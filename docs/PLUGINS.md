@@ -40,8 +40,10 @@ uses:
 
 See [`plugins/examples/hello_importer.py`](../plugins/examples/hello_importer.py)
 for a working example. Plugins run inside the LinDVB process, so **only install
-plugins you trust**. Manage them under **☰ → Plugins…**; disable one by adding
-its file name (without `.py`) to `plugins_disabled` in `settings.json`.
+plugins you trust**. Manage them under **☰ → Plugins…**: each installed plugin has
+an on/off switch (stored as `plugins_disabled` in `settings.json`, applied at the
+next start), plugins that failed to load show the error, and plugin menu actions
+can be run from there.
 
 ## Conditional access (descrambling your own channels)
 
@@ -68,10 +70,21 @@ Point LinDVB at the socket your softcam exposes:
 ### Hardware CI / CI+ module — `ca_provider = "ci"`
 
 For a Common Interface module (with your subscription card) plugged into the
-tuner. The module descrambles in hardware; LinDVB opens the adapter's CA device
-and sends it the CA PMT.
+tuner. The module descrambles in hardware. LinDVB talks EN 50221 to it through the
+adapter's CA device (transport and session layers, resource manager, application
+information, CA support, date-time and MMI) and sends it the CA PMT of the tuned
+channel.
 
 * `ca_ci_adapter`, `ca_ci_device` — select `/dev/dvb/adapterN/caM`.
+
+**CAM menu.** **☰ → CAM Menu (CI Module)…** opens the module's own menus: smart
+card information, parental control, language and whatever else the module offers.
+Menus and lists are shown as lists, questions such as a PIN prompt as an input
+field (hidden for PINs). When the module asks something by itself, for example a
+PIN for an age-restricted programme, the window opens on its own.
+
+CI+ host authentication is not implemented, because it needs licensed host
+certificates; CI+ modules work as far as they also operate in plain CI mode.
 
 ### None — `ca_provider = "none"` (default)
 

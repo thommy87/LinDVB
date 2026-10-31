@@ -36,7 +36,7 @@ def _manager(tmp_path, settings=None):
     (d / "myplugin.py").write_text(PLUGIN_SRC)
     os.environ["LINDVB_PLUGIN_PATH"] = str(d)
     logs = []
-    mgr = PluginManager(settings or {}, log=logs.append)
+    mgr = PluginManager({} if settings is None else settings, log=logs.append)
     return mgr, logs
 
 
@@ -94,3 +94,23 @@ def test_none_provider(tmp_path):
     mgr, _ = _manager(tmp_path, {"ca_provider": "none"})
     mgr.load_all()
     assert mgr.make_ca_provider() is None
+
+
+def test_enable_disable(tmp_path):
+    settings = {}
+    mgr, _ = _manager(tmp_path, settings)
+    assert mgr.is_enabled("myplugin")
+    mgr.set_enabled("myplugin", False)
+    assert settings["plugins_disabled"] == ["myplugin"] and not mgr.is_enabled("myplugin")
+    mgr.set_enabled("myplugin", True)
+    assert settings["plugins_disabled"] == [] and mgr.is_enabled("myplugin")
+
+
+def test_failed_plugin_recorded(tmp_path):
+    d = tmp_path / "plugins"
+    d.mkdir()
+    (d / "broken.py").write_text("import no_such_module_xyz\n")
+    os.environ["LINDVB_PLUGIN_PATH"] = str(d)
+    mgr = PluginManager({}, log=lambda m: None)
+    mgr.load_all()
+    assert "no_such_module_xyz" in mgr.failed["broken"]

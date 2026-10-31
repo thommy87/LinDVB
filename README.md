@@ -37,6 +37,8 @@ and whether LinDVB has it.
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
   web search links; on-screen now/next display; XMLTV for internet channels
 * Teletext window with page navigation, find, copy and save
+* Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
+  e.g. 150 or 777) drawn over the video in sync
 * Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
@@ -49,7 +51,8 @@ and whether LinDVB has it.
   providers, life-cycle hooks and menu entries
 * Conditional access for your own encrypted channels: an external softcam
   (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
-  module supplies the control words from your subscription card
+  module supplies the control words from your subscription card; CAM menu for
+  CI modules (smart card info, parental control, PIN prompts)
 
 ## Plugins and conditional access
 
@@ -193,9 +196,7 @@ time, which lets you test timeshift, recording, EPG and teletext without hardwar
 
 ## Not yet implemented
 
-Picture in picture and mosaic, the interactive CI MMI menu (basic CA
-descrambling is supported, see [docs/PLUGINS.md](docs/PLUGINS.md)), Unicable and
-DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
+Picture in picture and mosaic, CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
 ## License
