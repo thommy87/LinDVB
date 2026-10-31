@@ -3,6 +3,7 @@
 # (meant for Ubuntu 24.04; the AppImage then runs on distributions with
 # glibc 2.39 or newer). Usage: packaging/build-appdir.sh [AppDir]
 set -euo pipefail
+[ -n "${CI:-}" ] && set -x
 
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 APPDIR="$(realpath -m "${1:-$SRC/build/LinDVB.AppDir}")"
@@ -25,7 +26,7 @@ SITE="$APPDIR/usr/lib/python$PYVER/site-packages"
 mkdir -p "$SITE"
 for mod in gi cairo; do
     for base in /usr/lib/python3/dist-packages /usr/lib/python$PYVER/dist-packages; do
-        [ -d "$base/$mod" ] && cp -r "$base/$mod" "$SITE/" && break
+        if [ -d "$base/$mod" ]; then cp -r "$base/$mod" "$SITE/"; break; fi
     done
 done
 cp -r "$SRC/lindvb" "$SITE/"
@@ -37,8 +38,9 @@ for t in GLib-2.0 GObject-2.0 Gio-2.0 GModule-2.0 Gtk-4.0 Gdk-4.0 Gsk-4.0 Graphe
          Pango-1.0 PangoCairo-1.0 cairo-1.0 HarfBuzz-0.0 freetype2-2.0 GdkPixbuf-2.0 \
          Gst-1.0 GstBase-1.0 GstVideo-1.0 GstAudio-1.0 GstTag-1.0 GstMpegts-1.0 GstPbutils-1.0 \
          PangoFT2-1.0 Fontconfig-2.0 GioUnix-2.0 GLibUnix-2.0; do
-    [ -f "$ARCH_LIB/girepository-1.0/$t.typelib" ] && \
+    if [ -f "$ARCH_LIB/girepository-1.0/$t.typelib" ]; then
         cp "$ARCH_LIB/girepository-1.0/$t.typelib" "$APPDIR/usr/lib/girepository-1.0/"
+    fi
 done
 
 echo "== GStreamer plugins"
@@ -53,7 +55,7 @@ PLUGINS="coreelements playback typefindfunctions app autodetect audioconvert aud
   pipewire gtk4 opengl ximagesink"
 for p in $PLUGINS; do
     f="$ARCH_LIB/gstreamer-$GSTVER/libgst$p.so"
-    [ -f "$f" ] && cp "$f" "$APPDIR/usr/lib/gstreamer-$GSTVER/"
+    if [ -f "$f" ]; then cp "$f" "$APPDIR/usr/lib/gstreamer-$GSTVER/"; fi
 done
 SCANNER="$(ls "$ARCH_LIB"/gstreamer$GSTVER/gstreamer-$GSTVER/gst-plugin-scanner 2>/dev/null || true)"
 [ -n "$SCANNER" ] && cp "$SCANNER" "$APPDIR/usr/lib/gst-plugin-scanner"
@@ -76,10 +78,10 @@ cp "$GIO_MOD"/libgiognutls.so "$APPDIR/usr/lib/gio/modules/" 2>/dev/null || true
 
 echo "== dvbv5 tools"
 for tool in dvbv5-scan dvbv5-zap; do
-    command -v $tool >/dev/null && cp "$(command -v $tool)" "$APPDIR/usr/bin/"
+    if command -v $tool >/dev/null; then cp "$(command -v $tool)" "$APPDIR/usr/bin/"; fi
 done
 for d in /usr/share/dvb /usr/share/dvbv5; do
-    [ -d "$d" ] && cp -r "$d" "$APPDIR/usr/share/"
+    if [ -d "$d" ]; then cp -r "$d" "$APPDIR/usr/share/"; fi
 done
 
 echo "== shared libraries"
@@ -87,20 +89,20 @@ echo "== shared libraries"
 EXCLUDE='^(libc|libm|libdl|libpthread|librt|libresolv|libutil|libnsl|ld-linux|libGL|libGLX|libGLdispatch|libEGL|libOpenGL|libgbm|libdrm|libvulkan|libstdc\+\+|libgcc_s|libasound|libpulse|libjack|libpipewire|libudev|libsystemd|libdbus-1|libX11-xcb|libxcb|libX11|libwayland-client|libwayland-egl|libwayland-cursor|libexpat|libfontconfig|libfreetype|libz)\.so'
 collect() {
     find "$APPDIR" -type f \( -name '*.so*' -o -path '*/usr/bin/*' -o -name gst-plugin-scanner \) |
-        while read -r f; do ldd "$f" 2>/dev/null; done |
+        while read -r f; do ldd "$f" 2>/dev/null || true; done |
         awk '/=> \//{print $3}' | sort -u
 }
 for _ in 1 2 3 4; do
     collect | while read -r lib; do
         name="$(basename "$lib")"
-        [[ "$name" =~ $EXCLUDE ]] && continue
-        [ -e "$APPDIR/usr/lib/$name" ] || cp -L "$lib" "$APPDIR/usr/lib/$name"
+        if [[ "$name" =~ $EXCLUDE ]] || [ -e "$APPDIR/usr/lib/$name" ]; then continue; fi
+        cp -L "$lib" "$APPDIR/usr/lib/$name"
     done
 done
 # Python extension modules and GObject typelibs reference libraries by soname.
 for t in "$ARCH_LIB"/libgtk-4.so.1 "$ARCH_LIB"/libgstmpegts-1.0.so.0 "$ARCH_LIB"/libgstvideo-1.0.so.0 \
          "$ARCH_LIB"/libgstpbutils-1.0.so.0 "$ARCH_LIB"/libgraphene-1.0.so.0 "$ARCH_LIB"/libgirepository-1.0.so.1; do
-    [ -e "$t" ] && [ ! -e "$APPDIR/usr/lib/$(basename "$t")" ] && cp -L "$t" "$APPDIR/usr/lib/"
+    if [ -e "$t" ] && [ ! -e "$APPDIR/usr/lib/$(basename "$t")" ]; then cp -L "$t" "$APPDIR/usr/lib/"; fi
 done
 
 echo "== desktop integration"

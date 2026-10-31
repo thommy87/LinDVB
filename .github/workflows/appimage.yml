@@ -33,7 +33,17 @@ jobs:
         run: python3 -m pytest -q tests
 
       - name: Build AppImage
-        run: packaging/build-appimage.sh
+        shell: bash
+        run: |
+          set +e
+          packaging/build-appimage.sh 2>&1 | tee build.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            # Surface the end of the log as an annotation so it shows on the PR.
+            msg="$(tail -n 25 build.log | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')"
+            echo "::error title=AppImage build failed::$msg"
+          fi
+          exit "$rc"
 
       - name: Smoke test
         run: |
