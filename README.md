@@ -90,6 +90,8 @@ sudo snap connect lindvb:shutdown     # optional: standby/power off after record
 lindvb
 ```
 
+The snap is not signed by the Snap Store, so double-clicking it in the software centre fails
+with "cannot find signatures with metadata for snap"; install it with `--dangerous` as above.
 To build it yourself: `snapcraft` in the source tree.
 
 ### From source
