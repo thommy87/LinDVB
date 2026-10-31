@@ -109,6 +109,7 @@ class PluginManager:
         self.ca_providers = {}              # name -> (plugin, factory)
         self.hooks = {}                     # event -> [(plugin, callback)]
         self.menu_actions = []              # (plugin, label, callback)
+        self.failed = {}                    # module name -> error text
 
     def log(self, message):
         self._log(message)
@@ -154,6 +155,7 @@ class PluginManager:
             try:
                 self.load(name, path)
             except Exception as e:  # a broken plugin must not stop the app
+                self.failed[name] = str(e) or type(e).__name__
                 self.log(f"Plugin '{name}' failed to load: {e}")
                 self.log(traceback.format_exc())
 
@@ -166,6 +168,7 @@ class PluginManager:
         sys.modules[mod_name] = module
         spec.loader.exec_module(module)
         plugin = LoadedPlugin(getattr(module, "NAME", name), module, path)
+        plugin.module_name = name
         register = getattr(module, "register", None)
         if not callable(register):
             raise PluginError("missing register(api) function")
@@ -173,6 +176,16 @@ class PluginManager:
         self.plugins.append(plugin)
         self.log(f"Loaded plugin '{plugin.name}' {plugin.version}".rstrip())
         return plugin
+
+    def set_enabled(self, module_name, enabled):
+        """Switch a plugin on or off for the next start (stored in the settings)."""
+        disabled = [n for n in self.settings.get("plugins_disabled", []) if n != module_name]
+        if not enabled:
+            disabled.append(module_name)
+        self.settings["plugins_disabled"] = disabled
+
+    def is_enabled(self, module_name):
+        return module_name not in self.settings.get("plugins_disabled", [])
 
     # -- dispatch -------------------------------------------------------------
     def bind_app(self, app):

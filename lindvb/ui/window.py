@@ -24,6 +24,8 @@ CSS = b"""
 .osd-num { background: rgba(0,0,0,0.72); color: white; font-size: 2.5em; font-weight: bold;
            border-radius: 10px; padding: 6px 16px; }
 .rec { color: #e01b24; font-weight: bold; }
+.ttxsub { background: rgba(0,0,0,0.75); color: white; font-size: 1.5em; font-weight: bold;
+          border-radius: 4px; padding: 2px 10px; }
 .statusbar { padding: 2px 8px; }
 """
 
@@ -52,6 +54,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self.set_status(f"Playback error: {m}"))
         self.player.connect("tracks", lambda _p: self._rebuild_track_menus())
+        self.player.connect("subtitle-text", self._on_subtitle_text)
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
         self.app.tuners.connect("preempt-live", self._on_preempt)
@@ -90,6 +93,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "rebuild": self.rebuild_playback, "xmltv": lambda: self.app.update_xmltv(),
             "web-epg": self.on_web_search,
             "plugins": lambda: self.app.show_plugins(),
+            "cam-menu": lambda: self.app.show_cam_menu(),
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -103,7 +107,8 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self.player.select_audio(p.get_int32()))
         self.add_action(a)
         a = Gio.SimpleAction.new("subtitle", GLib.VariantType.new("i"))
-        a.connect("activate", lambda _a, p: self.player.select_subtitle(p.get_int32()))
+        a.connect("activate", lambda _a, p: (self.player.select_subtitle(p.get_int32()),
+                                             self._rebuild_track_menus()))
         self.add_action(a)
         a = Gio.SimpleAction.new("zoom", GLib.VariantType.new("i"))
         a.connect("activate", lambda _a, p: self.picture.set_content_fit(ZOOM[p.get_int32()][1]))
@@ -160,6 +165,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append("Timer Recordings", "win.timers")
         tv.append("Recording and Device Statistics", "win.stats")
         tv.append("Teletext", "win.teletext")
+        tv.append("CAM Menu (CI Module)…", "win.cam-menu")
         tv.append("Channel Search…", "win.scan")
         tv.append("Channel Editor / Favourites", "win.editor")
         tv.append("Update Internet EPG (XMLTV)", "win.xmltv")
@@ -306,6 +312,12 @@ class MainWindow(Gtk.ApplicationWindow):
                                   valign=Gtk.Align.START, margin_top=20, margin_end=20)
         self.numlabel.set_visible(False)
         overlay.add_overlay(self.numlabel)
+        # teletext subtitles drawn over the video
+        self.sublabel = Gtk.Label(css_classes=["ttxsub"], halign=Gtk.Align.CENTER,
+                                  valign=Gtk.Align.END, margin_bottom=36, justify=Gtk.Justification.CENTER,
+                                  wrap=True, can_target=False)
+        self.sublabel.set_visible(False)
+        overlay.add_overlay(self.sublabel)
         dbl = Gtk.GestureClick()
         dbl.connect("pressed", lambda g, n, *_: self.toggle_fullscreen() if n == 2 else self.show_osd())
         self.picture.add_controller(dbl)
@@ -674,6 +686,10 @@ class MainWindow(Gtk.ApplicationWindow):
     def change_volume(self, d):
         self.vol.set_value(self.vol.get_value() + d)
         self.flash(f"Volume {int(self.vol.get_value() * 100)}%")
+
+    def _on_subtitle_text(self, _player, text):
+        self.sublabel.set_text(text)
+        self.sublabel.set_visible(bool(text))
 
     def _rebuild_track_menus(self):
         self.audio_menu.remove_all()

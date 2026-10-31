@@ -38,7 +38,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Timeshift (pause live TV, jump, keep the buffer) | `English.lng:599-601` `actTimeshift`, `actTimeshiftRecStop`, `actTimeshiftSave.Caption=Keep Timeshift File`; `actions.ini` `Jump Minus 10=102` | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Media file and URL playback, playlists | `English.lng:569-570` `actLoadFile`, `actLoadURL`; `[frmPlaylist]`; `actRandom`, `actRepeat`, `actPlaylistGo` | **Yes**: files, URLs, M3U/PLS playlists, next/previous, random, endless |
 | Play rate | `English.lng:619` `mnuPlayrate.Caption=Play Rate`; `Images/Icons/VisionX/actPlayrate050..200.png` | **Yes** (files) |
-| Audio track and subtitle selection | `English.lng:615,620` `mnuAudio`, `mnuSubtitle`; `[frmOptSubtitles]` line 931 | **Yes**: playbin audio/text streams, DVB subtitles |
+| Audio track and subtitle selection | `English.lng:615,620` `mnuAudio`, `mnuSubtitle`; `[frmOptSubtitles]` line 931 | **Yes**: playbin audio/text streams, DVB subtitles, teletext subtitles (pages from the PMT teletext descriptor, decoded with `teletextdec` in the playback pipeline and drawn over the video) |
 | Audio channel (stereo/left/right), second audio output | `English.lng:532-537` `ActBalanceLeft/Right`, `actAudioOutput.Caption=Audio Output B` | **No** |
 | Equalizer | `English.lng:555` `actEqualizer.Caption=Equalizer...` | **Yes**: 10-band equalizer |
 | Brightness, contrast, saturation, hue | `English.lng:550` `actDisplay.Caption=Brightness, Contrast...`; `actions.ini` `Brightness Up=55` … `Hue Down=62` | **Yes**: `videobalance` with reset |
@@ -85,7 +85,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 
 | DVBViewer feature | Evidence | LinDVB |
 |---|---|---|
-| CAM / CI menu for pay TV | `English.lng:282` `[frmCIMenu]`, `Label3.Caption=This window enables communication with the common access module (CAM)` | **Partly**: conditional-access framework descrambles the user's own encrypted channels via an external softcam (DVBAPI/OSCam, control words applied with libdvbcsa) or a hardware CI module; see [PLUGINS.md](PLUGINS.md). No keys or card-sharing are bundled; a full CI MMI menu is still to come |
+| CAM / CI menu for pay TV | `English.lng:282` `[frmCIMenu]`, `Label3.Caption=This window enables communication with the common access module (CAM)` | **Yes**: CAM menu window for CI modules (EN 50221 MMI: menus, lists, PIN entry, opens by itself when the module asks); descrambling of the user's own channels via the CI module or an external softcam (DVBAPI/OSCam, libdvbcsa); see [PLUGINS.md](PLUGINS.md). No keys or card-sharing are bundled; no CI+ host authentication |
 | Plugins / add-ons | `Plugins/*.dll` (ImportCSV, ImportConf, ImportLamedb, Universal), `English.lng` plugin strings | **Yes**: Python plugin system for channel-list importers, conditional-access providers, life-cycle hooks and menu entries; see [PLUGINS.md](PLUGINS.md) |
 | Remote controls and key mapping | `Default/Remotes/default.remote` (XML command→key map), `Plugins/Universal.dll` (DVBSky, TeVii, Anysee, Twinhan, TechnoTrend IR), `[frmWinlircSettings]` | **Partly**: keyboard shortcuts; Linux IR receivers map to keys through the kernel's rc-core, so they work as keyboards |
 | Media server client, RTSP/UPnP/web | `English.lng:1267` `[frmServiceOptions]` (DVBViewer Media Server), `RTSP Server=` line 1919, `actUPnPOpen` | **No** |

@@ -56,6 +56,9 @@ class LinDVBApp(Gtk.Application):
         self.timers = TimerManager(self)
         self.plugins.bind_app(self)
         self.plugins.emit("startup")
+        self._cam_window = None
+        if self.settings.get("ca_provider") == "ci":
+            self._watch_cam()
         GLib.timeout_add_seconds(3, self._flush_epg)
         GLib.timeout_add_seconds(300, lambda: (self.timers.apply_series(), True)[1])
 
@@ -81,6 +84,8 @@ class LinDVBApp(Gtk.Application):
 
     def do_shutdown(self):
         self.plugins.emit("shutdown")
+        from . import en50221
+        en50221.close_all()
         if self.window:
             self.window.settings.save()
         self.timers.stop_all()
@@ -164,6 +169,42 @@ class LinDVBApp(Gtk.Application):
     def show_stats(self):
         from .ui.dialogs import StatsWindow
         StatsWindow(self, self.window).present()
+
+    # -- CI module menu ---------------------------------------------------------
+    def _watch_cam(self):
+        """Open the CAM menu window when the module asks something by itself
+        (a PIN prompt or a message while tuning)."""
+        from . import en50221
+        app = self
+
+        class Popup(en50221.CIListener):
+            def ci_menu(self, stack, menu):
+                GLib.idle_add(app._cam_popup, "show_menu", menu)
+
+            def ci_enquiry(self, stack, enquiry):
+                GLib.idle_add(app._cam_popup, "show_enquiry", enquiry)
+
+        dev = en50221.shared_device(self.settings)
+        dev.listeners.append(Popup())
+        dev.open()
+
+    def _cam_popup(self, method, obj):
+        if self._cam_window is None and self.window is not None:
+            win = self.show_cam_menu()
+            getattr(win, method)(obj)
+        return False
+
+    def show_cam_menu(self):
+        from .ui.cam import CamMenuWindow
+        if self._cam_window is None:
+            self._cam_window = CamMenuWindow(self, self.window)
+            self._cam_window.connect("close-request", self._cam_closed)
+        self._cam_window.present()
+        return self._cam_window
+
+    def _cam_closed(self, *_):
+        self._cam_window = None
+        return False
 
     def show_plugins(self):
         from .ui.dialogs import PluginsWindow

@@ -16,7 +16,15 @@ gi.require_version("Gst", "1.0")
 gi.require_version("GstVideo", "1.0")
 from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
+from .teletext import DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt  # noqa: E402
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
+
+try:
+    gi.require_version("GstMpegts", "1.0")
+    from gi.repository import GstMpegts  # noqa: E402
+    GstMpegts.initialize()
+except (ImportError, ValueError):
+    GstMpegts = None
 
 PLAY_FLAGS_VIDEO = 1
 PLAY_FLAGS_AUDIO = 2
@@ -121,6 +129,8 @@ class Player(GObject.Object):
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "tracks": (GObject.SignalFlags.RUN_LAST, None, ()),
         "eos": (GObject.SignalFlags.RUN_LAST, None, ()),
+        # teletext subtitle text to show over the video ("" clears it)
+        "subtitle-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
     }
 
     def __init__(self, picture, settings):
@@ -139,6 +149,12 @@ class Player(GObject.Object):
         self.balance = {"brightness": 0.0, "contrast": 1.0, "saturation": 1.0, "hue": 0.0}
         self._volume = settings["volume"]
         self._mute = False
+        # teletext subtitles: decoded inside playbin from tsdemux's teletext pad
+        self.ttx_page = 0               # selected subtitle page, 0 = off
+        self._ttx_dec = None
+        self._ttx_present = False       # the stream carries teletext
+        self._ttx_pages = []            # TeletextPage from the PMT
+        self._ttx_last = ""
 
     # -- pipeline -----------------------------------------------------------
 
@@ -172,6 +188,11 @@ class Player(GObject.Object):
         return pb
 
     def _teardown(self):
+        self._ttx_dec = None
+        self._ttx_present = False
+        self._ttx_pages = []
+        self._ttx_last = ""
+        self.emit("subtitle-text", "")
         if self.feeder:
             self.feeder.stop()
             self.feeder = None
@@ -211,8 +232,97 @@ class Player(GObject.Object):
 
     def _on_element_setup(self, _pb, element):
         f = element.get_factory()
-        if f and f.get_name() == "tsdemux" and self.sid:
-            element.set_property("program-number", self.sid)
+        if f and f.get_name() == "tsdemux":
+            if self.sid:
+                element.set_property("program-number", self.sid)
+            element.connect("pad-added", self._on_demux_pad)
+
+    # -- teletext subtitles -------------------------------------------------
+
+    def _on_demux_pad(self, demux, pad):
+        """Decode the teletext stream next to decodebin, synced to the video."""
+        caps = pad.get_current_caps() or pad.query_caps(None)
+        if not caps or caps.get_structure(0).get_name() != "application/x-teletext":
+            return
+        if self._ttx_dec is not None or pad.is_linked():
+            return
+        if Gst.ElementFactory.find("teletextdec") is None:
+            return
+        parent = demux.get_parent()
+        q = Gst.ElementFactory.make("queue")
+        q.set_property("max-size-buffers", 0)
+        q.set_property("max-size-time", 0)
+        q.set_property("max-size-bytes", 0)
+        dec = Gst.ElementFactory.make("teletextdec")
+        dec.set_property("page", self.ttx_page or DEFAULT_SUBTITLE_PAGES[0])
+        dec.set_property("subtitles-mode", True)
+        dec.set_property("subtitles-template", "%s\n")
+        cf = Gst.ElementFactory.make("capsfilter")
+        cf.set_property("caps", Gst.Caps.from_string("text/x-raw,format=utf-8"))
+        sink = Gst.ElementFactory.make("appsink")
+        sink.set_property("sync", True)
+        sink.set_property("async", False)
+        sink.set_property("emit-signals", True)
+        sink.set_property("max-buffers", 4)
+        sink.connect("new-sample", self._on_ttx_sample)
+        chain = (q, dec, cf, sink)
+        for e in chain:
+            parent.add(e)
+        for a, b in zip(chain, chain[1:]):
+            a.link(b)
+        for e in reversed(chain):
+            e.sync_state_with_parent()
+        if pad.link(q.get_static_pad("sink")) != Gst.PadLinkReturn.OK:
+            return
+        self._ttx_dec = dec
+        self._ttx_present = True
+        GLib.idle_add(lambda: (self.emit("tracks"), False)[1])
+
+    def _on_ttx_sample(self, sink):
+        sample = sink.emit("pull-sample")
+        if sample is None:
+            return Gst.FlowReturn.OK
+        buf = sample.get_buffer()
+        ok, info = buf.map(Gst.MapFlags.READ)
+        if ok:
+            text = bytes(info.data).decode("utf-8", "replace").replace("\x00", "")
+            buf.unmap(info)
+            text = "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
+            if self.ttx_page and text != self._ttx_last:
+                self._ttx_last = text
+                GLib.idle_add(self._show_subtitle, text)
+        return Gst.FlowReturn.OK
+
+    def _show_subtitle(self, text):
+        if self.ttx_page:
+            self.emit("subtitle-text", text)
+        return False
+
+    def teletext_pages(self):
+        """Teletext subtitle pages offered for the current stream."""
+        if self._ttx_pages:
+            return list(self._ttx_pages)
+        if self._ttx_present:
+            return [TeletextPage(p) for p in DEFAULT_SUBTITLE_PAGES]
+        return []
+
+    def _on_section(self, msg):
+        if GstMpegts is None:
+            return
+        section = GstMpegts.message_parse_mpegts_section(msg)
+        if section is None or section.section_type != GstMpegts.SectionType.PMT:
+            return
+        data = section.get_data()
+        raw = data.get_data() if hasattr(data, "get_data") else bytes(data)
+        try:
+            program, pages = subtitle_pages_from_pmt(bytes(raw))
+        except ValueError:
+            return
+        if self.sid and program != self.sid:
+            return
+        if pages and pages != self._ttx_pages:
+            self._ttx_pages = pages
+            self.emit("tracks")
 
     # -- sources ------------------------------------------------------------
 
@@ -372,9 +482,17 @@ class Player(GObject.Object):
         return self._tags_list("audio"), self.playbin.get_property("current-audio") if self.playbin else -1
 
     def subtitle_tracks(self):
-        on = bool(self.playbin and self.playbin.get_property("flags") & PLAY_FLAGS_TEXT)
-        cur = self.playbin.get_property("current-text") if self.playbin and on else -1
-        return self._tags_list("text"), cur
+        """Labels of the DVB/text subtitle streams followed by the teletext
+        subtitle pages, and the index of the active one (-1 = off)."""
+        tracks = self._tags_list("text")
+        pages = self.teletext_pages()
+        if self.ttx_page:
+            idx = next((i for i, p in enumerate(pages) if p.page == self.ttx_page), -1)
+            cur = len(tracks) + idx if idx >= 0 else -1
+        else:
+            on = bool(self.playbin and self.playbin.get_property("flags") & PLAY_FLAGS_TEXT)
+            cur = self.playbin.get_property("current-text") if self.playbin and on else -1
+        return tracks + [p.label for p in pages], cur
 
     def select_audio(self, i):
         if self.playbin:
@@ -384,6 +502,18 @@ class Player(GObject.Object):
         if not self.playbin:
             return
         flags = self.playbin.get_property("flags")
+        n = self.playbin.get_property("n-text")
+        pages = self.teletext_pages()
+        if 0 <= i - n < len(pages):
+            self.ttx_page = pages[i - n].page
+            self._ttx_last = ""
+            if self._ttx_dec is not None:
+                self._ttx_dec.set_property("page", self.ttx_page)
+            self.playbin.set_property("flags", flags & ~PLAY_FLAGS_TEXT)
+            self.emit("subtitle-text", "")
+            return
+        self.ttx_page = 0
+        self.emit("subtitle-text", "")
         if i < 0:
             self.playbin.set_property("flags", flags & ~PLAY_FLAGS_TEXT)
         else:
@@ -437,6 +567,8 @@ class Player(GObject.Object):
                 self.emit("tracks")
         elif t in (Gst.MessageType.STREAM_COLLECTION, Gst.MessageType.STREAMS_SELECTED):
             self.emit("tracks")
+        elif t == Gst.MessageType.ELEMENT:
+            self._on_section(msg)
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()
             if not self.capture and self.uri and not self.paused:

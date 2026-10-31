@@ -129,22 +129,40 @@ def parse_pmt(section):
 # CA_PMT list-management and command ids (EN 50221)
 CA_PMT_LIST_ONLY = 0x03
 CA_PMT_CMD_OK_DESCRAMBLING = 0x01
+CA_PMT_CMD_NOT_SELECTED = 0x04
+
+
+def _ca_descriptors_only(loop):
+    """Keep only the CA descriptors (tag 0x09) of a descriptor loop."""
+    out, i = bytearray(), 0
+    while i + 2 <= len(loop):
+        length = loop[i + 1]
+        if loop[i] == 0x09:
+            out += loop[i:i + 2 + length]
+        i += 2 + length
+    return bytes(out)
 
 
 def build_ca_pmt(pmt, list_mgmt=CA_PMT_LIST_ONLY,
                  cmd_id=CA_PMT_CMD_OK_DESCRAMBLING, demux=0, adapter=0,
-                 service_pmt_pid=0):
+                 service_pmt_pid=0, dvbapi=True):
     """Build an EN 50221 CA_PMT object body from a :class:`ProgramMapTable`.
 
     This is the payload the softcam / CI module consumes to learn which ECM
-    PIDs belong to the service. A private descriptor (tag 0x82) carries the
-    demux and adapter indices, as the DVBAPI protocol expects.
+    PIDs belong to the service. With ``dvbapi`` a private descriptor (tag
+    0x82) carries the demux and adapter indices, as the DVBAPI protocol
+    expects; for a CI module (``dvbapi=False``) only the CA descriptors are
+    passed, as EN 50221 requires.
     """
-    # Program-level private descriptor: demux/adapter selector for DVBAPI.
-    prog_desc = bytes([0x82, 0x02, demux & 0xFF, adapter & 0xFF])
-    if service_pmt_pid:
-        prog_desc += bytes([0x84, 0x02, (service_pmt_pid >> 8) & 0x1F, service_pmt_pid & 0xFF])
-    program_info = bytes([cmd_id]) + prog_desc + pmt.program_info
+    if dvbapi:
+        prog_desc = bytes([0x82, 0x02, demux & 0xFF, adapter & 0xFF])
+        if service_pmt_pid:
+            prog_desc += bytes([0x84, 0x02, (service_pmt_pid >> 8) & 0x1F,
+                                service_pmt_pid & 0xFF])
+        prog_loop = prog_desc + pmt.program_info
+    else:
+        prog_loop = _ca_descriptors_only(pmt.program_info)
+    program_info = (bytes([cmd_id]) + prog_loop) if prog_loop else b""
 
     out = bytearray()
     out.append(list_mgmt)
@@ -153,7 +171,8 @@ def build_ca_pmt(pmt, list_mgmt=CA_PMT_LIST_ONLY,
     out += struct.pack(">H", len(program_info) & 0x0FFF)
     out += program_info
     for stream_type, pid, _ca, info in pmt.streams:
-        es_info = (bytes([cmd_id]) + info) if info else b""
+        loop = info if dvbapi else _ca_descriptors_only(info)
+        es_info = (bytes([cmd_id]) + loop) if loop else b""
         out.append(stream_type)
         out += struct.pack(">H", pid & 0x1FFF)
         out += struct.pack(">H", len(es_info) & 0x0FFF)
@@ -572,43 +591,28 @@ class DvbApiProvider(CAProvider):
 #  Hardware CI / CI+ via the kernel CA device
 # --------------------------------------------------------------------------
 class CIProvider(CAProvider):
-    """A hardware CI/CI+ common-interface module in the adapter's CA device.
+    """A hardware CI module (with the user's card) in the adapter's CA device.
 
-    The module itself descrambles the stream in the tuner's hardware once it
-    has been given the CA PMT, so LinDVB does not touch the TS payload here; it
-    only opens ``/dev/dvb/adapterN/caM`` and forwards the CA PMT. A full
-    EN 50221 session/resource layer (including the MMI menu) is a larger piece
-    of work; this provider establishes the device and the CA-PMT path and
-    reports what it finds, which is the groundwork the CI menu builds on.
+    The module descrambles the stream inside the tuner once it has the CA PMT,
+    so LinDVB leaves the TS payload alone and only talks EN 50221 to the
+    module (see :mod:`lindvb.en50221`), which also provides the CAM menu.
     """
 
     name = "ci"
 
     def __init__(self, settings):
+        from . import en50221
         self.settings = settings
-        self._fd = None
-        self._state = "stopped"
-        self._channel = None
+        self.device = en50221.shared_device(settings)
         self._pmt = None
 
     @property
     def status(self):
-        return self._state
-
-    def _device_path(self):
-        adapter = self.settings.get("ca_ci_adapter", 0)
-        device = self.settings.get("ca_ci_device", 0)
-        return f"/dev/dvb/adapter{adapter}/ca{device}"
+        name = self.device.stack.module_name
+        return f"{self.device.state}" + (f" ({name})" if name else "")
 
     def start(self, channel, pmt_section=None):
-        self._channel = channel
-        path = self._device_path()
-        try:
-            self._fd = os.open(path, os.O_RDWR | os.O_NONBLOCK)
-            self._state = "ci device open"
-        except OSError as e:
-            self._state = f"no CI device: {e}"
-            self._fd = None
+        self.device.open()
         if pmt_section:
             self.set_pmt(pmt_section)
 
@@ -617,23 +621,16 @@ class CIProvider(CAProvider):
             self._pmt = parse_pmt(pmt_section)
         except ValueError:
             return
-        # Forwarding the CA PMT to the module is done through the EN 50221
-        # session layer on the CA device; the assembled object is prepared here.
-        self._ca_pmt = build_ca_pmt(self._pmt)
-        self._state = "ca pmt ready"
+        self.device.send_ca_pmt(build_ca_pmt(self._pmt, dvbapi=False))
 
     def process_packet(self, packet):
-        # Hardware CI descrambles in the tuner; nothing to do in software.
-        return True
+        return False                        # descrambled in hardware
 
     def stop(self):
-        if self._fd is not None:
-            try:
-                os.close(self._fd)
-            except OSError:
-                pass
-            self._fd = None
-        self._state = "stopped"
+        if self._pmt is not None:
+            self.device.send_ca_pmt(build_ca_pmt(self._pmt, cmd_id=CA_PMT_CMD_NOT_SELECTED,
+                                                 dvbapi=False))
+            self._pmt = None
 
 
 def builtin_provider(name, settings):

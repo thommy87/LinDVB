@@ -409,25 +409,65 @@ class PluginsWindow(Gtk.Window):
                        "in Preferences.")
         elif provider is None:
             ca_text = f"Provider '{app.settings['ca_provider']}' is not available."
+        elif provider.name == "ci":
+            ca_text = (f"Provider: CI module – {provider.status}\n"
+                       "The module descrambles with your card inside the tuner.")
         else:
             ca_text = (f"Provider: {provider.name}\n"
-                       "LinDVB forwards ECM sections to your external card client and applies "
-                       "the control words it returns; it holds no keys itself.")
+                       "LinDVB forwards ECM sections to your own card client and applies the "
+                       "control words it returns; it holds no keys itself.")
         lab = Gtk.Label(label=ca_text, xalign=0, wrap=True, css_classes=["dim-label"])
         box.append(lab)
+        cam = Gtk.Button(label="Open CAM Menu…", halign=Gtk.Align.START)
+        cam.connect("clicked", lambda *_: app.show_cam_menu())
+        box.append(cam)
 
-        box.append(Gtk.Label(label="Loaded plugins", css_classes=["heading"], xalign=0))
-        if pm.plugins:
-            for p in pm.plugins:
-                row = f"• {p.name} {p.version}".rstrip()
-                if p.description:
-                    row += f"\n    {p.description.splitlines()[0]}"
-                box.append(Gtk.Label(label=row, xalign=0, wrap=True))
+        box.append(Gtk.Label(label="Plugins", css_classes=["heading"], xalign=0))
+        loaded = {getattr(p, "module_name", p.name): p for p in pm.plugins}
+        found = pm.discover()
+        if found:
+            lst = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE, css_classes=["boxed-list"])
+            for name, path in found:
+                row = Gtk.Box(spacing=12, margin_top=8, margin_bottom=8, margin_start=10,
+                              margin_end=10)
+                text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True)
+                p = loaded.get(name)
+                title = f"{p.name} {p.version}".rstrip() if p else name
+                text.append(Gtk.Label(label=title, xalign=0, css_classes=["heading"]))
+                if name in pm.failed:
+                    detail = f"Failed to load: {pm.failed[name]}"
+                elif p and p.description:
+                    detail = p.description.splitlines()[0]
+                elif not pm.is_enabled(name):
+                    detail = "Switched off"
+                else:
+                    detail = str(path)
+                text.append(Gtk.Label(label=detail, xalign=0, wrap=True, css_classes=["dim-label"]))
+                sw = Gtk.Switch(active=pm.is_enabled(name), valign=Gtk.Align.CENTER)
+                sw.connect("notify::active", self._toggled, name)
+                row.append(text)
+                row.append(sw)
+                lst.append(row)
+            box.append(lst)
+            self.restart_note = Gtk.Label(label="Changes take effect when LinDVB is started again.",
+                                          xalign=0, css_classes=["dim-label"], visible=False)
+            box.append(self.restart_note)
         else:
-            box.append(Gtk.Label(label="No plugins loaded.", xalign=0,
+            box.append(Gtk.Label(label="No plugins installed.", xalign=0,
                                   css_classes=["dim-label"]))
+        if pm.menu_actions:
+            box.append(Gtk.Label(label="Plugin actions", css_classes=["heading"], xalign=0))
+            for _plugin, label, cb in pm.menu_actions:
+                b = Gtk.Button(label=label, halign=Gtk.Align.START)
+                b.connect("clicked", lambda _b, cb=cb: cb(app))
+                box.append(b)
 
         dirs = ", ".join(str(d) for d in pm.plugin_dirs())
         box.append(Gtk.Label(label=f"Plugin folders: {dirs}", xalign=0, wrap=True,
                              css_classes=["dim-label"]))
         self.set_child(scrolled(box))
+
+    def _toggled(self, sw, _pspec, name):
+        self.app.plugins.set_enabled(name, sw.get_active())
+        self.app.settings.save()
+        self.restart_note.set_visible(True)
