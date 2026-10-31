@@ -33,9 +33,9 @@ jobs:
           TAG: ${{ inputs.version }}
         run: |
           mkdir out
-          cp "$(find dist -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
-          cp "$(find dist -name '*.flatpak' | head -1)" "out/LinDVB-${TAG}-x86_64.flatpak"
-          cp "$(find dist -name '*.snap' | head -1)" "out/lindvb_${TAG#v}_amd64.snap"
+          cp "$(find dist -type f -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
+          cp "$(find dist -type f -name '*.flatpak' | head -1)" "out/LinDVB-${TAG}-x86_64.flatpak"
+          cp "$(find dist -type f -name '*.snap' | head -1)" "out/lindvb_${TAG#v}_amd64.snap"
           ls -lh out
           gh release create "$TAG" out/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "LinDVB ${TAG}" --generate-notes
