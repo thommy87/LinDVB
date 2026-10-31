@@ -877,7 +877,7 @@ class MainWindow(Gtk.ApplicationWindow):
         Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version="0.1",
                         comments="Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
                                  "internet TV with the Linux DVB API and GStreamer.",
-                        logo_icon_name="video-display").present()
+                        license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb").present()
 
     def _on_close(self, *_):
         self.settings.save()

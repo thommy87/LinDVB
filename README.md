@@ -15,6 +15,16 @@ The feature set follows DVBViewer on Windows. [docs/FEATURES.md](docs/FEATURES.m
 lists each DVBViewer function, the evidence for it from a DVBViewer installation,
 and whether LinDVB has it.
 
+![Live TV with the on-screen programme info](docs/screenshots/01-live-tv-osd.png)
+
+| Programme guide | TV guide timeline |
+|---|---|
+| ![EPG now/next](docs/screenshots/03-epg-now.png) | ![TV guide](docs/screenshots/04-epg-tv-guide.png) |
+| **Timer recordings** | **Channel search** |
+| ![Timers](docs/screenshots/05-timers.png) | ![Channel search](docs/screenshots/06-channel-search.png) |
+
+(Screenshots use invented channels and programmes and a generated test stream.)
+
 ## Features
 
 * Channel list with search, TV/radio/favourites/FTA/encrypted/HD/internet filters and
@@ -38,10 +48,28 @@ and whether LinDVB has it.
 
 ## Install
 
+### AppImage
+
+Download `LinDVB-…-x86_64.AppImage` from the
+[releases](https://github.com/thommy87/LinDVB/releases) (or the latest
+[Build AppImage](https://github.com/thommy87/LinDVB/actions/workflows/appimage.yml) run),
+then:
+
+```sh
+chmod +x LinDVB-*-x86_64.AppImage
+./LinDVB-*-x86_64.AppImage
+```
+
+The AppImage bundles Python, GTK 4, GStreamer (with FFmpeg decoders) and the dvbv5
+tools. It is built on Ubuntu 24.04 and needs glibc 2.39 or newer (Ubuntu 24.04,
+Debian 13, Fedora 40 and later). To build it yourself: `packaging/build-appimage.sh`.
+
+### From source
+
 Debian / Ubuntu:
 
 ```sh
-sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-gstreamer-1.0 \
+sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-gstreamer-1.0 \
   gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0 \
   gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
   gstreamer1.0-libav dvb-tools dtv-scan-tables
@@ -118,3 +146,8 @@ time, which lets you test timeshift, recording, EPG and teletext without hardwar
 Picture in picture and mosaic, CAM/CI descrambling, Unicable and DiSEqC motors,
 HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
 [docs/FEATURES.md](docs/FEATURES.md).
+
+## License
+
+LinDVB is free software under the GNU General Public License version 2 or (at your
+option) any later version. See [LICENSE](LICENSE).
