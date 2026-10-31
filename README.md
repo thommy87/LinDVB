@@ -40,8 +40,11 @@ picture and hides itself when the mouse is still.
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
-* Recording: instant, timer (lead/follow-up time, weekday repeat, after-recording
-  standby/hibernate/power off), from the EPG, and series rules by title
+* Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
+  after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
+* Recording formats per timer: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3
+  for radio, with teletext, subtitles, all audio tracks and EPG data; file naming
+  scheme with placeholders (%date %time %station %name ...) and sub-folders
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
   web search links; on-screen now/next display; XMLTV for internet channels
 * Teletext window with page navigation, find, copy and save

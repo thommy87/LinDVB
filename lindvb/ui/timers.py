@@ -1,134 +1,483 @@
-"""Timer recordings window (one-off, repeating and series timers)."""
+"""Timer recordings window (one-off, repeating and series timers).
+
+Laid out like a classic recorder programming dialog: channel list with search on
+the left, the timers on the top right and the editor for the selected timer
+below it (date, lead/follow time, start/end, weekdays, channel, name, timer
+action, action after recording, container format, extra streams, file naming
+scheme and folder).
+"""
 
 import time
-from datetime import datetime
+from datetime import date, datetime, timedelta
+from pathlib import Path
 
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, Gtk
 
-from ..recorder import AFTER_ACTIONS, WEEKDAYS, Timer
-from .common import day, dropdown, fill, hm, labeled, make_column_view, message, scrolled, selected
+from ..recformat import (AFTER_ACTIONS, EXTENSIONS, EXTRA_LABELS, EXTRAS, FORMAT_LABELS,
+                         PLACEHOLDERS, RADIO_FORMATS, TIMER_ACTIONS, TV_FORMATS, allowed_formats,
+                         effective_format, expand_scheme)
+from ..recorder import WEEKDAYS, Timer
+from .common import day, dropdown, fill, hm, make_column_view, message, scrolled, selected
+
+
+def _label(text, mnemonic_widget=None):
+    lbl = Gtk.Label(label=text, xalign=0, use_underline=True)
+    if mnemonic_widget is not None:
+        lbl.set_mnemonic_widget(mnemonic_widget)
+    return lbl
+
+
+def _time_entry():
+    return Gtk.Entry(width_chars=6, max_length=5, placeholder_text="HH:MM")
+
+
+class FormatChooser:
+    """A drop-down whose choices are the formats that can hold the ticked extras."""
+
+    def __init__(self, formats, radio):
+        self.formats = formats
+        self.radio = radio
+        self.shown = list(formats)
+        self.model = Gtk.StringList.new([FORMAT_LABELS[f] for f in formats])
+        self.widget = Gtk.DropDown(model=self.model, hexpand=True)
+
+    def get(self):
+        i = self.widget.get_selected()
+        return self.shown[i] if 0 <= i < len(self.shown) else "TS"
+
+    def set(self, fmt):
+        self.widget.set_selected(self.shown.index(fmt) if fmt in self.shown else 0)
+
+    def restrict(self, extras):
+        """Offer only the formats that can hold the extras; keep the choice if possible."""
+        current = self.get()
+        allowed = allowed_formats(extras, self.radio)
+        if allowed != self.shown:
+            self.shown = allowed
+            self.model.splice(0, self.model.get_n_items(), [FORMAT_LABELS[f] for f in allowed])
+        self.set(effective_format(current, extras, self.radio))
+        self.widget.set_sensitive(len(allowed) > 1)
 
 
 class TimersWindow(Gtk.Window):
     def __init__(self, app, parent):
-        super().__init__(title="Timer Recordings", transient_for=parent,
-                         default_width=1180, default_height=620)
+        super().__init__(title="Recording Timers", transient_for=parent,
+                         default_width=1240, default_height=760)
         self.app = app
+        self.channel = None
+        self.date = date.today()
+        self.folder = ""
+
+        # -- channel list (left) ------------------------------------------------
+        self.search = Gtk.SearchEntry(placeholder_text="Search channels")
+        self.search.connect("search-changed", lambda *_: self._fill_channels())
+        self.cview, self.cstore, self.csel = make_column_view(
+            [("Channel", lambda c: c.name + ("  (Radio)" if c.radio else ""), True)])
+        self.csel.connect("notify::selected-item", lambda *_: self._pick_channel(selected(self.csel)))
+        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_start=8,
+                       margin_top=8, margin_bottom=8)
+        left.append(self.search)
+        left.append(scrolled(self.cview))
+
+        # -- timer list (top right) ---------------------------------------------
         cols = [("Channel", lambda t: t.channel_name, False),
                 ("Date", lambda t: day(t.start), False),
                 ("Start", lambda t: hm(t.start), False), ("End", lambda t: hm(t.end), False),
                 ("Name", lambda t: t.title, True),
                 ("Repeat", lambda t: " ".join(WEEKDAYS[d] for d in t.days) or
                  ("Series" if t.series else "Once"), False),
+                ("Action", lambda t: t.action, False),
+                ("Format", self._format_text, False),
                 ("After", lambda t: t.after, False),
                 ("Status", lambda t: t.status if t.enabled else "Disabled", False)]
         self.view, self.store, self.sel = make_column_view(cols)
+        # No automatic selection: refilling the list must not load another timer.
+        self.sel.set_autoselect(False)
+        self.sel.set_can_unselect(True)
         self.sel.connect("notify::selected-item", lambda *_: self._load(selected(self.sel)))
 
-        rcols = [("Series title", lambda r: r.title, True),
-                 ("Channel", lambda r: (app.db.by_key(r.channel_key).name
-                                        if app.db.by_key(r.channel_key) else "Any"), False)]
-        self.rview, self.rstore, self.rsel = make_column_view(rcols)
+        right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_end=8,
+                        margin_top=8, margin_bottom=8)
+        sw = scrolled(self.view)
+        sw.set_size_request(-1, 200)
+        right.append(sw)
+        right.append(self._editor())
+        right.append(self._buttons())
+        right.append(self._series())
 
-        # editor
-        g = Gtk.Grid(row_spacing=6, column_spacing=8, margin_start=10, margin_end=10,
-                     margin_top=10, margin_bottom=10)
-        self.chans = list(app.db.channels)
-        self.ch = labeled(g, 0, "Channel", Gtk.DropDown.new_from_strings([c.name for c in self.chans] or ["-"]))
-        self.ch.set_enable_search(True)
-        self.ch.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
-        self.title_e = labeled(g, 1, "Name", Gtk.Entry())
-        self.date_e = labeled(g, 2, "Date (YYYY-MM-DD)", Gtk.Entry())
-        self.start_e = labeled(g, 3, "Start (HH:MM)", Gtk.Entry())
-        self.end_e = labeled(g, 4, "End (HH:MM)", Gtk.Entry())
-        days = Gtk.Box(spacing=2)
-        self.day_btns = [Gtk.ToggleButton(label=d) for d in WEEKDAYS]
-        for b in self.day_btns:
-            days.append(b)
-        labeled(g, 5, "Repeat on", days)
-        self.after = labeled(g, 6, "After recording", dropdown(AFTER_ACTIONS))
-        self.margins = labeled(g, 7, "Add lead/follow time", Gtk.Switch(halign=Gtk.Align.START, active=True))
-        btns = Gtk.Box(spacing=6)
-        for label, fn in (("New", self.on_new), ("Add", self.on_add), ("Apply", self.on_apply),
-                          ("Delete", self.on_delete), ("Enable/Disable", self.on_toggle)):
-            b = Gtk.Button(label=label)
-            b.connect("clicked", lambda _b, fn=fn: fn())
-            btns.append(b)
-        g.attach(btns, 0, 8, 2, 1)
-        rdel = Gtk.Button(label="Delete series rule", halign=Gtk.Align.START)
-        rdel.connect("clicked", lambda *_: self.on_delete_rule())
-
-        right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        right.append(g)
-        right.append(Gtk.Label(label="<b>Series recordings</b>", use_markup=True, xalign=0, margin_start=10))
-        right.append(scrolled(self.rview))
-        right.append(rdel)
-        paned = Gtk.Paned(position=640)
-        paned.set_start_child(scrolled(self.view))
-        paned.set_end_child(right)
+        paned = Gtk.Paned(position=260, shrink_start_child=False)
+        paned.set_start_child(left)
+        paned.set_end_child(scrolled(right))
         self.set_child(paned)
+
+        self._fill_channels()
         self.on_new()
         self.refresh()
         self._hid = app.timers.connect("changed", lambda *_: self.refresh())
         self.connect("close-request", lambda *_: (app.timers.disconnect(self._hid), False)[1])
 
+    # -- editor ---------------------------------------------------------------
+    def _editor(self):
+        g = Gtk.Grid(row_spacing=4, column_spacing=10)
+        s = self.app.settings
+
+        # Row 1: date, lead, start, end, follow, weekdays
+        self.cal = Gtk.Calendar()
+        self.cal.connect("day-selected", self._on_day_selected)
+        pop = Gtk.Popover(child=self.cal)
+        self.date_btn = Gtk.MenuButton(popover=pop, always_show_arrow=True)
+        self.lead = Gtk.SpinButton.new_with_range(0, 180, 1)
+        self.start_e = _time_entry()
+        self.end_e = _time_entry()
+        self.follow = Gtk.SpinButton.new_with_range(0, 360, 1)
+        days = Gtk.Box(spacing=2)
+        self.day_btns = []
+        for d in WEEKDAYS:
+            b = Gtk.ToggleButton(label=d)
+            b.set_tooltip_text("Repeat every " + d)
+            days.append(b)
+            self.day_btns.append(b)
+        for col, (text, w) in enumerate((("_Date", self.date_btn), ("_Lead (min)", self.lead),
+                                         ("_Start", self.start_e), ("_End", self.end_e),
+                                         ("_Follow (min)", self.follow), ("Repeat on", days))):
+            g.attach(_label(text, w), col, 0, 1, 1)
+            g.attach(w, col, 1, 1, 1)
+
+        # Row 2: channel and name
+        self.ch_e = Gtk.Entry(editable=False, can_focus=False,
+                              placeholder_text="Pick a channel on the left")
+        self.title_e = Gtk.Entry(hexpand=True)
+        self.title_e.connect("changed", lambda *_: self._update_preview())
+        g.attach(_label("Channel"), 0, 2, 2, 1)
+        g.attach(self.ch_e, 0, 3, 2, 1)
+        g.attach(_label("_Name", self.title_e), 2, 2, 4, 1)
+        g.attach(self.title_e, 2, 3, 4, 1)
+
+        # Row 3: actions and formats, extras on the right
+        self.action = dropdown(TIMER_ACTIONS)
+        self.after = dropdown(AFTER_ACTIONS)
+        self.tv_fmt = FormatChooser(TV_FORMATS, radio=False)
+        self.radio_fmt = FormatChooser(RADIO_FORMATS, radio=True)
+        for w in (self.tv_fmt.widget, self.radio_fmt.widget):
+            w.connect("notify::selected", lambda *_: self._update_preview())
+        self.action.connect("notify::selected", lambda *_: self._sync_action())
+        g.attach(_label("_Timer action", self.action), 0, 4, 2, 1)
+        g.attach(self.action, 0, 5, 2, 1)
+        g.attach(_label("_After recording", self.after), 0, 6, 2, 1)
+        g.attach(self.after, 0, 7, 2, 1)
+        g.attach(_label("T_V format", self.tv_fmt.widget), 2, 4, 2, 1)
+        g.attach(self.tv_fmt.widget, 2, 5, 2, 1)
+        g.attach(_label("_Radio format", self.radio_fmt.widget), 2, 6, 2, 1)
+        g.attach(self.radio_fmt.widget, 2, 7, 2, 1)
+
+        ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, margin_start=8,
+                       margin_end=8, margin_top=4, margin_bottom=6)
+        self.extra_btns = {}
+        for e in EXTRAS:
+            b = Gtk.CheckButton(label=EXTRA_LABELS[e])
+            b.connect("toggled", lambda *_: self._sync_formats())
+            ebox.append(b)
+            self.extra_btns[e] = b
+        self.extra_btns["teletext"].set_tooltip_text("Teletext only exists in MPEG-TS, so TS is used.")
+        self.extra_btns["epg_data"].set_tooltip_text("EPG data (EIT) only exists in MPEG-TS, so TS is used.")
+        self.extra_btns["subtitles"].set_tooltip_text(
+            "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
+            "DVB bitmap subtitles are kept in TS only.")
+        self.extra_btns["all_audio"].set_tooltip_text(
+            "Without this only the first audio track is recorded. Tracks a container cannot "
+            "carry (for example AC-3 in MPG) are left out.")
+        frame = Gtk.Frame(label="Also record", child=ebox, valign=Gtk.Align.START)
+        g.attach(frame, 4, 4, 2, 4)
+        self.fmt_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["dim-label"])
+        g.attach(self.fmt_hint, 0, 8, 6, 1)
+
+        # Row 4: file naming scheme, placeholders, folder
+        self.scheme_e = Gtk.Entry(hexpand=True)
+        self.scheme_e.connect("changed", lambda *_: self._update_preview())
+        g.attach(_label("File _naming scheme", self.scheme_e), 0, 9, 4, 1)
+        g.attach(self.scheme_e, 0, 10, 4, 1)
+        g.attach(self._placeholder_button(), 4, 10, 1, 1)
+        folder_btn = Gtk.Button(label="Folder…")
+        folder_btn.connect("clicked", lambda *_: self._choose_folder())
+        g.attach(folder_btn, 5, 10, 1, 1)
+        self.folder_lbl = Gtk.Label(xalign=0, ellipsize=1, hexpand=True, css_classes=["dim-label"])
+        reset = Gtk.Button(icon_name="edit-undo-symbolic", css_classes=["flat"],
+                           tooltip_text="Use the recording folder from the preferences")
+        reset.connect("clicked", lambda *_: self._set_folder(""))
+        fbox = Gtk.Box(spacing=4)
+        fbox.append(self.folder_lbl)
+        fbox.append(reset)
+        g.attach(fbox, 0, 11, 6, 1)
+        self.preview = Gtk.Label(xalign=0, ellipsize=1, selectable=True, css_classes=["dim-label"])
+        g.attach(self.preview, 0, 12, 6, 1)
+        self.scheme_e.set_tooltip_text(", ".join(p for p, _ in PLACEHOLDERS))
+        self._default_scheme = s["name_scheme"]
+        return g
+
+    def _placeholder_button(self):
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        pop = Gtk.Popover(child=box)
+        for ph, text in PLACEHOLDERS:
+            b = Gtk.Button(css_classes=["flat"])
+            b.set_child(Gtk.Label(label=f"{ph}   {text}", xalign=0))
+            b.connect("clicked", lambda _b, ph=ph: (self._insert_placeholder(ph), pop.popdown()))
+            box.append(b)
+        return Gtk.MenuButton(label="Placeholders", popover=pop)
+
+    def _insert_placeholder(self, ph):
+        pos = self.scheme_e.get_position()
+        text = self.scheme_e.get_text()
+        if pos < 0 or pos > len(text):
+            pos = len(text)
+        self.scheme_e.set_text(text[:pos] + ph + text[pos:])
+        self.scheme_e.set_position(pos + len(ph))
+
+    def _choose_folder(self):
+        dlg = Gtk.FileDialog(title="Recording folder")
+        start = Path(self.folder or self.app.settings["recording_dir"]).expanduser()
+        if start.is_dir():
+            dlg.set_initial_folder(Gio.File.new_for_path(str(start)))
+
+        def done(d, res):
+            try:
+                f = d.select_folder_finish(res)
+            except GLib.Error:
+                return
+            if f and f.get_path():
+                self._set_folder(f.get_path())
+
+        dlg.select_folder(self, None, done)
+
+    def _set_folder(self, folder):
+        self.folder = folder
+        shown = folder or f"{self.app.settings['recording_dir']} (from the preferences)"
+        self.folder_lbl.set_text("Folder: " + shown)
+        self._update_preview()
+
+    def _buttons(self):
+        box = Gtk.Box(spacing=6)
+        for label, fn, tip in (
+                ("New", self.on_new, "Clear the editor"),
+                ("Add", self.on_add, "Add the editor's settings as a new timer"),
+                ("Apply", self.on_apply, "Save the editor's settings to the selected timer"),
+                ("Delete", self.on_delete, "Delete the selected timer"),
+                ("Enable/Disable", self.on_toggle, "Switch the selected timer on or off"),
+                ("Save as default", self.on_save_defaults,
+                 "Use these formats and extra streams for new timers and manual recordings")):
+            b = Gtk.Button(label=label, tooltip_text=tip)
+            b.connect("clicked", lambda _b, fn=fn: fn())
+            box.append(b)
+        close = Gtk.Button(label="Close", hexpand=True, halign=Gtk.Align.END)
+        close.connect("clicked", lambda *_: self.close())
+        box.append(close)
+        return box
+
+    def _series(self):
+        rcols = [("Series title", lambda r: r.title, True),
+                 ("Channel", lambda r: (self.app.db.by_key(r.channel_key).name
+                                        if self.app.db.by_key(r.channel_key) else "Any"), False)]
+        self.rview, self.rstore, self.rsel = make_column_view(rcols)
+        rdel = Gtk.Button(label="Delete series rule", halign=Gtk.Align.START)
+        rdel.connect("clicked", lambda *_: self.on_delete_rule())
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        sw = scrolled(self.rview)
+        sw.set_size_request(-1, 110)
+        box.append(sw)
+        box.append(rdel)
+        return Gtk.Expander(label="Series recordings", child=box)
+
+    # -- state ----------------------------------------------------------------
+    def select(self, timer):
+        """Select a timer in the list and load it into the editor."""
+        for i, t in enumerate(self.app.timers.timers):
+            if t.id == timer.id:
+                self.sel.set_selected(i)
+                self.view.scroll_to(i, None, Gtk.ListScrollFlags.SELECT, None)
+                return
+
     def refresh(self):
         fill(self.store, self.app.timers.timers)
         fill(self.rstore, self.app.timers.rules)
 
+    def _fill_channels(self):
+        q = self.search.get_text().strip().lower()
+        fill(self.cstore, [c for c in self.app.db.channels if q in c.name.lower()])
+
+    def _pick_channel(self, c):
+        if c is None:
+            return
+        self.channel = c
+        self.ch_e.set_text(c.name)
+        self._update_preview()
+
+    def _format_text(self, t):
+        ch = self.app.db.by_key(t.channel_key)
+        radio = bool(ch and ch.radio)
+        fmt = effective_format(t.radio_format if radio else t.tv_format, t.extras, radio)
+        return FORMAT_LABELS[fmt].split(" (")[0] if fmt == "Audio" else fmt
+
+    def _on_day_selected(self, cal):
+        dt = cal.get_date()
+        self.date = date(dt.get_year(), dt.get_month(), dt.get_day_of_month())
+        self.date_btn.set_label(self.date.strftime("%a %d.%m.%Y"))
+        self._update_preview()
+
+    def _set_date(self, d):
+        self.date = d
+        self.cal.select_day(GLib.DateTime.new_local(d.year, d.month, d.day, 0, 0, 0))
+        self.date_btn.set_label(d.strftime("%a %d.%m.%Y"))
+
+    def _extras(self):
+        return [e for e, b in self.extra_btns.items() if b.get_active()]
+
+    def _sync_formats(self):
+        extras = self._extras()
+        self.tv_fmt.restrict(extras)
+        self.radio_fmt.restrict(extras)
+        why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data") if e in extras]
+        if why:
+            self.fmt_hint.set_text(f"{' and '.join(why)} can only be kept in MPEG-TS, so TS is used.")
+        elif "subtitles" in extras:
+            self.fmt_hint.set_text("Subtitles fit into TS or MKV.")
+        else:
+            self.fmt_hint.set_text("")
+        self._update_preview()
+
+    def _sync_action(self):
+        """A tune-only timer records nothing, so its recording options are greyed out."""
+        records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
+        for b in self.extra_btns.values():
+            b.set_sensitive(records)
+        self.scheme_e.set_sensitive(records)
+        if records:
+            self._sync_formats()
+        else:
+            self.tv_fmt.widget.set_sensitive(False)
+            self.radio_fmt.widget.set_sensitive(False)
+
+    def _update_preview(self):
+        if not hasattr(self, "preview"):
+            return
+        c = self.channel
+        radio = bool(c and c.radio)
+        fmt = (self.radio_fmt if radio else self.tv_fmt).get()
+        fmt = effective_format(fmt, self._extras(), radio)
+        start, end = self._times() or (time.time(), time.time())
+        ext = "" if fmt == "Audio" else EXTENSIONS[fmt]
+        name = expand_scheme(self.scheme_e.get_text() or self._default_scheme,
+                             c.name if c else "Channel", self.title_e.get_text().strip() or
+                             (c.name if c else "Name"), start, end) + (ext or ".mp2/.mp3/.aac/.ac3")
+        folder = Path(self.folder or self.app.settings["recording_dir"]).expanduser()
+        self.preview.set_text(f"File: {folder / name}")
+
+    # -- reading and writing a timer ----------------------------------------
     def _load(self, t):
         if not t:
             return
-        idx = next((i for i, c in enumerate(self.chans) if c.key == t.channel_key), 0)
-        self.ch.set_selected(idx)
+        c = self.app.db.by_key(t.channel_key)
+        self.channel = c
+        self.ch_e.set_text(c.name if c else t.channel_name)
         self.title_e.set_text(t.title)
-        self.date_e.set_text(datetime.fromtimestamp(t.start).strftime("%Y-%m-%d"))
+        self._set_date(datetime.fromtimestamp(t.start).date())
         self.start_e.set_text(hm(t.start))
         self.end_e.set_text(hm(t.end))
+        self.lead.set_value(t.lead)
+        self.follow.set_value(t.follow)
         for i, b in enumerate(self.day_btns):
             b.set_active(i in t.days)
+        self.action.set_selected(TIMER_ACTIONS.index(t.action) if t.action in TIMER_ACTIONS else 0)
         self.after.set_selected(AFTER_ACTIONS.index(t.after) if t.after in AFTER_ACTIONS else 0)
-        self.margins.set_active(False)
+        for e, b in self.extra_btns.items():
+            b.set_active(bool(getattr(t, e)))
+        self.tv_fmt.restrict(t.extras)
+        self.radio_fmt.restrict(t.extras)
+        self.tv_fmt.set(t.tv_format)
+        self.radio_fmt.set(t.radio_format)
+        self.scheme_e.set_text(t.name_scheme or self._default_scheme)
+        self._set_folder(t.folder)
+        self._sync_action()
 
     def on_new(self):
+        s = self.app.settings
         now = time.time()
+        self.sel.set_selected(Gtk.INVALID_LIST_POSITION)
         self.title_e.set_text("")
-        self.date_e.set_text(datetime.fromtimestamp(now).strftime("%Y-%m-%d"))
+        self._set_date(datetime.fromtimestamp(now + 300).date())
         self.start_e.set_text(hm(now + 300))
         self.end_e.set_text(hm(now + 3900))
+        self.lead.set_value(s["lead_minutes"])
+        self.follow.set_value(s["follow_minutes"])
         for b in self.day_btns:
             b.set_active(False)
-        self.margins.set_active(True)
+        self.action.set_selected(0)
+        self.after.set_selected(0)
+        d = self.app.timers.defaults()
+        for e, b in self.extra_btns.items():
+            b.set_active(d[e])
+        extras = [e for e in EXTRAS if d[e]]
+        self.tv_fmt.restrict(extras)
+        self.radio_fmt.restrict(extras)
+        self.tv_fmt.set(d["tv_format"])
+        self.radio_fmt.set(d["radio_format"])
+        self.scheme_e.set_text(self._default_scheme)
+        self._set_folder("")
+        if self.channel is None and self.app.window is not None:
+            self.channel = getattr(self.app.window, "current", None)
+            if self.channel is not None:
+                self.ch_e.set_text(self.channel.name)
+        self._sync_action()
+
+    def _times(self):
+        try:
+            st = datetime.strptime(self.start_e.get_text().strip(), "%H:%M").time()
+            en = datetime.strptime(self.end_e.get_text().strip(), "%H:%M").time()
+        except ValueError:
+            return None
+        start = datetime.combine(self.date, st)
+        end = datetime.combine(self.date, en)
+        if end <= start:
+            end += timedelta(days=1)
+        return start.timestamp(), end.timestamp()
 
     def _read(self):
-        try:
-            d = self.date_e.get_text().strip()
-            start = datetime.strptime(f"{d} {self.start_e.get_text().strip()}", "%Y-%m-%d %H:%M").timestamp()
-            end = datetime.strptime(f"{d} {self.end_e.get_text().strip()}", "%Y-%m-%d %H:%M").timestamp()
-        except ValueError:
-            message(self, "Invalid date or time")
+        times = self._times()
+        if times is None:
+            message(self, "Invalid start or end time", "Use HH:MM, for example 20:15.")
             return None
-        if end <= start:
-            end += 86400
-        if not self.chans:
+        c = self.channel
+        if c is None:
+            message(self, "No channel", "Pick the channel to record in the list on the left.")
             return None
-        c = self.chans[self.ch.get_selected()]
-        return Timer(c.key, c.name, self.title_e.get_text().strip() or c.name, int(start), int(end),
+        scheme = self.scheme_e.get_text().strip()
+        return Timer(c.key, c.name, self.title_e.get_text().strip() or c.name,
+                     int(times[0]), int(times[1]),
                      days=[i for i, b in enumerate(self.day_btns) if b.get_active()],
-                     after=AFTER_ACTIONS[self.after.get_selected()])
+                     after=AFTER_ACTIONS[self.after.get_selected()],
+                     lead=int(self.lead.get_value()), follow=int(self.follow.get_value()),
+                     action=TIMER_ACTIONS[self.action.get_selected()],
+                     name_scheme="" if scheme == self._default_scheme else scheme,
+                     folder=self.folder,
+                     tv_format=self.tv_fmt.get(), radio_format=self.radio_fmt.get(),
+                     **{e: b.get_active() for e, b in self.extra_btns.items()})
 
     def on_add(self):
         t = self._read()
         if t:
-            self.app.timers.add(t, with_margins=self.margins.get_active())
+            self.app.timers.add(t, with_margins=False)
 
     def on_apply(self):
         old = selected(self.sel)
+        if not old:
+            self.on_add()
+            return
         t = self._read()
-        if old and t:
-            t.id = old.id
-            self.app.timers.timers = [t if x.id == old.id else x for x in self.app.timers.timers]
-            self.app.timers.save()
+        if not t:
+            return
+        t.id, t.enabled, t.series = old.id, old.enabled, old.series
+        t.status = old.status if old.id in self.app.timers.active else "Scheduled"
+        self.app.timers.timers = [t if x.id == old.id else x for x in self.app.timers.timers]
+        self.app.timers.timers.sort(key=lambda x: x.rec_start)
+        self.app.timers.save()
 
     def on_delete(self):
         t = selected(self.sel)
@@ -140,6 +489,15 @@ class TimersWindow(Gtk.Window):
         if t:
             t.enabled = not t.enabled
             self.app.timers.save()
+
+    def on_save_defaults(self):
+        s = self.app.settings
+        s["rec_tv_format"] = self.tv_fmt.get()
+        s["rec_radio_format"] = self.radio_fmt.get()
+        for e, b in self.extra_btns.items():
+            s["rec_" + e] = b.get_active()
+        s.save()
+        self.app.window and self.app.window.set_status("Recording defaults saved")
 
     def on_delete_rule(self):
         r = selected(self.rsel)

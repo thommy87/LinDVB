@@ -44,7 +44,7 @@ class PrefsWindow(Gtk.Window):
         switch("full_transponder", 5, "Capture whole transponder")
         entry("recording_dir", 6, "Recording folder")
         entry("name_scheme", 7, "File naming scheme")
-        g.attach(Gtk.Label(label="Placeholders: %year %date %time %station %event",
+        g.attach(Gtk.Label(label="Placeholders: %year %date %time %end %station %name, / for sub-folders",
                            css_classes=["dim-label"], xalign=0), 1, 8, 1, 1)
         spin("lead_minutes", 9, "Lead time (min)", 0, 60)
         spin("follow_minutes", 10, "Follow-up time (min)", 0, 180)
@@ -70,11 +70,12 @@ class PrefsWindow(Gtk.Window):
         spin("ca_ci_adapter", 20, "CI adapter number", 0, 15)
         spin("ca_ci_device", 21, "CI CA device number", 0, 7)
         switch("plugins_enabled", 22, "Load plugins at startup")
+        switch("timer_edit_after_create", 23, "Open the timer window after creating a timer")
 
         self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
         save = Gtk.Button(label="Save", css_classes=["suggested-action"], halign=Gtk.Align.END)
         save.connect("clicked", lambda *_: self.on_save())
-        g.attach(save, 1, 23, 1, 1)
+        g.attach(save, 1, 24, 1, 1)
         self.set_child(scrolled(g))
         self.set_default_size(560, 640)
 

@@ -34,7 +34,18 @@ DEFAULTS = {
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
     "recording_dir": str(Path.home() / "Videos" / "LinDVB"),
-    "name_scheme": "%station_%date_%time_%event",
+    "name_scheme": "%station_%date_%time_%name",
+    # Default recording options for new timers and manual recordings.
+    # TV: "TS" "MPG" "MP4" "MKV"; radio: "Audio" (native MP2/MP3/AAC/AC3) or "TS".
+    # Teletext and EPG data need TS; subtitles TS or MKV (see recformat.py).
+    "rec_tv_format": "TS",
+    "rec_radio_format": "TS",
+    "rec_teletext": True,
+    "rec_subtitles": True,
+    "rec_all_audio": True,
+    "rec_epg_data": True,
+    # After "Record" in the EPG, open the timer window with the new timer.
+    "timer_edit_after_create": False,
     "lead_minutes": 2,
     "follow_minutes": 5,
     "screenshot_dir": str(Path.home() / "Pictures" / "LinDVB"),
