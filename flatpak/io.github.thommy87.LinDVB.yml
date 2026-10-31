@@ -1,0 +1,126 @@
+app-id: io.github.thommy87.LinDVB
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
+command: lindvb
+rename-icon: lindvb
+finish-args:
+  - --share=ipc
+  - --share=network            # internet TV, XMLTV, multicast IPTV
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=all               # /dev/dvb tuners and GPU
+  - --filesystem=xdg-videos    # recordings (~/Videos/LinDVB)
+  - --filesystem=xdg-pictures  # screenshots
+  - --system-talk-name=org.freedesktop.login1   # standby/power off after recording
+  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/app/lib/ffmpeg/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:/usr/lib/aarch64-linux-gnu/gstreamer-1.0
+
+add-extensions:
+  # Full FFmpeg for MPEG-2, H.264, HEVC, AC-3 and AAC broadcast decoding
+  org.freedesktop.Platform.ffmpeg-full:
+    directory: lib/ffmpeg
+    version: '24.08'
+    add-ld-path: .
+    no-autodownload: false
+    autodelete: false
+
+cleanup-commands:
+  - mkdir -p /app/lib/ffmpeg
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/man
+  - /share/doc
+  - '*.la'
+  - '*.a'
+
+modules:
+  # libzvbi for the teletext decoder
+  - name: zvbi
+    buildsystem: autotools
+    config-opts:
+      - --disable-static
+      - --without-x
+      - --disable-v4l
+      - --disable-nls
+    cleanup:
+      - /bin
+      - /sbin
+    sources:
+      - type: git
+        url: https://github.com/zapping-vbi/zvbi.git
+        tag: v0.2.44
+        commit: 5169a428d51c3ae8ff7b0897e8a687d8e05e37b5
+
+  # Only the teletext and DVB plugins from gst-plugins-bad; the GNOME runtime
+  # does not ship teletextdec, and building dvbsrc here guarantees tuner access.
+  - name: gst-plugins-bad-dvb-teletext
+    buildsystem: meson
+    subdir: subprojects/gst-plugins-bad
+    config-opts:
+      - -Dauto_features=disabled
+      - -Dteletext=enabled
+      - -Ddvb=enabled
+      - -Dexamples=disabled
+      - -Dtests=disabled
+      - -Ddoc=disabled
+      - -Dintrospection=disabled
+      - -Dnls=disabled
+      - -Dorc=disabled
+    post-install:
+      # keep the two plugins; use the runtime's GStreamer libraries
+      - find ${FLATPAK_DEST}/lib/gstreamer-1.0 -name '*.so' ! -name libgstteletext.so ! -name libgstdvb.so -delete
+      - rm -f ${FLATPAK_DEST}/lib/libgst*
+    sources:
+      - type: git
+        url: https://github.com/GStreamer/gstreamer.git
+        tag: 1.24.12
+        commit: 88e31216479a3f0c25096ca406369f3983efec14
+
+  # dvbv5-scan / dvbv5-zap (libdvbv5)
+  - name: v4l-utils
+    buildsystem: meson
+    config-opts:
+      - -Dqv4l2=disabled
+      - -Dqvidcap=disabled
+      - -Dbpf=disabled
+      - -Djpeg=disabled
+      - -Dgconv=disabled
+      - -Dv4l2-tracer=disabled
+      - -Dlibdvbv5=enabled
+      - -Dv4l-plugins=false
+      - -Ddoxygen-doc=disabled
+      - -Dudevdir=/app/lib/udev
+      - -Dsystemdsystemunitdir=/app/lib/systemd/system
+    cleanup:
+      - /lib/udev
+      - /lib/systemd
+      - /etc
+    post-install:
+      # keep only the DVB tools
+      - find ${FLATPAK_DEST}/bin -type f ! -name 'dvb*' -delete
+    sources:
+      - type: git
+        url: https://github.com/gjasny/v4l-utils.git
+        tag: v4l-utils-1.28.1
+        commit: fc15e229d9d337e46d730f00647821adbbd58548
+
+  - name: lindvb
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/share/lindvb
+      - cp -r lindvb ${FLATPAK_DEST}/share/lindvb/
+      - install -Dm755 flatpak/lindvb.sh ${FLATPAK_DEST}/bin/lindvb
+      - install -Dm644 data/io.github.thommy87.LinDVB.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 data/io.github.thommy87.LinDVB.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - install -Dm644 data/lindvb.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      - install -Dm644 data/lindvb.png -t ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps
+    sources:
+      - type: dir
+        path: ..
+        skip:
+          - build
+          - .git
+          - .flatpak-builder

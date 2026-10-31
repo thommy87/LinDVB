@@ -5,3 +5,5 @@ build/
 dist/
 .pytest_cache/
 build/
+.flatpak-builder/
+build-flatpak/

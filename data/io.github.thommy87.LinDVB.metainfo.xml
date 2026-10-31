@@ -10,6 +10,23 @@
     Linux DVB API and GStreamer. It has timeshift, timer and series recordings, a
     programme guide, teletext, channel search and a channel editor.</p>
   </description>
+  <developer id="io.github.thommy87">
+    <name>thommy87</name>
+  </developer>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/01-live-tv-osd.png</image>
+      <caption>Live TV with programme information</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/04-epg-tv-guide.png</image>
+      <caption>TV guide</caption>
+    </screenshot>
+  </screenshots>
+  <categories>
+    <category>AudioVideo</category>
+    <category>TV</category>
+  </categories>
   <launchable type="desktop-id">io.github.thommy87.LinDVB.desktop</launchable>
   <url type="homepage">https://github.com/thommy87/LinDVB</url>
   <content_rating type="oars-1.1"/>
