@@ -10,7 +10,7 @@ from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
 from ..player import EQ_BANDS, Player
 from .common import Row, hm, message
-from .theme import CSS
+from .theme import CSS, apply_accent
 
 FILTERS = ["All channels", "TV", "Radio", "Favourites", "Free to air", "Encrypted",
            "HD channels", "Internet streams"]
@@ -44,6 +44,7 @@ class MainWindow(Gtk.ApplicationWindow):
             prov.load_from_data(CSS.encode())
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
                                                   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        apply_accent(self.settings)
 
         self._build_actions()
         self._build_ui()
