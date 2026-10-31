@@ -44,6 +44,8 @@ picture and hides itself when the mouse is still.
   standby/hibernate/power off), from the EPG, and series rules by title
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
   web search links; on-screen now/next display; XMLTV for internet channels
+  with automatic and manual matching of M3U channels to guide channels;
+  MediaHighway 1/2 and Freesat EPG; preferred EPG language and time zone
 * Teletext window with page navigation, find, copy and save
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
   e.g. 150 or 777) drawn over the video in sync

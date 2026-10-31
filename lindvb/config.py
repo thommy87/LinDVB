@@ -47,6 +47,19 @@ DEFAULTS = {
         ["TMDB", "https://www.themoviedb.org/search?query={q}"],
     ],
     "osd_seconds": 4,
+    # EPG ---------------------------------------------------------------------
+    # Keep the guide on disk so it survives the end of the program.
+    "epg_save": True,
+    # Preferred EPG language (ISO 639-2, "" = as broadcast).
+    "epg_language": "",
+    # How long the programme info is shown on a channel change (0 = never).
+    "epg_info_seconds": 4,
+    # Time zone for EPG times: automatic (system) or a manual offset to GMT.
+    "epg_tz_auto": True,
+    "epg_tz_offset": 60,             # minutes east of GMT
+    # Transponders that carry a provider EPG: [frequency MHz, "h"/"v", type]
+    # with type "mhw1", "mhw2" or "freesat" (see lindvb.epgsources).
+    "epg_provider_freqs": [[10847, "v", "mhw2"], [11428, "h", "freesat"]],
     "deinterlace": True,
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the

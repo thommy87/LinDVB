@@ -47,6 +47,10 @@ class Channel:
     encrypted: bool = False
     radio: bool = False
     url: str = ""                    # for IPTV
+    tvg_id: str = ""                 # IPTV: tvg-id / tvg-name from the M3U
+    tvg_name: str = ""
+    xmltv_id: str = ""               # IPTV: matched XMLTV guide channel
+    xmltv_manual: bool = False       # the match was chosen by the user
     favourite: bool = False
     number: int = 0
 
@@ -72,6 +76,8 @@ class Channel:
     @property
     def epg_key(self):
         if self.is_iptv:
+            if self.xmltv_id:
+                return "xmltv:" + self.xmltv_id
             return "iptv:" + self.name.lower()
         return f"{self.tsid}:{self.sid}"
 
@@ -126,8 +132,11 @@ class ChannelDB:
             old = index.get(c.key)
             if old:
                 fav, name, num = old.favourite, old.name, old.number
+                xid, xman = old.xmltv_id, old.xmltv_manual
                 old.__dict__.update(asdict(c))
                 old.favourite, old.number = fav, num
+                if xman or not c.xmltv_id:       # keep the guide match
+                    old.xmltv_id, old.xmltv_manual = xid, xman
                 if not update_names:
                     old.name = name
                 updated += 1
@@ -355,11 +364,14 @@ def parse_m3u(text, root="IPTV"):
             attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', line))
             info = {"name": line.rsplit(",", 1)[-1].strip(),
                     "category": attrs.get("group-title", ""),
-                    "radio": attrs.get("radio", "") == "true"}
+                    "radio": attrs.get("radio", "") == "true",
+                    "tvg_id": attrs.get("tvg-id", "").strip(),
+                    "tvg_name": attrs.get("tvg-name", "").strip()}
         elif line and not line.startswith("#"):
             out.append(Channel(name=info.get("name") or line, delsys="iptv", url=line,
                                root=root, category=info.get("category", ""),
-                               radio=info.get("radio", False)))
+                               radio=info.get("radio", False),
+                               tvg_id=info.get("tvg_id", ""), tvg_name=info.get("tvg_name", "")))
             info = {}
     return out
 
@@ -368,7 +380,11 @@ def write_m3u(channels):
     lines = ["#EXTM3U"]
     for c in channels:
         if c.is_iptv:
-            lines.append(f'#EXTINF:-1 group-title="{c.category}",{c.name}')
+            tvg = c.xmltv_id or c.tvg_id
+            attrs = f'tvg-id="{tvg}" ' if tvg else ""
+            if c.tvg_name:
+                attrs += f'tvg-name="{c.tvg_name}" '
+            lines.append(f'#EXTINF:-1 {attrs}group-title="{c.category}",{c.name}')
             lines.append(c.url)
     return "\n".join(lines) + "\n"
 
