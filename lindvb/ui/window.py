@@ -10,25 +10,13 @@ from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
 from ..player import EQ_BANDS, Player
 from .common import Row, hm, message
+from .theme import CSS
 
 FILTERS = ["All channels", "TV", "Radio", "Favourites", "Free to air", "Encrypted",
            "HD channels", "Internet streams"]
 ZOOM = [("Fit", Gtk.ContentFit.CONTAIN), ("Fill (crop)", Gtk.ContentFit.COVER),
         ("Stretch", Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
-
-CSS = b"""
-.video { background: black; }
-.osd { background: rgba(0,0,0,0.72); color: white; border-radius: 10px; padding: 12px 18px; }
-.osd .title { font-size: 1.4em; font-weight: bold; }
-.osd-num { background: rgba(0,0,0,0.72); color: white; font-size: 2.5em; font-weight: bold;
-           border-radius: 10px; padding: 6px 16px; }
-.rec { color: #e01b24; font-weight: bold; }
-.ttxsub { background: rgba(0,0,0,0.75); color: white; font-size: 1.5em; font-weight: bold;
-          border-radius: 4px; padding: 2px 10px; }
-.statusbar { padding: 2px 8px; }
-"""
-
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
@@ -43,9 +31,17 @@ class MainWindow(Gtk.ApplicationWindow):
         self.playlist_random = self.playlist_repeat = False
         self.sleep_source = None
         self._osd_timeout = None
+        self._hide_source = None     # auto-hide of the controls in full screen
+        self._seek_source = None     # debounced seek while dragging the seek bar
+        self._seek_target = None
+        self._fs_layout = False      # full screen layout applied (controls float)
 
+        # The player is always dark, whatever the desktop theme.
+        Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
+        self.add_css_class("lindvb")
         prov = Gtk.CssProvider()
-        prov.load_from_data(CSS)
+        prov.load_from_string(CSS) if hasattr(prov, "load_from_string") else \
+            prov.load_from_data(CSS.encode())
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
                                                   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
@@ -64,6 +60,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.reload_channels()
         GLib.timeout_add(1000, self._tick)
         self.connect("close-request", self._on_close)
+        self.connect("notify::fullscreened", self._on_fullscreened)
 
     # ------------------------------------------------------------------ actions
     def _build_actions(self):
@@ -94,6 +91,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "web-epg": self.on_web_search,
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
+            "prev-item": lambda: self.step_item(-1), "next-item": lambda: self.step_item(1),
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -180,6 +178,13 @@ class MainWindow(Gtk.ApplicationWindow):
         for r in (0.5, 0.75, 1.0, 1.25, 1.5, 2.0):
             rate.append(f"{r:g}×", f"win.rate({r})")
         play.append_submenu("Play Rate", rate)
+        jump = Gio.Menu()
+        jump.append("Back 10 s", "win.back10")
+        jump.append("Forward 10 s", "win.fwd10")
+        jump.append("Back 1 min", "win.back60")
+        jump.append("Forward 1 min", "win.fwd60")
+        jump.append("Back to Live", "win.live")
+        play.append_submenu("Jump", jump)
         pl = Gio.Menu()
         pl.append("Next", "win.playlist-next")
         pl.append("Previous", "win.playlist-prev")
@@ -212,6 +217,10 @@ class MainWindow(Gtk.ApplicationWindow):
         view.append("Equalizer…", "win.equalizer")
         view.append("Screenshot", "win.screenshot")
         m.append_section(None, view)
+        # the gear in the control bar shows just the playback and view sections
+        self.settings_menu = Gio.Menu()
+        self.settings_menu.append_section(None, play)
+        self.settings_menu.append_section(None, view)
         end = Gio.Menu()
         end.append("Preferences", "win.prefs")
         end.append("Plugins…", "win.plugins")
@@ -223,47 +232,47 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # ------------------------------------------------------------------ layout
     def _build_ui(self):
+        menu_model = self._menu()
+
+        # slim header: channel list toggle, title/now playing, guide and main menu
         hb = Gtk.HeaderBar()
         self.set_titlebar(hb)
-        def btn(icon, action, tip):
-            b = Gtk.Button(icon_name=icon, action_name=action, tooltip_text=tip)
-            return b
-        hb.pack_start(btn("go-up-symbolic", "win.ch-prev", "Channel minus"))
-        hb.pack_start(btn("go-down-symbolic", "win.ch-next", "Channel plus"))
-        hb.pack_start(btn("media-seek-backward-symbolic", "win.back10", "Jump −10 s"))
-        self.pause_btn = btn("media-playback-pause-symbolic", "win.pause", "Pause / timeshift")
-        hb.pack_start(self.pause_btn)
-        hb.pack_start(btn("media-seek-forward-symbolic", "win.fwd10", "Jump +10 s"))
-        hb.pack_start(btn("go-last-symbolic", "win.live", "Back to live"))
-        self.rec_btn = Gtk.ToggleButton(icon_name="media-record-symbolic",
-                                        tooltip_text="Record current channel")
-        self.rec_btn.connect("clicked", lambda b: self.on_record() if b.get_active() !=
-                             self._is_recording() else None)
-        hb.pack_start(self.rec_btn)
-        menu = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=self._menu())
+        self.list_btn = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", active=True,
+                                         tooltip_text="Show/hide channel list (F9)")
+        self.list_btn.connect("toggled", lambda b: self.sidebar.set_visible(b.get_active()))
+        hb.pack_start(self.list_btn)
+        title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
+        self.title_label = Gtk.Label(label=APP_NAME, css_classes=["title"],
+                                     ellipsize=Pango.EllipsizeMode.END)
+        self.subtitle_label = Gtk.Label(css_classes=["subtitle"], ellipsize=Pango.EllipsizeMode.END,
+                                        visible=False)
+        title_box.append(self.title_label)
+        title_box.append(self.subtitle_label)
+        hb.set_title_widget(title_box)
+        menu = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu_model,
+                              tooltip_text="Main menu (F10)")
         menu.set_primary(True)
         hb.pack_end(menu)
-        hb.pack_end(btn("x-office-calendar-symbolic", "win.epg", "Programme guide"))
-        self.vol = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 1.5, 0.05)
-        self.vol.set_size_request(110, -1)
-        self.vol.set_draw_value(False)
-        self.vol.set_value(self.settings["volume"])
-        self.vol.connect("value-changed", lambda s: self._set_volume(s.get_value()))
-        hb.pack_end(self.vol)
-        self.mute_btn = Gtk.ToggleButton(icon_name="audio-volume-high-symbolic", tooltip_text="Mute")
-        self.mute_btn.connect("toggled", lambda b: self._set_mute(b.get_active()))
-        hb.pack_end(self.mute_btn)
+        hb.pack_end(Gtk.Button(icon_name="x-office-calendar-symbolic", action_name="win.epg",
+                               tooltip_text="Programme guide (Ctrl+E)"))
 
         # sidebar
-        side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        side.set_margin_start(6); side.set_margin_end(6); side.set_margin_top(6)
-        self.search = Gtk.SearchEntry(placeholder_text="Search channels")
+        side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
+        side.set_size_request(260, -1)
+        head = Gtk.Box(spacing=8, margin_start=12, margin_end=12, margin_top=12)
+        head.append(Gtk.Label(label="Channels", xalign=0, hexpand=True, css_classes=["lv-heading"]))
+        self.count_label = Gtk.Label(xalign=1, css_classes=["lv-count"])
+        head.append(self.count_label)
+        side.append(head)
+        self.search = Gtk.SearchEntry(placeholder_text="Search name or number",
+                                      margin_start=10, margin_end=10)
         self.search.connect("search-changed", lambda _e: self._refilter())
         self.search.connect("activate", lambda _e: self._activate_first())
         side.append(self.search)
-        row = Gtk.Box(spacing=4)
+        row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
         self.filter_dd = Gtk.DropDown.new_from_strings(FILTERS)
         self.filter_dd.connect("notify::selected", lambda *_: self._refilter())
+        self.filter_dd.set_hexpand(True)
         self.group_dd = Gtk.DropDown.new_from_strings(["All groups"])
         self.group_dd.connect("notify::selected", lambda *_: self._refilter())
         self.group_dd.set_hexpand(True)
@@ -284,27 +293,31 @@ class MainWindow(Gtk.ApplicationWindow):
         click = Gtk.GestureClick(button=3)
         click.connect("pressed", self._list_context)
         self.listview.add_controller(click)
-        sw = Gtk.ScrolledWindow(vexpand=True)
+        sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         sw.set_child(self.listview)
         side.append(sw)
-        self.count_label = Gtk.Label(xalign=0, css_classes=["dim-label"])
-        side.append(self.count_label)
         self.sidebar = side
 
-        # video + OSD
+        # video + overlays (OSD, number entry, teletext subtitles)
         self.picture = Gtk.Picture(content_fit=Gtk.ContentFit.CONTAIN, hexpand=True, vexpand=True)
         self.picture.add_css_class("video")
-        overlay = Gtk.Overlay()
+        self.overlay = overlay = Gtk.Overlay()
         overlay.set_child(self.picture)
-        self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
-                           valign=Gtk.Align.END, halign=Gtk.Align.FILL,
-                           margin_start=24, margin_end=24, margin_bottom=24)
+        self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
+                           valign=Gtk.Align.END, halign=Gtk.Align.START,
+                           margin_start=24, margin_end=24, margin_bottom=24, width_request=420)
         self.osd.add_css_class("osd")
-        self.osd_title = Gtk.Label(xalign=0, css_classes=["title"], ellipsize=Pango.EllipsizeMode.END)
-        self.osd_now = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END)
+        top = Gtk.Box(spacing=10)
+        self.osd_num = Gtk.Label(css_classes=["lv-osd-num"], valign=Gtk.Align.CENTER)
+        self.osd_title = Gtk.Label(xalign=0, css_classes=["title"], hexpand=True,
+                                   ellipsize=Pango.EllipsizeMode.END)
+        self.osd_clock = Gtk.Label(css_classes=["lv-osd-time"])
+        for w in (self.osd_num, self.osd_title, self.osd_clock):
+            top.append(w)
+        self.osd_now = Gtk.Label(xalign=0, css_classes=["lv-osd-now"], ellipsize=Pango.EllipsizeMode.END)
         self.osd_prog = Gtk.ProgressBar()
-        self.osd_next = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["dim-label"])
-        for w in (self.osd_title, self.osd_now, self.osd_prog, self.osd_next):
+        self.osd_next = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-osd-next"])
+        for w in (top, self.osd_now, self.osd_prog, self.osd_next):
             self.osd.append(w)
         self.osd.set_visible(False)
         overlay.add_overlay(self.osd)
@@ -312,7 +325,6 @@ class MainWindow(Gtk.ApplicationWindow):
                                   valign=Gtk.Align.START, margin_top=20, margin_end=20)
         self.numlabel.set_visible(False)
         overlay.add_overlay(self.numlabel)
-        # teletext subtitles drawn over the video
         self.sublabel = Gtk.Label(css_classes=["ttxsub"], halign=Gtk.Align.CENTER,
                                   valign=Gtk.Align.END, margin_bottom=36, justify=Gtk.Justification.CENTER,
                                   wrap=True, can_target=False)
@@ -324,24 +336,35 @@ class MainWindow(Gtk.ApplicationWindow):
         scroll = Gtk.EventControllerScroll(flags=Gtk.EventControllerScrollFlags.VERTICAL)
         scroll.connect("scroll", lambda _c, _dx, dy: (self.change_volume(-0.05 * dy), True)[1])
         self.picture.add_controller(scroll)
+        motion = Gtk.EventControllerMotion()
+        motion.connect("motion", self._on_pointer_motion)
+        overlay.add_controller(motion)
 
-        self.paned = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL)
+        self.paned = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL, css_classes=["lv-paned"])
         self.paned.set_start_child(side)
         self.paned.set_end_child(overlay)
         self.paned.set_position(300)
         self.paned.set_shrink_start_child(False)
+        self.paned.set_resize_start_child(False)
 
-        # status bar
-        self.statusbar = Gtk.Box(spacing=12, css_classes=["statusbar"])
+        # bottom control bar (floats over the picture in full screen)
+        self.controls = self._build_controls()
+        self.controls_revealer = Gtk.Revealer(child=self.controls, reveal_child=True,
+                                              transition_type=Gtk.RevealerTransitionType.CROSSFADE,
+                                              transition_duration=200)
+
+        # status strip
+        self.statusbar = Gtk.Box(spacing=16, css_classes=["statusbar"])
         self.status = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END)
-        self.signal_label = Gtk.Label()
+        self.signal_label = Gtk.Label(css_classes=["lv-signal"])
         self.ts_label = Gtk.Label()
         self.rec_label = Gtk.Label(css_classes=["rec"])
         for w in (self.status, self.ts_label, self.rec_label, self.signal_label):
             self.statusbar.append(w)
 
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.main_box = box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.append(self.paned)
+        box.append(self.controls_revealer)
         box.append(self.statusbar)
         self.set_child(box)
 
@@ -349,13 +372,81 @@ class MainWindow(Gtk.ApplicationWindow):
         keys.connect("key-pressed", self._on_key)
         self.add_controller(keys)
 
+    def _build_controls(self):
+        bar = Gtk.Box(spacing=8, css_classes=["lv-controls"], valign=Gtk.Align.CENTER)
+
+        def btn(icon, action, tip, *classes):
+            return Gtk.Button(icon_name=icon, action_name=action, tooltip_text=tip,
+                              css_classes=list(classes), valign=Gtk.Align.CENTER)
+
+        def menubtn(icon, model, tip):
+            mb = Gtk.MenuButton(icon_name=icon, menu_model=model, tooltip_text=tip,
+                                valign=Gtk.Align.CENTER, direction=Gtk.ArrowType.UP)
+            return mb
+
+        def sep():
+            return Gtk.Separator(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-sep"])
+
+        # transport
+        self.prev_btn = btn("media-skip-backward-symbolic", "win.prev-item", "Previous channel (Page Down)")
+        self.pause_btn = btn("media-playback-pause-symbolic", "win.pause",
+                             "Pause / timeshift (Space)", "lv-play")
+        self.next_btn = btn("media-skip-forward-symbolic", "win.next-item", "Next channel (Page Up)")
+        self.rec_btn = Gtk.ToggleButton(icon_name="media-record-symbolic", valign=Gtk.Align.CENTER,
+                                        tooltip_text="Record current channel (Ctrl+R)",
+                                        css_classes=["lv-rec"])
+        self.rec_btn.connect("clicked", lambda b: self.on_record() if b.get_active() !=
+                             self._is_recording() else None)
+        for w in (self.prev_btn, self.pause_btn, self.next_btn, self.rec_btn):
+            bar.append(w)
+
+        # seek bar: file position, or the timeshift buffer for live TV
+        self.pos_label = Gtk.Label(label="--:--", css_classes=["lv-time"], xalign=1)
+        self.seek = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 1, 1)
+        self.seek.set_draw_value(False)
+        self.seek.set_hexpand(True)
+        self.seek.set_sensitive(False)
+        self.seek.add_css_class("lv-seek")
+        self.seek.set_tooltip_text("Seek")
+        self.seek.connect("change-value", self._on_seek_changed)
+        self.dur_label = Gtk.Label(label="--:--", css_classes=["lv-time"], xalign=0)
+        self.live_btn = Gtk.Button(label="LIVE", action_name="win.live", valign=Gtk.Align.CENTER,
+                                   tooltip_text="Back to live (L)", css_classes=["lv-live"], visible=False)
+        for w in (self.pos_label, self.seek, self.dur_label, self.live_btn):
+            bar.append(w)
+        bar.append(sep())
+
+        # volume
+        self.mute_btn = Gtk.ToggleButton(icon_name="audio-volume-high-symbolic", tooltip_text="Mute (M)",
+                                         valign=Gtk.Align.CENTER)
+        self.mute_btn.connect("toggled", lambda b: self._set_mute(b.get_active()))
+        self.vol = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 1.5, 0.05)
+        self.vol.set_size_request(96, -1)
+        self.vol.set_draw_value(False)
+        self.vol.add_css_class("lv-volume")
+        self.vol.set_tooltip_text("Volume")
+        self.vol.set_value(self.settings["volume"])
+        self.vol.connect("value-changed", lambda s: self._set_volume(s.get_value()))
+        bar.append(self.mute_btn)
+        bar.append(self.vol)
+        bar.append(sep())
+
+        # tracks, settings, full screen
+        bar.append(menubtn("audio-x-generic-symbolic", self.audio_menu, "Audio track"))
+        bar.append(menubtn("media-view-subtitles-symbolic", self.sub_menu, "Subtitles"))
+        bar.append(menubtn("emblem-system-symbolic", self.settings_menu, "Playback and picture settings"))
+        self.fs_btn = btn("view-fullscreen-symbolic", "win.fullscreen", "Full screen (F)")
+        bar.append(self.fs_btn)
+        self._update_volume_icon()
+        return bar
+
     # ------------------------------------------------------------------ channel list
     def _row_setup(self, _f, li):
-        b = Gtk.Box(spacing=6)
-        num = Gtk.Label(width_chars=4, xalign=1, css_classes=["dim-label", "numeric"])
-        icon = Gtk.Image()
+        b = Gtk.Box(spacing=10)
+        num = Gtk.Label(width_chars=4, xalign=1, css_classes=["lv-num"])
+        icon = Gtk.Image(css_classes=["lv-chan-icon"])
         lbl = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END)
-        extra = Gtk.Image()
+        extra = Gtk.Image(css_classes=["lv-badge"])
         for w in (num, icon, lbl, extra):
             b.append(w)
         li.set_child(b)
@@ -371,6 +462,10 @@ class MainWindow(Gtk.ApplicationWindow):
         lbl.set_tooltip_text(f"{c.root} / {c.category}" + (f"\nNow: {now.title}" if now else ""))
         extra.set_from_icon_name("starred-symbolic" if c.favourite else
                                  "channel-secure-symbolic" if c.encrypted else None)
+        if c.favourite:
+            extra.add_css_class("lv-fav")
+        else:
+            extra.remove_css_class("lv-fav")
 
     def _filter_func(self, item):
         c = item.data
@@ -474,9 +569,40 @@ class MainWindow(Gtk.ApplicationWindow):
             self.set_status(str(e))
             return
         self.settings["last_channel"] = c.key
+        self._select_in_list(c)
         self.set_status(f"Tuning {c.name}…")
         self.show_osd()
         self._update_transport()
+
+    def _select_in_list(self, c):
+        for i in range(self.filtered.get_n_items()):
+            if self.filtered.get_item(i).data.key == c.key:
+                self.selection.set_selected(i)
+                if hasattr(self.listview, "scroll_to"):      # GTK >= 4.12
+                    self.listview.scroll_to(i, Gtk.ListScrollFlags.NONE, None)
+                return
+
+    def step_item(self, step):
+        """Previous/next button: playlist entry when a playlist runs, else channel."""
+        if len(self.playlist) > 1:
+            self.playlist_step(step)
+        else:
+            self.zap_relative(step)
+
+    def set_title(self, title):
+        super().set_title(title)
+        name = title.removesuffix(f" – {APP_NAME}") if title else APP_NAME
+        self.title_label.set_text(name or APP_NAME)
+        if name == APP_NAME:
+            self.subtitle_label.set_visible(False)
+
+    def _update_heading(self):
+        """Header subtitle: the programme on air on the current channel."""
+        now = None
+        if self.current:
+            now, _ = self.app.epg.now_next(self.current.epg_key)
+        self.subtitle_label.set_text(f"{hm(now.start)}–{hm(now.end)}  {now.title}" if now else "")
+        self.subtitle_label.set_visible(bool(now))
 
     def _start_live(self, cap):
         if cap is self.capture:
@@ -675,10 +801,17 @@ class MainWindow(Gtk.ApplicationWindow):
     def _set_volume(self, v):
         self.player.volume = v
         self.settings["volume"] = v
+        self._update_volume_icon()
 
     def _set_mute(self, m):
         self.player.mute = m
-        self.mute_btn.set_icon_name("audio-volume-muted-symbolic" if m else "audio-volume-high-symbolic")
+        self._update_volume_icon()
+
+    def _update_volume_icon(self):
+        v = self.vol.get_value()
+        level = "muted" if self.mute_btn.get_active() or v <= 0 else \
+            "low" if v < 0.4 else "medium" if v < 0.8 else "high"
+        self.mute_btn.set_icon_name(f"audio-volume-{level}-symbolic")
 
     def toggle_mute(self):
         self.mute_btn.set_active(not self.mute_btn.get_active())
@@ -751,20 +884,78 @@ class MainWindow(Gtk.ApplicationWindow):
         size = self.player.video_size() or (720, 576)
         side = self.sidebar.get_width() if self.sidebar.get_visible() else 0
         self.unfullscreen()
-        self.set_default_size(int(size[0] * pct / 100) + side, int(size[1] * pct / 100) + 80)
+        self.set_default_size(int(size[0] * pct / 100) + side, int(size[1] * pct / 100) + 120)
 
     def toggle_fullscreen(self):
-        if self.is_fullscreen():
+        if self._fs_layout:
             self.unfullscreen()
-            self.sidebar.set_visible(True)
-            self.statusbar.set_visible(True)
         else:
-            self.sidebar.set_visible(False)
-            self.statusbar.set_visible(False)
             self.fullscreen()
+        self._apply_fullscreen_layout(not self._fs_layout)
+
+    def _on_fullscreened(self, *_):
+        # follow full screen changes made by the window manager as well
+        if self.is_fullscreen() != self._fs_layout:
+            self._apply_fullscreen_layout(self.is_fullscreen())
+
+    def _apply_fullscreen_layout(self, on):
+        self._fs_layout = on
+        self.sidebar.set_visible(not on and self.list_btn.get_active())
+        self.statusbar.set_visible(not on)
+        self._dock_controls(floating=on)
+
+    def _dock_controls(self, floating):
+        """Controls sit under the picture in a window and float over it in full screen."""
+        rev = self.controls_revealer
+        if floating == (rev.get_parent() is self.overlay):
+            return
+        rev.get_parent().remove(rev) if floating else self.overlay.remove_overlay(rev)
+        if floating:
+            rev.set_valign(Gtk.Align.END)
+            rev.add_css_class("lv-floating")
+            self.overlay.add_overlay(rev)
+            self.osd.set_margin_bottom(110)
+            self.sublabel.set_margin_bottom(120)
+            self._schedule_hide()
+        else:
+            rev.remove_css_class("lv-floating")
+            self.main_box.insert_child_after(rev, self.paned)
+            self.osd.set_margin_bottom(24)
+            self.sublabel.set_margin_bottom(36)
+            self._show_controls()
+        self.fs_btn.set_icon_name("view-restore-symbolic" if floating else "view-fullscreen-symbolic")
+        self.fs_btn.set_tooltip_text("Leave full screen (F)" if floating else "Full screen (F)")
+
+    def _on_pointer_motion(self, _ctl, x, y):
+        if getattr(self, "_last_xy", None) == (int(x), int(y)):
+            return
+        self._last_xy = (int(x), int(y))
+        if self.controls_revealer.get_parent() is self.overlay:
+            self._show_controls()
+            self._schedule_hide()
+
+    def _show_controls(self):
+        self.controls_revealer.set_reveal_child(True)
+        self.set_cursor(None)
+
+    def _schedule_hide(self):
+        if self._hide_source:
+            GLib.source_remove(self._hide_source)
+        self._hide_source = GLib.timeout_add(2500, self._auto_hide)
+
+    def _auto_hide(self):
+        self._hide_source = None
+        floating = self.controls_revealer.get_parent() is self.overlay
+        hovered = self.controls.get_state_flags() & Gtk.StateFlags.PRELIGHT
+        if floating and not self.player.paused and not hovered:
+            self.controls_revealer.set_reveal_child(False)
+            self.set_cursor_from_name("none")
+        elif floating:
+            self._schedule_hide()
+        return False
 
     def toggle_list(self):
-        self.sidebar.set_visible(not self.sidebar.get_visible())
+        self.list_btn.set_active(not self.list_btn.get_active())
 
     # ------------------------------------------------------------------ sleep timer
     def sleep_in(self, seconds):
@@ -797,10 +988,12 @@ class MainWindow(Gtk.ApplicationWindow):
         if not c:
             return
         now, nxt = self.app.epg.now_next(c.epg_key)
-        self.osd_title.set_text(f"{c.number}  {c.name}")
+        self.osd_num.set_text(str(c.number))
+        self.osd_title.set_text(c.name)
+        self.osd_clock.set_text(hm(now.start) + "–" + hm(now.end) if now else hm(time.time()))
+        self._update_heading()
         if now:
-            self.osd_now.set_text(f"{hm(now.start)}–{hm(now.end)}  {now.title}"
-                                  + (f" – {now.subtitle}" if now.subtitle else ""))
+            self.osd_now.set_text(now.title + (f" – {now.subtitle}" if now.subtitle else ""))
             self.osd_prog.set_fraction(min(1, max(0, (time.time() - now.start) / max(1, now.duration))))
             self.osd_prog.set_visible(True)
         else:
@@ -838,6 +1031,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.signal_label.set_text("  ".join(parts))
 
     def _on_epg(self):
+        self._update_heading()
         if self.osd.get_visible():
             self.show_osd()
 
@@ -849,6 +1043,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self.rec_btn.set_active(rec)
         n = len(self.app.timers.active)
         self.rec_label.set_text(f"● REC {n}" if n else "")
+        if self.controls_revealer.get_parent() is self.overlay and self.player.paused:
+            self._show_controls()
 
     def _tick(self):
         if self.capture and self.player.capture:
@@ -856,10 +1052,67 @@ class MainWindow(Gtk.ApplicationWindow):
             self.ts_label.set_text(f"Timeshift −{int(d) // 60}:{int(d) % 60:02d}" if d > 3 else "Live")
             if self.status.get_text().startswith("Tuning") and self.capture.store.bounds()[1] > 0:
                 self.set_status(self.current.name)
+            start, end = self.capture.store.bounds()
+            buffered = max(1.0, (end - start) / self.capture.byte_rate())
+            d = min(d, buffered)
+            self._show_seek(buffered - d, buffered, live=True, behind=d)
         else:
             pos = self.player.position()
-            self.ts_label.set_text(f"{_mmss(pos[0])} / {_mmss(pos[1])}" if pos else "")
+            self.ts_label.set_text("")
+            if pos:
+                self._show_seek(pos[0], pos[1])
+            else:
+                self._show_seek(None, None)
         return True
+
+    # ------------------------------------------------------------------ seek bar
+    def _show_seek(self, value, upper, live=False, behind=0.0):
+        self.live_btn.set_visible(live)
+        self.dur_label.set_visible(not live)
+        if value is None:
+            self.seek.set_sensitive(False)
+            self.seek.set_range(0, 1)
+            self.seek.set_value(0)
+            self.pos_label.set_text("--:--")
+            self.dur_label.set_text("--:--")
+            return
+        self.seek.set_sensitive(True)
+        if live:
+            # what is on screen, as time of day; LIVE lights up at the live edge
+            self.pos_label.set_text(time.strftime("%H:%M:%S", time.localtime(time.time() - behind)))
+            if behind > 3:
+                self.live_btn.remove_css_class("lv-at-live")
+                self.live_btn.set_label(f"−{_mmss(behind)}")
+            else:
+                self.live_btn.add_css_class("lv-at-live")
+                self.live_btn.set_label("LIVE")
+        else:
+            self.pos_label.set_text(_mmss(value))
+            self.dur_label.set_text(_mmss(upper))
+        if self._seek_source is None:            # don't fight the user while dragging
+            self.seek.set_range(0, max(1.0, upper))
+            self.seek.set_value(value)
+
+    def _on_seek_changed(self, _scale, _scroll, value):
+        self._seek_target = value
+        if self._seek_source:
+            GLib.source_remove(self._seek_source)
+        self._seek_source = GLib.timeout_add(250, self._commit_seek)
+        return False
+
+    def _commit_seek(self):
+        self._seek_source = None
+        v = self._seek_target
+        if v is None:
+            return False
+        if self.capture and self.player.capture:
+            start, end = self.capture.store.bounds()
+            buffered = max(1.0, (end - start) / self.capture.byte_rate())
+            shown = buffered - min(self.player.timeshift_delay(), buffered)
+            self.player.jump(v - shown)
+        else:
+            self.player.seek_to(v)
+        return False
 
     def on_web_search(self):
         if self.current:
@@ -886,7 +1139,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 "plus": "vol-up", "KP_Add": "vol-up", "minus": "vol-down",
                 "KP_Subtract": "vol-down", "BackSpace": "last-channel", "s": "screenshot",
                 "i": "osd", "n": "playlist-next", "p": "playlist-prev"}
-        if name == "Escape" and self.is_fullscreen():
+        if name == "Escape" and self._fs_layout:
             self.toggle_fullscreen()
             return True
         if name in ("Up", "Down", "Left", "Right") and self.listview.get_focus_child():

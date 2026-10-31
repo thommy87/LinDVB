@@ -17,8 +17,16 @@ and whether LinDVB has it.
 
 ![Live TV with the on-screen programme info](docs/screenshots/01-live-tv-osd.png)
 
-| Programme guide | TV guide timeline |
+The player uses a minimal dark look with a blue accent: the picture fills the
+window, and one slim control bar holds previous/next, play/pause, record, the seek
+bar (file position, or the timeshift buffer with a LIVE button for TV), volume,
+audio track, subtitles and a settings menu. In full screen the bar floats over the
+picture and hides itself when the mouse is still.
+
+| Timeshift | File playback |
 |---|---|
+| ![Timeshift](docs/screenshots/08-timeshift.png) | ![File playback](docs/screenshots/02-file-playback.png) |
+| **Programme guide** | **TV guide timeline** |
 | ![EPG now/next](docs/screenshots/03-epg-now.png) | ![TV guide](docs/screenshots/04-epg-tv-guide.png) |
 | **Timer recordings** | **Channel search** |
 | ![Timers](docs/screenshots/05-timers.png) | ![Channel search](docs/screenshots/06-channel-search.png) |
