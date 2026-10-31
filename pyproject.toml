@@ -14,7 +14,7 @@ requires-python = ">=3.10"
 lindvb = "lindvb.app:main"
 
 [tool.setuptools]
-packages = ["lindvb", "lindvb.ui"]
+packages = ["lindvb", "lindvb.ui", "lindvb.addons"]
 
 [tool.setuptools.data-files]
 "share/applications" = ["data/io.github.thommy87.LinDVB.desktop"]

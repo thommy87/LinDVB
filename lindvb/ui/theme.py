@@ -66,6 +66,16 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
 .lv-chan-icon { color: @lv_text_dim; }
 .lv-badge { color: @lv_text_dim; }
 .lv-fav { color: #FFC83D; }
+/* TV / Radio switch */
+.lv-mode { background: @lv_surface_2; border-radius: 10px; padding: 3px;
+           border: 1px solid alpha(white, 0.06); }
+.lv-mode > button {
+  min-height: 28px; border-radius: 7px; background: none; box-shadow: none; border: none;
+  color: @lv_text_dim; font-weight: 600; transition: background 150ms ease, color 150ms ease;
+}
+.lv-mode > button:hover { color: @lv_text; background: alpha(white, 0.05); }
+.lv-mode > button:checked { background: @lv_accent; color: @lv_bg; }
+.lv-visualizer { background: black; }
 paned.lv-paned > separator { background: transparent; min-width: 1px; }
 
 /* ---------- video & overlays ---------- */

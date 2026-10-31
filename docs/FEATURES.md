@@ -24,7 +24,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | LNB types and LOFs | `English.lng:1216` `cbLNBType=Manual LOF,Universal,C-Band,10700 LOF,10750 LOF,11250 LOF,11300 LOF` | **Yes**: LNB type for the scan, LOF1/LOF2/switch frequency in Preferences |
 | DiSEqC switches, positioner | `English.lng:1221` `cbNetDiSEqC=None,SimpleA,SimpleB,Pos A/Opt A,…,Angular Pos.`, `btnDiSEqCEdit` | **Partly**: committed DiSEqC ports 1–4; no motor/positioner control |
 | Unicable (SCR) | `English.lng:1452` `[frmUnicable]`, `cbUseSlot.Caption=Use &Unicable Slot (1..8)` | **No**: `dvbsrc` has no SCR support; would need libdvbv5 directly |
-| Channel list with filters | `English.lng:1935-1957` `mnuAC3`, `mnuEncrypted`, `mnuFreetoAir`, `mnuRadio`, `mnuFavorite`, `mnuH264`, `mnuShowChannelNr` | **Yes**: All/TV/Radio/Favourites/FTA/Encrypted/HD/Internet filters, group filter, search, channel numbers |
+| Channel list with filters | `English.lng:1935-1957` `mnuAC3`, `mnuEncrypted`, `mnuFreetoAir`, `mnuRadio`, `mnuFavorite`, `mnuH264`, `mnuShowChannelNr` | **Yes**: TV/Radio switch (the list shows one kind; favourites mix both), All/Favourites/FTA/Encrypted/HD/Internet filters, group filter, search, channel numbers |
 | Channel editor | `English.lng:542` `actChannelEdit.Caption=Channel Editor`, `[frmChannelConfig]` at line 154 | **Yes**: edit name, group, tuning data, PIDs, reorder, sort, delete, new IPTV entry |
 | Favourites and favourite zapping | `English.lng:610` `actFavourites.Caption=Favourites Editor`; `actions.ini` `Favourite 0..9`, `Favourite Plus/Minus` | **Yes**: favourite flag, favourites filter, favourite plus/minus actions |
 | Channel list import from other software | `Plugins/ImportCSV.dll` ("CSV Files (*.csv)"), `ImportConf.dll` ("VDR Channel CONF Files (*.conf)"), `ImportLamedb.dll` (Enigma2 lamedb) | **Yes**: CSV, VDR channels.conf, Enigma2 lamedb, plus dvbv5 files, M3U and DVBViewer `.ini` lists |
@@ -34,7 +34,8 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 
 | DVBViewer feature | Evidence | LinDVB |
 |---|---|---|
-| Live TV and radio playback | `English.lng:1428` `[frmTVRadioOpt]`, `actRadioWindow.Caption=Radio Window` | **Yes** |
+| Live TV and radio playback | `English.lng:1428` `[frmTVRadioOpt]`, `actRadioWindow.Caption=Radio Window` | **Yes**: TV/Radio switch that tunes the last channel of each kind; the last channel is tuned again at start |
+| Visualisation for radio | `Images/Icons/VisionX/actRadioWindow.png`, visualisation plugins | **Yes**: glow waves, nebula particles, LED spectrum analyser, VU meters, oscilloscope; projectM and GOOM via the bundled GStreamer add-on; more through plugins |
 | Timeshift (pause live TV, jump, keep the buffer) | `English.lng:599-601` `actTimeshift`, `actTimeshiftRecStop`, `actTimeshiftSave.Caption=Keep Timeshift File`; `actions.ini` `Jump Minus 10=102` | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Media file and URL playback, playlists | `English.lng:569-570` `actLoadFile`, `actLoadURL`; `[frmPlaylist]`; `actRandom`, `actRepeat`, `actPlaylistGo` | **Yes**: files, URLs, M3U/PLS playlists, next/previous, random, endless |
 | Play rate | `English.lng:619` `mnuPlayrate.Caption=Play Rate`; `Images/Icons/VisionX/actPlayrate050..200.png` | **Yes** (files) |
