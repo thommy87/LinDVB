@@ -64,6 +64,21 @@ The AppImage bundles Python, GTK 4, GStreamer (with FFmpeg decoders) and the dvb
 tools. It is built on Ubuntu 24.04 and needs glibc 2.39 or newer (Ubuntu 24.04,
 Debian 13, Fedora 40 and later). To build it yourself: `packaging/build-appimage.sh`.
 
+### Flatpak
+
+Download `LinDVB-…-x86_64.flatpak` from the
+[releases](https://github.com/thommy87/LinDVB/releases) (or the latest
+[Build Flatpak](https://github.com/thommy87/LinDVB/actions/workflows/flatpak.yml) run), then:
+
+```sh
+flatpak install --user LinDVB-*-x86_64.flatpak     # pulls the GNOME 48 runtime from Flathub
+flatpak run io.github.thommy87.LinDVB
+```
+
+The Flatpak has access to all devices (for `/dev/dvb`), the network, and your Videos
+and Pictures folders. To build it yourself:
+`flatpak-builder --user --install build-flatpak flatpak/io.github.thommy87.LinDVB.yml`.
+
 ### From source
 
 Debian / Ubuntu:

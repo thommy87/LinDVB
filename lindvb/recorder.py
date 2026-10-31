@@ -2,7 +2,6 @@
 
 import json
 import re
-import subprocess
 import threading
 import time
 import uuid
@@ -10,17 +9,14 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from gi.repository import GLib, GObject
+from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
 from .tuner import IPTVRecorder, SegmentReader
 
 AFTER_ACTIONS = ["None", "Standby", "Hibernate", "Power off"]
-AFTER_COMMANDS = {
-    "Standby": ["systemctl", "suspend"],
-    "Hibernate": ["systemctl", "hibernate"],
-    "Power off": ["systemctl", "poweroff"],
-}
+# systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
+AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
 WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 
@@ -38,6 +34,17 @@ def file_name(scheme, station, event, start):
     for k, v in rep.items():
         out = out.replace(k, v)
     return safe(out) + ".ts"
+
+
+def power_action(method):
+    """Ask systemd-logind to suspend, hibernate or power off."""
+    try:
+        bus = Gio.bus_get_sync(Gio.BusType.SYSTEM, None)
+        bus.call(
+            "org.freedesktop.login1", "/org/freedesktop/login1", "org.freedesktop.login1.Manager",
+            method, GLib.Variant("(b)", (True,)), None, Gio.DBusCallFlags.NONE, -1, None, None, None)
+    except GLib.Error as e:
+        print(f"LinDVB: {method} failed: {e.message}")
 
 
 @dataclass
@@ -253,7 +260,7 @@ class TimerManager(GObject.Object):
                         t.next_occurrence(now)
                     if t.after in AFTER_COMMANDS and not self.active:
                         self.emit("message", f"After recording: {t.after}")
-                        subprocess.Popen(AFTER_COMMANDS[t.after])
+                        power_action(AFTER_COMMANDS[t.after])
             elif t.start <= now < t.end and t.status == "Scheduled":
                 ch = self.app.db.by_key(t.channel_key)
                 if ch is None:

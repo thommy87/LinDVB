@@ -1,0 +1,43 @@
+name: Build Flatpak
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: LinDVB.flatpak
+          manifest-path: flatpak/io.github.thommy87.LinDVB.yml
+          cache-key: flatpak-builder-${{ github.sha }}
+
+  release:
+    needs: flatpak
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          f=$(find dist -name '*.flatpak' | head -1)
+          cp "$f" "LinDVB-${GITHUB_REF_NAME}-x86_64.flatpak"
+          gh release upload "$GITHUB_REF_NAME" "LinDVB-${GITHUB_REF_NAME}-x86_64.flatpak" --clobber --repo "$GITHUB_REPOSITORY" \
+            || gh release create "$GITHUB_REF_NAME" "LinDVB-${GITHUB_REF_NAME}-x86_64.flatpak" --generate-notes --repo "$GITHUB_REPOSITORY"
