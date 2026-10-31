@@ -24,6 +24,7 @@ jobs:
     needs: [appimage, flatpak, snap]
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: dist
@@ -31,6 +32,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.version }}
+          NOTES: packaging/release-notes.md
         run: |
           mkdir out
           cp "$(find dist -type f -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
@@ -38,4 +40,4 @@ jobs:
           cp "$(find dist -type f -name '*.snap' | head -1)" "out/lindvb_${TAG#v}_amd64.snap"
           ls -lh out
           gh release create "$TAG" out/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-            --title "LinDVB ${TAG}" --generate-notes
+            --title "LinDVB ${TAG}" --notes-file "$NOTES" --generate-notes
