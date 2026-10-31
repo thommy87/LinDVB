@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=LinDVB
+GenericName=TV Viewer
+Comment=Watch and record DVB and internet TV
+Exec=lindvb %U
+Icon=video-display
+Terminal=false
+Categories=AudioVideo;Video;TV;Player;GTK;
+Keywords=DVB;TV;EPG;IPTV;Satellite;Cable;Recorder;
+MimeType=video/mp2t;video/mpeg;audio/x-mpegurl;
+StartupNotify=true
