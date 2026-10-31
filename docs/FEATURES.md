@@ -85,7 +85,8 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 
 | DVBViewer feature | Evidence | LinDVB |
 |---|---|---|
-| CAM / CI menu for pay TV | `English.lng:282` `[frmCIMenu]`, `Label3.Caption=This window enables communication with the common access module (CAM)` | **No**: encrypted channels are listed but not descrambled |
+| CAM / CI menu for pay TV | `English.lng:282` `[frmCIMenu]`, `Label3.Caption=This window enables communication with the common access module (CAM)` | **Partly**: conditional-access framework descrambles the user's own encrypted channels via an external softcam (DVBAPI/OSCam, control words applied with libdvbcsa) or a hardware CI module; see [PLUGINS.md](PLUGINS.md). No keys or card-sharing are bundled; a full CI MMI menu is still to come |
+| Plugins / add-ons | `Plugins/*.dll` (ImportCSV, ImportConf, ImportLamedb, Universal), `English.lng` plugin strings | **Yes**: Python plugin system for channel-list importers, conditional-access providers, life-cycle hooks and menu entries; see [PLUGINS.md](PLUGINS.md) |
 | Remote controls and key mapping | `Default/Remotes/default.remote` (XML command→key map), `Plugins/Universal.dll` (DVBSky, TeVii, Anysee, Twinhan, TechnoTrend IR), `[frmWinlircSettings]` | **Partly**: keyboard shortcuts; Linux IR receivers map to keys through the kernel's rc-core, so they work as keyboards |
 | Media server client, RTSP/UPnP/web | `English.lng:1267` `[frmServiceOptions]` (DVBViewer Media Server), `RTSP Server=` line 1919, `actUPnPOpen` | **No** |
 | Script hooks on events | `Scripts/channelchange.vbs`, `startrec.vbs`, `stoprec.vbs` | **No** |

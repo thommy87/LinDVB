@@ -15,6 +15,7 @@ from gi.repository import Gio, GLib, Gst, Gtk  # noqa: E402
 from .channels import ChannelDB, import_file  # noqa: E402
 from .config import APP_ID, Settings  # noqa: E402
 from .epg import EPGStore, parse_xmltv  # noqa: E402
+from .plugins import PluginManager  # noqa: E402
 from .recorder import TimerManager  # noqa: E402
 from .tuner import TunerManager  # noqa: E402
 
@@ -35,10 +36,14 @@ class LinDVBApp(Gtk.Application):
         opts = options.end().unpack()
         Gst.init(None)
         self.settings = Settings()
+        self.plugins = PluginManager(self.settings)
+        self.plugins.load_all()
         self.db = ChannelDB()
         for path in opts.get("import", []):
             path = path.decode() if isinstance(path, bytes) else path
-            added, updated = self.db.merge(import_file(path))
+            loader = self.plugins.importer_for(path)
+            channels = loader(path) if loader else import_file(path)
+            added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
         self._start_channel = opts.get("channel")
@@ -47,8 +52,10 @@ class LinDVBApp(Gtk.Application):
     def do_startup(self):
         Gtk.Application.do_startup(self)
         self.epg = EPGStore()
-        self.tuners = TunerManager(self.settings)
+        self.tuners = TunerManager(self.settings, ca_factory=self.plugins.make_ca_provider)
         self.timers = TimerManager(self)
+        self.plugins.bind_app(self)
+        self.plugins.emit("startup")
         GLib.timeout_add_seconds(3, self._flush_epg)
         GLib.timeout_add_seconds(300, lambda: (self.timers.apply_series(), True)[1])
 
@@ -73,6 +80,7 @@ class LinDVBApp(Gtk.Application):
         self.window.play_files(uris)
 
     def do_shutdown(self):
+        self.plugins.emit("shutdown")
         if self.window:
             self.window.settings.save()
         self.timers.stop_all()
@@ -156,6 +164,10 @@ class LinDVBApp(Gtk.Application):
     def show_stats(self):
         from .ui.dialogs import StatsWindow
         StatsWindow(self, self.window).present()
+
+    def show_plugins(self):
+        from .ui.dialogs import PluginsWindow
+        PluginsWindow(self, self.window).present()
 
     def show_teletext(self, capture, channel):
         from .ui.dialogs import TeletextWindow

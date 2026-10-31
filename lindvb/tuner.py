@@ -166,10 +166,15 @@ class Capture(GObject.Object):
         "eit": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
     }
 
-    def __init__(self, channel, adapter, frontend, settings):
+    def __init__(self, channel, adapter, frontend, settings, ca_provider=None):
         super().__init__()
         self.channel = channel
         self.adapter = adapter
+        # Conditional access for the user's own encrypted channels: a provider
+        # supplies control words (from an external softcam or a CI module) and
+        # descrambles the captured transport stream in place.
+        self.ca = ca_provider if (ca_provider and channel.encrypted) else None
+        self._pmt_asm = None
         base = Path(settings["timeshift_dir"])
         base.mkdir(parents=True, exist_ok=True)
         self.store = SegmentStore(tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base))
@@ -205,6 +210,15 @@ class Capture(GObject.Object):
         src.link(parse)
         parse.link(sink)
 
+        if self.ca is not None:
+            # Descramble the stream just before it is written to disk, so the
+            # live view, timeshift and recordings all get the clear stream.
+            from .ca import SectionAssembler
+            self._pmt_asm = SectionAssembler()
+            self.ca.start(channel)
+            pad = sink.get_static_pad("sink")
+            pad.add_probe(Gst.PadProbeType.BUFFER, self._ca_probe)
+
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
@@ -213,7 +227,57 @@ class Capture(GObject.Object):
         if self.pipeline.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
             self.emit("error", f"Could not open DVB adapter {self.adapter}.")
 
+    def _ca_probe(self, pad, info):
+        """Run the CA provider over every TS packet, descrambling in place."""
+        buf = info.get_buffer()
+        if buf is None:
+            return Gst.PadProbeReturn.OK
+        size = buf.get_size()
+        if size < TS_PACKET:
+            return Gst.PadProbeReturn.OK
+        data = bytearray(buf.extract_dup(0, size))
+        if self._process_ts(data):
+            try:
+                buf.fill(0, bytes(data))
+            except Exception:
+                pass
+        return Gst.PadProbeReturn.OK
+
+    def _process_ts(self, data):
+        """Descramble the packets in ``data`` (a bytearray). Returns True if written."""
+        from .ca import TS_SYNC, ts_pid
+        n = len(data)
+        pmt_pid = self.channel.pmt_pid
+        changed = False
+        aligned = (n % TS_PACKET == 0 and data[0] == TS_SYNC)
+        offsets = range(0, n - TS_PACKET + 1, TS_PACKET) if aligned else \
+            self._sync_offsets(data)
+        for off in offsets:
+            packet = memoryview(data)[off:off + TS_PACKET]
+            if packet[0] != TS_SYNC:
+                continue
+            if pmt_pid and self._pmt_asm is not None and ts_pid(packet) == pmt_pid:
+                for section in self._pmt_asm.feed(packet):
+                    if section and section[0] == 0x02:
+                        self.ca.set_pmt(section)
+                        self._pmt_asm = None
+                        break
+            if self.ca.process_packet(packet):
+                changed = True
+        return changed
+
+    @staticmethod
+    def _sync_offsets(data):
+        from .ca import TS_SYNC
+        offs, i, n = [], data.find(TS_SYNC), len(data)
+        while 0 <= i and i + TS_PACKET <= n:
+            offs.append(i)
+            i += TS_PACKET if data[i] == TS_SYNC else 1
+        return offs
+
     def stop(self):
+        if self.ca is not None:
+            self.ca.stop()
         self.pipeline.set_state(Gst.State.NULL)
         self.pipeline.get_bus().remove_signal_watch()
         self.store.finished = True
@@ -293,9 +357,12 @@ class TunerManager(GObject.Object):
         "preempt-live": (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
-    def __init__(self, settings):
+    def __init__(self, settings, ca_factory=None):
         super().__init__()
         self.settings = settings
+        # Called with no arguments to build a fresh CA provider for an
+        # encrypted channel, or None for no descrambling.
+        self.ca_factory = ca_factory
         self.captures = {}           # adapter -> Capture
 
     def acquire(self, channel, user):
@@ -322,7 +389,13 @@ class TunerManager(GObject.Object):
                     self.release(cap, "live")
                 free = live
         a = free[0]
-        cap = Capture(channel, a, self.settings["frontend"], self.settings)
+        provider = None
+        if channel.encrypted and self.ca_factory is not None:
+            try:
+                provider = self.ca_factory()
+            except Exception:
+                provider = None
+        cap = Capture(channel, a, self.settings["frontend"], self.settings, provider)
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()

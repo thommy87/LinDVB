@@ -89,6 +89,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "sleep-off": self.sleep_cancel, "sleep-programme": self.sleep_after_programme,
             "rebuild": self.rebuild_playback, "xmltv": lambda: self.app.update_xmltv(),
             "web-epg": self.on_web_search,
+            "plugins": lambda: self.app.show_plugins(),
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -113,6 +114,9 @@ class MainWindow(Gtk.ApplicationWindow):
         a = Gio.SimpleAction.new("rate", GLib.VariantType.new("d"))
         a.connect("activate", lambda _a, p: self.player.set_rate(p.get_double()))
         self.add_action(a)
+        a = Gio.SimpleAction.new("plugin-action", GLib.VariantType.new("i"))
+        a.connect("activate", lambda _a, p: self._run_plugin_action(p.get_int32()))
+        self.add_action(a)
         for name, init, fn in (("video-off", False, lambda v: self.player.disable_video(v)),
                                ("pl-random", False, lambda v: setattr(self, "playlist_random", v)),
                                ("pl-repeat", False, lambda v: setattr(self, "playlist_repeat", v))):
@@ -135,6 +139,13 @@ class MainWindow(Gtk.ApplicationWindow):
         }
         for k, v in accels.items():
             self.app.set_accels_for_action(k, v)
+
+    def _run_plugin_action(self, index):
+        try:
+            _plugin, _label, cb = self.app.plugins.menu_actions[index]
+            cb(self.app)
+        except Exception as e:
+            self.set_status(f"Plugin action failed: {e}")
 
     def _menu(self):
         m = Gio.Menu()
@@ -197,6 +208,9 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append_section(None, view)
         end = Gio.Menu()
         end.append("Preferences", "win.prefs")
+        end.append("Plugins…", "win.plugins")
+        for i, (_plugin, label, _cb) in enumerate(self.app.plugins.menu_actions):
+            end.append(label, f"win.plugin-action({i})")
         end.append("About LinDVB", "win.about")
         m.append_section(None, end)
         return m
@@ -442,6 +456,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.capture.connect("stats", self._on_stats)
                 self.capture.connect("error", lambda _c, m: self.set_status(m))
                 self.capture.connect("eit", self.app.on_eit)
+                self.app.plugins.emit("channel-tuned", c, self.capture)
                 GLib.timeout_add(700, self._start_live, self.capture)
         except RuntimeError as e:
             self.set_status(str(e))
