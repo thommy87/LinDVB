@@ -1,0 +1,53 @@
+name: Build AppImage
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  appimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi python3-gi-cairo python3-pytest gir1.2-gtk-4.0 gir1.2-gstreamer-1.0 \
+            gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0 \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-pulseaudio \
+            gstreamer1.0-alsa gstreamer1.0-pipewire dvb-tools dtv-scan-tables \
+            adwaita-icon-theme libgdk-pixbuf2.0-bin librsvg2-common file desktop-file-utils
+
+      - name: Run tests
+        run: python3 -m pytest -q tests
+
+      - name: Build AppImage
+        run: packaging/build-appimage.sh
+
+      - name: Smoke test
+        run: |
+          APPIMAGE=$(ls build/*.AppImage)
+          "$APPIMAGE" --appimage-extract >/dev/null
+          squashfs-root/AppRun --help
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LinDVB-AppImage
+          path: build/*.AppImage
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" build/*.AppImage --generate-notes || gh release upload "$GITHUB_REF_NAME" build/*.AppImage --clobber

@@ -7,6 +7,7 @@ name = "lindvb"
 version = "0.1.0"
 description = "DVB and internet TV viewer and recorder for GNOME (GTK 4, GStreamer, Linux DVB API)"
 readme = "README.md"
+license = {text = "GPL-2.0-or-later"}
 requires-python = ">=3.10"
 
 [project.scripts]
@@ -17,3 +18,5 @@ packages = ["lindvb", "lindvb.ui"]
 
 [tool.setuptools.data-files]
 "share/applications" = ["data/io.github.thommy87.LinDVB.desktop"]
+"share/icons/hicolor/scalable/apps" = ["data/lindvb.svg"]
+"share/metainfo" = ["data/io.github.thommy87.LinDVB.metainfo.xml"]

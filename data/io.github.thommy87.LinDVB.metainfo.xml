@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.thommy87.LinDVB</id>
+  <name>LinDVB</name>
+  <summary>Watch and record DVB and internet TV</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <description>
+    <p>LinDVB plays and records satellite, cable, terrestrial and internet TV using the
+    Linux DVB API and GStreamer. It has timeshift, timer and series recordings, a
+    programme guide, teletext, channel search and a channel editor.</p>
+  </description>
+  <launchable type="desktop-id">io.github.thommy87.LinDVB.desktop</launchable>
+  <url type="homepage">https://github.com/thommy87/LinDVB</url>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-10-31"/>
+  </releases>
+</component>

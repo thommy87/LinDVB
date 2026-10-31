@@ -12,7 +12,7 @@ from .common import day, dropdown, fill, hm, labeled, make_column_view, message,
 class TimersWindow(Gtk.Window):
     def __init__(self, app, parent):
         super().__init__(title="Timer Recordings", transient_for=parent,
-                         default_width=980, default_height=600)
+                         default_width=1180, default_height=620)
         self.app = app
         cols = [("Channel", lambda t: t.channel_name, False),
                 ("Date", lambda t: day(t.start), False),
@@ -63,7 +63,7 @@ class TimersWindow(Gtk.Window):
         right.append(Gtk.Label(label="<b>Series recordings</b>", use_markup=True, xalign=0, margin_start=10))
         right.append(scrolled(self.rview))
         right.append(rdel)
-        paned = Gtk.Paned(position=600)
+        paned = Gtk.Paned(position=640)
         paned.set_start_child(scrolled(self.view))
         paned.set_end_child(right)
         self.set_child(paned)
