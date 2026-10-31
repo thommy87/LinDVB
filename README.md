@@ -79,6 +79,19 @@ The Flatpak has access to all devices (for `/dev/dvb`), the network, and your Vi
 and Pictures folders. To build it yourself:
 `flatpak-builder --user --install build-flatpak flatpak/io.github.thommy87.LinDVB.yml`.
 
+### Snap
+
+Download `lindvb_…_amd64.snap` from the [releases](https://github.com/thommy87/LinDVB/releases), then:
+
+```sh
+sudo snap install --dangerous ./lindvb_*_amd64.snap
+sudo snap connect lindvb:dvb          # access to /dev/dvb tuners
+sudo snap connect lindvb:shutdown     # optional: standby/power off after recordings
+lindvb
+```
+
+To build it yourself: `snapcraft` in the source tree.
+
 ### From source
 
 Debian / Ubuntu:
@@ -145,6 +158,11 @@ with these keys; use `ir-keytable` to remap buttons.
 * `~/.cache/lindvb/epg.json` and the timeshift buffer (`timeshift/`)
 * Recordings go to `~/Videos/LinDVB` as `.ts` by default (naming scheme with
   `%year %date %time %station %event`)
+
+## Releasing
+
+Run the **Release** workflow from the Actions tab and enter a tag such as `v0.1.1`. It
+builds the AppImage, Flatpak and Snap and publishes all three in one GitHub release.
 
 ## Development
 

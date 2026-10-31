@@ -1,0 +1,36 @@
+name: Build Snap
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  snap:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: snapcore/action-build@v1
+        id: build
+
+      - name: Check the snap
+        run: |
+          unsquashfs -l "${{ steps.build.outputs.snap }}" | grep -E 'lib/lindvb/lindvb/app.py|bin/dvbv5-scan|libgstdvb.so|libgstteletext.so'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LinDVB-snap
+          path: ${{ steps.build.outputs.snap }}
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" "${{ steps.build.outputs.snap }}" --clobber

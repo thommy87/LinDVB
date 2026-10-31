@@ -7,3 +7,7 @@ dist/
 build/
 .flatpak-builder/
 build-flatpak/
+parts/
+prime/
+stage/
+*.snap

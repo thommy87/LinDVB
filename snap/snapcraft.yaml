@@ -1,0 +1,66 @@
+name: lindvb
+title: LinDVB
+summary: Watch and record DVB and internet TV
+description: |
+  LinDVB plays and records satellite, cable, terrestrial and internet TV using
+  the Linux DVB API and GStreamer. It has timeshift, timer and series
+  recordings, a programme guide, teletext, channel search and a channel editor.
+
+  To use a DVB tuner, connect the dvb interface:
+    sudo snap connect lindvb:dvb
+license: GPL-2.0-or-later
+icon: data/lindvb.svg
+adopt-info: lindvb
+base: core24
+grade: stable
+confinement: strict
+platforms:
+  amd64:
+
+apps:
+  lindvb:
+    command: bin/lindvb
+    extensions: [gnome]
+    common-id: io.github.thommy87.LinDVB
+    desktop: usr/share/applications/io.github.thommy87.LinDVB.desktop
+    plugs:
+      - dvb              # /dev/dvb tuners
+      - network          # internet TV, XMLTV
+      - audio-playback
+      - home             # recordings in ~/Videos
+      - removable-media  # recordings on external drives
+      - shutdown         # standby / power off after recording
+    environment:
+      PYTHONPATH: $SNAP/lib/lindvb:$SNAP/usr/lib/python3/dist-packages
+      GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:${GI_TYPELIB_PATH}
+      GST_PLUGIN_SYSTEM_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0
+      GST_PLUGIN_SCANNER: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
+      LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
+
+parts:
+  lindvb:
+    plugin: nil
+    source: .
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/lib/lindvb $CRAFT_PART_INSTALL/bin $CRAFT_PART_INSTALL/usr/share/applications \
+               $CRAFT_PART_INSTALL/usr/share/metainfo
+      cp -r lindvb $CRAFT_PART_INSTALL/lib/lindvb/
+      find $CRAFT_PART_INSTALL/lib/lindvb -name __pycache__ -prune -exec rm -rf {} +
+      install -m755 snap/local/lindvb.sh $CRAFT_PART_INSTALL/bin/lindvb
+      sed 's|^Icon=.*|Icon=${SNAP}/meta/gui/icon.svg|' data/io.github.thommy87.LinDVB.desktop \
+          > $CRAFT_PART_INSTALL/usr/share/applications/io.github.thommy87.LinDVB.desktop
+      cp data/io.github.thommy87.LinDVB.metainfo.xml $CRAFT_PART_INSTALL/usr/share/metainfo/
+      craftctl set version="$(sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml)"
+    stage-packages:
+      - python3-gi
+      - python3-gi-cairo
+      - gir1.2-gstreamer-1.0
+      - gir1.2-gst-plugins-base-1.0
+      - gir1.2-gst-plugins-bad-1.0
+      - gstreamer1.0-plugins-base
+      - gstreamer1.0-plugins-good
+      - gstreamer1.0-plugins-bad
+      - gstreamer1.0-libav
+      - gstreamer1.0-pulseaudio
+      - dvb-tools
+      - dtv-scan-tables
