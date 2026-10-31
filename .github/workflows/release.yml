@@ -1,0 +1,41 @@
+name: Release
+
+# Builds the AppImage, Flatpak and Snap and publishes them together as a
+# GitHub release. Start it from the Actions tab ("Run workflow").
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag, e.g. v0.1.1"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  appimage:
+    uses: ./.github/workflows/appimage.yml
+  flatpak:
+    uses: ./.github/workflows/flatpak.yml
+  snap:
+    uses: ./.github/workflows/snap.yml
+
+  publish:
+    needs: [appimage, flatpak, snap]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.version }}
+        run: |
+          mkdir out
+          cp "$(find dist -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
+          cp "$(find dist -name '*.flatpak' | head -1)" "out/LinDVB-${TAG}-x86_64.flatpak"
+          cp "$(find dist -name '*.snap' | head -1)" "out/lindvb_${TAG#v}_amd64.snap"
+          ls -lh out
+          gh release create "$TAG" out/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "LinDVB ${TAG}" --generate-notes
