@@ -54,15 +54,33 @@ class PrefsWindow(Gtk.Window):
         entry("xmltv_url", 14, "XMLTV URL (internet EPG)")
         switch("deinterlace", 15, "Deinterlace video")
         spin("osd_seconds", 16, "OSD display time (s)", 1, 30)
+
+        g.attach(Gtk.Label(label="Conditional access (your own encrypted channels)",
+                           css_classes=["heading"], xalign=0), 0, 17, 2, 1)
+        self._ca_names = ["none", "dvbapi", "ci"] + \
+            [n for n in app.plugins.ca_providers if n not in ("dvbapi", "ci")]
+        ca_labels = {"none": "None (leave scrambled)",
+                     "dvbapi": "External softcam (DVBAPI / OSCam)",
+                     "ci": "Hardware CI / CI+ module"}
+        cur = s.get("ca_provider", "none")
+        idx = self._ca_names.index(cur) if cur in self._ca_names else 0
+        self._ca_drop = labeled(g, 18, "Descrambling via",
+                                dropdown([ca_labels.get(n, n) for n in self._ca_names], idx))
+        entry("ca_dvbapi_socket", 19, "Softcam DVBAPI socket (path or host:port)")
+        spin("ca_ci_adapter", 20, "CI adapter number", 0, 15)
+        spin("ca_ci_device", 21, "CI CA device number", 0, 7)
+        switch("plugins_enabled", 22, "Load plugins at startup")
+
         self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
         save = Gtk.Button(label="Save", css_classes=["suggested-action"], halign=Gtk.Align.END)
         save.connect("clicked", lambda *_: self.on_save())
-        g.attach(save, 1, 17, 1, 1)
+        g.attach(save, 1, 23, 1, 1)
         self.set_child(scrolled(g))
         self.set_default_size(560, 640)
 
     def on_save(self):
         s = self.app.settings
+        s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         for k, (w, typ) in self.w.items():
             if typ is bool:
                 s[k] = w.get_active()
@@ -371,3 +389,45 @@ class TeletextWindow(Gtk.Window):
             self.feeder.stop()
             self.pipeline.set_state(Gst.State.NULL)
             self.pipeline = None
+
+class PluginsWindow(Gtk.Window):
+    """Lists the loaded plugins and the conditional-access status."""
+
+    def __init__(self, app, parent):
+        super().__init__(title="Plugins", transient_for=parent, default_width=560,
+                         default_height=440)
+        self.app = app
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=12,
+                      margin_end=12, margin_top=12, margin_bottom=12)
+
+        pm = app.plugins
+        box.append(Gtk.Label(label="Conditional access", css_classes=["heading"], xalign=0))
+        provider = app.tuners.ca_factory() if app.tuners.ca_factory else None
+        if app.settings.get("ca_provider", "none") == "none":
+            ca_text = ("No descrambling configured. Encrypted channels you are entitled to "
+                       "can be descrambled by pointing LinDVB at your own softcam or CI module "
+                       "in Preferences.")
+        elif provider is None:
+            ca_text = f"Provider '{app.settings['ca_provider']}' is not available."
+        else:
+            ca_text = (f"Provider: {provider.name}\n"
+                       "LinDVB forwards ECM sections to your external card client and applies "
+                       "the control words it returns; it holds no keys itself.")
+        lab = Gtk.Label(label=ca_text, xalign=0, wrap=True, css_classes=["dim-label"])
+        box.append(lab)
+
+        box.append(Gtk.Label(label="Loaded plugins", css_classes=["heading"], xalign=0))
+        if pm.plugins:
+            for p in pm.plugins:
+                row = f"• {p.name} {p.version}".rstrip()
+                if p.description:
+                    row += f"\n    {p.description.splitlines()[0]}"
+                box.append(Gtk.Label(label=row, xalign=0, wrap=True))
+        else:
+            box.append(Gtk.Label(label="No plugins loaded.", xalign=0,
+                                  css_classes=["dim-label"]))
+
+        dirs = ", ".join(str(d) for d in pm.plugin_dirs())
+        box.append(Gtk.Label(label=f"Plugin folders: {dirs}", xalign=0, wrap=True,
+                             css_classes=["dim-label"]))
+        self.set_child(scrolled(box))

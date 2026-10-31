@@ -16,6 +16,10 @@ CONFIG_DIR = _xdg("XDG_CONFIG_HOME", ".config") / "lindvb"
 DATA_DIR = _xdg("XDG_DATA_HOME", ".local/share") / "lindvb"
 CACHE_DIR = _xdg("XDG_CACHE_HOME", ".cache") / "lindvb"
 
+# Where user plugins live. Additional directories can be given in the
+# LINDVB_PLUGIN_PATH environment variable (os.pathsep separated).
+PLUGIN_DIR = DATA_DIR / "plugins"
+
 DEFAULTS = {
     # Tuners: list of adapter numbers that LinDVB may use, in order of preference.
     "adapters": [0],
@@ -44,6 +48,25 @@ DEFAULTS = {
     ],
     "osd_seconds": 4,
     "deinterlace": True,
+    # Plugins -----------------------------------------------------------------
+    # Load plugins from the plugins directory (DATA_DIR/plugins and the
+    # LINDVB_PLUGIN_PATH entries) at startup.
+    "plugins_enabled": True,
+    "plugins_disabled": [],          # plugin names the user has switched off
+    # Conditional access (descrambling of the user's own encrypted channels).
+    # Provider for descrambling:
+    #   "none"   - do not descramble (encrypted channels stay scrambled)
+    #   "dvbapi" - client of an external softcam (OSCam & co.) over the DVBAPI
+    #              socket; the softcam reads the user's own subscription card
+    #              and returns the control words, LinDVB only applies them
+    #   "ci"     - a hardware CI/CI+ module in the adapter's CA device
+    #   or the name of a CA plugin that provides control words
+    "ca_provider": "none",
+    # DVBAPI socket of the external softcam. Unix socket path, or "host:port".
+    "ca_dvbapi_socket": "/tmp/camd.socket",
+    # Hardware CI: which /dev/dvb/adapterN CA device to use.
+    "ca_ci_adapter": 0,
+    "ca_ci_device": 0,
 }
 
 

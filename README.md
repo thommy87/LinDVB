@@ -45,6 +45,21 @@ and whether LinDVB has it.
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer
 * Recording and device statistics (lock, signal, SNR, BER, bitrate)
+* Plugins: Python add-ons for channel-list importers, conditional-access
+  providers, life-cycle hooks and menu entries
+* Conditional access for your own encrypted channels: an external softcam
+  (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
+  module supplies the control words from your subscription card
+
+## Plugins and conditional access
+
+LinDVB can load plugins and can descramble the encrypted channels you are
+entitled to with **your own** subscription card. It contains no decryption keys
+and breaks no encryption: it talks to a conditional-access client you run
+yourself (a softcam such as OSCam reading your card, or a hardware CI module),
+the same way tvheadend, VDR and enigma2 do, and applies the control words that
+client returns. See [docs/PLUGINS.md](docs/PLUGINS.md) for how to write a plugin
+and how to point LinDVB at your softcam or CI module.
 
 ## Install
 
@@ -178,8 +193,9 @@ time, which lets you test timeshift, recording, EPG and teletext without hardwar
 
 ## Not yet implemented
 
-Picture in picture and mosaic, CAM/CI descrambling, Unicable and DiSEqC motors,
-HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
+Picture in picture and mosaic, the interactive CI MMI menu (basic CA
+descrambling is supported, see [docs/PLUGINS.md](docs/PLUGINS.md)), Unicable and
+DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
 ## License
