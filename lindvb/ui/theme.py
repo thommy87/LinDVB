@@ -82,6 +82,12 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .osd .lv-osd-now { font-size: 1.05em; }
 .osd .lv-osd-time { color: @lv_text_dim; font-feature-settings: "tnum"; }
 .osd .lv-osd-next { color: @lv_text_dim; }
+.osd .lv-osd-meta { color: @lv_text_dim; font-size: 0.85em; }
+.osd .lv-osd-tag {
+  color: @lv_text_dim; font-size: 0.75em; font-weight: 600; border-radius: 4px;
+  padding: 0 5px; border: 1px solid alpha(white, 0.22);
+}
+.osd .lv-osd-tag.lv-current { color: @lv_text; border-color: @lv_accent; }
 .osd progressbar trough { min-height: 4px; border-radius: 2px; background: alpha(white, 0.12); }
 .osd progressbar progress { min-height: 4px; border-radius: 2px; background: @lv_accent; }
 .osd-num {

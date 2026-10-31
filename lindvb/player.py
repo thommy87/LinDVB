@@ -8,6 +8,7 @@ and internet streams go to playbin directly.
 import re
 import threading
 import time
+import urllib.request
 
 import gi
 
@@ -16,6 +17,8 @@ gi.require_version("Gst", "1.0")
 gi.require_version("GstVideo", "1.0")
 from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
+from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
+                         language_name)
 from .teletext import DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt  # noqa: E402
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
 
@@ -32,6 +35,20 @@ PLAY_FLAGS_TEXT = 4
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
+
+
+def _has_playbin3():
+    return Gst.ElementFactory.find("playbin3") is not None
+
+
+def _is_hls_url(uri):
+    return uri.startswith(("http://", "https://")) and "m3u8" in uri.lower()
+
+
+def _fetch_text(url, limit=256 * 1024, timeout=4):
+    req = urllib.request.Request(url, headers={"User-Agent": "LinDVB"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read(limit).decode("utf-8", "replace")
 
 
 def ssm_rtp_to_udp(url):
@@ -155,12 +172,26 @@ class Player(GObject.Object):
         self._ttx_present = False       # the stream carries teletext
         self._ttx_pages = []            # TeletextPage from the PMT
         self._ttx_last = ""
+        # Internet streams with the audio in separate HLS renditions run on
+        # playbin3: the old hlsdemux in playbin lines those renditions up by
+        # playlist position instead of by timestamp, which puts sound and
+        # picture apart by up to a segment (seconds). hlsdemux2 syncs on PTS.
+        self._pb3 = False
+        self._collection = None         # playbin3: Gst.StreamCollection
+        self._selected = set()          # playbin3: ids of the selected streams
+        self._token = 0                 # bumps on every play/stop, cancels stale probes
+        self._hls_alt_audio = {}        # url -> master playlist has audio renditions
+        self._fallback_done = False
+        self._tracks_pending = False
+        self.audio_delay_ms = 0         # + = audio later, - = audio earlier
 
     # -- pipeline -----------------------------------------------------------
 
-    def _build(self):
+    def _build(self, pb3=False):
         self._teardown()
-        pb = Gst.ElementFactory.make("playbin", "player")
+        self._pb3 = bool(pb3)
+        self._collection, self._selected = None, set()
+        pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
         pb.set_property("video-sink", self.video.sink)
         vf = Gst.Bin.new("vfilter")
         chain = [Gst.ElementFactory.make("videoconvert")]
@@ -180,6 +211,9 @@ class Player(GObject.Object):
             pb.set_property("audio-filter", self.eq)
         pb.connect("source-setup", self._on_source_setup)
         pb.connect("element-setup", self._on_element_setup)
+        if not pb3:
+            pb.connect("audio-tags-changed", lambda *_: self._tracks_changed())
+            pb.connect("text-tags-changed", lambda *_: self._tracks_changed())
         bus = pb.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
@@ -207,6 +241,8 @@ class Player(GObject.Object):
             return
         pb.set_property("volume", self._volume)
         pb.set_property("mute", self._mute)
+        # playbin's av-offset > 0 plays the audio earlier, so it is the negated delay
+        pb.set_property("av-offset", -int(self.audio_delay_ms) * Gst.MSECOND)
         for k, v in self.balance.items():
             self.vbal.set_property(k, v)
         if self.eq is not None:
@@ -235,7 +271,8 @@ class Player(GObject.Object):
         if f and f.get_name() == "tsdemux":
             if self.sid:
                 element.set_property("program-number", self.sid)
-            element.connect("pad-added", self._on_demux_pad)
+            if not self._pb3:       # teletext is linked by hand into decodebin only
+                element.connect("pad-added", self._on_demux_pad)
 
     # -- teletext subtitles -------------------------------------------------
 
@@ -330,6 +367,7 @@ class Player(GObject.Object):
         """Play a DVB capture, starting at the live end or at a byte offset."""
         self.capture, self.sid, self.uri = capture, sid, None
         self._ssm_source = None
+        self._token += 1
         _, end = capture.store.bounds()
         if offset is None:
             offset = max(0, end - int(capture.byte_rate() * 0.5))
@@ -346,14 +384,59 @@ class Player(GObject.Object):
         if "://" not in uri:
             uri = Gst.filename_to_uri(uri)
         self.uri = uri
+        self._token += 1
+        self._fallback_done = False
+        engine = self.settings.get("stream_engine", "auto")
+        if engine == "playbin3" and _has_playbin3():
+            self._start_uri(True)
+        elif engine == "auto" and _is_hls_url(uri) and _has_playbin3():
+            known = self._hls_alt_audio.get(uri)
+            if known is not None:
+                self._start_uri(known)
+            else:
+                # look at the master playlist first (in the background)
+                self._teardown()
+                threading.Thread(target=self._probe_hls, args=(uri, self._token),
+                                 daemon=True).start()
+        else:
+            self._start_uri(False)
+
+    def _probe_hls(self, uri, token):
+        try:
+            alt = hls_has_alternate_audio(_fetch_text(uri))
+        except (OSError, ValueError):
+            alt = False
+        GLib.idle_add(self._probe_done, uri, token, alt)
+
+    def _probe_done(self, uri, token, alt):
+        self._hls_alt_audio[uri] = alt
+        if token == self._token and self.uri == uri and not self.capture:
+            self._start_uri(alt)
+        return False
+
+    def _start_uri(self, pb3):
+        uri = self.uri
         real, self._ssm_source = ssm_rtp_to_udp(uri) if uri.startswith(("rtp://", "udp://")) \
             else (uri, None)
-        pb = self._build()
+        pb = self._build(pb3)
         pb.set_property("uri", real)
         self.paused = False
         pb.set_state(Gst.State.PLAYING)
 
+    def _fallback_to_playbin(self, token):
+        if token == self._token and self.uri and not self.capture:
+            self._hls_alt_audio[self.uri] = False
+            self._start_uri(False)
+        return False
+
+    def set_audio_delay(self, ms):
+        """Shift the sound against the picture (ms, + = sound later)."""
+        self.audio_delay_ms = int(ms)
+        if self.playbin:
+            self.playbin.set_property("av-offset", -self.audio_delay_ms * Gst.MSECOND)
+
     def stop(self):
+        self._token += 1
         self._teardown()
         self.capture = None
         self.emit("state", "stopped")
@@ -460,49 +543,146 @@ class Player(GObject.Object):
         if self.eq is not None and self.playbin:
             self.eq.set_property(f"band{band}", gain)
 
-    def _tags_list(self, kind):
-        if not self.playbin:
+    def _tracks_changed(self):
+        """Tags arrive from streaming threads; tell the UI once, on the main loop."""
+        if not self._tracks_pending:
+            self._tracks_pending = True
+
+            def fire():
+                self._tracks_pending = False
+                self.emit("tracks")
+                return False
+            GLib.idle_add(fire)
+
+    def _streams(self, stype):
+        """playbin3: the streams of one type in the current collection."""
+        c = self._collection
+        if c is None:
             return []
-        n = self.playbin.get_property(f"n-{kind}")
         out = []
-        for i in range(n):
-            tags = self.playbin.emit(f"get-{kind}-tags", i)
-            label = f"Track {i + 1}"
-            if tags:
-                ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE)
-                ok2, codec = tags.get_string(
-                    Gst.TAG_AUDIO_CODEC if kind == "audio" else Gst.TAG_SUBTITLE_CODEC)
-                parts = [p for p, k in ((lang, ok), (codec, ok2)) if k and p]
-                if parts:
-                    label += " (" + ", ".join(parts) + ")"
-            out.append(label)
+        for i in range(c.get_size()):
+            st = c.get_stream(i)
+            if st.get_stream_type() & stype:
+                out.append(st)
         return out
 
+    def _select_streams(self, stype, stream):
+        """playbin3: keep the other selections, put `stream` (or none) for `stype`."""
+        keep = [st.get_stream_id() for st in self._streams(~stype & 0xff)
+                if st.get_stream_id() in self._selected]
+        if stream is not None:
+            keep.append(stream.get_stream_id())
+        if keep:
+            self.playbin.send_event(Gst.Event.new_select_streams(keep))
+
+    @staticmethod
+    def _track_from(tags, caps, codec_tag):
+        t = AudioTrack()
+        if tags:
+            for attr, tag in (("language", Gst.TAG_LANGUAGE_CODE), ("title", Gst.TAG_TITLE),
+                              ("codec", codec_tag)):
+                ok, v = tags.get_string(tag)
+                if ok and v:
+                    setattr(t, attr, v)
+        if caps and caps.get_size():
+            st = caps.get_structure(0)
+            ok, ch = st.get_int("channels")
+            if ok:
+                t.channels = ch
+            if not t.codec and not st.get_name().startswith(("audio/x-raw", "text/x-raw")):
+                t.codec = st.get_name().split("/")[-1]
+        return t
+
+    def _decoded_channels(self):
+        """Channels of the audio that is actually playing (after decoding)."""
+        pad = self.eq.get_static_pad("sink") if self.eq is not None else None
+        caps = pad.get_current_caps() if pad else None
+        if caps and caps.get_size():
+            ok, ch = caps.get_structure(0).get_int("channels")
+            if ok:
+                return ch
+        return 0
+
+    def audio_track_info(self):
+        """([AudioTrack], index of the current one or -1)."""
+        if not self.playbin:
+            return [], -1
+        tracks, cur = [], -1
+        if self._pb3:
+            for i, st in enumerate(self._streams(Gst.StreamType.AUDIO)):
+                tracks.append(self._track_from(st.get_tags(), st.get_caps(), Gst.TAG_AUDIO_CODEC))
+                if st.get_stream_id() in self._selected:
+                    cur = i
+        else:
+            for i in range(self.playbin.get_property("n-audio")):
+                pad = self.playbin.emit("get-audio-pad", i)
+                caps = pad.get_current_caps() if pad else None
+                tracks.append(self._track_from(self.playbin.emit("get-audio-tags", i), caps,
+                                               Gst.TAG_AUDIO_CODEC))
+            cur = self.playbin.get_property("current-audio") if tracks else -1
+        if 0 <= cur < len(tracks) and not tracks[cur].channels:
+            tracks[cur].channels = self._decoded_channels()
+        return tracks, cur
+
+    def _text_labels(self):
+        if not self.playbin:
+            return [], -1
+        if self._pb3:
+            streams = self._streams(Gst.StreamType.TEXT)
+            items = [st.get_tags() for st in streams]
+            cur = next((i for i, st in enumerate(streams) if st.get_stream_id() in self._selected), -1)
+        else:
+            items = [self.playbin.emit("get-text-tags", i)
+                     for i in range(self.playbin.get_property("n-text"))]
+            on = bool(self.playbin.get_property("flags") & PLAY_FLAGS_TEXT)
+            cur = self.playbin.get_property("current-text") if on else -1
+        out = []
+        for i, tags in enumerate(items):
+            label = f"Subtitles {i + 1}"
+            if tags:
+                ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE)
+                ok2, codec = tags.get_string(Gst.TAG_SUBTITLE_CODEC)
+                name = language_name(lang) if ok else None
+                if name:
+                    label = name
+                if ok2 and codec:
+                    label += f" ({codec})"
+            out.append(label)
+        return out, cur
+
     def audio_tracks(self):
-        return self._tags_list("audio"), self.playbin.get_property("current-audio") if self.playbin else -1
+        """Readable labels ('German, Stereo', ...) and the index of the current track."""
+        tracks, cur = self.audio_track_info()
+        return audio_track_labels(tracks), cur
 
     def subtitle_tracks(self):
         """Labels of the DVB/text subtitle streams followed by the teletext
         subtitle pages, and the index of the active one (-1 = off)."""
-        tracks = self._tags_list("text")
+        tracks, text_cur = self._text_labels()
         pages = self.teletext_pages()
         if self.ttx_page:
             idx = next((i for i, p in enumerate(pages) if p.page == self.ttx_page), -1)
             cur = len(tracks) + idx if idx >= 0 else -1
         else:
-            on = bool(self.playbin and self.playbin.get_property("flags") & PLAY_FLAGS_TEXT)
-            cur = self.playbin.get_property("current-text") if self.playbin and on else -1
+            cur = text_cur
         return tracks + [p.label for p in pages], cur
 
     def select_audio(self, i):
-        if self.playbin:
+        if not self.playbin:
+            return
+        if self._pb3:
+            streams = self._streams(Gst.StreamType.AUDIO)
+            if 0 <= i < len(streams):
+                self._select_streams(Gst.StreamType.AUDIO, streams[i])
+        else:
             self.playbin.set_property("current-audio", i)
+            self._tracks_changed()
 
     def select_subtitle(self, i):
         if not self.playbin:
             return
         flags = self.playbin.get_property("flags")
-        n = self.playbin.get_property("n-text")
+        n = len(self._text_labels()[0])
         pages = self.teletext_pages()
         if 0 <= i - n < len(pages):
             self.ttx_page = pages[i - n].page
@@ -516,9 +696,16 @@ class Player(GObject.Object):
         self.emit("subtitle-text", "")
         if i < 0:
             self.playbin.set_property("flags", flags & ~PLAY_FLAGS_TEXT)
+            if self._pb3:
+                self._select_streams(Gst.StreamType.TEXT, None)
         else:
             self.playbin.set_property("flags", flags | PLAY_FLAGS_TEXT)
-            self.playbin.set_property("current-text", i)
+            if self._pb3:
+                streams = self._streams(Gst.StreamType.TEXT)
+                if i < len(streams):
+                    self._select_streams(Gst.StreamType.TEXT, streams[i])
+            else:
+                self.playbin.set_property("current-text", i)
 
     def disable_video(self, off):
         if self.playbin:
@@ -544,8 +731,11 @@ class Player(GObject.Object):
     def video_size(self):
         if not self.playbin:
             return None
-        pad = self.playbin.emit("get-video-pad", 0)
-        caps = pad.get_current_caps() if pad else None
+        sample = self.playbin.get_property("sample")
+        caps = sample.get_caps() if sample else None
+        if caps is None and not self._pb3:
+            pad = self.playbin.emit("get-video-pad", 0)
+            caps = pad.get_current_caps() if pad else None
         if caps:
             s = caps.get_structure(0)
             return s.get_int("width")[1], s.get_int("height")[1]
@@ -557,6 +747,11 @@ class Player(GObject.Object):
         t = msg.type
         if t == Gst.MessageType.ERROR:
             err, _dbg = msg.parse_error()
+            if self._pb3 and self.uri and not self.capture and not self._fallback_done:
+                # e.g. hlsdemux2 refusing a stream: try the classic pipeline once
+                self._fallback_done = True
+                GLib.idle_add(self._fallback_to_playbin, self._token)
+                return
             self.emit("error", err.message)
         elif t == Gst.MessageType.EOS:
             self.emit("eos")
@@ -565,7 +760,17 @@ class Player(GObject.Object):
             if new == Gst.State.PLAYING:
                 self.emit("state", "playing")
                 self.emit("tracks")
-        elif t in (Gst.MessageType.STREAM_COLLECTION, Gst.MessageType.STREAMS_SELECTED):
+        elif t == Gst.MessageType.STREAMS_SELECTED:
+            if self._pb3:
+                self._collection = msg.parse_streams_selected()
+                self._selected = {msg.streams_selected_get_stream(i).get_stream_id()
+                                  for i in range(msg.streams_selected_get_size())}
+            self.emit("tracks")
+        elif t == Gst.MessageType.STREAM_COLLECTION:
+            if self._pb3:
+                f = msg.src.get_factory() if isinstance(msg.src, Gst.Element) else None
+                if msg.src is self.playbin or (f and f.get_name() in ("decodebin3", "uridecodebin3")):
+                    self._collection = msg.parse_stream_collection()
             self.emit("tracks")
         elif t == Gst.MessageType.ELEMENT:
             self._on_section(msg)

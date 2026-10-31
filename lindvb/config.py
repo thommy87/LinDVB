@@ -48,6 +48,12 @@ DEFAULTS = {
     ],
     "osd_seconds": 4,
     "deinterlace": True,
+    # Internet streams: "auto" plays HLS with separate audio renditions on
+    # playbin3 (keeps sound and picture in sync), everything else on playbin;
+    # "playbin" or "playbin3" forces one of them.
+    "stream_engine": "auto",
+    # Per-channel audio delay in ms (+ = sound later), set with J/K.
+    "audio_delays": {},
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the
     # LINDVB_PLUGIN_PATH entries) at startup.

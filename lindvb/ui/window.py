@@ -8,6 +8,8 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
+from ..epg import details_line, programme_details
+from ..media_info import audio_summary
 from ..player import EQ_BANDS, Player
 from .common import Row, hm, message
 from .theme import CSS
@@ -17,6 +19,7 @@ FILTERS = ["All channels", "TV", "Radio", "Favourites", "Free to air", "Encrypte
 ZOOM = [("Fit", Gtk.ContentFit.CONTAIN), ("Fill (crop)", Gtk.ContentFit.COVER),
         ("Stretch", Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
+AUDIO_DELAY_STEP = 100      # ms per key press / menu click
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
@@ -35,6 +38,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._seek_source = None     # debounced seek while dragging the seek bar
         self._seek_target = None
         self._fs_layout = False      # full screen layout applied (controls float)
+        self.stopped = None          # channel switched off with Stop (Play resumes it)
 
         # The player is always dark, whatever the desktop theme.
         Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
@@ -92,6 +96,9 @@ class MainWindow(Gtk.ApplicationWindow):
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
             "prev-item": lambda: self.step_item(-1), "next-item": lambda: self.step_item(1),
+            "audio-later": lambda: self.shift_audio(AUDIO_DELAY_STEP),
+            "audio-earlier": lambda: self.shift_audio(-AUDIO_DELAY_STEP),
+            "audio-delay-reset": lambda: self.shift_audio(None),
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -200,6 +207,11 @@ class MainWindow(Gtk.ApplicationWindow):
         sleep.append("Stop after current programme", "win.sleep-programme")
         sleep.append("Cancel", "win.sleep-off")
         play.append_submenu("Sleep Timer", sleep)
+        delay = Gio.Menu()
+        delay.append(f"Sound Later (+{AUDIO_DELAY_STEP} ms, K)", "win.audio-later")
+        delay.append(f"Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)", "win.audio-earlier")
+        delay.append("Reset", "win.audio-delay-reset")
+        play.append_submenu("Audio Delay (this channel)", delay)
         m.append_section(None, play)
 
         view = Gio.Menu()
@@ -315,9 +327,16 @@ class MainWindow(Gtk.ApplicationWindow):
         for w in (self.osd_num, self.osd_title, self.osd_clock):
             top.append(w)
         self.osd_now = Gtk.Label(xalign=0, css_classes=["lv-osd-now"], ellipsize=Pango.EllipsizeMode.END)
+        # genre, country, year of the programme on air, and what audio is on offer
+        self.osd_meta_row = meta = Gtk.Box(spacing=6)
+        self.osd_meta = Gtk.Label(xalign=0, hexpand=True, css_classes=["lv-osd-meta"],
+                                  ellipsize=Pango.EllipsizeMode.END)
+        self.osd_tags = Gtk.Box(spacing=4, valign=Gtk.Align.CENTER)
+        meta.append(self.osd_meta)
+        meta.append(self.osd_tags)
         self.osd_prog = Gtk.ProgressBar()
         self.osd_next = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-osd-next"])
-        for w in (top, self.osd_now, self.osd_prog, self.osd_next):
+        for w in (top, self.osd_now, meta, self.osd_prog, self.osd_next):
             self.osd.append(w)
         self.osd.set_visible(False)
         overlay.add_overlay(self.osd)
@@ -391,13 +410,14 @@ class MainWindow(Gtk.ApplicationWindow):
         self.prev_btn = btn("media-skip-backward-symbolic", "win.prev-item", "Previous channel (Page Down)")
         self.pause_btn = btn("media-playback-pause-symbolic", "win.pause",
                              "Pause / timeshift (Space)", "lv-play")
+        self.stop_btn = btn("media-playback-stop-symbolic", "win.stop", "Stop (switch the channel off)")
         self.next_btn = btn("media-skip-forward-symbolic", "win.next-item", "Next channel (Page Up)")
         self.rec_btn = Gtk.ToggleButton(icon_name="media-record-symbolic", valign=Gtk.Align.CENTER,
                                         tooltip_text="Record current channel (Ctrl+R)",
                                         css_classes=["lv-rec"])
         self.rec_btn.connect("clicked", lambda b: self.on_record() if b.get_active() !=
                              self._is_recording() else None)
-        for w in (self.prev_btn, self.pause_btn, self.next_btn, self.rec_btn):
+        for w in (self.prev_btn, self.pause_btn, self.stop_btn, self.next_btn, self.rec_btn):
             bar.append(w)
 
         # seek bar: file position, or the timeshift buffer for live TV
@@ -553,8 +573,11 @@ class MainWindow(Gtk.ApplicationWindow):
             self.previous = self.current
         self._release_capture()
         self.current = c
+        self.stopped = None
         self.playlist = []
         self.set_title(f"{c.name} – {APP_NAME}")
+        self.picture.set_opacity(1)
+        self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
         try:
             if c.is_iptv:
                 self.player.play_uri(c.url)
@@ -627,8 +650,9 @@ class MainWindow(Gtk.ApplicationWindow):
             items = [c for c in self.app.db.channels if c.favourite]
         if not items:
             return
+        here = self.current or self.stopped
         try:
-            i = next(i for i, c in enumerate(items) if self.current and c.key == self.current.key)
+            i = next(i for i, c in enumerate(items) if here and c.key == here.key)
         except StopIteration:
             i = -1 if step > 0 else 0
         c = items[(i + step) % len(items)]
@@ -645,9 +669,36 @@ class MainWindow(Gtk.ApplicationWindow):
                 return
 
     def stop_playback(self):
+        """Switch the channel (or file) off completely; Play brings it back."""
+        if self.current:
+            self.stopped = self.current
         self._release_capture()
         self.current = None
         self.set_title(APP_NAME)
+        self.picture.set_opacity(0)          # no frozen last frame
+        self._hide_osd()
+        self.sublabel.set_visible(False)
+        self.signal_label.set_text("")
+        self.set_status("Stopped")
+        self._update_transport()
+
+    def shift_audio(self, step):
+        """Move the sound against the picture; remembered per channel."""
+        ms = 0 if step is None else self.player.audio_delay_ms + step
+        ms = max(-10000, min(10000, ms))
+        self.player.set_audio_delay(ms)
+        if self.current:
+            delays = self.settings.setdefault("audio_delays", {})
+            if ms:
+                delays[self.current.key] = ms
+            else:
+                delays.pop(self.current.key, None)
+        if ms > 0:
+            self.flash(f"Sound {ms} ms later")
+        elif ms < 0:
+            self.flash(f"Sound {-ms} ms earlier")
+        else:
+            self.flash("Audio delay off")
 
     def rebuild_playback(self):
         if self.current:
@@ -656,6 +707,9 @@ class MainWindow(Gtk.ApplicationWindow):
     # ------------------------------------------------------------------ files / urls / playlist
     def play_files(self, paths):
         self.stop_playback()
+        self.stopped = None
+        self.picture.set_opacity(1)
+        self.player.audio_delay_ms = 0
         self.playlist, self.playlist_pos = list(paths), -1
         self.playlist_step(1)
 
@@ -702,6 +756,9 @@ class MainWindow(Gtk.ApplicationWindow):
             url = entry.get_text().strip()
             if url:
                 self.stop_playback()
+                self.stopped = None
+                self.picture.set_opacity(1)
+                self.player.audio_delay_ms = 0
                 self.playlist = [url]
                 self.playlist_pos = 0
                 self.player.play_uri(url)
@@ -796,6 +853,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # ------------------------------------------------------------------ audio / video
     def player_pause(self):
+        if not self.player.playbin and self.stopped:
+            self.zap(self.stopped)          # Play after Stop: switch the channel back on
+            return
         self.player.toggle_pause()
 
     def _set_volume(self, v):
@@ -834,6 +894,30 @@ class MainWindow(Gtk.ApplicationWindow):
         subs, cur = self.player.subtitle_tracks()
         for i, t in enumerate(subs):
             self.sub_menu.append(("● " if i == cur else "") + t, f"win.subtitle({i})")
+        self._update_osd_tags()
+
+    def _update_osd_tags(self):
+        """Info bar tags: sound formats (current first), languages, subtitles."""
+        for w in list(_children(self.osd_tags)):
+            self.osd_tags.remove(w)
+        if not self.current or not self.player.playbin:
+            self.osd_meta_row.set_visible(bool(self.osd_meta.get_text()))
+            return
+        tracks, cur = self.player.audio_track_info()
+        layouts, languages = audio_summary(tracks, cur)
+        tags = [(lay, i == 0, None) for i, lay in enumerate(layouts)]
+        if len(languages) > 1:
+            tags.append((f"{len(languages)} languages", False, " / ".join(languages)))
+        elif len(tracks) > 1:
+            tags.append((f"{len(tracks)} audio tracks", False, None))
+        if self.player.subtitle_tracks()[0]:
+            tags.append(("Subtitles", False, None))
+        for text, current, tip in tags:
+            lbl = Gtk.Label(label=text, css_classes=["lv-osd-tag"], tooltip_text=tip)
+            if current:
+                lbl.add_css_class("lv-current")
+            self.osd_tags.append(lbl)
+        self.osd_meta_row.set_visible(bool(tags) or bool(self.osd_meta.get_text()))
 
     def on_screenshot(self):
         d = Path(self.settings["screenshot_dir"]).expanduser()
@@ -992,8 +1076,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.osd_title.set_text(c.name)
         self.osd_clock.set_text(hm(now.start) + "–" + hm(now.end) if now else hm(time.time()))
         self._update_heading()
+        meta = details_line(now) if now else ""
+        self.osd_meta.set_text(meta)
+        self.osd_meta.set_visible(bool(meta))
+        self._update_osd_tags()
         if now:
-            self.osd_now.set_text(now.title + (f" – {now.subtitle}" if now.subtitle else ""))
+            sub = now.subtitle if now.subtitle and not programme_details(now)[3] else ""
+            self.osd_now.set_text(now.title + (f" – {sub}" if sub else ""))
             self.osd_prog.set_fraction(min(1, max(0, (time.time() - now.start) / max(1, now.duration))))
             self.osd_prog.set_visible(True)
         else:
@@ -1036,7 +1125,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self.show_osd()
 
     def _update_transport(self):
-        self.pause_btn.set_icon_name("media-playback-start-symbolic" if self.player.paused
+        idle = self.player.paused or not self.player.playbin
+        self.pause_btn.set_icon_name("media-playback-start-symbolic" if idle
                                      else "media-playback-pause-symbolic")
         rec = self._is_recording()
         if self.rec_btn.get_active() != rec:
@@ -1138,7 +1228,8 @@ class MainWindow(Gtk.ApplicationWindow):
                 "Left": "back10", "Right": "fwd10", "Up": "ch-prev", "Down": "ch-next",
                 "plus": "vol-up", "KP_Add": "vol-up", "minus": "vol-down",
                 "KP_Subtract": "vol-down", "BackSpace": "last-channel", "s": "screenshot",
-                "i": "osd", "n": "playlist-next", "p": "playlist-prev"}
+                "i": "osd", "n": "playlist-next", "p": "playlist-prev",
+                "j": "audio-earlier", "k": "audio-later"}
         if name == "Escape" and self._fs_layout:
             self.toggle_fullscreen()
             return True
