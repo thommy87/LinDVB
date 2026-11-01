@@ -160,9 +160,12 @@ class LinDVBApp(Gtk.Application):
         from .ui.epg import EPGWindow
         EPGWindow(self, self.window, channel).present()
 
-    def show_timers(self):
+    def show_timers(self, timer=None):
         from .ui.timers import TimersWindow
-        TimersWindow(self, self.window).present()
+        win = TimersWindow(self, self.window)
+        if timer is not None:
+            win.select(timer)
+        win.present()
 
     def show_scan(self):
         from .ui.scan import ScanWindow

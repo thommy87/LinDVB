@@ -136,10 +136,13 @@ class PrefsWindow(Gtk.Window):
         g = group(pg)
         entry(g, "recording_dir", "Recording folder")
         entry(g, "name_scheme", "File naming scheme",
-              "Placeholders: %year %date %time %station %event")
+              "Placeholders: %year %date %time %end %station %name, / for sub-folders")
         g = group(pg, "Timer padding")
         spin(g, "lead_minutes", "Start earlier by (min)", 0, 60)
         spin(g, "follow_minutes", "Stop later by (min)", 0, 180)
+        g = group(pg, "Timers")
+        switch(g, "timer_edit_after_create", "Open the timer window after creating a timer",
+               "After Record in the programme guide, edit the new timer straight away.")
 
         # -- EPG
         pg = page("epg", "Programme guide")
