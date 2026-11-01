@@ -3,60 +3,154 @@
 import time
 from pathlib import Path
 
-from gi.repository import GLib, Gst, Gtk
+from gi.repository import Gdk, GLib, Gst, Gtk
 
 from ..channels import Channel
 from ..tuner import SegmentReader
-from .common import dropdown, fill, labeled, make_column_view, scrolled, selected
+from .common import dropdown, fill, make_column_view, scrolled, selected
+from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
 
 DELSYS = ["dvb-s", "dvb-s2", "dvb-c-a", "dvb-c-b", "dvb-t", "dvb-t2", "atsc", "isdb-t", "dtmb", "iptv"]
 MODS = ["auto", "qpsk", "8psk", "16apsk", "32apsk", "qam-16", "qam-32", "qam-64", "qam-128",
         "qam-256", "8vsb"]
 
 
+ACCENT_LABELS = ["LinDVB blue (default)", "System accent colour", "Custom colour"]
+
+
+def _row(group, label, widget, hint=None):
+    """One labelled setting inside a preferences group."""
+    row = Gtk.Box(spacing=16, css_classes=["lv-row"])
+    text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, hexpand=True,
+                   valign=Gtk.Align.CENTER)
+    text.append(Gtk.Label(label=label, xalign=0, wrap=True))
+    if hint:
+        text.append(Gtk.Label(label=hint, xalign=0, wrap=True, css_classes=["lv-hint"]))
+    row.append(text)
+    widget.set_valign(Gtk.Align.CENTER)
+    if isinstance(widget, Gtk.Entry):
+        widget.set_size_request(280, -1)
+    elif isinstance(widget, (Gtk.SpinButton, Gtk.DropDown)):
+        widget.set_size_request(200, -1)
+    row.append(widget)
+    group.append(row)
+    return widget
+
+
 class PrefsWindow(Gtk.Window):
+    """Preferences, split into pages with a sidebar."""
+
     def __init__(self, app, parent):
-        super().__init__(title="Preferences", transient_for=parent, default_width=560)
+        super().__init__(title="Preferences", transient_for=parent,
+                         default_width=820, default_height=600)
         self.app = app
+        self._saved = False
         s = app.settings
-        g = Gtk.Grid(row_spacing=6, column_spacing=10, margin_start=12, margin_end=12,
-                     margin_top=12, margin_bottom=12)
         self.w = {}
 
-        def entry(key, row, label):
-            e = labeled(g, row, label, Gtk.Entry(text=str(s[key])))
-            self.w[key] = (e, str)
+        hb = Gtk.HeaderBar()
+        cancel = Gtk.Button(label="Cancel")
+        cancel.connect("clicked", lambda *_: self.close())
+        hb.pack_start(cancel)
+        save = Gtk.Button(label="Save", css_classes=["suggested-action"])
+        save.connect("clicked", lambda *_: self.on_save())
+        hb.pack_end(save)
+        self.set_titlebar(hb)
 
-        def spin(key, row, label, lo, hi):
-            sp = labeled(g, row, label, Gtk.SpinButton.new_with_range(lo, hi, 1))
+        self.stack = Gtk.Stack(transition_type=Gtk.StackTransitionType.CROSSFADE)
+        nav = Gtk.StackSidebar(stack=self.stack, css_classes=["lv-nav"], width_request=200)
+        body = Gtk.Box()
+        body.append(nav)
+        body.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
+        body.append(scrolled(self.stack))
+        self.set_child(body)
+
+        def page(name, title, intro=None):
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14, margin_start=24,
+                          margin_end=24, margin_top=20, margin_bottom=24)
+            box.append(Gtk.Label(label=title, xalign=0, css_classes=["lv-page-title"]))
+            if intro:
+                box.append(Gtk.Label(label=intro, xalign=0, wrap=True, css_classes=["lv-hint"]))
+            self.stack.add_titled(box, name, title)
+            return box
+
+        def group(pg, heading=None):
+            if heading:
+                pg.append(Gtk.Label(label=heading, xalign=0, css_classes=["lv-section-title"],
+                                    margin_top=4))
+            g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+            pg.append(g)
+            return g
+
+        def entry(g, key, label, hint=None):
+            self.w[key] = (_row(g, label, Gtk.Entry(text=str(s[key])), hint), str)
+
+        def spin(g, key, label, lo, hi, hint=None):
+            sp = _row(g, label, Gtk.SpinButton.new_with_range(lo, hi, 1), hint)
             sp.set_value(s[key])
             self.w[key] = (sp, int)
 
-        def switch(key, row, label):
-            sw = labeled(g, row, label, Gtk.Switch(active=bool(s[key]), halign=Gtk.Align.START))
-            self.w[key] = (sw, bool)
+        def switch(g, key, label, hint=None):
+            self.w[key] = (_row(g, label, Gtk.Switch(active=bool(s[key])), hint), bool)
 
-        entry("adapters", 0, "DVB adapters (comma separated)")
-        spin("frontend", 1, "Frontend", 0, 7)
-        spin("lnb_lof1", 2, "LNB LOF low (kHz)", 0, 20000000)
-        spin("lnb_lof2", 3, "LNB LOF high (kHz)", 0, 20000000)
-        spin("lnb_slof", 4, "LNB switch frequency (kHz)", 0, 20000000)
-        switch("full_transponder", 5, "Capture whole transponder")
-        entry("recording_dir", 6, "Recording folder")
-        entry("name_scheme", 7, "File naming scheme")
-        g.attach(Gtk.Label(label="Placeholders: %year %date %time %station %event",
-                           css_classes=["dim-label"], xalign=0), 1, 8, 1, 1)
-        spin("lead_minutes", 9, "Lead time (min)", 0, 60)
-        spin("follow_minutes", 10, "Follow-up time (min)", 0, 180)
-        entry("timeshift_dir", 11, "Timeshift folder")
-        spin("timeshift_max_mb", 12, "Timeshift buffer (MB)", 128, 200000)
-        entry("screenshot_dir", 13, "Screenshot folder")
-        entry("xmltv_url", 14, "XMLTV URL (internet EPG)")
-        switch("deinterlace", 15, "Deinterlace video")
-        spin("osd_seconds", 16, "OSD display time (s)", 1, 30)
+        # -- Appearance
+        pg = page("appearance", "Appearance")
+        g = group(pg, "Accent colour")
+        mode = s.get("accent_mode", "default")
+        self._accent_drop = _row(g, "Accent colour", dropdown(
+            ACCENT_LABELS, ACCENT_MODES.index(mode) if mode in ACCENT_MODES else 0),
+            "Used for highlights, selections and buttons in every window.")
+        self._accent_btn = self._color_button(s.get("accent_custom") or ACCENT)
+        self._custom_row = _row(g, "Custom colour", self._accent_btn)
+        self._accent_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"],
+                                      margin_top=4, margin_bottom=6)
+        g.append(self._accent_hint)
+        self._accent_drop.connect("notify::selected", lambda *_: self._preview_accent())
+        g = group(pg, "On-screen display")
+        spin(g, "osd_seconds", "OSD display time (s)", 1, 30)
 
-        g.attach(Gtk.Label(label="Conditional access (your own encrypted channels)",
-                           css_classes=["heading"], xalign=0), 0, 17, 2, 1)
+        # -- Playback
+        pg = page("playback", "Playback")
+        g = group(pg)
+        switch(g, "deinterlace", "Deinterlace video")
+        entry(g, "screenshot_dir", "Screenshot folder")
+        g = group(pg, "Timeshift")
+        entry(g, "timeshift_dir", "Timeshift folder")
+        spin(g, "timeshift_max_mb", "Timeshift buffer (MB)", 128, 200000)
+
+        # -- Tuner
+        pg = page("tuner", "Tuner and LNB")
+        g = group(pg, "DVB hardware")
+        entry(g, "adapters", "DVB adapters", "Adapter numbers LinDVB may use, comma separated.")
+        self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
+        spin(g, "frontend", "Frontend", 0, 7)
+        switch(g, "full_transponder", "Capture whole transponder",
+               "Needed for all audio tracks when the channel list knows only one audio PID.")
+        g = group(pg, "Satellite LNB")
+        spin(g, "lnb_lof1", "LOF low band (kHz)", 0, 20000000)
+        spin(g, "lnb_lof2", "LOF high band (kHz)", 0, 20000000)
+        spin(g, "lnb_slof", "Switch frequency (kHz)", 0, 20000000)
+
+        # -- Recording
+        pg = page("recording", "Recording")
+        g = group(pg)
+        entry(g, "recording_dir", "Recording folder")
+        entry(g, "name_scheme", "File naming scheme",
+              "Placeholders: %year %date %time %station %event")
+        g = group(pg, "Timer padding")
+        spin(g, "lead_minutes", "Start earlier by (min)", 0, 60)
+        spin(g, "follow_minutes", "Stop later by (min)", 0, 180)
+
+        # -- EPG
+        pg = page("epg", "Programme guide")
+        g = group(pg)
+        entry(g, "xmltv_url", "XMLTV URL", "Internet EPG source, used in addition to the broadcast EPG.")
+
+        # -- Conditional access
+        pg = page("ca", "Conditional access",
+                  "Descrambling of the encrypted channels you subscribe to, with your own "
+                  "card in a softcam or CI module.")
+        g = group(pg)
         self._ca_names = ["none", "dvbapi", "ci"] + \
             [n for n in app.plugins.ca_providers if n not in ("dvbapi", "ci")]
         ca_labels = {"none": "None (leave scrambled)",
@@ -64,23 +158,63 @@ class PrefsWindow(Gtk.Window):
                      "ci": "Hardware CI / CI+ module"}
         cur = s.get("ca_provider", "none")
         idx = self._ca_names.index(cur) if cur in self._ca_names else 0
-        self._ca_drop = labeled(g, 18, "Descrambling via",
-                                dropdown([ca_labels.get(n, n) for n in self._ca_names], idx))
-        entry("ca_dvbapi_socket", 19, "Softcam DVBAPI socket (path or host:port)")
-        spin("ca_ci_adapter", 20, "CI adapter number", 0, 15)
-        spin("ca_ci_device", 21, "CI CA device number", 0, 7)
-        switch("plugins_enabled", 22, "Load plugins at startup")
+        self._ca_drop = _row(g, "Descrambling via",
+                             dropdown([ca_labels.get(n, n) for n in self._ca_names], idx))
+        g = group(pg, "Softcam")
+        entry(g, "ca_dvbapi_socket", "DVBAPI socket", "Unix socket path, or host:port.")
+        g = group(pg, "CI module")
+        spin(g, "ca_ci_adapter", "CI adapter number", 0, 15)
+        spin(g, "ca_ci_device", "CA device number", 0, 7)
 
-        self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
-        save = Gtk.Button(label="Save", css_classes=["suggested-action"], halign=Gtk.Align.END)
-        save.connect("clicked", lambda *_: self.on_save())
-        g.attach(save, 1, 23, 1, 1)
-        self.set_child(scrolled(g))
-        self.set_default_size(560, 640)
+        # -- Plugins
+        pg = page("plugins", "Plugins")
+        g = group(pg)
+        switch(g, "plugins_enabled", "Load plugins at startup")
+        manage = Gtk.Button(label="Manage Plugins…", halign=Gtk.Align.START)
+        manage.connect("clicked", lambda *_: app.show_plugins())
+        pg.append(manage)
+
+        self._preview_accent()
+        self.connect("close-request", self._on_close)
+
+    # accent preview ---------------------------------------------------------
+    def _color_button(self, color):
+        rgba = Gdk.RGBA()
+        rgba.parse(color)
+        if hasattr(Gtk, "ColorDialogButton"):
+            btn = Gtk.ColorDialogButton(dialog=Gtk.ColorDialog(with_alpha=False,
+                                                               title="Accent colour"))
+            btn.set_rgba(rgba)
+        else:  # GTK < 4.10
+            btn = Gtk.ColorButton(rgba=rgba, use_alpha=False)
+        btn.connect("notify::rgba", lambda *_: self._preview_accent())
+        return btn
+
+    def _accent_settings(self):
+        rgba = self._accent_btn.get_rgba()
+        return {"accent_mode": ACCENT_MODES[self._accent_drop.get_selected()],
+                "accent_custom": to_hex((rgba.red * 255, rgba.green * 255, rgba.blue * 255))}
+
+    def _preview_accent(self):
+        a = self._accent_settings()
+        self._custom_row.get_parent().set_visible(a["accent_mode"] == "custom")
+        color = apply_accent(a)
+        if a["accent_mode"] == "system":
+            found = system_accent()
+            self._accent_hint.set_text(f"Desktop accent: {found}" if found else
+                                       "No desktop accent found, using LinDVB blue.")
+        else:
+            self._accent_hint.set_text(f"Current accent: {color}")
+
+    def _on_close(self, *_):
+        if not self._saved:
+            apply_accent(self.app.settings)    # drop the unsaved preview
+        return False
 
     def on_save(self):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
+        s.update(self._accent_settings())
         for k, (w, typ) in self.w.items():
             if typ is bool:
                 s[k] = w.get_active()
@@ -91,67 +225,137 @@ class PrefsWindow(Gtk.Window):
             else:
                 s[k] = w.get_text()
         s.save()
+        self._saved = True
+        apply_accent(s)
         self.close()
 
 
 class EditorWindow(Gtk.Window):
     """Channel editor: rename, reorder, favourites, tuning data, delete."""
 
+    SECTIONS = ("general", "tuning", "pids")
+
     def __init__(self, app, parent, channel=None):
         super().__init__(title="Channel Editor", transient_for=parent,
-                         default_width=980, default_height=620)
+                         default_width=1040, default_height=640)
         self.app = app
+        self.current = None
         cols = [("#", lambda c: str(c.number), False), ("Name", lambda c: c.name, True),
                 ("Group", lambda c: c.root, False), ("Category", lambda c: c.category, False),
                 ("Fav", lambda c: "★" if c.favourite else "", False),
                 ("Type", lambda c: c.delsys, False)]
         self.view, self.store, self.sel = make_column_view(cols)
         self.sel.connect("notify::selected-item", lambda *_: self._load(selected(self.sel)))
-        self.filter = Gtk.SearchEntry(placeholder_text="Filter")
+        self.filter = Gtk.SearchEntry(placeholder_text="Filter channels")
         self.filter.connect("search-changed", lambda *_: self.refresh())
 
-        g = Gtk.Grid(row_spacing=4, column_spacing=8, margin_start=10, margin_end=10, margin_top=10)
+        # -- details, grouped in collapsible sections
         self.f = {}
-        texts = [("name", "Name"), ("root", "Group"), ("category", "Category"), ("url", "URL")]
-        nums = [("frequency", "Frequency (kHz)"), ("symbol_rate", "Symbol rate (kBd)"),
-                ("bandwidth_hz", "Bandwidth (Hz)"), ("stream_id", "Stream ID"),
-                ("diseqc", "DiSEqC port (-1 none)"), ("sid", "Service ID"), ("tsid", "Transport ID"),
-                ("pmt_pid", "PMT PID"), ("video_pid", "Video PID"), ("pcr_pid", "PCR PID"),
-                ("teletext_pid", "Teletext PID")]
-        r = 0
-        for k, lbl in texts:
-            self.f[k] = labeled(g, r, lbl, Gtk.Entry())
-            r += 1
-        self.delsys = labeled(g, r, "System", dropdown(DELSYS)); r += 1
-        self.pol = labeled(g, r, "Polarity", dropdown(["", "h", "v", "l", "r"])); r += 1
-        self.mod = labeled(g, r, "Modulation", dropdown(MODS)); r += 1
-        for k, lbl in nums:
-            self.f[k] = labeled(g, r, lbl, Gtk.Entry())
-            r += 1
-        self.f["audio_pids"] = labeled(g, r, "Audio PIDs", Gtk.Entry()); r += 1
-        self.fav = labeled(g, r, "Favourite", Gtk.Switch(halign=Gtk.Align.START)); r += 1
-        self.enc = labeled(g, r, "Encrypted", Gtk.Switch(halign=Gtk.Align.START)); r += 1
-        self.radio = labeled(g, r, "Radio", Gtk.Switch(halign=Gtk.Align.START)); r += 1
-        bar = Gtk.Box(spacing=4)
-        for label, fn in (("Apply", self.on_apply), ("New", self.on_new), ("Delete", self.on_delete),
-                          ("Up", lambda: self.on_move(-1)), ("Down", lambda: self.on_move(1)),
-                          ("Sort A–Z", self.on_sort)):
-            b = Gtk.Button(label=label)
-            b.connect("clicked", lambda _b, fn=fn: fn())
-            bar.append(b)
-        g.attach(bar, 0, r, 2, 1)
+        details = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, margin_start=20,
+                          margin_end=16, margin_top=16, margin_bottom=16)
+        self.title = Gtk.Label(xalign=0, ellipsize=3, css_classes=["lv-page-title"])
+        self.subtitle = Gtk.Label(xalign=0, css_classes=["lv-hint"], margin_bottom=10)
+        details.append(self.title)
+        details.append(self.subtitle)
+        open_ = set(app.settings.get("editor_sections_open", ["general"]))
 
-        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        def section(key, title):
+            grid = Gtk.Grid(row_spacing=8, column_spacing=14, css_classes=["lv-section-body"])
+            exp = Gtk.Expander(child=grid, expanded=key in open_, css_classes=["lv-section"])
+            exp.set_label_widget(Gtk.Label(label=title, css_classes=["lv-section-title"]))
+            exp.connect("notify::expanded", lambda *_: self._remember_sections())
+            self._exp[key] = exp
+            details.append(exp)
+            return grid
+
+        def field(grid, row, label, widget):
+            grid.attach(Gtk.Label(label=label, xalign=0, css_classes=["lv-field-label"]),
+                        0, row, 1, 1)
+            widget.set_hexpand(True)
+            if isinstance(widget, Gtk.Switch):
+                widget.set_halign(Gtk.Align.START)
+            grid.attach(widget, 1, row, 1, 1)
+            return widget
+
+        self._exp = {}
+        g = section("general", "General")
+        for r, (k, lbl) in enumerate([("name", "Name"), ("root", "Group"),
+                                      ("category", "Category"), ("url", "Stream URL")]):
+            self.f[k] = field(g, r, lbl, Gtk.Entry())
+        self.fav = field(g, 4, "Favourite", Gtk.Switch())
+        self.radio = field(g, 5, "Radio", Gtk.Switch())
+        self.enc = field(g, 6, "Encrypted", Gtk.Switch())
+
+        g = section("tuning", "Tuning")
+        self.delsys = field(g, 0, "System", dropdown(DELSYS))
+        self.pol = field(g, 1, "Polarity", dropdown(["", "h", "v", "l", "r"]))
+        self.mod = field(g, 2, "Modulation", dropdown(MODS))
+        for r, (k, lbl) in enumerate([("frequency", "Frequency (kHz)"),
+                                      ("symbol_rate", "Symbol rate (kBd)"),
+                                      ("bandwidth_hz", "Bandwidth (Hz)"),
+                                      ("stream_id", "Stream ID"),
+                                      ("diseqc", "DiSEqC port (-1 none)")], start=3):
+            self.f[k] = field(g, r, lbl, Gtk.Entry())
+
+        g = section("pids", "Service and PIDs")
+        for r, (k, lbl) in enumerate([("sid", "Service ID"), ("tsid", "Transport ID"),
+                                      ("pmt_pid", "PMT PID"), ("video_pid", "Video PID"),
+                                      ("audio_pids", "Audio PIDs"), ("pcr_pid", "PCR PID"),
+                                      ("teletext_pid", "Teletext PID")]):
+            self.f[k] = field(g, r, lbl, Gtk.Entry())
+
+        # -- slim vertical strip of actions beside the details
+        strip = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
+                        css_classes=["lv-toolstrip"])
+        for item in (("object-select-symbolic", "Apply changes (Ctrl+S)", self.on_apply,
+                      "lv-primary"),
+                     None,
+                     ("list-add-symbolic", "New channel", self.on_new, None),
+                     ("user-trash-symbolic", "Delete channel", self.on_delete, "lv-danger"),
+                     None,
+                     ("go-up-symbolic", "Move up", lambda: self.on_move(-1), None),
+                     ("go-down-symbolic", "Move down", lambda: self.on_move(1), None),
+                     ("view-sort-ascending-symbolic", "Sort by group and name", self.on_sort,
+                      None)):
+            if item is None:
+                strip.append(Gtk.Separator())
+                continue
+            icon, tip, fn, cls = item
+            b = Gtk.Button(icon_name=icon, tooltip_text=tip)
+            b.update_property([Gtk.AccessibleProperty.LABEL], [tip])
+            if cls:
+                b.add_css_class(cls)
+            b.connect("clicked", lambda _b, fn=fn: fn())
+            strip.append(b)
+
+        right = Gtk.Box(css_classes=["lv-dialog-pane"])
+        right.append(scrolled(details))
+        right.append(strip)
+
+        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=10,
+                       margin_end=12, margin_top=10, margin_bottom=10)
         left.append(self.filter)
-        left.append(scrolled(self.view))
-        paned = Gtk.Paned(position=560)
+        frame = Gtk.Frame(child=scrolled(self.view))
+        left.append(frame)
+        paned = Gtk.Paned(position=540, wide_handle=True, shrink_start_child=False,
+                          shrink_end_child=False)
         paned.set_start_child(left)
-        paned.set_end_child(scrolled(g))
+        paned.set_end_child(right)
         self.set_child(paned)
+
+        keys = Gtk.ShortcutController()
+        keys.add_shortcut(Gtk.Shortcut(trigger=Gtk.ShortcutTrigger.parse_string("<Control>s"),
+                                       action=Gtk.CallbackAction.new(
+                                           lambda *_: (self.on_apply(), True)[1])))
+        self.add_controller(keys)
+
         self.refresh()
-        if channel:
-            self._load(channel)
-            self.current = channel
+        self._load(channel)
+
+    def _remember_sections(self):
+        self.app.settings["editor_sections_open"] = [
+            k for k in self.SECTIONS if self._exp[k].get_expanded()]
+        self.app.settings.save()
 
     def refresh(self):
         q = self.filter.get_text().lower()
@@ -160,7 +364,12 @@ class EditorWindow(Gtk.Window):
     def _load(self, c):
         self.current = c
         if not c:
+            self.title.set_text("No channel selected")
+            self.subtitle.set_text("Pick a channel in the list to edit it.")
             return
+        self.title.set_text(c.name or "Unnamed channel")
+        kind = "Radio" if c.radio else "TV"
+        self.subtitle.set_text(f"#{c.number} · {kind} · {c.delsys}")
         for k, w in self.f.items():
             v = getattr(c, k)
             w.set_text(" ".join(map(str, v)) if isinstance(v, list) else str(v))
@@ -200,6 +409,7 @@ class EditorWindow(Gtk.Window):
         if self.current:
             self._save_into(self.current)
             self._commit()
+            self._load(self.current)
 
     def on_new(self):
         c = Channel(name="New channel", delsys="iptv")

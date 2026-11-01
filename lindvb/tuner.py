@@ -17,6 +17,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
+from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -53,8 +54,13 @@ def dvbsrc_properties(ch, settings, adapter, frontend):
         p["code-rate-hp"] = ch.fec
     if ch.stream_id >= 0:
         p["stream-id"] = ch.stream_id
-    p["pids"] = "8192" if settings["full_transponder"] or not ch.pmt_pid else \
-        ":".join(map(str, ch.pids()))
+    if settings["full_transponder"] or not ch.pmt_pid:
+        p["pids"] = "8192"
+    else:
+        # also receive the PIDs of a provider EPG (MediaHighway / Freesat)
+        # when this transponder is in the user's list
+        extra = provider_pids(provider_types_for(ch, settings.get("epg_provider_freqs", [])))
+        p["pids"] = ":".join(map(str, sorted(set(ch.pids()) | set(extra))))
     return p
 
 
@@ -175,6 +181,7 @@ class Capture(GObject.Object):
         # descrambles the captured transport stream in place.
         self.ca = ca_provider if (ca_provider and channel.encrypted) else None
         self._pmt_asm = None
+        self.epg_language = settings.get("epg_language", "")
         base = Path(settings["timeshift_dir"])
         base.mkdir(parents=True, exist_ok=True)
         self.store = SegmentStore(tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base))
@@ -219,9 +226,31 @@ class Capture(GObject.Object):
             pad = sink.get_static_pad("sink")
             pad.add_probe(Gst.PadProbeType.BUFFER, self._ca_probe)
 
+        # EPG of other providers (MediaHighway 1/2, Freesat) on this transponder
+        self.provider_epg = None
+        kinds = provider_types_for(channel, settings.get("epg_provider_freqs", []))
+        if kinds:
+            self.provider_epg = ProviderEPG(kinds, self._on_provider_events, self.epg_language)
+            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._epg_probe)
+
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
+
+    def _epg_probe(self, pad, info):
+        buf = info.get_buffer()
+        if buf is not None and self.provider_epg is not None:
+            ok, mapinfo = buf.map(Gst.MapFlags.READ)
+            if ok:
+                try:
+                    self.provider_epg.feed_buffer(bytes(mapinfo.data))
+                finally:
+                    buf.unmap(mapinfo)
+        return Gst.PadProbeReturn.OK
+
+    def _on_provider_events(self, key, events):
+        # called from the streaming thread; hand over to the main loop
+        GLib.idle_add(lambda: (self.emit("eit", key, events), False)[1])
 
     def start(self):
         if self.pipeline.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
@@ -303,7 +332,7 @@ class Capture(GObject.Object):
             elif GstMpegts is not None:
                 section = GstMpegts.message_parse_mpegts_section(msg)
                 if section is not None:
-                    res = parse_eit_section(section, GstMpegts)
+                    res = parse_eit_section(section, GstMpegts, self.epg_language)
                     if res and res[1]:
                         self.emit("eit", res[0], res[1])
         elif t == Gst.MessageType.ERROR:
