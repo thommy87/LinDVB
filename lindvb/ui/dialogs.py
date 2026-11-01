@@ -145,9 +145,10 @@ class PrefsWindow(Gtk.Window):
                "After Record in the programme guide, edit the new timer straight away.")
 
         # -- EPG
-        pg = page("epg", "Programme guide")
-        g = group(pg)
-        entry(g, "xmltv_url", "XMLTV URL", "Internet EPG source, used in addition to the broadcast EPG.")
+        from .epgsettings import EPGPrefs
+        pg = page("epg", "EPG", "Programme guide: broadcast EPG, internet EPG (XMLTV) and the "
+                                "EPG of other providers.")
+        self._epg = EPGPrefs(app, self, pg, group, _row)
 
         # -- Conditional access
         pg = page("ca", "Conditional access",
@@ -227,9 +228,11 @@ class PrefsWindow(Gtk.Window):
                 s[k] = [int(x) for x in w.get_text().replace(" ", "").split(",") if x.isdigit()]
             else:
                 s[k] = w.get_text()
+        self._epg.save(s)
         s.save()
         self._saved = True
         apply_accent(s)
+        self._epg.apply(s)
         self.close()
 
 

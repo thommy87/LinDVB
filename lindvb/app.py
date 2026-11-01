@@ -171,10 +171,6 @@ class LinDVBApp(Gtk.Application):
         from .ui.scan import ScanWindow
         ScanWindow(self, self.window).present()
 
-    def show_epg_settings(self):
-        from .ui.epgsettings import EPGSettingsWindow
-        EPGSettingsWindow(self, self.window).present()
-
     def show_xmltv_match(self):
         from .ui.xmltvmatch import XMLTVMatchWindow
         XMLTVMatchWindow(self, self.window).present()
