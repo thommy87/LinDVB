@@ -59,6 +59,12 @@ DEFAULTS = {
     ],
     "osd_seconds": 4,
     "deinterlace": True,
+    # Accent colour: "default" (LinDVB blue), "system" (desktop accent) or
+    # "custom" (accent_custom, "#RRGGBB").
+    "accent_mode": "default",
+    "accent_custom": "#119CFF",
+    # Channel editor sections that are unfolded.
+    "editor_sections_open": ["general"],
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the
     # LINDVB_PLUGIN_PATH entries) at startup.
