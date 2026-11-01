@@ -2,6 +2,7 @@
 
 import gzip
 import json
+import os
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
@@ -41,10 +42,13 @@ class EPGStore:
 
     path = CACHE_DIR / "epg.json"
 
-    def __init__(self):
+    def __init__(self, persist=True):
         self.events: dict[str, dict[int, Event]] = {}
         self.listeners = []
-        self.load()
+        # "Save EPG data": keep the guide on disk beyond the end of the program.
+        self.persist = persist
+        if persist:
+            self.load()
 
     def load(self):
         try:
@@ -57,6 +61,12 @@ class EPGStore:
             pass
 
     def save(self):
+        if not self.persist:
+            try:
+                self.path.unlink()
+            except OSError:
+                pass
+            return
         self.path.parent.mkdir(parents=True, exist_ok=True)
         now = time.time()
         data = {k: [asdict(e) for e in v.values() if e.end > now]
@@ -115,8 +125,13 @@ def _gst_dt_to_unix(dt):
         return 0
 
 
-def parse_eit_section(section, GstMpegts):
-    """Return (key, [Event]) for an EIT section, or None."""
+def parse_eit_section(section, GstMpegts, language=""):
+    """Return (key, [Event]) for an EIT section, or None.
+
+    *language* is the preferred EPG language (ISO 639-2); when an event is
+    broadcast in several languages that one is used, otherwise the first.
+    """
+    from .epgsources import pick_language
     if section.section_type not in (GstMpegts.SectionType.EIT,):
         return None
     eit = section.get_eit()
@@ -128,26 +143,27 @@ def parse_eit_section(section, GstMpegts):
         start = _gst_dt_to_unix(ev.start_time) if ev.start_time else 0
         if not start:
             continue
-        title = sub = desc = genre = ""
-        ext = []
+        genre = ""
+        shorts, ext = [], {}
         for d in ev.descriptors:
             tag = d.tag
             try:
                 if tag == 0x4D:
-                    ok, _lang, name, text = d.parse_dvb_short_event()
+                    ok, lang, name, text = d.parse_dvb_short_event()
                     if ok:
-                        title, sub = name or "", text or ""
+                        shorts.append((lang or "", (name or "", text or "")))
                 elif tag == 0x4E:
                     ok, e = d.parse_dvb_extended_event()
                     if ok and e.text:
-                        ext.append(e.text)
+                        ext.setdefault(getattr(e, "language_code", "") or "", []).append(e.text)
                 elif tag == 0x54:
                     ok, contents = d.parse_dvb_content()
                     if ok and contents:
                         genre = GENRES.get(contents[0].content_nibble_1, "")
             except (TypeError, ValueError, AttributeError):
                 pass
-        desc = "".join(ext)
+        title, sub = pick_language(shorts, language) or ("", "")
+        desc = "".join(pick_language(list(ext.items()), language) or [])
         if len(sub) > 80 and not desc:
             sub, desc = "", sub
         if title:
@@ -168,19 +184,69 @@ def _xmltv_time(s):
         return 0
 
 
-def parse_xmltv(data: bytes):
-    """Yield (channel display-name lowercased, Event)."""
+def _pick_text(elem, tag, language):
+    from .epgsources import pick_language
+    opts = [(e.get("lang", ""), (e.text or "").strip()) for e in elem.findall(tag)]
+    return pick_language([o for o in opts if o[1]], language) or ""
+
+
+def read_xmltv(data: bytes, language=""):
+    """Parse an XMLTV guide.
+
+    Returns (channels, items): *channels* maps each XMLTV channel id to its
+    list of display names, *items* is a list of (channel id, Event).
+    """
     if data[:2] == b"\x1f\x8b":
         data = gzip.decompress(data)
     root = ET.fromstring(data)
-    names = {}
+    channels = {}
     for ch in root.findall("channel"):
-        dn = ch.findtext("display-name") or ch.get("id")
-        names[ch.get("id")] = dn.strip().lower()
+        cid = ch.get("id") or ""
+        names = [(d.text or "").strip() for d in ch.findall("display-name")]
+        channels[cid] = [n for n in names if n] or [cid]
+    items = []
     for p in root.findall("programme"):
         start, stop = _xmltv_time(p.get("start", "")), _xmltv_time(p.get("stop", ""))
         if not start or stop <= start:
             continue
-        yield names.get(p.get("channel"), p.get("channel", "").lower()), Event(
-            start, stop - start, p.findtext("title") or "", p.findtext("sub-title") or "",
-            p.findtext("desc") or "", p.findtext("category") or "")
+        cid = p.get("channel", "")
+        channels.setdefault(cid, [cid])
+        items.append((cid, Event(
+            start, stop - start, _pick_text(p, "title", language),
+            _pick_text(p, "sub-title", language), _pick_text(p, "desc", language),
+            _pick_text(p, "category", language))))
+    return channels, items
+
+
+def parse_xmltv(data: bytes):
+    """Yield (channel display-name lowercased, Event)."""
+    channels, items = read_xmltv(data)
+    for cid, ev in items:
+        yield channels.get(cid, [cid])[0].lower(), ev
+
+
+# ----------------------------------------------------------------------------
+# Time zone
+# ----------------------------------------------------------------------------
+
+_SYSTEM_TZ = os.environ.get("TZ")
+
+
+def apply_timezone(settings):
+    """Show EPG (and all other) times in the system time zone, or in a fixed
+    offset to GMT when the user chose a manual time zone."""
+    if settings.get("epg_tz_auto", True):
+        if _SYSTEM_TZ is None:
+            os.environ.pop("TZ", None)
+        else:
+            os.environ["TZ"] = _SYSTEM_TZ
+    else:
+        os.environ["TZ"] = posix_tz(int(settings.get("epg_tz_offset", 60)))
+    time.tzset()
+
+
+def posix_tz(offset_minutes):
+    """POSIX TZ string for a fixed offset east of GMT (note the inverted sign)."""
+    sign = "-" if offset_minutes >= 0 else "+"
+    m = abs(offset_minutes)
+    return f"GMT{sign}{m // 60:02d}:{m % 60:02d}"

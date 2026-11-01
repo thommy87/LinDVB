@@ -89,6 +89,8 @@ class MainWindow(Gtk.ApplicationWindow):
             "playlist-prev": lambda: self.playlist_step(-1),
             "sleep-off": self.sleep_cancel, "sleep-programme": self.sleep_after_programme,
             "rebuild": self.rebuild_playback, "xmltv": lambda: self.app.update_xmltv(),
+            "xmltv-match": lambda: self.app.show_xmltv_match(),
+            "epg-settings": lambda: self.app.show_epg_settings(),
             "web-epg": self.on_web_search,
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
@@ -168,6 +170,8 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append("Channel Search…", "win.scan")
         tv.append("Channel Editor / Favourites", "win.editor")
         tv.append("Update Internet EPG (XMLTV)", "win.xmltv")
+        tv.append("Match IPTV Channels to XMLTV…", "win.xmltv-match")
+        tv.append("EPG Settings…", "win.epg-settings")
         m.append_section(None, tv)
 
         play = Gio.Menu()
@@ -572,7 +576,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.settings["last_channel"] = c.key
         self._select_in_list(c)
         self.set_status(f"Tuning {c.name}…")
-        self.show_osd()
+        secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
+        if secs > 0:
+            self.show_osd(secs)
         self._update_transport()
 
     def _select_in_list(self, c):
@@ -984,10 +990,11 @@ class MainWindow(Gtk.ApplicationWindow):
         return False
 
     # ------------------------------------------------------------------ OSD / status
-    def show_osd(self):
+    def show_osd(self, seconds=None):
         c = self.current
         if not c:
             return
+        self._osd_secs = seconds
         now, nxt = self.app.epg.now_next(c.epg_key)
         self.osd_num.set_text(str(c.number))
         self.osd_title.set_text(c.name)
@@ -1004,7 +1011,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.osd.set_visible(True)
         if self._osd_timeout:
             GLib.source_remove(self._osd_timeout)
-        self._osd_timeout = GLib.timeout_add_seconds(self.settings["osd_seconds"], self._hide_osd)
+        self._osd_timeout = GLib.timeout_add_seconds(seconds or self.settings["osd_seconds"],
+                                                     self._hide_osd)
 
     def _hide_osd(self):
         self.osd.set_visible(False)
@@ -1034,7 +1042,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _on_epg(self):
         self._update_heading()
         if self.osd.get_visible():
-            self.show_osd()
+            self.show_osd(getattr(self, "_osd_secs", None))
 
     def _update_transport(self):
         self.pause_btn.set_icon_name("media-playback-start-symbolic" if self.player.paused
