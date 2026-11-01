@@ -35,8 +35,14 @@ picture and hides itself when the mouse is still.
 
 ## Features
 
-* Channel list with search, TV/radio/favourites/FTA/encrypted/HD/internet filters and
+* Separate TV and radio: a TV/Radio switch (Ctrl+M) above the channel list, which
+  shows one kind at a time; favourites mix both. LinDVB remembers the last channel
+  of each kind and tunes the last one again at start
+* Channel list with search, favourites/FTA/encrypted/HD/internet filters and
   groups; channel number entry, last channel, channel and favourite zapping
+* Radio visualisations: glow waves and nebula particles (modern), LED spectrum
+  analyser, VU meters and oscilloscope (classic), and projectM (MilkDrop presets)
+  or GOOM through the bundled GStreamer add-on; plugins can add their own
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
@@ -58,7 +64,7 @@ picture and hides itself when the mouse is still.
   play rate for files, playlists, sleep timer
 * Recording and device statistics (lock, signal, SNR, BER, bitrate)
 * Plugins: Python add-ons for channel-list importers, conditional-access
-  providers, life-cycle hooks and menu entries
+  providers, radio visualisations, life-cycle hooks and menu entries
 * Conditional access for your own encrypted channels: an external softcam
   (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
   module supplies the control words from your subscription card; CAM menu for

@@ -9,11 +9,16 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
 from ..player import EQ_BANDS, Player
+from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
-from .theme import CSS, apply_accent
+from .theme import CSS, apply_accent, resolve_accent
+from .visualizer import VisualizerArea
 
-FILTERS = ["All channels", "TV", "Radio", "Favourites", "Free to air", "Encrypted",
+# The channel list shows either TV or radio channels; only the favourites mix both.
+FILTERS = ["All channels", "Favourites (TV + Radio)", "Free to air", "Encrypted",
            "HD channels", "Internet streams"]
+F_ALL, F_FAV, F_FTA, F_ENC, F_HD, F_IPTV = range(len(FILTERS))
+MODES = ("tv", "radio")
 ZOOM = [("Fit", Gtk.ContentFit.CONTAIN), ("Fill (crop)", Gtk.ContentFit.COVER),
         ("Stretch", Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
@@ -35,6 +40,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self._seek_source = None     # debounced seek while dragging the seek bar
         self._seek_target = None
         self._fs_layout = False      # full screen layout applied (controls float)
+        self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
+        self._mode_sync = False      # set while the TV/Radio buttons follow the code
+        self._vis_id = None          # visualisation style currently drawn
 
         # The player is always dark, whatever the desktop theme.
         Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
@@ -50,7 +58,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self._build_ui()
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self.set_status(f"Playback error: {m}"))
-        self.player.connect("tracks", lambda _p: self._rebuild_track_menus())
+        self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
+                                                  self._update_visualizer()))
+        self.player.connect("state", lambda _p, _s: self._update_visualizer())
+        self.vis.analysis = self.player.analysis
         self.player.connect("subtitle-text", self._on_subtitle_text)
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
@@ -95,6 +106,9 @@ class MainWindow(Gtk.ApplicationWindow):
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
             "prev-item": lambda: self.step_item(-1), "next-item": lambda: self.step_item(1),
+            "toggle-mode": lambda: self.set_mode("tv" if self.mode == "radio" else "radio"),
+            "mode-tv": lambda: self.set_mode("tv"), "mode-radio": lambda: self.set_mode("radio"),
+            "vis-next": self.cycle_visualizer,
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -120,6 +134,16 @@ class MainWindow(Gtk.ApplicationWindow):
         a = Gio.SimpleAction.new("rate", GLib.VariantType.new("d"))
         a.connect("activate", lambda _a, p: self.player.set_rate(p.get_double()))
         self.add_action(a)
+        # radio visualisations: built-in styles and those plugins registered
+        self.visualizers = {s.id: (s.label, "draw", s) for s in STYLES}
+        for _plugin, name, kind, factory in self.app.plugins.visualizers:
+            self.visualizers[f"plugin:{name}"] = (name, kind, factory)
+        if self.settings.get("visualizer") not in self.visualizers:
+            self.settings["visualizer"] = DEFAULT_STYLE
+        a = Gio.SimpleAction.new_stateful("vis", GLib.VariantType.new("s"),
+                                          GLib.Variant.new_string(self.settings["visualizer"]))
+        a.connect("activate", lambda _a, p: self.set_visualizer(p.get_string()))
+        self.add_action(a)
         a = Gio.SimpleAction.new("plugin-action", GLib.VariantType.new("i"))
         a.connect("activate", lambda _a, p: self._run_plugin_action(p.get_int32()))
         self.add_action(a)
@@ -142,6 +166,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "win.teletext": ["<Ctrl><Shift>t"], "win.screenshot": ["<Ctrl><Shift>p"],
             "win.ch-next": ["Page_Up"], "win.ch-prev": ["Page_Down"],
             "win.last-channel": ["<Ctrl>BackSpace"], "win.editor": ["<Ctrl><Shift>e"],
+            "win.toggle-mode": ["<Ctrl>m"],
         }
         for k, v in accels.items():
             self.app.set_accels_for_action(k, v)
@@ -162,6 +187,7 @@ class MainWindow(Gtk.ApplicationWindow):
         file.append("Export Channel List…", "win.export")
         m.append_section(None, file)
         tv = Gio.Menu()
+        tv.append("Switch TV / Radio", "win.toggle-mode")
         tv.append("Programme Guide (EPG)", "win.epg")
         tv.append("Timer Recordings", "win.timers")
         tv.append("Recording and Device Statistics", "win.stats")
@@ -220,6 +246,10 @@ class MainWindow(Gtk.ApplicationWindow):
         view.append_submenu("Window Size", ws)
         view.append("Picture Settings…", "win.picture")
         view.append("Equalizer…", "win.equalizer")
+        vis = Gio.Menu()
+        for vid, (label, _kind, _f) in self.visualizers.items():
+            vis.append(label, f"win.vis::{vid}")
+        view.append_submenu("Radio Visualisation", vis)
         view.append("Screenshot", "win.screenshot")
         m.append_section(None, view)
         # the gear in the control bar shows just the playback and view sections
@@ -264,8 +294,26 @@ class MainWindow(Gtk.ApplicationWindow):
         # sidebar
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
         side.set_size_request(260, -1)
-        head = Gtk.Box(spacing=8, margin_start=12, margin_end=12, margin_top=12)
-        head.append(Gtk.Label(label="Channels", xalign=0, hexpand=True, css_classes=["lv-heading"]))
+        head = Gtk.Box(spacing=8, margin_start=10, margin_end=10, margin_top=12)
+        # TV / Radio switch: the channel list shows one kind at a time
+        seg = Gtk.Box(css_classes=["linked", "lv-mode"], hexpand=True, homogeneous=True)
+        self.mode_btns = {}
+        group = None
+        for mode, label, icon in (("tv", "TV", "video-display-symbolic"),
+                                  ("radio", "Radio", "audio-x-generic-symbolic")):
+            content = Gtk.Box(spacing=6, halign=Gtk.Align.CENTER)
+            content.append(Gtk.Image(icon_name=icon))
+            content.append(Gtk.Label(label=label))
+            b = Gtk.ToggleButton(child=content, active=mode == self.mode,
+                                 tooltip_text=f"Show {label} channels (Ctrl+M switches)")
+            if group is None:
+                group = b
+            else:
+                b.set_group(group)
+            b.connect("toggled", self._on_mode_toggled, mode)
+            self.mode_btns[mode] = b
+            seg.append(b)
+        head.append(seg)
         self.count_label = Gtk.Label(xalign=1, css_classes=["lv-count"])
         head.append(self.count_label)
         side.append(head)
@@ -308,6 +356,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.picture.add_css_class("video")
         self.overlay = overlay = Gtk.Overlay()
         overlay.set_child(self.picture)
+        # radio / audio-only: drawn visualisation over the (empty) picture
+        self.vis = VisualizerArea(None)
+        self.vis.set_visible(False)
+        overlay.add_overlay(self.vis)
         self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
                            valign=Gtk.Align.END, halign=Gtk.Align.START,
                            margin_start=24, margin_end=24, margin_bottom=24, width_request=420)
@@ -475,19 +527,18 @@ class MainWindow(Gtk.ApplicationWindow):
     def _filter_func(self, item):
         c = item.data
         f = self.filter_dd.get_selected()
-        if f == 1 and c.radio:
+        if f == F_FAV:
+            if not c.favourite:
+                return False
+        elif c.radio != (self.mode == "radio"):
             return False
-        if f == 2 and not c.radio:
+        if f == F_FTA and c.encrypted:
             return False
-        if f == 3 and not c.favourite:
+        if f == F_ENC and not c.encrypted:
             return False
-        if f == 4 and c.encrypted:
+        if f == F_HD and "HD" not in c.name and "HEVC" not in c.name and "UHD" not in c.name:
             return False
-        if f == 5 and not c.encrypted:
-            return False
-        if f == 6 and "HD" not in c.name and "HEVC" not in c.name and "UHD" not in c.name:
-            return False
-        if f == 7 and not c.is_iptv:
+        if f == F_IPTV and not c.is_iptv:
             return False
         g = self.group_dd.get_selected()
         if g > 0 and self._groups[g] != c.root:
@@ -509,7 +560,15 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _refilter(self):
         self.filter.changed(Gtk.FilterChange.DIFFERENT)
-        self.count_label.set_text(f"{self.filtered.get_n_items()} of {self.store.get_n_items()} channels")
+        radio = self.mode == "radio"
+        if self.filter_dd.get_selected() == F_FAV:
+            total = sum(1 for c in self.app.db.channels if c.favourite)
+        else:
+            total = sum(1 for c in self.app.db.channels if c.radio == radio)
+        self.count_label.set_text(f"{self.filtered.get_n_items()} of {total}")
+        self.count_label.set_tooltip_text(
+            f"{self.filtered.get_n_items()} of {total} "
+            f"{'favourites' if self.filter_dd.get_selected() == F_FAV else 'radio stations' if radio else 'TV channels'} shown")
 
     def _activate_first(self):
         if self.filtered.get_n_items():
@@ -573,13 +632,53 @@ class MainWindow(Gtk.ApplicationWindow):
         except RuntimeError as e:
             self.set_status(str(e))
             return
-        self.settings["last_channel"] = c.key
+        self._remember(c)
+        if (self.mode == "radio") != c.radio:
+            self.set_mode("radio" if c.radio else "tv", tune=False)
         self._select_in_list(c)
         self.set_status(f"Tuning {c.name}…")
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
         if secs > 0:
             self.show_osd(secs)
         self._update_transport()
+        self._update_visualizer()
+
+    def _remember(self, c):
+        """Last channel overall (tuned at start) and per kind (for the TV/Radio switch)."""
+        self.settings["last_channel"] = c.key
+        self.settings["last_radio_channel" if c.radio else "last_tv_channel"] = c.key
+        try:
+            self.settings.save()
+        except OSError:
+            pass
+
+    # ------------------------------------------------------------------ TV / radio
+    def _on_mode_toggled(self, btn, mode):
+        if btn.get_active() and not self._mode_sync:
+            self.set_mode(mode)
+
+    def set_mode(self, mode, tune=True):
+        """Show TV or radio channels; with ``tune`` also switch to the last
+        channel watched (or listened to) in that mode."""
+        if mode not in MODES:
+            return
+        self.mode = mode
+        self.settings["mode"] = mode
+        self._mode_sync = True
+        self.mode_btns[mode].set_active(True)
+        self._mode_sync = False
+        self._refilter()
+        if not tune or (self.current is not None and self.current.radio == (mode == "radio")):
+            return
+        radio = mode == "radio"
+        target = self.app.db.by_key(self.settings.get(f"last_{mode}_channel") or "")
+        if target is None or target.radio != radio:
+            target = next((c for c in self.app.db.channels if c.radio == radio), None)
+        if target is None:
+            self.set_status("No radio stations in the channel list" if radio
+                            else "No TV channels in the channel list")
+            return
+        self.zap(target)
 
     def _select_in_list(self, c):
         for i in range(self.filtered.get_n_items()):
@@ -655,6 +754,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._release_capture()
         self.current = None
         self.set_title(APP_NAME)
+        self._update_visualizer()
 
     def rebuild_playback(self):
         if self.current:
@@ -681,6 +781,7 @@ class MainWindow(Gtk.ApplicationWindow):
         item = self.playlist[self.playlist_pos]
         self.player.play_uri(item)
         self.set_title(f"{Path(item).name} – {APP_NAME}")
+        self._update_visualizer()
         self.set_status(f"Playing {item}")
 
     def _on_eos(self, _p):
@@ -964,6 +1065,47 @@ class MainWindow(Gtk.ApplicationWindow):
     def toggle_list(self):
         self.list_btn.set_active(not self.list_btn.get_active())
 
+    # ------------------------------------------------------------------ radio visualisation
+    def set_visualizer(self, vis_id):
+        if vis_id not in self.visualizers:
+            vis_id = DEFAULT_STYLE
+        self.settings["visualizer"] = vis_id
+        self.lookup_action("vis").set_state(GLib.Variant.new_string(vis_id))
+        self._update_visualizer()
+        self.flash(self.visualizers[vis_id][0])
+
+    def cycle_visualizer(self):
+        ids = list(self.visualizers)
+        cur = self.settings.get("visualizer")
+        i = ids.index(cur) if cur in ids else -1
+        self.set_visualizer(ids[(i + 1) % len(ids)])
+
+    def _update_visualizer(self):
+        """Show the visualisation for radio channels and audio-only files."""
+        if self.current is not None:
+            audio_only = self.current.radio and self.player.playbin is not None
+            name = self.current.name
+        else:
+            audio_only = self.player.is_audio_only()
+            name = self.get_title().removesuffix(f" – {APP_NAME}") if audio_only else ""
+        vis_id = self.settings.get("visualizer", DEFAULT_STYLE)
+        _label, kind, factory = self.visualizers.get(vis_id) or self.visualizers[DEFAULT_STYLE]
+        # a GStreamer visualiser renders into the picture; the drawn ones overlay it
+        self.player.set_visualizer(factory if kind == "element" else None)
+        drawn = audio_only and kind == "draw"
+        if drawn:
+            self.vis.set_accent(resolve_accent(self.settings))
+        if drawn and vis_id != self._vis_id:
+            try:
+                self.vis.set_style(factory())
+            except Exception as e:
+                self.set_status(f"Visualisation failed: {e}")
+                self.vis.set_style(None)
+            self._vis_id = vis_id
+        self.vis.set_caption(name)
+        self.vis.set_visible(drawn)
+        self.player.analyze = drawn
+
     # ------------------------------------------------------------------ sleep timer
     def sleep_in(self, seconds):
         self.sleep_cancel()
@@ -1147,7 +1289,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 "Left": "back10", "Right": "fwd10", "Up": "ch-prev", "Down": "ch-next",
                 "plus": "vol-up", "KP_Add": "vol-up", "minus": "vol-down",
                 "KP_Subtract": "vol-down", "BackSpace": "last-channel", "s": "screenshot",
-                "i": "osd", "n": "playlist-next", "p": "playlist-prev"}
+                "i": "osd", "n": "playlist-next", "p": "playlist-prev", "v": "vis-next"}
         if name == "Escape" and self._fs_layout:
             self.toggle_fullscreen()
             return True

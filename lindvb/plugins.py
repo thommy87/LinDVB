@@ -29,6 +29,10 @@ from pathlib import Path
 
 from .config import PLUGIN_DIR
 
+# Add-ons shipped with LinDVB. They load like user plugins (and can be switched
+# off the same way); a user plugin with the same name takes precedence.
+BUNDLED_DIR = Path(__file__).resolve().parent / "addons"
+
 
 class PluginError(Exception):
     pass
@@ -96,6 +100,27 @@ class PluginAPI:
         """Add an entry to the Plugins menu. ``callback(app)``."""
         self._manager.menu_actions.append((self._plugin.name, label, callback))
 
+    def add_visualizer(self, name, draw=None, element=None):
+        """Register a visualisation for radio and other audio-only playback.
+
+        Give exactly one of:
+
+        ``draw``    ``draw() -> style``: an object with a
+                    ``draw(cr, width, height, frame)`` method that paints one
+                    picture with cairo from a :class:`lindvb.audioviz.Frame`
+                    (spectrum bands, levels, waveform, beat). Called anew each
+                    time the user picks the visualisation.
+        ``element`` ``element() -> Gst.Element``: a GStreamer audio
+                    visualiser (audio in, video out, e.g. ``projectm`` or
+                    ``goom``) that playbin renders into the video area.
+
+        ``name`` is shown in the View → Visualisation menu.
+        """
+        if (draw is None) == (element is None):
+            raise PluginError("add_visualizer needs exactly one of draw= or element=")
+        kind, factory = ("draw", draw) if draw is not None else ("element", element)
+        self._manager.visualizers.append((self._plugin.name, name, kind, factory))
+
 
 class PluginManager:
     """Discovers, loads and holds the plugins, and dispatches their hooks."""
@@ -109,6 +134,7 @@ class PluginManager:
         self.ca_providers = {}              # name -> (plugin, factory)
         self.hooks = {}                     # event -> [(plugin, callback)]
         self.menu_actions = []              # (plugin, label, callback)
+        self.visualizers = []               # (plugin, name, "draw"|"element", factory)
         self.failed = {}                    # module name -> error text
 
     def log(self, message):
@@ -119,6 +145,8 @@ class PluginManager:
         dirs = [PLUGIN_DIR]
         extra = os.environ.get("LINDVB_PLUGIN_PATH", "")
         dirs += [Path(p) for p in extra.split(os.pathsep) if p]
+        if not os.environ.get("LINDVB_NO_BUNDLED_PLUGINS"):
+            dirs.append(BUNDLED_DIR)
         seen, out = set(), []
         for d in dirs:
             d = d.expanduser()

@@ -39,7 +39,15 @@ DEFAULTS = {
     "follow_minutes": 5,
     "screenshot_dir": str(Path.home() / "Pictures" / "LinDVB"),
     "volume": 0.8,
+    # Last tuned channel (TV or radio, tuned again at start) and the last
+    # channel of each kind, tuned when switching between TV and radio.
     "last_channel": None,
+    "last_tv_channel": None,
+    "last_radio_channel": None,
+    "mode": "tv",                    # channel list shows "tv" or "radio"
+    # Radio visualisation: a built-in style (glow, nebula, bars, vu, scope, off)
+    # or "plugin:<name>" for one registered by a plugin.
+    "visualizer": "glow",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
