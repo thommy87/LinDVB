@@ -90,7 +90,6 @@ class MainWindow(Gtk.ApplicationWindow):
             "sleep-off": self.sleep_cancel, "sleep-programme": self.sleep_after_programme,
             "rebuild": self.rebuild_playback, "xmltv": lambda: self.app.update_xmltv(),
             "xmltv-match": lambda: self.app.show_xmltv_match(),
-            "epg-settings": lambda: self.app.show_epg_settings(),
             "web-epg": self.on_web_search,
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
@@ -171,7 +170,6 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append("Channel Editor / Favourites", "win.editor")
         tv.append("Update Internet EPG (XMLTV)", "win.xmltv")
         tv.append("Match IPTV Channels to XMLTV…", "win.xmltv-match")
-        tv.append("EPG Settings…", "win.epg-settings")
         m.append_section(None, tv)
 
         play = Gio.Menu()
