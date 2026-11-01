@@ -11,9 +11,6 @@ GTK switches transitions off on its own when animations are disabled.
 ACCENT = "#119CFF"
 
 CSS = """
-@define-color lv_accent #119CFF;
-@define-color lv_accent_hover #3BAEFF;
-@define-color lv_accent_active #0B86DE;
 @define-color lv_bg #0A0A0C;
 @define-color lv_surface #121215;
 @define-color lv_surface_2 #1B1B20;
@@ -74,7 +71,7 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
   color: @lv_text_dim; font-weight: 600; transition: background 150ms ease, color 150ms ease;
 }
 .lv-mode > button:hover { color: @lv_text; background: alpha(white, 0.05); }
-.lv-mode > button:checked { background: @lv_accent; color: @lv_bg; }
+.lv-mode > button:checked { background: @lv_accent; color: @lv_on_accent; }
 .lv-visualizer { background: black; }
 paned.lv-paned > separator { background: transparent; min-width: 1px; }
 
@@ -85,7 +82,7 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
   padding: 14px 18px; border: 1px solid alpha(white, 0.08);
 }
 .osd .lv-osd-num {
-  background: @lv_accent; color: @lv_bg; font-weight: 800; border-radius: 6px;
+  background: @lv_accent; color: @lv_on_accent; font-weight: 800; border-radius: 6px;
   padding: 1px 8px; font-feature-settings: "tnum";
 }
 .osd .title { font-size: 1.35em; font-weight: 700; }
@@ -126,9 +123,9 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .lv-controls button:disabled { color: alpha(@lv_text_dim, 0.4); }
 .lv-controls button.lv-play {
   min-width: 52px; min-height: 34px; border-radius: 10px;
-  background: @lv_accent; color: @lv_bg;
+  background: @lv_accent; color: @lv_on_accent;
 }
-.lv-controls button.lv-play:hover { background: @lv_accent_hover; color: @lv_bg; }
+.lv-controls button.lv-play:hover { background: @lv_accent_hover; color: @lv_on_accent; }
 .lv-controls button.lv-play:active { background: @lv_accent_active; }
 .lv-controls button.lv-rec:hover { color: @lv_rec; }
 .lv-controls button.lv-rec:checked { background: alpha(@lv_rec, 0.18); color: @lv_rec; }
@@ -175,3 +172,233 @@ window.lindvb popover modelbutton:hover, window.lindvb popover modelbutton:selec
   background: alpha(@lv_accent, 0.18);
 }
 """
+
+# ---------- dialogs (channel editor, preferences, ...) ----------
+# Applies to every window of the app, not just the main one.
+CSS += """
+.lv-dialog-pane { background: alpha(white, 0.02); }
+.lv-section-title { font-weight: 700; }
+expander.lv-section > title { padding: 6px 4px; border-radius: 8px; }
+expander.lv-section > title:hover { background: alpha(white, 0.05); }
+.lv-section-body { margin: 2px 6px 10px 22px; }
+.lv-field-label { color: @lv_text_dim; }
+.lv-hint { color: @lv_text_dim; font-size: 0.85em; }
+.lv-toolstrip {
+  background: alpha(white, 0.03); border-left: 1px solid alpha(white, 0.06);
+  padding: 8px 6px;
+}
+.lv-toolstrip button {
+  min-width: 34px; min-height: 34px; padding: 0; border-radius: 8px;
+  background: none; box-shadow: none; border: none;
+}
+.lv-toolstrip button:hover { background: alpha(white, 0.08); }
+.lv-toolstrip button.lv-primary { background: @lv_accent; color: @lv_on_accent; }
+.lv-toolstrip button.lv-primary:hover { background: @lv_accent_hover; }
+.lv-toolstrip button.lv-danger:hover { background: alpha(@lv_rec, 0.18); color: @lv_rec; }
+.lv-toolstrip separator { margin: 6px 4px; background: alpha(white, 0.08); }
+.lv-group {
+  background: alpha(white, 0.04); border: 1px solid alpha(white, 0.06);
+  border-radius: 12px; padding: 4px 14px;
+}
+.lv-group > .lv-row { padding: 8px 0; }
+.lv-group > .lv-row + .lv-row { border-top: 1px solid alpha(white, 0.06); }
+.lv-page-title { font-size: 1.25em; font-weight: 700; }
+stacksidebar.lv-nav { background: alpha(white, 0.02); }
+stacksidebar.lv-nav row { padding: 8px 12px; border-radius: 8px; margin: 1px 6px; }
+"""
+
+# ---------- accent colour ----------------------------------------------------
+# The accent is kept in its own style provider so it can be swapped at run
+# time. Besides the LinDVB colour names it overrides the theme's accent, so
+# stock widgets (selected rows, switches, focus rings...) in every window use
+# it too; without that Ubuntu's Yaru theme shows its orange accent in dialogs.
+
+ACCENT_MODES = ("default", "system", "custom")
+
+# GNOME 47+ "accent-color" names, with libadwaita's colours.
+_GNOME_ACCENTS = {
+    "blue": "#3584E4", "teal": "#2190A4", "green": "#3A944A", "yellow": "#C88800",
+    "orange": "#ED5B00", "red": "#E62D42", "pink": "#D56199", "purple": "#9141AC",
+    "slate": "#6F8396",
+}
+# Ubuntu's Yaru colour variants (theme name "Yaru-<variant>[-dark]").
+_YARU_ACCENTS = {
+    "": "#E95420", "bark": "#787859", "sage": "#657B69", "olive": "#4B8501",
+    "viridian": "#03875B", "prussiangreen": "#308280", "blue": "#0073E5",
+    "purple": "#7764D8", "magenta": "#B34CB3", "red": "#DA3450",
+}
+
+
+def parse_hex(color):
+    """'#RRGGBB' (or 'RRGGBB', '#RGB') -> (r, g, b) ints, or None."""
+    c = str(color or "").strip().lstrip("#")
+    if len(c) == 3:
+        c = "".join(ch * 2 for ch in c)
+    if len(c) != 6:
+        return None
+    try:
+        return tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError:
+        return None
+
+
+def to_hex(rgb):
+    return "#%02X%02X%02X" % tuple(max(0, min(255, round(v))) for v in rgb)
+
+
+def _mix(rgb, other, t):
+    return tuple(a + (b - a) * t for a, b in zip(rgb, other))
+
+
+def _luminance(rgb):
+    def lin(v):
+        v /= 255
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (lin(v) for v in rgb)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def on_accent(rgb):
+    """Text colour for labels drawn on the accent: near black or white."""
+    lum = _luminance(rgb)
+    dark = (lum + 0.05) / (_luminance((10, 10, 12)) + 0.05)
+    light = 1.05 / (lum + 0.05)
+    return "#0A0A0C" if dark >= light else "#FFFFFF"
+
+
+def yaru_accent(theme_name):
+    """Accent of an Ubuntu Yaru theme name, or None if it isn't Yaru."""
+    name = (theme_name or "").lower()
+    if not name.startswith("yaru"):
+        return None
+    parts = [p for p in name.split("-")[1:] if p not in ("dark", "light")]
+    return _YARU_ACCENTS.get(parts[0] if parts else "", _YARU_ACCENTS[""])
+
+
+def system_accent():
+    """Best guess at the desktop's accent colour as '#RRGGBB', or None."""
+    try:
+        from gi.repository import Gtk
+        theme = Gtk.Settings.get_default().get_property("gtk-theme-name")
+    except Exception:  # noqa: BLE001 - no display or no GTK
+        theme = None
+    yaru = yaru_accent(theme)
+    if yaru:
+        return yaru
+    try:
+        from gi.repository import Gio
+        src = Gio.SettingsSchemaSource.get_default()
+        schema = src.lookup("org.gnome.desktop.interface", True) if src else None
+        if schema and schema.has_key("accent-color"):
+            name = Gio.Settings.new("org.gnome.desktop.interface").get_string("accent-color")
+            if name in _GNOME_ACCENTS:
+                return _GNOME_ACCENTS[name]
+    except Exception:  # noqa: BLE001
+        pass
+    try:  # whatever the GTK theme itself calls its accent
+        from gi.repository import Gtk
+        ctx = Gtk.Label().get_style_context()
+        for name in ("accent_bg_color", "theme_selected_bg_color", "selected_bg_color"):
+            ok, rgba = ctx.lookup_color(name)
+            if ok:
+                return to_hex((rgba.red * 255, rgba.green * 255, rgba.blue * 255))
+    except Exception:  # noqa: BLE001
+        pass
+    return None
+
+
+def resolve_accent(settings):
+    """The accent '#RRGGBB' for the user's settings."""
+    mode = settings.get("accent_mode", "default")
+    if mode == "custom" and parse_hex(settings.get("accent_custom")):
+        return to_hex(parse_hex(settings["accent_custom"]))
+    if mode == "system":
+        return system_accent() or ACCENT
+    return ACCENT
+
+
+def accent_css(color, override_theme=True):
+    """CSS defining the LinDVB accent colours (and, by default, the theme's)."""
+    rgb = parse_hex(color) or parse_hex(ACCENT)
+    acc = to_hex(rgb)
+    hover = to_hex(_mix(rgb, (255, 255, 255), 0.18))
+    active = to_hex(_mix(rgb, (0, 0, 0), 0.15))
+    fg = on_accent(rgb)
+    css = f"""
+@define-color lv_accent {acc};
+@define-color lv_accent_hover {hover};
+@define-color lv_accent_active {active};
+@define-color lv_on_accent {fg};
+"""
+    if not override_theme:
+        return css
+    return css + f"""
+@define-color accent_color {acc};
+@define-color accent_bg_color {acc};
+@define-color accent_fg_color {fg};
+@define-color theme_selected_bg_color {acc};
+@define-color theme_selected_fg_color {fg};
+@define-color selected_bg_color {acc};
+@define-color selected_fg_color {fg};
+
+row:selected, columnview > listview > row:selected, listview > row:selected,
+gridview > child:selected, treeview.view:selected, calendar > grid > label.day-number:selected {{
+  background-color: alpha(@lv_accent, 0.32); color: @lv_text;
+}}
+row:selected:hover, listview > row:selected:hover {{ background-color: alpha(@lv_accent, 0.40); }}
+*:focus-visible {{ outline-color: alpha(@lv_accent, 0.80); }}
+entry:focus-within, spinbutton:focus-within, searchbar entry:focus-within,
+dropdown > button:focus-visible, textview:focus-within {{
+  outline-color: alpha(@lv_accent, 0.80); border-color: alpha(@lv_accent, 0.80);
+}}
+selection, entry selection, text selection, label selection {{
+  background-color: alpha(@lv_accent, 0.45);
+}}
+switch:checked {{ background-color: @lv_accent; border-color: @lv_accent; }}
+switch:checked > slider {{ border-color: @lv_accent; }}
+check:checked, check:indeterminate, radio:checked, radio:indeterminate {{
+  background-color: @lv_accent; border-color: @lv_accent; color: @lv_on_accent;
+}}
+button.suggested-action, button.suggested-action:checked {{
+  background-color: @lv_accent; background-image: none; color: @lv_on_accent;
+  border-color: @lv_accent_active;
+}}
+button.suggested-action:hover {{ background-color: @lv_accent_hover; }}
+button.suggested-action:active {{ background-color: @lv_accent_active; }}
+scale > trough > highlight, progressbar > trough > progress,
+levelbar > trough > block.filled {{ background-color: @lv_accent; border-color: @lv_accent; }}
+notebook > header > tabs > tab:checked {{ box-shadow: inset 0 -3px @lv_accent; }}
+link, button.link {{ color: @lv_accent; }}
+popover modelbutton:selected, popover modelbutton:hover {{
+  background-color: alpha(@lv_accent, 0.18);
+}}
+"""
+
+
+_provider = None
+
+
+def apply_accent(settings_or_color):
+    """Install or replace the accent provider for the whole display."""
+    global _provider
+    from gi.repository import Gdk, Gtk
+    if isinstance(settings_or_color, str):
+        color, override = settings_or_color, True
+    else:
+        s = settings_or_color
+        override = s.get("accent_mode", "default") != "system"
+        if _provider is not None and not override:
+            # Look up the theme's own accent without our override in place.
+            Gtk.StyleContext.remove_provider_for_display(Gdk.Display.get_default(), _provider)
+            _provider = None
+        color = resolve_accent(s)
+    css = accent_css(color, override_theme=override)
+    if _provider is None:
+        _provider = Gtk.CssProvider()
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), _provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1)
+    if hasattr(_provider, "load_from_string"):
+        _provider.load_from_string(css)
+    else:
+        _provider.load_from_data(css.encode())
+    return color

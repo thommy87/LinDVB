@@ -62,6 +62,9 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | EPG search (case, whole word, description) | `English.lng:409-412` `mnuSearchCase`, `mnuSearchDescription`, `mnuSearchWord` | **Yes** (case and description options) |
 | Search the web for a programme | `Default/EPG_URLList.ini` (Google, IMDb, Wikipedia, TMDB…), `btnInternet` | **Yes**: configurable URL list |
 | EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Partly**: XMLTV import for internet channels; no export |
+| EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in TV ▸ EPG Settings; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
+| EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: TV ▸ EPG Settings |
+| Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
 | On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress |
 | Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save |
 | Teletext character sets | `English.lng:1419` `clbVTCharSet=English,Polish,…` | **Yes**: handled by libzvbi |

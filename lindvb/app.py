@@ -14,7 +14,7 @@ from gi.repository import Gio, GLib, Gst, Gtk  # noqa: E402
 
 from .channels import ChannelDB, import_file  # noqa: E402
 from .config import APP_ID, Settings  # noqa: E402
-from .epg import EPGStore, parse_xmltv  # noqa: E402
+from .epg import EPGStore, apply_timezone, read_xmltv  # noqa: E402
 from .plugins import PluginManager  # noqa: E402
 from .recorder import TimerManager  # noqa: E402
 from .tuner import TunerManager  # noqa: E402
@@ -51,7 +51,8 @@ class LinDVBApp(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
-        self.epg = EPGStore()
+        apply_timezone(self.settings)
+        self.epg = EPGStore(persist=self.settings.get("epg_save", True))
         self.tuners = TunerManager(self.settings, ca_factory=self.plugins.make_ca_provider)
         self.timers = TimerManager(self)
         self.plugins.bind_app(self)
@@ -111,23 +112,32 @@ class LinDVBApp(Gtk.Application):
             self.window.set_status("Set an XMLTV URL in the preferences first")
             return
         self.window.set_status("Downloading XMLTV guide…")
+        language = self.settings.get("epg_language", "")
 
         def work():
             try:
                 data = urllib.request.urlopen(url, timeout=60).read()
-                items = list(parse_xmltv(data))
+                channels, items = read_xmltv(data, language)
             except Exception as e:  # network and XML errors are reported to the user
                 GLib.idle_add(self.window.set_status, f"XMLTV failed: {e}")
                 return
-
-            def apply():
-                for name, ev in items:
-                    self.epg.add("iptv:" + name, ev)
-                self.epg.notify()
-                self.epg.save()
-                self.window.set_status(f"XMLTV: {len(items)} programmes loaded")
-            GLib.idle_add(apply)
+            GLib.idle_add(self._apply_xmltv, channels, items)
         threading.Thread(target=work, daemon=True).start()
+
+    def _apply_xmltv(self, channels, items):
+        from . import xmltvmatch
+        for cid, ev in items:
+            self.epg.add("xmltv:" + cid, ev)
+        xmltvmatch.save_channels(channels)
+        matched, unmatched = xmltvmatch.auto_match(self.db.channels, channels)
+        self.db.save()
+        self.epg.notify()
+        self.epg.save()
+        msg = f"XMLTV: {len(items)} programmes loaded, {matched} IPTV channels matched"
+        if unmatched:
+            msg += f", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+        self.window.set_status(msg)
+        return False
 
     def web_search(self, text, parent):
         urls = self.settings["epg_search_urls"]
@@ -157,6 +167,14 @@ class LinDVBApp(Gtk.Application):
     def show_scan(self):
         from .ui.scan import ScanWindow
         ScanWindow(self, self.window).present()
+
+    def show_epg_settings(self):
+        from .ui.epgsettings import EPGSettingsWindow
+        EPGSettingsWindow(self, self.window).present()
+
+    def show_xmltv_match(self):
+        from .ui.xmltvmatch import XMLTVMatchWindow
+        XMLTVMatchWindow(self, self.window).present()
 
     def show_prefs(self):
         from .ui.dialogs import PrefsWindow

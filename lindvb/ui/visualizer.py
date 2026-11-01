@@ -21,6 +21,7 @@ class VisualizerArea(Gtk.DrawingArea):
         self.smoother = Smoother()
         self.style = Blank()
         self.caption = ""
+        self.accent = rgb(ACCENT)
         self._last_draw = 0.0
         self._failed = False
         self.set_draw_func(self._draw)
@@ -30,6 +31,13 @@ class VisualizerArea(Gtk.DrawingArea):
         self.style = style or Blank()
         self._failed = False
         self.queue_draw()
+
+    def set_accent(self, hex_colour):
+        """Draw with the user's accent colour ('#RRGGBB')."""
+        try:
+            self.accent = rgb(hex_colour)
+        except (ValueError, TypeError):
+            self.accent = rgb(ACCENT)
 
     def set_caption(self, text):
         self.caption = text or ""
@@ -44,7 +52,7 @@ class VisualizerArea(Gtk.DrawingArea):
 
     def _draw(self, _area, cr, width, height):
         frame = self.smoother.update(self.analysis, time.monotonic())
-        frame.accent = rgb(ACCENT)
+        frame.accent = self.accent
         frame.caption = self.caption
         try:
             self.style.draw(cr, width, height, frame)
