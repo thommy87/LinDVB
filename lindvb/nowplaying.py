@@ -8,8 +8,8 @@
   into a title tag ("Artist - Title").
 * Album covers come from the file's tags, or are looked up online (iTunes
   Search API) when the user allows it.
-* Station logos are image files named after the channel in a logo folder
-  (logos named after the channel, as DVBViewer keeps them, work as they are).
+* Station logos are image files named after the channel in a logo folder,
+  as DVBViewer keeps them.
 
 No GTK in here, so it can be tested on its own.
 """

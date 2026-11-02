@@ -1176,6 +1176,9 @@ class MainWindow(Gtk.ApplicationWindow):
         else:
             audio_only = self.player.is_audio_only()
             name = self.get_title().removesuffix(f" – {APP_NAME}") if audio_only else ""
+        self._update_nowplaying(audio_only, name)
+        if self.settings.get("vis_show_song") or self.settings.get("vis_show_logo"):
+            name = ""                   # the overlay names the station already
         vis_id = self.settings.get("visualizer", DEFAULT_STYLE)
         _label, kind, factory = self.visualizers.get(vis_id) or self.visualizers[DEFAULT_STYLE]
         # a GStreamer visualiser renders into the picture; the drawn ones overlay it
@@ -1190,12 +1193,9 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.set_status(f"Visualisation failed: {e}")
                 self.vis.set_style(None)
             self._vis_id = vis_id
-        # the overlay names the station already
-        overlay = self.settings.get("vis_show_song") or self.settings.get("vis_show_logo")
-        self.vis.set_caption("" if overlay else name)
+        self.vis.set_caption(name)
         self.vis.set_visible(drawn)
         self.player.analyze = drawn
-        self._update_nowplaying(audio_only, name)
 
     def _update_nowplaying(self, audio_only=None, name=None):
         """Logo, cover, song and clock over the visualisation (Preferences ›

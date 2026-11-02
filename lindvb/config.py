@@ -59,6 +59,13 @@ DEFAULTS = {
     # Radio visualisation: a built-in style (glow, nebula, bars, vu, scope, off)
     # or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",
+    "xmltv_url": "",
+    "epg_search_urls": [
+        ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
+        ["IMDb", "https://www.imdb.com/find?q={q}"],
+        ["TMDB", "https://www.themoviedb.org/search?query={q}"],
+    ],
+    "osd_seconds": 4,
     # Shown over the radio visualisation (Preferences › Visualisation): the
     # station logo tile, the album cover, the song (artist, album, title, from
     # DVB RadioText, internet radio ICY titles or file tags) and a clock.
@@ -68,16 +75,9 @@ DEFAULTS = {
     "vis_show_clock": True,
     # Look up album covers online (artist and title go to the iTunes Search API).
     "vis_cover_online": True,
-    # Station logos: image files named after the channel (DVBViewer's Logos
+    # Station logos: image files named after the channel (DVBViewer's
     # channel logos work as they are). "" = DATA_DIR/logos.
     "logo_dir": "",
-    "xmltv_url": "",
-    "epg_search_urls": [
-        ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
-        ["IMDb", "https://www.imdb.com/find?q={q}"],
-        ["TMDB", "https://www.themoviedb.org/search?query={q}"],
-    ],
-    "osd_seconds": 4,
     # EPG ---------------------------------------------------------------------
     # Keep the guide on disk so it survives the end of the program.
     "epg_save": True,
