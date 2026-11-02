@@ -80,6 +80,12 @@ DEFAULTS = {
     # with type "mhw1", "mhw2" or "freesat" (see lindvb.epgsources).
     "epg_provider_freqs": [[10847, "v", "mhw2"], [11428, "h", "freesat"]],
     "deinterlace": True,
+    # Internet streams: "auto" plays HLS with separate audio renditions on
+    # playbin3 (keeps sound and picture in sync), everything else on playbin;
+    # "playbin" or "playbin3" forces one of them.
+    "stream_engine": "auto",
+    # Per-channel audio delay in ms (+ = sound later), set with J/K.
+    "audio_delays": {},
     # Accent colour: "default" (LinDVB blue), "system" (desktop accent) or
     # "custom" (accent_custom, "#RRGGBB").
     "accent_mode": "default",

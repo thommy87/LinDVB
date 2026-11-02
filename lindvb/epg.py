@@ -3,6 +3,7 @@
 import gzip
 import json
 import os
+import re
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
@@ -27,6 +28,8 @@ class Event:
     description: str = ""
     genre: str = ""
     event_id: int = 0
+    country: str = ""     # production country (XMLTV <country>)
+    year: int = 0         # production year (XMLTV <date>)
 
     @property
     def end(self):
@@ -210,11 +213,14 @@ def read_xmltv(data: bytes, language=""):
         if not start or stop <= start:
             continue
         cid = p.get("channel", "")
+        date = (p.findtext("date") or "").strip()
         channels.setdefault(cid, [cid])
         items.append((cid, Event(
             start, stop - start, _pick_text(p, "title", language),
             _pick_text(p, "sub-title", language), _pick_text(p, "desc", language),
-            _pick_text(p, "category", language))))
+            _pick_text(p, "category", language).strip(),
+            country=(p.findtext("country") or "").strip(),
+            year=int(date[:4]) if date[:4].isdigit() else 0)))
     return channels, items
 
 
@@ -223,6 +229,52 @@ def parse_xmltv(data: bytes):
     channels, items = read_xmltv(data)
     for cid, ev in items:
         yield channels.get(cid, [cid])[0].lower(), ev
+
+
+# ----------------------------------------------------------------------------
+# Details for the info bar: genre, country, year
+# ----------------------------------------------------------------------------
+
+# "Show, Deutschland 2026", "Spielfilm, USA 1995", "Deutschland 2025",
+# "Krimiserie, D/A 2019-2024" -- how German broadcasters write it in the EIT
+_DETAILS = re.compile(
+    r"^(?:(?P<genre>[^,\d]{2,40}),\s*)?(?P<country>[A-ZÄÖÜ][^,\d]{0,60}?)\s+"
+    r"(?P<year>(?:19|20)\d\d)(?:\s*[-–/]\s*(?:19|20)?\d\d)?\.?$")
+
+
+def _short_genre(genre):
+    """'Show/Game show' (EIT content nibble) -> 'Show'."""
+    return genre.split("/")[0].strip() if genre else ""
+
+
+def programme_details(ev):
+    """(genre, country, year, used_subtitle) for the info bar.
+
+    Takes the XMLTV fields when present, else reads a "Genre, Country Year"
+    line from the subtitle or the start of the description. used_subtitle
+    says the subtitle was just that line (so it need not be shown again)."""
+    genre, country, year = _short_genre(ev.genre), ev.country, ev.year
+    used = False
+    if not (country and year):
+        first_desc = (ev.description or "").strip().splitlines()[:1]
+        for i, text in enumerate([ev.subtitle] + first_desc):
+            m = _DETAILS.match((text or "").strip())
+            if m:
+                genre = genre or (m.group("genre") or "").strip()
+                if m.group("genre") and not ev.genre:
+                    genre = m.group("genre").strip()
+                country = country or m.group("country").strip()
+                year = year or int(m.group("year"))
+                used = i == 0
+                break
+    return genre, country, year, used
+
+
+def details_line(ev):
+    """'Show, Deutschland 2026' -- empty when the EPG has none of it."""
+    genre, country, year, _ = programme_details(ev)
+    origin = " ".join(p for p in (country, str(year) if year else "") if p)
+    return ", ".join(p for p in (genre, origin) if p)
 
 
 # ----------------------------------------------------------------------------

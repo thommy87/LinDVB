@@ -18,7 +18,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | DVBViewer feature | Evidence | LinDVB |
 |---|---|---|
 | Satellite, cable, terrestrial, ATSC, DTMB, ISDB reception | `Default/Transponders/` holds `DVB-S_*.ini`, `DVB-C_*.ini`, `DVB-T*_*.ini`, `ATSC_America.ini`, `DTMB.ini`, `ISDB.ini`; channel lists carry `TunerType=0/1/6` | **Yes**: GStreamer `dvbsrc` (Linux DVB API v5) with DVB-S/S2, DVB-C, DVB-T/T2, ATSC, ISDB-T, DTMB delivery systems |
-| Internet TV / radio streams (HLS, DASH, RTP multicast IPTV) | `Default/Channels/6500_Internet TV (ger).ini` (`URL=…master.m3u8`), `6500_MPEG Dash (ger).ini`, `6500_MagentaTV.m3u` (`rtp://src@group:port`), `DVBViewer_IPTV_Firewall_Rules.bat` | **Yes**: playbin for http(s)/HLS/DASH/RTSP; `rtp://src@group:port` source-specific multicast mapped to `udpsrc` |
+| Internet TV / radio streams (HLS, DASH, RTP multicast IPTV) | `Default/Channels/6500_Internet TV (ger).ini` (`URL=…master.m3u8`), `6500_MPEG Dash (ger).ini`, `6500_MagentaTV.m3u` (`rtp://src@group:port`), `DVBViewer_IPTV_Firewall_Rules.bat` | **Yes**: playbin for http(s)/HLS/DASH/RTSP; HLS with separate audio renditions on playbin3 (hlsdemux2 keeps them in sync by timestamp); `rtp://src@group:port` source-specific multicast mapped to `udpsrc` |
 | Channel search with transponder lists | `English.lng:1205` `[frmScanner]`, `lblTransList.Caption=&Transponder Lists`, `btnScan.Caption=&Channel &Search -->` | **Yes**: runs `dvbv5-scan` (libdvbv5) with dtv-scan-tables or DVBViewer-style transponder `.ini` lists |
 | Scan options: NIT search, update only, FTA only, update names, group by provider/frequency/letter | `English.lng:1240-1248` `cbNITScan`, `cbUpdateOnly`, `cbFTAOnly`, `cbUpdateNames`, `rbProvider`, `rbFrequency`, `rbInitialLetter` | **Yes** (FTA filter applies to lists that carry CA info; dvbv5 output does not) |
 | LNB types and LOFs | `English.lng:1216` `cbLNBType=Manual LOF,Universal,C-Band,10700 LOF,10750 LOF,11250 LOF,11300 LOF` | **Yes**: LNB type for the scan, LOF1/LOF2/switch frequency in Preferences |
@@ -39,7 +39,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Timeshift (pause live TV, jump, keep the buffer) | `English.lng:599-601` `actTimeshift`, `actTimeshiftRecStop`, `actTimeshiftSave.Caption=Keep Timeshift File`; `actions.ini` `Jump Minus 10=102` | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Media file and URL playback, playlists | `English.lng:569-570` `actLoadFile`, `actLoadURL`; `[frmPlaylist]`; `actRandom`, `actRepeat`, `actPlaylistGo` | **Yes**: files, URLs, M3U/PLS playlists, next/previous, random, endless |
 | Play rate | `English.lng:619` `mnuPlayrate.Caption=Play Rate`; `Images/Icons/VisionX/actPlayrate050..200.png` | **Yes** (files) |
-| Audio track and subtitle selection | `English.lng:615,620` `mnuAudio`, `mnuSubtitle`; `[frmOptSubtitles]` line 931 | **Yes**: playbin audio/text streams, DVB subtitles, teletext subtitles (pages from the PMT teletext descriptor, decoded with `teletextdec` in the playback pipeline and drawn over the video) |
+| Audio track and subtitle selection | `English.lng:615,620` `mnuAudio`, `mnuSubtitle`; `[frmOptSubtitles]` line 931 | **Yes**: playbin audio/text streams with readable names ("German, Stereo", "German, 5.1"), DVB subtitles, teletext subtitles (pages from the PMT teletext descriptor, decoded with `teletextdec` in the playback pipeline and drawn over the video) |
 | Audio channel (stereo/left/right), second audio output | `English.lng:532-537` `ActBalanceLeft/Right`, `actAudioOutput.Caption=Audio Output B` | **No** |
 | Equalizer | `English.lng:555` `actEqualizer.Caption=Equalizer...` | **Yes**: 10-band equalizer |
 | Brightness, contrast, saturation, hue | `English.lng:550` `actDisplay.Caption=Brightness, Contrast...`; `actions.ini` `Brightness Up=55` … `Hue Down=62` | **Yes**: `videobalance` with reset |
@@ -48,6 +48,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Deinterlacing, pixel shaders | `Shaders/` holds 45 shader XML files (e.g. `Effect_Deinterlace.xml`, `Resample_Lanczos3.xml`, `Stereo3D_Anaglyph_Dubois.xml`); `mnuShaders` line 656 | **Partly**: deinterlace option; no shader effects |
 | Screenshot | `English.lng:592` `actScreenshot.Caption=Screenshot` | **Yes**: PNG to a configurable folder |
 | Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **No**: needs a second tuner pipeline and window; planned |
+| Audio delay (lip sync) per channel | (LinDVB addition) | **Yes**: J/K or the gear menu shift the sound in 100 ms steps, saved per channel |
 | Video off / audio only | `English.lng:529-530` `acDisableAV`, `actDisableV` | **Yes** |
 | DVD and audio CD playback | `English.lng:552` `actDVDPlay.Caption=CD/DVD Playback`, `[frmDVDOptions]` | **No**: out of scope for a TV app |
 | DirectShow filter presets | `Default/GraphPresets/*.fgp`, `Filters/PushSource.ax`, LAV Filters installer | **Not applicable**: GStreamer picks decoders automatically |
@@ -65,7 +66,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
 | EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
-| On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress |
+| On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress, genre/country/year of the programme on air, sound format, languages and subtitles on offer |
 | Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save |
 | Teletext character sets | `English.lng:1419` `clbVTCharSet=English,Polish,…` | **Yes**: handled by libzvbi |
 | HbbTV | `English.lng:1421` `gbHbbTV.Caption=HbbTV (requires add-on)` | **No** |
