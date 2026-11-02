@@ -8,14 +8,17 @@ extras that are ticked:
   * Teletext and EPG data only exist as MPEG-TS streams: they force TS.
   * Subtitles are kept in TS, or in MKV as a text track converted from the
     teletext subtitle page (DVB bitmap subtitles stay TS-only).
-  * All audio tracks fit into TS, MPG, MP4 and MKV (tracks a container cannot
-    carry, such as AC-3 in MPG, are left out).
+
+The audio tracks are chosen separately (AUDIO_MODES): all of them, the ones in
+the preferred language, or only the first. TS, MPG and MKV keep several tracks
+(tracks a container cannot carry, such as AC-3 in MPG, are left out); MP4 and
+the native radio audio file keep one, the preferred language when it is on air.
 """
 
 import re
 from datetime import datetime
 
-from .ca import TS_PACKET, TS_SYNC, ts_payload_offset, ts_pid
+from .ca import TS_PACKET, TS_SYNC, parse_pmt, ts_payload_offset, ts_pid
 
 TV_FORMATS = ["TS", "MPG", "MP4", "MKV"]
 RADIO_FORMATS = ["Audio", "TS"]          # "Audio": the native MP2 / MP3 / AAC / AC-3 stream
@@ -33,22 +36,31 @@ TS_SYNC_BYTE = bytes([TS_SYNC])
 EXTENSIONS = {"TS": ".ts", "MPG": ".mpg", "MP4": ".mp4", "MKV": ".mkv", "Audio": ".mp2"}
 
 # Extra streams, in the order the timer dialog shows them.
-EXTRAS = ("teletext", "subtitles", "all_audio", "epg_data")
+EXTRAS = ("teletext", "subtitles", "epg_data")
 EXTRA_LABELS = {
     "teletext": "Teletext (TS)",
     "subtitles": "Subtitles (TS / MKV)",
-    "all_audio": "All audio tracks (TS / MPG / MP4 / MKV)",
     "epg_data": "EPG data (TS)",
 }
 
 # Which extra streams each container can hold.
 CAN_HOLD = {
     "TS": set(EXTRAS),
-    "MPG": {"all_audio"},
-    "MP4": {"all_audio"},
-    "MKV": {"subtitles", "all_audio"},
+    "MPG": set(),
+    "MP4": set(),
+    "MKV": {"subtitles"},
     "Audio": set(),
 }
+
+# Which audio tracks to record.
+AUDIO_MODES = ["all", "language", "first"]
+AUDIO_MODE_LABELS = {
+    "all": "All audio tracks",
+    "language": "Preferred language only",
+    "first": "First audio track only",
+}
+# Containers that keep a single audio track.
+SINGLE_AUDIO = {"MP4", "Audio"}
 
 TIMER_ACTIONS = ["Record", "Tune only", "Record and tune"]
 AFTER_ACTIONS = ["None", "Standby", "Hibernate", "Power off", "Quit LinDVB"]
@@ -81,10 +93,26 @@ def effective_format(fmt, extras, radio=False):
     return fmt if fmt in allowed else "TS"
 
 
-def keep_pids(channel, extras, fmt):
+def audio_mode_from_legacy(all_audio):
+    """Timers and settings of older versions only had an "all audio tracks" switch."""
+    return "all" if all_audio else "first"
+
+
+def audio_note(fmt, mode):
+    """A short note on how many audio tracks the chosen container keeps."""
+    if fmt == "MP4" and mode != "first":
+        return "MP4 keeps one audio track (the preferred language when it is on air)."
+    if fmt == "Audio" and mode != "first":
+        return "The audio file keeps one track (the preferred language when it is on air)."
+    return ""
+
+
+def keep_pids(channel, extras, fmt, audio_mode="all"):
     """PIDs to keep from the captured transport stream, or None for all.
 
     None means the stream layout is unknown (no PMT PID), so nothing is dropped.
+    The audio PIDs come from the channel list: all of them or the first. The
+    preferred language is chosen later from the PMT (see choose_from_pmt).
     """
     if not channel.pmt_pid:
         return None
@@ -96,12 +124,100 @@ def keep_pids(channel, extras, fmt):
         if pid:
             keep.add(pid)
     audio = list(channel.audio_pids)
-    keep.update(audio if "all_audio" in extras else audio[:1])
+    many = audio_mode != "first" and fmt not in SINGLE_AUDIO
+    keep.update(audio if many else audio[:1])
     if channel.teletext_pid and ("teletext" in extras or "subtitles" in extras):
         keep.add(channel.teletext_pid)        # teletext also carries subtitle pages
     if "subtitles" in extras:
         keep.update(channel.subtitle_pids)
     return keep
+
+
+# -- audio tracks from the PMT ----------------------------------------------------
+
+ISO_639_DESCRIPTOR = 0x0A
+# stream_type values that are always audio (ISO 13818-1, ATSC A/53).
+AUDIO_STREAM_TYPES = {0x03, 0x04, 0x0F, 0x11, 0x81, 0x87}
+# Descriptors that make a private stream (stream_type 0x06) audio: AC-3, DTS, AAC, E-AC-3.
+AUDIO_DESCRIPTORS = {0x6A, 0x7B, 0x7C, 0x7A}
+# ISO 639 audio_type: 2 = hearing impaired, 3 = audio description for the blind.
+SPECIAL_AUDIO_TYPES = {0x02, 0x03}
+
+
+def _descriptors(loop):
+    i = 0
+    while i + 2 <= len(loop):
+        tag, length = loop[i], loop[i + 1]
+        yield tag, loop[i + 2:i + 2 + length]
+        i += 2 + length
+
+
+def pmt_audio_tracks(section):
+    """Audio tracks of a PMT section as (pid, language, special) in PMT order.
+
+    *language* is the ISO 639 code ("" when not announced), *special* is True for
+    audio description and hearing-impaired tracks.
+    """
+    tracks = []
+    for stream_type, pid, _ca, info in parse_pmt(section).streams:
+        tags = dict(_descriptors(info))
+        if stream_type not in AUDIO_STREAM_TYPES and not (
+                stream_type == 0x06 and AUDIO_DESCRIPTORS & tags.keys()):
+            continue
+        lang, special = "", False
+        body = tags.get(ISO_639_DESCRIPTOR, b"")
+        if len(body) >= 4:
+            lang = bytes(body[:3]).decode("latin-1", "replace").strip("\x00 ").lower()
+            special = body[3] in SPECIAL_AUDIO_TYPES
+        tracks.append((pid, lang, special))
+    return tracks
+
+
+def choose_audio(tracks, mode, language="", single=False):
+    """The audio PIDs to record from *tracks* (see pmt_audio_tracks).
+
+    "all" keeps every track, "language" the tracks in the preferred language
+    (without audio description), "first" only the first. A single-track
+    container gets the first preferred-language track. Without a match the
+    first track is used.
+    """
+    from .epgsources import norm_lang
+    if not tracks:
+        return []
+    if mode == "all" and not single:
+        return [pid for pid, _lang, _special in tracks]
+    want = norm_lang(language)
+    if mode != "first" and want:
+        match = [pid for pid, lang, special in tracks if norm_lang(lang) == want and not special]
+        if match:
+            return match[:1] if single else match
+    return [tracks[0][0]]
+
+
+def choose_from_pmt(section, pids, channel_audio, mode, language="", single=False,
+                    captured=None):
+    """*pids* with the channel list's audio PIDs replaced by the ones chosen
+    from the PMT. Returns *pids* unchanged when the PMT names no audio track.
+
+    *captured* are the audio PIDs the tuner delivers (None: all of them, when the
+    whole transponder is captured); other tracks of the PMT are not offered.
+    """
+    try:
+        tracks = pmt_audio_tracks(section)
+    except ValueError:
+        return pids
+    if captured is not None:
+        tracks = [t for t in tracks if t[0] in set(captured)]
+    audio = choose_audio(tracks, mode, language, single)
+    if not audio:
+        return pids
+    return (set(pids) - set(channel_audio)) | set(audio)
+
+
+def needs_pmt(audio_mode, fmt, language):
+    """True when the audio tracks can only be chosen once the PMT is known."""
+    return bool(language) and (audio_mode == "language" or
+                               (audio_mode == "all" and fmt in SINGLE_AUDIO))
 
 
 def _safe(s):
@@ -134,17 +250,36 @@ class PidFilter:
 
     Data may arrive in pieces that do not end on a packet boundary; the rest is
     kept for the next call.
+
+    With *choose*, the PIDs are only settled once the PMT is seen:
+    ``choose(pmt_section)`` returns the PID set to keep. Until then the packets
+    are held (at most *hold_limit* bytes, then the given *pids* are used).
     """
 
-    def __init__(self, pids=None, pmt_pid=0):
+    def __init__(self, pids=None, pmt_pid=0, choose=None, hold_limit=4 << 20):
         self.pids = pids
         self.pmt_pid = pmt_pid
         self.pmt = None              # first complete PMT section seen
+        self.choose = choose if pmt_pid else None
+        self.hold_limit = hold_limit
+        self._held = []
+        self._held_bytes = 0
         self._rest = b""
+
+    def _settle(self):
+        """Fix the PID set (from the PMT, if it came) and release held packets."""
+        if self.pmt is not None:
+            try:
+                self.pids = self.choose(self.pmt)
+            except Exception:          # noqa: BLE001 - a broken PMT keeps the given PIDs
+                pass
+        self.choose = None
+        held, self._held, self._held_bytes = self._held, [], 0
+        return [p for p in held if self.pids is None or ts_pid(p) in self.pids]
 
     def feed(self, data):
         data = self._rest + data
-        if self.pids is None and (self.pmt is not None or not self.pmt_pid):
+        if self.choose is None and self.pids is None and (self.pmt is not None or not self.pmt_pid):
             n = len(data) - len(data) % TS_PACKET
             self._rest = data[n:]
             return data[:n]
@@ -161,13 +296,23 @@ class PidFilter:
                 continue
             pkt = mv[i:i + TS_PACKET]
             pid = ts_pid(pkt)
+            i += TS_PACKET
             if self.pmt is None and pid == self.pmt_pid and pkt[1] & 0x40:
                 self._grab_pmt(bytes(pkt))
+            if self.choose is not None:
+                self._held.append(bytes(pkt))
+                self._held_bytes += TS_PACKET
+                if self.pmt is not None or self._held_bytes >= self.hold_limit:
+                    out.extend(self._settle())
+                continue
             if self.pids is None or pid in self.pids:
                 out.append(pkt)
-            i += TS_PACKET
         self._rest = data[i:]
         return b"".join(out)
+
+    def flush(self):
+        """Packets still held when the stream ends before the PMT came."""
+        return b"".join(self._settle()) if self.choose is not None else b""
 
     def _grab_pmt(self, pkt):
         off = ts_payload_offset(pkt)

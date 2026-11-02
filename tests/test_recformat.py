@@ -4,8 +4,9 @@ import time
 from datetime import datetime
 
 from lindvb.channels import Channel
-from lindvb.recformat import (EXTRAS, PidFilter, allowed_formats, audio_extension,
-                              effective_format, expand_scheme, keep_pids)
+from lindvb.recformat import (EXTRAS, PidFilter, allowed_formats, audio_extension, choose_audio,
+                              choose_from_pmt, effective_format, expand_scheme, keep_pids,
+                              needs_pmt, pmt_audio_tracks)
 
 
 def test_teletext_and_epg_force_ts():
@@ -17,16 +18,13 @@ def test_teletext_and_epg_force_ts():
 
 def test_subtitles_allow_ts_and_mkv():
     assert allowed_formats(["subtitles"]) == ["TS", "MKV"]
-    assert allowed_formats(["subtitles", "all_audio"]) == ["TS", "MKV"]
     assert effective_format("MP4", ["subtitles"]) == "TS"
     assert effective_format("MKV", ["subtitles"]) == "MKV"
 
 
 def test_plain_video_and_audio_allows_everything():
     assert allowed_formats([]) == ["TS", "MPG", "MP4", "MKV"]
-    assert allowed_formats(["all_audio"]) == ["TS", "MPG", "MP4", "MKV"]
     assert allowed_formats([], radio=True) == ["Audio", "TS"]
-    assert allowed_formats(["all_audio"], radio=True) == ["TS"]
 
 
 def _ch():
@@ -38,11 +36,84 @@ def test_keep_pids():
     ch = _ch()
     everything = keep_pids(ch, EXTRAS, "TS")
     assert {0, 0x12, 5100, 5101, 5102, 5103, 5104, 5105, 5106} <= everything
-    bare = keep_pids(ch, [], "MKV")
+    bare = keep_pids(ch, [], "MKV", "first")
     assert 5102 in bare and 5103 not in bare and 5104 not in bare and 0x12 not in bare
     subs = keep_pids(ch, ["subtitles"], "MKV")
     assert 5104 in subs and 5105 in subs          # teletext carries the subtitle pages
     assert keep_pids(Channel("Unknown"), [], "TS") is None
+    assert {5102, 5103, 5106} <= keep_pids(ch, [], "MKV", "all")
+    first = keep_pids(ch, EXTRAS, "TS", "first")
+    assert 5102 in first and 5103 not in first and 5106 not in first
+    mp4 = keep_pids(ch, [], "MP4", "all")            # MP4 keeps one audio track
+    assert 5102 in mp4 and 5103 not in mp4
+
+
+def _pmt(streams):
+    """A PMT section; streams are (stream_type, pid, descriptor bytes)."""
+    body = bytes([0x6D, 0xCA, 0xC1, 0, 0, 0xE0 | (5101 >> 8), 5101 & 0xFF, 0xF0, 0x00])
+    for st, pid, desc in streams:
+        body += bytes([st, 0xE0 | (pid >> 8), pid & 0xFF, 0xF0 | (len(desc) >> 8), len(desc) & 0xFF])
+        body += desc
+    length = len(body) + 4
+    return bytes([0x02, 0xB0 | (length >> 8), length & 0xFF]) + body + b"\0\0\0\0"
+
+
+def _lang(code, audio_type=0):
+    return bytes([0x0A, 4]) + code.encode() + bytes([audio_type])
+
+
+PMT = _pmt([(0x1B, 5101, b""),                                  # H.264 video
+            (0x03, 5102, _lang("deu")),                         # MPEG audio, German
+            (0x03, 5103, _lang("deu", 3)),                      # German audio description
+            (0x06, 5106, bytes([0x6A, 1, 0]) + _lang("ger")),   # AC-3, German
+            (0x04, 5107, _lang("eng")),                         # English
+            (0x06, 5104, bytes([0x56, 5]) + b"deu\x09\x00")])   # teletext
+
+
+def test_pmt_audio_tracks():
+    assert pmt_audio_tracks(PMT) == [(5102, "deu", False), (5103, "deu", True),
+                                     (5106, "ger", False), (5107, "eng", False)]
+
+
+def test_choose_audio():
+    tracks = pmt_audio_tracks(PMT)
+    assert choose_audio(tracks, "all") == [5102, 5103, 5106, 5107]
+    assert choose_audio(tracks, "language", "deu") == [5102, 5106]    # no audio description
+    assert choose_audio(tracks, "language", "eng") == [5107]
+    assert choose_audio(tracks, "language", "eng", single=True) == [5107]
+    assert choose_audio(tracks, "all", "eng", single=True) == [5107]
+    assert choose_audio(tracks, "language", "fra") == [5102]          # no match: first track
+    assert choose_audio(tracks, "language", "") == [5102]
+    assert choose_audio(tracks, "first", "eng") == [5102]
+    assert choose_audio([], "all") == []
+
+
+def test_choose_from_pmt_replaces_audio_pids():
+    ch = _ch()
+    pids = keep_pids(ch, EXTRAS, "TS", "language")
+    chosen = choose_from_pmt(PMT, pids, ch.audio_pids, "language", "eng")
+    assert 5107 in chosen and 5102 not in chosen and 5103 not in chosen
+    assert {5100, 5101, 5104, 5105} <= chosen
+    assert choose_from_pmt(b"junk", pids, ch.audio_pids, "language", "eng") == pids
+    # English is not captured (only the channel list's PIDs are): first captured track.
+    only = choose_from_pmt(PMT, pids, ch.audio_pids, "language", "eng", captured=ch.audio_pids)
+    assert 5102 in only and 5107 not in only
+    assert needs_pmt("language", "MKV", "deu") and not needs_pmt("language", "MKV", "")
+    assert needs_pmt("all", "MP4", "deu") and not needs_pmt("all", "TS", "deu")
+    assert not needs_pmt("first", "MP4", "deu")
+
+
+def test_pid_filter_holds_until_pmt():
+    pmt = _pmt([(0x03, 300, _lang("deu")), (0x03, 400, _lang("eng"))])
+    data = _pkt(300) + _pkt(400) + _pkt(100, True, b"\x00" + pmt) + _pkt(300) + _pkt(400)
+    f = PidFilter({100, 300}, pmt_pid=100,
+                  choose=lambda sec: choose_from_pmt(sec, {100, 300}, [300], "language", "eng"))
+    out = f.feed(data[:400]) + f.feed(data[400:])
+    assert out == _pkt(400) + _pkt(100, True, b"\x00" + pmt) + _pkt(400)
+    # Without a PMT the held packets come out with the given PIDs at the end.
+    f2 = PidFilter({300}, pmt_pid=100, choose=lambda sec: {400})
+    assert f2.feed(_pkt(300) + _pkt(400)) == b""
+    assert f2.flush() == _pkt(300)
 
 
 def test_expand_scheme():

@@ -57,9 +57,11 @@ picture and hides itself when the mouse is still.
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
 * Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
   after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
-* Recording formats per timer: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3
-  for radio, with teletext, subtitles, all audio tracks and EPG data; file naming
-  scheme with placeholders (%date %time %station %name ...) and sub-folders
+* Recording formats: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3 for radio,
+  with teletext, subtitles and EPG data; audio tracks: all, preferred language only or
+  the first (MP4 keeps one). Defaults in Preferences > Recording, changeable per timer
+  and with "Record with Options…" for one instant recording; file naming scheme with
+  placeholders (%date %time %station %name ...) and sub-folders
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
   web search links; on-screen now/next display; XMLTV for internet channels
   with automatic and manual matching of M3U channels to guide channels;

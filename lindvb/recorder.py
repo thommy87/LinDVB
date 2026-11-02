@@ -12,8 +12,9 @@ from pathlib import Path
 from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
-from .recformat import (AFTER_ACTIONS, EXTENSIONS, EXTRAS, TIMER_ACTIONS, PidFilter,  # noqa: F401
-                        effective_format, expand_scheme, keep_pids)
+from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
+                        SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
+                        choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt)
 from .tuner import SegmentReader
 # systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
 AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
@@ -65,8 +66,8 @@ class Timer:
     radio_format: str = "TS"
     teletext: bool = True
     subtitles: bool = True
-    all_audio: bool = True
     epg_data: bool = True
+    audio_mode: str = "all"        # see recformat.AUDIO_MODES
 
     @property
     def rec_start(self):
@@ -116,11 +117,13 @@ class Recording:
     """
 
     def __init__(self, path, capture=None, url=None, start_offset=None, fmt="TS",
-                 channel=None, extras=EXTRAS):
+                 channel=None, extras=EXTRAS, audio_mode="all", language="",
+                 full_capture=False):
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         self.fmt = fmt
         self.extras = set(extras)
+        self.audio_mode = audio_mode if audio_mode in AUDIO_MODES else "all"
         self.path = path if fmt == "Audio" else path.with_name(path.name + EXTENSIONS[fmt])
         self.capture = capture
         self.started = time.time()
@@ -131,23 +134,35 @@ class Recording:
             if start_offset is None:
                 _, start_offset = capture.store.bounds()
             self.reader = SegmentReader(capture.store, start_offset)
-            pids = keep_pids(channel, self.extras, fmt) if channel is not None else None
-            want_pmt = fmt == "MKV" and "subtitles" in self.extras and channel is not None \
-                and channel.teletext_pid
-            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt else 0)
+            pids = keep_pids(channel, self.extras, fmt, self.audio_mode) \
+                if channel is not None else None
+            self.want_sub_page = bool(fmt == "MKV" and "subtitles" in self.extras and
+                                      channel is not None and channel.teletext_pid)
+            choose = None
+            if pids is not None and needs_pmt(self.audio_mode, fmt, language):
+                single = fmt in SINGLE_AUDIO
+                captured = None if full_capture else list(channel.audio_pids)
+                choose = (lambda pmt: choose_from_pmt(pmt, pids, channel.audio_pids,
+                                                      self.audio_mode, language, single,
+                                                      captured))
+            want_pmt = self.want_sub_page or choose is not None
+            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt and channel else 0, choose)
             if fmt != "TS":
-                self.remux = self._remuxer(program=channel.sid if channel else 0)
+                # The PID filter has already picked the audio tracks.
+                self.remux = self._remuxer(program=channel.sid if channel else 0,
+                                           all_audio=fmt not in SINGLE_AUDIO)
                 self.remux.start()
             self.thread = threading.Thread(target=self._copy, daemon=True)
             self.thread.start()
         else:
-            self.remux = self._remuxer(url=url)
+            # Internet TV: no PMT to choose by language, so "language" keeps the first.
+            self.remux = self._remuxer(url=url, all_audio=self.audio_mode == "all" and
+                                       fmt not in SINGLE_AUDIO)
             self.remux.start()
 
-    def _remuxer(self, url=None, program=0):
+    def _remuxer(self, url=None, program=0, all_audio=True):
         from .remux import Remuxer
-        return Remuxer(self.fmt, self.path, url=url, program=program,
-                       all_audio="all_audio" in self.extras,
+        return Remuxer(self.fmt, self.path, url=url, program=program, all_audio=all_audio,
                        on_done=lambda r: setattr(self, "path", Path(r.path)))
 
     @property
@@ -183,7 +198,7 @@ class Recording:
                     out.write(data)
                     self._bytes += len(data)
                     continue
-                if self.filter.pmt_pid and not self.remux.subtitle_page:
+                if self.want_sub_page and not self.remux.subtitle_page:
                     held.append(data)
                     if self.filter.pmt is None and sum(map(len, held)) < (4 << 20):
                         continue
@@ -191,6 +206,12 @@ class Recording:
                     data, held = b"".join(held), []
                 self.remux.push(data)
         finally:
+            rest = self.filter.flush()
+            if rest and out is not None:
+                out.write(rest)
+                self._bytes += len(rest)
+            elif rest:
+                held.append(rest)
             if out is not None:
                 out.close()
             if self.remux is not None:
@@ -226,6 +247,9 @@ class TimerManager(GObject.Object):
         try:
             d = json.loads(self.path.read_text())
             names = {f.name for f in fields(Timer)}
+            for t in d.get("timers", []):
+                if "audio_mode" not in t and "all_audio" in t:
+                    t["audio_mode"] = audio_mode_from_legacy(t["all_audio"])
             self.timers = [Timer(**{k: v for k, v in t.items() if k in names})
                            for t in d.get("timers", [])]
             self.rules = [SeriesRule(**r) for r in d.get("rules", [])]
@@ -242,8 +266,10 @@ class TimerManager(GObject.Object):
     def defaults(self):
         """Recording options for new timers and manual recordings (preferences)."""
         s = self.app.settings
+        mode = s.get("rec_audio_mode", "all")
         return {"tv_format": s.get("rec_tv_format", "TS"),
                 "radio_format": s.get("rec_radio_format", "TS"),
+                "audio_mode": mode if mode in AUDIO_MODES else "all",
                 **{e: bool(s.get("rec_" + e, True)) for e in EXTRAS}}
 
     def new_timer(self, channel, title, start, end, **kw):
@@ -298,13 +324,17 @@ class TimerManager(GObject.Object):
                         known.add((ch.key, ev.title, ev.start))
 
     # -- manual recording -----------------------------------------------------
-    def record_now(self, channel, capture=None, title="", start_offset=None):
+    def record_now(self, channel, capture=None, title="", start_offset=None, options=None):
+        """Start or stop a manual recording. *options* (a dict with tv_format,
+        radio_format, audio_mode and the extras) replaces the defaults for this
+        one recording."""
         key = "manual:" + channel.key
         if key in self.active:
             self._stop(key)
             self.emit("message", "Recording stopped")
             return False
-        self._start(key, channel, title or channel.name, capture, start_offset)
+        opts = Timer("", "", "", 0, 0, **{**self.defaults(), **(options or {})})
+        self._start(key, channel, title or channel.name, capture, start_offset, options=opts)
         return True
 
     def is_recording(self, channel):
@@ -317,9 +347,12 @@ class TimerManager(GObject.Object):
         if key in self.active:
             GLib.timeout_add_seconds(int(seconds), lambda: (self._stop(key), False)[1])
 
-    def _start(self, key, channel, title, capture=None, start_offset=None, timer=None):
+    def _start(self, key, channel, title, capture=None, start_offset=None, timer=None,
+               options=None):
         s = self.app.settings
-        opts = timer if timer is not None else Timer("", "", "", 0, 0, **self.defaults())
+        opts = timer or options or Timer("", "", "", 0, 0, **self.defaults())
+        audio = {"audio_mode": opts.audio_mode, "language": s.get("rec_audio_language", "")}
+        full = bool(s.get("full_transponder")) or not channel.pmt_pid
         extras = opts.extras
         fmt = effective_format(opts.radio_format if channel.radio else opts.tv_format,
                                extras, channel.radio)
@@ -335,12 +368,12 @@ class TimerManager(GObject.Object):
         try:
             if channel.is_iptv:
                 rec, cap = Recording(path, url=channel.url, fmt=fmt, channel=channel,
-                                     extras=extras), None
+                                     extras=extras, **audio), None
             else:
                 cap = capture or self.app.tuners.acquire(channel, key)
                 cap.users.add(key)
                 rec = Recording(path, capture=cap, start_offset=start_offset, fmt=fmt,
-                                channel=channel, extras=extras)
+                                channel=channel, extras=extras, full_capture=full, **audio)
         except (RuntimeError, OSError) as e:
             self.emit("message", f"Recording failed: {e}")
             return None
