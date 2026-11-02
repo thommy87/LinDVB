@@ -61,6 +61,9 @@ class MainWindow(Gtk.ApplicationWindow):
             prov.load_from_data(CSS.encode())
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
                                                   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        # LinDVB's own symbolic icons (e.g. the visualisation sine wave)
+        Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_search_path(
+            str(Path(__file__).resolve().parent.parent / "icons"))
         apply_accent(self.settings)
 
         self._build_actions()
@@ -555,7 +558,7 @@ class MainWindow(Gtk.ApplicationWindow):
         bar.append(menubtn("media-view-subtitles-symbolic", self.sub_menu, "Subtitles"))
         bar.append(menubtn("emblem-system-symbolic", self.settings_menu, "Playback and picture settings"))
         # radio visualisation picker: only usable while radio / audio is playing
-        self.vis_btn = menubtn("applications-multimedia-symbolic", self.vis_menu, "")
+        self.vis_btn = menubtn("lindvb-sine-wave-symbolic", self.vis_menu, "")
         self._set_vis_button(False)
         bar.append(self.vis_btn)
         self.fs_btn = btn("view-fullscreen-symbolic", "win.fullscreen", "Full screen (F)")
