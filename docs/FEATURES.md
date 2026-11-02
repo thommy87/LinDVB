@@ -68,7 +68,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
 | On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress, genre/country/year of the programme on air, sound format, languages and subtitles on offer |
-| Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save |
+| Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save; opened from the "TXT" button next to the guide button in the header bar (greyed out when the channel has no teletext) |
 | Teletext character sets | `English.lng:1419` `clbVTCharSet=English,Polish,…` | **Yes**: handled by libzvbi |
 | HbbTV | `English.lng:1421` `gbHbbTV.Caption=HbbTV (requires add-on)` | **No** |
 

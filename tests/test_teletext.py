@@ -48,3 +48,15 @@ def test_duplicates_removed():
     e = _entry("deu", 0x02, 1, 0x50)
     info = bytes([0x56, 5]) + e + bytes([0x56, 5]) + e
     assert len(teletext.subtitle_pages_from_pmt(_pmt(info))[1]) == 1
+
+
+def test_teletext_in_pmt():
+    entries = _entry("deu", 0x01, 1, 0x00)               # initial page only, no subtitles
+    program, present = teletext.teletext_in_pmt(_pmt(bytes([0x56, len(entries)]) + entries))
+    assert (program, present) == (7, True)
+    assert teletext.subtitle_pages_from_pmt(_pmt(bytes([0x56, len(entries)]) + entries))[1] == []
+
+
+def test_no_teletext_in_pmt():
+    assert teletext.teletext_in_pmt(_pmt(bytes([0x0A, 4]) + b"deu\0")) == (7, False)
+    assert teletext.teletext_in_pmt(_pmt(b"")) == (7, False)
