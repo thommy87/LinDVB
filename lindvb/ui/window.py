@@ -4,12 +4,13 @@ import random
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, Gio, GLib, Gst, Gtk, Pango
+from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gst, Gtk, Pango
 
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
 from ..epg import details_line, programme_details
 from ..media_info import audio_summary
+from ..nowplaying import content_box
 from ..player import EQ_BANDS, Player
 from ..recordings import find_recordings
 from ..visuals import DEFAULT_STYLE, STYLES
@@ -586,7 +587,9 @@ class MainWindow(Gtk.ApplicationWindow):
         logo = self._logo_texture(c.logo) if c.logo else None
         if logo is not None:
             icon.set_from_paintable(logo)
+            icon.set_pixel_size(32)
         else:
+            icon.set_pixel_size(-1)
             icon.set_from_icon_name("audio-x-generic-symbolic" if c.radio else
                                     "network-wireless-symbolic" if c.is_iptv else
                                     "video-display-symbolic")
@@ -601,11 +604,17 @@ class MainWindow(Gtk.ApplicationWindow):
             extra.remove_css_class("lv-fav")
 
     def _logo_texture(self, path):
-        """Channel logo (DVB-I) for the list, loaded once."""
+        """Channel logo (DVB-I) for the list, loaded once, with its plain
+        border cut away so the logo itself fills the row."""
         cache = self.__dict__.setdefault("_logos", {})
         if path not in cache:
             try:
-                cache[path] = Gdk.Texture.new_from_filename(path)
+                pb = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, 320, 180, True)
+                x, y, w, h = content_box(pb.get_pixels(), pb.get_width(), pb.get_height(),
+                                         pb.get_rowstride(), pb.get_n_channels())
+                if (w, h) != (pb.get_width(), pb.get_height()):
+                    pb = pb.new_subpixbuf(x, y, w, h).copy()
+                cache[path] = Gdk.Texture.new_for_pixbuf(pb)
             except GLib.Error:
                 cache[path] = None
         return cache[path]

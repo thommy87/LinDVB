@@ -109,3 +109,24 @@ def test_find_logo(tmp_path):
     assert find_logo("Das Erste HD", [str(tmp_path)]).endswith("Das Erste.svg")
     assert find_logo("readme", [str(tmp_path)]) is None
     assert find_logo("Bayern 3", ["/nonexistent"]) is None
+
+
+def test_content_box_cuts_plain_border():
+    from lindvb.nowplaying import content_box
+    w, h, ch = 160, 90, 3
+    data = bytearray([255, 255, 255] * w * h)          # white board
+    for y in range(40, 50):                              # dark logo in the middle
+        for x in range(60, 100):
+            o = (y * w + x) * ch
+            data[o:o + 3] = b"\x10\x20\x30"
+    x, y, bw, bh = content_box(bytes(data), w, h, w * ch, ch)
+    assert x <= 60 and y <= 40 and x + bw >= 100 and y + bh >= 50
+    assert bw < 60 and bh < 20
+    # transparent RGBA border
+    data = bytearray([0, 0, 0, 0] * w * h)
+    o = (45 * w + 80) * 4
+    data[o:o + 4] = b"\xff\x00\x00\xff"
+    x, y, bw, bh = content_box(bytes(data), w, h, w * 4, 4)
+    assert x <= 80 < x + bw and y <= 45 < y + bh and bw < 20
+    # nothing to cut
+    assert content_box(bytes([9, 9, 9] * 4), 2, 2, 6, 3) == (0, 0, 2, 2)

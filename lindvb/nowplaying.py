@@ -273,3 +273,38 @@ def find_logo(name, folders):
             if s in index:
                 return os.path.join(folder, index[s])
     return None
+
+
+def content_box(data, width, height, rowstride, channels, tolerance=24, margin=0.04):
+    """Bounding box (x, y, w, h) of a logo inside its plain border.
+
+    Many DVB-I logos are 16:9 boards with the logo in the middle; cut away
+    the border (transparent, or the colour of the top-left corner) so the
+    logo fills the small space in the channel list. *data* holds the pixels
+    (RGB or RGBA, 8 bit) as a GdkPixbuf gives them."""
+    if width <= 0 or height <= 0:
+        return 0, 0, width, height
+    bg = data[0:channels]
+    transparent = channels == 4 and bg[3] < 16
+
+    def is_content(o):
+        if channels == 4 and data[o + 3] < 16:
+            return False
+        if transparent:
+            return True
+        return max(abs(data[o + i] - bg[i]) for i in range(3)) > tolerance
+
+    x0, y0, x1, y1 = width, height, -1, -1
+    step = max(1, min(width, height) // 160)          # enough for logo-sized images
+    for y in range(0, height, step):
+        row = y * rowstride
+        for x in range(0, width, step):
+            if is_content(row + x * channels):
+                x0, x1 = min(x0, x), max(x1, x)
+                y0, y1 = min(y0, y), max(y1, y)
+    if x1 < 0:
+        return 0, 0, width, height
+    pad = int(max(x1 - x0, y1 - y0) * margin) + step
+    x0, y0 = max(0, x0 - pad), max(0, y0 - pad)
+    x1, y1 = min(width - 1, x1 + pad), min(height - 1, y1 + pad)
+    return x0, y0, x1 - x0 + 1, y1 - y0 + 1
