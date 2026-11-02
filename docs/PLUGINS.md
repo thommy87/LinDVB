@@ -58,10 +58,13 @@ the *LED spectrum analyser*, *VU meters* and an *Oscilloscope* (classic), and
 The built-in styles are drawn on the graphics card (OpenGL 3.3 or OpenGL ES 3.0,
 through the `Gtk.GLArea` GTK already provides) at the window's full resolution
 and at the display's frame rate, so full screen costs almost no CPU. *Goom HD*
-rebuilds GOOM's effects as shaders — the zoom/bend/fade feedback loop with its
-distortion modes, the waveform lines, flying stars and the IFS fractal — and
-renders them natively at the screen's resolution instead of scaling up a
-320x200 picture. Without OpenGL, or with `"visualizer_gpu": false` in
+runs the original GOOM 2k4 logic (ported to Python in `lindvb/goom.py`: beat
+detection, the eight states, the zoom filter modes and their smooth switching,
+the scope lines, 3D tentacles, fireworks and the IFS fractal) at GOOM's own 30
+frames per second, and draws it with shaders natively at the screen's
+resolution instead of scaling up a 320x200 picture: the displacement field,
+blur and fade of GOOM's zoom filter are computed per screen pixel, the IFS and
+the tentacles in vertex shaders, and the lines are smooth. Without OpenGL, or with `"visualizer_gpu": false` in
 `settings.json` (or the environment variable `LINDVB_NO_GPU_VIS=1`), every
 style is drawn with cairo as before. A plugin can add two kinds:
 

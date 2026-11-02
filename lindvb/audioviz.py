@@ -115,6 +115,22 @@ def analyse_samples(data, fmt, channels):
     return rms, peak, wave
 
 
+def pcm_block(data, fmt, channels, n=512):
+    """The first ``n`` frames of the first two channels as floats (-1..1),
+    consecutive like a visualiser's input (GOOM takes 512 per channel)."""
+    spec = SAMPLE_FORMATS.get(fmt)
+    if spec is None or channels < 1:
+        return [], []
+    code, scale = spec
+    samples = array(code)
+    size = samples.itemsize * channels
+    take = min(len(data) - len(data) % size, n * size)
+    samples.frombytes(bytes(data[:take]))
+    left = [x / scale for x in samples[0::channels]]
+    right = [x / scale for x in samples[1::channels]] if channels > 1 else left
+    return left, right
+
+
 class AudioAnalysis:
     """The latest analysis of the playing audio, shared between threads."""
 
@@ -128,6 +144,7 @@ class AudioAnalysis:
             self.rms = [0.0, 0.0]
             self.peak = [0.0, 0.0]
             self.wave = []
+            self.pcm = ([], [])         # consecutive samples per channel
             self.spectrum = []          # dB per display band
             self.stamp = 0.0            # monotonic time of the last update
 
@@ -137,9 +154,11 @@ class AudioAnalysis:
         if res is None:
             return
         rms, peak, wave = res
+        pcm = pcm_block(data, fmt, channels)
         with self._lock:
             self.rate = rate or self.rate
             self.rms, self.peak, self.wave = rms, peak, wave
+            self.pcm = pcm
             self.stamp = time.monotonic()
 
     def feed_spectrum(self, magnitudes):
@@ -152,6 +171,10 @@ class AudioAnalysis:
         with self._lock:
             return (list(self.spectrum), list(self.rms), list(self.peak),
                     list(self.wave), self.stamp)
+
+    def pcm_snapshot(self):
+        with self._lock:
+            return self.pcm
 
 
 @dataclass
@@ -166,6 +189,7 @@ class Frame:
     level: list = field(default_factory=lambda: [0.0, 0.0])    # fast RMS, 0..1
     peak_db: list = field(default_factory=lambda: [MIN_DB, MIN_DB])
     wave: list = field(default_factory=list)                   # -1..1
+    pcm: tuple = ([], [])            # 512 consecutive samples per channel, -1..1
     bass: float = 0.0                # 0..1 energy of the low/mid/high bands
     mid: float = 0.0
     treble: float = 0.0
@@ -231,6 +255,7 @@ class Smoother:
         f.level = [lv + (_norm_db(to_db(r), -60, 0) - lv) * fast for lv, r in zip(f.level, rms)]
         f.peak_db = [max(to_db(p), pd - 20 * dt) for p, pd in zip(peak, f.peak_db)]
         f.wave = wave
+        f.pcm = analysis.pcm_snapshot() if live and hasattr(analysis, "pcm_snapshot") else ([], [])
         n = self.n
         third = max(1, n // 6)
         f.bass = sum(f.bands[:third]) / third

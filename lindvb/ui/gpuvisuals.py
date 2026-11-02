@@ -51,40 +51,47 @@ uniform sampler2D u_tex;
 void main() { fragColor = texture(u_tex, v_uv).bgra; }   // cairo ARGB32, premultiplied
 """
 
-SHAPES_VERTEX = """
-in vec2 a_corner;
-in vec4 a_p;          // x0 y0 x1 y1 in pixels (top left origin)
-in vec4 a_s;          // radius / half width, kind, middle stop, -
-in vec4 a_c0;
-in vec4 a_c1;
-in vec4 a_c2;
-uniform vec2 u_res;
+SHAPE_EMIT = """
+uniform vec2 u_res;          // size of the target in units
+uniform float u_unit;        // screen pixels per unit
 out vec2 v_px;
 flat out vec4 v_p;
 flat out vec4 v_s;
 flat out vec4 v_c0;
 flat out vec4 v_c1;
 flat out vec4 v_c2;
-void main() {
-    int kind = int(a_s.y + 0.5);
-    float r = a_s.x;
+in vec2 a_corner;
+// p: x0 y0 x1 y1 (top left origin), s: radius / half width, kind, middle stop, -
+void emit(vec4 p, vec4 s, vec4 c0, vec4 c1, vec4 c2) {
+    int kind = int(s.y + 0.5);
+    float r = s.x;
+    float e = r + 1.0 / u_unit;
     vec2 pos;
     if (kind == 0) {
-        pos = mix(a_p.xy, a_p.zw, a_corner);
+        pos = mix(p.xy, p.zw, a_corner);
     } else if (kind == 1) {
-        vec2 d = a_p.zw - a_p.xy;
+        vec2 d = p.zw - p.xy;
         float len = length(d);
         vec2 dir = len > 1e-4 ? d / len : vec2(1.0, 0.0);
         vec2 nrm = vec2(-dir.y, dir.x);
-        float e = r + 1.0;
-        pos = a_p.xy - dir * e + dir * (len + 2.0 * e) * a_corner.x + nrm * e * (a_corner.y * 2.0 - 1.0);
+        pos = p.xy - dir * e + dir * (len + 2.0 * e) * a_corner.x + nrm * e * (a_corner.y * 2.0 - 1.0);
     } else {
-        pos = a_p.xy + (a_corner * 2.0 - 1.0) * (r + 1.0);
+        pos = p.xy + (a_corner * 2.0 - 1.0) * e;
     }
-    v_px = pos; v_p = a_p; v_s = a_s; v_c0 = a_c0; v_c1 = a_c1; v_c2 = a_c2;
+    v_px = pos; v_p = p; v_s = s; v_c0 = c0; v_c1 = c1; v_c2 = c2;
     vec2 ndc = pos / u_res * 2.0 - 1.0;
     gl_Position = vec4(ndc.x, -ndc.y, 0.0, 1.0);
 }
+void hide() { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); v_s = vec4(0.0); }
+"""
+
+SHAPES_VERTEX = SHAPE_EMIT + """
+in vec4 a_p;
+in vec4 a_s;
+in vec4 a_c0;
+in vec4 a_c1;
+in vec4 a_c2;
+void main() { emit(a_p, a_s, a_c0, a_c1, a_c2); }
 """
 
 SHAPES_FRAGMENT = """
@@ -95,6 +102,7 @@ flat in vec4 v_c0;
 flat in vec4 v_c1;
 flat in vec4 v_c2;
 out vec4 fragColor;
+uniform float u_unit;
 vec4 pm(vec4 c) { return vec4(c.rgb * c.a, c.a); }
 void main() {
     int kind = int(v_s.y + 0.5);
@@ -104,7 +112,7 @@ void main() {
         vec2 pa = v_px - v_p.xy, ba = v_p.zw - v_p.xy;
         float h = clamp(dot(pa, ba) / max(dot(ba, ba), 1e-6), 0.0, 1.0);
         float d = length(pa - ba * h);
-        fragColor = pm(v_c0) * clamp(r - d + 0.5, 0.0, 1.0);
+        fragColor = pm(v_c0) * clamp((r - d) * u_unit + 0.5, 0.0, 1.0);
         return;
     }
     float d = length(v_px - v_p.xy);
@@ -112,7 +120,7 @@ void main() {
     if (kind == 2) {                                  // disc with a 3-stop radial gradient
         float m = clamp(v_s.z, 1e-4, 1.0 - 1e-4);
         vec4 c = t < m ? mix(pm(v_c0), pm(v_c1), t / m) : mix(pm(v_c1), pm(v_c2), (t - m) / (1.0 - m));
-        fragColor = c * clamp(r - d + 0.5, 0.0, 1.0);
+        fragColor = c * clamp((r - d) * u_unit + 0.5, 0.0, 1.0);
     } else {                                          // soft glow
         float g = 1.0 - t;
         fragColor = pm(v_c0) * g * g;
@@ -238,45 +246,204 @@ void main() {
 }
 """
 
-GOOM_WARP = PRELUDE + """
-uniform sampler2D u_prev;
-uniform vec2 u_mode;         // modes being blended
-uniform float u_mix, u_speed, u_amp, u_rot, u_t, u_dt, u_decay;
-uniform vec2 u_plane, u_centre;
-vec2 disp(int m, vec2 p) {
-    float r2 = dot(p, p), r = sqrt(r2), a = u_amp;
-    if (m == 1) return p * (1.0 + 0.6 * a * sin(r * 18.0 - u_t * 4.0));          // wave
-    if (m == 2) return p * (1.0 - 2.2 * a * r2);                                   // crystal ball
-    if (m == 3) return p * (1.0 + 2.5 * a * r2);                                   // scrunch
-    if (m == 4) return p * (1.0 + 1.6 * a * r);                                    // amulet
-    if (m == 5) return p + 0.35 * a * vec2(sin(p.y * 22.0 + u_t * 2.0), sin(p.x * 22.0 + u_t * 1.7));  // water
-    if (m == 6) return p + 0.5 * a * vec2(sin(p.y * 9.0), sin(p.x * 9.0));         // hypercos
-    if (m == 7) return vec2(p.x * 0.6, (p.y + 0.5) * 1.8 * a);                      // speedway
-    if (m == 8) return vec2(0.15 * sin(p.y * 6.0 + u_t), p.y * 1.8 * a);            // y only
-    return p;                                                                       // zoom
-}
+# --- Goom HD ---------------------------------------------------------------------------
+# GOOM's zoom filter (filters.c zoomVector) as a displacement field: each texel holds
+# how far (in 0..1 screen units) the picture moves in one GOOM frame at that point.
+GOOM_FIELD = PRELUDE + """
+uniform vec2 u_vres;         // GOOM's screen (width x 200)
+uniform vec2 u_middle;       // 0..1
+uniform float u_speed, u_seed;
+uniform int u_mode, u_hypercos, u_noisify;
+uniform vec2 u_plane;        // hPlaneEffect, vPlaneEffect
+float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7)) + u_seed * 91.7) * 43758.5453); }
 void main() {
-    vec2 asp = vec2(u_res.x / u_res.y, 1.0);
-    vec2 p = (v_uv - u_centre) * asp;
-    vec2 d = mix(disp(int(u_mode.x + 0.5), p), disp(int(u_mode.y + 0.5), p), u_mix);
-    vec2 src = p - d * u_speed * u_dt;
-    src -= u_rot * u_dt * vec2(-p.y, p.x);
-    src -= u_dt * vec2(p.y * u_plane.x, p.x * u_plane.y);
-    vec2 uv = src / asp + u_centre;
-    vec4 c = vec4(0.0);
-    if (uv.x > 0.0 && uv.y > 0.0 && uv.x < 1.0 && uv.y < 1.0) c = tap(u_prev, uv);
-    vec3 rgb = mix(c.rgb, c.gbr, 0.5 * u_dt);         // colours drift slowly in the trails
-    fragColor = vec4(max(rgb * u_decay - 0.75 / 255.0, 0.0), 1.0);
+    float ratio = 2.0 / u_vres.x;
+    vec2 vpx = v_uv * u_vres;
+    float X = (vpx.x - u_middle.x * u_vres.x) * ratio;
+    float Y = (vpx.y - u_middle.y * u_vres.y) * ratio;
+    float sq = X * X + Y * Y;
+    float coef = (1.0 + u_speed) / 50.0;
+    if (u_mode == 2) coef -= (sq - 0.3) / 15.0;          // crystal ball
+    else if (u_mode == 4) coef += sq * 3.5;              // amulette
+    else if (u_mode == 1) coef += sin(sq * 20.0) / 100.0; // wave
+    else if (u_mode == 3) coef += sq / 10.0;             // scrunch
+    else if (u_mode == 9) coef *= 4.0 * Y;               // speedway
+    coef = clamp(coef, -2.01, 2.01);
+    vec2 v = coef * vec2(X, Y);
+    if (u_noisify != 0) {
+        vec2 cell = gl_FragCoord.xy;
+        v += (vec2(hash(cell), hash(cell + 17.3)) - 0.5) / 50.0;
+    }
+    if (u_hypercos != 0) v += vec2(sin(Y * 10.0), sin(X * 10.0)) / 120.0;
+    v += vec2(Y * 0.0025 * u_plane.x, X * 0.0025 * u_plane.y);
+    float lo = ratio / 16.0;
+    if (abs(v.x) < lo) v.x = v.x < 0.0 ? -lo : lo;
+    if (abs(v.y) < lo) v.y = v.y < 0.0 ? -lo : lo;
+    fragColor = vec4(v / ratio / u_vres, 0.0, 1.0);
 }
 """
 
-GOOM_PRESENT = PRELUDE + """
-uniform sampler2D u_tex;
-uniform float u_flash;
+GOOM_FIELD_MIX = PRELUDE + """
+uniform sampler2D u_src, u_dst;
+uniform float u_blend;
+void main() { fragColor = mix(tap(u_src, v_uv), tap(u_dst, v_uv), u_blend); }
+"""
+
+# fields as parameters, for GL implementations without float render targets
+GOOM_FIELD_FN = """
+uniform vec2 u_vres;
+float hash(vec2 p, float seed) { return fract(sin(dot(p, vec2(127.1, 311.7)) + seed * 91.7) * 43758.5453); }
+vec2 field(vec2 uv, vec4 a, vec4 b, vec2 plane) {
+    // a: middle x, middle y, speed, seed   b: mode, hypercos, noisify, -
+    float ratio = 2.0 / u_vres.x;
+    vec2 vpx = uv * u_vres;
+    float X = (vpx.x - a.x * u_vres.x) * ratio;
+    float Y = (vpx.y - a.y * u_vres.y) * ratio;
+    float sq = X * X + Y * Y;
+    float coef = (1.0 + a.z) / 50.0;
+    int mode = int(b.x + 0.5);
+    if (mode == 2) coef -= (sq - 0.3) / 15.0;
+    else if (mode == 4) coef += sq * 3.5;
+    else if (mode == 1) coef += sin(sq * 20.0) / 100.0;
+    else if (mode == 3) coef += sq / 10.0;
+    else if (mode == 9) coef *= 4.0 * Y;
+    coef = clamp(coef, -2.01, 2.01);
+    vec2 v = coef * vec2(X, Y);
+    if (b.z > 0.5) {
+        vec2 cell = floor(uv * 1024.0);
+        v += (vec2(hash(cell, a.w), hash(cell + 17.3, a.w)) - 0.5) / 50.0;
+    }
+    if (b.y > 0.5) v += vec2(sin(Y * 10.0), sin(X * 10.0)) / 120.0;
+    v += vec2(Y * 0.0025 * plane.x, X * 0.0025 * plane.y);
+    float lo = ratio / 16.0;
+    if (abs(v.x) < lo) v.x = v.x < 0.0 ? -lo : lo;
+    if (abs(v.y) < lo) v.y = v.y < 0.0 ? -lo : lo;
+    return v / ratio / u_vres;
+}
+"""
+
+# one GOOM frame of the zoom filter: move, blur (bilinear) and fade the picture
+GOOM_WARP = PRELUDE + """
+uniform sampler2D u_prev, u_src, u_dst;
+uniform float u_blend, u_keep;
+uniform int u_textures;      // 1: fields in textures, 0: computed here
+uniform vec4 u_fa0, u_fb0, u_fa1, u_fb1;
+uniform vec4 u_planes;
+uniform float u_frozen;      // blend frozen into the parameter source (fallback)
+""" + GOOM_FIELD_FN + """
 void main() {
-    vec3 c = tap(u_tex, v_uv).rgb;
-    c += u_flash * 0.12 * (1.0 - c);
-    fragColor = vec4(c + dither(), 1.0);
+    vec2 d;
+    if (u_textures == 1) {
+        d = mix(tap(u_src, v_uv).xy, tap(u_dst, v_uv).xy, u_blend);
+    } else {
+        d = mix(field(v_uv, u_fa0, u_fb0, u_planes.xy), field(v_uv, u_fa1, u_fb1, u_planes.zw), u_blend);
+    }
+    vec2 s = v_uv - d;
+    vec3 c = vec3(0.0);
+    if (s.x >= 0.0 && s.y >= 0.0 && s.x < 1.0 - 1.0 / u_vres.x && s.y < 1.0 - 1.0 / u_vres.y)
+        c = tap(u_prev, s).rgb;
+    // GOOM's coefficients add up to ~252/256, it subtracts 5 and truncates to 8 bits
+    c = floor(max(c * 255.0 * u_keep - 5.0 / 256.0, 0.0)) / 255.0;
+    fragColor = vec4(c, 1.0);
+}
+"""
+
+GOOM_COPY = PRELUDE + """
+uniform sampler2D u_tex;
+void main() { fragColor = vec4(tap(u_tex, v_uv).rgb, 1.0); }
+"""
+
+# ifs.c: the points of the fractal, one instance per point (levels breadth first)
+GOOM_IFS_VERTEX = SHAPE_EMIT + """
+uniform int u_nb, u_depth, u_per, u_incr;
+uniform vec4 u_sim[5];       // centre x, centre y, r, r2
+uniform vec4 u_ang[5];       // cos A, sin A, cos A2, sin A2
+uniform vec2 u_l;            // Lx, Ly
+uniform vec4 u_col;
+uniform float u_rad;
+vec2 T(int k, vec2 o) {
+    vec4 s = u_sim[k]; vec4 a = u_ang[k];
+    vec2 c = s.xy;
+    float xo = (o.x - c.x) * s.z;
+    float yo = (o.y - c.y) * s.z;
+    float xx = (xo - c.x) * s.w;
+    float yy = (-yo - c.y) * s.w;
+    return vec2(xo * a.x - yo * a.y + xx * a.z - yy * a.w + c.x,
+                xo * a.y + yo * a.x + xx * a.w + yy * a.z + c.y);
+}
+bool moves(vec2 d) {      // ((x - xo) >> 4) && ((y - yo) >> 4) in GOOM's 12-bit fixed point
+    float q = 16.0 / 4096.0;
+    return (d.x < 0.0 || d.x >= q) && (d.y < 0.0 || d.y >= q);
+}
+void main() {
+    int id = gl_InstanceID * u_incr;
+    int start = id / u_per;
+    int rem = id - start * u_per;
+    int level = 1;
+    int count = u_nb;
+    for (int k = 0; k < 12; k++) {
+        if (rem < count || level > u_depth) break;
+        rem -= count; level++; count *= u_nb;
+    }
+    int i = start / (u_nb - 1);
+    int j = start - i * (u_nb - 1);
+    if (j >= i) j++;
+    vec2 p = T(j, u_sim[i].xy);
+    int div = count / u_nb;
+    bool ok = true;
+    for (int k = 0; k < 12; k++) {
+        if (k >= level) break;
+        int digit = (rem / div) - (rem / div / u_nb) * u_nb;
+        vec2 q = T(digit, p);
+        if (k < level - 1 && !moves(q - p)) ok = false;
+        p = q;
+        div = max(1, div / u_nb);
+    }
+    vec2 pos = vec2(u_l.x + p.x * u_l.x * 0.5, u_l.y - p.y * u_l.y * 0.5);
+    if (!ok || pos.x <= 0.0 || pos.y <= 0.0 || pos.x >= u_res.x || pos.y >= u_res.y) { hide(); return; }
+    emit(vec4(pos, pos), vec4(u_rad, 2.0, 0.5, 0.0), u_col, u_col, u_col);
+}
+"""
+
+# tentacle3d.c / surf3d.c: the six meshes, one instance per segment
+GOOM_TENTACLE_VERTEX = SHAPE_EMIT + """
+uniform sampler2D u_y;       // vertex heights: x across, rows of all grids down
+uniform vec4 u_grid[6];      // sizex, sizez, defz, first row
+uniform vec4 u_cam[6];       // camera x, y, z, first instance
+uniform vec2 u_rot;          // sin, cos of the rotation
+uniform float u_dist, u_width;
+uniform vec4 u_col;
+const int DEFX = 15;
+vec2 project(int g, int x, int z, out bool ok) {
+    vec4 gr = u_grid[g];
+    int defz = int(gr.z + 0.5);
+    float vx = float(x - DEFX / 2) * gr.x / float(DEFX);
+    float vz = float(z - defz / 2) * gr.y / float(defz);
+    float vy = texelFetch(u_y, ivec2(x, int(gr.w + 0.5) + z), 0).r;
+    vec3 c = u_cam[g].xyz;
+    float sx = vx * u_rot.x - vz * u_rot.y + c.x;
+    float sz = vx * u_rot.y + vz * u_rot.x + c.z;
+    float sy = vy + c.y;
+    ok = sz > 2.0;
+    if (!ok) return vec2(0.0);
+    vec2 v = vec2(float(int(u_dist * sx / sz)), float(int(u_dist * sy / sz)));
+    vec2 p = vec2(v.x + float(int(u_res.x) / 2), -v.y + float(int(u_res.y) / 2));
+    ok = p.x >= 0.0 && p.y >= 0.0 && p.x < u_res.x && p.y < u_res.y;
+    return p;
+}
+void main() {
+    int id = gl_InstanceID;
+    int g = 0;
+    for (int k = 1; k < 6; k++) if (id >= int(u_cam[k].w + 0.5)) g = k;
+    int local = id - int(u_cam[g].w + 0.5);
+    int defz = int(u_grid[g].z + 0.5);
+    int x = local / (defz - 1);
+    int z = local - x * (defz - 1) + 1;
+    bool ok0, ok1;
+    vec2 a = project(g, x, z - 1, ok0);
+    vec2 b = project(g, x, z, ok1);
+    if (!ok0 || !ok1) { hide(); return; }
+    emit(vec4(a, b), vec4(u_width * 0.5, 1.0, 0.0, 0.0), u_col, u_col, u_col);
 }
 """
 
@@ -355,7 +522,8 @@ class Context:
             gl.glDisable(G.BLEND)
             return
         gl.glEnable(G.BLEND)
-        if mode == "add":
+        gl.glBlendEquation(G.MAX if mode == "max" else G.FUNC_ADD)
+        if mode in ("add", "max"):
             gl.glBlendFunc(G.ONE, G.ONE)
         elif mode == "screen":
             gl.glBlendFunc(G.ONE, G.ONE_MINUS_SRC_COLOR)
@@ -392,13 +560,16 @@ class Context:
             self.composite(self.layer("footer", caption,
                                       lambda cr, w, h: visuals.footer(cr, w, h, caption)))
 
-    def draw_shapes(self, data, mode="over"):
+    def draw_shapes(self, data, mode="over", res=None, unit=1.0):
+        """Draw instanced shapes; ``res`` is the target size in shape units
+        (default: pixels), ``unit`` the screen pixels per unit."""
         n = len(data) // FLOATS_PER_SHAPE
         if not n:
             return
         gl = self.gl
         prog = self.shapes_program().use()
-        prog.set("u_res", self.width, self.height)
+        prog.set("u_res", *(res or (self.width, self.height)))
+        prog.set("u_unit", unit)
         gl.glBindVertexArray(self.shape_vao)
         gl.glBindBuffer(G.ARRAY_BUFFER, self.shape_buf)
         gl.glBufferData(G.ARRAY_BUFFER, len(data) * 4, data.buffer_info()[0], G.STREAM_DRAW)
@@ -590,81 +761,300 @@ class VURenderer(Renderer):
 
 
 class GoomRenderer(Renderer):
-    """Goom HD: a full-resolution feedback loop on two textures."""
+    """Goom HD: GOOM's frames (lindvb.goom) drawn at the screen's resolution.
+
+    Per GOOM frame, like goom_core.c: the IFS and the dots go into the picture
+    (A), the zoom filter moves A into B along a blend of two displacement fields,
+    the shown frame is A plus the fireworks and the bright tentacles, and the
+    dim tentacles and the scope lines go into B, which becomes the next A.
+    """
+
+    FIELD_MAX = (1280, 720)          # the fields are smooth, they need no more
+    KEEP = 252.0 / 256.0             # light kept by GOOM's bilinear coefficients
 
     def __init__(self, ctx, style):
         super().__init__(ctx, style)
         self.size = None
-        self.tex = [0, 0]
-        self.fbos = [0, 0]
+        self.pic = [0, 0]            # A, B (feedback)
+        self.pic_fbo = [0, 0]
+        self.shown = self.shown_fbo = 0
+        self.ifs_tex = self.ifs_fbo = 0
+        self.fields = []             # [source, dest, temp] float textures
+        self.field_fbos = []
+        self.fsize = (1, 1)
+        self.float_fields = True
+        self.params = [None, None]   # source / dest Field (fallback without textures)
+        self.frozen = 0.0
+        self.ytex = self.gl.texture(G.NEAREST)
+        self.vres = (320, 200)
+
+    # -- resources ----------------------------------------------------------------------
+    def _target(self, w, h, internal=G.RGBA8, fmt=G.RGBA, kind=G.UNSIGNED_BYTE):
+        gl = self.gl
+        tex = gl.texture(G.LINEAR)
+        gl.glBindTexture(G.TEXTURE_2D, tex)
+        gl.glTexImage2D(G.TEXTURE_2D, 0, internal, w, h, 0, fmt, kind, None)
+        fbo = gl.framebuffer(tex)
+        gl.glClearColor(0, 0, 0, 1)
+        gl.glClear(G.COLOR_BUFFER_BIT)
+        return tex, fbo
 
     def _resize(self, w, h):
         self.free()
+        for k in range(2):
+            self.pic[k], self.pic_fbo[k] = self._target(w, h)
+        self.shown, self.shown_fbo = self._target(w, h)
+        self.ifs_tex, self.ifs_fbo = self._target(w, h)
+        f = min(1.0, self.FIELD_MAX[0] / w, self.FIELD_MAX[1] / h)
+        self.fsize = (max(16, int(w * f)), max(16, int(h * f)))
+        self.fields, self.field_fbos = [], []
+        if self.float_fields:
+            try:
+                for _ in range(3):
+                    tex, fbo = self._target(*self.fsize, G.RGBA16F, G.RGBA, G.HALF_FLOAT)
+                    self.fields.append(tex)
+                    self.field_fbos.append(fbo)
+            except G.GLError:
+                for tex, fbo in zip(self.fields, self.field_fbos):
+                    self.gl.delete_framebuffer(fbo)
+                    self.gl.delete_texture(tex)
+                self.fields, self.field_fbos = [], []
+                self.float_fields = False
+        self.size = (w, h)
+        core = self.style.core
+        if core is not None:
+            init = core.zoom.initial
+            self.params = [init, init]
+            if self.fields:
+                self._make_field(init, 0)
+                self._make_field(init, 1)
+
+    def free(self):
         gl = self.gl
         for k in range(2):
-            self.tex[k] = gl.texture(G.LINEAR)
-            gl.upload_rgba(self.tex[k], w, h, None)
-            self.fbos[k] = gl.framebuffer(self.tex[k])
-            gl.glClearColor(0, 0, 0, 1)
-            gl.glClear(G.COLOR_BUFFER_BIT)
-        self.size = (w, h)
+            gl.delete_framebuffer(self.pic_fbo[k])
+            gl.delete_texture(self.pic[k])
+            self.pic_fbo[k] = self.pic[k] = 0
+        for fbo, tex in ((self.shown_fbo, self.shown), (self.ifs_fbo, self.ifs_tex)):
+            gl.delete_framebuffer(fbo)
+            gl.delete_texture(tex)
+        self.shown = self.shown_fbo = self.ifs_tex = self.ifs_fbo = 0
+        for tex, fbo in zip(self.fields, self.field_fbos):
+            gl.delete_framebuffer(fbo)
+            gl.delete_texture(tex)
+        self.fields, self.field_fbos = [], []
+        self.size = None
+
+    # -- fields -------------------------------------------------------------------------
+    def _make_field(self, fd, slot):
+        gl, ctx = self.gl, self.ctx
+        gl.glBindFramebuffer(G.FRAMEBUFFER, self.field_fbos[slot])
+        gl.glViewport(0, 0, *self.fsize)
+        prog = ctx.program("goom-field", GOOM_FIELD).use()
+        prog.set("u_res", *self.fsize)
+        prog.set("u_vres", *self.vres)
+        prog.set("u_middle", *fd.middle)
+        prog.set("u_speed", fd.speed)
+        prog.set("u_seed", fd.seed)
+        prog.set_int("u_mode", fd.mode)
+        prog.set_int("u_hypercos", fd.hypercos)
+        prog.set_int("u_noisify", fd.noisify)
+        prog.set("u_plane", fd.h_plane, fd.v_plane)
+        gl.glBindVertexArray(ctx.quad_vao)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
+
+    def _new_field(self, fd, freeze):
+        if not self.fields:
+            # without float textures: keep the parameters, snap to the nearer one
+            self.params = [self.params[1] if freeze >= 0.5 else self.params[0], fd]
+            return
+        gl, ctx = self.gl, self.ctx
+        # temp = mix(source, dest, freeze); source <- temp; dest <- new field
+        gl.glBindFramebuffer(G.FRAMEBUFFER, self.field_fbos[2])
+        gl.glViewport(0, 0, *self.fsize)
+        prog = ctx.program("goom-field-mix", GOOM_FIELD_MIX).use()
+        prog.set("u_res", *self.fsize)
+        gl.bind_texture(0, self.fields[0])
+        gl.bind_texture(1, self.fields[1])
+        prog.set_int("u_src", 0)
+        prog.set_int("u_dst", 1)
+        prog.set("u_blend", freeze)
+        gl.glBindVertexArray(ctx.quad_vao)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
+        self.fields[0], self.fields[2] = self.fields[2], self.fields[0]
+        self.field_fbos[0], self.field_fbos[2] = self.field_fbos[2], self.field_fbos[0]
+        self._make_field(fd, 1)
+
+    # -- drawing ------------------------------------------------------------------------
+    def _bind(self, fbo):
+        self.gl.glBindFramebuffer(G.FRAMEBUFFER, fbo)
+        self.gl.glViewport(0, 0, *self.size)
+
+    def _ifs(self, ifs, unit):
+        sims, depth, colour, incr = ifs
+        nb = len(sims)
+        if nb < 2:
+            return
+        ctx, gl = self.ctx, self.gl
+        per = sum(nb ** lv for lv in range(1, depth + 2))
+        total = nb * (nb - 1) * per
+        prog = ctx.program("goom-ifs", SHAPES_FRAGMENT, GOOM_IFS_VERTEX, ("a_corner",)).use()
+        vw, vh = self.vres
+        prog.set("u_res", vw, vh)
+        prog.set("u_unit", unit)
+        prog.set_int("u_nb", nb)
+        prog.set_int("u_depth", depth)
+        prog.set_int("u_per", per)
+        prog.set_int("u_incr", max(1, incr))
+        prog.set_array("u_sim", [v for s in sims for v in (s[0], s[1], s[2], s[3])], 4)
+        prog.set_array("u_ang", [v for s in sims for v in (math.cos(s[4]), math.sin(s[4]),
+                                                          math.cos(s[5]), math.sin(s[5]))], 4)
+        prog.set("u_l", (vw - 1) // 2, (vh - 1) // 2)
+        prog.set("u_col", *(c / 255 for c in colour), 1.0)
+        prog.set("u_rad", 0.55)
+        # GOOM sets each point once (picture + colour): overlapping points must
+        # not add up, so take the brightest in a layer and add that layer once
+        self._bind(self.ifs_fbo)
+        gl.glClearColor(0, 0, 0, 1)
+        gl.glClear(G.COLOR_BUFFER_BIT)
+        gl.glBindVertexArray(ctx.quad_vao)
+        ctx.blend("max")
+        gl.glDrawArraysInstanced(G.TRIANGLE_STRIP, 0, 4, (total + incr - 1) // max(1, incr))
+        self._bind(self.pic_fbo[0])
+        ctx.blend("add")
+        prog = ctx.program("goom-copy", GOOM_COPY).use()
+        prog.set("u_res", *self.size)
+        gl.bind_texture(0, self.ifs_tex)
+        prog.set_int("u_tex", 0)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
+        ctx.blend(None)
+
+    def _tentacles(self, tent, unit, low):
+        grids, rot, dist, colour, colour_low = tent
+        ctx, gl = self.ctx, self.gl
+        ys, grid_u, cam_u = [], [], []
+        row = first = 0
+        for g in grids:
+            ys.extend(g.y)
+            grid_u.extend((g.sizex, g.sizez, g.defz, row))
+            cam_u.extend((*g.cam, first))
+            row += g.defz
+            first += g.defx * (g.defz - 1)
+        gl.upload_floats(self.ytex, ys, grids[0].defx, row)
+        prog = ctx.program("goom-tentacles", SHAPES_FRAGMENT, GOOM_TENTACLE_VERTEX,
+                           ("a_corner",)).use()
+        prog.set("u_res", *self.vres)
+        prog.set("u_unit", unit)
+        gl.bind_texture(0, self.ytex)
+        prog.set_int("u_y", 0)
+        prog.set_array("u_grid", grid_u, 4)
+        prog.set_array("u_cam", cam_u, 4)
+        prog.set("u_rot", math.sin(rot), math.cos(rot))
+        prog.set("u_dist", dist)
+        prog.set("u_width", max(1.0, 1.3 / unit) if low else max(0.9, 1.2 / unit))
+        prog.set("u_col", *(c / 255 for c in (colour_low if low else colour)), 1.0)
+        gl.glBindVertexArray(ctx.quad_vao)
+        ctx.blend("add")
+        gl.glDrawArraysInstanced(G.TRIANGLE_STRIP, 0, 4, first)
+        ctx.blend(None)
+
+    def _step(self, fr, unit):
+        ctx, gl = self.ctx, self.gl
+        vw, vh = self.vres
+        a_tex, b_tex = self.pic
+        a_fbo, b_fbo = self.pic_fbo
+        line_w = max(0.6, 1.4 / unit)
+        # 1. IFS and dots into the picture, before the zoom
+        self._bind(a_fbo)
+        if fr.ifs is not None:
+            self._ifs(fr.ifs, unit)
+        if fr.points:
+            sh = Shapes()
+            for x, y, col in fr.points:
+                rgba = (col[0] / 255, col[1] / 255, col[2] / 255, 1.0)
+                for dx, dy in ((1, 0), (0, 1), (2, 1), (1, 2)):
+                    sh.disc(x + dx + 0.5, y + dy + 0.5, 0.6, rgba)
+                sh.disc(x + 1.5, y + 1.5, 0.6, (1.0, 1.0, 1.0, 1.0))
+            ctx.draw_shapes(sh.data, "over", (vw, vh), unit)
+        # 2. zoom filter: A -> B
+        if fr.new_field is not None:
+            self._new_field(fr.new_field, fr.freeze_blend)
+        self._bind(b_fbo)
+        prog = ctx.program("goom-warp", GOOM_WARP).use()
+        prog.set("u_res", *self.size)
+        prog.set("u_vres", vw, vh)
+        gl.bind_texture(0, a_tex)
+        prog.set_int("u_prev", 0)
+        prog.set("u_blend", fr.blend)
+        prog.set("u_keep", self.KEEP)
+        if self.fields:
+            gl.bind_texture(1, self.fields[0])
+            gl.bind_texture(2, self.fields[1])
+            prog.set_int("u_src", 1)
+            prog.set_int("u_dst", 2)
+            prog.set_int("u_textures", 1)
+        else:
+            prog.set_int("u_textures", 0)
+            for k, fd in enumerate(self.params):
+                prog.set(f"u_fa{k}", fd.middle[0], fd.middle[1], fd.speed, fd.seed)
+                prog.set(f"u_fb{k}", fd.mode, fd.hypercos, fd.noisify, 0)
+            p0, p1 = self.params
+            prog.set("u_planes", p0.h_plane, p0.v_plane, p1.h_plane, p1.v_plane)
+        gl.glBindVertexArray(ctx.quad_vao)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
+        # 3. the shown frame: A + fireworks + bright tentacles
+        self._bind(self.shown_fbo)
+        prog = ctx.program("goom-copy", GOOM_COPY).use()
+        prog.set("u_res", *self.size)
+        gl.bind_texture(0, a_tex)
+        prog.set_int("u_tex", 0)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
+        if fr.tentacles is not None:
+            self._tentacles(fr.tentacles, unit, low=False)
+        if fr.stars:
+            sh = Shapes()
+            for x0, y0, x1, y1, col in fr.stars:
+                if 0 <= x0 < vw and 0 <= x1 < vw and 0 <= y0 < vh and 0 <= y1 < vh:
+                    sh.line(x0 + 0.5, y0 + 0.5, x1 + 0.5, y1 + 0.5, line_w,
+                            (col[0] / 255, col[1] / 255, col[2] / 255, 1.0))
+            ctx.draw_shapes(sh.data, "add", (vw, vh), unit)
+        # 4. dim tentacles and scope lines into B
+        self._bind(b_fbo)
+        if fr.tentacles is not None:
+            self._tentacles(fr.tentacles, unit, low=True)
+        if fr.lines:
+            sh = Shapes()
+            for pts, col in fr.lines:
+                rgba = (col[0] / 255, col[1] / 255, col[2] / 255, 1.0)
+                for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+                    if 0 <= x0 < vw and 0 <= x1 < vw and 0 <= y0 < vh and 0 <= y1 < vh:
+                        sh.line(x0 + 0.5, y0 + 0.5, x1 + 0.5, y1 + 0.5, line_w, rgba)
+            ctx.draw_shapes(sh.data, "add", (vw, vh), unit)
+        self.pic.reverse()
+        self.pic_fbo.reverse()
 
     def render(self, f):
         ctx, gl = self.ctx, self.gl
         w, h, screen = ctx.width, ctx.height, ctx.fbo
+        frames = self.style.steps(f, w, h)
+        core = self.style.core
+        self.vres = (core.w, core.h)
         if self.size != (w, h):
             self._resize(w, h)
-        st = self.style.update(f, w, h)
-        src, dst = self.tex[0], self.fbos[1]
-        # 1. zoom/bend/fade the previous picture
-        gl.glBindFramebuffer(G.FRAMEBUFFER, dst)
-        gl.glViewport(0, 0, w, h)
-        prog = ctx.program("goom-warp", GOOM_WARP).use()
-        gl.bind_texture(0, src)
-        prog.set_int("u_prev", 0)
-        prog.set("u_mode", st.mode_a, st.mode_b)
-        prog.set("u_mix", st.mix * st.mix * (3 - 2 * st.mix))
-        prog.set("u_speed", st.speed)
-        prog.set("u_amp", st.amp)
-        prog.set("u_rot", st.rot)
-        prog.set("u_t", st.t)
-        prog.set("u_dt", st.dt)
-        prog.set("u_decay", st.decay)
-        prog.set("u_plane", *st.plane)
-        prog.set("u_centre", *st.centre)
-        ctx.fullscreen(prog)
-        # 2. new elements on top: they are bent with the picture from the next frame on
-        sh = Shapes()
-        for pts, col, alpha, width in st.lines:
-            rgba = (*col, alpha)
-            for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
-                sh.line(x0, y0, x1, y1, width, rgba)
-        for x, y, r, col, alpha in st.stars:
-            sh.glow(x, y, r * 3, (*col, alpha * 0.6))
-            sh.disc(x, y, r * 0.6, (1, 1, 1, alpha))
-        if st.ifs_alpha > 0:
-            rgba = (*st.ifs_colour, st.ifs_alpha)
-            for x, y in st.ifs:
-                sh.disc(x, y, st.ifs_size, rgba)
-        ctx.draw_shapes(sh.data, "add")
-        # 3. show it
+        unit = h / core.h
+        for fr in frames:
+            self._step(fr, unit)
         gl.glBindFramebuffer(G.FRAMEBUFFER, screen)
         gl.glViewport(0, 0, w, h)
-        prog = ctx.program("goom-present", GOOM_PRESENT).use()
-        gl.bind_texture(0, self.tex[1])
+        prog = ctx.program("goom-copy", GOOM_COPY).use()
+        gl.bind_texture(0, self.shown)
         prog.set_int("u_tex", 0)
-        prog.set("u_flash", st.flash)
         ctx.fullscreen(prog)
         ctx.footer(f.caption)
-        self.tex.reverse()
-        self.fbos.reverse()
 
-    def free(self):
-        for k in range(2):
-            self.gl.delete_framebuffer(self.fbos[k])
-            self.gl.delete_texture(self.tex[k])
-            self.fbos[k] = self.tex[k] = 0
-        self.size = None
+    def release(self):
+        self.free()
+        self.gl.delete_texture(self.ytex)
 
 
 RENDERERS = {

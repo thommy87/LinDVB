@@ -15,7 +15,8 @@ from ..audioviz import Smoother
 from ..visuals import Blank, rgb
 from .theme import ACCENT
 
-FPS = 30                # cairo drawing; the GPU path follows the display
+FPS = 30                # cairo drawing
+GPU_FPS = 60            # the GPU path follows the display, up to this rate
 
 
 class VisualizerArea(Gtk.Box):
@@ -111,10 +112,13 @@ class VisualizerArea(Gtk.Box):
     def _tick(self, _widget, clock):
         if not self.get_mapped():
             return True
-        if self.uses_gpu:
-            self.gl_area.queue_render()          # every frame of the display
-            return True
         now = clock.get_frame_time() / 1e6
+        if self.uses_gpu:
+            # every frame of the display, but not more than GPU_FPS (120/144 Hz screens)
+            if now - self._last_draw >= 1.0 / GPU_FPS - 0.002:
+                self._last_draw = now
+                self.gl_area.queue_render()
+            return True
         if now - self._last_draw >= 1.0 / FPS - 0.002:
             self._last_draw = now
             self.cairo_area.queue_draw()

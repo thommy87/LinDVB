@@ -233,4 +233,7 @@ class LinDVBApp(Gtk.Application):
 
 
 def main():
+    from . import watchdog
+    from .config import CACHE_DIR
+    watchdog.start(CACHE_DIR / "hang.log")
     return LinDVBApp().run(sys.argv)
