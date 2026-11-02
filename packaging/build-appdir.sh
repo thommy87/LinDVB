@@ -48,7 +48,7 @@ mkdir -p "$APPDIR/usr/lib/gstreamer-$GSTVER"
 # Only the plugins LinDVB uses: tuning, demuxing, decoding, network sources, output.
 PLUGINS="coreelements playback typefindfunctions app autodetect audioconvert audioresample
   volume audiorate videoconvertscale videoconvert videoscale videorate videofilter deinterlace
-  equalizer pbtypes gio subparse pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
+  equalizer spectrum goom pbtypes gio subparse pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
   dvbsuboverlay dvdspu libav audioparsers videoparsersbad mpegpsdemux mpeg2dec mpg123 a52dec
   dtsdec faad opus vorbis ogg flac isomp4 matroska id3demux icydemux soup hls dash
   adaptivedemux2 udp rtp rtpmanager rtpmanagerbad rtsp tcp multifile png alsa pulseaudio

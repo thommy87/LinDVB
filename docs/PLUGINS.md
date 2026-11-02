@@ -25,6 +25,7 @@ def register(api):
     api.add_ca_provider("mycam", make_provider)               # CA provider
     api.add_hook("channel-tuned", on_tuned)                   # life-cycle hook
     api.add_menu_action("Do something", lambda app: ...)      # Plugins menu entry
+    api.add_visualizer("My scope", draw=MyStyle)              # radio visualisation
 ```
 
 The `api` object (`lindvb.plugins.PluginAPI`) is the whole surface a plugin
@@ -36,6 +37,7 @@ uses:
 | `add_ca_provider(name, factory)` | `factory(settings) -> CAProvider` selectable as `ca_provider` |
 | `add_hook(event, callback)` | `startup`, `channel-tuned(channel, capture)`, `shutdown` |
 | `add_menu_action(label, callback)` | `callback(app)` from the Plugins menu |
+| `add_visualizer(name, draw=… \| element=…)` | a radio visualisation, see below |
 | `app` / `log(msg)` | the running application, and logging |
 
 See [`plugins/examples/hello_importer.py`](../plugins/examples/hello_importer.py)
@@ -44,6 +46,39 @@ plugins you trust**. Manage them under **☰ → Plugins…**: each installed pl
 an on/off switch (stored as `plugins_disabled` in `settings.json`, applied at the
 next start), plugins that failed to load show the error, and plugin menu actions
 can be run from there.
+
+## Radio visualisations
+
+While a radio channel or an audio-only file plays, LinDVB shows a visualisation
+instead of the empty picture. Pick it under **☰ → Radio Visualisation** or cycle
+with **V**. Built in are *Glow waves* and *Nebula particles* (modern), the *LED
+spectrum analyser*, *VU meters* and an *Oscilloscope* (classic), and *Off*, which
+just shows the station name. A plugin can add two kinds:
+
+* **Drawn** — `api.add_visualizer("My scope", draw=factory)`. `factory()` returns
+  an object with `draw(cr, width, height, frame)`, called about 30 times a second
+  with a cairo context and a `lindvb.audioviz.Frame`: `bands` (48 log-spaced
+  spectrum bands, 0..1, with falling `peaks`), `level` and `vu` per channel,
+  `wave` (the latest waveform, -1..1), `bass`/`mid`/`treble`, `beat`, `t`, `dt`,
+  the theme `accent` colour and a `caption` (station name). The built-in styles in
+  [`lindvb/visuals.py`](../lindvb/visuals.py) are written exactly this way.
+* **GStreamer element** — `api.add_visualizer("My vis", element=factory)`.
+  `factory()` returns an audio visualiser element (audio in, video out) that
+  playbin renders into the video area, like `goom`, `monoscope` or `projectm`.
+
+### projectM
+
+LinDVB ships the add-on *GStreamer visualisations (projectM, GOOM)*
+(`lindvb/addons/gst_visualizers.py`). It offers **projectM** — the open-source
+MilkDrop, with thousands of presets — when the
+[gst-projectm](https://github.com/projectM-visualizer/gst-projectm) GStreamer
+plugin (element `projectm`, built on libprojectM 4) is installed, and **GOOM**
+from gst-plugins-good. Presets are taken from `projectm_preset_dir` in
+`settings.json`, or else from the usual folders such as
+`/usr/share/projectM/presets`; `projectm_preset_seconds` sets how long each
+preset runs (default 20). Without gst-projectm the entry is simply not offered
+and the plugin list says why. Like any plugin, the add-on can be switched off
+under **☰ → Plugins…**.
 
 ## Conditional access (descrambling your own channels)
 

@@ -6,6 +6,8 @@ import textwrap
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
+os.environ["LINDVB_NO_BUNDLED_PLUGINS"] = "1"   # only the test plugins
+
 from lindvb.plugins import PluginManager  # noqa: E402
 
 PLUGIN_SRC = textwrap.dedent('''
@@ -114,3 +116,35 @@ def test_failed_plugin_recorded(tmp_path):
     mgr = PluginManager({}, log=lambda m: None)
     mgr.load_all()
     assert "no_such_module_xyz" in mgr.failed["broken"]
+
+
+def test_visualizer_registration(tmp_path):
+    d = tmp_path / "plugins"
+    d.mkdir()
+    (d / "vis.py").write_text(textwrap.dedent('''
+        class Style:
+            def draw(self, cr, w, h, frame):
+                pass
+
+        def register(api):
+            api.add_visualizer("Drawn", draw=Style)
+            api.add_visualizer("Element", element=lambda: None)
+            try:
+                api.add_visualizer("Both", draw=Style, element=lambda: None)
+            except Exception:
+                pass
+    '''))
+    os.environ["LINDVB_PLUGIN_PATH"] = str(d)
+    mgr = PluginManager({}, log=lambda m: None)
+    mgr.load_all()
+    assert [(n, k) for _p, n, k, _f in mgr.visualizers] == [("Drawn", "draw"), ("Element", "element")]
+
+
+def test_bundled_addon_loads(tmp_path, monkeypatch):
+    monkeypatch.delenv("LINDVB_NO_BUNDLED_PLUGINS", raising=False)
+    monkeypatch.setenv("LINDVB_PLUGIN_PATH", str(tmp_path))
+    mgr = PluginManager({}, log=lambda m: None)
+    names = [n for n, _p in mgr.discover()]
+    assert "gst_visualizers" in names
+    mgr.load_all()                      # with or without GStreamer, it must not fail
+    assert "gst_visualizers" not in mgr.failed

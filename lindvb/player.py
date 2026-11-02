@@ -19,6 +19,7 @@ from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name)
+from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .teletext import DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt  # noqa: E402
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
 
@@ -32,6 +33,10 @@ except (ImportError, ValueError):
 PLAY_FLAGS_VIDEO = 1
 PLAY_FLAGS_AUDIO = 2
 PLAY_FLAGS_TEXT = 4
+PLAY_FLAGS_VIS = 8
+
+SPECTRUM_BINS = 256
+SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
@@ -102,7 +107,13 @@ class VideoBin:
         bin_ = Gst.Bin.new("videoout")
         conv = Gst.ElementFactory.make("videoconvert")
         appsink = Gst.ElementFactory.make("appsink")
-        appsink.set_property("caps", Gst.Caps.from_string("video/x-raw,format=RGBA"))
+        # Opaque formats: visualisers such as GOOM leave junk in the padding
+        # byte, which RGBA would turn into transparency.
+        if hasattr(Gdk.MemoryFormat, "R8G8B8X8"):
+            self._format, caps = Gdk.MemoryFormat.R8G8B8X8, "RGBx"
+        else:
+            self._format, caps = Gdk.MemoryFormat.R8G8B8, "RGB"
+        appsink.set_property("caps", Gst.Caps.from_string(f"video/x-raw,format={caps}"))
         appsink.set_property("emit-signals", True)
         appsink.set_property("max-buffers", 2)
         appsink.set_property("drop", True)
@@ -135,7 +146,7 @@ class VideoBin:
         pending, self._pending = self._pending, None
         if pending:
             data, w, h, stride = pending
-            tex = Gdk.MemoryTexture.new(w, h, Gdk.MemoryFormat.R8G8B8A8, data, stride)
+            tex = Gdk.MemoryTexture.new(w, h, self._format, data, stride)
             self.picture.set_paintable(tex)
         return False
 
@@ -184,6 +195,12 @@ class Player(GObject.Object):
         self._fallback_done = False
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
+        # radio visualisations: audio analysis tap, or a GStreamer visualiser
+        self.analysis = AudioAnalysis()
+        self._analyze = False
+        self.spectrum = None
+        self.vis_factory = None         # () -> Gst.Element for playbin's vis-plugin
+        self._pending_seek = None
 
     # -- pipeline -----------------------------------------------------------
 
@@ -206,9 +223,16 @@ class Player(GObject.Object):
         vf.add_pad(Gst.GhostPad.new("sink", chain[0].get_static_pad("sink")))
         vf.add_pad(Gst.GhostPad.new("src", chain[-1].get_static_pad("src")))
         pb.set_property("video-filter", vf)
-        self.eq = Gst.ElementFactory.make("equalizer-10bands")
-        if self.eq is not None:
-            pb.set_property("audio-filter", self.eq)
+        pb.set_property("audio-filter", self._audio_filter())
+        if self.vis_factory is not None:
+            try:
+                vis = self.vis_factory()
+            except Exception as e:      # a plugin's visualiser must not stop playback
+                vis = None
+                self.emit("error", f"Visualisation not available: {e}")
+            if vis is not None:
+                pb.set_property("vis-plugin", vis)
+                pb.set_property("flags", pb.get_property("flags") | PLAY_FLAGS_VIS)
         pb.connect("source-setup", self._on_source_setup)
         pb.connect("element-setup", self._on_element_setup)
         if not pb3:
@@ -220,6 +244,103 @@ class Player(GObject.Object):
         self.playbin = pb
         self._apply_settings()
         return pb
+
+    def _audio_filter(self):
+        """audioconvert ! equalizer ! spectrum, with a probe for the meters."""
+        self.eq = Gst.ElementFactory.make("equalizer-10bands")
+        self.spectrum = Gst.ElementFactory.make("spectrum")
+        if self.spectrum is not None:
+            self.spectrum.set_property("bands", SPECTRUM_BINS)
+            self.spectrum.set_property("threshold", -80)
+            self.spectrum.set_property("interval", SPECTRUM_INTERVAL)
+            self.spectrum.set_property("post-messages", self._analyze)
+        chain = [e for e in (Gst.ElementFactory.make("audioconvert"), self.eq, self.spectrum)
+                 if e is not None]
+        if self.eq is None and self.spectrum is None:
+            return None
+        bin_ = Gst.Bin.new("afilter")
+        for e in chain:
+            bin_.add(e)
+        for a, b in zip(chain, chain[1:]):
+            a.link(b)
+        bin_.add_pad(Gst.GhostPad.new("sink", chain[0].get_static_pad("sink")))
+        src = chain[-1].get_static_pad("src")
+        bin_.add_pad(Gst.GhostPad.new("src", src))
+        src.add_probe(Gst.PadProbeType.BUFFER, self._on_audio_buffer)
+        return bin_
+
+    def _on_audio_buffer(self, pad, info):
+        """Streaming thread: hand the decoded audio to the analysis."""
+        if not self._analyze:
+            return Gst.PadProbeReturn.OK
+        buf = info.get_buffer()
+        caps = pad.get_current_caps()
+        if buf is None or caps is None:
+            return Gst.PadProbeReturn.OK
+        st = caps.get_structure(0)
+        ok, mapinfo = buf.map(Gst.MapFlags.READ)
+        if ok:
+            try:
+                self.analysis.feed_buffer(mapinfo.data, st.get_string("format"),
+                                          st.get_int("channels")[1], st.get_int("rate")[1])
+            finally:
+                buf.unmap(mapinfo)
+        return Gst.PadProbeReturn.OK
+
+    @property
+    def analyze(self):
+        return self._analyze
+
+    @analyze.setter
+    def analyze(self, on):
+        """Run the audio analysis (only while a visualisation is shown)."""
+        on = bool(on)
+        if on != self._analyze:
+            self._analyze = on
+            self.analysis.reset()
+            if self.spectrum is not None:
+                self.spectrum.set_property("post-messages", on)
+
+    def set_visualizer(self, factory):
+        """Use a GStreamer element as visualisation (``None`` = drawn by LinDVB).
+
+        playbin only takes a new visualiser when the pipeline is built, so a
+        running audio-only stream is restarted where it is.
+        """
+        if factory is self.vis_factory:
+            return
+        self.vis_factory = factory
+        if self.playbin and not self.has_video():
+            self.restart()
+
+    def _count(self, kind):
+        """Number of video/audio streams, on playbin or playbin3."""
+        if not self.playbin:
+            return 0
+        if self._pb3:
+            stype = Gst.StreamType.VIDEO if kind == "video" else Gst.StreamType.AUDIO
+            return len(self._streams(stype))
+        return self.playbin.get_property(f"n-{kind}")
+
+    def has_video(self):
+        return self._count("video") > 0
+
+    def is_audio_only(self):
+        """True once a running stream turned out to have audio but no video."""
+        if not self.playbin:
+            return False
+        _ret, state, _pending = self.playbin.get_state(0)
+        return (state in (Gst.State.PAUSED, Gst.State.PLAYING)
+                and self._count("video") == 0 and self._count("audio") > 0)
+
+    def restart(self):
+        """Rebuild the pipeline and continue at the same position."""
+        if self.capture:
+            self.play_capture(self.capture, self.sid, self.played_offset())
+        elif self.uri:
+            pos = self.position()
+            self.play_uri(self.uri)
+            self._pending_seek = pos[0] if pos else None
 
     def _teardown(self):
         self._ttx_dec = None
@@ -384,6 +505,7 @@ class Player(GObject.Object):
         if "://" not in uri:
             uri = Gst.filename_to_uri(uri)
         self.uri = uri
+        self._pending_seek = None
         self._token += 1
         self._fallback_done = False
         engine = self.settings.get("stream_engine", "auto")
@@ -758,6 +880,9 @@ class Player(GObject.Object):
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:
             _old, new, _p = msg.parse_state_changed()
             if new == Gst.State.PLAYING:
+                if self._pending_seek is not None:
+                    target, self._pending_seek = self._pending_seek, None
+                    self.seek_to(target)
                 self.emit("state", "playing")
                 self.emit("tracks")
         elif t == Gst.MessageType.STREAMS_SELECTED:
@@ -773,6 +898,11 @@ class Player(GObject.Object):
                     self._collection = msg.parse_stream_collection()
             self.emit("tracks")
         elif t == Gst.MessageType.ELEMENT:
+            st = msg.get_structure()
+            if st is not None and st.get_name() == "spectrum":
+                if self._analyze:
+                    self.analysis.feed_spectrum(parse_spectrum(st.to_string()))
+                return
             self._on_section(msg)
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()

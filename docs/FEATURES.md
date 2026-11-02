@@ -24,7 +24,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | LNB types and LOFs | `English.lng:1216` `cbLNBType=Manual LOF,Universal,C-Band,10700 LOF,10750 LOF,11250 LOF,11300 LOF` | **Yes**: LNB type for the scan, LOF1/LOF2/switch frequency in Preferences |
 | DiSEqC switches, positioner | `English.lng:1221` `cbNetDiSEqC=None,SimpleA,SimpleB,Pos A/Opt A,…,Angular Pos.`, `btnDiSEqCEdit` | **Partly**: committed DiSEqC ports 1–4; no motor/positioner control |
 | Unicable (SCR) | `English.lng:1452` `[frmUnicable]`, `cbUseSlot.Caption=Use &Unicable Slot (1..8)` | **No**: `dvbsrc` has no SCR support; would need libdvbv5 directly |
-| Channel list with filters | `English.lng:1935-1957` `mnuAC3`, `mnuEncrypted`, `mnuFreetoAir`, `mnuRadio`, `mnuFavorite`, `mnuH264`, `mnuShowChannelNr` | **Yes**: All/TV/Radio/Favourites/FTA/Encrypted/HD/Internet filters, group filter, search, channel numbers |
+| Channel list with filters | `English.lng:1935-1957` `mnuAC3`, `mnuEncrypted`, `mnuFreetoAir`, `mnuRadio`, `mnuFavorite`, `mnuH264`, `mnuShowChannelNr` | **Yes**: TV/Radio switch (the list shows one kind; favourites mix both), All/Favourites/FTA/Encrypted/HD/Internet filters, group filter, search, channel numbers |
 | Channel editor | `English.lng:542` `actChannelEdit.Caption=Channel Editor`, `[frmChannelConfig]` at line 154 | **Yes**: edit name, group, tuning data, PIDs, reorder, sort, delete, new IPTV entry |
 | Favourites and favourite zapping | `English.lng:610` `actFavourites.Caption=Favourites Editor`; `actions.ini` `Favourite 0..9`, `Favourite Plus/Minus` | **Yes**: favourite flag, favourites filter, favourite plus/minus actions |
 | Channel list import from other software | `Plugins/ImportCSV.dll` ("CSV Files (*.csv)"), `ImportConf.dll` ("VDR Channel CONF Files (*.conf)"), `ImportLamedb.dll` (Enigma2 lamedb) | **Yes**: CSV, VDR channels.conf, Enigma2 lamedb, plus dvbv5 files, M3U and DVBViewer `.ini` lists |
@@ -34,7 +34,8 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 
 | DVBViewer feature | Evidence | LinDVB |
 |---|---|---|
-| Live TV and radio playback | `English.lng:1428` `[frmTVRadioOpt]`, `actRadioWindow.Caption=Radio Window` | **Yes** |
+| Live TV and radio playback | `English.lng:1428` `[frmTVRadioOpt]`, `actRadioWindow.Caption=Radio Window` | **Yes**: TV/Radio switch that tunes the last channel of each kind; the last channel is tuned again at start |
+| Visualisation for radio | `Images/Icons/VisionX/actRadioWindow.png`, visualisation plugins | **Yes**: glow waves, nebula particles, LED spectrum analyser, VU meters, oscilloscope; projectM and GOOM via the bundled GStreamer add-on; more through plugins |
 | Timeshift (pause live TV, jump, keep the buffer) | `English.lng:599-601` `actTimeshift`, `actTimeshiftRecStop`, `actTimeshiftSave.Caption=Keep Timeshift File`; `actions.ini` `Jump Minus 10=102` | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Media file and URL playback, playlists | `English.lng:569-570` `actLoadFile`, `actLoadURL`; `[frmPlaylist]`; `actRandom`, `actRepeat`, `actPlaylistGo` | **Yes**: files, URLs, M3U/PLS playlists, next/previous, random, endless |
 | Play rate | `English.lng:619` `mnuPlayrate.Caption=Play Rate`; `Images/Icons/VisionX/actPlayrate050..200.png` | **Yes** (files) |
@@ -62,8 +63,8 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | EPG search (case, whole word, description) | `English.lng:409-412` `mnuSearchCase`, `mnuSearchDescription`, `mnuSearchWord` | **Yes** (case and description options) |
 | Search the web for a programme | `Default/EPG_URLList.ini` (Google, IMDb, Wikipedia, TMDB…), `btnInternet` | **Yes**: configurable URL list |
 | EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Partly**: XMLTV import for internet channels; no export |
-| EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in TV ▸ EPG Settings; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
-| EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: TV ▸ EPG Settings |
+| EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
+| EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
 | On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress, genre/country/year of the programme on air, sound format, languages and subtitles on offer |
 | Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save |
@@ -77,9 +78,9 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Instant recording | `English.lng:588` `actRecord.Caption=Record Current Channel` | **Yes** |
 | Timer recordings with lead/follow-up time and weekday repeat | `English.lng:1051` `[frmRecorder]`, `lstRecorder=Channel,Date,Start,End,Name,Status,Type,Day,Duration,After Recording`, `lblLeadTime`, `lblFollowUp`, `lblMo`…`lblSo` | **Yes** |
 | Record from the EPG, series recording | `English.lng:376,379` `actPVR.Caption=&Record`, `actSeries.Caption=Record Series` | **Yes**: series rules match EPG titles and add timers |
-| Final action after recording | `English.lng:1076` `lblAfterRec.Caption=&Final Action:`; `cbShutdown=Close DVBViewer,Shutdown Computer,Sleep,Hibernate` | **Yes**: standby, hibernate or power off via systemd |
+| Final action after recording | `English.lng:1076` `lblAfterRec.Caption=&Final Action:`; `cbShutdown=Close DVBViewer,Shutdown Computer,Sleep,Hibernate` | **Yes**: standby, hibernate or power off via systemd, or quit LinDVB |
 | File naming scheme with placeholders | `English.lng:1087` `edNameScheme.Hint=%year … %date … %time … %station … %event` | **Yes**: same placeholder idea, own implementation |
-| Recording formats (TS, MPG, audio only), include teletext/subtitles/EPG | `English.lng:1078-1085` `cbTVFormat`, `cbRecTeletext`, `cbRecSubs`, `cbRecAllAudio`, `cbRecEPG` | **Partly**: always TS; includes whatever PIDs are captured (whole transponder option) |
+| Recording formats (TS, MPG, MP4, MKV, native radio audio), include teletext/subtitles/all audio/EPG | `English.lng:1078-1085` `cbTVFormat`, `cbRecTeletext`, `cbRecSubs`, `cbRecAllAudio`, `cbRecEPG` | **Yes**: per timer; teletext and EPG data force TS, subtitles TS or MKV (teletext subtitles as a text track), no re-encoding |
 | Recording and device statistics | `English.lng:590` `actRecorderControls.Caption=Recording and Device Statistics` | **Yes**: per-tuner lock/signal/SNR/BER/bitrate, active recordings |
 | Sleep timer, stop recording after programme | `English.lng:624-633` `sr10…sr180`, `srCurrent.Caption=Stop after current programme` | **Yes** (playback sleep timer) |
 | Recording database, media libraries (video, music, pictures) | `actions.ini` `Refresh RecDB=8260`; `[frmMovieLibrary]` line 819; `OSDSkins/Default/myrecordings.xml`, `mymusicfiles.xml`, `mypics.xml` | **No**: recordings are plain `.ts` files in a folder |
