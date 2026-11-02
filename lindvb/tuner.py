@@ -54,7 +54,10 @@ def dvbsrc_properties(ch, settings, adapter, frontend):
         p["code-rate-hp"] = ch.fec
     if ch.stream_id >= 0:
         p["stream-id"] = ch.stream_id
-    if settings["full_transponder"] or not ch.pmt_pid:
+    software_ca = ch.encrypted and settings.get("ca_provider", "none") not in ("none", "ci", "")
+    if settings["full_transponder"] or not ch.pmt_pid or software_ca:
+        # whole transponder: also when a softcam descrambles, so that the ECM
+        # PIDs (not in the channel list) reach it
         p["pids"] = "8192"
     else:
         # also receive the PIDs of a provider EPG (MediaHighway / Freesat)
@@ -181,6 +184,8 @@ class Capture(GObject.Object):
         # descrambles the captured transport stream in place.
         self.ca = ca_provider if (ca_provider and channel.encrypted) else None
         self._pmt_asm = None
+        self._pat_asm = None
+        self._pmt_pid = channel.pmt_pid
         self.epg_language = settings.get("epg_language", "")
         base = Path(settings["timeshift_dir"])
         base.mkdir(parents=True, exist_ok=True)
@@ -222,6 +227,8 @@ class Capture(GObject.Object):
             # live view, timeshift and recordings all get the clear stream.
             from .ca import SectionAssembler
             self._pmt_asm = SectionAssembler()
+            if not self._pmt_pid:
+                self._pat_asm = SectionAssembler()     # find the PMT PID in the PAT
             self.ca.start(channel)
             pad = sink.get_static_pad("sink")
             pad.add_probe(Gst.PadProbeType.BUFFER, self._ca_probe)
@@ -274,9 +281,9 @@ class Capture(GObject.Object):
 
     def _process_ts(self, data):
         """Descramble the packets in ``data`` (a bytearray). Returns True if written."""
-        from .ca import TS_SYNC, ts_pid
+        from .ca import TS_SYNC, pat_pmt_pid, ts_pid
         n = len(data)
-        pmt_pid = self.channel.pmt_pid
+        pmt_pid = self._pmt_pid
         changed = False
         aligned = (n % TS_PACKET == 0 and data[0] == TS_SYNC)
         offsets = range(0, n - TS_PACKET + 1, TS_PACKET) if aligned else \
@@ -285,6 +292,14 @@ class Capture(GObject.Object):
             packet = memoryview(data)[off:off + TS_PACKET]
             if packet[0] != TS_SYNC:
                 continue
+            if not pmt_pid and self._pat_asm is not None and ts_pid(packet) == 0:
+                for section in self._pat_asm.feed(packet):
+                    found = pat_pmt_pid(section, self.channel.sid) if section else 0
+                    if found:
+                        pmt_pid = self._pmt_pid = found
+                        self.ca.pmt_pid = found
+                        self._pat_asm = None
+                        break
             if pmt_pid and self._pmt_asm is not None and ts_pid(packet) == pmt_pid:
                 for section in self._pmt_asm.feed(packet):
                     if section and section[0] == 0x02:

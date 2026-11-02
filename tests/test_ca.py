@@ -132,3 +132,31 @@ def test_dvbapi_message_framing():
         struct.pack(">II", 0, 0) + bytes([1, 2, 3, 4, 5, 6, 7, 8])
     leftover = prov._consume(msg)
     assert leftover == b""                     # fully consumed
+
+
+def test_pat_pmt_pid():
+    from lindvb.ca import pat_pmt_pid
+    # PAT: program 0 -> NIT 0x0010, program 10301 -> PMT 0x0064, program 7 -> 0x0100
+    body = bytes([0x00, 0x01, 0xC1, 0x00, 0x00,
+                  0x00, 0x00, 0xE0, 0x10,
+                  0x28, 0x3D, 0xE0, 0x64,
+                  0x00, 0x07, 0xE1, 0x00])
+    sec = bytes([0x00, 0xB0, len(body) + 4]) + body + b"\0\0\0\0"
+    assert pat_pmt_pid(sec, 10301) == 0x64
+    assert pat_pmt_pid(sec, 7) == 0x100
+    assert pat_pmt_pid(sec, 99) == 0 and pat_pmt_pid(sec, 0) == 0
+    assert pat_pmt_pid(b"\x02" + sec[1:], 10301) == 0
+
+
+def test_softcam_gets_whole_transponder():
+    from lindvb.channels import Channel
+    from lindvb.config import DEFAULTS
+    from lindvb.tuner import dvbsrc_properties
+    ch = Channel(name="Pay", delsys="dvb-s2", frequency=11494000, polarity="h",
+                 symbol_rate=22000, sid=1, pmt_pid=100, video_pid=101, encrypted=True)
+    s = dict(DEFAULTS)
+    assert dvbsrc_properties(ch, s, 0, 0)["pids"] != "8192"        # no CA: own PIDs
+    s["ca_provider"] = "dvbapi"
+    assert dvbsrc_properties(ch, s, 0, 0)["pids"] == "8192"        # ECM PIDs reach OSCam
+    s["ca_provider"] = "ci"
+    assert dvbsrc_properties(ch, s, 0, 0)["pids"] != "8192"

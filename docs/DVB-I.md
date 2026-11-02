@@ -33,9 +33,9 @@ German profile "DTVP DVB-I Implementierungsprofil V1.1.0" (2026). Open it with
      satellite channels in your channel list, so LinDVB knows there is a dish;
      their DiSEqC port is used. Circular polarisation is not supported. Can be
      switched off in the setup; takes effect with the next update
-   * encrypted instances (ContentProtection with a CA system, CI+) are only used
-     when a CA module or softcam is set up in the preferences; otherwise the
-     next instance is taken
+   * encrypted instances (ContentProtection with a CA system) are used like any
+     other broadcast channel; to watch them, set up your own card in a softcam
+     or a CI module ([SOFTCAM.md](SOFTCAM.md))
    * pop-up channels: an instance with an availability window is shown in the
      channel list only while it is on air. Tuned by number outside the window,
      LinDVB shows the out-of-service banner of the list instead of a picture

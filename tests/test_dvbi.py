@@ -440,18 +440,14 @@ def test_sat_direct_tuning():
     assert dvbi.resolve(sat, scanned, sat_direct=False)[0] is None
 
 
-def test_encrypted_instances_need_ca():
+def test_encrypted_instances_are_used():
+    # descrambling is left to the CA provider (softcam plugin or CI module)
     inst = dvbi.Instance(kind="dvb-t", sid=514, onid=8468, ca=["0x1702"])
     dash = dvbi.Instance(kind="dash", url="https://x/a.mpd")
-    found, reasons = dvbi.candidates([inst, dash], SCANNED, "A")
-    assert [c.is_iptv for _i, c in found] == [True] and "encrypted" in reasons[0]
-    found, _ = dvbi.candidates([inst, dash], SCANNED, "A", ca=True)
-    assert found[0][1].delsys == "dvb-t2"
+    found, _ = dvbi.candidates([inst, dash], SCANNED, "A")
+    assert [c.delsys for _i, c in found] == ["dvb-t2", "iptv"]
     enc = [Channel(name="Enc", delsys="dvb-t2", frequency=1, sid=7, encrypted=True)]
-    plain = dvbi.Instance(kind="dvb-t", sid=7)
-    assert dvbi.instance_channel(plain, enc)[0] is None
-    assert dvbi.instance_channel(plain, enc, ca=True)[0] is not None
-    assert dvbi.ca_available({"ca_provider": "dvbapi"}) and not dvbi.ca_available({})
+    assert dvbi.instance_channel(dvbi.Instance(kind="dvb-t", sid=7), enc)[0].encrypted
 
 
 def test_alternatives_for_failover():

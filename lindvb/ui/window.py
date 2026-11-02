@@ -1071,7 +1071,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if c is None or not c.dvbi_id or not self.settings.get("dvbi_failover", True) or \
                 self.stopped is not None:
             return False
-        alts = dvbi.alternatives(c, self.app.db.channels, ca=dvbi.ca_available(self.settings),
+        alts = dvbi.alternatives(c, self.app.db.channels,
                                  sat_direct=self.settings.get("dvbi_sat_direct", True))
         for alt in alts:
             sig = _tuning_sig(alt)

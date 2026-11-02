@@ -20,9 +20,10 @@ This module is the part that runs without GTK:
   If-Modified-Since (at least every 24 hours, the last list stays in use when
   the download fails)
 * stage 3: satellite instances tuned straight from their delivery parameters
-  (no channel search needed), encrypted instances only with a CA module or
-  softcam, availability windows (pop-up channels) and the other instances of
-  a service for switching over when one fails (failover)
+  (no channel search needed), availability windows (pop-up channels) and the
+  other instances of a service for switching over when one fails (failover).
+  Encrypted instances are used like any other; descrambling is the job of the
+  CA provider (softcam plugin or CI module, see docs/SOFTCAM.md)
 
 The German profile is "DTVP DVB-I Implementierungsprofil V1.1.0" (2026), on
 top of TS 103 770 V1.2.1 profile IP2. Requirement numbers (IT-n) in the
@@ -778,15 +779,10 @@ def direct_channel(inst, scanned):
                    encrypted=bool(inst.ca))
 
 
-def instance_channel(inst, scanned, name="", radio=False, ca=False, sat_direct=True):
+def instance_channel(inst, scanned, name="", radio=False, sat_direct=True):
     """(Channel, None) for a service instance, or (None, reason)."""
     if inst.kind in ("dvb-t", "dvb-c", "dvb-s"):
-        if inst.ca and not ca:
-            # IT-15: an encrypted (CI+) instance needs a CA module or softcam
-            return None, f"{inst.kind.upper()} encrypted, no CA module set up"
         ch = find_broadcast(inst, scanned)
-        if ch is not None and ch.encrypted and not ca:
-            return None, f"{inst.kind.upper()} encrypted, no CA module set up"
         if ch is not None:
             c = Channel.from_dict(asdict(ch))
             c.favourite = False
@@ -807,12 +803,12 @@ def instance_channel(inst, scanned, name="", radio=False, ca=False, sat_direct=T
     return None, ""
 
 
-def candidates(instances, scanned, name="", radio=False, ca=False, sat_direct=True):
+def candidates(instances, scanned, name="", radio=False, sat_direct=True):
     """All playable instances in priority order as [(Instance, Channel)],
     and the reasons the others were left out."""
     out, reasons = [], []
     for inst in instances:
-        ch, why = instance_channel(inst, scanned, name, radio, ca, sat_direct)
+        ch, why = instance_channel(inst, scanned, name, radio, sat_direct)
         if ch is not None:
             out.append((inst, ch))
         elif why:
@@ -820,20 +816,20 @@ def candidates(instances, scanned, name="", radio=False, ca=False, sat_direct=Tr
     return out, reasons
 
 
-def resolve(service, scanned, ca=False, sat_direct=True):
+def resolve(service, scanned, sat_direct=True):
     """The channel for the best playable instance in priority order (IT-10), or
     (None, reason). A broadcast instance needs a matching channel from the
     channel search, or for satellite the delivery parameters; DRM-protected
     internet instances cannot be played."""
     found, reasons = candidates(service.instances, scanned, service.name, service.radio,
-                                ca, sat_direct)
+                                sat_direct)
     if found:
         inst, ch = found[0]
         return ch, inst
     return None, "; ".join(reasons) or "no playable instance"
 
 
-def alternatives(channel, scanned, ca=False, sat_direct=True):
+def alternatives(channel, scanned, sat_direct=True):
     """IT-10 failover: the other playable instances of a DVB-I channel, in
     priority order, as channels with the channel's identity (name, number,
     DVB-I fields) and the tuning of that instance."""
@@ -845,7 +841,7 @@ def alternatives(channel, scanned, ca=False, sat_direct=True):
         except TypeError:
             continue
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
-    found, _ = candidates(insts, scanned, channel.name, channel.radio, ca, sat_direct)
+    found, _ = candidates(insts, scanned, channel.name, channel.radio, sat_direct)
     out = []
     tuning = ("delsys", "root", "frequency", "polarity", "symbol_rate", "modulation", "fec",
               "bandwidth_hz", "stream_id", "diseqc", "sid", "tsid", "onid", "pmt_pid",
@@ -886,17 +882,16 @@ class BuildResult:
     missing: list = field(default_factory=list)    # (service name, reason)
 
 
-def build_channels(sl, region_id, scanned, list_name="", ca=False, sat_direct=True):
+def build_channels(sl, region_id, scanned, list_name="", sat_direct=True):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
-    channels of the user's own channel search (DVB-T/C/S). *ca*: a CA module
-    or softcam is set up; *sat_direct*: satellite instances may be tuned from
-    their delivery parameters."""
+    channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
+    satellite instances may be tuned from their delivery parameters."""
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
     for entry in lineup(sl, region_id):
         svc = entry.service
-        ch, inst = resolve(svc, scanned, ca, sat_direct)
+        ch, inst = resolve(svc, scanned, sat_direct)
         if ch is None:
             res.missing.append((svc.name, inst))
             continue
@@ -927,11 +922,6 @@ def build_channels(sl, region_id, scanned, list_name="", ca=False, sat_direct=Tr
 
 
 # ---------------------------------------------------------------- network
-
-def ca_available(settings):
-    """IT-15: encrypted instances are only used with a CA provider set up."""
-    return settings.get("ca_provider", "none") not in ("", "none")
-
 
 def with_postcode(url, postcode):
     """IT-5: server-side region selection, <ServiceList_URL>?postcode=<postcode>."""
@@ -1144,7 +1134,7 @@ class Updater:
                                         region if region is not None else s.get("dvbi_region", ""))
         res.region, res.regions, res.service_list = rid, cands, sl
         res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name,
-                                   ca=ca_available(s), sat_direct=s.get("dvbi_sat_direct", True))
+                                   sat_direct=s.get("dvbi_sat_direct", True))
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)
         res.changed = True

@@ -109,6 +109,9 @@ enigma2 do. Choose the provider under **Preferences → Conditional access**:
 
 ### External softcam (DVBAPI / OSCam) — `ca_provider = "dvbapi"`
 
+Step-by-step setup, OSCam configuration and troubleshooting:
+[SOFTCAM.md](SOFTCAM.md).
+
 For a card in a card reader driven by a softcam such as OSCam. OSCam reads your
 subscription card, LinDVB connects to its DVBAPI socket, runs the section
 filters OSCam asks for, forwards the ECM/EMM sections, and applies the control
