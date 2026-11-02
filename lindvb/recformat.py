@@ -13,6 +13,10 @@ The audio tracks are chosen separately (AUDIO_MODES): all of them, the ones in
 the preferred language, or only the first. TS, MPG and MKV keep several tracks
 (tracks a container cannot carry, such as AC-3 in MPG, are left out); MP4 and
 the native radio audio file keep one, the preferred language when it is on air.
+
+Internet streams (IPTV, HLS, DASH) carry no teletext, subtitle or EPG data
+streams, so their extras are greyed out and every format is on offer. HLS and
+DASH streams are recorded with one audio track (see choose_streams).
 """
 
 import re
@@ -80,17 +84,34 @@ PLACEHOLDERS = [
 ]
 
 
-def allowed_formats(extras, radio=False):
+def usable_extras(extras, iptv=False):
+    """The ticked extra streams a channel can deliver (none for internet streams)."""
+    return [] if iptv else [e for e in extras if e in EXTRAS]
+
+
+def allowed_formats(extras, radio=False, iptv=False):
     """Formats that can hold every ticked extra stream, in display order."""
-    wanted = {e for e in extras if e in EXTRAS}
+    wanted = set(usable_extras(extras, iptv))
     formats = RADIO_FORMATS if radio else TV_FORMATS
     return [f for f in formats if wanted <= CAN_HOLD[f]]
 
 
-def effective_format(fmt, extras, radio=False):
+def effective_format(fmt, extras, radio=False, iptv=False):
     """The chosen format, or TS when it cannot hold the ticked extras."""
-    allowed = allowed_formats(extras, radio)
+    allowed = allowed_formats(extras, radio, iptv)
     return fmt if fmt in allowed else "TS"
+
+
+def unavailable_reason(fmt, extras, radio=False, iptv=False):
+    """Why *fmt* is greyed out, or "" when it can be chosen."""
+    if fmt in allowed_formats(extras, radio, iptv):
+        return ""
+    missing = [EXTRA_LABELS[e].split(" (")[0].lower()
+               for e in usable_extras(extras, iptv) if e not in CAN_HOLD[fmt]]
+    return f"{FORMAT_LABELS[fmt].split(' (')[0]} cannot hold {' and '.join(missing)}."
+
+
+IPTV_EXTRAS_NOTE = "Internet streams have no teletext, subtitle or EPG data streams."
 
 
 def audio_mode_from_legacy(all_audio):
@@ -98,8 +119,11 @@ def audio_mode_from_legacy(all_audio):
     return "all" if all_audio else "first"
 
 
-def audio_note(fmt, mode):
+def audio_note(fmt, mode, iptv=False):
     """A short note on how many audio tracks the chosen container keeps."""
+    if iptv and mode != "first":
+        return ("HLS and DASH internet streams are recorded with one audio track "
+                "(the preferred language when it is offered).")
     if fmt == "MP4" and mode != "first":
         return "MP4 keeps one audio track (the preferred language when it is on air)."
     if fmt == "Audio" and mode != "first":
@@ -212,6 +236,24 @@ def choose_from_pmt(section, pids, channel_audio, mode, language="", single=Fals
     if not audio:
         return pids
     return (set(pids) - set(channel_audio)) | set(audio)
+
+
+def choose_streams(streams, mode, language="", single=False):
+    """Streams to record from an internet stream's collection (HLS / DASH).
+
+    *streams* are (stream_id, kind, language, default) with kind "video",
+    "audio" or anything else (subtitles and data are not recorded). One video
+    stream is kept (the default one, else the first); the audio streams are
+    chosen like DVB audio tracks (see choose_audio), the default one counting
+    as the first track.
+    """
+    video = [s for s in streams if s[1] == "video"]
+    video.sort(key=lambda s: not s[3])
+    audio = [s for s in streams if s[1] == "audio"]
+    audio.sort(key=lambda s: not s[3])           # stable: the default track first
+    picked = choose_audio([(sid, lang, False) for sid, _k, lang, _d in audio],
+                          mode, language, single)
+    return [s[0] for s in video[:1]] + picked
 
 
 def needs_pmt(audio_mode, fmt, language):

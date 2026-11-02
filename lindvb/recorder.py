@@ -14,7 +14,8 @@ from gi.repository import Gio, GLib, GObject
 from .config import CONFIG_DIR
 from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
                         SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
-                        choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt)
+                        choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
+                        usable_extras)
 from .tuner import SegmentReader
 # systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
 AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
@@ -155,15 +156,18 @@ class Recording:
             self.thread = threading.Thread(target=self._copy, daemon=True)
             self.thread.start()
         else:
-            # Internet TV: no PMT to choose by language, so "language" keeps the first.
+            # Internet TV: HLS / DASH streams are chosen by language from the
+            # stream list; other streams have no PMT to go by, so "language"
+            # keeps the first track there.
             self.remux = self._remuxer(url=url, all_audio=self.audio_mode == "all" and
-                                       fmt not in SINGLE_AUDIO)
+                                       fmt not in SINGLE_AUDIO,
+                                       audio_mode=self.audio_mode, language=language)
             self.remux.start()
 
-    def _remuxer(self, url=None, program=0, all_audio=True):
+    def _remuxer(self, url=None, program=0, all_audio=True, **kw):
         from .remux import Remuxer
         return Remuxer(self.fmt, self.path, url=url, program=program, all_audio=all_audio,
-                       on_done=lambda r: setattr(self, "path", Path(r.path)))
+                       on_done=lambda r: setattr(self, "path", Path(r.path)), **kw)
 
     @property
     def bytes(self):
@@ -353,9 +357,9 @@ class TimerManager(GObject.Object):
         opts = timer or options or Timer("", "", "", 0, 0, **self.defaults())
         audio = {"audio_mode": opts.audio_mode, "language": s.get("rec_audio_language", "")}
         full = bool(s.get("full_transponder")) or not channel.pmt_pid
-        extras = opts.extras
+        extras = usable_extras(opts.extras, channel.is_iptv)
         fmt = effective_format(opts.radio_format if channel.radio else opts.tv_format,
-                               extras, channel.radio)
+                               extras, channel.radio, channel.is_iptv)
         if fmt != "TS":
             from .remux import available
             if not available(fmt):

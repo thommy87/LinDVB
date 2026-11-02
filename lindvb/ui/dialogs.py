@@ -219,7 +219,9 @@ class PrefsWindow(Gtk.Window):
                   "recording started with \"Record with options…\", can change them.\n"
                   "TS: video, all audio tracks, subtitles, teletext and EPG data. "
                   "MKV: video, several audio tracks and subtitles. "
-                  "MPG: video and several audio tracks. MP4: video and one audio track.",
+                  "MPG: video and several audio tracks. MP4: video and one audio track. "
+                  "Internet streams have no teletext, subtitles or EPG data; HLS and DASH "
+                  "streams are recorded with one audio track.",
             xalign=0, wrap=True, css_classes=["lv-hint"], margin_top=6, margin_bottom=6))
 
         def pick(key, values, labels, label, hint=None):
