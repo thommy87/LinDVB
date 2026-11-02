@@ -447,6 +447,194 @@ void main() {
 }
 """
 
+# --- Light ribbons ---------------------------------------------------------------------
+SPECTRUM_FN = """
+uniform float u_spec[48];
+float spec(float m) {            // m: 0 (bass) .. 1 (treble), interpolated
+    float x = clamp(m, 0.0, 1.0) * 47.0;
+    int i = int(floor(x));
+    int j = min(i + 1, 47);
+    return mix(u_spec[i], u_spec[j], x - float(i));
+}
+float hash21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+"""
+
+RIBBONS = PRELUDE + SPECTRUM_FN + """
+uniform float u_t, u_unit, u_horizon, u_mirror, u_glow;
+uniform int u_count;
+uniform vec4 u_ra[4];        // y0, amplitude, frequency, phase
+uniform vec4 u_rb[4];        // width, twist frequency, twist phase, spectrum gain
+uniform vec3 u_front[4];
+uniform vec3 u_back[4];
+const float TAU = 6.2831853;
+const int LINES = 24;
+void ribbon(int k, float x, out float c, out float wd, out float phi) {
+    vec4 a = u_ra[k]; vec4 b = u_rb[k];
+    float u = x / u_res.x;
+    c = a.x + a.y * (0.7 * sin(TAU * a.z * u + a.w) + 0.3 * sin(TAU * a.z * 2.3 * u - 1.3 * a.w))
+        - b.w * spec(abs(2.0 * u - 1.0));
+    wd = b.x * (0.6 + 0.4 * sin(TAU * 0.7 * u + 0.5 * b.z));
+    phi = TAU * b.y * u + b.z;
+}
+// light of all ribbons at p; blur widens the threads (the reflection), stride skips some
+vec3 ribbons(vec2 p, float blur, int stride) {
+    vec3 acc = vec3(0.0);
+    float u = p.x / u_res.x;
+    float env = 0.35 + 0.65 * smoothstep(0.0, 0.2, u) * smoothstep(1.0, 0.8, u);
+    float lw = max(1.0, 1.05 * u_unit);
+    for (int k = 0; k < 4; k++) {
+        if (k >= u_count) break;
+        float c0, w0, f0, c1, w1, f1;
+        ribbon(k, p.x, c0, w0, f0);
+        ribbon(k, p.x + 1.0, c1, w1, f1);
+        float cs0 = cos(f0), sn0 = sin(f0), cs1 = cos(f1), sn1 = sin(f1);
+        vec3 col = mix(u_back[k], u_front[k], smoothstep(-0.35, 0.35, cs0));
+        float dc = p.y - c0;
+        float halo = abs(w0) * 1.6 + u_res.y * 0.02;
+        acc += col * (0.07 + 0.10 * u_glow) * exp(-dc * dc / (halo * halo)) * env;
+        // the translucent sheet between the outer threads
+        float ya = c0 + w0 * (-cs0 + 0.15 * sn0), yb = c0 + w0 * (cs0 + 0.15 * sn0);
+        float lo = min(ya, yb), hi = max(ya, yb);
+        acc += col * 0.07 * clamp(p.y - lo + 0.5, 0.0, 1.0) * clamp(hi - p.y + 0.5, 0.0, 1.0) * env;
+        float reach = abs(w0) * 1.2 + lw + blur * 2.0 + 2.0;
+        if (abs(dc) > reach) continue;
+        float threads = 0.0;
+        for (int j = 0; j < LINES; j += stride) {
+            float s = -1.0 + 2.0 * float(j) / float(LINES - 1);
+            float y0 = c0 + w0 * (s * cs0 + 0.15 * s * s * sn0);
+            float y1 = c1 + w1 * (s * cs1 + 0.15 * s * s * sn1);
+            float slope = y1 - y0;
+            float d = abs(p.y - y0) * inversesqrt(1.0 + slope * slope);
+            threads += clamp((lw * 0.5 - d) / blur + 0.5, 0.0, 1.0);
+        }
+        acc += col * threads * 0.26 * float(stride) / sqrt(blur) * env;
+    }
+    return acc;
+}
+void main() {
+    vec2 px = v_uv * u_res;
+    float h = u_res.y, yh = h * u_horizon;
+    // night sky with two soft spotlights from above
+    vec3 col = mix(vec3(0.004, 0.01, 0.05), vec3(0.02, 0.05, 0.17), smoothstep(0.0, yh, px.y));
+    vec2 l1 = (px - vec2(0.13 * u_res.x, -0.05 * h)) / h;
+    vec2 l2 = (px - vec2(0.86 * u_res.x, -0.05 * h)) / h;
+    col += vec3(0.03, 0.08, 0.28) * (exp(-dot(l1, l1) * 6.0) + exp(-dot(l2, l2) * 6.0)) * (0.7 + 0.5 * u_glow);
+    if (px.y < yh) {
+        col += 1.0 - exp(-ribbons(px, 1.0, 1) * 1.2);
+    } else {
+        float depth = (px.y - yh) / max(1.0, h - yh);
+        col = mix(vec3(0.02, 0.05, 0.17), vec3(0.0, 0.004, 0.02), sqrt(depth));
+        col += vec3(0.1, 0.25, 0.8) * exp(-(px.y - yh) / (3.0 * u_unit)) * 0.25;
+        // ripples: wavy rows that shift the mirrored picture sideways
+        float yy = px.y / u_unit, xx = px.x / u_unit;
+        float rip = sin(yy * 0.35 + u_t * 1.7 + 3.0 * sin(xx * 0.004 + u_t * 0.3))
+                  + 0.5 * sin(yy * 0.9 - u_t * 2.3 + xx * 0.002);
+        // mirrored about the horizon and squashed, as seen at a low angle
+        vec2 q = vec2(px.x + rip * (3.0 + 40.0 * depth) * u_unit,
+                      yh - (px.y - yh) * u_mirror + rip * 3.0 * u_unit);
+        float streak = 0.5 + 0.5 * sin(yy * 0.55 + rip * 2.0 + 2.5 * sin(xx * 0.011 + yy * 0.07 - u_t * 0.6)
+                                       + 1.5 * sin(xx * 0.029 - yy * 0.13 + u_t * 0.9));
+        vec3 refl = 1.0 - exp(-ribbons(q, 1.0 + 6.0 * depth * u_unit, 2) * 1.1);
+        col += refl * (1.2 - 0.75 * depth) * (0.3 + 0.7 * streak);
+        col += 1.0 - exp(-ribbons(px, 1.0, 1) * 1.2);       // ribbons dipping into the water
+    }
+    fragColor = vec4(col + dither(), 1.0);
+}
+"""
+
+# --- Pulsar ----------------------------------------------------------------------------
+PULSAR = PRELUDE + SPECTRUM_FN + """
+uniform float u_t, u_unit, u_r0, u_pulse, u_level, u_spin;
+uniform int u_layers;
+uniform vec4 u_layer[5];     // turn offset, gain (px), opacity, sharpness
+uniform vec3 u_lcol[5];
+uniform vec4 u_orbit[3];     // centre x, centre y, radius, phase 2
+uniform vec4 u_orbit2[3];    // a2, a3, phase 3, -
+uniform vec3 u_ocol[3];
+uniform vec2 u_aura;         // radius, phase
+const float TAU = 6.2831853;
+const float SPOKES = 144.0;
+float specm(float turns) { return spec(1.0 - abs(2.0 * fract(turns) - 1.0)); }
+vec3 screen(vec3 a, vec3 b) { return a + b - a * b; }
+vec3 stars(vec2 px, float cell, float density, float t) {
+    vec2 c = floor(px / cell);
+    float h = hash21(c);
+    if (h > density) return vec3(0.0);
+    vec2 pos = (c + vec2(hash21(c + 3.1), hash21(c + 7.7))) * cell;
+    float d = length(px - pos) / u_unit;
+    float tw = 0.55 + 0.45 * sin(t * (1.0 + 3.0 * hash21(c + 1.3)) + h * 40.0);
+    vec3 col = mix(vec3(0.6, 0.75, 1.0), vec3(1.0, 0.9, 0.5), step(0.5, hash21(c + 9.4)));
+    return col * tw * exp(-d * d * 1.2);
+}
+void main() {
+    vec2 px = v_uv * u_res;
+    vec2 q = px - u_res * 0.5;
+    float r = length(q);
+    float ang = fract(atan(q.x, -q.y) / TAU);          // turns, 0 at the top, clockwise
+    float lw = max(1.0, 1.1 * u_unit);
+    vec3 col = vec3(0.0, 0.0, 0.012) + stars(px, 26.0 * u_unit, 0.16, u_t);
+    // purple waves at the edges
+    float ph = u_aura.y;
+    float ra = u_aura.x * (1.0 + 0.05 * sin(3.0 * TAU * ang + ph) + 0.035 * sin(5.0 * TAU * ang - 1.3 * ph)
+                          + 0.02 * sin(2.0 * TAU * ang + 0.7 * ph));
+    vec3 aura = mix(vec3(0.42, 0.18, 1.0), vec3(1.0, 0.15, 0.78), 0.5 + 0.5 * sin(ang * TAU * 2.0 + ph * 0.5));
+    float gap = 6.0 * u_unit;
+    float t = (r - ra) / gap;
+    if (t > -0.5 && t < 11.5) {
+        float d = abs(t - floor(t + 0.5)) * gap;
+        col += aura * clamp(lw * 0.5 - d + 0.5, 0.0, 1.0) * 0.55 * (1.0 - t / 14.0);
+    }
+    col += aura * 0.45 * smoothstep(ra + 8.0 * gap, ra + 40.0 * gap, r);
+    col += aura * 0.08 * exp(-abs(r - ra) / (30.0 * u_unit));
+    // colour flames around the core
+    for (int k = 0; k < 5; k++) {
+        if (k >= u_layers) break;
+        vec4 L = u_layer[k];
+        float R = u_r0 + L.y * pow(specm(ang - L.x), L.w) + u_r0 * 0.04 * sin(ang * TAU * 5.0 + u_t + float(k));
+        float fill = clamp((R - r) / (1.5 * u_unit) + 0.5, 0.0, 1.0);
+        float m = smoothstep(u_r0, u_r0 + max(R - u_r0, 1.0) * 0.12 + 2.0 * u_unit, r);
+        vec3 c = mix(vec3(1.0, 0.9, 0.95), u_lcol[k], m) * (1.0 - 0.3 * smoothstep(u_r0, R, r));
+        col = mix(col, mix(c, screen(col, c), 0.35), fill * L.z);
+        col += u_lcol[k] * 0.18 * L.z * exp(-max(r - R, 0.0) / (10.0 * u_unit)) * step(R, r);
+    }
+    // light spokes
+    float sa = ang - u_spin;
+    float idx = floor(sa * SPOKES + 0.5);
+    float sl = u_r0 * (1.3 + 1.9 * specm(idx / SPOKES + u_spin));
+    float sd = r * abs(sin((sa - idx / SPOKES) * TAU));
+    float spoke = clamp(lw * 0.5 - sd + 0.5, 0.0, 1.0) * step(u_r0, r) * (1.0 - smoothstep(sl * 0.6, sl, r));
+    col += vec3(0.55, 0.95, 1.0) * spoke * 0.3;
+    // the dark core with star dust inside, a cyan rim and a white glow
+    if (r < u_r0) {
+        col = vec3(0.0, 0.008, 0.03) + stars(px, 9.0 * u_unit, 0.35, u_t * 2.0) * vec3(0.6, 1.0, 0.6);
+        col += vec3(0.1, 0.3, 0.9) * 0.15 * smoothstep(u_r0 * 0.5, u_r0, r);
+    } else {
+        col += vec3(1.0) * exp(-(r - u_r0) / ((5.0 + 6.0 * u_pulse) * u_unit)) * (0.6 + 0.4 * u_pulse);
+    }
+    float rim = (r - u_r0) / (1.8 * u_unit);
+    col += vec3(0.35, 0.9, 1.0) * exp(-rim * rim);
+    // orbiting curves, three strands each
+    for (int k = 0; k < 3; k++) {
+        vec4 o = u_orbit[k]; vec4 o2 = u_orbit2[k];
+        vec2 v = px - o.xy;
+        float rv = max(length(v), 1.0);
+        float a = atan(v.y, v.x);
+        vec3 oc = mix(u_ocol[k], u_ocol[k].gbr, 0.25 + 0.25 * sin(a + o.w));
+        for (int s = 0; s < 3; s++) {
+            float fs = float(s);
+            float p2 = o.w + fs * 0.25, p3 = o2.z - fs * 0.18;
+            float rad = o.z * (1.0 + 0.015 * fs);
+            float R = rad * (1.0 + o2.x * sin(2.0 * a + p2) + o2.y * sin(3.0 * a + p3));
+            float dR = rad * (2.0 * o2.x * cos(2.0 * a + p2) + 3.0 * o2.y * cos(3.0 * a + p3));
+            float d = abs(rv - R) * inversesqrt(1.0 + dR * dR / (rv * rv));
+            float k2 = (s == 0) ? 0.85 : 0.3;
+            col += oc * (clamp(lw * 0.6 - d + 0.5, 0.0, 1.0) * k2 + 0.05 * exp(-d * d / (40.0 * u_unit * u_unit)));
+        }
+    }
+    fragColor = vec4(col + dither(), 1.0);
+}
+"""
+
 FLOATS_PER_SHAPE = 20
 
 
@@ -760,6 +948,58 @@ class VURenderer(Renderer):
         ctx.composite(ctx.layer("vu-glass", f.caption, glass))
 
 
+class RibbonsRenderer(Renderer):
+    def render(self, f):
+        ctx, st = self.ctx, self.style
+        h = ctx.height
+        ribbons = st.params(f, h)
+        prog = ctx.program("ribbons", RIBBONS).use()
+        prog.set("u_t", f.t)
+        prog.set("u_unit", h / 1080)
+        prog.set("u_horizon", st.HORIZON)
+        prog.set("u_mirror", st.MIRROR)
+        prog.set("u_glow", st.glow)
+        prog.set_array("u_spec", st.spectrum.values, 1)
+        prog.set_int("u_count", len(ribbons))
+        prog.set_array("u_ra", [v for r in ribbons for v in r[0:4]], 4)
+        prog.set_array("u_rb", [v for r in ribbons for v in r[4:8]], 4)
+        prog.set_array("u_front", [c for r in ribbons for c in r[8]], 3)
+        prog.set_array("u_back", [c for r in ribbons for c in r[9]], 3)
+        ctx.fullscreen(prog)
+        ctx.footer(f.caption)
+
+
+class PulsarRenderer(Renderer):
+    def render(self, f):
+        ctx, st = self.ctx, self.style
+        w, h = ctx.width, ctx.height
+        p = st.params(f, w, h)
+        prog = ctx.program("pulsar", PULSAR).use()
+        prog.set("u_t", f.t)
+        prog.set("u_unit", min(w, h) / 1080)
+        prog.set("u_r0", p["r0"])
+        prog.set("u_pulse", p["pulse"])
+        prog.set("u_level", p["level"])
+        prog.set("u_spin", p["spin"])
+        prog.set("u_aura", *p["aura"])
+        prog.set_array("u_spec", st.spectrum.values, 1)
+        layers = p["layers"]
+        prog.set_int("u_layers", len(layers))
+        prog.set_array("u_layer", [v for ly in layers for v in ly[0:4]], 4)
+        prog.set_array("u_lcol", [c for ly in layers for c in ly[4]], 3)
+        orbits = p["orbits"]
+        prog.set_array("u_orbit", [v for o in orbits for v in o[0:4]], 4)
+        prog.set_array("u_orbit2", [v for o in orbits for v in (o[4], o[5], o[6], 0.0)], 4)
+        prog.set_array("u_ocol", [c for o in orbits for c in o[7]], 3)
+        ctx.fullscreen(prog)
+        cx, cy = w / 2, h / 2
+        sh = Shapes()
+        for x, y, size, col, fade in st.step(f, p["r0"], min(w, h)):
+            sh.disc(cx + x, cy + y, size, (*col, 0.9 * fade), (*col, 0.0), mid=0.4)
+        ctx.draw_shapes(sh.data, "add")
+        ctx.footer(f.caption)
+
+
 class GoomRenderer(Renderer):
     """Goom HD: GOOM's frames (lindvb.goom) drawn at the screen's resolution.
 
@@ -1064,6 +1304,8 @@ RENDERERS = {
     visuals.Oscilloscope: ScopeRenderer,
     visuals.Nebula: NebulaRenderer,
     visuals.VUMeters: VURenderer,
+    visuals.LightRibbons: RibbonsRenderer,
+    visuals.Pulsar: PulsarRenderer,
     visuals.GoomHD: GoomRenderer,
 }
 

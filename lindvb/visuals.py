@@ -453,6 +453,321 @@ class Nebula(Style):
         cr.set_operator(cairo.OPERATOR_OVER)
 
 
+class _Spectrum:
+    """The bands, smoothed in time (fast up, slow down) and across neighbours,
+    for shapes that should flow rather than flicker."""
+
+    def __init__(self, rise=14.0, fall=2.5, blur=1):
+        self.rise, self.fall, self.blur = rise, fall, blur
+        self.values = []
+
+    def update(self, f):
+        bands = list(f.bands)
+        n = len(bands)
+        if len(self.values) != n:
+            self.values = [0.0] * n
+        for _ in range(self.blur):
+            bands = [(bands[max(0, i - 1)] + 2 * bands[i] + bands[min(n - 1, i + 1)]) / 4 for i in range(n)]
+        out = self.values
+        for i, v in enumerate(bands):
+            rate = self.rise if v > out[i] else self.fall
+            out[i] += (v - out[i]) * min(1.0, f.dt * rate)
+        return out
+
+    def at(self, m):
+        """Value at ``m`` in 0..1 (0: lowest band), linearly interpolated."""
+        v = self.values
+        if not v:
+            return 0.0
+        x = max(0.0, min(1.0, m)) * (len(v) - 1)
+        i = int(x)
+        j = min(i + 1, len(v) - 1)
+        return v[i] + (v[j] - v[i]) * (x - i)
+
+
+class LightRibbons(Style):
+    """Translucent ribbons of fine light threads, cyan in front and magenta
+    behind, that twist and swell with the music above a rippling water
+    reflection. The bass lifts the middle of the ribbons, the treble their
+    ends."""
+    id, label = "ribbons", "Light ribbons (modern)"
+
+    LINES = 24
+    HORIZON = 0.70
+    MIRROR = 2.2          # the reflection is squashed by this, as seen at a low angle
+    # base y (0..1 of h), wave frequency, wave speed, twist frequency, twist speed,
+    # width (0..1 of h), band group, colour in front, colour behind
+    RIBBONS = (
+        (0.52, 1.05, 0.33, 1.35, 0.50, 0.085, 0, rgb("#2EC8FF"), rgb("#B03CFF")),
+        (0.55, 1.55, -0.42, 1.90, -0.66, 0.065, 1, rgb("#3A6BFF"), rgb("#FF3FC8")),
+        (0.49, 0.80, 0.24, 1.10, 0.38, 0.075, 2, rgb("#7FE8FF"), rgb("#8A4DFF")),
+        (0.57, 2.10, 0.52, 2.50, 0.88, 0.045, 1, rgb("#24A0FF"), rgb("#FF5FA8")),
+    )
+
+    def __init__(self):
+        self.spectrum = _Spectrum(blur=3)
+        self.energy = [0.0, 0.0, 0.0]
+        self.phase = [0.0] * len(self.RIBBONS)
+        self.twist = [k * 1.7 for k in range(len(self.RIBBONS))]
+        self.glow = 0.0
+
+    def params(self, f, h):
+        """Advance the ribbons; returns [(y0, amplitude, frequency, phase, width,
+        twist frequency, twist phase, spectrum gain, front, back)] in pixels."""
+        self.spectrum.update(f)
+        for g, v in enumerate((f.bass, f.mid, f.treble)):
+            self.energy[g] += (v - self.energy[g]) * min(1.0, f.dt * 4)
+        level = sum(self.energy) / 3
+        self.glow += (min(1.0, level * 1.5 + f.beat * 0.4) - self.glow) * min(1.0, f.dt * 6)
+        pace = 0.35 + 1.4 * level
+        out = []
+        for k, (y0, freq, speed, tfreq, tspeed, width, grp, front, back) in enumerate(self.RIBBONS):
+            e = self.energy[grp]
+            self.phase[k] += f.dt * speed * pace
+            self.twist[k] += f.dt * tspeed * (0.5 + pace)
+            out.append((h * (y0 + 0.015 * math.sin(f.t * 0.21 + k)),
+                        h * (0.035 + 0.11 * e + 0.035 * f.beat),
+                        freq, self.phase[k],
+                        h * width * (0.65 + 0.9 * e),
+                        tfreq, self.twist[k],
+                        h * (0.10 + 0.08 * e),
+                        front, back))
+        return out
+
+    def spec_at(self, u):
+        """Spectrum along the ribbons: bass in the middle, treble at the ends."""
+        return self.spectrum.at(abs(2 * u - 1))
+
+    @staticmethod
+    def centre(r, u, spec):
+        y0, amp, freq, phase = r[:4]
+        return (y0 + amp * (0.7 * math.sin(TAU * freq * u + phase)
+                            + 0.3 * math.sin(TAU * freq * 2.3 * u - 1.3 * phase)) - r[7] * spec)
+
+    def draw(self, cr, w, h, f):
+        ribbons = self.params(f, h)
+        yh = h * self.HORIZON
+        g = cairo.LinearGradient(0, 0, 0, h)
+        g.add_color_stop_rgb(0, 0.01, 0.02, 0.07)
+        g.add_color_stop_rgb(self.HORIZON, 0.02, 0.05, 0.16)
+        g.add_color_stop_rgb(min(1.0, self.HORIZON + 0.01), 0.01, 0.02, 0.07)
+        g.add_color_stop_rgb(1, 0.0, 0.005, 0.02)
+        cr.set_source(g)
+        cr.paint()
+        steps = max(48, int(w / 8))
+        lines = self.LINES // 3
+        specs = [self.spec_at(i / steps) for i in range(steps + 1)]
+
+        def ribbons_paths(alpha):
+            for r in ribbons:
+                width, tfreq, tphase, front, back = r[4], r[5], r[6], r[8], r[9]
+                for j in range(lines):
+                    s = -1 + 2 * j / (lines - 1)
+                    pts = []
+                    for i in range(steps + 1):
+                        u = i / steps
+                        phi = TAU * tfreq * u + tphase
+                        wd = width * (0.6 + 0.4 * math.sin(TAU * 0.7 * u + 0.5 * tphase))
+                        pts.append((w * u, self.centre(r, u, specs[i])
+                                    + wd * (s * math.cos(phi) + 0.15 * s * s * math.sin(phi))))
+                    mid = math.cos(TAU * tfreq * 0.5 + tphase)
+                    cr.set_source_rgba(*_mix(back, front, 0.5 + 0.5 * mid), alpha)
+                    cr.move_to(*pts[0])
+                    for p in pts[1:]:
+                        cr.line_to(*p)
+                    cr.stroke()
+
+        cr.set_operator(cairo.OPERATOR_ADD)
+        cr.set_line_width(max(1.0, h / 700))
+        ribbons_paths(0.5)
+        # the reflection: mirrored about the horizon, squashed and dimmer
+        cr.save()
+        cr.rectangle(0, yh, w, h - yh)
+        cr.clip()
+        cr.translate(0, yh)
+        cr.scale(1, -1 / self.MIRROR)
+        cr.translate(0, -yh)
+        cr.set_line_width(max(2.0, h / 250) * self.MIRROR)
+        ribbons_paths(0.2)
+        cr.restore()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        footer(cr, w, h, f.caption)
+
+
+class Pulsar(Style):
+    """A dark core whose rim bursts into layered colour flames shaped by the
+    spectrum, with light spokes, orbiting curves, star dust and purple
+    waves at the edges."""
+    id, label = "pulsar", "Pulsar (modern)"
+
+    MAX = 260
+    # colour, turn offset, turn speed, gain (core radii), opacity, sharpness;
+    # drawn in this order, each over the ones before
+    LAYERS = (
+        (rgb("#18D8FF"), 0.62, -0.012, 1.50, 0.80, 2.6),
+        (rgb("#FF2E4D"), 0.00, 0.010, 1.30, 0.85, 1.3),
+        (rgb("#2B5BFF"), 0.80, 0.018, 0.90, 0.70, 1.8),
+        (rgb("#FF2FA0"), 0.30, -0.016, 1.00, 0.75, 1.6),
+        (rgb("#FF9A2E"), 0.12, 0.022, 0.50, 0.45, 1.8),
+    )
+    # colour, radius (core radii), centre drift, speed
+    ORBITS = (
+        (rgb("#FFD23F"), 2.05, 0.10, 0.11),
+        (rgb("#3DFF7A"), 2.45, 0.13, -0.08),
+        (rgb("#2EE6D6"), 1.55, 0.06, 0.14),
+    )
+    SPOKES = 144
+
+    def __init__(self):
+        self.spectrum = _Spectrum(rise=16.0, fall=3.0, blur=3)
+        self.rng = random.Random(11)
+        self.parts = []
+        self.energy = [0.0, 0.0, 0.0]
+        self.turn = [0.0] * len(self.LAYERS)
+        self.orbit = [k * 2.1 for k in range(len(self.ORBITS))]
+        self.spin = 0.0
+        self.aura = 0.0
+        self.pulse = 0.0
+
+    def params(self, f, w, h):
+        """Advance the state; returns a dict with everything in pixels."""
+        self.spectrum.update(f)
+        for g, v in enumerate((f.bass, f.mid, f.treble)):
+            self.energy[g] += (v - self.energy[g]) * min(1.0, f.dt * 5)
+        bass, mid, treble = self.energy
+        level = (bass + mid + treble) / 3
+        self.pulse += (f.beat - self.pulse) * min(1.0, f.dt * 10)
+        scale = min(w, h)
+        r0 = scale * 0.16 * (1 + 0.07 * self.pulse)
+        self.spin += f.dt * (0.02 + 0.05 * level)
+        self.aura += f.dt * (0.15 + 0.6 * level)
+        layers = []
+        for k, (col, off, speed, gain, alpha, sharp) in enumerate(self.LAYERS):
+            self.turn[k] += f.dt * speed * (1 + 3 * level)
+            layers.append((off + self.turn[k], r0 * gain * (0.45 + 0.5 * level + 0.25 * self.pulse),
+                           alpha, sharp, col))
+        orbits = []
+        for k, (col, rad, drift, speed) in enumerate(self.ORBITS):
+            self.orbit[k] += f.dt * speed * (1 + 2 * mid)
+            a = self.orbit[k]
+            orbits.append((w / 2 + math.cos(a * 1.3 + k) * drift * scale,
+                           h / 2 + math.sin(a + 2 * k) * drift * scale * 0.7,
+                           r0 * rad * (1 + 0.18 * bass), a * 2.0,
+                           0.10 + 0.16 * mid, 0.05 + 0.12 * treble, -a * 3.1 + k, col))
+        return {"r0": r0, "layers": layers, "orbits": orbits, "spin": self.spin,
+                "aura": (max(w, h) * 0.47 * (1 - 0.03 * self.pulse), self.aura),
+                "pulse": self.pulse, "level": level}
+
+    def spec_at(self, turns):
+        """Spectrum around the circle (mirrored: bass at the offset, treble opposite)."""
+        return self.spectrum.at(1 - abs(2 * (turns % 1.0) - 1))
+
+    def step(self, f, r0, scale):
+        """Advance the star dust; returns [(x, y, size, colour, fade)] in pixels
+        relative to the centre."""
+        dt = f.dt
+        if not f.silent:
+            n = int(1 + 40 * dt * (1 + 3 * f.treble)) + (int(14 * f.beat) if f.beat > 0.9 else 0)
+            palette = ((1, 1, 1), rgb("#FFD23F"), rgb("#3DFF7A"), rgb("#18D8FF"), rgb("#FF2FA0"))
+            for _ in range(n):
+                if len(self.parts) >= self.MAX:
+                    break
+                a = self.rng.uniform(0, TAU)
+                speed = self.rng.uniform(0.04, 0.2) * (0.5 + f.bass + f.beat)
+                life = self.rng.uniform(1.5, 4.0)
+                self.parts.append([a, 1.0 + self.rng.uniform(0, 0.1), speed, life, life,
+                                   self.rng.uniform(0.6, 1.8), self.rng.choice(palette)])
+        out, alive = [], []
+        for p in self.parts:
+            a, d, speed, life, total, size, col = p
+            life -= dt
+            if life <= 0:
+                continue
+            d += speed * dt * scale / max(1.0, r0)
+            a += dt * 0.05
+            p[:] = [a, d, speed, life, total, size, col]
+            alive.append(p)
+            fade = min(1.0, life / total * 1.5) * min(1.0, (total - life) * 3)
+            out.append((math.cos(a) * d * r0, math.sin(a) * d * r0, size * scale / 540, col, fade))
+        self.parts = alive
+        return out
+
+    @staticmethod
+    def orbit_radius(o, a):
+        _cx, _cy, rad, p2, a2, a3, p3, _col = o
+        return rad * (1 + a2 * math.sin(2 * a + p2) + a3 * math.sin(3 * a + p3))
+
+    def draw(self, cr, w, h, f):
+        p = self.params(f, w, h)
+        cx, cy, r0 = w / 2, h / 2, p["r0"]
+        cr.set_source_rgb(0.0, 0.0, 0.01)
+        cr.paint()
+        steps = 120
+        # purple waves at the edges
+        base, ph = p["aura"]
+        cr.set_operator(cairo.OPERATOR_ADD)
+        cr.set_line_width(max(1.0, h / 600))
+        for k in range(6):
+            cr.set_source_rgba(0.55, 0.2, 1.0, 0.35)
+            for i in range(steps + 1):
+                a = i / steps
+                rr = base * (1 + 0.05 * math.sin(3 * TAU * a + ph) + 0.035 * math.sin(5 * TAU * a - 1.3 * ph)) \
+                    + k * h / 140
+                x, y = cx + math.sin(a * TAU) * rr, cy - math.cos(a * TAU) * rr
+                (cr.move_to if i == 0 else cr.line_to)(x, y)
+            cr.stroke()
+        # colour flames
+        for turn, gain, alpha, sharp, col in p["layers"]:
+            for i in range(steps + 1):
+                a = i / steps
+                rr = r0 + gain * self.spec_at(a - turn) ** sharp + r0 * 0.04 * math.sin(a * TAU * 5 + f.t)
+                x, y = cx + math.sin(a * TAU) * rr, cy - math.cos(a * TAU) * rr
+                (cr.move_to if i == 0 else cr.line_to)(x, y)
+            cr.close_path()
+            g = cairo.RadialGradient(cx, cy, r0, cx, cy, r0 + gain)
+            g.add_color_stop_rgba(0, 1, 1, 1, alpha)
+            g.add_color_stop_rgba(0.12, *col, alpha)
+            g.add_color_stop_rgba(1, *col, alpha * 0.6)
+            cr.set_source(g)
+            cr.fill()
+        # spokes
+        cr.set_line_width(max(1.0, h / 900))
+        cr.set_source_rgba(0.6, 0.95, 1.0, 0.25)
+        for i in range(0, self.SPOKES, 2):
+            a = i / self.SPOKES + p["spin"]
+            length = r0 * (1.3 + 1.8 * self.spec_at(i / self.SPOKES))
+            s, c = math.sin(a * TAU), -math.cos(a * TAU)
+            cr.move_to(cx + s * r0, cy + c * r0)
+            cr.line_to(cx + s * length, cy + c * length)
+        cr.stroke()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        # the core
+        cr.set_source_rgb(0.0, 0.01, 0.03)
+        cr.arc(cx, cy, r0, 0, TAU)
+        cr.fill()
+        cr.set_operator(cairo.OPERATOR_ADD)
+        cr.set_source_rgba(0.5, 0.95, 1.0, 0.9)
+        cr.set_line_width(max(1.5, h / 400))
+        cr.arc(cx, cy, r0, 0, TAU)
+        cr.stroke()
+        # orbits
+        cr.set_line_width(max(1.0, h / 600))
+        for o in p["orbits"]:
+            cr.set_source_rgba(*o[7], 0.8)
+            for i in range(steps + 1):
+                a = i / steps * TAU
+                rr = self.orbit_radius(o, a)
+                (cr.move_to if i == 0 else cr.line_to)(o[0] + math.cos(a) * rr, o[1] + math.sin(a) * rr)
+            cr.close_path()
+            cr.stroke()
+        for x, y, size, col, fade in self.step(f, r0, min(w, h)):
+            cr.set_source_rgba(*col, 0.9 * fade)
+            cr.arc(cx + x, cy + y, size, 0, TAU)
+            cr.fill()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        footer(cr, w, h, f.caption)
+
+
 class GoomHD(Style):
     """GOOM 2k4 at the screen's own resolution.
 
@@ -542,7 +857,7 @@ class GoomHD(Style):
         footer(cr, w, h, f.caption)
 
 
-STYLES = [GlowWaves, Nebula, GoomHD, SpectrumBars, VUMeters, Oscilloscope, Blank]
+STYLES = [GlowWaves, Nebula, LightRibbons, Pulsar, GoomHD, SpectrumBars, VUMeters, Oscilloscope, Blank]
 DEFAULT_STYLE = GlowWaves.id
 
 
