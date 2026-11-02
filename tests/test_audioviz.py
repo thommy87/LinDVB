@@ -84,3 +84,42 @@ def test_styles_draw():
             frame.caption = "Radio Test"
             style.draw(cr, 320, 180, frame)
         assert style.id and style.label
+
+
+def test_every_builtin_style_has_a_gpu_renderer():
+    pytest.importorskip("cairo")
+    from lindvb.ui.gpuvisuals import renderer_class
+    from lindvb.visuals import STYLES
+    for style_cls in STYLES:
+        assert renderer_class(style_cls()) is not None, style_cls.id
+
+    class PluginStyle(STYLES[0]):          # subclasses (plugins) are drawn with cairo
+        pass
+    assert renderer_class(PluginStyle()) is None
+
+
+def test_goom_hd_changes_modes_on_beats():
+    from lindvb.visuals import GoomHD
+    an = AudioAnalysis()
+    sm = Smoother()
+    goom = GoomHD(seed=3)
+    modes = set()
+    for k in range(30 * 40):                       # 40 s at 30 fps
+        an.feed_buffer(struct.pack("<2048f", *_sine(amp=0.3 + 0.3 * (k % 15 == 0))),
+                       "F32LE", 2, 48000)
+        an.feed_spectrum([-10.0 if k % 15 == 0 else -40.0] * 256)
+        an.stamp = now = 1000.0 + k / 30
+        frame = sm.update(an, now=now)
+        st = goom.update(frame, 1920, 1080)
+        modes.add(st.mode_b)
+        assert 0.0 <= st.mix <= 1.0 and 0.0 < st.decay <= 1.0
+        assert len(st.lines) == 2 and len(st.lines[0][0]) == GoomHD.LINE_POINTS
+    assert len(modes) >= 3
+
+
+def test_visualiser_sizes():
+    from lindvb.addons.gst_visualizers import parse_size
+    assert parse_size("2560x1440", None) == (2560, 1440)
+    assert parse_size(" 1279 X 721 ", None) == (1278, 720)
+    assert parse_size("auto", (640, 360)) == (640, 360)
+    assert parse_size(None, (640, 360)) == (640, 360)

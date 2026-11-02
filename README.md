@@ -40,9 +40,11 @@ picture and hides itself when the mouse is still.
   of each kind and tunes the last one again at start
 * Channel list with search, favourites/FTA/encrypted/HD/internet filters and
   groups; channel number entry, last channel, channel and favourite zapping
-* Radio visualisations: glow waves and nebula particles (modern), LED spectrum
-  analyser, VU meters and oscilloscope (classic), and projectM (MilkDrop presets)
-  or GOOM through the bundled GStreamer add-on; plugins can add their own.
+* Radio visualisations, drawn on the graphics card (OpenGL) at full resolution:
+  glow waves, nebula particles and Goom HD (GOOM's effects rebuilt as shaders,
+  native up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
+  and projectM (MilkDrop presets) or the original GOOM through the bundled
+  GStreamer add-on; plugins can add their own.
   A button at the bottom right of the control bar picks the visualisation; it
   is only active while radio or audio plays
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,

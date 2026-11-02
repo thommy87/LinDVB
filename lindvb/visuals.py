@@ -9,6 +9,7 @@ style. Plugins can add their own styles the same way (see docs/PLUGINS.md).
 
 import math
 import random
+from dataclasses import dataclass, field
 
 import cairo
 
@@ -131,10 +132,9 @@ class VUMeters(Style):
         v = 10 ** (max(-30.0, min(4.0, vu)) / 20)
         return max(-0.03, min(1.03, (v - lo) / (hi - lo)))
 
-    def draw(self, cr, w, h, f):
-        background(cr, w, h)
-        side_by_side = w >= h * 1.2
-        if side_by_side:
+    def meters(self, w, h):
+        """Position of the two meters: [(x, y, width, height, channel, name)]."""
+        if w >= h * 1.2:
             mw = min(w * 0.44, h * 0.9 * 1.6)
             mh = mw / 1.6
             xs = [w / 2 - mw - w * 0.02, w / 2 + w * 0.02]
@@ -144,13 +144,52 @@ class VUMeters(Style):
             mw = mh * 1.6
             xs = [(w - mw) / 2] * 2
             ys = [h / 2 - mh - h * 0.02, h / 2 + h * 0.02]
-        for ch, name in enumerate(("L", "R")):
-            self._meter(cr, xs[ch], ys[ch], mw, mh, f.vu[ch] - self.REF_DBFS,
-                        f.peak_db[ch] > -1.0, name, f)
+        return [(xs[ch], ys[ch], mw, mh, ch, name) for ch, name in enumerate(("L", "R"))]
+
+    def draw(self, cr, w, h, f):
+        background(cr, w, h)
+        for x, y, mw, mh, ch, name in self.meters(w, h):
+            self.face(cr, x, y, mw, mh, name)
+            lx, ly, lr, lit = self.led(x, y, mw, mh, f.peak_db[ch] > -1.0)
+            cr.arc(lx, ly, lr, 0, TAU)
+            cr.set_source_rgb(*lit)
+            cr.fill()
+            cx, cy, ex, ey, width = self.needle(x, y, mw, mh, f.vu[ch] - self.REF_DBFS)
+            cr.save()
+            _rounded(cr, x, y, mw, mh, 8)
+            cr.clip()
+            cr.set_source_rgba(0, 0, 0, 0.18)
+            cr.set_line_width(max(1.5, mh / 70))
+            cr.move_to(cx + 3, cy + 3)
+            cr.line_to(ex + 3, ey + 3)
+            cr.stroke()
+            cr.set_source_rgb(0.08, 0.06, 0.05)
+            cr.set_line_width(width)
+            cr.move_to(cx, cy)
+            cr.line_to(ex, ey)
+            cr.stroke()
+            cr.restore()
+            self.glass(cr, x, y, mw, mh)
         footer(cr, w, h, f.caption)
 
-    def _meter(self, cr, x, y, w, h, vu, clip, name, f):
-        # case and backlit face
+    def _geometry(self, x, y, w, h):
+        # pivot below the face, arc in the upper part
+        return x + w / 2, y + h * 1.05, h * 0.80, math.radians(-138), math.radians(-42)
+
+    def needle(self, x, y, w, h, vu):
+        """Needle from the pivot to its tip: (cx, cy, tip_x, tip_y, line width)."""
+        cx, cy, r, a0, a1 = self._geometry(x, y, w, h)
+        a = a0 + (a1 - a0) * self._pos(vu)
+        return cx, cy, cx + math.cos(a) * r * 1.08, cy + math.sin(a) * r * 1.08, max(1.2, h / 90)
+
+    @staticmethod
+    def led(x, y, w, h, clip):
+        """Peak LED: (x, y, radius, colour)."""
+        return (x + w * 0.92, y + h * 0.84, max(3.0, h / 28),
+                (1.0, 0.2, 0.15) if clip else (0.45, 0.20, 0.15))
+
+    def face(self, cr, x, y, w, h, name):
+        """The case, backlit face, scale and labels (everything that does not move)."""
         cr.set_source_rgb(0.08, 0.08, 0.09)
         _rounded(cr, x - 6, y - 6, w + 12, h + 12, 12)
         cr.fill()
@@ -160,10 +199,7 @@ class VUMeters(Style):
         cr.set_source(g)
         _rounded(cr, x, y, w, h, 8)
         cr.fill()
-        # pivot below the face, arc in the upper part
-        cx, cy = x + w / 2, y + h * 1.05
-        r = h * 0.80
-        a0, a1 = math.radians(-138), math.radians(-42)
+        cx, cy, r, a0, a1 = self._geometry(x, y, w, h)
 
         def ang(p):
             return a0 + (a1 - a0) * p
@@ -201,27 +237,9 @@ class VUMeters(Style):
         cr.set_font_size(max(8.0, h / 12))
         cr.move_to(x + w * 0.06, y + h * 0.9)
         cr.show_text(name)
-        # peak LED
-        cr.arc(x + w * 0.92, y + h * 0.84, max(3.0, h / 28), 0, TAU)
-        cr.set_source_rgb(*((1.0, 0.2, 0.15) if clip else (0.45, 0.20, 0.15)))
-        cr.fill()
-        # needle
-        a = ang(self._pos(vu))
-        cr.save()
-        _rounded(cr, x, y, w, h, 8)
-        cr.clip()
-        cr.set_source_rgba(0, 0, 0, 0.18)
-        cr.set_line_width(max(1.5, h / 70))
-        cr.move_to(cx + 3, cy + 3)
-        cr.line_to(cx + math.cos(a) * r * 1.08 + 3, cy + math.sin(a) * r * 1.08 + 3)
-        cr.stroke()
-        cr.set_source_rgb(0.08, 0.06, 0.05)
-        cr.set_line_width(max(1.2, h / 90))
-        cr.move_to(cx, cy)
-        cr.line_to(cx + math.cos(a) * r * 1.08, cy + math.sin(a) * r * 1.08)
-        cr.stroke()
-        cr.restore()
-        # glass highlight
+
+    @staticmethod
+    def glass(cr, x, y, w, h):
         g = cairo.LinearGradient(x, y, x, y + h * 0.5)
         g.add_color_stop_rgba(0, 1, 1, 1, 0.25)
         g.add_color_stop_rgba(1, 1, 1, 1, 0.0)
@@ -286,7 +304,6 @@ class GlowWaves(Style):
         background(cr, w, h, inner=(0.06, 0.08, 0.13), outer=(0.02, 0.025, 0.04))
         footer(cr, w, h, f.caption)
         cy = h / 2
-        energy = (f.bass, f.mid, f.treble)
         # centre line, fading towards the ends
         g = cairo.LinearGradient(0, 0, w, 0)
         g.add_color_stop_rgba(0, 1, 1, 1, 0)
@@ -300,16 +317,7 @@ class GlowWaves(Style):
         cr.stroke()
         cr.set_operator(cairo.OPERATOR_SCREEN)
         steps = max(60, int(w / 6))
-        for k, (col, centre, width, freq, speed, grp) in enumerate(self.waves):
-            col = col or f.accent
-            target = min(1.0, energy[grp] * 1.4 + f.beat * 0.25)
-            self.amps[k] += (target - self.amps[k]) * min(1.0, f.dt * 8)
-            amp = self.amps[k] * h * 0.36
-            if amp < 0.5:
-                continue
-            drift = 0.06 * math.sin(f.t * 0.35 + k * 1.7)
-            c = centre + drift
-            phase = f.t * speed
+        for col, c, width, freq, phase, amp in self.params(f, h):
             for scale, alpha in ((1.3, 0.10), (1.0, 0.45)):
                 pts = []
                 for i in range(steps + 1):
@@ -329,6 +337,22 @@ class GlowWaves(Style):
                 cr.set_source(g)
                 cr.fill()
         cr.set_operator(cairo.OPERATOR_OVER)
+
+    def params(self, f, h):
+        """Advance the wave amplitudes; returns the visible waves as
+        [(colour, centre, width, frequency, phase, amplitude in pixels)]."""
+        energy = (f.bass, f.mid, f.treble)
+        out = []
+        for k, (col, centre, width, freq, speed, grp) in enumerate(self.waves):
+            col = col or f.accent
+            target = min(1.0, energy[grp] * 1.4 + f.beat * 0.25)
+            self.amps[k] += (target - self.amps[k]) * min(1.0, f.dt * 8)
+            amp = self.amps[k] * h * 0.36
+            if amp < 0.5:
+                continue
+            drift = 0.06 * math.sin(f.t * 0.35 + k * 1.7)
+            out.append((col, centre + drift, width, freq, f.t * speed, amp))
+        return out
 
 
 class Nebula(Style):
@@ -356,16 +380,16 @@ class Nebula(Style):
                                life, life, self.rng.uniform(0.6, 2.2), colour,
                                self.rng.uniform(-1.5, 1.5)])
 
-    def draw(self, cr, w, h, f):
-        background(cr, w, h, inner=(0.16, 0.10, 0.12), outer=(0.03, 0.02, 0.03))
-        footer(cr, w, h, f.caption)
+    BG = ((0.16, 0.10, 0.12), (0.03, 0.02, 0.03))
+
+    def step(self, f):
+        """Advance the particles; returns [(x, y, nx, ny, size, colour, fade)]
+        in units of min(width, height), relative to the centre."""
         dt = f.dt
         if not f.silent:
             self._spawn(f, int(2 + 60 * dt * (1 + 4 * f.mid)) + (int(18 * f.beat) if f.beat > 0.9 else 0))
         self.spin += dt * (0.2 + f.treble)
-        cx, cy, scale = w / 2, h / 2, min(w, h)
-        cr.set_operator(cairo.OPERATOR_ADD)
-        alive = []
+        alive, out = [], []
         for p in self.parts:
             x, y, vx, vy, life, total, size, col, curl = p
             life -= dt
@@ -376,6 +400,33 @@ class Nebula(Style):
             vx, vy = vx * math.cos(ang) - vy * math.sin(ang), vx * math.sin(ang) + vy * math.cos(ang)
             nx, ny = x + vx * dt, y + vy * dt
             fade = min(1.0, life / total * 1.5) * min(1.0, (total - life) * 4)
+            out.append((x, y, nx, ny, size, col, fade))
+            p[:] = [nx, ny, vx, vy, life, total, size, col, curl]
+            alive.append(p)
+        self.parts = alive
+        return out
+
+    def orbs(self, f, w, h):
+        """A few big soft orbs that drift with the spin: [(x, y, radius)]."""
+        cx, cy, scale = w / 2, h / 2, min(w, h)
+        out = []
+        for k in range(5):
+            a = self.spin * (0.5 + k * 0.17) + k * 1.3
+            rad = scale * (0.18 + 0.08 * k)
+            size = scale * (0.015 + 0.02 * f.treble)
+            out.append((cx + math.cos(a) * rad, cy + math.sin(a * 1.3) * rad * 0.7, size * 3))
+        return out
+
+    @staticmethod
+    def core(f, w, h):
+        return min(w, h) * (0.05 + 0.10 * f.bass + 0.06 * f.beat) * 3
+
+    def draw(self, cr, w, h, f):
+        background(cr, w, h, *self.BG)
+        footer(cr, w, h, f.caption)
+        cx, cy, scale = w / 2, h / 2, min(w, h)
+        cr.set_operator(cairo.OPERATOR_ADD)
+        for x, y, nx, ny, size, col, fade in self.step(f):
             cr.set_source_rgba(*col, 0.35 * fade)
             cr.set_line_width(max(0.6, size * 0.7))
             cr.move_to(cx + x * scale, cy + y * scale)
@@ -384,34 +435,276 @@ class Nebula(Style):
             cr.set_source_rgba(*col, 0.8 * fade)
             cr.arc(cx + nx * scale, cy + ny * scale, size, 0, TAU)
             cr.fill()
-            p[:] = [nx, ny, vx, vy, life, total, size, col, curl]
-            alive.append(p)
-        self.parts = alive
-        # a few big soft orbs that drift with the spin
-        for k in range(5):
-            a = self.spin * (0.5 + k * 0.17) + k * 1.3
-            rad = scale * (0.18 + 0.08 * k)
-            ox, oy = cx + math.cos(a) * rad, cy + math.sin(a * 1.3) * rad * 0.7
-            size = scale * (0.015 + 0.02 * f.treble)
-            g = cairo.RadialGradient(ox, oy, 0, ox, oy, size * 3)
+        for ox, oy, r in self.orbs(f, w, h):
+            g = cairo.RadialGradient(ox, oy, 0, ox, oy, r)
             g.add_color_stop_rgba(0, 1.0, 0.75, 0.85, 0.35)
             g.add_color_stop_rgba(1, 1.0, 0.75, 0.85, 0)
             cr.set_source(g)
-            cr.arc(ox, oy, size * 3, 0, TAU)
+            cr.arc(ox, oy, r, 0, TAU)
             cr.fill()
         # the core
-        core = scale * (0.05 + 0.10 * f.bass + 0.06 * f.beat)
-        g = cairo.RadialGradient(cx, cy, 0, cx, cy, core * 3)
+        r = self.core(f, w, h)
+        g = cairo.RadialGradient(cx, cy, 0, cx, cy, r)
         g.add_color_stop_rgba(0, 1, 1, 1, 0.95)
         g.add_color_stop_rgba(0.15, 1.0, 0.80, 0.90, 0.55)
         g.add_color_stop_rgba(1, *f.accent, 0)
         cr.set_source(g)
-        cr.arc(cx, cy, core * 3, 0, TAU)
+        cr.arc(cx, cy, r, 0, TAU)
         cr.fill()
         cr.set_operator(cairo.OPERATOR_OVER)
 
 
-STYLES = [GlowWaves, Nebula, SpectrumBars, VUMeters, Oscilloscope, Blank]
+def hsv(h, s, v):
+    """HSV (all 0..1, hue wraps) to an RGB tuple."""
+    h = (h % 1.0) * 6
+    i = int(h)
+    f = h - i
+    p, q, t = v * (1 - s), v * (1 - s * f), v * (1 - s * (1 - f))
+    return ((v, t, p), (q, v, p), (p, v, t), (p, q, v), (t, p, v), (v, p, q))[i % 6]
+
+
+@dataclass
+class GoomState:
+    """One picture of Goom HD, in pixels, for the GPU renderer."""
+    mode_a: int = 0
+    mode_b: int = 0
+    mix: float = 1.0                 # 0 = mode_a, 1 = mode_b
+    speed: float = 0.0               # zoom per second (negative: outwards)
+    amp: float = 1.0                 # strength of the mode's distortion
+    rot: float = 0.0                 # radians per second
+    plane: tuple = (0.0, 0.0)        # horizontal / vertical shear per second
+    centre: tuple = (0.5, 0.5)       # zoom centre, 0..1
+    decay: float = 0.95              # brightness kept per frame
+    flash: float = 0.0
+    lines: list = field(default_factory=list)   # [(points [(x, y)], (r, g, b), alpha, width)]
+    stars: list = field(default_factory=list)   # [(x, y, radius, (r, g, b), alpha)]
+    ifs: list = field(default_factory=list)     # [(x, y)]
+    ifs_colour: tuple = (1.0, 1.0, 1.0)
+    ifs_alpha: float = 0.0
+    ifs_size: float = 1.0
+    t: float = 0.0
+    dt: float = 0.0
+
+
+class GoomHD(Style):
+    """GOOM's look rebuilt for the graphics card at the screen's own resolution.
+
+    Like the original GOOM (2k4) the picture is a feedback loop: each frame the
+    previous one is zoomed, bent and faded by one of several distortion modes
+    (zoom, wave, crystal ball, scrunch, amulet, water, hypercos, speedway,
+    y-only) that change on strong beats, and new elements are drawn into it:
+    the waveform lines (circle or line), flying stars on the beat and a slowly
+    morphing IFS fractal. The GPU renderer (``lindvb.ui.gpuvisuals``) works on
+    full-resolution textures, so nothing is upscaled. Without OpenGL a small
+    cairo version is drawn instead.
+    """
+    id, label = "goomhd", "Goom HD (GPU)"
+
+    MODES = ("zoom", "wave", "crystal", "scrunch", "amulet", "water", "hypercos",
+             "speedway", "yonly")
+    LINE_POINTS = 360
+    STARS_MAX = 600
+    IFS_POINTS = 500
+
+    def __init__(self, seed=None):
+        self.rng = random.Random(seed)
+        self.state = GoomState()
+        self.t = 0.0
+        self.next_change = 4.0
+        self.mode_a = self.mode_b = 0
+        self.mix = 1.0
+        self.target = self._random_params()
+        self.cur = dict(self.target)
+        self.hue = self.rng.random()
+        self.shape = 0.0                 # lines: 0 = circles, 1 = horizontal lines
+        self.shape_target = 0.0
+        self.stars = []
+        self.ifs_on = True
+        self.ifs_maps = self._random_ifs()
+        self._cairo_buf = None
+
+    # -- the "goom events" ------------------------------------------------------------
+    def _random_params(self):
+        r = self.rng
+        return {
+            "speed": r.uniform(0.35, 0.9) * (-1 if r.random() < 0.15 else 1),
+            "amp": r.uniform(0.6, 1.6),
+            "rot": r.choice((0.0, 0.0, r.uniform(-0.5, 0.5))),
+            "ph": r.choice((0.0, 0.0, r.uniform(-0.25, 0.25))),
+            "pv": r.choice((0.0, 0.0, r.uniform(-0.25, 0.25))),
+            "cx": r.choice((0.5, 0.5, r.uniform(0.3, 0.7))),
+            "cy": r.choice((0.5, 0.5, r.uniform(0.3, 0.7))),
+        }
+
+    def _random_ifs(self):
+        r = self.rng
+        maps = []
+        for _ in range(r.choice((3, 4, 4, 5))):
+            maps.append([r.uniform(0.35, 0.6), r.uniform(0, TAU), r.uniform(-0.6, 0.6),
+                         r.uniform(-0.6, 0.6), r.uniform(-0.5, 0.5)])   # scale, angle, tx, ty, spin
+        return maps
+
+    def _event(self):
+        r = self.rng
+        self.mode_a = self.mode_b if self.mix >= 0.5 else self.mode_a
+        choices = [m for m in range(len(self.MODES)) if m != self.mode_a]
+        self.mode_b = r.choice(choices)
+        self.mix = 0.0
+        self.target = self._random_params()
+        if r.random() < 0.4:
+            self.shape_target = 1.0 - self.shape_target
+        if r.random() < 0.3:
+            self.ifs_on = not self.ifs_on
+        if r.random() < 0.5:
+            self.ifs_maps = self._random_ifs()
+        self.next_change = self.t + r.uniform(6.0, 14.0)
+
+    # -- one frame ----------------------------------------------------------------------
+    def update(self, f, w, h):
+        dt = f.dt
+        self.t += dt
+        st = self.state
+        energy = min(1.0, 0.5 * f.bass + 0.3 * f.mid + 0.2 * f.treble)
+        if (self.t >= self.next_change and f.beat > 0.9) or self.t >= self.next_change + 6:
+            self._event()
+        self.mix = min(1.0, self.mix + dt / 1.5)
+        k = min(1.0, dt * 1.5)
+        for key, val in self.target.items():
+            self.cur[key] += (val - self.cur[key]) * k
+        self.shape += (self.shape_target - self.shape) * min(1.0, dt * 2.0)
+        self.hue = (self.hue + dt * (0.03 + 0.1 * f.treble)) % 1.0
+        c = self.cur
+        st.mode_a, st.mode_b, st.mix = self.mode_a, self.mode_b, self.mix
+        st.speed = c["speed"] * (0.25 + 1.1 * energy + 0.6 * f.beat)
+        st.amp = c["amp"] * (0.6 + 0.8 * f.mid)
+        st.rot, st.plane = c["rot"], (c["ph"], c["pv"])
+        st.centre = (c["cx"], c["cy"])
+        st.decay = math.exp(-dt * (0.8 + 1.0 * (1.0 - energy)))
+        st.flash = f.beat * f.bass if f.beat > 0.9 else st.flash * math.exp(-dt * 6)
+        st.t, st.dt = self.t, dt
+        st.lines = self._lines(f, w, h)
+        st.stars = self._stars(f, w, h)
+        st.ifs, st.ifs_colour, st.ifs_alpha, st.ifs_size = self._ifs(f, w, h)
+        return st
+
+    def _lines(self, f, w, h):
+        wave = f.wave or [0.0]
+        n, src = self.LINE_POINTS, len(wave)
+        scale = min(w, h)
+        gain = 1.0 + 2.0 * f.level[0]
+        out = []
+        for line in range(2):
+            col = hsv(self.hue + 0.5 * line, 0.75, 1.0)
+            alpha = 0.25 + 0.75 * min(1.0, max(f.level) * 2.5)
+            if f.silent:
+                alpha *= 0.3
+            radius = scale * (0.22 + 0.10 * line + 0.05 * f.bass)
+            base_y = h * (0.5 + (0.12 if line else -0.12))
+            pts = []
+            for i in range(n):
+                u = i / (n - 1)
+                v = wave[(i * src // n if line == 0 else (n - 1 - i) * src // n) % src]
+                v = max(-1.0, min(1.0, v * gain))
+                a = u * TAU + self.t * (0.2 if line else -0.15)
+                rr = radius * (1 + 0.35 * v)
+                cx = w * self.cur["cx"] + math.cos(a) * rr
+                cy = h * self.cur["cy"] + math.sin(a) * rr
+                lx, ly = u * w, base_y + v * h * 0.18
+                pts.append((cx + (lx - cx) * self.shape, cy + (ly - cy) * self.shape))
+            out.append((pts, col, alpha, max(1.5, scale / 300)))
+        return out
+
+    def _stars(self, f, w, h):
+        r = self.rng
+        scale = min(w, h)
+        if f.beat > 0.95 and f.bass > 0.3 and len(self.stars) < self.STARS_MAX:
+            ox, oy = w * r.uniform(0.2, 0.8), h * r.uniform(0.45, 0.85)
+            hue = r.random()
+            for _ in range(int(30 + 70 * f.bass)):
+                a = r.uniform(-math.pi, 0)          # upwards
+                sp = scale * r.uniform(0.2, 0.9)
+                life = r.uniform(0.8, 2.0)
+                self.stars.append([ox, oy, math.cos(a) * sp, math.sin(a) * sp, life, life,
+                                   hsv(hue + r.uniform(-0.08, 0.08), 0.6, 1.0)])
+        out, alive = [], []
+        g = scale * 0.6
+        for s in self.stars:
+            s[4] -= f.dt
+            if s[4] <= 0:
+                continue
+            s[3] += g * f.dt
+            s[0] += s[2] * f.dt
+            s[1] += s[3] * f.dt
+            fade = s[4] / s[5]
+            out.append((s[0], s[1], scale / 260 * (0.5 + fade), s[6], fade))
+            alive.append(s)
+        self.stars = alive
+        return out
+
+    def _ifs(self, f, w, h):
+        if not self.ifs_on:
+            return [], (1.0, 1.0, 1.0), 0.0, 1.0
+        r = self.rng
+        maps = []
+        for sc, ang, tx, ty, spin in self.ifs_maps:
+            a = ang + spin * self.t
+            maps.append((sc * math.cos(a), sc * math.sin(a), tx, ty))
+        x = y = 0.0
+        pts = []
+        scale = min(w, h) * 0.32 * (1 + 0.3 * f.bass)
+        cx, cy = w * self.cur["cx"], h * self.cur["cy"]
+        for i in range(self.IFS_POINTS + 8):
+            ca, sa, tx, ty = maps[r.randrange(len(maps))]
+            x, y = ca * x - sa * y + tx, sa * x + ca * y + ty
+            if i >= 8:
+                pts.append((cx + x * scale, cy + y * scale))
+        return (pts, hsv(self.hue + 0.25, 0.5, 1.0), 0.25 + 0.6 * f.mid,
+                max(1.0, min(w, h) / 700))
+
+    # -- without OpenGL: a small cairo version ------------------------------------------
+    def draw(self, cr, w, h, f):
+        st = self.update(f, w, h)
+        bw = max(64, min(int(w), 480))
+        bh = max(36, int(bw * h / max(1, w)))
+        prev = self._cairo_buf
+        buf = cairo.ImageSurface(cairo.FORMAT_RGB24, bw, bh)
+        c = cairo.Context(buf)
+        c.set_source_rgb(0, 0, 0)
+        c.paint()
+        if prev is not None and prev.get_width() == bw and prev.get_height() == bh:
+            zx, zy = st.centre[0] * bw, st.centre[1] * bh
+            c.save()
+            c.translate(zx, zy)
+            c.rotate(st.rot * st.dt)
+            c.scale(1 + st.speed * st.dt * 0.6, 1 + st.speed * st.dt * 0.6)
+            c.translate(-zx, -zy)
+            c.set_source_surface(prev, 0, 0)
+            c.paint_with_alpha(st.decay)
+            c.restore()
+        c.scale(bw / w, bh / h)
+        c.set_operator(cairo.OPERATOR_ADD)
+        for pts, col, alpha, width in st.lines:
+            c.set_source_rgba(*col, alpha)
+            c.set_line_width(width * w / bw)
+            c.move_to(*pts[0])
+            for p in pts[1:]:
+                c.line_to(*p)
+            c.stroke()
+        for x, y, rad, col, alpha in st.stars:
+            c.set_source_rgba(*col, alpha)
+            c.arc(x, y, rad * w / bw, 0, TAU)
+            c.fill()
+        self._cairo_buf = buf
+        cr.save()
+        cr.scale(w / bw, h / bh)
+        cr.set_source_surface(buf, 0, 0)
+        cr.get_source().set_filter(cairo.FILTER_BILINEAR)
+        cr.paint()
+        cr.restore()
+        footer(cr, w, h, f.caption)
+
+
+STYLES = [GlowWaves, Nebula, GoomHD, SpectrumBars, VUMeters, Oscilloscope, Blank]
 DEFAULT_STYLE = GlowWaves.id
 
 

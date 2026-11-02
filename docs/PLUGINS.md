@@ -51,9 +51,19 @@ can be run from there.
 
 While a radio channel or an audio-only file plays, LinDVB shows a visualisation
 instead of the empty picture. Pick it under **☰ → Radio Visualisation** or cycle
-with **V**. Built in are *Glow waves* and *Nebula particles* (modern), the *LED
-spectrum analyser*, *VU meters* and an *Oscilloscope* (classic), and *Off*, which
-just shows the station name. A plugin can add two kinds:
+with **V**. Built in are *Glow waves*, *Nebula particles* and *Goom HD* (modern),
+the *LED spectrum analyser*, *VU meters* and an *Oscilloscope* (classic), and
+*Off*, which just shows the station name.
+
+The built-in styles are drawn on the graphics card (OpenGL 3.3 or OpenGL ES 3.0,
+through the `Gtk.GLArea` GTK already provides) at the window's full resolution
+and at the display's frame rate, so full screen costs almost no CPU. *Goom HD*
+rebuilds GOOM's effects as shaders — the zoom/bend/fade feedback loop with its
+distortion modes, the waveform lines, flying stars and the IFS fractal — and
+renders them natively at the screen's resolution instead of scaling up a
+320x200 picture. Without OpenGL, or with `"visualizer_gpu": false` in
+`settings.json` (or the environment variable `LINDVB_NO_GPU_VIS=1`), every
+style is drawn with cairo as before. A plugin can add two kinds:
 
 * **Drawn** — `api.add_visualizer("My scope", draw=factory)`. `factory()` returns
   an object with `draw(cr, width, height, frame)`, called about 30 times a second
@@ -61,7 +71,9 @@ just shows the station name. A plugin can add two kinds:
   spectrum bands, 0..1, with falling `peaks`), `level` and `vu` per channel,
   `wave` (the latest waveform, -1..1), `bass`/`mid`/`treble`, `beat`, `t`, `dt`,
   the theme `accent` colour and a `caption` (station name). The built-in styles in
-  [`lindvb/visuals.py`](../lindvb/visuals.py) are written exactly this way.
+  [`lindvb/visuals.py`](../lindvb/visuals.py) are written exactly this way (their
+  GPU versions are in [`lindvb/ui/gpuvisuals.py`](../lindvb/ui/gpuvisuals.py));
+  plugin styles are drawn with cairo.
 * **GStreamer element** — `api.add_visualizer("My vis", element=factory)`.
   `factory()` returns an audio visualiser element (audio in, video out) that
   playbin renders into the video area, like `goom`, `monoscope` or `projectm`.
@@ -76,7 +88,12 @@ plugin (element `projectm`, built on libprojectM 4) is installed, and **GOOM**
 from gst-plugins-good. Presets are taken from `projectm_preset_dir` in
 `settings.json`, or else from the usual folders such as
 `/usr/share/projectM/presets`; `projectm_preset_seconds` sets how long each
-preset runs (default 20). Without gst-projectm the entry is simply not offered
+preset runs (default 20). GStreamer visualisers render at 320x200 unless told
+otherwise, so the add-on asks projectM (OpenGL) for the screen's resolution, at
+most 2560x1440, or `visualizer_resolution` (`"1920x1080"`, default `"auto"`),
+and the original GOOM, which runs on the CPU and gets slow at high resolutions,
+for `goom_resolution` (default `"640x360"`). For a sharp GOOM in full screen
+use the built-in *Goom HD*. Without gst-projectm the entry is simply not offered
 and the plugin list says why. Like any plugin, the add-on can be switched off
 under **☰ → Plugins…**.
 

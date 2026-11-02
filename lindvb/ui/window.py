@@ -368,7 +368,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.overlay = overlay = Gtk.Overlay()
         overlay.set_child(self.picture)
         # radio / audio-only: drawn visualisation over the (empty) picture
-        self.vis = VisualizerArea(None)
+        self.vis = VisualizerArea(None, gpu=self.settings.get("visualizer_gpu", True))
         self.vis.set_visible(False)
         overlay.add_overlay(self.vis)
         self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,

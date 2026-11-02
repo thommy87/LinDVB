@@ -56,9 +56,17 @@ DEFAULTS = {
     "last_tv_channel": None,
     "last_radio_channel": None,
     "mode": "tv",                    # channel list shows "tv" or "radio"
-    # Radio visualisation: a built-in style (glow, nebula, bars, vu, scope, off)
-    # or "plugin:<name>" for one registered by a plugin.
+    # Radio visualisation: a built-in style (glow, nebula, goomhd, bars, vu,
+    # scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",
+    # Draw the built-in visualisations on the graphics card (OpenGL); cairo
+    # on the CPU is used when this is off or OpenGL is not available.
+    "visualizer_gpu": True,
+    # Size the GStreamer visualisations render at: "auto" (the screen, at most
+    # 2560x1440, for projectM) or "WIDTHxHEIGHT". The original GOOM runs on
+    # the CPU and uses "goom_resolution" (default 640x360).
+    "visualizer_resolution": "auto",
+    "goom_resolution": "640x360",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
