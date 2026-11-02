@@ -6,7 +6,7 @@ import os
 import re
 import time
 import xml.etree.ElementTree as ET
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 
 from .config import CACHE_DIR
@@ -30,6 +30,12 @@ class Event:
     event_id: int = 0
     country: str = ""     # production country (XMLTV <country>)
     year: int = 0         # production year (XMLTV <date>)
+    # DVB-I content guide: programme id (CRID), image, minimum age and the
+    # accessibility features (see lindvb.contentguide)
+    programme_id: str = ""
+    image: str = ""
+    min_age: int = 0
+    access: list = field(default_factory=list)
 
     @property
     def end(self):

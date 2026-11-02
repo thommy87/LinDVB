@@ -65,6 +65,7 @@ class Channel:
     dvbi_instances: list = field(default_factory=list)
     dvbi_alt_names: list = field(default_factory=list)
     dvbi_cg: str = ""                # content guide service reference
+    dvbi_guide: dict = field(default_factory=dict)   # content guide endpoints
 
     @property
     def is_iptv(self):

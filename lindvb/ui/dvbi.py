@@ -48,6 +48,10 @@ class DVBISetupWindow(Gtk.Window):
                                    active=bool(self.s.get("dvbi_privacy_ack")))
         self.ack.connect("toggled", lambda *_: self._sensitive())
         box.append(self.ack)
+        self.guide = Gtk.CheckButton(label="Load the programme guide (EPG) of the DVB-I channels",
+                                     active=bool(self.s.get("dvbi_guide", True)))
+        self.guide.connect("toggled", lambda b: self._guide_toggled(b.get_active()))
+        box.append(self.guide)
 
         # IT-7/IT-8: lists from the national registry, default list first
         title("Service list")
@@ -270,6 +274,12 @@ class DVBISetupWindow(Gtk.Window):
             elif i == 1:
                 self._install(nationwide=True)
         dlg.choose(self, None, chosen)
+
+    def _guide_toggled(self, on):
+        self.s["dvbi_guide"] = on
+        self.s.save()
+        if on and self.s.get("dvbi_privacy_ack") and self.app.db.dvbi_channels():
+            self.app.update_dvbi_guide()
 
     def _remove(self):
         removed = self.app.db.replace_dvbi([])[2]

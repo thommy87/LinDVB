@@ -1,12 +1,26 @@
 """Programme guide window: what's on now, per channel, timeline and search."""
 
+import hashlib
+import os
+import threading
 import time
 
-from gi.repository import Gtk, Pango
+from gi.repository import Gdk, GLib, Gtk, Pango
 
+from ..config import CACHE_DIR
+from ..contentguide import AUDIO_DESCRIPTION, SUBTITLES, badges, image_url
 from .common import day, dropdown, fill, hm, make_column_view, scrolled, selected
 
 ROW_H = 34
+IMAGE_DIR = CACHE_DIR / "dvbi" / "images"
+# Now/next filter (DTVP IT-16: let viewers find programmes with these features)
+ACCESS_FILTERS = [("All programmes", None), ("With audio description", AUDIO_DESCRIPTION),
+                  ("With subtitles", SUBTITLES)]
+
+
+def _title(e):
+    b = badges(e)
+    return f"{e.title}  {b}" if b else e.title
 PX_PER_MIN = 4
 NAME_W = 150
 
@@ -18,6 +32,7 @@ class EPGWindow(Gtk.Window):
         self.app = app
         self.parent = parent
         self.selected_event = None      # (channel, event)
+        self._image_url = ""
         self.chans = [c for c in app.db.channels]
 
         nb = Gtk.Notebook()
@@ -28,9 +43,16 @@ class EPGWindow(Gtk.Window):
         if channel:
             nb.set_current_page(1)
 
-        self.details = Gtk.Label(xalign=0, yalign=0, wrap=True, selectable=True,
+        self.details = Gtk.Label(xalign=0, yalign=0, wrap=True, selectable=True, hexpand=True,
                                  wrap_mode=Pango.WrapMode.WORD_CHAR)
-        det = scrolled(self.details)
+        # programme image from the DVB-I content guide
+        self.image = Gtk.Picture(can_shrink=True, content_fit=Gtk.ContentFit.CONTAIN,
+                                 visible=False, valign=Gtk.Align.START)
+        self.image.set_size_request(200, 112)
+        dbox = Gtk.Box(spacing=12)
+        dbox.append(self.image)
+        dbox.append(self.details)
+        det = scrolled(dbox)
         det.set_size_request(-1, 130)
         bar = Gtk.Box(spacing=6)
         for label, fn in (("Watch", self.on_watch), ("Record", self.on_record),
@@ -58,12 +80,16 @@ class EPGWindow(Gtk.Window):
         self.at_dd.connect("notify::selected", lambda *_: self.refresh())
         self.only_fav = Gtk.CheckButton(label="Only favourites")
         self.only_fav.connect("toggled", lambda *_: self.refresh())
+        self.access_dd = dropdown([label for label, _a in ACCESS_FILTERS])
+        self.access_dd.set_tooltip_text("Accessibility features (DVB-I programme guide)")
+        self.access_dd.connect("notify::selected", lambda *_: self.refresh())
         top.append(Gtk.Label(label="Show:"))
         top.append(self.at_dd)
         top.append(self.only_fav)
+        top.append(self.access_dd)
         box.append(top)
         cols = [("Channel", lambda r: r[0].name, False), ("Start", lambda r: hm(r[1].start), False),
-                ("End", lambda r: hm(r[1].end), False), ("Title", lambda r: r[1].title, True),
+                ("End", lambda r: hm(r[1].end), False), ("Title", lambda r: _title(r[1]), True),
                 ("Genre", lambda r: r[1].genre, False)]
         self.now_view, self.now_store, self.now_sel = make_column_view(cols, lambda r: self.app.window.zap(r[0]))
         self.now_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
@@ -86,7 +112,7 @@ class EPGWindow(Gtk.Window):
         box.append(self.ch_dd)
         cols = [("Day", lambda r: day(r[1].start), False), ("Start", lambda r: hm(r[1].start), False),
                 ("Duration", lambda r: f"{r[1].duration // 60} min", False),
-                ("Title", lambda r: r[1].title, True), ("Subheading", lambda r: r[1].subtitle, True)]
+                ("Title", lambda r: _title(r[1]), True), ("Subheading", lambda r: r[1].subtitle, True)]
         self.ch_view, self.ch_store, self.ch_sel = make_column_view(cols, lambda r: self.on_record())
         self.ch_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.ch_view))
@@ -115,7 +141,7 @@ class EPGWindow(Gtk.Window):
             top.append(w)
         box.append(top)
         cols = [("Channel", lambda r: r[0].name, False), ("Day", lambda r: day(r[1].start), False),
-                ("Start", lambda r: hm(r[1].start), False), ("Title", lambda r: r[1].title, True)]
+                ("Start", lambda r: hm(r[1].start), False), ("Title", lambda r: _title(r[1]), True)]
         self.s_view, self.s_store, self.s_sel = make_column_view(cols, lambda r: self.on_record())
         self.s_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.s_view))
@@ -142,7 +168,8 @@ class EPGWindow(Gtk.Window):
                 lt = time.localtime(now)
                 t = time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, hh, mm, 0, 0, 0, -1))
                 ev = epg.at(c.epg_key, t)
-            if ev:
+            want = ACCESS_FILTERS[self.access_dd.get_selected()][1]
+            if ev and (want is None or want in (ev.access or [])):
                 rows.append((c, ev))
         fill(self.now_store, rows)
         if self.chans:
@@ -171,10 +198,53 @@ class EPGWindow(Gtk.Window):
             return
         self.selected_event = row
         c, e = row
+        extra = ""
+        if e.access:
+            extra += " · " + ", ".join(e.access)
+        if e.min_age:
+            extra += f" · FSK {e.min_age}"
         self.details.set_markup(
             f"<b>{_esc(e.title)}</b>  {_esc(e.subtitle)}\n"
             f"{_esc(c.name)} · {day(e.start)} {hm(e.start)}–{hm(e.end)} · {e.duration // 60} min"
-            f"{' · ' + _esc(e.genre) if e.genre else ''}\n\n{_esc(e.description)}")
+            f"{' · ' + _esc(e.genre) if e.genre else ''}{_esc(extra)}\n\n{_esc(e.description)}")
+        self._show_image(e.image)
+
+    def _show_image(self, url):
+        """Programme image (IT-6, 640 px wide), downloaded once into the cache."""
+        self._image_url = url
+        if not url:
+            self.image.set_visible(False)
+            return
+        url = image_url(url)
+        path = str(IMAGE_DIR / (hashlib.sha1(url.encode()).hexdigest()[:20] + ".img"))
+        if os.path.exists(path):
+            self._set_image(path, self._image_url)
+            return
+        self.image.set_visible(False)
+        want = self._image_url
+
+        def work():
+            from ..dvbi import DVBIError, fetch
+            try:
+                data = fetch(url).data
+                os.makedirs(IMAGE_DIR, exist_ok=True)
+                with open(path + ".tmp", "wb") as f:
+                    f.write(data)
+                os.replace(path + ".tmp", path)
+            except (DVBIError, OSError):
+                return
+            GLib.idle_add(self._set_image, path, want)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _set_image(self, path, want):
+        if want != self._image_url:
+            return False
+        try:
+            self.image.set_paintable(Gdk.Texture.new_from_filename(path))
+            self.image.set_visible(True)
+        except GLib.Error:
+            self.image.set_visible(False)
+        return False
 
     # -- timeline drawing -------------------------------------------------------
     def _draw_timeline(self, _area, cr, w, h):

@@ -39,14 +39,24 @@ When the download fails, the last list stays in use. **Update Now** in the
 setup loads it at once, for example after a new channel search, and
 **Remove DVB-I Channels** takes the DVB-I channels out again.
 
+## Programme guide
+
+DVB-I channels get their programme guide from the content guide servers named
+in the service list (switch it off in the DVB-I setup). LinDVB asks for
+now/next first and then the schedule of today and the next 7 days, every 6
+hours. Programmes show the long synopsis, genre, age rating and the
+programme image. Audio description, and subtitles on antenna/cable/satellite
+channels, are marked [AD] and [ST] in the guide and can be filtered on the
+Now/Next page; features LinDVB cannot play yet (subtitles in DASH, sign
+language) are not listed.
+
 ## Not yet
 
 These parts of the profile are planned for later stages:
 
-* the DVB-I content guide (now/next and schedule from the list's endpoints);
-  broadcast DVB-I channels already show the broadcast EPG
+* past days of the content guide, "more episodes" and box sets
 * switching to another instance when one fails during playback, satellite
   direct tuning without a channel search, CI+ instance handling, pop-up
   channels with availability windows and out-of-service banners
-* EBU-TT-D subtitles in DASH streams and the accessibility markers
+* EBU-TT-D subtitles in DASH streams
 * HbbTV, linked applications, MSE/EME and DRM
