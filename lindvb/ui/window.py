@@ -256,7 +256,8 @@ class MainWindow(Gtk.ApplicationWindow):
         view.append_submenu("Window Size", ws)
         view.append("Picture Settings…", "win.picture")
         view.append("Equalizer…", "win.equalizer")
-        vis = Gio.Menu()
+        # shared with the visualisation button in the control bar
+        self.vis_menu = vis = Gio.Menu()
         for vid, (label, _kind, _f) in self.visualizers.items():
             vis.append(label, f"win.vis::{vid}")
         view.append_submenu("Radio Visualisation", vis)
@@ -510,6 +511,10 @@ class MainWindow(Gtk.ApplicationWindow):
         bar.append(menubtn("audio-x-generic-symbolic", self.audio_menu, "Audio track"))
         bar.append(menubtn("media-view-subtitles-symbolic", self.sub_menu, "Subtitles"))
         bar.append(menubtn("emblem-system-symbolic", self.settings_menu, "Playback and picture settings"))
+        # radio visualisation picker: only usable while radio / audio is playing
+        self.vis_btn = menubtn("applications-multimedia-symbolic", self.vis_menu, "")
+        self._set_vis_button(False)
+        bar.append(self.vis_btn)
         self.fs_btn = btn("view-fullscreen-symbolic", "win.fullscreen", "Full screen (F)")
         bar.append(self.fs_btn)
         self._update_volume_icon()
@@ -1187,6 +1192,18 @@ class MainWindow(Gtk.ApplicationWindow):
         self.vis.set_caption(name)
         self.vis.set_visible(drawn)
         self.player.analyze = drawn
+        self._set_vis_button(audio_only)
+
+    def _set_vis_button(self, enabled):
+        """The visualisation button is greyed out unless radio or audio is playing."""
+        btn = getattr(self, "vis_btn", None)
+        if btn is None:
+            return
+        if not enabled:
+            btn.popdown()
+        btn.set_sensitive(enabled)
+        btn.set_tooltip_text("Radio visualisation" if enabled
+                             else "Radio visualisation (only for radio and audio)")
 
     # ------------------------------------------------------------------ sleep timer
     def sleep_in(self, seconds):
