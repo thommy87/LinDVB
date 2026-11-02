@@ -174,3 +174,16 @@ def test_build_channels_sets_guide():
     ard = next(c for c in res.channels if c.dvbi_id == "tag:ard")
     assert ard.dvbi_guide["schedule"] == "https://example.org/schedule"
     assert ard.dvbi_cg == "ard.de"
+
+
+def test_dvbi_guide_ahead_of_xmltv(monkeypatch):
+    from lindvb import channels
+    g = {"schedule": "https://g/s"}
+    a = Channel(name="ARD", delsys="iptv", url="https://x/a.mpd", dvbi_id="tag:ard",
+                xmltv_id="DasErste.de", dvbi_guide=g)
+    b = Channel(name="no guide", delsys="iptv", url="https://x/b", dvbi_id="tag:b",
+                xmltv_id="B.de")
+    assert a.epg_key == "dvbi:tag:ard" and b.epg_key == "xmltv:B.de"
+    assert cg.sources_for([a])[0].key == "dvbi:tag:ard"
+    monkeypatch.setattr(channels, "DVBI_GUIDE_FIRST", False)
+    assert a.epg_key == "xmltv:DasErste.de"

@@ -6,7 +6,7 @@ import urllib.parse
 
 from gi.repository import GLib, Gtk
 
-from .. import dvbi
+from .. import channels, dvbi
 from .common import message
 
 
@@ -278,6 +278,8 @@ class DVBISetupWindow(Gtk.Window):
     def _guide_toggled(self, on):
         self.s["dvbi_guide"] = on
         self.s.save()
+        channels.DVBI_GUIDE_FIRST = on      # XMLTV again for these channels when off
+        self.app.epg.notify()
         if on and self.s.get("dvbi_privacy_ack") and self.app.db.dvbi_channels():
             self.app.update_dvbi_guide()
 

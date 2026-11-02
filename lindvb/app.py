@@ -12,6 +12,7 @@ gi.require_version("Gst", "1.0")
 gi.require_version("GstVideo", "1.0")
 from gi.repository import Gio, GLib, Gst, Gtk  # noqa: E402
 
+from . import channels as channels_mod  # noqa: E402
 from .channels import ChannelDB, import_file  # noqa: E402
 from .config import APP_ID, Settings  # noqa: E402
 from .epg import EPGStore, apply_timezone, read_xmltv  # noqa: E402
@@ -39,6 +40,7 @@ class LinDVBApp(Gtk.Application):
         opts = options.end().unpack()
         Gst.init(None)
         self.settings = Settings()
+        channels_mod.DVBI_GUIDE_FIRST = bool(self.settings.get("dvbi_guide", True))
         self.plugins = PluginManager(self.settings)
         self.plugins.load_all()
         self.db = ChannelDB()

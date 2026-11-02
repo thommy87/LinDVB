@@ -50,6 +50,21 @@ channels, are marked [AD] and [ST] in the guide and can be filtered on the
 Now/Next page; features LinDVB cannot play yet (subtitles in DASH, sign
 language) are not listed.
 
+For internet channels whose list entry names a content guide, this guide comes
+first, even when the channel is also matched to an XMLTV channel. All other
+channels keep their XMLTV (or broadcast) guide. Switching the DVB-I guide off
+in the setup gives these channels their XMLTV guide back.
+
+## Streams that do not play
+
+Many internet streams in the German lists are meant for viewers in Germany
+only. The ARD entries (`itv.ard.de/dvbi/...`) forward to the broadcaster's
+stream for the viewer's country, and from abroad that server answers
+"403 Forbidden". LinDVB then shows *The server refused the stream (HTTP 403)*.
+This is the broadcaster's decision and cannot be fixed in the player. Channels
+that only list satellite or cable, or a link to an HbbTV app with DRM (most
+private channels), are left out of the channel list.
+
 ## Not yet
 
 These parts of the profile are planned for later stages:
