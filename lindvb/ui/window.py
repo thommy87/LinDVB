@@ -11,6 +11,7 @@ from ..config import APP_NAME
 from ..epg import details_line, programme_details
 from ..media_info import audio_summary
 from ..player import EQ_BANDS, Player
+from ..recordings import find_recordings
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
@@ -22,6 +23,8 @@ FILTERS = ["All channels", "Favourites (TV + Radio)", "Free to air", "Encrypted"
            "HD channels", "Internet streams"]
 F_ALL, F_FAV, F_FTA, F_ENC, F_HD, F_IPTV = range(len(FILTERS))
 MODES = ("tv", "radio")
+# The list tabs: TV channels, radio stations, and the recordings on disk.
+TABS = MODES + ("recordings",)
 ZOOM = [("Fit", Gtk.ContentFit.CONTAIN), ("Fill (crop)", Gtk.ContentFit.COVER),
         ("Stretch", Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
@@ -47,6 +50,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stopped = None          # channel switched off with Stop (Play resumes it)
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
+        self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
         self._vis_id = None          # visualisation style currently drawn
 
         # The player is always dark, whatever the desktop theme.
@@ -114,8 +118,11 @@ class MainWindow(Gtk.ApplicationWindow):
             "audio-later": lambda: self.shift_audio(AUDIO_DELAY_STEP),
             "audio-earlier": lambda: self.shift_audio(-AUDIO_DELAY_STEP),
             "audio-delay-reset": lambda: self.shift_audio(None),
-            "toggle-mode": lambda: self.set_mode("tv" if self.mode == "radio" else "radio"),
+            "toggle-mode": lambda: self.set_mode(self.mode if self.tab == "recordings" else
+                                                 "tv" if self.tab == "radio" else "radio"),
             "mode-tv": lambda: self.set_mode("tv"), "mode-radio": lambda: self.set_mode("radio"),
+            "mode-recordings": lambda: self.set_mode("recordings"),
+            "rec-refresh": self.reload_recordings, "rec-folder": self.open_recording_folder,
             "vis-next": self.cycle_visualizer,
         }
         for name, fn in acts.items():
@@ -196,6 +203,7 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append_section(None, file)
         tv = Gio.Menu()
         tv.append("Switch TV / Radio", "win.toggle-mode")
+        tv.append("Recordings", "win.mode-recordings")
         tv.append("Programme Guide (EPG)", "win.epg")
         tv.append("Timer Recordings", "win.timers")
         tv.append("Recording and Device Statistics", "win.stats")
@@ -308,17 +316,21 @@ class MainWindow(Gtk.ApplicationWindow):
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
         side.set_size_request(260, -1)
         head = Gtk.Box(spacing=8, margin_start=10, margin_end=10, margin_top=12)
-        # TV / Radio switch: the channel list shows one kind at a time
-        seg = Gtk.Box(css_classes=["linked", "lv-mode"], hexpand=True, homogeneous=True)
+        # TV / Radio / Recordings tabs: the list shows one kind at a time
+        seg = Gtk.Box(css_classes=["linked", "lv-mode"], hexpand=True)
         self.mode_btns = {}
         group = None
-        for mode, label, icon in (("tv", "TV", "video-display-symbolic"),
-                                  ("radio", "Radio", "audio-x-generic-symbolic")):
+        for mode, label, icon, tip in (
+                ("tv", "TV", "video-display-symbolic", "Show TV channels (Ctrl+M switches)"),
+                ("radio", "Radio", "audio-x-generic-symbolic",
+                 "Show radio stations (Ctrl+M switches)"),
+                ("recordings", "Recordings", "media-record-symbolic",
+                 "Show your recordings (double-click plays one)")):
             content = Gtk.Box(spacing=6, halign=Gtk.Align.CENTER)
             content.append(Gtk.Image(icon_name=icon))
             content.append(Gtk.Label(label=label))
-            b = Gtk.ToggleButton(child=content, active=mode == self.mode,
-                                 tooltip_text=f"Show {label} channels (Ctrl+M switches)")
+            b = Gtk.ToggleButton(child=content, active=mode == self.tab, hexpand=True,
+                                 tooltip_text=tip)
             if group is None:
                 group = b
             else:
@@ -327,14 +339,19 @@ class MainWindow(Gtk.ApplicationWindow):
             self.mode_btns[mode] = b
             seg.append(b)
         head.append(seg)
-        self.count_label = Gtk.Label(xalign=1, css_classes=["lv-count"])
-        head.append(self.count_label)
         side.append(head)
-        self.search = Gtk.SearchEntry(placeholder_text="Search name or number",
-                                      margin_start=10, margin_end=10)
+        srow = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
+        self.search = Gtk.SearchEntry(placeholder_text="Search name or number", hexpand=True)
         self.search.connect("search-changed", lambda _e: self._refilter())
         self.search.connect("activate", lambda _e: self._activate_first())
-        side.append(self.search)
+        srow.append(self.search)
+        self.count_label = Gtk.Label(xalign=1, css_classes=["lv-count"])
+        srow.append(self.count_label)
+        side.append(srow)
+        # the channel page (filters + list) and the recordings page share the search
+        self.side_stack = Gtk.Stack(vexpand=True,
+                                    transition_type=Gtk.StackTransitionType.CROSSFADE)
+        chan_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
         self.filter_dd = Gtk.DropDown.new_from_strings(FILTERS)
         self.filter_dd.connect("notify::selected", lambda *_: self._refilter())
@@ -344,7 +361,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.group_dd.set_hexpand(True)
         row.append(self.filter_dd)
         row.append(self.group_dd)
-        side.append(row)
+        chan_page.append(row)
 
         self.store = Gio.ListStore(item_type=Row)
         self.filter = Gtk.CustomFilter.new(self._filter_func)
@@ -361,7 +378,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.listview.add_controller(click)
         sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         sw.set_child(self.listview)
-        side.append(sw)
+        chan_page.append(sw)
+        self.side_stack.add_named(chan_page, "channels")
+        self.side_stack.add_named(self._build_recordings_page(), "recordings")
+        self.side_stack.set_visible_child_name(
+            "recordings" if self.tab == "recordings" else "channels")
+        side.append(self.side_stack)
         self.sidebar = side
 
         # video + overlays (OSD, number entry, teletext subtitles)
@@ -589,6 +611,12 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _refilter(self):
         self.filter.changed(Gtk.FilterChange.DIFFERENT)
+        if self.tab == "recordings":
+            self.rec_filter.changed(Gtk.FilterChange.DIFFERENT)
+            n, total = self.rec_filtered.get_n_items(), self.rec_store.get_n_items()
+            self.count_label.set_text(f"{n} of {total}")
+            self.count_label.set_tooltip_text(f"{n} of {total} recordings shown")
+            return
         radio = self.mode == "radio"
         if self.filter_dd.get_selected() == F_FAV:
             total = sum(1 for c in self.app.db.channels if c.favourite)
@@ -600,6 +628,10 @@ class MainWindow(Gtk.ApplicationWindow):
             f"{'favourites' if self.filter_dd.get_selected() == F_FAV else 'radio stations' if radio else 'TV channels'} shown")
 
     def _activate_first(self):
+        if self.tab == "recordings":
+            if self.rec_filtered.get_n_items():
+                self.play_recording(self.rec_filtered.get_item(0).data)
+            return
         if self.filtered.get_n_items():
             self.zap(self.filtered.get_item(0).data)
 
@@ -638,6 +670,176 @@ class MainWindow(Gtk.ApplicationWindow):
         self._refilter()
         self.listview.queue_draw()
 
+    # ------------------------------------------------------------------ recordings tab
+    def _build_recordings_page(self):
+        page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        bar = Gtk.Box(spacing=6, margin_start=10, margin_end=10)
+        self.rec_folder_label = Gtk.Label(xalign=0, hexpand=True, css_classes=["lv-count"],
+                                          ellipsize=Pango.EllipsizeMode.MIDDLE)
+        bar.append(self.rec_folder_label)
+        bar.append(Gtk.Button(icon_name="folder-open-symbolic", action_name="win.rec-folder",
+                              tooltip_text="Open the recording folder", css_classes=["flat"]))
+        bar.append(Gtk.Button(icon_name="view-refresh-symbolic", action_name="win.rec-refresh",
+                              tooltip_text="Look for new recordings", css_classes=["flat"]))
+        page.append(bar)
+
+        self.rec_store = Gio.ListStore(item_type=Row)
+        self.rec_filter = Gtk.CustomFilter.new(self._rec_filter_func)
+        self.rec_filtered = Gtk.FilterListModel(model=self.rec_store, filter=self.rec_filter)
+        self.rec_selection = Gtk.SingleSelection(model=self.rec_filtered, autoselect=False)
+        fac = Gtk.SignalListItemFactory()
+        fac.connect("setup", self._rec_row_setup)
+        fac.connect("bind", self._rec_row_bind)
+        self.rec_view = Gtk.ListView(model=self.rec_selection, factory=fac)
+        self.rec_view.connect("activate", lambda _l, pos: self.play_recording(
+            self.rec_filtered.get_item(pos).data))
+        click = Gtk.GestureClick(button=3)
+        click.connect("pressed", self._rec_context)
+        self.rec_view.add_controller(click)
+        sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        sw.set_child(self.rec_view)
+        self.rec_empty = Gtk.Label(wrap=True, justify=Gtk.Justification.CENTER,
+                                   css_classes=["lv-count"], margin_start=20, margin_end=20,
+                                   valign=Gtk.Align.START, margin_top=24)
+        stack = self.rec_stack = Gtk.Stack(vexpand=True)
+        stack.add_named(sw, "list")
+        stack.add_named(self.rec_empty, "empty")
+        page.append(stack)
+        self.app.timers.connect("changed", lambda _t: self.tab == "recordings"
+                                and self.reload_recordings())
+        return page
+
+    def _recording_folders(self):
+        """The recording folder from the preferences plus any folder a timer uses."""
+        folders = [self.settings.get("recording_dir", "")]
+        folders += [t.folder for t in self.app.timers.timers if t.folder]
+        return list(dict.fromkeys(str(Path(f).expanduser()) for f in folders if f))
+
+    def _active_recording_paths(self):
+        paths = set()
+        for rec, _cap in list(self.app.timers.active.values()):
+            try:
+                paths.add(str(Path(rec.path).resolve()))
+            except (OSError, AttributeError):
+                pass
+        return paths
+
+    def reload_recordings(self):
+        folders = self._recording_folders()
+        recs = find_recordings(folders)
+        self._recording_now = self._active_recording_paths()
+        self.rec_store.remove_all()
+        self.rec_store.splice(0, 0, [Row(r) for r in recs])
+        main = folders[0] if folders else ""
+        self.rec_folder_label.set_text(main)
+        self.rec_folder_label.set_tooltip_text("\n".join(folders))
+        self.rec_empty.set_text(f"No recordings yet.\n\nRecordings are saved in\n{main}"
+                                if main else "No recording folder set in the preferences.")
+        self.rec_stack.set_visible_child_name("list" if recs else "empty")
+        self._refilter()
+
+    def _rec_filter_func(self, item):
+        q = self.search.get_text().strip().lower()
+        return not q or q in item.data.title.lower()
+
+    def _rec_row_setup(self, _f, li):
+        b = Gtk.Box(spacing=10)
+        icon = Gtk.Image(css_classes=["lv-chan-icon"], valign=Gtk.Align.CENTER)
+        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True)
+        title = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END)
+        info = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-count"])
+        text.append(title)
+        text.append(info)
+        badge = Gtk.Image(icon_name="media-record-symbolic", css_classes=["rec"],
+                          tooltip_text="Recording in progress")
+        for w in (icon, text, badge):
+            b.append(w)
+        li.set_child(b)
+
+    def _rec_row_bind(self, _f, li):
+        r = li.get_item().data
+        icon, text, badge = list(_children(li.get_child()))
+        title, info = list(_children(text))
+        icon.set_from_icon_name("audio-x-generic-symbolic" if r.is_audio
+                                else "video-x-generic-symbolic")
+        title.set_text(r.title)
+        info.set_text(r.details())
+        li.get_child().set_tooltip_text(str(r.path))
+        try:
+            running = str(r.path.resolve()) in getattr(self, "_recording_now", ())
+        except OSError:
+            running = False
+        badge.set_visible(running)
+
+    def play_recording(self, r):
+        if not r.path.exists():
+            self.set_status(f"Recording not found: {r.path}")
+            self.reload_recordings()
+            return
+        self.play_files([str(r.path)])
+
+    def open_recording_folder(self, path=None):
+        folder = Path(path) if path else Path(self.settings.get("recording_dir", "")).expanduser()
+        if not folder.is_dir():
+            self.set_status(f"Folder not found: {folder}")
+            return
+        try:
+            Gio.AppInfo.launch_default_for_uri(folder.as_uri(), None)
+        except GLib.Error as e:
+            self.set_status(f"Cannot open {folder}: {e.message}")
+
+    def _rec_context(self, _gesture, _n, x, y):
+        pos = self.rec_selection.get_selected()
+        if pos == Gtk.INVALID_LIST_POSITION:
+            return
+        r = self.rec_filtered.get_item(pos).data
+        for name, fn in (("rec-ctx-play", lambda: self.play_recording(r)),
+                         ("rec-ctx-folder", lambda: self.open_recording_folder(r.path.parent)),
+                         ("rec-ctx-delete", lambda: self._confirm_delete_recording(r))):
+            a = Gio.SimpleAction.new(name, None)
+            a.connect("activate", lambda _a, _p, fn=fn: fn())
+            self.add_action(a)
+        m = Gio.Menu()
+        m.append("Play", "win.rec-ctx-play")
+        m.append("Show in Folder", "win.rec-ctx-folder")
+        m.append("Delete…", "win.rec-ctx-delete")
+        pop = Gtk.PopoverMenu.new_from_model(m)
+        pop.set_parent(self.rec_view)
+        rect = Gdk.Rectangle()
+        rect.x, rect.y, rect.width, rect.height = int(x), int(y), 1, 1
+        pop.set_pointing_to(rect)
+        pop.popup()
+
+    def _confirm_delete_recording(self, r):
+        try:
+            running = str(r.path.resolve()) in self._active_recording_paths()
+        except OSError:
+            running = False
+        if running:
+            self.set_status("Stop the recording before deleting it")
+            return
+        dlg = Gtk.AlertDialog(message=f"Delete \u201c{r.title}\u201d?",
+                              detail=f"{r.path}\n\nThe file is removed from the disk.",
+                              buttons=["Cancel", "Delete"], cancel_button=0, default_button=0)
+
+        def done(d, res):
+            try:
+                if d.choose_finish(res) != 1:
+                    return
+            except GLib.Error:
+                return
+            if 0 <= self.playlist_pos < len(self.playlist) and \
+                    Path(self.playlist[self.playlist_pos]) == r.path:
+                self.stop_playback()
+            try:
+                r.path.unlink()
+                self.set_status(f"Deleted {r.path.name}")
+            except OSError as e:
+                self.set_status(f"Cannot delete {r.path.name}: {e.strerror}")
+            self.reload_recordings()
+
+        dlg.choose(self, None, done)
+
     # ------------------------------------------------------------------ zapping
     def zap(self, c):
         if c is None:
@@ -665,8 +867,10 @@ class MainWindow(Gtk.ApplicationWindow):
             self.set_status(str(e))
             return
         self._remember(c)
-        if (self.mode == "radio") != c.radio:
+        if self.tab != "recordings" and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
+        elif self.tab == "recordings":
+            self.mode = "radio" if c.radio else "tv"
         self._select_in_list(c)
         self.set_status(f"Tuning {c.name}…")
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
@@ -691,14 +895,23 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def set_mode(self, mode, tune=True):
         """Show TV or radio channels; with ``tune`` also switch to the last
-        channel watched (or listened to) in that mode."""
-        if mode not in MODES:
+        channel watched (or listened to) in that mode. ``"recordings"`` shows
+        the recordings instead and leaves playback alone."""
+        if mode not in TABS:
             return
-        self.mode = mode
-        self.settings["mode"] = mode
+        self.tab = mode
         self._mode_sync = True
         self.mode_btns[mode].set_active(True)
         self._mode_sync = False
+        self.search.set_placeholder_text("Search recordings" if mode == "recordings"
+                                         else "Search name or number")
+        if mode == "recordings":
+            self.side_stack.set_visible_child_name("recordings")
+            self.reload_recordings()
+            return
+        self.side_stack.set_visible_child_name("channels")
+        self.mode = mode
+        self.settings["mode"] = mode
         self._refilter()
         if not tune or (self.current is not None and self.current.radio == (mode == "radio")):
             return
