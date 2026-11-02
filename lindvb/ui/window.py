@@ -14,6 +14,7 @@ from ..player import EQ_BANDS, Player
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
+from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
 
 # The channel list shows either TV or radio channels; only the favourites mix both.
@@ -66,6 +67,7 @@ class MainWindow(Gtk.ApplicationWindow):
                                                   self._update_visualizer()))
         self.player.connect("state", lambda _p, _s: self._update_visualizer())
         self.vis.analysis = self.player.analysis
+        self.player.connect("metadata", self._on_metadata)
         self.player.connect("subtitle-text", self._on_subtitle_text)
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
@@ -371,6 +373,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.vis = VisualizerArea(None, gpu=self.settings.get("visualizer_gpu", True))
         self.vis.set_visible(False)
         overlay.add_overlay(self.vis)
+        # station logo, cover, song and clock over the visualisation
+        self.nowplaying = NowPlayingOverlay(self.settings)
+        self.nowplaying.set_visible(False)
+        overlay.add_overlay(self.nowplaying)
         self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
                            valign=Gtk.Align.END, halign=Gtk.Align.START,
                            margin_start=24, margin_end=24, margin_bottom=24, width_request=420)
@@ -1175,6 +1181,9 @@ class MainWindow(Gtk.ApplicationWindow):
         else:
             audio_only = self.player.is_audio_only()
             name = self.get_title().removesuffix(f" – {APP_NAME}") if audio_only else ""
+        self._update_nowplaying(audio_only, name)
+        if self.settings.get("vis_show_song") or self.settings.get("vis_show_logo"):
+            name = ""                   # the overlay names the station already
         vis_id = self.settings.get("visualizer", DEFAULT_STYLE)
         _label, kind, factory = self.visualizers.get(vis_id) or self.visualizers[DEFAULT_STYLE]
         # a GStreamer visualiser renders into the picture; the drawn ones overlay it
@@ -1204,6 +1213,34 @@ class MainWindow(Gtk.ApplicationWindow):
         btn.set_sensitive(enabled)
         btn.set_tooltip_text("Radio visualisation" if enabled
                              else "Radio visualisation (only for radio and audio)")
+
+    def _update_nowplaying(self, audio_only=None, name=None):
+        """Logo, cover, song and clock over the visualisation (Preferences ›
+        Visualisation)."""
+        if audio_only is None:
+            audio_only = self.vis.get_visible() or (
+                self.player.playbin is not None and
+                (self.current.radio if self.current else self.player.is_audio_only()))
+        np = self.nowplaying
+        show = bool(audio_only) and overlay_enabled(self.settings)
+        if show:
+            programme = ""
+            if self.current is not None:
+                now, _ = self.app.epg.now_next(self.current.epg_key)
+                programme = now.title if now else ""
+            if name is None:
+                name = self.current.name if self.current else np.station
+            np.channel = self.current is not None
+            np.set_accent(resolve_accent(self.settings))
+            np.set_station(self.player.metadata.get("organization") or name
+                           if self.current is None else name, programme)
+            np.tick()
+        np.set_visible(show)
+
+    def _on_metadata(self, _player, meta):
+        self.nowplaying.set_metadata(meta)
+        if self.nowplaying.get_visible() and self.current is None:
+            self._update_nowplaying()
 
     # ------------------------------------------------------------------ sleep timer
     def sleep_in(self, seconds):
@@ -1287,6 +1324,8 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_epg(self):
         self._update_heading()
+        if self.nowplaying.get_visible():
+            self._update_nowplaying()
         if self.osd.get_visible():
             self.show_osd(getattr(self, "_osd_secs", None))
 
@@ -1303,6 +1342,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self._show_controls()
 
     def _tick(self):
+        if self.nowplaying.get_visible():
+            self.nowplaying.tick()
         if self.capture and self.player.capture:
             d = self.player.timeshift_delay()
             self.ts_label.set_text(f"Timeshift −{int(d) // 60}:{int(d) % 60:02d}" if d > 3 else "Live")

@@ -49,6 +49,11 @@ picture and hides itself when the mouse is still.
   is only active while radio or audio plays
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
+* Now playing over the radio visualisation, each part switchable in
+  Preferences › Visualisation: station logo tile, album cover, artist / album and
+  year / track and title, and a clock. Song details come from the RDS RadioText of
+  DVB radio, the ICY stream title of internet radio and the tags of audio files;
+  covers from the file or the iTunes Search API, logos from a logo folder
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
 * Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
   after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
