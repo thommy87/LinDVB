@@ -6,8 +6,9 @@ from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gst, Gtk, Pango
 
+from .. import dvbi
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
-from ..config import APP_NAME
+from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
 from ..media_info import audio_summary
 from ..nowplaying import content_box
@@ -18,6 +19,28 @@ from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
+
+NO_LOCK_SECONDS = 8          # DVB-I failover after this long without a signal lock
+
+
+def _tuning_sig(c):
+    return (c.delsys, c.url, c.frequency, c.polarity, c.sid)
+
+
+def _instance_kind(c):
+    if c.is_iptv:
+        return "the internet stream"
+    if c.is_sat:
+        return "satellite"
+    return "cable" if c.delsys.startswith("dvb-c") else "antenna"
+
+
+def _short(text, n=90):
+    text = (text or "").strip()
+    if text.startswith("Playback error: "):
+        text = text[len("Playback error: "):]
+    text = text.split(". ")[0].rstrip(".")
+    return text if len(text) <= n else text[:n - 1] + "…"
 
 # The channel list shows either TV or radio channels; only the favourites mix both.
 FILTERS = ["All channels", "Favourites (TV + Radio)", "Free to air", "Encrypted",
@@ -49,6 +72,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self._seek_target = None
         self._fs_layout = False      # full screen layout applied (controls float)
         self.stopped = None          # channel switched off with Stop (Play resumes it)
+        self._tuned = None           # the channel or DVB-I instance actually playing
+        self._tried = set()          # DVB-I instances tried since the last channel change
+        self._nolock_since = None
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
         self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
@@ -70,7 +96,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._build_actions()
         self._build_ui()
         self.player = Player(self.picture, self.settings)
-        self.player.connect("error", lambda _p, m: self.set_status(f"Playback error: {m}"))
+        self.player.connect("error", lambda _p, m: self._on_play_error(f"Playback error: {m}"))
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
@@ -78,6 +104,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.vis.analysis = self.player.analysis
         self.player.connect("metadata", self._on_metadata)
         self.player.connect("subtitle-text", self._on_subtitle_text)
+        # DVB-I pop-up channels come and go with their availability windows
+        GLib.timeout_add_seconds(60, self._availability_tick)
         self._update_teletext()
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
@@ -446,6 +474,17 @@ class MainWindow(Gtk.ApplicationWindow):
                                   wrap=True, can_target=False)
         self.sublabel.set_visible(False)
         overlay.add_overlay(self.sublabel)
+        # DVB-I: banner of a channel that is not on air (IT-4, pop-up channels)
+        self.oos = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12,
+                           halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER, can_target=False)
+        self.oos_image = Gtk.Picture(content_fit=Gtk.ContentFit.CONTAIN,
+                                     width_request=480, height_request=270)
+        self.oos_label = Gtk.Label(css_classes=["title-2"], wrap=True,
+                                   justify=Gtk.Justification.CENTER)
+        self.oos.append(self.oos_image)
+        self.oos.append(self.oos_label)
+        self.oos.set_visible(False)
+        overlay.add_overlay(self.oos)
         dbl = Gtk.GestureClick()
         dbl.connect("pressed", lambda g, n, *_: self.toggle_fullscreen() if n == 2 else self.show_osd())
         self.picture.add_controller(dbl)
@@ -621,7 +660,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _filter_func(self, item):
         c = item.data
-        if not c.visible:            # DVB-I: hidden services (still tunable by number)
+        if not c.visible or c.dvbi_periods and not dvbi.available(c.dvbi_periods):
+            # DVB-I: hidden services and pop-up channels off air (IT-4), still
+            # tunable by number
             q = self.search.get_text().strip()
             return bool(q) and q.isdigit() and str(c.number) == q
         f = self.filter_dd.get_selected()
@@ -900,20 +941,20 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_title(f"{c.name} – {APP_NAME}")
         self.picture.set_opacity(1)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
-        try:
-            if c.is_iptv:
-                self.player.play_uri(c.url)
-            else:
-                self.capture = self.app.tuners.acquire(c, "live")
-                self.capture.connect("stats", self._on_stats)
-                self.capture.connect("error", lambda _c, m: self.set_status(m))
-                self.capture.connect("eit", self.app.on_eit)
-                self.app.plugins.emit("channel-tuned", c, self.capture)
-                GLib.timeout_add(700, self._start_live, self.capture)
-        except RuntimeError as e:
-            self.set_status(str(e))
-            self._update_teletext()
-            return
+        self._tuned = c
+        self._tried = {_tuning_sig(c)}
+        self.oos.set_visible(False)
+        off_air = bool(c.dvbi_periods) and not dvbi.available(c.dvbi_periods)
+        if off_air:
+            self._show_off_air(c)
+        else:
+            try:
+                self._start_stream(c)
+            except RuntimeError as e:
+                if not self._try_failover(str(e)):
+                    self.set_status(str(e))
+                    self._update_teletext()
+                    return
         self._update_teletext()
         self._remember(c)
         if self.tab != "recordings" and (self.mode == "radio") != c.radio:
@@ -921,7 +962,8 @@ class MainWindow(Gtk.ApplicationWindow):
         elif self.tab == "recordings":
             self.mode = "radio" if c.radio else "tv"
         self._select_in_list(c)
-        self.set_status(f"Tuning {c.name}…")
+        if not off_air:
+            self.set_status(f"Tuning {c.name}…")
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
         if secs > 0:
             self.show_osd(secs)
@@ -1004,9 +1046,100 @@ class MainWindow(Gtk.ApplicationWindow):
         self.subtitle_label.set_text(f"{hm(now.start)}–{hm(now.end)}  {now.title}" if now else "")
         self.subtitle_label.set_visible(bool(now))
 
+    def _start_stream(self, c):
+        """Play channel *c* (a list channel, or another instance of it)."""
+        self._nolock_since = None
+        if c.is_iptv:
+            self.player.play_uri(c.url)
+        else:
+            self.capture = self.app.tuners.acquire(c, "live")
+            self.capture.connect("stats", self._on_stats)
+            self.capture.connect("error", lambda _c, m: self._on_play_error(m))
+            self.capture.connect("eit", self.app.on_eit)
+            self.app.plugins.emit("channel-tuned", c, self.capture)
+            GLib.timeout_add(700, self._start_live, self.capture)
+
+    def _on_play_error(self, msg):
+        if not self._try_failover(msg):
+            self.set_status(msg)
+
+    def _try_failover(self, reason):
+        """IT-10: when the instance of a DVB-I channel in use fails, switch
+        to the next one in priority order. Each instance is tried once per
+        channel change, so a failing pair does not alternate."""
+        c = self.current
+        if c is None or not c.dvbi_id or not self.settings.get("dvbi_failover", True) or \
+                self.stopped is not None:
+            return False
+        alts = dvbi.alternatives(c, self.app.db.channels,
+                                 sat_direct=self.settings.get("dvbi_sat_direct", True))
+        for alt in alts:
+            sig = _tuning_sig(alt)
+            if sig in self._tried:
+                continue
+            self._tried.add(sig)
+            self._tuned_before_iptv = bool(self._tuned and self._tuned.is_iptv)
+            self._release_capture()
+            self._tuned = alt
+            try:
+                self._start_stream(alt)
+            except RuntimeError as e:
+                reason = str(e)
+                continue
+            kind = _instance_kind(alt)
+            if alt.is_iptv and self._tuned_before_iptv:
+                kind = "another internet stream"
+            self.set_status(f"{c.name}: {_short(reason)} – switched to {kind}")
+            self._update_teletext()
+            return True
+        return False
+
+    def _availability_tick(self):
+        if any(c.dvbi_periods for c in self.app.db.channels):
+            self._refilter()
+            c = self.current
+            if c is not None and c.dvbi_periods and self.oos.get_visible() and \
+                    dvbi.available(c.dvbi_periods):
+                self.zap(c)                  # the channel went on air
+        return True
+
+    def _show_off_air(self, c):
+        """IT-4: a pop-up channel outside its availability: banner, no tuning."""
+        self.oos_label.set_text(f"{c.name} is not on air at the moment")
+        self.oos_image.set_paintable(None)
+        self.oos.set_visible(True)
+        self.set_status(f"{c.name} is not on air at the moment")
+        url = c.dvbi_oos_logo
+        if not url:
+            return
+        folder = CACHE_DIR / "dvbi" / "banners"
+        path = dvbi.logo_file(str(folder), url)
+
+        def show():
+            if self.current is c and Path(path).exists():
+                self.oos_image.set_filename(path)
+            return False
+
+        if Path(path).exists():
+            show()
+            return
+
+        def work():
+            try:
+                folder.mkdir(parents=True, exist_ok=True)
+                data = dvbi.fetch(url).data
+                with open(path, "wb") as f:
+                    f.write(data)
+            except (OSError, dvbi.DVBIError):
+                return
+            GLib.idle_add(show)
+
+        import threading
+        threading.Thread(target=work, daemon=True).start()
+
     def _start_live(self, cap):
         if cap is self.capture:
-            self.player.play_capture(cap, self.current.sid, offset=0)
+            self.player.play_capture(cap, self._tuned.sid, offset=0)
         return False
 
     def _release_capture(self):
@@ -1056,6 +1189,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.current = None
         self.set_title(APP_NAME)
         self.picture.set_opacity(0)          # no frozen last frame
+        self.oos.set_visible(False)
         self._hide_osd()
         self.sublabel.set_visible(False)
         self.signal_label.set_text("")
@@ -1610,8 +1744,17 @@ class MainWindow(Gtk.ApplicationWindow):
     def set_status(self, text):
         self.status.set_text(text)
 
-    def _on_stats(self, _cap, st):
+    def _on_stats(self, cap, st):
         parts = []
+        if "lock" in st and cap is self.capture:
+            # no lock for a while: the antenna/cable/satellite instance fails
+            if st["lock"]:
+                self._nolock_since = None
+            elif self._nolock_since is None:
+                self._nolock_since = time.monotonic()
+            elif time.monotonic() - self._nolock_since > NO_LOCK_SECONDS:
+                self._nolock_since = None
+                GLib.idle_add(lambda: self._try_failover("no signal") and False)
         if "lock" in st:
             parts.append("LOCK" if st["lock"] else "no lock")
         if "signal" in st:

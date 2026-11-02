@@ -58,6 +58,37 @@ def _fetch_text(url, limit=256 * 1024, timeout=4):
         return resp.read(limit).decode("utf-8", "replace")
 
 
+def enable_ttml():
+    """EBU-TT-D subtitles in DASH (DTVP IT-3, IT-16). GStreamer's TTML parser
+    and renderer have rank "none", so playbin leaves TTML subtitle streams
+    out; with a rank they are found and drawn over the video. Returns whether
+    both elements are installed."""
+    ok = True
+    for name in ("ttmlparse", "ttmlrender"):
+        f = Gst.ElementFactory.find(name)
+        if f is None:
+            ok = False
+        elif f.get_rank() < Gst.Rank.PRIMARY:
+            f.set_rank(Gst.Rank.PRIMARY)
+    if ok:
+        from . import contentguide
+        contentguide.INTERNET_SUBTITLES = True
+    return ok
+
+
+def describe_error(err, debug=""):
+    """A readable text for a GStreamer error; HTTP refusals get their reason."""
+    text = f"{err.message} {debug or ''}"
+    m = re.search(r"\((40[134]|410|451)\)", text)
+    if m:
+        code = m.group(1)
+        if code in ("401", "403", "451"):
+            return (f"The server refused the stream (HTTP {code}). It is probably "
+                    "only available in certain countries.")
+        return f"The stream was not found on the server (HTTP {code})."
+    return err.message
+
+
 def ssm_rtp_to_udp(url):
     """rtp://source@group:port (source-specific multicast) -> (udp uri, source)."""
     m = re.match(r"(rtp|udp)://(?:([^@/]+)@)?([^:/]+):(\d+)", url)
@@ -169,6 +200,7 @@ class Player(GObject.Object):
     def __init__(self, picture, settings):
         super().__init__()
         self.settings = settings
+        enable_ttml()
         self.video = VideoBin(picture)
         self.playbin = None
         self.feeder = None
@@ -199,6 +231,7 @@ class Player(GObject.Object):
         self._token = 0                 # bumps on every play/stop, cancels stale probes
         self._hls_alt_audio = {}        # url -> master playlist has audio renditions
         self._fallback_done = False
+        self._error_token = -1          # playback that already reported an error
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
         # radio visualisations: audio analysis tap, or a GStreamer visualiser
@@ -965,7 +998,13 @@ class Player(GObject.Object):
                 self._fallback_done = True
                 GLib.idle_add(self._fallback_to_playbin, self._token)
                 return
-            self.emit("error", err.message)
+            # one error per playback: the first one names the cause, the ones
+            # after it ("not enough data", "can't typefind") only follow from it
+            if self.uri and not self.capture:
+                if self._error_token == self._token:
+                    return
+                self._error_token = self._token
+            self.emit("error", describe_error(err, _dbg))
         elif t == Gst.MessageType.EOS:
             self.emit("eos")
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:

@@ -126,6 +126,20 @@ def parse_pmt(section):
     return pmt
 
 
+def pat_pmt_pid(section, program_number):
+    """The PMT PID of *program_number* in a PAT section (table_id 0x00), or 0.
+    Needed for channels tuned without a channel search (DVB-I satellite
+    direct tuning), which only know their service ID."""
+    if len(section) < 12 or section[0] != 0x00:
+        return 0
+    end = min(len(section), 3 + (((section[1] & 0x0F) << 8) | section[2])) - 4
+    for i in range(8, end - 3, 4):
+        prog = (section[i] << 8) | section[i + 1]
+        if prog and prog == program_number:
+            return ((section[i + 2] & 0x1F) << 8) | section[i + 3]
+    return 0
+
+
 # CA_PMT list-management and command ids (EN 50221)
 CA_PMT_LIST_ONLY = 0x03
 CA_PMT_CMD_OK_DESCRAMBLING = 0x01
@@ -338,6 +352,9 @@ class CAProvider:
     """
 
     name = "none"
+    # PMT PID found in the PAT when the channel does not know it (set by the
+    # capture before set_pmt; 0 = use channel.pmt_pid)
+    pmt_pid = 0
 
     def start(self, channel, pmt_section=None):
         """Begin descrambling ``channel``. ``pmt_section`` is its PMT if known."""
@@ -496,7 +513,7 @@ class DvbApiProvider(CAProvider):
     def _send_capmt(self):
         if self._pmt is None:
             return
-        pmt_pid = getattr(self._channel, "pmt_pid", 0) if self._channel else 0
+        pmt_pid = self.pmt_pid or (getattr(self._channel, "pmt_pid", 0) if self._channel else 0)
         body = build_ca_pmt(self._pmt, service_pmt_pid=pmt_pid)
         self._send(wrap_ca_pmt(body))
         self._state = "waiting for control word"

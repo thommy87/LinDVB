@@ -406,3 +406,102 @@ def test_pick_logo_and_data_uri(tmp_path):
     c = Channel(name="x", logo_url=uri)
     dvbi.download_logos([c], str(tmp_path))
     assert c.logo.endswith(".png") and open(c.logo, "rb").read().startswith(b"\x89PNG")
+
+
+# ---------------------------------------------------------------- stage 3
+
+SAT_SCANNED = SCANNED + [
+    Channel(name="Some Sat", delsys="dvb-s2", root="Astra 19.2E", frequency=11494000 // 100 * 10,
+            polarity="h", symbol_rate=22000, sid=1, tsid=1019, onid=1, diseqc=1),
+]
+
+
+def test_sat_direct_tuning():
+    sl = dvbi.parse_service_list(SERVICE_LIST)
+    sat = next(s for s in sl.services if s.uid == "tag:sat-only")
+    inst = sat.instances[0]
+    inst.frequency = 1149300                 # 11493.00 MHz in 10 kHz units
+    # no satellite channels in the list: no dish, no direct tuning
+    assert dvbi.direct_channel(inst, SCANNED) is None
+    scanned = SCANNED + [Channel(name="Other", delsys="dvb-s", root="Astra 19.2E",
+                                 frequency=12188000, polarity="h", symbol_rate=27500, sid=9,
+                                 diseqc=2)]
+    c = dvbi.direct_channel(inst, scanned)
+    assert (c.frequency, c.polarity, c.symbol_rate, c.sid, c.diseqc, c.delsys) == \
+        (11493000, "h", 22000, 10301, 2, "dvb-s2")
+    assert not c.pmt_pid                   # whole transponder, service by its ID
+    inst.symbol_rate = 27500
+    assert dvbi.direct_channel(inst, scanned).delsys == "dvb-s"
+    inst.polarization = "left circular"
+    assert dvbi.direct_channel(inst, scanned) is None
+    inst.polarization = "horizontal"
+    ch, _ = dvbi.resolve(sat, scanned)
+    assert ch.is_sat and ch.name == "Sat Only"
+    assert dvbi.resolve(sat, scanned, sat_direct=False)[0] is None
+
+
+def test_encrypted_instances_are_used():
+    # descrambling is left to the CA provider (softcam plugin or CI module)
+    inst = dvbi.Instance(kind="dvb-t", sid=514, onid=8468, ca=["0x1702"])
+    dash = dvbi.Instance(kind="dash", url="https://x/a.mpd")
+    found, _ = dvbi.candidates([inst, dash], SCANNED, "A")
+    assert [c.delsys for _i, c in found] == ["dvb-t2", "iptv"]
+    enc = [Channel(name="Enc", delsys="dvb-t2", frequency=1, sid=7, encrypted=True)]
+    assert dvbi.instance_channel(dvbi.Instance(kind="dvb-t", sid=7), enc)[0].encrypted
+
+
+def test_alternatives_for_failover():
+    sl = dvbi.parse_service_list(SERVICE_LIST)
+    ard = next(c for c in dvbi.build_channels(sl, "DE-BY", SCANNED).channels
+               if c.dvbi_id == "tag:ard")
+    alts = dvbi.alternatives(ard, SCANNED)
+    assert len(alts) == 1
+    alt = alts[0]
+    assert alt.is_iptv and alt.url == "https://example.org/ard.mpd"
+    assert alt.name == ard.name and alt.dvbi_id == ard.dvbi_id and alt.number == ard.number
+    # the DVB-T instance is the fallback of the internet one
+    web = dvbi.alternatives(alt, SCANNED)
+    assert [c.delsys for c in web] == ["dvb-t2"]
+
+
+AVAIL = b"""<ServiceList xmlns="urn:dvb:metadata:servicediscovery:2024" xmlns:tva="urn:tva:metadata:2024">
+ <Service><UniqueIdentifier>tag:popup</UniqueIdentifier><ServiceName>EM Extra</ServiceName>
+  <RelatedMaterial><tva:HowRelated href="urn:dvb:metadata:cs:HowRelatedCS:2021:1000.1"/>
+   <tva:MediaLocator><tva:MediaUri contentType="image/png">https://x/off.png</tva:MediaUri></tva:MediaLocator>
+  </RelatedMaterial>
+  <ServiceInstance priority="1">
+   <Availability>
+    <Period validFrom="2026-06-01T00:00:00Z" validTo="2026-07-31T23:59:59Z">
+     <Interval days="1 2 3 4 5" startTime="18:00:00Z" endTime="23:00:00Z"/>
+     <Interval days="6 7" startTime="22:00:00Z" endTime="02:00:00Z"/>
+    </Period>
+   </Availability>
+   <DASHDeliveryParameters><UriBasedLocation contentType="application/dash+xml">
+    <URI>https://x/em.mpd</URI></UriBasedLocation></DASHDeliveryParameters>
+  </ServiceInstance>
+ </Service>
+</ServiceList>"""
+
+
+def _ts(text):
+    from datetime import datetime
+    return datetime.fromisoformat(text.replace("Z", "+00:00")).timestamp()
+
+
+def test_availability_windows():
+    sl = dvbi.parse_service_list(AVAIL)
+    svc = sl.services[0]
+    assert svc.oos_logos == ["https://x/off.png"]
+    per = svc.instances[0].periods
+    assert dvbi.available(per, _ts("2026-06-03T19:00:00Z"))        # Wednesday evening
+    assert not dvbi.available(per, _ts("2026-06-03T12:00:00Z"))    # Wednesday noon
+    assert dvbi.available(per, _ts("2026-06-06T23:30:00Z"))        # Saturday late
+    assert dvbi.available(per, _ts("2026-06-07T01:00:00Z"))        # after midnight, Sat night
+    assert dvbi.available(per, _ts("2026-06-08T01:00:00Z"))        # Monday 1:00 = Sunday night
+    assert not dvbi.available(per, _ts("2026-06-08T03:00:00Z"))    # Monday 3:00
+    assert not dvbi.available(per, _ts("2026-08-03T19:00:00Z"))    # after validTo
+    assert dvbi.available([], 0)
+    assert dvbi.available([{"from": "2026-01-01T00:00:00Z", "to": "", "intervals": []}],
+                          _ts("2026-03-01T00:00:00Z"))
+    ch = dvbi.build_channels(sl, "", []).channels[0]
+    assert ch.dvbi_periods == per and ch.dvbi_oos_logo == "https://x/off.png"

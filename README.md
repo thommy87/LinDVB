@@ -99,7 +99,8 @@ and breaks no encryption: it talks to a conditional-access client you run
 yourself (a softcam such as OSCam reading your card, or a hardware CI module),
 the same way tvheadend, VDR and enigma2 do, and applies the control words that
 client returns. See [docs/PLUGINS.md](docs/PLUGINS.md) for how to write a plugin
-and how to point LinDVB at your softcam or CI module.
+and how to point LinDVB at your softcam or CI module, and
+[docs/SOFTCAM.md](docs/SOFTCAM.md) for a step-by-step OSCam setup.
 
 ## Install
 

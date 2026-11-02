@@ -19,6 +19,11 @@ This module is the part that runs without GTK:
 * logo download with a cache, and the service list refresh with
   If-Modified-Since (at least every 24 hours, the last list stays in use when
   the download fails)
+* stage 3: satellite instances tuned straight from their delivery parameters
+  (no channel search needed), availability windows (pop-up channels) and the
+  other instances of a service for switching over when one fails (failover).
+  Encrypted instances are used like any other; descrambling is the job of the
+  CA provider (softcam plugin or CI module, see docs/SOFTCAM.md)
 
 The German profile is "DTVP DVB-I Implementierungsprofil V1.1.0" (2026), on
 top of TS 103 770 V1.2.1 profile IP2. Requirement numbers (IT-n) in the
@@ -35,7 +40,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from collections import Counter
 from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
 
 from .channels import Channel
 
@@ -267,6 +274,7 @@ class Instance:
     drm: list = field(default_factory=list)      # DRMSystemId values
     ca: list = field(default_factory=list)       # CASystemId values
     availability: bool = False                   # has an availability window
+    periods: list = field(default_factory=list)  # availability periods, see available()
     display_name: str = ""
 
 
@@ -284,6 +292,7 @@ class Service:
     cg_source_ref: str = ""
     guide: dict = field(default_factory=dict)     # the service's own ContentGuideSource
     minimum_age: int = 0
+    oos_logos: list = field(default_factory=list)  # out-of-service banner (IT-4)
 
 
 @dataclass
@@ -343,7 +352,10 @@ def _instance(el):
     for cp in _kids(el, "ContentProtection"):
         inst.drm += [_text(x) for x in _all(cp, "DRMSystemId") if _text(x)]
         inst.ca += [_text(x) for x in _all(cp, "CASystemId") if _text(x)]
-    inst.availability = _kid(el, "Availability") is not None
+    av = _kid(el, "Availability")
+    inst.availability = av is not None
+    if av is not None:
+        inst.periods = _periods(av)
     for child in el:
         name = _local(child.tag)
         if name in ("DVBTDeliveryParameters", "DVBCDeliveryParameters", "DVBSDeliveryParameters"):
@@ -377,6 +389,88 @@ def _instance(el):
                 inst.kind = "icecast" if ctype.startswith("audio/") or "icecast" in ctype \
                     else "other"
     return inst
+
+
+def _periods(av):
+    """IT-4: the Period elements of an Availability as plain dicts."""
+    out = []
+    for p in _kids(av, "Period"):
+        per = {"from": p.get("validFrom", ""), "to": p.get("validTo", ""), "intervals": []}
+        for i in _kids(p, "Interval"):
+            days = [int(d) for d in (i.get("days") or "1 2 3 4 5 6 7").split() if d.isdigit()]
+            per["intervals"].append({
+                "days": days, "recurrence": _int(i.get("recurrence"), 1) or 1,
+                "start": i.get("startTime") or "00:00:00Z",
+                "end": i.get("endTime") or "23:59:59.999Z"})
+        out.append(per)
+    return out
+
+
+def _iso(text):
+    try:
+        t = datetime.fromisoformat(text.strip().replace("Z", "+00:00"))
+    except (AttributeError, ValueError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return t.timestamp()
+
+
+def _clock(text):
+    """Seconds after midnight UTC of a ZuluTime ("20:15:00Z", "20:15:00+01:00")."""
+    m = re.match(r"(\d\d):(\d\d)(?::(\d\d)(?:\.\d+)?)?(Z|[+-]\d\d:?\d\d)?$", (text or "").strip())
+    if not m:
+        return None
+    secs = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3) or 0)
+    tz = m.group(4)
+    if tz and tz != "Z":
+        off = int(tz[1:3]) * 3600 + int(tz[-2:]) * 60
+        secs -= off if tz[0] == "+" else -off
+    return secs % 86400
+
+
+def _day_ok(t, iv, origin):
+    """The interval's weekday list, every *recurrence* weeks counted from the
+    start of the period (or the ISO week number when it has none)."""
+    if t.isoweekday() not in (iv.get("days") or range(1, 8)):
+        return False
+    rec = max(1, int(iv.get("recurrence") or 1))
+    if rec == 1:
+        return True
+    week = int((t.timestamp() - origin) // (7 * 86400)) if origin is not None \
+        else t.isocalendar()[1]
+    return week % rec == 0
+
+
+def _in_interval(iv, now, origin=None):
+    start, end = _clock(iv.get("start")), _clock(iv.get("end"))
+    if start is None or end is None:
+        return False
+    t = datetime.fromtimestamp(now, timezone.utc)
+    secs = t.hour * 3600 + t.minute * 60 + t.second
+    if start < end:
+        return start <= secs <= end and _day_ok(t, iv, origin)
+    # over midnight: the part after midnight belongs to the day before
+    if secs >= start:
+        return _day_ok(t, iv, origin)
+    return secs <= end and _day_ok(datetime.fromtimestamp(now - 86400, timezone.utc), iv, origin)
+
+
+def available(periods, now=None):
+    """IT-4: is a service instance with these availability periods on air?
+    No periods means always. A period without intervals covers its whole
+    validFrom..validTo span."""
+    if not periods:
+        return True
+    now = time.time() if now is None else now
+    for p in periods:
+        lo, hi = _iso(p.get("from", "")), _iso(p.get("to", ""))
+        if lo is not None and now < lo or hi is not None and now > hi:
+            continue
+        ivs = p.get("intervals") or []
+        if not ivs or any(_in_interval(iv, now, lo) for iv in ivs):
+            return True
+    return False
 
 
 def _guide(cg):
@@ -448,6 +542,7 @@ def parse_service_list(data):
         svc.instances.sort(key=lambda i: i.priority)          # IT-10: 1 = best
         svc.target_regions = [_text(r) for r in _kids(s, "TargetRegion") if _text(r)]
         svc.logos = _media_uris(_kids(s, "RelatedMaterial"), HOW_SERVICE_LOGO)
+        svc.oos_logos = _media_uris(_kids(s, "RelatedMaterial"), HOW_OUT_OF_SERVICE)
         for inst in _kids(s, "ServiceInstance"):
             svc.alt_names += [_text(a) for a in _kids(inst, "AltServiceName") if _text(a)]
         svc.cg_service_ref = _text(_kid(s, "ContentGuideServiceRef"))
@@ -621,29 +716,147 @@ def instance_info(inst):
     return {k: v for k, v in d.items() if v not in (None, "", [], 0, False) or k == "kind"}
 
 
-def resolve(service, scanned):
-    """The channel for the best playable instance in priority order (IT-10), or
-    (None, reason). A broadcast instance needs a matching channel from the
-    channel search; DRM-protected internet instances cannot be played."""
-    reasons = []
-    for inst in service.instances:
-        if inst.kind in ("dvb-t", "dvb-c", "dvb-s"):
-            ch = find_broadcast(inst, scanned)
-            if ch is None:
-                reasons.append(f"{inst.kind.upper()} not in the channel list")
-                continue
+SAT_POLARITY = {"horizontal": "h", "vertical": "v"}
+
+
+def _orbital_names(orbital):
+    """"19.2" -> ("19.2", "19,2"): how the position may appear in a channel
+    list's satellite name ("Astra 19.2E")."""
+    o = (orbital or "").strip()
+    return (o, o.replace(".", ",")) if o else ()
+
+
+def sat_diseqc(inst, scanned):
+    """The DiSEqC port for a satellite instance, or None when the user's
+    channel list has no satellite channels at all (no dish). A channel on
+    the same transponder or orbital position decides; otherwise the port
+    most channels use."""
+    sats = [c for c in scanned if c.is_sat]
+    if not sats:
+        return None
+    pol = SAT_POLARITY.get(inst.polarization.lower(), "")
+    khz = inst.frequency * 10
+    for c in sats:
+        if khz and abs(c.frequency - khz) < 5000 and c.polarity.lower()[:1] == pol:
+            return c.diseqc
+    names = _orbital_names(inst.orbital)
+    for c in sats:
+        if names and any(n in c.root for n in names):
+            return c.diseqc
+    return Counter(c.diseqc for c in sats).most_common(1)[0][0]
+
+
+def direct_channel(inst, scanned):
+    """IT-12: a satellite instance tuned straight from its delivery
+    parameters (frequency in 10 kHz, symbol rate in kSymbol/s), without a
+    channel search. The whole transponder is received and the service picked
+    by its service ID, so no PIDs are needed."""
+    if inst.kind != "dvb-s" or not (inst.frequency and inst.symbol_rate and inst.sid):
+        return None
+    pol = SAT_POLARITY.get(inst.polarization.lower())
+    if pol is None:                       # circular polarisation: not for a universal LNB
+        return None
+    diseqc = sat_diseqc(inst, scanned)
+    if diseqc is None:
+        return None
+    khz = inst.frequency * 10
+    same_tp = next((c for c in scanned if c.is_sat and abs(c.frequency - khz) < 5000
+                    and c.polarity.lower()[:1] == pol), None)
+    ms = inst.modulation_system.upper()
+    if ms:
+        delsys = "dvb-s2" if ms.startswith("DVB-S2") else "dvb-s"
+    elif same_tp is not None:
+        delsys = same_tp.delsys
+    else:
+        # no modulation system in the list: 27500 kBd transponders on the
+        # common German positions are DVB-S, the others DVB-S2
+        delsys = "dvb-s" if inst.symbol_rate == 27500 else "dvb-s2"
+    root = same_tp.root if same_tp is not None else \
+        (f"Satellite {inst.orbital}" if inst.orbital else "Satellite")
+    return Channel(name=inst.display_name or "", delsys=delsys, root=root,
+                   frequency=khz, polarity=pol, symbol_rate=inst.symbol_rate,
+                   diseqc=diseqc, sid=inst.sid, tsid=inst.tsid or 0, onid=inst.onid or 0,
+                   encrypted=bool(inst.ca))
+
+
+def instance_channel(inst, scanned, name="", radio=False, sat_direct=True):
+    """(Channel, None) for a service instance, or (None, reason)."""
+    if inst.kind in ("dvb-t", "dvb-c", "dvb-s"):
+        ch = find_broadcast(inst, scanned)
+        if ch is not None:
             c = Channel.from_dict(asdict(ch))
             c.favourite = False
             c.xmltv_id = ""
             c.xmltv_manual = False
-            return c, inst
-        if inst.kind in ("dash", "icecast") and inst.url:
-            if inst.drm:
-                reasons.append("internet stream with DRM")
-                continue
-            return Channel(name=service.name, delsys="iptv", url=inst.url,
-                           radio=service.radio or inst.kind == "icecast"), inst
+            return c, None
+        if sat_direct:
+            c = direct_channel(inst, scanned)
+            if c is not None:
+                c.name, c.radio = name, radio
+                return c, None
+        return None, f"{inst.kind.upper()} not in the channel list"
+    if inst.kind in ("dash", "icecast") and inst.url:
+        if inst.drm:
+            return None, "internet stream with DRM"
+        return Channel(name=name, delsys="iptv", url=inst.url,
+                       radio=radio or inst.kind == "icecast"), None
+    return None, ""
+
+
+def candidates(instances, scanned, name="", radio=False, sat_direct=True):
+    """All playable instances in priority order as [(Instance, Channel)],
+    and the reasons the others were left out."""
+    out, reasons = [], []
+    for inst in instances:
+        ch, why = instance_channel(inst, scanned, name, radio, sat_direct)
+        if ch is not None:
+            out.append((inst, ch))
+        elif why:
+            reasons.append(why)
+    return out, reasons
+
+
+def resolve(service, scanned, sat_direct=True):
+    """The channel for the best playable instance in priority order (IT-10), or
+    (None, reason). A broadcast instance needs a matching channel from the
+    channel search, or for satellite the delivery parameters; DRM-protected
+    internet instances cannot be played."""
+    found, reasons = candidates(service.instances, scanned, service.name, service.radio,
+                                sat_direct)
+    if found:
+        inst, ch = found[0]
+        return ch, inst
     return None, "; ".join(reasons) or "no playable instance"
+
+
+def alternatives(channel, scanned, sat_direct=True):
+    """IT-10 failover: the other playable instances of a DVB-I channel, in
+    priority order, as channels with the channel's identity (name, number,
+    DVB-I fields) and the tuning of that instance."""
+    insts = []
+    for d in channel.dvbi_instances:
+        try:
+            insts.append(Instance(**{k: v for k, v in d.items()
+                                     if k in Instance.__dataclass_fields__}))
+        except TypeError:
+            continue
+    scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
+    found, _ = candidates(insts, scanned, channel.name, channel.radio, sat_direct)
+    out = []
+    tuning = ("delsys", "root", "frequency", "polarity", "symbol_rate", "modulation", "fec",
+              "bandwidth_hz", "stream_id", "diseqc", "sid", "tsid", "onid", "pmt_pid",
+              "pcr_pid", "video_pid", "audio_pids", "teletext_pid", "subtitle_pids",
+              "encrypted", "url")
+    for _inst, ch in found:
+        alt = Channel.from_dict(asdict(channel))
+        for k in tuning:
+            setattr(alt, k, getattr(ch, k))
+        if alt.delsys == channel.delsys and alt.url == channel.url and \
+                alt.frequency == channel.frequency and alt.sid == channel.sid and \
+                alt.polarity == channel.polarity:
+            continue                        # the instance in use
+        out.append(alt)
+    return out
 
 
 def pick_logo(urls, dark=True):
@@ -669,15 +882,16 @@ class BuildResult:
     missing: list = field(default_factory=list)    # (service name, reason)
 
 
-def build_channels(sl, region_id, scanned, list_name=""):
+def build_channels(sl, region_id, scanned, list_name="", sat_direct=True):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
-    channels of the user's own channel search (DVB-T/C/S)."""
+    channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
+    satellite instances may be tuned from their delivery parameters."""
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
     for entry in lineup(sl, region_id):
         svc = entry.service
-        ch, inst = resolve(svc, scanned)
+        ch, inst = resolve(svc, scanned, sat_direct)
         if ch is None:
             res.missing.append((svc.name, inst))
             continue
@@ -693,6 +907,8 @@ def build_channels(sl, region_id, scanned, list_name=""):
         ch.visible = entry.visible
         ch.logo_url = pick_logo(svc.logos)
         ch.dvbi_instances = [instance_info(i) for i in svc.instances]
+        ch.dvbi_periods = list(inst.periods)
+        ch.dvbi_oos_logo = pick_logo(svc.oos_logos)
         ch.dvbi_alt_names = list(svc.alt_names)
         ch.dvbi_cg = svc.cg_service_ref
         ch.dvbi_guide = dict(svc.guide or sl.content_guides.get(svc.cg_source_ref) or
@@ -917,7 +1133,8 @@ class Updater:
         rid, cands = self.choose_region(sl, postcode,
                                         region if region is not None else s.get("dvbi_region", ""))
         res.region, res.regions, res.service_list = rid, cands, sl
-        res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name)
+        res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name,
+                                   sat_direct=s.get("dvbi_sat_direct", True))
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)
         res.changed = True

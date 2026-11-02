@@ -18,6 +18,11 @@ from dataclasses import asdict, dataclass, field, fields
 
 from .config import CONFIG_DIR
 
+# Internet channels from a DVB-I list that name a content guide take their
+# programme guide from it, ahead of XMLTV (the app sets this from the
+# "dvbi_guide" setting).
+DVBI_GUIDE_FIRST = True
+
 SAT_SYSTEMS = ("dvb-s", "dvb-s2", "turbo", "isdb-s")
 
 
@@ -66,6 +71,8 @@ class Channel:
     dvbi_alt_names: list = field(default_factory=list)
     dvbi_cg: str = ""                # content guide service reference
     dvbi_guide: dict = field(default_factory=dict)   # content guide endpoints
+    dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
+    dvbi_oos_logo: str = ""          # out-of-service banner image URL
 
     @property
     def is_iptv(self):
@@ -91,6 +98,8 @@ class Channel:
     @property
     def epg_key(self):
         if self.is_iptv:
+            if self.dvbi_id and DVBI_GUIDE_FIRST and self.dvbi_guide.get("schedule"):
+                return "dvbi:" + self.dvbi_id
             if self.xmltv_id:
                 return "xmltv:" + self.xmltv_id
             if self.dvbi_id:
