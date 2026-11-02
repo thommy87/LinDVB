@@ -34,10 +34,14 @@ class EPGWindow(Gtk.Window):
         self.selected_event = None      # (channel, event)
         self._image_url = ""
         self.chans = [c for c in app.db.channels]
+        # Channel to focus in every view: the one asked for, else the one playing.
+        focus = channel or getattr(app.window, "current", None)
+        self.focus_key = focus.key if focus else None
+        self._initial = True
 
         nb = Gtk.Notebook()
         nb.append_page(self._now_page(), Gtk.Label(label="Now / Next"))
-        nb.append_page(self._channel_page(channel), Gtk.Label(label="Per Channel"))
+        nb.append_page(self._channel_page(focus), Gtk.Label(label="Per Channel"))
         nb.append_page(self._timeline_page(), Gtk.Label(label="TV Guide"))
         nb.append_page(self._search_page(), Gtk.Label(label="Search"))
         if channel:
@@ -69,6 +73,8 @@ class EPGWindow(Gtk.Window):
         paned.set_end_child(lower)
         self.set_child(paned)
         self.refresh()
+        self._initial = False
+        self._select(selected(self.ch_sel if channel else self.now_sel))
         app.epg.listeners.append(self.refresh)
         self.connect("close-request", lambda *_: (app.epg.listeners.remove(self.refresh), False)[1])
 
@@ -126,6 +132,7 @@ class EPGWindow(Gtk.Window):
         self.tl.add_controller(click)
         sw = Gtk.ScrolledWindow(vexpand=True, hexpand=True)
         sw.set_child(self.tl)
+        self.tl_sw = sw
         return sw
 
     def _search_page(self):
@@ -155,6 +162,9 @@ class EPGWindow(Gtk.Window):
 
     def refresh(self):
         epg = self.app.epg
+        # Keep the user's choice across EPG updates; on first fill use the focus channel.
+        keep_now = None if self._initial else selected(self.now_sel)
+        keep_ch = None if self._initial else selected(self.ch_sel)
         sel = self.at_dd.get_selected()
         now = time.time()
         rows = []
@@ -172,15 +182,50 @@ class EPGWindow(Gtk.Window):
             if ev and (want is None or want in (ev.access or [])):
                 rows.append((c, ev))
         fill(self.now_store, rows)
+        now_key = keep_now[0].key if keep_now else self.focus_key
+        self._focus_row(self.now_view, self.now_sel, rows,
+                        lambda r: r[0].key == now_key)
         if self.chans:
             c = self.chans[self.ch_dd.get_selected()]
-            fill(self.ch_store, [(c, e) for e in epg.for_key(c.epg_key)])
+            evs = [(c, e) for e in epg.for_key(c.epg_key)]
+            fill(self.ch_store, evs)
+            if keep_ch and keep_ch[0].key == c.key:
+                match = lambda r: r[1].start == keep_ch[1].start
+            else:
+                match = lambda r: r[1].end > now
+            self._focus_row(self.ch_view, self.ch_sel, evs, match)
         self._timeline_rows = [(c, epg.for_key(c.epg_key)) for c in self._visible_channels()]
         self._timeline_rows = [r for r in self._timeline_rows if r[1]]
         self._t0 = (int(now) // 1800) * 1800
         self.tl.set_content_width(NAME_W + 24 * 60 * PX_PER_MIN)
         self.tl.set_content_height(max(1, len(self._timeline_rows)) * ROW_H + 24)
         self.tl.queue_draw()
+        if self._initial:
+            self._focus_timeline()
+
+    def _focus_row(self, view, sel, rows, match):
+        """Select and scroll to the first row matching, else the first row."""
+        if not rows:
+            return
+        i = next((i for i, r in enumerate(rows) if match(r)), 0)
+        sel.set_selected(i)
+        if hasattr(view, "scroll_to"):          # GTK >= 4.12
+            GLib.idle_add(lambda: (view.scroll_to(i, None, Gtk.ListScrollFlags.NONE, None), False)[1])
+
+    def _focus_timeline(self):
+        r = next((i for i, (c, _e) in enumerate(self._timeline_rows) if c.key == self.focus_key), None)
+        if r is None:
+            return
+        adj = self.tl_sw.get_vadjustment()
+        y = 24 + r * ROW_H
+
+        def apply(*_):
+            page = adj.get_page_size()
+            if page <= 0:
+                return
+            adj.set_value(max(0, min(y - page / 3, adj.get_upper() - page)))
+            adj.disconnect(hid)
+        hid = adj.connect("changed", apply)
 
     def do_search(self):
         text = self.q.get_text().strip()
