@@ -159,3 +159,35 @@ def test_old_timers_keep_their_times():
     t.lead, t.follow = 2, 5
     assert t.rec_start == now - 120 and t.rec_end == now + 3600 + 300
     assert t.records and not t.tunes
+
+
+# -- internet streams -------------------------------------------------------------
+
+def test_internet_streams_ignore_extras():
+    from lindvb.recformat import usable_extras
+    assert usable_extras(["teletext", "subtitles"], iptv=True) == []
+    assert allowed_formats(["teletext", "epg_data"], iptv=True) == ["TS", "MPG", "MP4", "MKV"]
+    assert effective_format("MP4", ["teletext"], iptv=True) == "MP4"
+    assert effective_format("MP4", ["teletext"]) == "TS"
+
+
+def test_unavailable_reason():
+    from lindvb.recformat import unavailable_reason
+    assert unavailable_reason("MKV", ["subtitles"]) == ""
+    assert unavailable_reason("MP4", ["subtitles"]) == "MP4 cannot hold subtitles."
+    assert unavailable_reason("MKV", ["teletext", "subtitles"]) == "Matroska cannot hold teletext."
+    assert unavailable_reason("MP4", ["teletext"], iptv=True) == ""
+
+
+def test_choose_streams_hls():
+    from lindvb.recformat import choose_streams
+    streams = [("v", "video", "", True), ("a-mul", "audio", "mul", False),
+               ("a-deu", "audio", "deu", True), ("a-eng", "audio", "en", False),
+               ("t", "other", "deu", False)]
+    # the default audio stream counts as the first track
+    assert choose_streams(streams, "first") == ["v", "a-deu"]
+    assert choose_streams(streams, "language", "eng", single=True) == ["v", "a-eng"]
+    assert choose_streams(streams, "all", "eng", single=True) == ["v", "a-eng"]
+    assert choose_streams(streams, "language", "fra", single=True) == ["v", "a-deu"]
+    assert choose_streams(streams, "all") == ["v", "a-deu", "a-mul", "a-eng"]
+    assert choose_streams([("a", "audio", "", False)], "all", single=True) == ["a"]

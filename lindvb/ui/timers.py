@@ -15,8 +15,9 @@ from gi.repository import Gio, GLib, Gtk
 
 from ..recformat import (AFTER_ACTIONS, AUDIO_MODE_LABELS, AUDIO_MODES, EXTENSIONS,
                          EXTRA_LABELS, EXTRAS, FORMAT_LABELS, PLACEHOLDERS, RADIO_FORMATS,
-                         TIMER_ACTIONS, TV_FORMATS, allowed_formats, audio_note,
-                         effective_format, expand_scheme)
+                         IPTV_EXTRAS_NOTE, TIMER_ACTIONS, TV_FORMATS, allowed_formats,
+                         audio_note, effective_format, expand_scheme, unavailable_reason,
+                         usable_extras)
 from ..recorder import WEEKDAYS, Timer
 from .common import day, dropdown, fill, hm, make_column_view, message, scrolled, selected
 
@@ -33,30 +34,74 @@ def _time_entry():
 
 
 class FormatChooser:
-    """A drop-down whose choices are the formats that can hold the ticked extras."""
+    """A drop-down of all formats; the ones that cannot hold the ticked extras
+    are greyed out and cannot be picked."""
 
     def __init__(self, formats, radio):
-        self.formats = formats
+        self.formats = list(formats)
         self.radio = radio
-        self.shown = list(formats)
+        self.extras = []
+        self.iptv = False
+        self.allowed = list(formats)
+        self._last = self.formats[0]
         self.model = Gtk.StringList.new([FORMAT_LABELS[f] for f in formats])
-        self.widget = Gtk.DropDown(model=self.model, hexpand=True)
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", lambda _f, item: item.set_child(Gtk.Label(xalign=0)))
+        factory.connect("bind", self._bind)
+        factory.connect("unbind", lambda _f, item: self._bound.discard(item))
+        self._bound = set()            # list items on screen (button and pop-up)
+        self.widget = Gtk.DropDown(model=self.model, factory=factory, hexpand=True)
+        self.widget.connect("notify::selected", self._selected)
+
+    def _bind(self, _factory, item):
+        self._bound.add(item)
+        self._style(item)
+
+    def _style(self, item):
+        pos = item.get_position()
+        if not 0 <= pos < len(self.formats):
+            return
+        fmt = self.formats[pos]
+        ok = fmt in self.allowed
+        label = item.get_child()
+        label.set_text(FORMAT_LABELS[fmt])
+        label.set_sensitive(ok)
+        label.set_tooltip_text(None if ok else
+                               unavailable_reason(fmt, self.extras, self.radio, self.iptv))
+        item.set_selectable(ok)
+        item.set_activatable(ok)
+        # A row that cannot be activated loses the row padding: keep the height.
+        pad = 0 if ok else 6
+        label.set_margin_top(pad)
+        label.set_margin_bottom(pad)
+        label.set_margin_start(pad)
+
+    def _selected(self, *_):
+        fmt = self.get()
+        if fmt in self.allowed:
+            self._last = fmt
+        else:                          # a greyed-out entry: go back to the last choice
+            self.set(self._last)
 
     def get(self):
         i = self.widget.get_selected()
-        return self.shown[i] if 0 <= i < len(self.shown) else "TS"
+        return self.formats[i] if 0 <= i < len(self.formats) else "TS"
 
     def set(self, fmt):
-        self.widget.set_selected(self.shown.index(fmt) if fmt in self.shown else 0)
+        fmt = effective_format(fmt, self.extras, self.radio, self.iptv)
+        self._last = fmt
+        self.widget.set_selected(self.formats.index(fmt) if fmt in self.formats else 0)
 
-    def restrict(self, extras):
-        """Offer only the formats that can hold the extras; keep the choice if possible."""
-        current = self.get()
-        allowed = allowed_formats(extras, self.radio)
-        if allowed != self.shown:
-            self.shown = allowed
-            self.model.splice(0, self.model.get_n_items(), [FORMAT_LABELS[f] for f in allowed])
-        self.set(effective_format(current, extras, self.radio))
+    def restrict(self, extras, iptv=False):
+        """Grey out the formats that cannot hold the extras; keep the choice if possible."""
+        current = self._last
+        self.extras = list(extras)
+        self.iptv = iptv
+        allowed = allowed_formats(extras, self.radio, iptv)
+        self.allowed = allowed
+        for item in list(self._bound):
+            self._style(item)
+        self.set(current)
         self.widget.set_sensitive(len(allowed) > 1)
 
 
@@ -318,7 +363,8 @@ class TimersWindow(Gtk.Window):
     def _format_text(self, t):
         ch = self.app.db.by_key(t.channel_key)
         radio = bool(ch and ch.radio)
-        fmt = effective_format(t.radio_format if radio else t.tv_format, t.extras, radio)
+        fmt = effective_format(t.radio_format if radio else t.tv_format, t.extras, radio,
+                               bool(ch and ch.is_iptv))
         return FORMAT_LABELS[fmt].split(" (")[0] if fmt == "Audio" else fmt
 
     def _on_day_selected(self, cal):
@@ -341,19 +387,29 @@ class TimersWindow(Gtk.Window):
     def _set_audio_mode(self, mode):
         self.audio.set_selected(AUDIO_MODES.index(mode) if mode in AUDIO_MODES else 0)
 
+    def _iptv(self):
+        return bool(self.channel and self.channel.is_iptv)
+
     def _sync_formats(self):
-        extras = self._extras()
-        self.tv_fmt.restrict(extras)
-        self.radio_fmt.restrict(extras)
+        iptv = self._iptv()
+        extras = usable_extras(self._extras(), iptv)
+        self.tv_fmt.restrict(extras, iptv)
+        self.radio_fmt.restrict(extras, iptv)
+        records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
+        for b in self.extra_btns.values():
+            b.set_sensitive(records and not iptv)
         why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data") if e in extras]
         radio = bool(self.channel and self.channel.radio)
-        fmt = effective_format((self.radio_fmt if radio else self.tv_fmt).get(), extras, radio)
+        fmt = effective_format((self.radio_fmt if radio else self.tv_fmt).get(), extras, radio,
+                               iptv)
         notes = []
+        if iptv:
+            notes.append(IPTV_EXTRAS_NOTE)
         if why:
             notes.append(f"{' and '.join(why)} can only be kept in MPEG-TS, so TS is used.")
         elif "subtitles" in extras:
             notes.append("Subtitles fit into TS or MKV.")
-        note = audio_note(fmt, self._audio_mode())
+        note = audio_note(fmt, self._audio_mode(), iptv)
         if note:
             notes.append(note)
         if self._audio_mode() == "language" and not self.app.settings.get("rec_audio_language"):
@@ -370,7 +426,7 @@ class TimersWindow(Gtk.Window):
         """A tune-only timer records nothing, so its recording options are greyed out."""
         records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
         for b in self.extra_btns.values():
-            b.set_sensitive(records)
+            b.set_sensitive(records and not self._iptv())
         self.audio.set_sensitive(records)
         self.scheme_e.set_sensitive(records)
         if records:
@@ -385,7 +441,7 @@ class TimersWindow(Gtk.Window):
         c = self.channel
         radio = bool(c and c.radio)
         fmt = (self.radio_fmt if radio else self.tv_fmt).get()
-        fmt = effective_format(fmt, self._extras(), radio)
+        fmt = effective_format(fmt, self._extras(), radio, self._iptv())
         start, end = self._times() or (time.time(), time.time())
         ext = "" if fmt == "Audio" else EXTENSIONS[fmt]
         name = expand_scheme(self.scheme_e.get_text() or self._default_scheme,
@@ -414,8 +470,8 @@ class TimersWindow(Gtk.Window):
         for e, b in self.extra_btns.items():
             b.set_active(bool(getattr(t, e)))
         self._set_audio_mode(t.audio_mode)
-        self.tv_fmt.restrict(t.extras)
-        self.radio_fmt.restrict(t.extras)
+        self.tv_fmt.restrict(t.extras, self._iptv())
+        self.radio_fmt.restrict(t.extras, self._iptv())
         self.tv_fmt.set(t.tv_format)
         self.radio_fmt.set(t.radio_format)
         self.scheme_e.set_text(t.name_scheme or self._default_scheme)
@@ -441,8 +497,8 @@ class TimersWindow(Gtk.Window):
             b.set_active(d[e])
         self._set_audio_mode(d["audio_mode"])
         extras = [e for e in EXTRAS if d[e]]
-        self.tv_fmt.restrict(extras)
-        self.radio_fmt.restrict(extras)
+        self.tv_fmt.restrict(extras, self._iptv())
+        self.radio_fmt.restrict(extras, self._iptv())
         self.tv_fmt.set(d["tv_format"])
         self.radio_fmt.set(d["radio_format"])
         self.scheme_e.set_text(self._default_scheme)
@@ -573,8 +629,12 @@ class RecordOptionsWindow(Gtk.Window):
         box.append(_label("Audi_o tracks", self.audio))
         box.append(self.audio)
         self.extra_btns = {}
+        iptv = channel.is_iptv
         for e in EXTRAS:
-            b = Gtk.CheckButton(label=EXTRA_LABELS[e], active=d[e])
+            b = Gtk.CheckButton(label=EXTRA_LABELS[e], active=d[e] and not iptv,
+                                sensitive=not iptv)
+            if iptv:
+                b.set_tooltip_text(IPTV_EXTRAS_NOTE)
             b.connect("toggled", lambda *_: self._sync())
             box.append(b)
             self.extra_btns[e] = b
@@ -582,7 +642,7 @@ class RecordOptionsWindow(Gtk.Window):
         box.append(self.hint)
         self.set_child(box)
         self._ready = True
-        self.fmt.restrict(self._extras())
+        self.fmt.restrict(self._extras(), iptv)
         self.fmt.set(d["radio_format" if radio else "tv_format"])
         self._sync()
 
@@ -592,13 +652,16 @@ class RecordOptionsWindow(Gtk.Window):
     def _sync(self):
         if not getattr(self, "_ready", False):
             return
-        extras = self._extras()
-        self.fmt.restrict(extras)
+        iptv = self.channel.is_iptv
+        extras = usable_extras(self._extras(), iptv)
+        self.fmt.restrict(extras, iptv)
         mode = AUDIO_MODES[self.audio.get_selected()]
         notes = []
+        if iptv:
+            notes.append(IPTV_EXTRAS_NOTE)
         if any(e in extras for e in ("teletext", "epg_data")):
             notes.append("Teletext and EPG data can only be kept in MPEG-TS, so TS is used.")
-        note = audio_note(self.fmt.get(), mode)
+        note = audio_note(self.fmt.get(), mode, iptv)
         if note:
             notes.append(note)
         if mode == "language":
