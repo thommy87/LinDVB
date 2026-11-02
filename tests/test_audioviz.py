@@ -173,3 +173,40 @@ def test_visualiser_sizes():
     assert parse_size(" 1279 X 721 ", None) == (1278, 720)
     assert parse_size("auto", (640, 360)) == (640, 360)
     assert parse_size(None, (640, 360)) == (640, 360)
+
+
+def _frames(n, amp, spectrum_db):
+    an, sm = AudioAnalysis(), Smoother()
+    for k in range(n):
+        an.feed_buffer(struct.pack("<2048f", *_sine(freq=80, amp=amp)), "F32LE", 2, 48000)
+        an.feed_spectrum([spectrum_db - j * 0.1 for j in range(256)])
+        an.stamp = now = 1000.0 + k / 60
+        yield sm.update(an, now=now)
+
+
+def test_light_ribbons_follow_the_music():
+    from lindvb.visuals import LightRibbons
+    quiet, loud = LightRibbons(), LightRibbons()
+    for f in _frames(60, 0.01, -78.0):
+        rq = quiet.params(f, 1080)
+    for f in _frames(60, 0.6, -15.0):
+        rl = loud.params(f, 1080)
+    assert len(rl) == len(LightRibbons.RIBBONS)
+    for q, lo in zip(rq, rl):
+        assert lo[1] > q[1] and lo[4] > q[4]          # louder: higher waves, wider ribbons
+    assert max(loud.spectrum.values) > 0.5 > max(quiet.spectrum.values)
+    assert all(0.0 <= loud.spec_at(u / 10) <= 1.0 for u in range(11))
+
+
+def test_pulsar_bursts_with_the_music():
+    from lindvb.visuals import Pulsar
+    style = Pulsar()
+    for f in _frames(120, 0.6, -15.0):
+        p = style.params(f, 1920, 1080)
+        dust = style.step(f, p["r0"], 1080)
+    assert dust and len(style.parts) <= Pulsar.MAX
+    assert len(p["layers"]) == 5 and len(p["orbits"]) == 3
+    assert 0.1 * 1080 < p["r0"] < 0.25 * 1080
+    for turn, gain, alpha, sharp, col in p["layers"]:
+        assert gain > 0 and 0 < alpha <= 1 and len(col) == 3
+    assert all(0.0 <= style.spec_at(a / 16) <= 1.0 for a in range(-16, 33))

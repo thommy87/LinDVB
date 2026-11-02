@@ -60,8 +60,8 @@ DEFAULTS = {
     "last_tv_channel": None,
     "last_radio_channel": None,
     "mode": "tv",                    # channel list shows "tv" or "radio"
-    # Radio visualisation: a built-in style (glow, nebula, goomhd, bars, vu,
-    # scope, off) or "plugin:<name>" for one registered by a plugin.
+    # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar,
+    # goomhd, bars, vu, scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",
     # Draw the built-in visualisations on the graphics card (OpenGL); cairo
     # on the CPU is used when this is off or OpenGL is not available.
