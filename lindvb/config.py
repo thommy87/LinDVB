@@ -42,8 +42,12 @@ DEFAULTS = {
     "rec_radio_format": "TS",
     "rec_teletext": True,
     "rec_subtitles": True,
-    "rec_all_audio": True,
     "rec_epg_data": True,
+    # Audio tracks: "all", "language" (the preferred language only) or "first".
+    # MP4 and the radio audio file keep one track either way.
+    "rec_audio_mode": "all",
+    # Preferred audio language (ISO 639-2, e.g. "deu"); "" = none.
+    "rec_audio_language": "",
     # After "Record" in the EPG, open the timer window with the new timer.
     "timer_edit_after_create": False,
     "lead_minutes": 2,
@@ -140,9 +144,13 @@ class Settings(dict):
     def __init__(self):
         super().__init__(DEFAULTS)
         try:
-            self.update(json.loads(self.path.read_text()))
+            saved = json.loads(self.path.read_text())
         except (OSError, ValueError):
-            pass
+            saved = {}
+        if "rec_all_audio" in saved and "rec_audio_mode" not in saved:
+            saved["rec_audio_mode"] = "all" if saved["rec_all_audio"] else "first"
+        saved.pop("rec_all_audio", None)
+        self.update(saved)
 
     def save(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)

@@ -89,6 +89,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "scan": lambda: self.app.show_scan(), "prefs": lambda: self.app.show_prefs(),
             "editor": lambda: self.app.show_editor(), "stats": lambda: self.app.show_stats(),
             "teletext": self.on_teletext, "record": self.on_record,
+            "record-options": self.on_record_options,
             "fullscreen": self.toggle_fullscreen, "toggle-list": self.toggle_list,
             "pause": self.player_pause, "live": lambda: self.player.go_live(),
             "back10": lambda: self.player.jump(-10), "fwd10": lambda: self.player.jump(10),
@@ -198,6 +199,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append("Switch TV / Radio", "win.toggle-mode")
         tv.append("Programme Guide (EPG)", "win.epg")
         tv.append("Timer Recordings", "win.timers")
+        tv.append("Record with Options…", "win.record-options")
         tv.append("Recording and Device Statistics", "win.stats")
         tv.append("Teletext", "win.teletext")
         tv.append("CAM Menu (CI Module)…", "win.cam-menu")
@@ -479,7 +481,15 @@ class MainWindow(Gtk.ApplicationWindow):
                                         css_classes=["lv-rec"])
         self.rec_btn.connect("clicked", lambda b: self.on_record() if b.get_active() !=
                              self._is_recording() else None)
-        for w in (self.prev_btn, self.pause_btn, self.stop_btn, self.next_btn, self.rec_btn):
+        rec_menu = Gio.Menu()
+        rec_menu.append("Record with Options…", "win.record-options")
+        self.rec_more = Gtk.MenuButton(menu_model=rec_menu, valign=Gtk.Align.CENTER,
+                                       direction=Gtk.ArrowType.UP, css_classes=["lv-rec-more"],
+                                       tooltip_text="Choose format and tracks for this recording")
+        rec_box = Gtk.Box(css_classes=["linked"], valign=Gtk.Align.CENTER)
+        rec_box.append(self.rec_btn)
+        rec_box.append(self.rec_more)
+        for w in (self.prev_btn, self.pause_btn, self.stop_btn, self.next_btn, rec_box):
             bar.append(w)
 
         # seek bar: file position, or the timeshift buffer for live TV
@@ -954,6 +964,27 @@ class MainWindow(Gtk.ApplicationWindow):
             title = now.title
         self.app.timers.record_now(self.current, self.capture, title)
         self._update_transport()
+
+    def on_record_options(self):
+        """Choose format and tracks for one manual recording, then start it."""
+        if not self.current:
+            self.set_status("Nothing to record")
+            return
+        if self._is_recording():
+            self.set_status("This channel is already being recorded")
+            return
+        channel = self.current
+
+        def start(options):
+            if self.current is not channel or self._is_recording():
+                return
+            now, _ = self.app.epg.now_next(channel.epg_key)
+            self.app.timers.record_now(channel, self.capture, now.title if now else "",
+                                       options=options)
+            self._update_transport()
+
+        from .timers import RecordOptionsWindow
+        RecordOptionsWindow(self.app, self, channel, start).present()
 
     def on_keep_timeshift(self):
         """Save the whole timeshift buffer, then continue recording live."""

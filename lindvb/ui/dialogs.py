@@ -7,6 +7,9 @@ from gi.repository import Gdk, GLib, Gst, Gtk
 
 from ..channels import Channel
 from ..config import DATA_DIR
+from ..epgsources import LANGUAGES
+from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LABELS,
+                         RADIO_FORMATS, TV_FORMATS, audio_note, effective_format)
 from ..tuner import SegmentReader
 from .common import dropdown, fill, make_column_view, scrolled, selected
 from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
@@ -161,6 +164,7 @@ class PrefsWindow(Gtk.Window):
         entry(g, "recording_dir", "Recording folder")
         entry(g, "name_scheme", "File naming scheme",
               "Placeholders: %year %date %time %end %station %name, / for sub-folders")
+        self._recording_options(pg, group, switch)
         g = group(pg, "Timer padding")
         spin(g, "lead_minutes", "Start earlier by (min)", 0, 60)
         spin(g, "follow_minutes", "Stop later by (min)", 0, 180)
@@ -205,6 +209,71 @@ class PrefsWindow(Gtk.Window):
         self._preview_accent()
         self.connect("close-request", self._on_close)
 
+    # recording defaults -----------------------------------------------------
+    def _recording_options(self, pg, group, switch):
+        """Default container and streams for new timers and manual recordings."""
+        s = self.app.settings
+        g = group(pg, "Format and tracks")
+        g.append(Gtk.Label(
+            label="Defaults for new timers and the Record button. Each timer, and a "
+                  "recording started with \"Record with options…\", can change them.\n"
+                  "TS: video, all audio tracks, subtitles, teletext and EPG data. "
+                  "MKV: video, several audio tracks and subtitles. "
+                  "MPG: video and several audio tracks. MP4: video and one audio track.",
+            xalign=0, wrap=True, css_classes=["lv-hint"], margin_top=6, margin_bottom=6))
+
+        def pick(key, values, labels, label, hint=None):
+            cur = s.get(key)
+            dd = _row(g, label, dropdown([labels[v] for v in values],
+                                         values.index(cur) if cur in values else 0), hint)
+            dd.connect("notify::selected", lambda *_: self._rec_hint_update())
+            self._rec[key] = (dd, values)
+
+        self._rec = {}
+        pick("rec_tv_format", TV_FORMATS, FORMAT_LABELS, "TV format")
+        pick("rec_radio_format", RADIO_FORMATS, FORMAT_LABELS, "Radio format")
+        pick("rec_audio_mode", AUDIO_MODES, AUDIO_MODE_LABELS, "Audio tracks")
+        codes = [c for c, _ in LANGUAGES]
+        names = {c: ("None" if not c else name) for c, name in LANGUAGES}
+        pick("rec_audio_language", codes, names, "Preferred audio language",
+             "Used by \"Preferred language only\" and by MP4, which keeps one track. "
+             "Audio description tracks are skipped. Without a match the first track is "
+             "recorded.")
+        for e in ("subtitles", "teletext", "epg_data"):
+            switch(g, "rec_" + e, EXTRA_LABELS[e])
+            self.w["rec_" + e][0].connect("notify::active", lambda *_: self._rec_hint_update())
+        self._rec_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"],
+                                   margin_top=4, margin_bottom=6)
+        g.append(self._rec_hint)
+        self._rec_hint_update()
+
+    def _rec_values(self):
+        return {k: values[dd.get_selected()] for k, (dd, values) in self._rec.items()}
+
+    def _rec_hint_update(self):
+        v = self._rec_values()
+        extras = [e for e in ("teletext", "subtitles", "epg_data")
+                  if self.w["rec_" + e][0].get_active()]
+        notes = []
+        for fmt, radio, what in ((v["rec_tv_format"], False, "TV"),
+                                 (v["rec_radio_format"], True, "Radio")):
+            used = effective_format(fmt, extras, radio)
+            if used != fmt:
+                why = [EXTRA_LABELS[e].split(" (")[0] for e in extras if e != "subtitles"] \
+                    or ["Subtitles"]
+                notes.append(f"{what}: {' and '.join(why)} can only be kept in "
+                             f"{'MPEG-TS' if why != ['Subtitles'] else 'TS or MKV'}, so "
+                             f"recordings are saved as TS.")
+            else:
+                note = audio_note(used, v["rec_audio_mode"])
+                if note:
+                    notes.append(f"{what}: {note}")
+        if v["rec_audio_mode"] == "language" and not v["rec_audio_language"]:
+            notes.append("No preferred audio language is set, so only the first audio track "
+                         "is recorded.")
+        self._rec_hint.set_text("\n".join(notes))
+        self._rec_hint.set_visible(bool(notes))
+
     # accent preview ---------------------------------------------------------
     def _color_button(self, color):
         rgba = Gdk.RGBA()
@@ -243,6 +312,7 @@ class PrefsWindow(Gtk.Window):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s.update(self._accent_settings())
+        s.update(self._rec_values())
         for k, (w, typ) in self.w.items():
             if typ is bool:
                 s[k] = w.get_active()

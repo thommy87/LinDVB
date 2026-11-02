@@ -13,8 +13,9 @@ from pathlib import Path
 
 from gi.repository import Gio, GLib, Gtk
 
-from ..recformat import (AFTER_ACTIONS, EXTENSIONS, EXTRA_LABELS, EXTRAS, FORMAT_LABELS,
-                         PLACEHOLDERS, RADIO_FORMATS, TIMER_ACTIONS, TV_FORMATS, allowed_formats,
+from ..recformat import (AFTER_ACTIONS, AUDIO_MODE_LABELS, AUDIO_MODES, EXTENSIONS,
+                         EXTRA_LABELS, EXTRAS, FORMAT_LABELS, PLACEHOLDERS, RADIO_FORMATS,
+                         TIMER_ACTIONS, TV_FORMATS, allowed_formats, audio_note,
                          effective_format, expand_scheme)
 from ..recorder import WEEKDAYS, Timer
 from .common import day, dropdown, fill, hm, make_column_view, message, scrolled, selected
@@ -159,7 +160,7 @@ class TimersWindow(Gtk.Window):
         self.tv_fmt = FormatChooser(TV_FORMATS, radio=False)
         self.radio_fmt = FormatChooser(RADIO_FORMATS, radio=True)
         for w in (self.tv_fmt.widget, self.radio_fmt.widget):
-            w.connect("notify::selected", lambda *_: self._update_preview())
+            w.connect("notify::selected", lambda *_: self._format_changed())
         self.action.connect("notify::selected", lambda *_: self._sync_action())
         g.attach(_label("_Timer action", self.action), 0, 4, 2, 1)
         g.attach(self.action, 0, 5, 2, 1)
@@ -172,6 +173,13 @@ class TimersWindow(Gtk.Window):
 
         ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, margin_start=8,
                        margin_end=8, margin_top=4, margin_bottom=6)
+        self.audio = dropdown([AUDIO_MODE_LABELS[m] for m in AUDIO_MODES])
+        self.audio.set_tooltip_text(
+            "Preferred language only: the tracks in the audio language from the preferences, "
+            "without audio description. MP4 and the radio audio file keep one track.")
+        self.audio.connect("notify::selected", lambda *_: self._sync_formats())
+        ebox.append(_label("Audi_o tracks", self.audio))
+        ebox.append(self.audio)
         self.extra_btns = {}
         for e in EXTRAS:
             b = Gtk.CheckButton(label=EXTRA_LABELS[e])
@@ -183,10 +191,7 @@ class TimersWindow(Gtk.Window):
         self.extra_btns["subtitles"].set_tooltip_text(
             "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
             "DVB bitmap subtitles are kept in TS only.")
-        self.extra_btns["all_audio"].set_tooltip_text(
-            "Without this only the first audio track is recorded. Tracks a container cannot "
-            "carry (for example AC-3 in MPG) are left out.")
-        frame = Gtk.Frame(label="Also record", child=ebox, valign=Gtk.Align.START)
+        frame = Gtk.Frame(label="Tracks", child=ebox, valign=Gtk.Align.START)
         g.attach(frame, 4, 4, 2, 4)
         self.fmt_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["dim-label"])
         g.attach(self.fmt_hint, 0, 8, 6, 1)
@@ -308,7 +313,7 @@ class TimersWindow(Gtk.Window):
             return
         self.channel = c
         self.ch_e.set_text(c.name)
-        self._update_preview()
+        self._sync_formats()
 
     def _format_text(self, t):
         ch = self.app.db.by_key(t.channel_key)
@@ -330,24 +335,43 @@ class TimersWindow(Gtk.Window):
     def _extras(self):
         return [e for e, b in self.extra_btns.items() if b.get_active()]
 
+    def _audio_mode(self):
+        return AUDIO_MODES[self.audio.get_selected()]
+
+    def _set_audio_mode(self, mode):
+        self.audio.set_selected(AUDIO_MODES.index(mode) if mode in AUDIO_MODES else 0)
+
     def _sync_formats(self):
         extras = self._extras()
         self.tv_fmt.restrict(extras)
         self.radio_fmt.restrict(extras)
         why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data") if e in extras]
+        radio = bool(self.channel and self.channel.radio)
+        fmt = effective_format((self.radio_fmt if radio else self.tv_fmt).get(), extras, radio)
+        notes = []
         if why:
-            self.fmt_hint.set_text(f"{' and '.join(why)} can only be kept in MPEG-TS, so TS is used.")
+            notes.append(f"{' and '.join(why)} can only be kept in MPEG-TS, so TS is used.")
         elif "subtitles" in extras:
-            self.fmt_hint.set_text("Subtitles fit into TS or MKV.")
-        else:
-            self.fmt_hint.set_text("")
+            notes.append("Subtitles fit into TS or MKV.")
+        note = audio_note(fmt, self._audio_mode())
+        if note:
+            notes.append(note)
+        if self._audio_mode() == "language" and not self.app.settings.get("rec_audio_language"):
+            notes.append("No preferred audio language in the preferences: the first track is "
+                         "recorded.")
+        self.fmt_hint.set_text(" ".join(notes))
         self._update_preview()
+
+    def _format_changed(self):
+        if hasattr(self, "audio"):
+            self._sync_formats()
 
     def _sync_action(self):
         """A tune-only timer records nothing, so its recording options are greyed out."""
         records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
         for b in self.extra_btns.values():
             b.set_sensitive(records)
+        self.audio.set_sensitive(records)
         self.scheme_e.set_sensitive(records)
         if records:
             self._sync_formats()
@@ -389,6 +413,7 @@ class TimersWindow(Gtk.Window):
         self.after.set_selected(AFTER_ACTIONS.index(t.after) if t.after in AFTER_ACTIONS else 0)
         for e, b in self.extra_btns.items():
             b.set_active(bool(getattr(t, e)))
+        self._set_audio_mode(t.audio_mode)
         self.tv_fmt.restrict(t.extras)
         self.radio_fmt.restrict(t.extras)
         self.tv_fmt.set(t.tv_format)
@@ -414,6 +439,7 @@ class TimersWindow(Gtk.Window):
         d = self.app.timers.defaults()
         for e, b in self.extra_btns.items():
             b.set_active(d[e])
+        self._set_audio_mode(d["audio_mode"])
         extras = [e for e in EXTRAS if d[e]]
         self.tv_fmt.restrict(extras)
         self.radio_fmt.restrict(extras)
@@ -458,6 +484,7 @@ class TimersWindow(Gtk.Window):
                      name_scheme="" if scheme == self._default_scheme else scheme,
                      folder=self.folder,
                      tv_format=self.tv_fmt.get(), radio_format=self.radio_fmt.get(),
+                     audio_mode=self._audio_mode(),
                      **{e: b.get_active() for e, b in self.extra_btns.items()})
 
     def on_add(self):
@@ -494,6 +521,7 @@ class TimersWindow(Gtk.Window):
         s = self.app.settings
         s["rec_tv_format"] = self.tv_fmt.get()
         s["rec_radio_format"] = self.radio_fmt.get()
+        s["rec_audio_mode"] = self._audio_mode()
         for e, b in self.extra_btns.items():
             s["rec_" + e] = b.get_active()
         s.save()
@@ -504,3 +532,86 @@ class TimersWindow(Gtk.Window):
         if r:
             self.app.timers.rules = [x for x in self.app.timers.rules if x.id != r.id]
             self.app.timers.save()
+
+
+class RecordOptionsWindow(Gtk.Window):
+    """Format and tracks for one manual recording of the current channel.
+
+    Starts with the defaults from the preferences; the choice is used for this
+    recording only.
+    """
+
+    def __init__(self, app, parent, channel, on_record):
+        super().__init__(title="Record with Options", transient_for=parent, modal=True,
+                         default_width=440, resizable=False)
+        self.app = app
+        self.channel = channel
+        self.on_record = on_record
+        d = app.timers.defaults()
+
+        hb = Gtk.HeaderBar(show_title_buttons=False)
+        cancel = Gtk.Button(label="Cancel")
+        cancel.connect("clicked", lambda *_: self.close())
+        hb.pack_start(cancel)
+        rec = Gtk.Button(label="Record", css_classes=["suggested-action"])
+        rec.connect("clicked", lambda *_: self._record())
+        hb.pack_end(rec)
+        self.set_titlebar(hb)
+        self.set_default_widget(rec)
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_start=16,
+                      margin_end=16, margin_top=12, margin_bottom=16)
+        box.append(Gtk.Label(label=channel.name, xalign=0, css_classes=["heading"]))
+        radio = channel.radio
+        self.fmt = FormatChooser(RADIO_FORMATS if radio else TV_FORMATS, radio=radio)
+        self.fmt.widget.connect("notify::selected", lambda *_: self._sync())
+        box.append(_label("_Format", self.fmt.widget))
+        box.append(self.fmt.widget)
+        self.audio = dropdown([AUDIO_MODE_LABELS[m] for m in AUDIO_MODES],
+                              AUDIO_MODES.index(d["audio_mode"]))
+        self.audio.connect("notify::selected", lambda *_: self._sync())
+        box.append(_label("Audi_o tracks", self.audio))
+        box.append(self.audio)
+        self.extra_btns = {}
+        for e in EXTRAS:
+            b = Gtk.CheckButton(label=EXTRA_LABELS[e], active=d[e])
+            b.connect("toggled", lambda *_: self._sync())
+            box.append(b)
+            self.extra_btns[e] = b
+        self.hint = Gtk.Label(xalign=0, wrap=True, css_classes=["dim-label"], max_width_chars=50)
+        box.append(self.hint)
+        self.set_child(box)
+        self._ready = True
+        self.fmt.restrict(self._extras())
+        self.fmt.set(d["radio_format" if radio else "tv_format"])
+        self._sync()
+
+    def _extras(self):
+        return [e for e, b in self.extra_btns.items() if b.get_active()]
+
+    def _sync(self):
+        if not getattr(self, "_ready", False):
+            return
+        extras = self._extras()
+        self.fmt.restrict(extras)
+        mode = AUDIO_MODES[self.audio.get_selected()]
+        notes = []
+        if any(e in extras for e in ("teletext", "epg_data")):
+            notes.append("Teletext and EPG data can only be kept in MPEG-TS, so TS is used.")
+        note = audio_note(self.fmt.get(), mode)
+        if note:
+            notes.append(note)
+        if mode == "language":
+            lang = self.app.settings.get("rec_audio_language")
+            notes.append(f"Preferred audio language: {lang}." if lang else
+                         "No preferred audio language in the preferences: the first track "
+                         "is recorded.")
+        self.hint.set_text(" ".join(notes))
+        self.hint.set_visible(bool(notes))
+
+    def _record(self):
+        fmt = self.fmt.get()
+        key = "radio_format" if self.channel.radio else "tv_format"
+        self.on_record({key: fmt, "audio_mode": AUDIO_MODES[self.audio.get_selected()],
+                        **{e: b.get_active() for e, b in self.extra_btns.items()}})
+        self.close()
