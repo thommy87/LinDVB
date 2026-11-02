@@ -27,6 +27,18 @@ German profile "DTVP DVB-I Implementierungsprofil V1.1.0" (2026). Open it with
      used when your own channel search found the service (DVB triplet; a missing
      tsId or origNetId is a wildcard). Otherwise the internet instance is used.
      DASH instances with DRM are skipped
+   * satellite instances that your channel search did not find are tuned
+     straight from the list (frequency, polarisation, symbol rate; the whole
+     transponder is received and the service picked by its ID). This needs
+     satellite channels in your channel list, so LinDVB knows there is a dish;
+     their DiSEqC port is used. Circular polarisation is not supported. Can be
+     switched off in the setup; takes effect with the next update
+   * encrypted instances (ContentProtection with a CA system, CI+) are only used
+     when a CA module or softcam is set up in the preferences; otherwise the
+     next instance is taken
+   * pop-up channels: an instance with an availability window is shown in the
+     channel list only while it is on air. Tuned by number outside the window,
+     LinDVB shows the out-of-service banner of the list instead of a picture
    * hidden services (`visible="false"`) are left out of the list but can be
      tuned by number; services that are not selectable are skipped when zapping
    * logos are downloaded to `~/.cache/lindvb/dvbi/logos`; the variant for dark
@@ -38,6 +50,24 @@ The list is checked again at least every 24 hours (with If-Modified-Since).
 When the download fails, the last list stays in use. **Update Now** in the
 setup loads it at once, for example after a new channel search, and
 **Remove DVB-I Channels** takes the DVB-I channels out again.
+
+## When a stream fails (failover)
+
+When the instance in use fails (a playback error such as HTTP 403, no free
+tuner, or no signal lock for 8 seconds), LinDVB switches to the next instance
+of the same channel in priority order: another internet stream, antenna,
+cable or satellite. The status line names the reason and the new path. Each
+instance is tried once per channel change, so two failing instances do not
+alternate. Switch it off in the setup if you prefer to see the error.
+
+## Subtitles and DASH
+
+EBU-TT-D (TTML) subtitles in DASH streams are shown over the video and can be
+chosen in the subtitle menu. They need GStreamer's TTML elements (`ttmlparse`
+and `ttmlrender` from gst-plugins-bad); LinDVB gives them a rank so playbin
+uses them. With them installed, the programme guide also marks subtitles [ST]
+on internet channels. DASH streams with several periods and with adaptation
+sets LinDVB does not know (e.g. thumbnails) play; unknown sets are ignored.
 
 ## Programme guide
 
@@ -70,8 +100,7 @@ private channels), are left out of the channel list.
 These parts of the profile are planned for later stages:
 
 * past days of the content guide, "more episodes" and box sets
-* switching to another instance when one fails during playback, satellite
-  direct tuning without a channel search, CI+ instance handling, pop-up
-  channels with availability windows and out-of-service banners
-* EBU-TT-D subtitles in DASH streams
-* HbbTV, linked applications, MSE/EME and DRM
+* direct tuning for antenna and cable (their delivery parameters carry no
+  frequency, so these need a channel search)
+* HbbTV, linked applications, MSE/EME and DRM (most private channels and
+  restart/catch-up)

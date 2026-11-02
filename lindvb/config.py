@@ -133,6 +133,13 @@ DEFAULTS = {
     # guide servers (now/next and 7 days ahead, refreshed every 6 hours).
     "dvbi_guide": True,
     "dvbi_guide_last": 0,
+    # Tune satellite instances straight from the service list (frequency,
+    # polarisation, symbol rate) when they are not in the channel list.
+    # Used only when the channel list has satellite channels (a dish).
+    "dvbi_sat_direct": True,
+    # Switch to the next instance of a DVB-I channel (internet, antenna,
+    # cable, satellite) when the one in use fails.
+    "dvbi_failover": True,
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the
     # LINDVB_PLUGIN_PATH entries) at startup.

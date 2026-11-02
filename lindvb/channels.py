@@ -71,6 +71,8 @@ class Channel:
     dvbi_alt_names: list = field(default_factory=list)
     dvbi_cg: str = ""                # content guide service reference
     dvbi_guide: dict = field(default_factory=dict)   # content guide endpoints
+    dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
+    dvbi_oos_logo: str = ""          # out-of-service banner image URL
 
     @property
     def is_iptv(self):

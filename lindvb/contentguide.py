@@ -221,13 +221,18 @@ def complete(ev, programme):
     ev.access = ev.access or list(programme.access)
 
 
+# Subtitles in internet streams (EBU-TT-D in DASH) play when GStreamer's TTML
+# elements are installed; the player sets this (lindvb.player.enable_ttml).
+INTERNET_SUBTITLES = False
+
+
 def supported_access(access, broadcast):
     """IT-16: list only what LinDVB can play. Broadcast DVB subtitles and an
-    audio description track work; subtitles in DASH (EBU-TT-D) and sign
-    language (HbbTV) do not yet."""
+    audio description track work, subtitles in DASH (EBU-TT-D) with the TTML
+    elements; sign language (HbbTV) does not."""
     out = []
     for a in access or []:
-        if a == AUDIO_DESCRIPTION or (a == SUBTITLES and broadcast):
+        if a == AUDIO_DESCRIPTION or (a == SUBTITLES and (broadcast or INTERNET_SUBTITLES)):
             out.append(a)
     return out
 

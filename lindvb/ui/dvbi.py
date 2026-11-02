@@ -52,6 +52,17 @@ class DVBISetupWindow(Gtk.Window):
                                      active=bool(self.s.get("dvbi_guide", True)))
         self.guide.connect("toggled", lambda b: self._guide_toggled(b.get_active()))
         box.append(self.guide)
+        failover = Gtk.CheckButton(
+            label="Switch to another reception path (internet, antenna, cable, satellite) "
+                  "when one fails", active=bool(self.s.get("dvbi_failover", True)))
+        failover.connect("toggled", lambda b: self._set("dvbi_failover", b.get_active()))
+        box.append(failover)
+        sat = Gtk.CheckButton(
+            label="Tune satellite channels from the list without a channel search "
+                  "(needs satellite channels in your list)",
+            active=bool(self.s.get("dvbi_sat_direct", True)))
+        sat.connect("toggled", lambda b: self._set("dvbi_sat_direct", b.get_active()))
+        box.append(sat)
 
         # IT-7/IT-8: lists from the national registry, default list first
         title("Service list")
@@ -274,6 +285,10 @@ class DVBISetupWindow(Gtk.Window):
             elif i == 1:
                 self._install(nationwide=True)
         dlg.choose(self, None, chosen)
+
+    def _set(self, key, value):
+        self.s[key] = value
+        self.s.save()
 
     def _guide_toggled(self, on):
         self.s["dvbi_guide"] = on

@@ -58,6 +58,24 @@ def _fetch_text(url, limit=256 * 1024, timeout=4):
         return resp.read(limit).decode("utf-8", "replace")
 
 
+def enable_ttml():
+    """EBU-TT-D subtitles in DASH (DTVP IT-3, IT-16). GStreamer's TTML parser
+    and renderer have rank "none", so playbin leaves TTML subtitle streams
+    out; with a rank they are found and drawn over the video. Returns whether
+    both elements are installed."""
+    ok = True
+    for name in ("ttmlparse", "ttmlrender"):
+        f = Gst.ElementFactory.find(name)
+        if f is None:
+            ok = False
+        elif f.get_rank() < Gst.Rank.PRIMARY:
+            f.set_rank(Gst.Rank.PRIMARY)
+    if ok:
+        from . import contentguide
+        contentguide.INTERNET_SUBTITLES = True
+    return ok
+
+
 def describe_error(err, debug=""):
     """A readable text for a GStreamer error; HTTP refusals get their reason."""
     text = f"{err.message} {debug or ''}"
@@ -182,6 +200,7 @@ class Player(GObject.Object):
     def __init__(self, picture, settings):
         super().__init__()
         self.settings = settings
+        enable_ttml()
         self.video = VideoBin(picture)
         self.playbin = None
         self.feeder = None
