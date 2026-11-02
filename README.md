@@ -42,7 +42,9 @@ picture and hides itself when the mouse is still.
   groups; channel number entry, last channel, channel and favourite zapping
 * Radio visualisations: glow waves and nebula particles (modern), LED spectrum
   analyser, VU meters and oscilloscope (classic), and projectM (MilkDrop presets)
-  or GOOM through the bundled GStreamer add-on; plugins can add their own
+  or GOOM through the bundled GStreamer add-on; plugins can add their own.
+  A button at the bottom right of the control bar picks the visualisation; it
+  is only active while radio or audio plays
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
