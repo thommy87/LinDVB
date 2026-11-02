@@ -116,6 +116,19 @@ DEFAULTS = {
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.
     "editor_sections_open": ["general"],
+    # DVB-I (TV ▸ DVB-I Setup, see lindvb.dvbi) --------------------------------
+    # Service list registries, asked in this order; the chosen service list,
+    # the postcode for the region, the region chosen when several match, and
+    # the state of the daily update check.
+    "dvbi_registries": ["https://deu.csr.dvbservices.org/query", "https://csr.dvb-i-slr.de/query"],
+    "dvbi_list_url": "",
+    "dvbi_list_name": "",
+    "dvbi_postcode": "",
+    "dvbi_region": "",
+    "dvbi_last_check": 0,
+    "dvbi_last_modified": "",
+    "dvbi_etag": "",
+    "dvbi_privacy_ack": False,
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the
     # LINDVB_PLUGIN_PATH entries) at startup.

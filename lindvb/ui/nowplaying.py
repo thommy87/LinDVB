@@ -7,6 +7,7 @@ area over the visualisation, so it works with every style, the GPU ones and
 the GStreamer visualisers alike, and is only redrawn when something changes.
 """
 
+import os
 import threading
 import time
 
@@ -70,6 +71,7 @@ class NowPlayingOverlay(Gtk.DrawingArea):
         self.cover = None               # Pixbuf of the album cover
         self.logo = None                # Pixbuf of the station logo
         self._logo_for = None
+        self.logo_file = ""             # logo from the channel list (DVB-I)
         self._cover_key = None          # song the cover (lookup) belongs to
         self._lookup_gen = 0
         self._scaled = {}               # (id(pixbuf), size) -> scaled pixbuf
@@ -84,9 +86,10 @@ class NowPlayingOverlay(Gtk.DrawingArea):
             self.accent = rgb(ACCENT)
         self.queue_draw()
 
-    def set_station(self, name, programme=""):
-        if name != self.station:
+    def set_station(self, name, programme="", logo=""):
+        if name != self.station or (logo or "") != self.logo_file:
             self.station = name or ""
+            self.logo_file = logo or ""
             self._logo_for = None
         if (programme or "") != self.programme:
             self.programme = programme or ""
@@ -129,6 +132,8 @@ class NowPlayingOverlay(Gtk.DrawingArea):
         self._logo_for = self.station
         folder = self.settings.get("logo_dir") or str(DEFAULT_LOGO_DIR)
         path = find_logo(self.station, [folder, str(DEFAULT_LOGO_DIR)])
+        if not path and self.logo_file and os.path.exists(self.logo_file):
+            path = self.logo_file       # the user's own logo folder wins
         self.logo = _pixbuf(path=path, size=512) if path else None
         self.queue_draw()
 
