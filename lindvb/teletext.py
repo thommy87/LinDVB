@@ -49,6 +49,22 @@ def subtitle_pages_from_descriptors(loop):
     return pages
 
 
+def has_teletext_descriptor(loop):
+    """True when an ES descriptor loop announces a teletext stream."""
+    i = 0
+    while i + 2 <= len(loop):
+        if loop[i] == TELETEXT_DESCRIPTOR:
+            return True
+        i += 2 + loop[i + 1]
+    return False
+
+
+def teletext_in_pmt(section):
+    """(program number, True if the service carries a teletext stream)."""
+    pmt = parse_pmt(section)
+    return pmt.program_number, any(has_teletext_descriptor(info) for *_x, info in pmt.streams)
+
+
 def subtitle_pages_from_pmt(section):
     """All teletext subtitle pages of the service described by a PMT section."""
     pmt = parse_pmt(section)

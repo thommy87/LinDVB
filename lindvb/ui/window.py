@@ -4,7 +4,7 @@ import random
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, Gio, GLib, Gtk, Pango
+from gi.repository import Gdk, Gio, GLib, Gst, Gtk, Pango
 
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME
@@ -68,11 +68,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self.set_status(f"Playback error: {m}"))
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
-                                                  self._update_visualizer()))
+                                                  self._update_visualizer(),
+                                                  self._update_teletext()))
         self.player.connect("state", lambda _p, _s: self._update_visualizer())
         self.vis.analysis = self.player.analysis
         self.player.connect("metadata", self._on_metadata)
         self.player.connect("subtitle-text", self._on_subtitle_text)
+        self._update_teletext()
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
         self.app.tuners.connect("preempt-live", self._on_preempt)
@@ -313,6 +315,9 @@ class MainWindow(Gtk.ApplicationWindow):
         hb.pack_end(menu)
         hb.pack_end(Gtk.Button(icon_name="x-office-calendar-symbolic", action_name="win.epg",
                                tooltip_text="Programme guide (Ctrl+E)"))
+        self.ttx_btn = Gtk.Button(label="TXT", action_name="win.teletext",
+                                  tooltip_text="Teletext (Ctrl+Shift+T)")
+        hb.pack_end(self.ttx_btn)
 
         # sidebar
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
@@ -875,7 +880,9 @@ class MainWindow(Gtk.ApplicationWindow):
                 GLib.timeout_add(700, self._start_live, self.capture)
         except RuntimeError as e:
             self.set_status(str(e))
+            self._update_teletext()
             return
+        self._update_teletext()
         self._remember(c)
         if self.tab != "recordings" and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
@@ -975,10 +982,12 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.capture:
             self.app.tuners.release(self.capture, "live")
             self.capture = None
+        self._update_teletext()
 
     def _on_preempt(self, _tm):
         self.player.stop()
         self.capture = None
+        self._update_teletext()
         self.set_status("Live TV stopped: tuner needed for a timer recording")
 
     def zap_relative(self, step, favs=False):
@@ -1206,6 +1215,19 @@ class MainWindow(Gtk.ApplicationWindow):
             self.app.timers.record_now(self.current, self.capture, "Timeshift", start_offset=start)
 
     # ------------------------------------------------------------------ teletext
+    def _update_teletext(self):
+        """Enable the teletext button/action only when the live channel has teletext."""
+        if not hasattr(self, "player"):
+            return
+        c = self.current
+        has = bool(self.capture and c and (c.teletext_pid or self.player.has_teletext()))
+        decoder = Gst.ElementFactory.find("teletextdec") is not None
+        self.lookup_action("teletext").set_enabled(has and decoder)
+        self.ttx_btn.set_tooltip_text(
+            "Teletext (Ctrl+Shift+T)" if has and decoder else
+            "Teletext: decoder missing (gst-plugins-bad with libzvbi)" if has else
+            "Teletext: not available on this channel")
+
     def on_teletext(self):
         if not self.capture:
             self.set_status("Teletext needs a DVB channel")

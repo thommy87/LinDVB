@@ -21,7 +21,8 @@ from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
-from .teletext import DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt  # noqa: E402
+from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
+                       teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
 
 try:
@@ -186,6 +187,7 @@ class Player(GObject.Object):
         self._ttx_dec = None
         self._ttx_present = False       # the stream carries teletext
         self._ttx_pages = []            # TeletextPage from the PMT
+        self._ttx_in_pmt = False        # the PMT announces a teletext stream
         self._ttx_last = ""
         # Internet streams with the audio in separate HLS renditions run on
         # playbin3: the old hlsdemux in playbin lines those renditions up by
@@ -351,6 +353,7 @@ class Player(GObject.Object):
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
+        self._ttx_in_pmt = False
         self._ttx_last = ""
         self.emit("subtitle-text", "")
         if self.feeder:
@@ -538,6 +541,10 @@ class Player(GObject.Object):
             return [TeletextPage(p) for p in DEFAULT_SUBTITLE_PAGES]
         return []
 
+    def has_teletext(self):
+        """The current stream carries teletext (seen in the PMT or demuxed)."""
+        return self._ttx_present or self._ttx_in_pmt or bool(self._ttx_pages)
+
     def _on_section(self, msg):
         if GstMpegts is None:
             return
@@ -548,12 +555,17 @@ class Player(GObject.Object):
         raw = data.get_data() if hasattr(data, "get_data") else bytes(data)
         try:
             program, pages = subtitle_pages_from_pmt(bytes(raw))
+            _program, present = teletext_in_pmt(bytes(raw))
         except ValueError:
             return
         if self.sid and program != self.sid:
             return
+        changed = present != self._ttx_in_pmt
+        self._ttx_in_pmt = present
         if pages and pages != self._ttx_pages:
             self._ttx_pages = pages
+            changed = True
+        if changed:
             self.emit("tracks")
 
     # -- sources ------------------------------------------------------------
