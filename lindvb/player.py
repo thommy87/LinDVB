@@ -17,6 +17,7 @@ gi.require_version("Gst", "1.0")
 gi.require_version("GstVideo", "1.0")
 from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
+from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
@@ -159,6 +160,9 @@ class Player(GObject.Object):
         "eos": (GObject.SignalFlags.RUN_LAST, None, ()),
         # teletext subtitle text to show over the video ("" clears it)
         "subtitle-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        # what is playing (dict: title, artist, album, year, track, image,
+        # organization, radiotext); sent again whenever it changes
+        "metadata": (GObject.SignalFlags.RUN_LAST, None, (object,)),
     }
 
     def __init__(self, picture, settings):
@@ -201,6 +205,7 @@ class Player(GObject.Object):
         self.spectrum = None
         self.vis_factory = None         # () -> Gst.Element for playbin's vis-plugin
         self._pending_seek = None
+        self.metadata = {}
 
     # -- pipeline -----------------------------------------------------------
 
@@ -392,6 +397,7 @@ class Player(GObject.Object):
         if f and f.get_name() == "tsdemux":
             if self.sid:
                 element.set_property("program-number", self.sid)
+            element.connect("pad-added", self._on_demux_audio_pad)
             if not self._pb3:       # teletext is linked by hand into decodebin only
                 element.connect("pad-added", self._on_demux_pad)
 
@@ -435,6 +441,74 @@ class Player(GObject.Object):
         self._ttx_dec = dec
         self._ttx_present = True
         GLib.idle_add(lambda: (self.emit("tracks"), False)[1])
+
+    # -- now playing --------------------------------------------------------
+
+    def _reset_metadata(self):
+        if self.metadata:
+            self.metadata = {}
+            self.emit("metadata", {})
+
+    def _update_metadata(self, new, token):
+        """Main thread: merge new song data; a new title drops the old song's."""
+        if token != self._token:
+            return False
+        md = dict(self.metadata)
+        if "title" in new and new["title"] != md.get("title"):
+            for k in ("artist", "album", "year", "track", "image"):
+                md.pop(k, None)
+        md.update(new)
+        if md != self.metadata:
+            self.metadata = md
+            self.emit("metadata", dict(md))
+        return False
+
+    def _on_demux_audio_pad(self, _demux, pad):
+        """Read the RDS RadioText that DVB radio sends with MPEG audio."""
+        caps = pad.get_current_caps() or pad.query_caps(None)
+        if not caps or caps.is_empty():
+            return
+        st = caps.get_structure(0)
+        if st.get_name() != "audio/mpeg" or st.get_int("mpegversion")[1] != 1:
+            return
+        dec, token = RadioTextDecoder(), self._token
+
+        def probe(_pad, info):
+            buf = info.get_buffer()
+            if buf is not None:
+                tail = ancillary_tail(buf.get_size(), buf.extract_dup)
+                text = dec.feed_tail(tail) if tail else None
+                if text:
+                    GLib.idle_add(self._update_metadata, {"radiotext": text}, token)
+            return Gst.PadProbeReturn.OK
+        pad.add_probe(Gst.PadProbeType.BUFFER, probe)
+
+    def _on_tags(self, msg):
+        tags = msg.parse_tag()
+        new = {}
+        for key, tag in (("title", Gst.TAG_TITLE), ("artist", Gst.TAG_ARTIST),
+                         ("album", Gst.TAG_ALBUM), ("organization", Gst.TAG_ORGANIZATION)):
+            ok, v = tags.get_string(tag)
+            if ok and v and v.strip():
+                new[key] = v.strip()
+        ok, n = tags.get_uint(Gst.TAG_TRACK_NUMBER)
+        if ok and n:
+            new["track"] = n
+        ok, dt = tags.get_date_time(Gst.TAG_DATE_TIME)
+        if ok and dt and dt.has_year():
+            new["year"] = dt.get_year()
+        else:
+            ok, d = tags.get_date(Gst.TAG_DATE)
+            if ok and d and d.valid():
+                new["year"] = d.get_year()
+        for tag in (Gst.TAG_IMAGE, Gst.TAG_PREVIEW_IMAGE):
+            ok, sample = tags.get_sample(tag)
+            if ok and sample and sample.get_buffer():
+                buf = sample.get_buffer()
+                new["image"] = buf.extract_dup(0, buf.get_size())
+                break
+        if new:
+            self._update_metadata(new, self._token)
 
     def _on_ttx_sample(self, sink):
         sample = sink.emit("pull-sample")
@@ -486,6 +560,8 @@ class Player(GObject.Object):
 
     def play_capture(self, capture, sid, offset=None):
         """Play a DVB capture, starting at the live end or at a byte offset."""
+        if capture is not self.capture or sid != self.sid:
+            self._reset_metadata()
         self.capture, self.sid, self.uri = capture, sid, None
         self._ssm_source = None
         self._token += 1
@@ -504,6 +580,8 @@ class Player(GObject.Object):
         self.capture, self.sid = None, 0
         if "://" not in uri:
             uri = Gst.filename_to_uri(uri)
+        if uri != self.uri:
+            self._reset_metadata()
         self.uri = uri
         self._pending_seek = None
         self._token += 1
@@ -561,6 +639,7 @@ class Player(GObject.Object):
         self._token += 1
         self._teardown()
         self.capture = None
+        self._reset_metadata()
         self.emit("state", "stopped")
 
     # -- transport ----------------------------------------------------------
@@ -904,6 +983,8 @@ class Player(GObject.Object):
                     self.analysis.feed_spectrum(parse_spectrum(st.to_string()))
                 return
             self._on_section(msg)
+        elif t == Gst.MessageType.TAG:
+            self._on_tags(msg)
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()
             if not self.capture and self.uri and not self.paused:

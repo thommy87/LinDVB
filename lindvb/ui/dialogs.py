@@ -6,6 +6,7 @@ from pathlib import Path
 from gi.repository import Gdk, GLib, Gst, Gtk
 
 from ..channels import Channel
+from ..config import DATA_DIR
 from ..tuner import SegmentReader
 from .common import dropdown, fill, make_column_view, scrolled, selected
 from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
@@ -108,6 +109,29 @@ class PrefsWindow(Gtk.Window):
         self._accent_drop.connect("notify::selected", lambda *_: self._preview_accent())
         g = group(pg, "On-screen display")
         spin(g, "osd_seconds", "OSD display time (s)", 1, 30)
+
+        # -- Visualisation
+        pg = page("visualisation", "Visualisation",
+                  "What is shown over the radio visualisation while a radio channel or an "
+                  "audio file plays. Song details come from the RadioText of DVB radio, the "
+                  "stream title of internet radio and the tags of audio files.")
+        g = group(pg, "Overlay")
+        switch(g, "vis_show_logo", "Station logo tile",
+               "The channel's logo, or a tile with the station name when there is none.")
+        switch(g, "vis_show_cover", "Album cover",
+               "The cover of the song on air, from the file or looked up online.")
+        switch(g, "vis_show_song", "Song information",
+               "Artist, album and year, track and title. Without song details the station "
+               "and the programme on air are shown.")
+        switch(g, "vis_show_clock", "Clock in the top right corner")
+        g = group(pg, "Sources")
+        switch(g, "vis_cover_online", "Look up covers online",
+               "Sends artist and title of the song on air to the iTunes Search API to find "
+               "the album, year and cover.")
+        entry(g, "logo_dir", "Station logo folder",
+              "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". "
+              "Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: "
+              f"{DATA_DIR / 'logos'}")
 
         # -- Playback
         pg = page("playback", "Playback")
@@ -233,6 +257,10 @@ class PrefsWindow(Gtk.Window):
         self._saved = True
         apply_accent(s)
         self._epg.apply(s)
+        win = getattr(self.app, "window", None)
+        if win is not None:
+            win.nowplaying.refresh()
+            win._update_nowplaying()
         self.close()
 
 

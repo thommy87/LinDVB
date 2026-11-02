@@ -36,6 +36,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 |---|---|---|
 | Live TV and radio playback | `English.lng:1428` `[frmTVRadioOpt]`, `actRadioWindow.Caption=Radio Window` | **Yes**: TV/Radio switch that tunes the last channel of each kind; the last channel is tuned again at start |
 | Visualisation for radio | `Images/Icons/VisionX/actRadioWindow.png`, visualisation plugins | **Yes**: glow waves, nebula particles, LED spectrum analyser, VU meters, oscilloscope; projectM and GOOM via the bundled GStreamer add-on; more through plugins |
+| Radio text and now-playing info in the radio window | `English.lng:211` `cbRDS.Caption=RDS` | **Yes**: RDS RadioText from the MPEG audio of DVB radio, ICY titles of internet radio and audio file tags, shown with station logo, album cover (from the file or iTunes Search) and a clock over the visualisation; Preferences › Visualisation |
 | Timeshift (pause live TV, jump, keep the buffer) | `English.lng:599-601` `actTimeshift`, `actTimeshiftRecStop`, `actTimeshiftSave.Caption=Keep Timeshift File`; `actions.ini` `Jump Minus 10=102` | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Media file and URL playback, playlists | `English.lng:569-570` `actLoadFile`, `actLoadURL`; `[frmPlaylist]`; `actRandom`, `actRepeat`, `actPlaylistGo` | **Yes**: files, URLs, M3U/PLS playlists, next/previous, random, endless |
 | Play rate | `English.lng:619` `mnuPlayrate.Caption=Play Rate`; `Images/Icons/VisionX/actPlayrate050..200.png` | **Yes** (files) |

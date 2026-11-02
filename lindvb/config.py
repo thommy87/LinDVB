@@ -59,6 +59,18 @@ DEFAULTS = {
     # Radio visualisation: a built-in style (glow, nebula, bars, vu, scope, off)
     # or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",
+    # Shown over the radio visualisation (Preferences › Visualisation): the
+    # station logo tile, the album cover, the song (artist, album, title, from
+    # DVB RadioText, internet radio ICY titles or file tags) and a clock.
+    "vis_show_logo": True,
+    "vis_show_cover": True,
+    "vis_show_song": True,
+    "vis_show_clock": True,
+    # Look up album covers online (artist and title go to the iTunes Search API).
+    "vis_cover_online": True,
+    # Station logos: image files named after the channel (DVBViewer's Logos
+    # channel logos work as they are). "" = DATA_DIR/logos.
+    "logo_dir": "",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
