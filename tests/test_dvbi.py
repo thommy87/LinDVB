@@ -211,7 +211,7 @@ def test_parse_service_list():
     assert radio.radio and radio.instances[0].kind == "icecast"
     sat = next(s for s in sl.services if s.uid == "tag:sat-only").instances[0]
     assert (sat.frequency, sat.polarization, sat.symbol_rate) == (11494000, "horizontal", 22000)
-    assert sl.content_guides["cg1"]["schedule"] == "https://example.org/schedule"
+    assert sl.default_guide["schedule"] == "https://example.org/schedule"
     assert [r.id for r in sl.regions] == ["DE", "DE-BY", "DE-BY-M", "DE-HE", "DE-BW"]
 
 

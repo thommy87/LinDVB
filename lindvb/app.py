@@ -20,6 +20,9 @@ from .recorder import TimerManager  # noqa: E402
 from .tuner import TunerManager  # noqa: E402
 
 
+GUIDE_INTERVAL = 6 * 3600         # DVB-I content guide refresh
+
+
 class LinDVBApp(Gtk.Application):
     def __init__(self):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_OPEN |
@@ -64,6 +67,7 @@ class LinDVBApp(Gtk.Application):
         GLib.timeout_add_seconds(300, lambda: (self.timers.apply_series(), True)[1])
         # DVB-I: check the service list for updates (IT-18: at least daily)
         self._dvbi_busy = False
+        self._guide_busy = False
         GLib.timeout_add_seconds(15, self._dvbi_check)
 
     def do_activate(self):
@@ -149,11 +153,62 @@ class LinDVBApp(Gtk.Application):
         return dvbi.Updater(self.settings, CACHE_DIR / "dvbi", CACHE_DIR / "dvbi" / "logos")
 
     def _dvbi_check(self):
+        import time
         from . import dvbi
         if dvbi.update_due(self.settings):
             self.update_dvbi()
+        elif time.time() - float(self.settings.get("dvbi_guide_last") or 0) >= GUIDE_INTERVAL:
+            self.update_dvbi_guide()
         GLib.timeout_add_seconds(3600, self._dvbi_check)
         return False
+
+    def update_dvbi_guide(self, done=None):
+        """Load the DVB-I content guide of all DVB-I channels in the
+        background (IT-6: now/next, today and 7 days ahead)."""
+        import time
+        from concurrent.futures import ThreadPoolExecutor
+        from . import contentguide
+        if self._guide_busy or not self.settings.get("dvbi_guide", True) or \
+                not self.settings.get("dvbi_privacy_ack"):
+            return False
+        sources = contentguide.sources_for(self.db.channels)
+        if not sources:
+            return False
+        self._guide_busy = True
+        self.settings["dvbi_guide_last"] = time.time()
+
+        def work():
+            # now/next of all channels first, so the list shows them quickly
+            with ThreadPoolExecutor(4) as pool:
+                first = list(pool.map(lambda s: contentguide.load_guide(s, days=False), sources))
+            GLib.idle_add(add, sources, first, False)
+            with ThreadPoolExecutor(4) as pool:
+                full = list(pool.map(lambda s: contentguide.load_guide(s, details=False), sources))
+            GLib.idle_add(add, sources, full, True)
+
+        def add(srcs, results, last):
+            count, with_guide, failed = 0, 0, 0
+            for src, (events, errors) in zip(srcs, results):
+                for ev in events:
+                    self.epg.add(src.key, ev)
+                count += len(events)
+                with_guide += bool(events)
+                failed += bool(errors and not events)
+            self.epg.notify()
+            if last:
+                self._guide_busy = False
+                self.epg.save()
+                msg = f"DVB-I guide: {count} programmes for {with_guide} channels"
+                if failed:
+                    msg += f", {failed} guide servers did not answer"
+                if self.window:
+                    self.window.set_status(msg)
+                if done:
+                    done(msg)
+            return False
+
+        threading.Thread(target=work, daemon=True).start()
+        return True
 
     def update_dvbi(self, force=False, region=None, done=None):
         """Load the DVB-I service list in the background and update the
@@ -182,6 +237,7 @@ class LinDVBApp(Gtk.Application):
                 self.db.save()
                 if self.window:
                     self.window.reload_channels()
+                GLib.timeout_add_seconds(2, lambda: (self.update_dvbi_guide(), False)[1])
             if self.window:
                 self.window.set_status(msg)
             if done:

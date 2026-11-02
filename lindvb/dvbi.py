@@ -56,7 +56,9 @@ HOW_OUT_OF_SERVICE = ":1000.1"
 PRIVACY_NOTICE = (
     "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the "
     "German service list registry (csr.dvb-i-slr.de), the server of the service list "
-    "you choose and the servers that host the channel logos. These servers see your "
+    "you choose, the servers that host the channel logos and, when the programme "
+    "guide is switched on, the broadcasters' programme guide servers. These servers "
+    "see your "
     "IP address and the time of the request. If you enter a postcode, it is sent to "
     "the service list server so that it can return the channels of your region. "
     "LinDVB sends no other personal data and keeps the list and logos only on this "
@@ -280,6 +282,7 @@ class Service:
     alt_names: list = field(default_factory=list)
     cg_service_ref: str = ""
     cg_source_ref: str = ""
+    guide: dict = field(default_factory=dict)     # the service's own ContentGuideSource
     minimum_age: int = 0
 
 
@@ -319,6 +322,7 @@ class ServiceList:
     regions: list = field(default_factory=list)      # all regions, depth first
     lcn_tables: list = field(default_factory=list)
     content_guides: dict = field(default_factory=dict)   # CGSID -> {schedule, program, ...}
+    default_guide: dict = field(default_factory=dict)    # the list's own ContentGuideSource
 
     def region(self, rid):
         return next((r for r in self.regions if r.id == rid), None)
@@ -375,6 +379,14 @@ def _instance(el):
     return inst
 
 
+def _guide(cg):
+    """Endpoints of a ContentGuideSource."""
+    return {key: _text(next(iter(_all(_kid(cg, el), "URI")), None))
+            for key, el in (("schedule", "ScheduleInfoEndpoint"), ("program", "ProgramInfoEndpoint"),
+                            ("group", "GroupInfoEndpoint"), ("episodes", "MoreEpisodesEndpoint"))
+            if _kid(cg, el) is not None}
+
+
 def _regions(el, parent="", depth=0, out=None):
     out = [] if out is None else out
     for r in _kids(el, "Region"):
@@ -421,13 +433,11 @@ def parse_service_list(data):
                 tab.ranges.append((start, _int(r.get("end"), start + 9999),
                                    r.get("fillMethod") == "fillGaps"))
         sl.lcn_tables.append(tab)
-    for cg in _all(root, "ContentGuideSource"):
-        cgsid = cg.get("CGSID", "")
-        sl.content_guides[cgsid] = {
-            key: _text(next(iter(_all(_kid(cg, el), "URI")), None))
-            for key, el in (("schedule", "ScheduleInfoEndpoint"), ("program", "ProgramInfoEndpoint"),
-                            ("group", "GroupInfoEndpoint"), ("episodes", "MoreEpisodesEndpoint"))
-            if _kid(cg, el) is not None}
+    default_cg = _kid(root, "ContentGuideSource")
+    if default_cg is not None:
+        sl.default_guide = _guide(default_cg)
+    for cg in _kids(_kid(root, "ContentGuideSourceList"), "ContentGuideSource"):
+        sl.content_guides[cg.get("CGSID", "")] = _guide(cg)
     for s in _kids(root, "Service"):
         uid = _text(_kid(s, "UniqueIdentifier"))
         if not uid:
@@ -443,8 +453,9 @@ def parse_service_list(data):
         svc.cg_service_ref = _text(_kid(s, "ContentGuideServiceRef"))
         ref = _kid(s, "ContentGuideSourceRef")
         own = _kid(s, "ContentGuideSource")
-        svc.cg_source_ref = _text(ref) if ref is not None else \
-            (own.get("CGSID", "") if own is not None else "")
+        svc.cg_source_ref = _text(ref) if ref is not None else ""
+        if own is not None:
+            svc.guide = _guide(own)
         pr = _kid(s, "ParentalRating")
         if pr is not None:
             svc.minimum_age = _int(_text(next(iter(_all(pr, "MinimumAge")), None)), 0) or 0
@@ -684,6 +695,8 @@ def build_channels(sl, region_id, scanned, list_name=""):
         ch.dvbi_instances = [instance_info(i) for i in svc.instances]
         ch.dvbi_alt_names = list(svc.alt_names)
         ch.dvbi_cg = svc.cg_service_ref
+        ch.dvbi_guide = dict(svc.guide or sl.content_guides.get(svc.cg_source_ref) or
+                             sl.default_guide)
         if ch.is_iptv:
             res.internet += 1
         else:

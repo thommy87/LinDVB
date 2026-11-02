@@ -129,6 +129,10 @@ DEFAULTS = {
     "dvbi_last_modified": "",
     "dvbi_etag": "",
     "dvbi_privacy_ack": False,
+    # Load the programme guide of DVB-I channels from the list's content
+    # guide servers (now/next and 7 days ahead, refreshed every 6 hours).
+    "dvbi_guide": True,
+    "dvbi_guide_last": 0,
     # Plugins -----------------------------------------------------------------
     # Load plugins from the plugins directory (DATA_DIR/plugins and the
     # LINDVB_PLUGIN_PATH entries) at startup.
