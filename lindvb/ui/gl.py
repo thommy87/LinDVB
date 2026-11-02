@@ -26,6 +26,8 @@ TEXTURE_MIN_FILTER, TEXTURE_MAG_FILTER = 0x2801, 0x2800
 TEXTURE_WRAP_S, TEXTURE_WRAP_T = 0x2802, 0x2803
 NEAREST, LINEAR, CLAMP_TO_EDGE = 0x2600, 0x2601, 0x812F
 RGBA, RGBA8, RED, R32F = 0x1908, 0x8058, 0x1903, 0x822E
+RGBA16F, HALF_FLOAT = 0x881A, 0x140B
+FUNC_ADD, MAX = 0x8006, 0x8008
 UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, PACK_ALIGNMENT = 0x0CF5, 0x0CF2, 0x0D05
 FRAMEBUFFER, COLOR_ATTACHMENT0 = 0x8D40, 0x8CE0
 FRAMEBUFFER_BINDING, FRAMEBUFFER_COMPLETE = 0x8CA6, 0x8CD5
@@ -42,6 +44,7 @@ _FUNCS = {
     "glEnable": (None, (_u,)),
     "glDisable": (None, (_u,)),
     "glBlendFunc": (None, (_u, _u)),
+    "glBlendEquation": (None, (_u,)),
     "glCreateShader": (_u, (_u,)),
     "glShaderSource": (None, (_u, _i, ctypes.POINTER(ctypes.c_char_p), ctypes.POINTER(_i))),
     "glCompileShader": (None, (_u,)),

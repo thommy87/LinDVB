@@ -98,23 +98,73 @@ def test_every_builtin_style_has_a_gpu_renderer():
     assert renderer_class(PluginStyle()) is None
 
 
-def test_goom_hd_changes_modes_on_beats():
+def _goom_pcm(k, loud):
+    amp = 24000 if loud else 3000
+    return [int(amp * math.sin(i * 0.07 + k) * math.sin(i * 0.011)) for i in range(512)]
+
+
+def test_goom_core_follows_the_original():
+    from lindvb.goom import STEP_RATE, VH, GoomCore
+    core = GoomCore(width=356, seed=3)
+    assert (core.w, core.h) == (356, VH) and STEP_RATE == 30
+    modes, gooms, fields = set(), 0, 0
+    for k in range(int(STEP_RATE) * 60):               # a minute of GOOM frames
+        loud = k % 20 < 2                           # a beat every 2/3 s
+        fr = core.update(_goom_pcm(k, loud), _goom_pcm(k + 1, loud))
+        assert 0.0 <= fr.blend <= 1.0 and 0.0 <= fr.freeze_blend <= 1.0
+        gooms += fr.goom
+        if fr.new_field is not None:
+            fields += 1
+            modes.add(fr.new_field.mode)
+            mx, my = fr.new_field.middle
+            assert 0.0 <= mx <= 1.0 and 0.0 <= my <= 1.0
+        for pts, colour in fr.lines:
+            assert len(pts) == 512 and all(0 <= c <= 255 for c in colour)
+        for x0, y0, x1, y1, colour in fr.stars:
+            assert len(colour) == 3
+        if fr.ifs is not None:
+            sims, depth, colour, incr = fr.ifs
+            assert 2 <= len(sims) <= 5 and depth >= 1 and incr >= 1
+        if fr.tentacles is not None:
+            grids = fr.tentacles[0]
+            assert len(grids) == 6
+            assert all(len(g.y) == g.defx * g.defz for g in grids)
+    assert gooms >= 10 and fields >= 5 and len(modes) >= 3
+
+
+def test_goom_core_is_deterministic_with_a_seed():
+    from lindvb.goom import GoomCore
+    a, b = GoomCore(320, seed=7), GoomCore(320, seed=7)
+    for k in range(200):
+        d = _goom_pcm(k, k % 15 == 0)
+        fa, fb = a.update(d, d), b.update(d, d)
+        assert fa.blend == fb.blend and fa.stars == fb.stars and fa.lines == fb.lines
+
+
+def test_goom_hd_steps_at_goom_rate():
     from lindvb.visuals import GoomHD
     an = AudioAnalysis()
     sm = Smoother()
-    goom = GoomHD(seed=3)
-    modes = set()
-    for k in range(30 * 40):                       # 40 s at 30 fps
-        an.feed_buffer(struct.pack("<2048f", *_sine(amp=0.3 + 0.3 * (k % 15 == 0))),
-                       "F32LE", 2, 48000)
-        an.feed_spectrum([-10.0 if k % 15 == 0 else -40.0] * 256)
-        an.stamp = now = 1000.0 + k / 30
-        frame = sm.update(an, now=now)
-        st = goom.update(frame, 1920, 1080)
-        modes.add(st.mode_b)
-        assert 0.0 <= st.mix <= 1.0 and 0.0 < st.decay <= 1.0
-        assert len(st.lines) == 2 and len(st.lines[0][0]) == GoomHD.LINE_POINTS
-    assert len(modes) >= 3
+    style = GoomHD(seed=3)
+    steps = 0
+    for k in range(120):                            # 2 s at 60 fps
+        an.feed_buffer(struct.pack("<2048f", *_sine(amp=0.4)), "F32LE", 2, 48000)
+        an.stamp = now = 1000.0 + k / 60
+        steps += len(style.steps(sm.update(an, now=now), 2560, 1440))
+    assert 55 <= steps <= 62                        # 30 GOOM frames a second
+    assert style.core.w == round(200 * 2560 / 1440) and style.core.h == 200
+
+
+def test_pcm_block():
+    from lindvb.audioviz import pcm_block
+    vals = []
+    for i in range(600):
+        vals += [i / 1000, -i / 1000]
+    left, right = pcm_block(struct.pack(f"<{len(vals)}f", *vals), "F32LE", 2)
+    assert len(left) == len(right) == 512
+    assert left[10] == pytest.approx(0.01) and right[10] == pytest.approx(-0.01)
+    left, right = pcm_block(struct.pack("<4h", 16384, -16384, 0, 0), "S16LE", 2)
+    assert left[0] == pytest.approx(0.5) and right[0] == pytest.approx(-0.5)
 
 
 def test_visualiser_sizes():

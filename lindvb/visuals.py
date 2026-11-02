@@ -9,7 +9,6 @@ style. Plugins can add their own styles the same way (see docs/PLUGINS.md).
 
 import math
 import random
-from dataclasses import dataclass, field
 
 import cairo
 
@@ -454,249 +453,88 @@ class Nebula(Style):
         cr.set_operator(cairo.OPERATOR_OVER)
 
 
-def hsv(h, s, v):
-    """HSV (all 0..1, hue wraps) to an RGB tuple."""
-    h = (h % 1.0) * 6
-    i = int(h)
-    f = h - i
-    p, q, t = v * (1 - s), v * (1 - s * f), v * (1 - s * (1 - f))
-    return ((v, t, p), (q, v, p), (p, v, t), (p, q, v), (t, p, v), (v, p, q))[i % 6]
-
-
-@dataclass
-class GoomState:
-    """One picture of Goom HD, in pixels, for the GPU renderer."""
-    mode_a: int = 0
-    mode_b: int = 0
-    mix: float = 1.0                 # 0 = mode_a, 1 = mode_b
-    speed: float = 0.0               # zoom per second (negative: outwards)
-    amp: float = 1.0                 # strength of the mode's distortion
-    rot: float = 0.0                 # radians per second
-    plane: tuple = (0.0, 0.0)        # horizontal / vertical shear per second
-    centre: tuple = (0.5, 0.5)       # zoom centre, 0..1
-    decay: float = 0.95              # brightness kept per frame
-    flash: float = 0.0
-    lines: list = field(default_factory=list)   # [(points [(x, y)], (r, g, b), alpha, width)]
-    stars: list = field(default_factory=list)   # [(x, y, radius, (r, g, b), alpha)]
-    ifs: list = field(default_factory=list)     # [(x, y)]
-    ifs_colour: tuple = (1.0, 1.0, 1.0)
-    ifs_alpha: float = 0.0
-    ifs_size: float = 1.0
-    t: float = 0.0
-    dt: float = 0.0
-
-
 class GoomHD(Style):
-    """GOOM's look rebuilt for the graphics card at the screen's own resolution.
+    """GOOM 2k4 at the screen's own resolution.
 
-    Like the original GOOM (2k4) the picture is a feedback loop: each frame the
-    previous one is zoomed, bent and faded by one of several distortion modes
-    (zoom, wave, crystal ball, scrunch, amulet, water, hypercos, speedway,
-    y-only) that change on strong beats, and new elements are drawn into it:
-    the waveform lines (circle or line), flying stars on the beat and a slowly
-    morphing IFS fractal. The GPU renderer (``lindvb.ui.gpuvisuals``) works on
-    full-resolution textures, so nothing is upscaled. Without OpenGL a small
-    cairo version is drawn instead.
+    The logic is GOOM's own, ported to Python in :mod:`lindvb.goom` and run at
+    GOOM's 30 frames per second: sound and goom detection, the eight states,
+    the zoom filter modes and transitions, scope lines, 3D tentacles,
+    fireworks and the IFS fractal. The GPU renderer
+    (``lindvb.ui.gpuvisuals.GoomRenderer``) computes GOOM's displacement field
+    and draws everything at full resolution. Without OpenGL a small cairo
+    version is drawn instead.
     """
     id, label = "goomhd", "Goom HD (GPU)"
 
-    MODES = ("zoom", "wave", "crystal", "scrunch", "amulet", "water", "hypercos",
-             "speedway", "yonly")
-    LINE_POINTS = 360
-    STARS_MAX = 600
-    IFS_POINTS = 500
-
     def __init__(self, seed=None):
-        self.rng = random.Random(seed)
-        self.state = GoomState()
-        self.t = 0.0
-        self.next_change = 4.0
-        self.mode_a = self.mode_b = 0
-        self.mix = 1.0
-        self.target = self._random_params()
-        self.cur = dict(self.target)
-        self.hue = self.rng.random()
-        self.shape = 0.0                 # lines: 0 = circles, 1 = horizontal lines
-        self.shape_target = 0.0
-        self.stars = []
-        self.ifs_on = True
-        self.ifs_maps = self._random_ifs()
-        self._cairo_buf = None
+        self.seed = seed
+        self.core = None
+        self._acc = 0.0
+        self._buf = None
+        self._field = None
 
-    # -- the "goom events" ------------------------------------------------------------
-    def _random_params(self):
-        r = self.rng
-        return {
-            "speed": r.uniform(0.35, 0.9) * (-1 if r.random() < 0.15 else 1),
-            "amp": r.uniform(0.6, 1.6),
-            "rot": r.choice((0.0, 0.0, r.uniform(-0.5, 0.5))),
-            "ph": r.choice((0.0, 0.0, r.uniform(-0.25, 0.25))),
-            "pv": r.choice((0.0, 0.0, r.uniform(-0.25, 0.25))),
-            "cx": r.choice((0.5, 0.5, r.uniform(0.3, 0.7))),
-            "cy": r.choice((0.5, 0.5, r.uniform(0.3, 0.7))),
-        }
-
-    def _random_ifs(self):
-        r = self.rng
-        maps = []
-        for _ in range(r.choice((3, 4, 4, 5))):
-            maps.append([r.uniform(0.35, 0.6), r.uniform(0, TAU), r.uniform(-0.6, 0.6),
-                         r.uniform(-0.6, 0.6), r.uniform(-0.5, 0.5)])   # scale, angle, tx, ty, spin
-        return maps
-
-    def _event(self):
-        r = self.rng
-        self.mode_a = self.mode_b if self.mix >= 0.5 else self.mode_a
-        choices = [m for m in range(len(self.MODES)) if m != self.mode_a]
-        self.mode_b = r.choice(choices)
-        self.mix = 0.0
-        self.target = self._random_params()
-        if r.random() < 0.4:
-            self.shape_target = 1.0 - self.shape_target
-        if r.random() < 0.3:
-            self.ifs_on = not self.ifs_on
-        if r.random() < 0.5:
-            self.ifs_maps = self._random_ifs()
-        self.next_change = self.t + r.uniform(6.0, 14.0)
-
-    # -- one frame ----------------------------------------------------------------------
-    def update(self, f, w, h):
-        dt = f.dt
-        self.t += dt
-        st = self.state
-        energy = min(1.0, 0.5 * f.bass + 0.3 * f.mid + 0.2 * f.treble)
-        if (self.t >= self.next_change and f.beat > 0.9) or self.t >= self.next_change + 6:
-            self._event()
-        self.mix = min(1.0, self.mix + dt / 1.5)
-        k = min(1.0, dt * 1.5)
-        for key, val in self.target.items():
-            self.cur[key] += (val - self.cur[key]) * k
-        self.shape += (self.shape_target - self.shape) * min(1.0, dt * 2.0)
-        self.hue = (self.hue + dt * (0.03 + 0.1 * f.treble)) % 1.0
-        c = self.cur
-        st.mode_a, st.mode_b, st.mix = self.mode_a, self.mode_b, self.mix
-        st.speed = c["speed"] * (0.25 + 1.1 * energy + 0.6 * f.beat)
-        st.amp = c["amp"] * (0.6 + 0.8 * f.mid)
-        st.rot, st.plane = c["rot"], (c["ph"], c["pv"])
-        st.centre = (c["cx"], c["cy"])
-        st.decay = math.exp(-dt * (0.8 + 1.0 * (1.0 - energy)))
-        st.flash = f.beat * f.bass if f.beat > 0.9 else st.flash * math.exp(-dt * 6)
-        st.t, st.dt = self.t, dt
-        st.lines = self._lines(f, w, h)
-        st.stars = self._stars(f, w, h)
-        st.ifs, st.ifs_colour, st.ifs_alpha, st.ifs_size = self._ifs(f, w, h)
-        return st
-
-    def _lines(self, f, w, h):
-        wave = f.wave or [0.0]
-        n, src = self.LINE_POINTS, len(wave)
-        scale = min(w, h)
-        gain = 1.0 + 2.0 * f.level[0]
+    def steps(self, f, w, h, max_steps=2):
+        """Advance GOOM by the frames due since the last call (at most ``max_steps``)."""
+        from .goom import VH, STEP_RATE, GoomCore, pcm_to_goom
+        width = max(16, int(round(VH * w / max(1, h))))
+        if self.core is None:
+            self.core = GoomCore(width, self.seed)
+        else:
+            self.core.set_width(width)
+        period = 1.0 / STEP_RATE
+        self._acc = min(self._acc + f.dt, max_steps * period)
+        left, right = f.pcm if f.pcm else ([], [])
+        d0, d1 = pcm_to_goom(left), pcm_to_goom(right or left)
         out = []
-        for line in range(2):
-            col = hsv(self.hue + 0.5 * line, 0.75, 1.0)
-            alpha = 0.25 + 0.75 * min(1.0, max(f.level) * 2.5)
-            if f.silent:
-                alpha *= 0.3
-            radius = scale * (0.22 + 0.10 * line + 0.05 * f.bass)
-            base_y = h * (0.5 + (0.12 if line else -0.12))
-            pts = []
-            for i in range(n):
-                u = i / (n - 1)
-                v = wave[(i * src // n if line == 0 else (n - 1 - i) * src // n) % src]
-                v = max(-1.0, min(1.0, v * gain))
-                a = u * TAU + self.t * (0.2 if line else -0.15)
-                rr = radius * (1 + 0.35 * v)
-                cx = w * self.cur["cx"] + math.cos(a) * rr
-                cy = h * self.cur["cy"] + math.sin(a) * rr
-                lx, ly = u * w, base_y + v * h * 0.18
-                pts.append((cx + (lx - cx) * self.shape, cy + (ly - cy) * self.shape))
-            out.append((pts, col, alpha, max(1.5, scale / 300)))
+        while self._acc >= period - 1e-4:
+            self._acc -= period
+            out.append(self.core.update(d0, d1))
         return out
 
-    def _stars(self, f, w, h):
-        r = self.rng
-        scale = min(w, h)
-        if f.beat > 0.95 and f.bass > 0.3 and len(self.stars) < self.STARS_MAX:
-            ox, oy = w * r.uniform(0.2, 0.8), h * r.uniform(0.45, 0.85)
-            hue = r.random()
-            for _ in range(int(30 + 70 * f.bass)):
-                a = r.uniform(-math.pi, 0)          # upwards
-                sp = scale * r.uniform(0.2, 0.9)
-                life = r.uniform(0.8, 2.0)
-                self.stars.append([ox, oy, math.cos(a) * sp, math.sin(a) * sp, life, life,
-                                   hsv(hue + r.uniform(-0.08, 0.08), 0.6, 1.0)])
-        out, alive = [], []
-        g = scale * 0.6
-        for s in self.stars:
-            s[4] -= f.dt
-            if s[4] <= 0:
-                continue
-            s[3] += g * f.dt
-            s[0] += s[2] * f.dt
-            s[1] += s[3] * f.dt
-            fade = s[4] / s[5]
-            out.append((s[0], s[1], scale / 260 * (0.5 + fade), s[6], fade))
-            alive.append(s)
-        self.stars = alive
-        return out
-
-    def _ifs(self, f, w, h):
-        if not self.ifs_on:
-            return [], (1.0, 1.0, 1.0), 0.0, 1.0
-        r = self.rng
-        maps = []
-        for sc, ang, tx, ty, spin in self.ifs_maps:
-            a = ang + spin * self.t
-            maps.append((sc * math.cos(a), sc * math.sin(a), tx, ty))
-        x = y = 0.0
-        pts = []
-        scale = min(w, h) * 0.32 * (1 + 0.3 * f.bass)
-        cx, cy = w * self.cur["cx"], h * self.cur["cy"]
-        for i in range(self.IFS_POINTS + 8):
-            ca, sa, tx, ty = maps[r.randrange(len(maps))]
-            x, y = ca * x - sa * y + tx, sa * x + ca * y + ty
-            if i >= 8:
-                pts.append((cx + x * scale, cy + y * scale))
-        return (pts, hsv(self.hue + 0.25, 0.5, 1.0), 0.25 + 0.6 * f.mid,
-                max(1.0, min(w, h) / 700))
-
-    # -- without OpenGL: a small cairo version ------------------------------------------
+    # -- without OpenGL: GOOM's frames drawn small with cairo ---------------------------
     def draw(self, cr, w, h, f):
-        st = self.update(f, w, h)
-        bw = max(64, min(int(w), 480))
-        bh = max(36, int(bw * h / max(1, w)))
-        prev = self._cairo_buf
-        buf = cairo.ImageSurface(cairo.FORMAT_RGB24, bw, bh)
-        c = cairo.Context(buf)
-        c.set_source_rgb(0, 0, 0)
-        c.paint()
-        if prev is not None and prev.get_width() == bw and prev.get_height() == bh:
-            zx, zy = st.centre[0] * bw, st.centre[1] * bh
-            c.save()
-            c.translate(zx, zy)
-            c.rotate(st.rot * st.dt)
-            c.scale(1 + st.speed * st.dt * 0.6, 1 + st.speed * st.dt * 0.6)
-            c.translate(-zx, -zy)
-            c.set_source_surface(prev, 0, 0)
-            c.paint_with_alpha(st.decay)
-            c.restore()
-        c.scale(bw / w, bh / h)
-        c.set_operator(cairo.OPERATOR_ADD)
-        for pts, col, alpha, width in st.lines:
-            c.set_source_rgba(*col, alpha)
-            c.set_line_width(width * w / bw)
-            c.move_to(*pts[0])
-            for p in pts[1:]:
-                c.line_to(*p)
-            c.stroke()
-        for x, y, rad, col, alpha in st.stars:
-            c.set_source_rgba(*col, alpha)
-            c.arc(x, y, rad * w / bw, 0, TAU)
-            c.fill()
-        self._cairo_buf = buf
+        frames = self.steps(f, w, h)
+        if self.core is None:
+            return
+        gw, gh = self.core.w, self.core.h
+        buf = self._buf
+        if buf is None or buf.get_width() != gw:
+            buf = self._buf = cairo.ImageSurface(cairo.FORMAT_RGB24, gw, gh)
+        for fr in frames:
+            if fr.new_field is not None:
+                self._field = fr.new_field
+            fd = self._field
+            new = cairo.ImageSurface(cairo.FORMAT_RGB24, gw, gh)
+            c = cairo.Context(new)
+            if fd is not None:
+                mx, my = fd.middle[0] * gw, fd.middle[1] * gh
+                zoom = 1.0 / max(0.5, 1.0 - (1.0 + fd.speed) / 50.0)
+                c.translate(mx, my)
+                c.scale(zoom, zoom)
+                c.translate(-mx, -my)
+            c.set_source_surface(buf, 0, 0)
+            c.paint_with_alpha(0.97)
+            c.identity_matrix()
+            c.set_operator(cairo.OPERATOR_ADD)
+            c.set_line_width(1.0)
+            for pts, col in fr.lines:
+                c.set_source_rgb(*(v / 255 for v in col))
+                c.move_to(*pts[0])
+                for p in pts[1:]:
+                    c.line_to(*p)
+                c.stroke()
+            for x, y, col in fr.points:
+                c.set_source_rgb(*(v / 255 for v in col))
+                c.rectangle(x, y, 2, 2)
+                c.fill()
+            for x0, y0, x1, y1, col in fr.stars:
+                c.set_source_rgb(*(v / 255 for v in col))
+                c.move_to(x0, y0)
+                c.line_to(x1, y1)
+                c.stroke()
+            buf = self._buf = new
         cr.save()
-        cr.scale(w / bw, h / bh)
+        cr.scale(w / gw, h / gh)
         cr.set_source_surface(buf, 0, 0)
         cr.get_source().set_filter(cairo.FILTER_BILINEAR)
         cr.paint()

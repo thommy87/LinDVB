@@ -41,8 +41,8 @@ picture and hides itself when the mouse is still.
 * Channel list with search, favourites/FTA/encrypted/HD/internet filters and
   groups; channel number entry, last channel, channel and favourite zapping
 * Radio visualisations, drawn on the graphics card (OpenGL) at full resolution:
-  glow waves, nebula particles and Goom HD (GOOM's effects rebuilt as shaders,
-  native up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
+  glow waves, nebula particles and Goom HD (the original GOOM logic, drawn by
+  shaders natively up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
   and projectM (MilkDrop presets) or the original GOOM through the bundled
   GStreamer add-on; plugins can add their own.
   A button at the bottom right of the control bar picks the visualisation; it
@@ -229,7 +229,16 @@ time, which lets you test timeshift, recording, EPG and teletext without hardwar
 Picture in picture and mosaic, CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
+## If LinDVB stops responding
+
+When the main loop does not answer for 8 seconds, LinDVB writes the stacks of
+all its threads to `~/.cache/lindvb/hang.log` (crashes go there too). Please
+attach that file when you report a freeze.
+
 ## License
 
 LinDVB is free software under the GNU General Public License version 2 or (at your
 option) any later version. See [LICENSE](LICENSE).
+
+`lindvb/goom.py` is a port of GOOM 2k4 (Copyright (C) 2000-2004 Jean-Christophe
+Hoelt and the GOOM authors, from gst-plugins-good, GNU LGPL 2.1 or later).
