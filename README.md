@@ -73,6 +73,10 @@ picture and hides itself when the mouse is still.
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
   e.g. 150 or 777) drawn over the video in sync
 * Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
+* DVB-I (TV ▸ DVB-I Setup): the channel list of your region from the German
+  service list registry, with postcode, channel numbers (LCN), logos and a daily
+  update; each channel uses your antenna/cable/satellite channel where the
+  channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
   DVBViewer channel lists (`*.ini`). Export: dvbv5, M3U, CSV

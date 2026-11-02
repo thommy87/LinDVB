@@ -53,6 +53,18 @@ class Channel:
     xmltv_manual: bool = False       # the match was chosen by the user
     favourite: bool = False
     number: int = 0
+    # DVB-I (see lindvb.dvbi): the service's unique identifier, its logical
+    # channel number, the LCN flags, the logo and all service instances of
+    # the service (the tuning fields above hold the instance in use)
+    dvbi_id: str = ""
+    lcn: int = 0
+    selectable: bool = True
+    visible: bool = True
+    logo_url: str = ""
+    logo: str = ""                   # downloaded logo file
+    dvbi_instances: list = field(default_factory=list)
+    dvbi_alt_names: list = field(default_factory=list)
+    dvbi_cg: str = ""                # content guide service reference
 
     @property
     def is_iptv(self):
@@ -65,6 +77,8 @@ class Channel:
     @property
     def key(self):
         """Stable identifier used for favourites, EPG and timers."""
+        if self.dvbi_id:
+            return "dvbi:" + self.dvbi_id
         if self.is_iptv:
             return "url:" + self.url
         return f"{self.delsys}:{self.frequency}:{self.polarity}:{self.sid}"
@@ -78,6 +92,8 @@ class Channel:
         if self.is_iptv:
             if self.xmltv_id:
                 return "xmltv:" + self.xmltv_id
+            if self.dvbi_id:
+                return "dvbi:" + self.dvbi_id
             return "iptv:" + self.name.lower()
         return f"{self.tsid}:{self.sid}"
 
@@ -113,8 +129,45 @@ class ChannelDB:
         tmp.replace(self.path)
 
     def renumber(self):
-        for i, c in enumerate(self.channels, 1):
+        """Number the channels 1, 2, 3 ... in list order. Channels from a DVB-I
+        service list keep their logical channel number (LCN) and come first,
+        sorted by it; the other channels follow after the highest LCN."""
+        lcn = sorted((c for c in self.channels if c.lcn > 0), key=lambda c: c.lcn)
+        if not lcn:
+            for i, c in enumerate(self.channels, 1):
+                c.number = i
+            return
+        rest = [c for c in self.channels if c.lcn <= 0]
+        for c in lcn:
+            c.number = c.lcn
+        for i, c in enumerate(rest, lcn[-1].lcn + 1):
             c.number = i
+        self.channels[:] = lcn + rest
+
+    def dvbi_channels(self):
+        return [c for c in self.channels if c.dvbi_id]
+
+    def replace_dvbi(self, new):
+        """Replace the channels of the DVB-I service list with *new* (a list
+        update). Favourites and guide matches of services that stay are kept.
+        Returns (added, updated, removed)."""
+        old = {c.key: c for c in self.channels if c.dvbi_id}
+        keep = [c for c in self.channels if not c.dvbi_id]
+        added = updated = 0
+        for c in new:
+            prev = old.pop(c.key, None)
+            if prev:
+                c.favourite = prev.favourite
+                if prev.xmltv_manual or not c.xmltv_id:
+                    c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
+                if not c.logo:
+                    c.logo = prev.logo
+                updated += 1
+            else:
+                added += 1
+        self.channels[:] = list(new) + keep
+        self.renumber()
+        return added, updated, len(old)
 
     def by_key(self, key):
         for c in self.channels:

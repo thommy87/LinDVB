@@ -117,6 +117,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "sleep-off": self.sleep_cancel, "sleep-programme": self.sleep_after_programme,
             "rebuild": self.rebuild_playback, "xmltv": lambda: self.app.update_xmltv(),
             "xmltv-match": lambda: self.app.show_xmltv_match(),
+            "dvbi-setup": lambda: self.app.show_dvbi_setup(),
             "web-epg": self.on_web_search,
             "plugins": lambda: self.app.show_plugins(),
             "cam-menu": lambda: self.app.show_cam_menu(),
@@ -217,6 +218,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append("Teletext", "win.teletext")
         tv.append("CAM Menu (CI Module)…", "win.cam-menu")
         tv.append("Channel Search…", "win.scan")
+        tv.append("DVB-I Setup…", "win.dvbi-setup")
         tv.append("Channel Editor / Favourites", "win.editor")
         tv.append("Update Internet EPG (XMLTV)", "win.xmltv")
         tv.append("Match IPTV Channels to XMLTV…", "win.xmltv-match")
@@ -581,8 +583,13 @@ class MainWindow(Gtk.ApplicationWindow):
         c = li.get_item().data
         num, icon, lbl, extra = list(_children(li.get_child()))
         num.set_text(str(c.number))
-        icon.set_from_icon_name("audio-x-generic-symbolic" if c.radio else
-                                "network-wireless-symbolic" if c.is_iptv else "video-display-symbolic")
+        logo = self._logo_texture(c.logo) if c.logo else None
+        if logo is not None:
+            icon.set_from_paintable(logo)
+        else:
+            icon.set_from_icon_name("audio-x-generic-symbolic" if c.radio else
+                                    "network-wireless-symbolic" if c.is_iptv else
+                                    "video-display-symbolic")
         now, _ = self.app.epg.now_next(c.epg_key)
         lbl.set_text(c.name)
         lbl.set_tooltip_text(f"{c.root} / {c.category}" + (f"\nNow: {now.title}" if now else ""))
@@ -593,8 +600,21 @@ class MainWindow(Gtk.ApplicationWindow):
         else:
             extra.remove_css_class("lv-fav")
 
+    def _logo_texture(self, path):
+        """Channel logo (DVB-I) for the list, loaded once."""
+        cache = self.__dict__.setdefault("_logos", {})
+        if path not in cache:
+            try:
+                cache[path] = Gdk.Texture.new_from_filename(path)
+            except GLib.Error:
+                cache[path] = None
+        return cache[path]
+
     def _filter_func(self, item):
         c = item.data
+        if not c.visible:            # DVB-I: hidden services (still tunable by number)
+            q = self.search.get_text().strip()
+            return bool(q) and q.isdigit() and str(c.number) == q
         f = self.filter_dd.get_selected()
         if f == F_FAV:
             if not c.favourite:
@@ -998,6 +1018,7 @@ class MainWindow(Gtk.ApplicationWindow):
         items = [self.filtered.get_item(i).data for i in range(n)]
         if favs:
             items = [c for c in self.app.db.channels if c.favourite]
+        items = [c for c in items if c.selectable]      # DVB-I LCN flag
         if not items:
             return
         here = self.current or self.stopped
@@ -1014,7 +1035,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def zap_number(self, num):
         for c in self.app.db.channels:
-            if c.number == num:
+            if c.number == num and c.selectable:
                 self.zap(c)
                 return
 
@@ -1502,7 +1523,8 @@ class MainWindow(Gtk.ApplicationWindow):
             np.channel = self.current is not None
             np.set_accent(resolve_accent(self.settings))
             np.set_station(self.player.metadata.get("organization") or name
-                           if self.current is None else name, programme)
+                           if self.current is None else name, programme,
+                           logo=self.current.logo if self.current is not None else "")
             np.tick()
         np.set_visible(show)
 

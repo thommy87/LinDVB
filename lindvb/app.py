@@ -62,6 +62,9 @@ class LinDVBApp(Gtk.Application):
             self._watch_cam()
         GLib.timeout_add_seconds(3, self._flush_epg)
         GLib.timeout_add_seconds(300, lambda: (self.timers.apply_series(), True)[1])
+        # DVB-I: check the service list for updates (IT-18: at least daily)
+        self._dvbi_busy = False
+        GLib.timeout_add_seconds(15, self._dvbi_check)
 
     def do_activate(self):
         from .ui.window import MainWindow
@@ -138,6 +141,59 @@ class LinDVBApp(Gtk.Application):
             msg += f", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
         self.window.set_status(msg)
         return False
+
+    # -- DVB-I -----------------------------------------------------------------
+    def dvbi_updater(self):
+        from . import dvbi
+        from .config import CACHE_DIR
+        return dvbi.Updater(self.settings, CACHE_DIR / "dvbi", CACHE_DIR / "dvbi" / "logos")
+
+    def _dvbi_check(self):
+        from . import dvbi
+        if dvbi.update_due(self.settings):
+            self.update_dvbi()
+        GLib.timeout_add_seconds(3600, self._dvbi_check)
+        return False
+
+    def update_dvbi(self, force=False, region=None, done=None):
+        """Load the DVB-I service list in the background and update the
+        channel list. *done(result, message)* runs on the main thread."""
+        if self._dvbi_busy or not self.settings.get("dvbi_list_url"):
+            return False
+        self._dvbi_busy = True
+        updater = self.dvbi_updater()
+        scanned = [c for c in self.db.channels if not c.dvbi_id]
+        if self.window:
+            self.window.set_status("DVB-I: loading the service list…")
+
+        def work():
+            try:
+                res = updater.run(scanned, force=force, region=region)
+            except Exception as e:  # report unexpected errors instead of dying in the thread
+                from .dvbi import UpdateResult
+                res = UpdateResult(error=str(e))
+            GLib.idle_add(finish, res)
+
+        def finish(res):
+            self._dvbi_busy = False
+            msg = updater.apply(res, self.db)
+            self.settings.save()
+            if res.changed:
+                self.db.save()
+                if self.window:
+                    self.window.reload_channels()
+            if self.window:
+                self.window.set_status(msg)
+            if done:
+                done(res, msg)
+            return False
+
+        threading.Thread(target=work, daemon=True).start()
+        return True
+
+    def show_dvbi_setup(self):
+        from .ui.dvbi import DVBISetupWindow
+        DVBISetupWindow(self, self.window).present()
 
     def web_search(self, text, parent):
         urls = self.settings["epg_search_urls"]
