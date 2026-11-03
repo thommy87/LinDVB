@@ -14,6 +14,8 @@ FEC_CODES = {"12": "1/2", "23": "2/3", "34": "3/4", "35": "3/5", "45": "4/5",
 # Standard locations of the dtv-scan-tables package on common distributions.
 SCAN_TABLE_DIRS = ["/usr/share/dvb", "/usr/share/dvbv5", "/usr/share/dvb-scan-tables",
                    "/usr/local/share/dvb"]
+# lists that ship with LinDVB (the kernel's virtual tuner vidtv, for testing)
+BUNDLED_TABLES = Path(__file__).with_name("scantables")
 
 
 @dataclass
@@ -116,7 +118,7 @@ def write_scan_file(tplist, diseqc=-1):
 def find_transponder_lists(extra_dirs=()):
     """Return (name, path) of transponder lists found on this system."""
     found = []
-    for d in [*extra_dirs, *SCAN_TABLE_DIRS]:
+    for d in [*extra_dirs, *SCAN_TABLE_DIRS, BUNDLED_TABLES]:
         p = Path(d).expanduser()
         if not p.is_dir():
             continue
@@ -165,5 +167,22 @@ def find_adapters():
                 break
             except OSError:
                 pass
+        if not name and is_virtual_adapter(a, f):
+            name = "Virtual tuner (vidtv)"
         res.append((a, f, name or f"Adapter {a}"))
     return res
+
+
+def is_virtual_adapter(adapter, frontend=0):
+    """True for the kernel's virtual DVB driver vidtv (a test tuner, no hardware)."""
+    dev = Path(f"/sys/class/dvb/dvb{adapter}.frontend{frontend}/device")
+    for link in (dev / "driver", dev):
+        try:
+            if "vidtv" in link.resolve().name:
+                return True
+        except OSError:
+            pass
+    try:
+        return "vidtv" in (dev / "modalias").read_text()
+    except OSError:
+        return False

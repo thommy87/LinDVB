@@ -1,0 +1,8 @@
+# Virtual DVB tuner of the Linux kernel (vidtv): DVB-T on 474 MHz.
+# Load it with "sudo modprobe vidtv"; it sends one radio service, "Beethoven".
+[CHANNEL]
+	DELIVERY_SYSTEM = DVBT
+	FREQUENCY = 474000000
+	BANDWIDTH_HZ = 8000000
+	MODULATION = QAM/AUTO
+	INNER_FEC = AUTO

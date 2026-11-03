@@ -17,7 +17,7 @@ lindvb = "lindvb.app:main"
 packages = ["lindvb", "lindvb.ui", "lindvb.addons"]
 
 [tool.setuptools.package-data]
-lindvb = ["icons/hicolor/scalable/actions/*.svg"]
+lindvb = ["icons/hicolor/scalable/actions/*.svg", "scantables/*"]
 
 [tool.setuptools.data-files]
 "share/applications" = ["data/io.github.thommy87.LinDVB.desktop"]

@@ -232,6 +232,10 @@ LINDVB_TEST_TS=sample.ts python3 -m lindvb   # replay a TS file instead of a tun
 `LINDVB_TEST_TS` makes every DVB channel play the given transport stream at real
 time, which lets you test timeshift, recording, EPG and teletext without hardware.
 
+The kernel's virtual DVB tuner **vidtv** (`sudo modprobe vidtv`) tests channel
+search, tuning and the EPG like a real tuner; LinDVB ships scan files for it.
+See [docs/TESTING.md](docs/TESTING.md).
+
 ## Not yet implemented
 
 Picture in picture and mosaic, CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
