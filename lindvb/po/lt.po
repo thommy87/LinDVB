@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: lt\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importuoti kanalų sąrašą (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Paleisti su šiuo kanalu (pavadinimas arba numeris)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} {time}"
+
+msgid "Watch"
+msgstr "Žiūrėti"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Priminimas: {title} per {channel} {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Pirmiausia nustatykite XMLTV adresą nuostatose"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Atsisiunčiamas XMLTV gidas…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} be gido (TV ▸ Susieti IPTV kanalus su XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: įkeliamas paslaugų sąrašas…"
+
+msgid "Search the web"
+msgstr "Ieškoti žiniatinklyje"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletekstas (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Subtitrai (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG duomenys (TS)"
+
+msgid "All audio tracks"
+msgstr "Visi garso takeliai"
+
+msgid "Preferred language only"
+msgstr "Tik pageidaujama kalba"
+
+msgid "First audio track only"
+msgstr "Tik pirmas garso takelis"
+
+msgid "Record"
+msgstr "Įrašyti"
+
+msgid "Record and tune"
+msgstr "Įrašyti ir perjungti"
+
+msgid "Tune only"
+msgstr "Tik perjungti"
+
+msgid "Hibernate"
+msgstr "Hibernacija"
+
+msgid "None"
+msgstr "Nieko"
+
+msgid "Power off"
+msgstr "Išjungti"
+
+msgid "Quit LinDVB"
+msgstr "Išeiti iš LinDVB"
+
+msgid "Standby"
+msgstr "Budėjimo režimas"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Interneto srautai neturi teleteksto, subtitrų ar EPG duomenų."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 išlaiko vieną garso takelį (pageidaujamą kalbą, kai ji transliuojama)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Garso failas išlaiko vieną takelį (pageidaujamą kalbą, kai ji transliuojama)."
+
+msgid "Fr"
+msgstr "Pn"
+
+msgid "Mo"
+msgstr "Pr"
+
+msgid "Sa"
+msgstr "Še"
+
+msgid "Su"
+msgstr "Sk"
+
+msgid "Th"
+msgstr "Kt"
+
+msgid "Tu"
+msgstr "An"
+
+msgid "We"
+msgstr "Tr"
+
+msgid "Scheduled"
+msgstr "Suplanuota"
+
+msgid "Done"
+msgstr "Atlikta"
+
+msgid "Channel missing"
+msgstr "Trūksta kanalo"
+
+msgid "Tuned"
+msgstr "Perjungta"
+
+msgid "Recording"
+msgstr "Įrašoma"
+
+msgid "Failed"
+msgstr "Nepavyko"
+
+msgid "Missed"
+msgstr "Praleista"
+
+msgid "After recording: {action}"
+msgstr "Po įrašymo: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Modulis išimtas arba atstatytas."
+
+msgid "CAM Menu"
+msgstr "CAM meniu"
+
+msgid "Cancel"
+msgstr "Atšaukti"
+
+msgid "OK"
+msgstr "Gerai"
+
+msgid "Open CAM Menu"
+msgstr "Atverti CAM meniu"
+
+msgid "Select"
+msgstr "Pasirinkti"
+
+msgid "Back"
+msgstr "Atgal"
+
+msgid "Close Menu"
+msgstr "Užverti meniu"
+
+msgid "Device: {path} – {state}"
+msgstr "Įrenginys: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Atverkite CAM meniu, kad matytumėte modulio nustatymus, lustinės kortelės informaciją ir tėvų kontrolę."
+
+msgid "The module has not finished starting yet."
+msgstr "Modulis dar nebaigė paleisties."
+
+msgid "Custom colour"
+msgstr "Pasirinktinė spalva"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB mėlyna (numatytoji)"
+
+msgid "System accent colour"
+msgstr "Sistemos akcento spalva"
+
+msgid "Preferences"
+msgstr "Nuostatos"
+
+msgid "Save"
+msgstr "Įrašyti"
+
+msgid "Appearance"
+msgstr "Išvaizda"
+
+msgid "Language"
+msgstr "Kalba"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Įsigalios kitą kartą paleidus LinDVB."
+
+msgid "Accent colour"
+msgstr "Akcento spalva"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Naudojama paryškinimams, žymėjimams ir mygtukams visuose languose."
+
+msgid "On-screen display"
+msgstr "Rodymas ekrane"
+
+msgid "OSD display time (s)"
+msgstr "OSD rodymo trukmė (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizacija"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Kas rodoma virš radijo vizualizacijos, kol groja radijo stotis ar garso failas. Dainos duomenys gaunami iš DVB radijo RadioText, interneto radijo srauto pavadinimo ir garso failų žymių."
+
+msgid "Overlay"
+msgstr "Perdanga"
+
+msgid "Station logo tile"
+msgstr "Stoties logotipo plytelė"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Kanalo logotipas arba plytelė su stoties pavadinimu, jei logotipo nėra."
+
+msgid "Album cover"
+msgstr "Albumo viršelis"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Grojamos dainos viršelis iš failo arba surastas internete."
+
+msgid "Song information"
+msgstr "Dainos informacija"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Atlikėjas, albumas ir metai, takelis ir pavadinimas. Be dainos duomenų rodoma stotis ir dabartinė laida."
+
+msgid "Clock in the top right corner"
+msgstr "Laikrodis viršutiniame dešiniajame kampe"
+
+msgid "Sources"
+msgstr "Šaltiniai"
+
+msgid "Look up covers online"
+msgstr "Ieškoti viršelių internete"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Siunčia grojamos dainos atlikėją ir pavadinimą į iTunes Search API, kad rastų albumą, metus ir viršelį."
+
+msgid "Station logo folder"
+msgstr "Stočių logotipų aplankas"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Paveikslėlių failai (PNG, SVG, JPG), pavadinti pagal kanalą, pvz., „Bayern 3.png“. Pagal kanalą pavadinti logotipai, kaip juos laiko DVBViewer, veikia be pakeitimų. Tuščia: {v0}"
+
+msgid "Playback"
+msgstr "Atkūrimas"
+
+msgid "Deinterlace video"
+msgstr "Šalinti vaizdo eilučių persipynimą"
+
+msgid "Screenshot folder"
+msgstr "Ekrano kopijų aplankas"
+
+msgid "Timeshift"
+msgstr "Laiko poslinkis"
+
+msgid "Timeshift folder"
+msgstr "Laiko poslinkio aplankas"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Laiko poslinkio buferis (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Imtuvas ir LNB"
+
+msgid "DVB hardware"
+msgstr "DVB aparatinė įranga"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Adapterių numeriai, kuriuos LinDVB gali naudoti, atskirti kableliais."
+
+msgid "DVB adapters"
+msgstr "DVB adapteriai"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Fiksuoti visą transponderį"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Reikia visiems garso takeliams, kai kanalų sąrašas žino tik vieną garso PID."
+
+msgid "Satellite LNB"
+msgstr "Palydovinis LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF žemoji juosta (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF aukštoji juosta (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Perjungimo dažnis (kHz)"
+
+msgid "Recording folder"
+msgstr "Įrašų aplankas"
+
+msgid "File naming scheme"
+msgstr "Failų pavadinimų šablonas"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Vietos rezervavimo ženklai: %year %date %time %end %station %name, / poaplankiams"
+
+msgid "Timer padding"
+msgstr "Laikmačių atsargos"
+
+msgid "Start earlier by (min)"
+msgstr "Pradėti anksčiau (min)"
+
+msgid "Stop later by (min)"
+msgstr "Baigti vėliau (min)"
+
+msgid "Timers"
+msgstr "Laikmačiai"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Sukūrus laikmatį atverti laikmačių langą"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Gide paspaudus „Įrašyti“ iškart redaguoti naują laikmatį."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Programų gidas: transliuojamas EPG, interneto EPG (XMLTV) ir kitų teikėjų EPG."
+
+msgid "Conditional access"
+msgstr "Sąlyginė prieiga"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Užkoduotų kanalų, kuriuos prenumeruojate, dekodavimas jūsų kortele softcam ar CI modulyje."
+
+msgid "None (leave scrambled)"
+msgstr "Nieko (palikti užkoduotą)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Išorinis softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Aparatinis CI / CI+ modulis"
+
+msgid "Descrambling via"
+msgstr "Dekoduoti per"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI lizdas"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix lizdo kelias arba serveris:prievadas."
+
+msgid "CI module"
+msgstr "CI modulis"
+
+msgid "CI adapter number"
+msgstr "CI adapterio numeris"
+
+msgid "CA device number"
+msgstr "CA įrenginio numeris"
+
+msgid "Plugins"
+msgstr "Papildiniai"
+
+msgid "Load plugins at startup"
+msgstr "Įkelti papildinius paleidžiant"
+
+msgid "Manage Plugins…"
+msgstr "Tvarkyti papildinius…"
+
+msgid "Format and tracks"
+msgstr "Formatas ir takeliai"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Numatytosios reikšmės naujiems laikmačiams ir mygtukui Įrašyti. Kiekvienas laikmatis ir įrašas, pradėtas su „Įrašyti su parinktimis…“, gali jas keisti.\nTS: vaizdas, visi garso takeliai, subtitrai, teletekstas ir EPG duomenys. MKV: vaizdas, keli garso takeliai ir subtitrai. MPG: vaizdas ir keli garso takeliai. MP4: vaizdas ir vienas garso takelis. Interneto srautai neturi teleteksto, subtitrų ar EPG duomenų; HLS ir DASH srautai įrašomi su vienu garso takeliu."
+
+msgid "TV format"
+msgstr "TV formatas"
+
+msgid "Radio format"
+msgstr "Radijo formatas"
+
+msgid "Audio tracks"
+msgstr "Garso takeliai"
+
+msgid "Preferred audio language"
+msgstr "Pageidaujama garso kalba"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Naudojama parinkčiai „Tik pageidaujama kalba“ ir MP4, kuris išlaiko vieną takelį. Garsinio vaizdavimo takeliai praleidžiami. Neradus atitikmens įrašomas pirmas takelis."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} galima išlaikyti tik MPEG-TS, todėl įrašai saugomi kaip TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} galima išlaikyti tik TS arba MKV, todėl įrašai saugomi kaip TS."
+
+msgid " and "
+msgstr " ir "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Pageidaujama garso kalba nenustatyta, todėl įrašomas tik pirmas garso takelis."
+
+msgid "Desktop accent: {found}"
+msgstr "Darbalaukio akcentas: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Darbalaukio akcentas nerastas, naudojama LinDVB mėlyna."
+
+msgid "Current accent: {color}"
+msgstr "Dabartinis akcentas: {color}"
+
+msgid "Channel Editor"
+msgstr "Kanalų redaktorius"
+
+msgid "Name"
+msgstr "Pavadinimas"
+
+msgid "Category"
+msgstr "Kategorija"
+
+msgid "Group"
+msgstr "Grupė"
+
+msgid "Fav"
+msgstr "Mėg"
+
+msgid "Type"
+msgstr "Tipas"
+
+msgid "Filter channels"
+msgstr "Filtruoti kanalus"
+
+msgid "General"
+msgstr "Bendra"
+
+msgid "Stream URL"
+msgstr "Srauto adresas"
+
+msgid "Favourite"
+msgstr "Mėgstamas"
+
+msgid "Radio"
+msgstr "Radijas"
+
+msgid "Encrypted"
+msgstr "Užkoduotas"
+
+msgid "Tuning"
+msgstr "Derinimas"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Polarity"
+msgstr "Poliškumas"
+
+msgid "Modulation"
+msgstr "Moduliacija"
+
+msgid "Frequency (kHz)"
+msgstr "Dažnis (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Simbolių sparta (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Pralaidumas (Hz)"
+
+msgid "Stream ID"
+msgstr "Srauto ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC prievadas (-1 nėra)"
+
+msgid "Service and PIDs"
+msgstr "Paslauga ir PID"
+
+msgid "Service ID"
+msgstr "Paslaugos ID"
+
+msgid "Transport ID"
+msgstr "Transporto ID"
+
+msgid "Video PID"
+msgstr "Vaizdo PID"
+
+msgid "Audio PIDs"
+msgstr "Garso PID"
+
+msgid "Teletext PID"
+msgstr "Teleteksto PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Taikyti pakeitimus (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Naujas kanalas"
+
+msgid "Delete channel"
+msgstr "Šalinti kanalą"
+
+msgid "Move up"
+msgstr "Perkelti aukštyn"
+
+msgid "Move down"
+msgstr "Perkelti žemyn"
+
+msgid "Sort by group and name"
+msgstr "Rikiuoti pagal grupę ir pavadinimą"
+
+msgid "No channel selected"
+msgstr "Nepasirinktas joks kanalas"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Pasirinkite kanalą sąraše, kad jį redaguotumėte."
+
+msgid "Unnamed channel"
+msgstr "Kanalas be pavadinimo"
+
+msgid "Recording and Device Statistics"
+msgstr "Įrašymo ir įrenginio statistika"
+
+msgid "Active recordings:"
+msgstr "Vykstantys įrašymai:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nKitas laikmatis: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletekstas – {name}"
+
+msgid "Find on page"
+msgstr "Ieškoti puslapyje"
+
+msgid "Copy page"
+msgstr "Kopijuoti puslapį"
+
+msgid "Save page"
+msgstr "Įrašyti puslapį"
+
+msgid "Waiting for teletext…"
+msgstr "Laukiama teleteksto…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Trūksta teletextdec (gst-plugins-bad su libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Ieškomas puslapis {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Dekodavimas nenustatytas. Užkoduotus kanalus, į kuriuos turite teisę, galima dekoduoti nuostatose nukreipus LinDVB į savo softcam ar CI modulį."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Teikėjas „{v0}“ nepasiekiamas."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Teikėjas: CI modulis – {status}\nModulis dekoduoja jūsų kortele imtuvo viduje."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Teikėjas: {name}\nLinDVB perduoda ECM sekcijas jūsų kortelės klientui ir taiko grąžintus valdymo žodžius; pats raktų nelaiko."
+
+msgid "Open CAM Menu…"
+msgstr "Atverti CAM meniu…"
+
+msgid "Failed to load: {v0}"
+msgstr "Nepavyko įkelti: {v0}"
+
+msgid "Switched off"
+msgstr "Išjungta"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Pakeitimai įsigalios kitą kartą paleidus LinDVB."
+
+msgid "No plugins installed."
+msgstr "Papildinių neįdiegta."
+
+msgid "Plugin actions"
+msgstr "Papildinių veiksmai"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Papildinių aplankai: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I sąranka"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I iš interneto gauna jūsų regiono kanalų sąrašą: numeraciją, pavadinimus ir logotipus, o kiekvienam kanalui – priėmimo būdus. LinDVB, kai įmanoma, naudoja antenos, kabelinės ar palydovinės televizijos kanalus iš jūsų kanalų paieškos, kitaip – interneto srautą."
+
+msgid "Privacy"
+msgstr "Privatumas"
+
+msgid "I have read the privacy notice"
+msgstr "Perskaičiau privatumo pranešimą"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Įkelti DVB-I kanalų programų gidą (EPG)"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Sutrikus vienam priėmimo būdui, perjungti į kitą (internetas, antena, kabelis, palydovas)"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Derinti sąrašo palydovinius kanalus be kanalų paieškos (reikia palydovinių kanalų jūsų sąraše)"
+
+msgid "Service list"
+msgstr "Paslaugų sąrašas"
+
+msgid "Load Lists from Registry"
+msgstr "Įkelti sąrašus iš registro"
+
+msgid "In use: {current}"
+msgstr "Naudojama: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Dar nenaudojamas joks DVB-I sąrašas."
+
+msgid "Region"
+msgstr "Regionas"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Jūsų pašto kodas parenka regioninius kanalus ir jų numeraciją. Jis siunčiamas tik paslaugų sąrašo serveriui."
+
+msgid "Postcode"
+msgstr "Pašto kodas"
+
+msgid "No postcode: nationwide list"
+msgstr "Be pašto kodo: nacionalinis sąrašas"
+
+msgid "Remove DVB-I Channels"
+msgstr "Pašalinti DVB-I kanalus"
+
+msgid "Update Now"
+msgstr "Atnaujinti dabar"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Iš naujo įkelti pasirinktą sąrašą (jis tikrinamas ir kasdien)"
+
+msgid "Install Channel List"
+msgstr "Įdiegti kanalų sąrašą"
+
+msgid "Close"
+msgstr "Užverti"
+
+msgid "Asking the service list registry…"
+msgstr "Užklausiamas paslaugų sąrašų registras…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Registras nepasiekiamas: {error}"
+
+msgid "Default"
+msgstr "Numatytasis"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Paslaugų sąrašai iš {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Registras nesiūlo paslaugų sąrašo Vokietijai."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Įveskite penkiaženklį pašto kodą"
+
+msgid "Loading the service list…"
+msgstr "Įkeliamas paslaugų sąrašas…"
+
+msgid "In use: {v0}"
+msgstr "Naudojama: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nPasirinkite savo regioną ir dar kartą spustelėkite Įdiegti."
+
+msgid "Enter Again"
+msgstr "Įvesti iš naujo"
+
+msgid "The service list does not know this postcode."
+msgstr "Paslaugų sąrašas nežino šio pašto kodo."
+
+msgid "The service list server answered {code}."
+msgstr "Paslaugų sąrašo serveris atsakė {code}."
+
+msgid "Try Again"
+msgstr "Bandyti dar kartą"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Galite bandyti dar kartą arba naudoti nacionalinį sąrašą be pašto kodo."
+
+msgid "Nationwide List"
+msgstr "Nacionalinis sąrašas"
+
+msgid "No DVB-I list is in use."
+msgstr "Nenaudojamas joks DVB-I sąrašas."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Pašalinta DVB-I kanalų: {removed}"
+
+msgid "All programmes"
+msgstr "Visos laidos"
+
+msgid "With audio description"
+msgstr "Su garsiniu vaizdavimu"
+
+msgid "With subtitles"
+msgstr "Su subtitrais"
+
+msgid "Programme Guide"
+msgstr "Programų gidas"
+
+msgid "Now / Next"
+msgstr "Dabar / Toliau"
+
+msgid "Per Channel"
+msgstr "Pagal kanalą"
+
+msgid "TV Guide"
+msgstr "TV programa"
+
+msgid "Search"
+msgstr "Ieškoti"
+
+msgid "Record Series"
+msgstr "Įrašyti serialą"
+
+msgid "Remind Me"
+msgstr "Priminti"
+
+msgid "Search Web"
+msgstr "Ieškoti žiniatinklyje"
+
+msgid "Export the guide as XMLTV"
+msgstr "Eksportuoti gidą kaip XMLTV"
+
+msgid "Next"
+msgstr "Toliau"
+
+msgid "Now"
+msgstr "Dabar"
+
+msgid "Only favourites"
+msgstr "Tik mėgstami"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Pritaikymas neįgaliesiems (DVB-I programų gidas)"
+
+msgid "Show:"
+msgstr "Rodyti:"
+
+msgid "Channel"
+msgstr "Kanalas"
+
+msgid "Start"
+msgstr "Pradžia"
+
+msgid "End"
+msgstr "Pabaiga"
+
+msgid "Title"
+msgstr "Pavadinimas"
+
+msgid "Genre"
+msgstr "Žanras"
+
+msgid "Day"
+msgstr "Diena"
+
+msgid "Duration"
+msgstr "Trukmė"
+
+msgid "Subheading"
+msgstr "Paantraštė"
+
+msgid "Title or description"
+msgstr "Pavadinimas arba aprašas"
+
+msgid "Include description"
+msgstr "Įtraukti aprašą"
+
+msgid "Case sensitive"
+msgstr "Skirti didžiąsias ir mažąsias raides"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min.{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Serialo įrašymas: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Priminimas pašalintas: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} jau prasidėjo"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Priminimas nustatytas: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Pašalinti priminimą"
+
+msgid "Save EPG data"
+msgstr "Įrašyti EPG duomenis"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Išlaiko gidą diske uždarius LinDVB."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Rodyti EPG informaciją keičiant kanalą (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nerodyti."
+
+msgid "Remind before start (min)"
+msgstr "Priminti prieš pradžią (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Gide nustatyti priminimai praneša tiek anksčiau."
+
+msgid "Preferred language"
+msgstr "Pageidaujama kalba"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Naudojama, kai laida transliuojama keliomis kalbomis."
+
+msgid "Time zone"
+msgstr "Laiko juosta"
+
+msgid "Set time zone automatically"
+msgstr "Nustatyti laiko juostą automatiškai"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Išjungta: gidui, laikmačiams ir laikrodžiui naudoti pastovų poslinkį nuo GMT."
+
+msgid "Offset to GMT"
+msgstr "Poslinkis nuo GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Interneto EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Interneto EPG šaltinis, naudojamas kartu su transliuojamu EPG."
+
+msgid "Match IPTV Channels…"
+msgstr "Susieti IPTV kanalus…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Patikrinkite arba pataisykite, kuris gido kanalas priklauso kuriam M3U kanalui."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat dažniai"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Kai suderintas kanalas yra viename iš šių transponderių, LinDVB taip pat skaito to teikėjo EPG. Pakeitimai galioja kitą kartą derinant kanalą."
+
+msgid "Frequency (MHz)"
+msgstr "Dažnis (MHz)"
+
+msgid "Add"
+msgstr "Pridėti"
+
+msgid "Polarisation"
+msgstr "Poliarizacija"
+
+msgid "Defaults"
+msgstr "Numatytosios reikšmės"
+
+msgid "Delete"
+msgstr "Šalinti"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Įveskite transponderio dažnį MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Nepavyko rasti viršelio: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Sukeisti su pagrindiniu vaizdu"
+
+msgid "Close picture in picture"
+msgstr "Užverti vaizdą vaizde"
+
+msgid "Picture in picture: {error}"
+msgstr "Vaizdas vaizde: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Vaizdas vaizde veikia su interneto kanalais; DVB kanalams reikia antro imtuvo."
+
+msgid "Channel Mosaic"
+msgstr "Kanalų mozaika"
+
+msgid "Previous channels"
+msgstr "Ankstesni kanalai"
+
+msgid "Next channels"
+msgstr "Kiti kanalai"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mozaika rodo interneto kanalus. Dabartiniame rodinyje sąraše jų nėra."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "{page} puslapis iš {pages} · interneto kanalų: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Spustelėkite, kad žiūrėtumėte {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universalus (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Išplėstinis"
+
+msgid "None / not satellite"
+msgstr "Nieko / ne palydovas"
+
+msgid "Port 1 (A/A)"
+msgstr "Prievadas 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Prievadas 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Prievadas 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Prievadas 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Dažnis"
+
+msgid "Initial letter"
+msgstr "Pradinė raidė"
+
+msgid "Provider"
+msgstr "Teikėjas"
+
+msgid "Channel Search"
+msgstr "Kanalų paieška"
+
+msgid "Device"
+msgstr "Įrenginys"
+
+msgid "(choose…)"
+msgstr "(pasirinkite…)"
+
+msgid "Add folder…"
+msgstr "Pridėti aplanką…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Aplankas su transponderių sąrašais (dtv-scan-tables arba DVBViewer stiliaus .ini)"
+
+msgid "Transponder list"
+msgstr "Transponderių sąrašas"
+
+msgid "LNB type"
+msgstr "LNB tipas"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Tikslinė grupė"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "pvz., Astra 19,2° R"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Ieškoti papildomų dažnių (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Pridėti tik nemokamus kanalus"
+
+msgid "Only update existing channels"
+msgstr "Tik atnaujinti esamus kanalus"
+
+msgid "Update channel names"
+msgstr "Atnaujinti kanalų pavadinimus"
+
+msgid "Group by"
+msgstr "Grupuoti pagal"
+
+msgid "Start Search"
+msgstr "Pradėti paiešką"
+
+msgid "Stop"
+msgstr "Stabdyti"
+
+msgid "Folder with transponder lists"
+msgstr "Aplankas su transponderių sąrašais"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nepasirinktas transponderių sąrašas. Įdiekite dtv-scan-tables arba pridėkite aplanką.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nKanalų nerasta.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nAtlikta: naujų kanalų {added}, atnaujintų {updated}.\n"
+
+msgid "HH:MM"
+msgstr "VV:MM"
+
+msgid "Recording Timers"
+msgstr "Įrašymo laikmačiai"
+
+msgid "Search channels"
+msgstr "Ieškoti kanalų"
+
+msgid "  (Radio)"
+msgstr "  (Radijas)"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Repeat"
+msgstr "Kartojimas"
+
+msgid "Once"
+msgstr "Vieną kartą"
+
+msgid "Series"
+msgstr "Serialas"
+
+msgid "Action"
+msgstr "Veiksmas"
+
+msgid "Format"
+msgstr "Formatas"
+
+msgid "After"
+msgstr "Po to"
+
+msgid "Disabled"
+msgstr "Išjungtas"
+
+msgid "Status"
+msgstr "Būsena"
+
+msgid "Repeat every {day}"
+msgstr "Kartoti kiekvieną {day}"
+
+msgid "_Date"
+msgstr "_Data"
+
+msgid "_Lead (min)"
+msgstr "_Prieš (min)"
+
+msgid "_End"
+msgstr "_Pabaiga"
+
+msgid "_Start"
+msgstr "Pr_adžia"
+
+msgid "Repeat on"
+msgstr "Kartoti"
+
+msgid "_Follow (min)"
+msgstr "P_o (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Pasirinkite kanalą kairėje"
+
+msgid "_Name"
+msgstr "Pa_vadinimas"
+
+msgid "_Timer action"
+msgstr "_Laikmačio veiksmas"
+
+msgid "_After recording"
+msgstr "Po į_rašymo"
+
+msgid "T_V format"
+msgstr "T_V formatas"
+
+msgid "_Radio format"
+msgstr "_Radijo formatas"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Tik pageidaujama kalba: takeliai nuostatose nurodyta garso kalba, be garsinio vaizdavimo. MP4 ir radijo garso failas išlaiko vieną takelį."
+
+msgid "Audi_o tracks"
+msgstr "Garso _takeliai"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teletekstas yra tik MPEG-TS, todėl naudojamas TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG duomenys (EIT) yra tik MPEG-TS, todėl naudojamas TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS išlaiko visus subtitrų srautus. MKV gauna teleteksto subtitrų puslapį kaip tekstinį takelį; DVB rastriniai subtitrai lieka tik TS."
+
+msgid "Tracks"
+msgstr "Takeliai"
+
+msgid "File _naming scheme"
+msgstr "_Failų pavadinimų šablonas"
+
+msgid "Folder…"
+msgstr "Aplankas…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Naudoti įrašų aplanką iš nuostatų"
+
+msgid "Placeholders"
+msgstr "Vietos rezervavimo ženklai"
+
+msgid "Folder: "
+msgstr "Aplankas: "
+
+msgid "Clear the editor"
+msgstr "Išvalyti redaktorių"
+
+msgid "New"
+msgstr "Naujas"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Pridėti redaktoriaus nustatymus kaip naują laikmatį"
+
+msgid "Apply"
+msgstr "Taikyti"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Įrašyti redaktoriaus nustatymus į pasirinktą laikmatį"
+
+msgid "Delete the selected timer"
+msgstr "Šalinti pasirinktą laikmatį"
+
+msgid "Enable/Disable"
+msgstr "Įjungti/Išjungti"
+
+msgid "Switch the selected timer on or off"
+msgstr "Įjungti arba išjungti pasirinktą laikmatį"
+
+msgid "Save as default"
+msgstr "Įrašyti kaip numatytąjį"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Naudoti šiuos formatus ir papildomus srautus naujiems laikmačiams ir rankiniams įrašymams"
+
+msgid "Series title"
+msgstr "Serialo pavadinimas"
+
+msgid "Delete series rule"
+msgstr "Šalinti serialo taisyklę"
+
+msgid "Series recordings"
+msgstr "Serialų įrašai"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Subtitrai telpa į TS arba MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Nuostatose nėra pageidaujamos garso kalbos: įrašomas pirmas takelis."
+
+msgid "File: {v0}"
+msgstr "Failas: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Netinkamas pradžios arba pabaigos laikas"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Naudokite VV:MM, pavyzdžiui, 20:15."
+
+msgid "No channel"
+msgstr "Nėra kanalo"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Kairėje esančiame sąraše pasirinkite įrašomą kanalą."
+
+msgid "Recording defaults saved"
+msgstr "Numatytieji įrašymo nustatymai įrašyti"
+
+msgid "Record with Options"
+msgstr "Įrašyti su parinktimis"
+
+msgid "_Format"
+msgstr "_Formatas"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teletekstą ir EPG duomenis galima išlaikyti tik MPEG-TS, todėl naudojamas TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Pageidaujama garso kalba: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Vizualizacija „{v0}“ nepavyko: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} yra per senas"
+
+msgid "Playback error: "
+msgstr "Atkūrimo klaida: "
+
+msgid "All channels"
+msgstr "Visi kanalai"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Mėgstami (TV + radijas)"
+
+msgid "Free to air"
+msgstr "Nemokami"
+
+msgid "Internet streams"
+msgstr "Interneto srautai"
+
+msgid "Fill (crop)"
+msgstr "Užpildyti (apkirpti)"
+
+msgid "Fit"
+msgstr "Pritaikyti"
+
+msgid "Stretch"
+msgstr "Ištempti"
+
+msgid "Playback error: {m}"
+msgstr "Atkūrimo klaida: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Papildinio veiksmas nepavyko: {e}"
+
+msgid "Open Media File…"
+msgstr "Atverti medijos failą…"
+
+msgid "Open URL…"
+msgstr "Atverti adresą…"
+
+msgid "Import Channel List…"
+msgstr "Importuoti kanalų sąrašą…"
+
+msgid "Export Channel List…"
+msgstr "Eksportuoti kanalų sąrašą…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Eksportuoti programų gidą (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Perjungti TV / radiją"
+
+msgid "Recordings"
+msgstr "Įrašai"
+
+msgid "Programme Guide (EPG)"
+msgstr "Programų gidas (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Laikmačio įrašai"
+
+msgid "Record with Options…"
+msgstr "Įrašyti su parinktimis…"
+
+msgid "Teletext"
+msgstr "Teletekstas"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM meniu (CI modulis)…"
+
+msgid "Channel Search…"
+msgstr "Kanalų paieška…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I sąranka…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanalų redaktorius / mėgstami"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Atnaujinti interneto EPG (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Susieti IPTV kanalus su XMLTV…"
+
+msgid "Audio Track"
+msgstr "Garso takelis"
+
+msgid "Subtitles"
+msgstr "Subtitrai"
+
+msgid "Play Rate"
+msgstr "Atkūrimo sparta"
+
+msgid "Back 10 s"
+msgstr "Atgal 10 s"
+
+msgid "Forward 10 s"
+msgstr "Pirmyn 10 s"
+
+msgid "Back 1 min"
+msgstr "Atgal 1 min"
+
+msgid "Forward 1 min"
+msgstr "Pirmyn 1 min"
+
+msgid "Back to Live"
+msgstr "Grįžti į tiesioginį eterį"
+
+msgid "Jump"
+msgstr "Peršokti"
+
+msgid "Previous"
+msgstr "Ankstesnis"
+
+msgid "Random Order"
+msgstr "Atsitiktinė tvarka"
+
+msgid "Endless Playback"
+msgstr "Begalinis atkūrimas"
+
+msgid "Playlist"
+msgstr "Grojaraštis"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Išlaikyti laiko poslinkį kaip įrašą"
+
+msgid "Rebuild Playback"
+msgstr "Atkurti grojimą iš naujo"
+
+msgid "Video Off (audio only)"
+msgstr "Vaizdas išjungtas (tik garsas)"
+
+msgid "Show Selected Channel"
+msgstr "Rodyti pasirinktą kanalą"
+
+msgid "Swap Pictures"
+msgstr "Sukeisti vaizdus"
+
+msgid "Picture in Picture"
+msgstr "Vaizdas vaizde"
+
+msgid "Channel Mosaic…"
+msgstr "Kanalų mozaika…"
+
+msgid "Stop in {mins} min"
+msgstr "Stabdyti po {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Stabdyti po dabartinės laidos"
+
+msgid "Sleep Timer"
+msgstr "Miego laikmatis"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Garsas vėliau (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Garsas anksčiau (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Atstatyti"
+
+msgid "Audio Delay (this channel)"
+msgstr "Garso vėlinimas (šis kanalas)"
+
+msgid "Full Screen"
+msgstr "Visas ekranas"
+
+msgid "Show/Hide Channel List"
+msgstr "Rodyti/slėpti kanalų sąrašą"
+
+msgid "Aspect / Zoom"
+msgstr "Kraštinių santykis / mastelis"
+
+msgid "Window Size"
+msgstr "Lango dydis"
+
+msgid "Picture Settings…"
+msgstr "Vaizdo nustatymai…"
+
+msgid "Equalizer…"
+msgstr "Glodintuvas…"
+
+msgid "Radio Visualisation"
+msgstr "Radijo vizualizacija"
+
+msgid "Screenshot"
+msgstr "Ekrano kopija"
+
+msgid "Plugins…"
+msgstr "Papildiniai…"
+
+msgid "About LinDVB"
+msgstr "Apie LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Rodyti/slėpti kanalų sąrašą (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Pagrindinis meniu (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Programų gidas (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletekstas (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Rodyti TV kanalus (Ctrl+M perjungia)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Rodyti radijo stotis (Ctrl+M perjungia)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Rodyti jūsų įrašus (dukart spustelėjus atkuriama)"
+
+msgid "Search name or number"
+msgstr "Ieškoti pavadinimo ar numerio"
+
+msgid "All groups"
+msgstr "Visos grupės"
+
+msgid "Previous channel (Page Down)"
+msgstr "Ankstesnis kanalas (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pauzė / laiko poslinkis (tarpas)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Stabdyti (išjungti kanalą)"
+
+msgid "Next channel (Page Up)"
+msgstr "Kitas kanalas (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Įrašyti dabartinį kanalą (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Pasirinkti šio įrašo formatą ir takelius"
+
+msgid "Seek"
+msgstr "Padėtis"
+
+msgid "LIVE"
+msgstr "TIESIOGIAI"
+
+msgid "Back to live (L)"
+msgstr "Grįžti į tiesioginį eterį (L)"
+
+msgid "Mute (M)"
+msgstr "Nutildyti (M)"
+
+msgid "Volume"
+msgstr "Garsumas"
+
+msgid "Audio track"
+msgstr "Garso takelis"
+
+msgid "Playback and picture settings"
+msgstr "Atkūrimo ir vaizdo nustatymai"
+
+msgid "Full screen (F)"
+msgstr "Visas ekranas (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nDabar: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} iš {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Rodoma įrašų: {n} iš {total}"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Rodoma mėgstamų: {n} iš {total}"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Rodoma radijo stočių: {n} iš {total}"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Rodoma TV kanalų: {n} iš {total}"
+
+msgid "Add to Favourites"
+msgstr "Pridėti prie mėgstamų"
+
+msgid "Remove from Favourites"
+msgstr "Pašalinti iš mėgstamų"
+
+msgid "Edit…"
+msgstr "Redaguoti…"
+
+msgid "Show as Picture in Picture"
+msgstr "Rodyti kaip vaizdą vaizde"
+
+msgid "Select a channel in the list first"
+msgstr "Pirmiausia pasirinkite kanalą sąraše"
+
+msgid "By channel"
+msgstr "Pagal kanalą"
+
+msgid "By title"
+msgstr "Pagal pavadinimą"
+
+msgid "Newest first"
+msgstr "Naujausi pirmiau"
+
+msgid "Oldest first"
+msgstr "Seniausi pirmiau"
+
+msgid "Largest first"
+msgstr "Didžiausi pirmiau"
+
+msgid "Sort the recordings"
+msgstr "Rikiuoti įrašus"
+
+msgid "Open the recording folder"
+msgstr "Atverti įrašų aplanką"
+
+msgid "Look for new recordings"
+msgstr "Ieškoti naujų įrašų"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Įrašų dar nėra.\n\nĮrašai saugomi aplanke\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Nuostatose nenustatytas įrašų aplankas."
+
+msgid "Recording in progress"
+msgstr "Vyksta įrašymas"
+
+msgid "Watched"
+msgstr "Peržiūrėta"
+
+msgid "Watched up to {pos}"
+msgstr "Peržiūrėta iki {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Įrašas nerastas: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Tęsiama nuo {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Aplankas nerastas: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Nepavyksta atverti {folder}: {message}"
+
+msgid "Play"
+msgstr "Atkurti"
+
+msgid "Play from the Beginning"
+msgstr "Atkurti nuo pradžios"
+
+msgid "Details…"
+msgstr "Išsami informacija…"
+
+msgid "Mark as Unwatched"
+msgstr "Žymėti kaip nežiūrėtą"
+
+msgid "Mark as Watched"
+msgstr "Žymėti kaip žiūrėtą"
+
+msgid "Show in Folder"
+msgstr "Rodyti aplanke"
+
+msgid "Delete…"
+msgstr "Šalinti…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Prieš šalindami sustabdykite įrašymą"
+
+msgid "Delete “{title}”?"
+msgstr "Šalinti „{title}“?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nFailas bus pašalintas iš disko."
+
+msgid "Deleted {name}"
+msgstr "{name} pašalinta"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Nepavyksta pašalinti {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Derinamas {name}…"
+
+msgid "Search recordings"
+msgstr "Ieškoti įrašuose"
+
+msgid "No radio stations in the channel list"
+msgstr "Kanalų sąraše nėra radijo stočių"
+
+msgid "No TV channels in the channel list"
+msgstr "Kanalų sąraše nėra TV kanalų"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – perjungta į {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} šiuo metu netransliuoja"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Tiesioginė TV sustabdyta: imtuvas reikalingas laikmačio įrašymui"
+
+msgid "Stopped"
+msgstr "Sustabdyta"
+
+msgid "Sound {ms} ms later"
+msgstr "Garsas {ms} ms vėliau"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Garsas {v0} ms anksčiau"
+
+msgid "Audio delay off"
+msgstr "Garso vėlinimas išjungtas"
+
+msgid "Playing {item}"
+msgstr "Atkuriama {item}"
+
+msgid "Open media files"
+msgstr "Atverti medijos failus"
+
+msgid "Open URL"
+msgstr "Atverti adresą"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Atverti"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importuoti kanalų sąrašą (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Nepavyko importuoti {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importuota naujų kanalų: {total_a}, atnaujintų: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Eksportuoti kanalus (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Eksportuota į {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Eksportuoti programų gidą (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Nepavyksta įrašyti {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Nėra ką įrašyti"
+
+msgid "This channel is already being recorded"
+msgstr "Šis kanalas jau įrašomas"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletekstas: trūksta dekoderio (gst-plugins-bad su libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletekstas: šiame kanale nepasiekiamas"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teletekstui reikia DVB kanalo"
+
+msgid "Volume {v0}%"
+msgstr "Garsumas {v0}%"
+
+msgid "Off"
+msgstr "Išjungta"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Paslėpti subtitrai (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Kalbų: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Garso takelių: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Ekrano kopija įrašyta: {path}"
+
+msgid "Screenshot failed"
+msgstr "Ekrano kopija nepavyko"
+
+msgid "Picture Settings"
+msgstr "Vaizdo nustatymai"
+
+msgid "Restore Defaults"
+msgstr "Atkurti numatytąsias reikšmes"
+
+msgid "Equalizer"
+msgstr "Glodintuvas"
+
+msgid "Leave full screen (F)"
+msgstr "Išeiti iš viso ekrano (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Vizualizacija nepavyko: {e}"
+
+msgid "Radio visualisation"
+msgstr "Radijo vizualizacija"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Radijo vizualizacija (tik radijui ir garsui)"
+
+msgid "Playback stops at {v0}"
+msgstr "Atkūrimas sustos {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Miego laikmačiui nėra laidos informacijos"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Miego laikmatis: atkūrimas sustabdytas"
+
+msgid "No programme information"
+msgstr "Nėra laidos informacijos"
+
+msgid "Next: {v0}  {title}"
+msgstr "Toliau: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signalas {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Tiesiogiai"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Laiko poslinkis −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Žiūrėkite ir įrašykite DVB-S/S2, DVB-C, DVB-T/T2, ATSC ir interneto televiziją naudodami Linux DVB API ir GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Susieti IPTV kanalus su XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV gidas dar neįkeltas. Nustatykite XMLTV adresą EPG nustatymuose ir pirmiausia atsisiųskite gidą; susiejimas prasidės automatiškai po atsisiuntimo."
+
+msgid "Download XMLTV guide now"
+msgstr "Atsisiųsti XMLTV gidą dabar"
+
+msgid "Only channels without guide"
+msgstr "Tik kanalai be gido"
+
+msgid "Match"
+msgstr "Susiejimas"
+
+msgid "Guide channel:"
+msgstr "Gido kanalas:"
+
+msgid "Assign"
+msgstr "Priskirti"
+
+msgid "Suggest"
+msgstr "Pasiūlyti"
+
+msgid "Auto-match all"
+msgstr "Susieti viską automatiškai"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Susieti kiekvieną kanalą, kuris nebuvo priskirtas rankiniu būdu"
+
+msgid "Reset to automatic"
+msgstr "Grąžinti į automatinį"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Leisti automatiniam susiejimui vėl nuspręsti pasirinktam kanalui"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Gido kanalą turi {done} iš {v1} kanalų"
+
+msgid "No suggestion for {name}"
+msgstr "Nėra pasiūlymo kanalui {name}"
