@@ -64,6 +64,8 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | EPG search (case, whole word, description) | `English.lng:409-412` `mnuSearchCase`, `mnuSearchDescription`, `mnuSearchWord` | **Yes** (case and description options) |
 | Search the web for a programme | `Default/EPG_URLList.ini` (Google, IMDb, Wikipedia, TMDB…), `btnInternet` | **Yes**: configurable URL list |
 | EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Yes**: XMLTV import for internet channels; the whole guide can be exported as XMLTV (Menu ▸ File, or the button in the programme guide) |
+| ATSC programme guide (PSIP) | – | **Yes**: virtual channel table (TVCT/CVCT) with major.minor numbers, EIT and ETT descriptions, system time table for GPS time; parsed from the raw sections |
+| Closed captions (CEA-608/708) | – | **Yes**: `cc708overlay`, switchable in the Subtitles menu |
 | EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
 | EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |

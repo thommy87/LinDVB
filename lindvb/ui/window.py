@@ -220,6 +220,8 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self._run_plugin_action(p.get_int32()))
         self.add_action(a)
         for name, init, fn in (("video-off", False, lambda v: self.player.disable_video(v)),
+                               ("closed-captions", bool(self.settings.get("closed_captions")),
+                                lambda v: self.player.set_closed_captions(v)),
                                ("pl-random", False, lambda v: setattr(self, "playlist_random", v)),
                                ("pl-repeat", False, lambda v: setattr(self, "playlist_repeat", v))):
             a = Gio.SimpleAction.new_stateful(name, None, GLib.Variant.new_boolean(init))
@@ -654,7 +656,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _row_bind(self, _f, li):
         c = li.get_item().data
         num, icon, lbl, extra = list(_children(li.get_child()))
-        num.set_text(str(c.number))
+        num.set_text(c.vchannel or str(c.number))
         logo = self._logo_texture(c.logo) if c.logo else None
         if logo is not None:
             icon.set_from_paintable(logo)
@@ -718,6 +720,8 @@ class MainWindow(Gtk.ApplicationWindow):
         if q:
             if q.isdigit():
                 return str(c.number).startswith(q)
+            if c.vchannel and q.replace("-", ".").replace(".", "").isdigit():
+                return c.vchannel.startswith(q.replace("-", "."))      # ATSC "7.1"
             return q in c.name.lower()
         return True
 
@@ -1259,6 +1263,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("stats", self._on_stats)
             self.capture.connect("error", lambda _c, m: self._on_play_error(m))
             self.capture.connect("eit", self.app.on_eit)
+            self.capture.connect("tsid", self.app.on_tsid)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
 
@@ -1675,6 +1680,10 @@ class MainWindow(Gtk.ApplicationWindow):
         subs, cur = self.player.subtitle_tracks()
         for i, t in enumerate(subs):
             self.sub_menu.append(("● " if i == cur else "") + t, f"win.subtitle({i})")
+        if self.player.has_closed_captions():
+            cc = Gio.Menu()
+            cc.append(_("Closed Captions (CEA-608/708)"), "win.closed-captions")
+            self.sub_menu.append_section(None, cc)
         self._update_osd_tags()
 
     def _update_osd_tags(self):
@@ -1940,7 +1949,7 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         self._osd_secs = seconds
         now, nxt = self.app.epg.now_next(c.epg_key)
-        self.osd_num.set_text(str(c.number))
+        self.osd_num.set_text(c.vchannel or str(c.number))
         self.osd_title.set_text(c.name)
         self.osd_clock.set_text(hm(now.start) + "–" + hm(now.end) if now else hm(time.time()))
         self._update_heading()

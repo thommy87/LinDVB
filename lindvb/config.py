@@ -108,6 +108,8 @@ DEFAULTS = {
     # with type "mhw1", "mhw2" or "freesat" (see lindvb.epgsources).
     "epg_provider_freqs": [[10847, "v", "mhw2"], [11428, "h", "freesat"]],
     "deinterlace": True,
+    # CEA-608/708 closed captions (ATSC, US cable)
+    "closed_captions": False,
     # Internet streams: "auto" plays HLS with separate audio renditions on
     # playbin3 (keeps sound and picture in sync), everything else on playbin;
     # "playbin" or "playbin3" forces one of them.

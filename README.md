@@ -84,7 +84,11 @@ picture and hides itself when the mouse is still.
 * Teletext window with page navigation, find, copy and save, opened from the "TXT"
   button in the header bar (greyed out when the channel carries no teletext)
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
-  e.g. 150 or 777) drawn over the video in sync
+  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-608/708) for
+  ATSC and US cable channels (Subtitles ▸ Closed Captions)
+* ATSC (USA, Canada, Mexico, South Korea): virtual channel numbers like 7.1 in the
+  channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
+  (channel table, EIT and extended texts, GPS time)
 * Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
 * DVB-I (TV ▸ DVB-I Setup): the channel list of your region from the German
   service list registry, with postcode, channel numbers (LCN), logos and a daily

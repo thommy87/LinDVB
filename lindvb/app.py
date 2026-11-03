@@ -144,6 +144,19 @@ class LinDVBApp(Gtk.Application):
             self.epg.add(key, ev)
         self._epg_dirty = True
 
+    def on_tsid(self, cap, tsid):
+        """Channel lists without transport stream ids (older scans) learn it from
+        the PAT, so the DVB guide (keyed by tsid:sid) finds its channels."""
+        mux = cap.channel.mux_key
+        changed = False
+        for c in self.db.channels:
+            if not c.tsid and not c.is_iptv and c.mux_key == mux:
+                c.tsid = tsid
+                changed = True
+        if changed:
+            self.db.save()
+            self._epg_dirty = True
+
     def _flush_epg(self):
         if self._epg_dirty:
             self._epg_dirty = False

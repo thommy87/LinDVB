@@ -58,6 +58,7 @@ class Channel:
     xmltv_manual: bool = False       # the match was chosen by the user
     favourite: bool = False
     number: int = 0
+    vchannel: str = ""               # ATSC virtual channel "7.1" (major.minor)
     # DVB-I (see lindvb.dvbi): the service's unique identifier, its logical
     # channel number, the LCN flags, the logo and all service instances of
     # the service (the tuning fields above hold the instance in use)
@@ -273,6 +274,9 @@ def parse_dvbv5(text, root=""):
             stream_id=int(kv.get("STREAM_ID", -1) or -1),
             diseqc=int(kv.get("SAT_NUMBER", -1) or -1),
             sid=int(kv.get("SERVICE_ID", 0) or 0),
+            tsid=int(kv.get("TRANSPORT_ID", 0) or 0),
+            onid=int(kv.get("NETWORK_ID", 0) or 0),
+            vchannel=kv.get("VCHANNEL", "").strip(),
             video_pid=vpid, pcr_pid=vpid, audio_pids=apids,
             subtitle_pids=others, radio=vpid == 0 and bool(apids),
         )
@@ -288,6 +292,12 @@ def write_dvbv5(channels):
             continue
         buf.write(f"[{c.name}]\n")
         buf.write(f"\tSERVICE_ID = {c.sid}\n")
+        if c.tsid:
+            buf.write(f"\tTRANSPORT_ID = {c.tsid}\n")
+        if c.onid:
+            buf.write(f"\tNETWORK_ID = {c.onid}\n")
+        if c.vchannel:
+            buf.write(f"\tVCHANNEL = {c.vchannel}\n")
         if c.video_pid:
             buf.write(f"\tVIDEO_PID = {c.video_pid}\n")
         if c.audio_pids:
