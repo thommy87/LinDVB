@@ -273,6 +273,20 @@ def test_aurora_mountains_scroll_left_and_grow_from_the_music():
     assert all(0.02 <= h <= 0.26 for h in style.ridge)
 
 
+def test_supernova_burns_out_when_the_music_stops():
+    pytest.importorskip("cairo")
+    from lindvb.visuals import Supernova
+    from lindvb.ui.gpuvisuals import SUPERNOVA
+    style = Supernova()
+    for f in _frames(300, 0.6, -15.0):
+        style.params(f)
+    assert style.presence == 1.0
+    for f in _frames(660, 0.0, -90.0):               # 11 s of silence: burnt out
+        style.params(f)
+    assert style.presence == 0.0
+    assert "u_presence" in SUPERNOVA and "u_wall" in SUPERNOVA    # the flash and the lone star
+
+
 def test_aurora_fades_away_when_the_music_stops():
     from lindvb.visuals import AuroraBorealis
     style = AuroraBorealis(seed=3)

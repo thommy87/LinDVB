@@ -837,6 +837,8 @@ class Supernova(_Scene):
     and drift outwards, growing more transparent until they vanish while new
     ones follow, so the star keeps spreading without ever getting bigger.
     Behind it a spiral galaxy turns slowly and stars light up and go out.
+    When the music stops the veils thin out, a last flash fills the screen,
+    then all goes dark and a single star twinkles where the supernova was.
     Veils are born only while music plays; their strength and colours come
     from the music of their birth, the spectrum sets their brightness around
     the star (bass at the top, treble at the bottom), the beat makes the
@@ -844,6 +846,7 @@ class Supernova(_Scene):
     id, label = "supernova", "Supernova (modern)"
 
     PACE = 0.10
+    FADE_OUT = 10.0
     VEILS = 9             # veils alive at once, as in the shader
     FLOW = 1.1            # veil lives per clock unit
 

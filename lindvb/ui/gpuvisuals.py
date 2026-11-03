@@ -697,6 +697,8 @@ const int VEILS = 9;
 uniform float u_flow;        // how far the veils have travelled (one unit: one veil's life)
 uniform float u_veil[9];     // the strength each veil got from the music when it was born
 uniform float u_hue[9];      // and its tone: 0 bass-heavy (warm) .. 1 bright (cool)
+uniform float u_presence;    // 1 while music plays, sinks to 0 when it stops
+uniform float u_wall;        // seconds of wall time, only for the lone star left in silence
 const vec3 PAL[6] = vec3[6](vec3(1.0, 0.48, 0.10),     // orange       (warm: bass)
                             vec3(1.0, 0.82, 0.28),     // yellow
                             vec3(1.0, 0.32, 0.68),     // pink
@@ -727,7 +729,14 @@ void main() {
     float ang = fract(atan(q.x, -q.y) / TAU);
     float c = u_clock;
     float bass = u_energy.x, mid = u_energy.y, treble = u_energy.z, level = u_energy.w;
+    // when the music stops: the veils thin out, a last flash fills the screen,
+    // then all goes dark and a single star twinkles where the supernova was
+    float gone = 1.0 - u_presence;
+    float veils_left = smoothstep(0.62, 0.0, gone);
+    float flash = smoothstep(0.50, 0.70, gone) * smoothstep(0.86, 0.70, gone);
+    float scene = 1.0 - smoothstep(0.68, 0.80, gone);
     vec3 col = vec3(0.0, 0.0, 0.012);
+    vec3 bgcol = col;
     col += starfield(px, 6.0 * u_unit, 0.10, u_t, 0.8) * 0.6;            // faint, steady
     col += blinking(px, 21.0 * u_unit, 0.45, 1.3) * (1.0 + 0.8 * treble);
     col += blinking(px + 57.0, 70.0 * u_unit, 0.30, 1.8) * 1.3;
@@ -756,7 +765,7 @@ void main() {
         float seed = floor(life) * 7.31 + fk * 3.17;
         float R = 0.03 * pow(18.0, s);                          // its radius grows exponentially
         float strength = u_veil[k];
-        float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.0) * strength;
+        float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.0) * strength * veils_left;
         // wider than high, like the screen, and turning a little as it travels
         vec2 u = rot(seed + s * 0.35) * (q * vec2(0.78, 1.0)) / R;
         float ur = length(u);
@@ -795,6 +804,18 @@ void main() {
     col += vec3(1.0, 0.70, 0.45) * exp(-r / 0.22) * 0.25;
     float lum = dot(col, vec3(0.3, 0.55, 0.15));
     col = max(mix(vec3(lum), col, 1.3), 0.0);                 // a little more colour
+    // the last flash grows from the core over the whole screen, then the dark
+    float reach = mix(0.05, 2.5, smoothstep(0.50, 0.66, gone));
+    col += vec3(1.0, 0.97, 0.92) * 6.0 * flash * smoothstep(reach, reach * 0.4, r);
+    col = mix(bgcol, col, scene);
+    if (gone > 0.7) {                                          // the lone star
+        float tw = 0.75 + 0.25 * sin(u_wall * 2.3) * sin(u_wall * 0.77 + 1.0);
+        vec2 sd = q / (0.0035 * tw);
+        float star = exp(-dot(sd, sd)) * 1.6
+                   + 0.35 * exp(-abs(sd.x) / 0.8) * exp(-abs(sd.y) / 18.0)
+                   + 0.35 * exp(-abs(sd.y) / 0.8) * exp(-abs(sd.x) / 18.0);
+        col += vec3(1.0, 0.95, 0.88) * star * tw * smoothstep(0.72, 0.9, gone);
+    }
     fragColor = vec4(tonemap(col * 1.1) + dither(), 1.0);
 }
 """
@@ -1462,6 +1483,8 @@ class SceneRenderer(Renderer):
             prog.set("u_flow", st.flow)
             prog.set_array("u_veil", st.veils, 1)
             prog.set_array("u_hue", st.hues, 1)
+            prog.set("u_presence", st.presence)
+            prog.set("u_wall", f.t)
         ctx.fullscreen(prog)
         ctx.footer(f.caption)
 
