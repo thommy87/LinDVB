@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: de\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Senderliste importieren (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Mit diesem Sender starten (Name oder Nummer)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} um {time}"
+
+msgid "Watch"
+msgstr "Ansehen"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Erinnerung: {title} auf {channel} um {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Bitte zuerst eine XMLTV-Adresse in den Einstellungen eintragen"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV-Programmführer wird geladen…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} ohne Programmführer (TV ▸ IPTV-Sender XMLTV zuordnen)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: Dienstliste wird geladen…"
+
+msgid "Search the web"
+msgstr "Im Web suchen"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Videotext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Untertitel (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG-Daten (TS)"
+
+msgid "All audio tracks"
+msgstr "Alle Tonspuren"
+
+msgid "Preferred language only"
+msgstr "Nur bevorzugte Sprache"
+
+msgid "First audio track only"
+msgstr "Nur erste Tonspur"
+
+msgid "Record"
+msgstr "Aufnehmen"
+
+msgid "Record and tune"
+msgstr "Aufnehmen und umschalten"
+
+msgid "Tune only"
+msgstr "Nur umschalten"
+
+msgid "Hibernate"
+msgstr "Ruhezustand"
+
+msgid "None"
+msgstr "Keine"
+
+msgid "Power off"
+msgstr "Ausschalten"
+
+msgid "Quit LinDVB"
+msgstr "LinDVB beenden"
+
+msgid "Standby"
+msgstr "Bereitschaft"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Internet-Streams haben keinen Videotext, keine Untertitel und keine EPG-Daten."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 behält eine Tonspur (die bevorzugte Sprache, wenn sie gesendet wird)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Die Audiodatei behält eine Tonspur (die bevorzugte Sprache, wenn sie gesendet wird)."
+
+msgid "Fr"
+msgstr "Fr"
+
+msgid "Mo"
+msgstr "Mo"
+
+msgid "Sa"
+msgstr "Sa"
+
+msgid "Su"
+msgstr "So"
+
+msgid "Th"
+msgstr "Do"
+
+msgid "Tu"
+msgstr "Di"
+
+msgid "We"
+msgstr "Mi"
+
+msgid "Scheduled"
+msgstr "Geplant"
+
+msgid "Done"
+msgstr "Erledigt"
+
+msgid "Channel missing"
+msgstr "Sender fehlt"
+
+msgid "Tuned"
+msgstr "Umgeschaltet"
+
+msgid "Recording"
+msgstr "Aufnahme läuft"
+
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+msgid "Missed"
+msgstr "Verpasst"
+
+msgid "After recording: {action}"
+msgstr "Nach der Aufnahme: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Das Modul wurde entfernt oder zurückgesetzt."
+
+msgid "CAM Menu"
+msgstr "CAM-Menü"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "CAM-Menü öffnen"
+
+msgid "Select"
+msgstr "Auswählen"
+
+msgid "Back"
+msgstr "Zurück"
+
+msgid "Close Menu"
+msgstr "Menü schließen"
+
+msgid "Device: {path} – {state}"
+msgstr "Gerät: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Öffnen Sie das CAM-Menü, um die Einstellungen des Moduls, Smartcard-Informationen und den Jugendschutz zu sehen."
+
+msgid "The module has not finished starting yet."
+msgstr "Das Modul ist noch nicht fertig gestartet."
+
+msgid "Custom colour"
+msgstr "Eigene Farbe"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB-Blau (Standard)"
+
+msgid "System accent colour"
+msgstr "Akzentfarbe des Systems"
+
+msgid "Preferences"
+msgstr "Einstellungen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Appearance"
+msgstr "Darstellung"
+
+msgid "Language"
+msgstr "Sprache"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Wird beim nächsten Start von LinDVB wirksam."
+
+msgid "Accent colour"
+msgstr "Akzentfarbe"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Für Hervorhebungen, Auswahl und Schaltflächen in allen Fenstern."
+
+msgid "On-screen display"
+msgstr "Bildschirmanzeige"
+
+msgid "OSD display time (s)"
+msgstr "Anzeigedauer OSD (s)"
+
+msgid "Visualisation"
+msgstr "Visualisierung"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Was über der Radio-Visualisierung angezeigt wird, während ein Radiosender oder eine Audiodatei läuft. Titelangaben stammen aus dem RadioText von DVB-Radio, dem Streamtitel von Internetradio und den Tags von Audiodateien."
+
+msgid "Overlay"
+msgstr "Einblendung"
+
+msgid "Station logo tile"
+msgstr "Senderlogo-Kachel"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Das Logo des Senders oder eine Kachel mit dem Sendernamen, wenn es keines gibt."
+
+msgid "Album cover"
+msgstr "Albumcover"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Das Cover des laufenden Titels, aus der Datei oder online gesucht."
+
+msgid "Song information"
+msgstr "Titelinformationen"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Interpret, Album und Jahr, Titelnummer und Titel. Ohne Titelangaben werden Sender und laufende Sendung angezeigt."
+
+msgid "Clock in the top right corner"
+msgstr "Uhr oben rechts"
+
+msgid "Sources"
+msgstr "Quellen"
+
+msgid "Look up covers online"
+msgstr "Cover online suchen"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Sendet Interpret und Titel des laufenden Stücks an die iTunes Search API, um Album, Jahr und Cover zu finden."
+
+msgid "Station logo folder"
+msgstr "Ordner für Senderlogos"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Bilddateien (PNG, SVG, JPG), benannt nach dem Sender, z. B. „Bayern 3.png“. Logos, die wie bei DVBViewer nach dem Sender benannt sind, funktionieren unverändert. Leer: {v0}"
+
+msgid "Playback"
+msgstr "Wiedergabe"
+
+msgid "Deinterlace video"
+msgstr "Video deinterlacen"
+
+msgid "Screenshot folder"
+msgstr "Ordner für Bildschirmfotos"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Timeshift-Ordner"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Timeshift-Puffer (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner und LNB"
+
+msgid "DVB hardware"
+msgstr "DVB-Hardware"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Adapternummern, die LinDVB verwenden darf, durch Komma getrennt."
+
+msgid "DVB adapters"
+msgstr "DVB-Adapter"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Ganzen Transponder erfassen"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Nötig für alle Tonspuren, wenn die Senderliste nur eine Audio-PID kennt."
+
+msgid "Satellite LNB"
+msgstr "Satelliten-LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF unteres Band (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF oberes Band (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Umschaltfrequenz (kHz)"
+
+msgid "Recording folder"
+msgstr "Aufnahmeordner"
+
+msgid "File naming scheme"
+msgstr "Schema für Dateinamen"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Platzhalter: %year %date %time %end %station %name, / für Unterordner"
+
+msgid "Timer padding"
+msgstr "Vor- und Nachlauf"
+
+msgid "Start earlier by (min)"
+msgstr "Früher beginnen um (min)"
+
+msgid "Stop later by (min)"
+msgstr "Später enden um (min)"
+
+msgid "Timers"
+msgstr "Timer"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Nach dem Anlegen eines Timers das Timerfenster öffnen"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Nach „Aufnehmen“ im Programmführer den neuen Timer gleich bearbeiten."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Programmführer: EPG aus dem Sendesignal, Internet-EPG (XMLTV) und das EPG anderer Anbieter."
+
+msgid "Conditional access"
+msgstr "Entschlüsselung"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Entschlüsselung der verschlüsselten Sender, die Sie abonniert haben, mit Ihrer eigenen Karte in einem Softcam oder CI-Modul."
+
+msgid "None (leave scrambled)"
+msgstr "Keine (verschlüsselt lassen)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Externes Softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Hardware-CI / CI+-Modul"
+
+msgid "Descrambling via"
+msgstr "Entschlüsselung über"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI-Socket"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix-Socket-Pfad oder Host:Port."
+
+msgid "CI module"
+msgstr "CI-Modul"
+
+msgid "CI adapter number"
+msgstr "CI-Adapternummer"
+
+msgid "CA device number"
+msgstr "CA-Gerätenummer"
+
+msgid "Plugins"
+msgstr "Plugins"
+
+msgid "Load plugins at startup"
+msgstr "Plugins beim Start laden"
+
+msgid "Manage Plugins…"
+msgstr "Plugins verwalten…"
+
+msgid "Format and tracks"
+msgstr "Format und Spuren"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Vorgaben für neue Timer und die Aufnahmetaste. Jeder Timer und eine mit „Mit Optionen aufnehmen…“ gestartete Aufnahme kann sie ändern.\nTS: Video, alle Tonspuren, Untertitel, Videotext und EPG-Daten. MKV: Video, mehrere Tonspuren und Untertitel. MPG: Video und mehrere Tonspuren. MP4: Video und eine Tonspur. Internet-Streams haben keinen Videotext, keine Untertitel und keine EPG-Daten; HLS- und DASH-Streams werden mit einer Tonspur aufgenommen."
+
+msgid "TV format"
+msgstr "TV-Format"
+
+msgid "Radio format"
+msgstr "Radio-Format"
+
+msgid "Audio tracks"
+msgstr "Tonspuren"
+
+msgid "Preferred audio language"
+msgstr "Bevorzugte Audiosprache"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Gilt für „Nur bevorzugte Sprache“ und für MP4, das eine Spur behält. Spuren mit Audiodeskription werden übersprungen. Ohne Treffer wird die erste Spur aufgenommen."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} können nur in MPEG-TS erhalten bleiben, daher werden Aufnahmen als TS gespeichert."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} können nur in TS oder MKV erhalten bleiben, daher werden Aufnahmen als TS gespeichert."
+
+msgid " and "
+msgstr " und "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Es ist keine bevorzugte Audiosprache eingestellt, daher wird nur die erste Tonspur aufgenommen."
+
+msgid "Desktop accent: {found}"
+msgstr "Akzentfarbe des Desktops: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Keine Akzentfarbe des Desktops gefunden, LinDVB-Blau wird verwendet."
+
+msgid "Current accent: {color}"
+msgstr "Aktuelle Akzentfarbe: {color}"
+
+msgid "Channel Editor"
+msgstr "Sendereditor"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Category"
+msgstr "Kategorie"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Fav"
+msgstr "Fav"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Filter channels"
+msgstr "Sender filtern"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Stream URL"
+msgstr "Stream-Adresse"
+
+msgid "Favourite"
+msgstr "Favorit"
+
+msgid "Radio"
+msgstr "Radio"
+
+msgid "Encrypted"
+msgstr "Verschlüsselt"
+
+msgid "Tuning"
+msgstr "Abstimmung"
+
+msgid "System"
+msgstr "System"
+
+msgid "Polarity"
+msgstr "Polarisation"
+
+msgid "Modulation"
+msgstr "Modulation"
+
+msgid "Frequency (kHz)"
+msgstr "Frequenz (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Symbolrate (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Bandbreite (Hz)"
+
+msgid "Stream ID"
+msgstr "Stream-ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC-Port (-1 keiner)"
+
+msgid "Service and PIDs"
+msgstr "Dienst und PIDs"
+
+msgid "Service ID"
+msgstr "Service-ID"
+
+msgid "Transport ID"
+msgstr "Transport-ID"
+
+msgid "Video PID"
+msgstr "Video-PID"
+
+msgid "Audio PIDs"
+msgstr "Audio-PIDs"
+
+msgid "Teletext PID"
+msgstr "Videotext-PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Änderungen übernehmen (Strg+S)"
+
+msgid "New channel"
+msgstr "Neuer Sender"
+
+msgid "Delete channel"
+msgstr "Sender löschen"
+
+msgid "Move up"
+msgstr "Nach oben"
+
+msgid "Move down"
+msgstr "Nach unten"
+
+msgid "Sort by group and name"
+msgstr "Nach Gruppe und Name sortieren"
+
+msgid "No channel selected"
+msgstr "Kein Sender ausgewählt"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Wählen Sie einen Sender in der Liste aus, um ihn zu bearbeiten."
+
+msgid "Unnamed channel"
+msgstr "Unbenannter Sender"
+
+msgid "Recording and Device Statistics"
+msgstr "Aufnahme- und Gerätestatistik"
+
+msgid "Active recordings:"
+msgstr "Laufende Aufnahmen:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nNächster Timer: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Videotext – {name}"
+
+msgid "Find on page"
+msgstr "Auf der Seite suchen"
+
+msgid "Copy page"
+msgstr "Seite kopieren"
+
+msgid "Save page"
+msgstr "Seite speichern"
+
+msgid "Waiting for teletext…"
+msgstr "Warte auf Videotext…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec fehlt (gst-plugins-bad mit libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Suche Seite {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Keine Entschlüsselung eingerichtet. Verschlüsselte Sender, für die Sie berechtigt sind, lassen sich entschlüsseln, wenn Sie LinDVB in den Einstellungen auf Ihr eigenes Softcam oder CI-Modul verweisen."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Anbieter „{v0}“ ist nicht verfügbar."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Anbieter: CI-Modul – {status}\nDas Modul entschlüsselt mit Ihrer Karte im Tuner."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Anbieter: {name}\nLinDVB leitet ECM-Sektionen an Ihren eigenen Kartenclient weiter und verwendet die zurückgegebenen Kontrollwörter; es enthält selbst keine Schlüssel."
+
+msgid "Open CAM Menu…"
+msgstr "CAM-Menü öffnen…"
+
+msgid "Failed to load: {v0}"
+msgstr "Laden fehlgeschlagen: {v0}"
+
+msgid "Switched off"
+msgstr "Ausgeschaltet"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Änderungen werden beim nächsten Start von LinDVB wirksam."
+
+msgid "No plugins installed."
+msgstr "Keine Plugins installiert."
+
+msgid "Plugin actions"
+msgstr "Plugin-Aktionen"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Plugin-Ordner: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I-Einrichtung"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I lädt die Senderliste Ihrer Region aus dem Internet: Nummerierung, Namen und Logos und für jeden Sender die Empfangswege. LinDVB nutzt nach Möglichkeit die Antennen-, Kabel- oder Satellitensender aus Ihrem Sendersuchlauf und sonst den Internet-Stream."
+
+msgid "Privacy"
+msgstr "Datenschutz"
+
+msgid "I have read the privacy notice"
+msgstr "Ich habe den Datenschutzhinweis gelesen"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Programmführer (EPG) der DVB-I-Sender laden"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Auf einen anderen Empfangsweg (Internet, Antenne, Kabel, Satellit) wechseln, wenn einer ausfällt"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Satellitensender aus der Liste ohne Sendersuchlauf einstellen (benötigt Satellitensender in Ihrer Liste)"
+
+msgid "Service list"
+msgstr "Dienstliste"
+
+msgid "Load Lists from Registry"
+msgstr "Listen aus dem Verzeichnis laden"
+
+msgid "In use: {current}"
+msgstr "In Verwendung: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Noch keine DVB-I-Liste in Verwendung."
+
+msgid "Region"
+msgstr "Region"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Ihre Postleitzahl wählt die regionalen Sender und ihre Nummerierung. Sie wird nur an den Server der Dienstliste gesendet."
+
+msgid "Postcode"
+msgstr "Postleitzahl"
+
+msgid "No postcode: nationwide list"
+msgstr "Keine Postleitzahl: bundesweite Liste"
+
+msgid "Remove DVB-I Channels"
+msgstr "DVB-I-Sender entfernen"
+
+msgid "Update Now"
+msgstr "Jetzt aktualisieren"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Die gewählte Liste erneut laden (sie wird auch täglich geprüft)"
+
+msgid "Install Channel List"
+msgstr "Senderliste installieren"
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Asking the service list registry…"
+msgstr "Verzeichnis der Dienstlisten wird abgefragt…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Das Verzeichnis war nicht erreichbar: {error}"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} Dienstlisten von {netloc}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Das Verzeichnis bietet keine Dienstliste für Deutschland an."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Bitte eine fünfstellige Postleitzahl eingeben"
+
+msgid "Loading the service list…"
+msgstr "Dienstliste wird geladen…"
+
+msgid "In use: {v0}"
+msgstr "In Verwendung: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nWählen Sie Ihre Region und drücken Sie erneut auf Installieren."
+
+msgid "Enter Again"
+msgstr "Erneut eingeben"
+
+msgid "The service list does not know this postcode."
+msgstr "Die Dienstliste kennt diese Postleitzahl nicht."
+
+msgid "The service list server answered {code}."
+msgstr "Der Server der Dienstliste antwortete mit {code}."
+
+msgid "Try Again"
+msgstr "Erneut versuchen"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Sie können es erneut versuchen oder die bundesweite Liste ohne Postleitzahl verwenden."
+
+msgid "Nationwide List"
+msgstr "Bundesweite Liste"
+
+msgid "No DVB-I list is in use."
+msgstr "Keine DVB-I-Liste in Verwendung."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "{removed} DVB-I-Sender entfernt"
+
+msgid "All programmes"
+msgstr "Alle Sendungen"
+
+msgid "With audio description"
+msgstr "Mit Audiodeskription"
+
+msgid "With subtitles"
+msgstr "Mit Untertiteln"
+
+msgid "Programme Guide"
+msgstr "Programmführer"
+
+msgid "Now / Next"
+msgstr "Jetzt / Danach"
+
+msgid "Per Channel"
+msgstr "Pro Sender"
+
+msgid "TV Guide"
+msgstr "TV-Planer"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Record Series"
+msgstr "Serie aufnehmen"
+
+msgid "Remind Me"
+msgstr "Erinnern"
+
+msgid "Search Web"
+msgstr "Im Web suchen"
+
+msgid "Export the guide as XMLTV"
+msgstr "Programmführer als XMLTV exportieren"
+
+msgid "Next"
+msgstr "Danach"
+
+msgid "Now"
+msgstr "Jetzt"
+
+msgid "Only favourites"
+msgstr "Nur Favoriten"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Barrierefreiheit (DVB-I-Programmführer)"
+
+msgid "Show:"
+msgstr "Zeigen:"
+
+msgid "Channel"
+msgstr "Sender"
+
+msgid "Start"
+msgstr "Beginn"
+
+msgid "End"
+msgstr "Ende"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Genre"
+msgstr "Genre"
+
+msgid "Day"
+msgstr "Tag"
+
+msgid "Duration"
+msgstr "Dauer"
+
+msgid "Subheading"
+msgstr "Untertitel"
+
+msgid "Title or description"
+msgstr "Titel oder Beschreibung"
+
+msgid "Include description"
+msgstr "Beschreibung einbeziehen"
+
+msgid "Case sensitive"
+msgstr "Groß-/Kleinschreibung beachten"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Serienaufnahme: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Erinnerung entfernt: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} hat bereits begonnen"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Erinnerung gesetzt: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Erinnerung entfernen"
+
+msgid "Save EPG data"
+msgstr "EPG-Daten speichern"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Behält den Programmführer nach dem Beenden von LinDVB auf der Festplatte."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "EPG-Info beim Umschalten zeigen (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nicht anzeigen."
+
+msgid "Remind before start (min)"
+msgstr "Erinnern vor Beginn (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Im Programmführer gesetzte Erinnerungen melden sich so früh."
+
+msgid "Preferred language"
+msgstr "Bevorzugte Sprache"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Wird verwendet, wenn eine Sendung in mehreren Sprachen ausgestrahlt wird."
+
+msgid "Time zone"
+msgstr "Zeitzone"
+
+msgid "Set time zone automatically"
+msgstr "Zeitzone automatisch einstellen"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Aus: feste Abweichung zu GMT für Programmführer, Timer und Uhr verwenden."
+
+msgid "Offset to GMT"
+msgstr "Abweichung zu GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Internet-EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Internet-EPG-Quelle, zusätzlich zum EPG aus dem Sendesignal."
+
+msgid "Match IPTV Channels…"
+msgstr "IPTV-Sender zuordnen…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Prüfen oder korrigieren, welcher Programmführer-Sender zu welchem M3U-Sender gehört."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway-/Freesat-Frequenzen"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Liegt ein eingestellter Sender auf einem dieser Transponder, liest LinDVB auch das EPG dieses Anbieters. Änderungen gelten beim nächsten Umschalten."
+
+msgid "Frequency (MHz)"
+msgstr "Frequenz (MHz)"
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "Polarisation"
+msgstr "Polarisation"
+
+msgid "Defaults"
+msgstr "Standardwerte"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Geben Sie die Transponderfrequenz in MHz ein."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Coversuche fehlgeschlagen: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Mit dem Hauptbild tauschen"
+
+msgid "Close picture in picture"
+msgstr "Bild im Bild schließen"
+
+msgid "Picture in picture: {error}"
+msgstr "Bild im Bild: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Bild im Bild funktioniert mit Internetsendern; DVB-Sender benötigen einen zweiten Tuner."
+
+msgid "Channel Mosaic"
+msgstr "Sendermosaik"
+
+msgid "Previous channels"
+msgstr "Vorherige Sender"
+
+msgid "Next channels"
+msgstr "Nächste Sender"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Das Mosaik zeigt Internetsender. Die Liste enthält in der aktuellen Ansicht keine."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Seite {page} von {pages} · {n} Internetsender"
+
+msgid "Click to watch {name}"
+msgstr "Klicken, um {name} anzusehen"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Erweitert"
+
+msgid "None / not satellite"
+msgstr "Keiner / kein Satellit"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frequenz"
+
+msgid "Initial letter"
+msgstr "Anfangsbuchstabe"
+
+msgid "Provider"
+msgstr "Anbieter"
+
+msgid "Channel Search"
+msgstr "Sendersuchlauf"
+
+msgid "Device"
+msgstr "Gerät"
+
+msgid "(choose…)"
+msgstr "(auswählen…)"
+
+msgid "Add folder…"
+msgstr "Ordner hinzufügen…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Ordner mit Transponderlisten (dtv-scan-tables oder .ini im DVBViewer-Stil)"
+
+msgid "Transponder list"
+msgstr "Transponderliste"
+
+msgid "LNB type"
+msgstr "LNB-Typ"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Zielgruppe"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "z. B. Astra 19,2°O"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Nach weiteren Frequenzen suchen (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Nur frei empfangbare Sender hinzufügen"
+
+msgid "Only update existing channels"
+msgstr "Nur vorhandene Sender aktualisieren"
+
+msgid "Update channel names"
+msgstr "Sendernamen aktualisieren"
+
+msgid "Group by"
+msgstr "Gruppieren nach"
+
+msgid "Start Search"
+msgstr "Suchlauf starten"
+
+msgid "Stop"
+msgstr "Stopp"
+
+msgid "Folder with transponder lists"
+msgstr "Ordner mit Transponderlisten"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Keine Transponderliste ausgewählt. Installieren Sie dtv-scan-tables oder fügen Sie einen Ordner hinzu.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nKeine Sender gefunden.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nFertig: {added} neue, {updated} aktualisierte Sender.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Aufnahme-Timer"
+
+msgid "Search channels"
+msgstr "Sender suchen"
+
+msgid "  (Radio)"
+msgstr "  (Radio)"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Repeat"
+msgstr "Wiederholen"
+
+msgid "Once"
+msgstr "Einmalig"
+
+msgid "Series"
+msgstr "Serie"
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "After"
+msgstr "Danach"
+
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Repeat every {day}"
+msgstr "Jeden {day} wiederholen"
+
+msgid "_Date"
+msgstr "_Datum"
+
+msgid "_Lead (min)"
+msgstr "_Vorlauf (min)"
+
+msgid "_End"
+msgstr "_Ende"
+
+msgid "_Start"
+msgstr "_Beginn"
+
+msgid "Repeat on"
+msgstr "Wiederholen am"
+
+msgid "_Follow (min)"
+msgstr "_Nachlauf (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Links einen Sender auswählen"
+
+msgid "_Name"
+msgstr "_Name"
+
+msgid "_Timer action"
+msgstr "_Timer-Aktion"
+
+msgid "_After recording"
+msgstr "Nach der _Aufnahme"
+
+msgid "T_V format"
+msgstr "T_V-Format"
+
+msgid "_Radio format"
+msgstr "_Radio-Format"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Nur bevorzugte Sprache: die Spuren in der Audiosprache aus den Einstellungen, ohne Audiodeskription. MP4 und die Radio-Audiodatei behalten eine Spur."
+
+msgid "Audi_o tracks"
+msgstr "T_onspuren"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Videotext gibt es nur in MPEG-TS, daher wird TS verwendet."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG-Daten (EIT) gibt es nur in MPEG-TS, daher wird TS verwendet."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS behält alle Untertitelströme. MKV erhält die Videotext-Untertitelseite als Textspur; DVB-Bitmap-Untertitel bleiben nur in TS erhalten."
+
+msgid "Tracks"
+msgstr "Spuren"
+
+msgid "File _naming scheme"
+msgstr "Schema für _Dateinamen"
+
+msgid "Folder…"
+msgstr "Ordner…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Aufnahmeordner aus den Einstellungen verwenden"
+
+msgid "Placeholders"
+msgstr "Platzhalter"
+
+msgid "Folder: "
+msgstr "Ordner: "
+
+msgid "Clear the editor"
+msgstr "Editor leeren"
+
+msgid "New"
+msgstr "Neu"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Einstellungen des Editors als neuen Timer hinzufügen"
+
+msgid "Apply"
+msgstr "Übernehmen"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Einstellungen des Editors im ausgewählten Timer speichern"
+
+msgid "Delete the selected timer"
+msgstr "Ausgewählten Timer löschen"
+
+msgid "Enable/Disable"
+msgstr "Ein/Aus"
+
+msgid "Switch the selected timer on or off"
+msgstr "Ausgewählten Timer ein- oder ausschalten"
+
+msgid "Save as default"
+msgstr "Als Standard speichern"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Diese Formate und Zusatzströme für neue Timer und manuelle Aufnahmen verwenden"
+
+msgid "Series title"
+msgstr "Serientitel"
+
+msgid "Delete series rule"
+msgstr "Serienregel löschen"
+
+msgid "Series recordings"
+msgstr "Serienaufnahmen"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Untertitel passen in TS oder MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Keine bevorzugte Audiosprache in den Einstellungen: Die erste Spur wird aufgenommen."
+
+msgid "File: {v0}"
+msgstr "Datei: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Ungültige Beginn- oder Endzeit"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Verwenden Sie HH:MM, zum Beispiel 20:15."
+
+msgid "No channel"
+msgstr "Kein Sender"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Wählen Sie den aufzunehmenden Sender in der Liste links."
+
+msgid "Recording defaults saved"
+msgstr "Aufnahmevorgaben gespeichert"
+
+msgid "Record with Options"
+msgstr "Mit Optionen aufnehmen"
+
+msgid "_Format"
+msgstr "_Format"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Videotext und EPG-Daten bleiben nur in MPEG-TS erhalten, daher wird TS verwendet."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Bevorzugte Audiosprache: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Visualisierung „{v0}“ fehlgeschlagen: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} ist zu alt"
+
+msgid "Playback error: "
+msgstr "Wiedergabefehler: "
+
+msgid "All channels"
+msgstr "Alle Sender"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Favoriten (TV + Radio)"
+
+msgid "Free to air"
+msgstr "Frei empfangbar"
+
+msgid "Internet streams"
+msgstr "Internet-Streams"
+
+msgid "Fill (crop)"
+msgstr "Füllen (beschneiden)"
+
+msgid "Fit"
+msgstr "Einpassen"
+
+msgid "Stretch"
+msgstr "Strecken"
+
+msgid "Playback error: {m}"
+msgstr "Wiedergabefehler: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Plugin-Aktion fehlgeschlagen: {e}"
+
+msgid "Open Media File…"
+msgstr "Mediendatei öffnen…"
+
+msgid "Open URL…"
+msgstr "Adresse öffnen…"
+
+msgid "Import Channel List…"
+msgstr "Senderliste importieren…"
+
+msgid "Export Channel List…"
+msgstr "Senderliste exportieren…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Programmführer exportieren (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "TV / Radio umschalten"
+
+msgid "Recordings"
+msgstr "Aufnahmen"
+
+msgid "Programme Guide (EPG)"
+msgstr "Programmführer (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Timer-Aufnahmen"
+
+msgid "Record with Options…"
+msgstr "Mit Optionen aufnehmen…"
+
+msgid "Teletext"
+msgstr "Videotext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM-Menü (CI-Modul)…"
+
+msgid "Channel Search…"
+msgstr "Sendersuchlauf…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I-Einrichtung…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Sendereditor / Favoriten"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Internet-EPG aktualisieren (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "IPTV-Sender XMLTV zuordnen…"
+
+msgid "Audio Track"
+msgstr "Tonspur"
+
+msgid "Subtitles"
+msgstr "Untertitel"
+
+msgid "Play Rate"
+msgstr "Wiedergabegeschwindigkeit"
+
+msgid "Back 10 s"
+msgstr "10 s zurück"
+
+msgid "Forward 10 s"
+msgstr "10 s vor"
+
+msgid "Back 1 min"
+msgstr "1 min zurück"
+
+msgid "Forward 1 min"
+msgstr "1 min vor"
+
+msgid "Back to Live"
+msgstr "Zurück zu Live"
+
+msgid "Jump"
+msgstr "Springen"
+
+msgid "Previous"
+msgstr "Vorheriger"
+
+msgid "Random Order"
+msgstr "Zufällige Reihenfolge"
+
+msgid "Endless Playback"
+msgstr "Endlos abspielen"
+
+msgid "Playlist"
+msgstr "Wiedergabeliste"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Timeshift als Aufnahme behalten"
+
+msgid "Rebuild Playback"
+msgstr "Wiedergabe neu aufbauen"
+
+msgid "Video Off (audio only)"
+msgstr "Video aus (nur Ton)"
+
+msgid "Show Selected Channel"
+msgstr "Ausgewählten Sender zeigen"
+
+msgid "Swap Pictures"
+msgstr "Bilder tauschen"
+
+msgid "Picture in Picture"
+msgstr "Bild im Bild"
+
+msgid "Channel Mosaic…"
+msgstr "Sendermosaik…"
+
+msgid "Stop in {mins} min"
+msgstr "In {mins} min stoppen"
+
+msgid "Stop after current programme"
+msgstr "Nach der aktuellen Sendung stoppen"
+
+msgid "Sleep Timer"
+msgstr "Schlaf-Timer"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Ton später (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Ton früher (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Audio Delay (this channel)"
+msgstr "Tonverzögerung (dieser Sender)"
+
+msgid "Full Screen"
+msgstr "Vollbild"
+
+msgid "Show/Hide Channel List"
+msgstr "Senderliste zeigen/verbergen"
+
+msgid "Aspect / Zoom"
+msgstr "Seitenverhältnis / Zoom"
+
+msgid "Window Size"
+msgstr "Fenstergröße"
+
+msgid "Picture Settings…"
+msgstr "Bildeinstellungen…"
+
+msgid "Equalizer…"
+msgstr "Equalizer…"
+
+msgid "Radio Visualisation"
+msgstr "Radio-Visualisierung"
+
+msgid "Screenshot"
+msgstr "Bildschirmfoto"
+
+msgid "Plugins…"
+msgstr "Plugins…"
+
+msgid "About LinDVB"
+msgstr "Über LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Senderliste zeigen/verbergen (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Hauptmenü (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Programmführer (Strg+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Videotext (Strg+Umschalt+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "TV-Sender zeigen (Strg+M wechselt)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Radiosender zeigen (Strg+M wechselt)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Ihre Aufnahmen zeigen (Doppelklick spielt ab)"
+
+msgid "Search name or number"
+msgstr "Name oder Nummer suchen"
+
+msgid "All groups"
+msgstr "Alle Gruppen"
+
+msgid "Previous channel (Page Down)"
+msgstr "Vorheriger Sender (Bild ab)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pause / Timeshift (Leertaste)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Stopp (Sender ausschalten)"
+
+msgid "Next channel (Page Up)"
+msgstr "Nächster Sender (Bild auf)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Aktuellen Sender aufnehmen (Strg+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Format und Spuren für diese Aufnahme wählen"
+
+msgid "Seek"
+msgstr "Spulen"
+
+msgid "LIVE"
+msgstr "LIVE"
+
+msgid "Back to live (L)"
+msgstr "Zurück zu Live (L)"
+
+msgid "Mute (M)"
+msgstr "Stumm (M)"
+
+msgid "Volume"
+msgstr "Lautstärke"
+
+msgid "Audio track"
+msgstr "Tonspur"
+
+msgid "Playback and picture settings"
+msgstr "Wiedergabe- und Bildeinstellungen"
+
+msgid "Full screen (F)"
+msgstr "Vollbild (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nJetzt: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} von {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{n} von {total} Aufnahmen angezeigt"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{n} von {total} Favoriten angezeigt"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{n} von {total} Radiosendern angezeigt"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{n} von {total} TV-Sendern angezeigt"
+
+msgid "Add to Favourites"
+msgstr "Zu Favoriten hinzufügen"
+
+msgid "Remove from Favourites"
+msgstr "Aus Favoriten entfernen"
+
+msgid "Edit…"
+msgstr "Bearbeiten…"
+
+msgid "Show as Picture in Picture"
+msgstr "Als Bild im Bild zeigen"
+
+msgid "Select a channel in the list first"
+msgstr "Bitte zuerst einen Sender in der Liste auswählen"
+
+msgid "By channel"
+msgstr "Nach Sender"
+
+msgid "By title"
+msgstr "Nach Titel"
+
+msgid "Newest first"
+msgstr "Neueste zuerst"
+
+msgid "Oldest first"
+msgstr "Älteste zuerst"
+
+msgid "Largest first"
+msgstr "Größte zuerst"
+
+msgid "Sort the recordings"
+msgstr "Aufnahmen sortieren"
+
+msgid "Open the recording folder"
+msgstr "Aufnahmeordner öffnen"
+
+msgid "Look for new recordings"
+msgstr "Nach neuen Aufnahmen suchen"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Noch keine Aufnahmen.\n\nAufnahmen werden gespeichert in\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "In den Einstellungen ist kein Aufnahmeordner festgelegt."
+
+msgid "Recording in progress"
+msgstr "Aufnahme läuft"
+
+msgid "Watched"
+msgstr "Gesehen"
+
+msgid "Watched up to {pos}"
+msgstr "Gesehen bis {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Aufnahme nicht gefunden: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Weiter bei {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Ordner nicht gefunden: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder} kann nicht geöffnet werden: {message}"
+
+msgid "Play"
+msgstr "Abspielen"
+
+msgid "Play from the Beginning"
+msgstr "Von Anfang an abspielen"
+
+msgid "Details…"
+msgstr "Details…"
+
+msgid "Mark as Unwatched"
+msgstr "Als ungesehen markieren"
+
+msgid "Mark as Watched"
+msgstr "Als gesehen markieren"
+
+msgid "Show in Folder"
+msgstr "Im Ordner zeigen"
+
+msgid "Delete…"
+msgstr "Löschen…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Beenden Sie die Aufnahme, bevor Sie sie löschen"
+
+msgid "Delete “{title}”?"
+msgstr "„{title}“ löschen?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nDie Datei wird von der Festplatte entfernt."
+
+msgid "Deleted {name}"
+msgstr "{name} gelöscht"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name} kann nicht gelöscht werden: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Stelle {name} ein…"
+
+msgid "Search recordings"
+msgstr "Aufnahmen durchsuchen"
+
+msgid "No radio stations in the channel list"
+msgstr "Keine Radiosender in der Senderliste"
+
+msgid "No TV channels in the channel list"
+msgstr "Keine TV-Sender in der Senderliste"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – umgeschaltet auf {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} sendet derzeit nicht"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Live-TV gestoppt: Tuner wird für eine Timer-Aufnahme gebraucht"
+
+msgid "Stopped"
+msgstr "Gestoppt"
+
+msgid "Sound {ms} ms later"
+msgstr "Ton {ms} ms später"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Ton {v0} ms früher"
+
+msgid "Audio delay off"
+msgstr "Tonverzögerung aus"
+
+msgid "Playing {item}"
+msgstr "Spiele {item}"
+
+msgid "Open media files"
+msgstr "Mediendateien öffnen"
+
+msgid "Open URL"
+msgstr "Adresse öffnen"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Öffnen"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Senderliste importieren (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "{name} konnte nicht importiert werden"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "{total_a} neue und {total_u} aktualisierte Sender importiert"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Sender exportieren (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Exportiert nach {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Programmführer exportieren (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path} kann nicht geschrieben werden: {error}"
+
+msgid "Nothing to record"
+msgstr "Nichts aufzunehmen"
+
+msgid "This channel is already being recorded"
+msgstr "Dieser Sender wird bereits aufgenommen"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Videotext: Decoder fehlt (gst-plugins-bad mit libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Videotext: auf diesem Sender nicht verfügbar"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Videotext benötigt einen DVB-Sender"
+
+msgid "Volume {v0}%"
+msgstr "Lautstärke {v0}%"
+
+msgid "Off"
+msgstr "Aus"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Untertitel für Hörgeschädigte (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} Sprachen"
+
+msgid "{n} audio tracks"
+msgstr "{n} Tonspuren"
+
+msgid "Screenshot saved: {path}"
+msgstr "Bildschirmfoto gespeichert: {path}"
+
+msgid "Screenshot failed"
+msgstr "Bildschirmfoto fehlgeschlagen"
+
+msgid "Picture Settings"
+msgstr "Bildeinstellungen"
+
+msgid "Restore Defaults"
+msgstr "Standard wiederherstellen"
+
+msgid "Equalizer"
+msgstr "Equalizer"
+
+msgid "Leave full screen (F)"
+msgstr "Vollbild verlassen (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Visualisierung fehlgeschlagen: {e}"
+
+msgid "Radio visualisation"
+msgstr "Radio-Visualisierung"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Radio-Visualisierung (nur für Radio und Audio)"
+
+msgid "Playback stops at {v0}"
+msgstr "Wiedergabe endet um {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Keine Sendungsinformationen für den Schlaf-Timer"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Schlaf-Timer: Wiedergabe gestoppt"
+
+msgid "No programme information"
+msgstr "Keine Sendungsinformationen"
+
+msgid "Next: {v0}  {title}"
+msgstr "Danach: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signal {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "DVB-S/S2, DVB-C, DVB-T/T2, ATSC und Internet-TV ansehen und aufnehmen, mit der Linux-DVB-API und GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "IPTV-Sender XMLTV zuordnen"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Noch kein XMLTV-Programmführer geladen. Tragen Sie die XMLTV-Adresse in den EPG-Einstellungen ein und laden Sie zuerst den Programmführer; die Zuordnung beginnt nach dem Laden automatisch."
+
+msgid "Download XMLTV guide now"
+msgstr "XMLTV-Programmführer jetzt laden"
+
+msgid "Only channels without guide"
+msgstr "Nur Sender ohne Programmführer"
+
+msgid "Match"
+msgstr "Zuordnung"
+
+msgid "Guide channel:"
+msgstr "Programmführer-Sender:"
+
+msgid "Assign"
+msgstr "Zuordnen"
+
+msgid "Suggest"
+msgstr "Vorschlagen"
+
+msgid "Auto-match all"
+msgstr "Alle automatisch zuordnen"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Jeden Sender zuordnen, der nicht von Hand zugeordnet wurde"
+
+msgid "Reset to automatic"
+msgstr "Auf automatisch zurücksetzen"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Für den ausgewählten Sender wieder die automatische Zuordnung entscheiden lassen"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} von {v1} Sendern haben einen Programmführer-Sender"
+
+msgid "No suggestion for {name}"
+msgstr "Kein Vorschlag für {name}"
