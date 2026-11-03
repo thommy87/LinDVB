@@ -32,8 +32,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.version }}
-          NOTES: packaging/release-notes.md
         run: |
+          # Release notes: the changelog for this tag (if there is one), then the install notes.
+          NOTES=release-notes.md
+          if [ -f "packaging/changelog/${TAG}.md" ]; then
+            cat "packaging/changelog/${TAG}.md" > "$NOTES"
+          fi
+          cat packaging/release-notes.md >> "$NOTES"
           mkdir out
           cp "$(find dist -type f -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
           cp "$(find dist -type f -name '*.flatpak' | head -1)" "out/LinDVB-${TAG}-x86_64.flatpak"
