@@ -15,12 +15,13 @@ high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
 LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
 
+import os
 import re
 import sys
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.2"
+VERSION = "1.3"
 
 # the AppImage brings its own collection under its prefix (sys.prefix/share)
 PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
@@ -53,6 +54,23 @@ def _set(element, props, value):
         except (TypeError, ValueError, OverflowError):
             pass
         return
+
+
+def preset_folders(root, depth=2):
+    """Folders below ``root`` (up to ``depth`` levels) that hold .milk presets,
+    as sorted relative paths: ["Dancer", "Dancer/Aurora", ...]."""
+    if not root:
+        return []
+    base = os.path.expanduser(root)
+    found = set()
+    for path, _dirs, files in os.walk(base):
+        if not any(f.endswith(".milk") for f in files):
+            continue
+        parts = Path(os.path.relpath(path, base)).parts
+        parts = () if parts == (".",) else parts
+        for n in range(1, min(depth, len(parts)) + 1):
+            found.add("/".join(parts[:n]))
+    return sorted(found, key=lambda f: [p.lstrip("!# ").casefold() for p in f.split("/")])
 
 
 def parse_size(text, default):
@@ -88,10 +106,90 @@ def screen_size(limit=MAX_SIZE, default=DEFAULT_SIZE):
     return int(w * f) & ~1, int(h * f) & ~1
 
 
-def sized(Gst, element, size, any_memory=False):
+_ISOLATED = {}
+
+
+def _isolated_bin_class(Gst):
+    """A bin that keeps its OpenGL elements away from the application's GL context.
+
+    GStreamer GL elements share the GL context of the video sink, which is GTK's.
+    On Wayland GTK draws with OpenGL ES, and projectM needs desktop OpenGL: with
+    GTK's context it fails ("Subclass failed to initialize"). projectM hands out
+    ordinary video frames, so it does not need to share: this bin answers no GL
+    context query or request, and projectM creates its own context."""
+    cls = _ISOLATED.get("cls")
+    if cls is not None:
+        return cls
+
+    def is_gl(context_type):
+        return (context_type or "").startswith("gst.gl")
+
+    try:
+        import gi
+        gi.require_version("GstGL", "1.0")
+        from gi.repository import GstGL
+    except (ImportError, ValueError):
+        GstGL = None
+
+    class IsolatedGLBin(Gst.Bin):
+        __gtype_name__ = "LinDVBIsolatedGLBin"
+        display = None
+
+        def _display_context(self):
+            """A GL display of our own that only offers desktop OpenGL (projectM
+            needs it; on EGL GStreamer would otherwise pick OpenGL ES)."""
+            if GstGL is None:
+                return None
+            if self.display is None:
+                display = GstGL.GLDisplay.new()
+                display.filter_gl_api(GstGL.GLAPI.OPENGL3 | GstGL.GLAPI.OPENGL)
+                self.display = display
+            context = Gst.Context.new("gst.gl.GLDisplay", True)
+            GstGL.context_set_gl_display(context, self.display)
+            return context
+
+        def do_handle_message(self, message):
+            if message.type == Gst.MessageType.NEED_CONTEXT:
+                ok, context_type = message.parse_context_type()
+                if ok and is_gl(context_type):
+                    if context_type == "gst.gl.GLDisplay" and message.src is not None:
+                        context = self._display_context()
+                        if context is not None:
+                            message.src.set_context(context)
+                    return          # nothing from outside: no sharing with GTK's context
+            elif message.type == Gst.MessageType.HAVE_CONTEXT:
+                if is_gl(message.parse_have_context().get_context_type()):
+                    return          # and its context stays inside
+            Gst.Bin.do_handle_message(self, message)
+
+        def do_set_context(self, context):
+            if not is_gl(context.get_context_type()):
+                Gst.Bin.do_set_context(self, context)
+
+    _ISOLATED["cls"] = IsolatedGLBin
+    return IsolatedGLBin
+
+
+def _block_gl_queries(Gst, element):
+    def probe(_pad, info):
+        query = info.get_query()
+        if query is not None and query.type == Gst.QueryType.CONTEXT:
+            ok, context_type = query.parse_context_type()
+            if ok and (context_type or "").startswith("gst.gl"):
+                return Gst.PadProbeReturn.DROP
+        return Gst.PadProbeReturn.OK
+    for pad in element.pads:
+        pad.add_probe(Gst.PadProbeType.QUERY_BOTH, probe)
+
+
+def sized(Gst, element, size, any_memory=False, isolate_gl=False):
     """Wrap a visualiser so it renders at ``size`` instead of its default 320x240."""
     w, h = size
-    bin_ = Gst.Bin.new(None)
+    if isolate_gl:
+        bin_ = _isolated_bin_class(Gst)()
+        _block_gl_queries(Gst, element)
+    else:
+        bin_ = Gst.Bin.new(None)
     caps = Gst.ElementFactory.make("capsfilter")
     feature = "(ANY)" if any_memory else ""
     caps.set_property("caps", Gst.Caps.from_string(
@@ -119,10 +217,15 @@ def register(api):
         return api.app.settings if api.app is not None else {}
 
     if Gst.ElementFactory.find("projectm") is not None:
-        def make_projectm():
+        def preset_root():
+            return _first_dir([settings().get("projectm_preset_dir")] + PRESET_DIRS)
+
+        def make_projectm(choice=None):
             el = Gst.ElementFactory.make("projectm")
             s = settings()
-            presets = _first_dir([s.get("projectm_preset_dir")] + PRESET_DIRS)
+            presets = preset_root()
+            if presets and choice and (Path(presets) / choice).is_dir():
+                presets = str(Path(presets) / choice)   # just this folder, shuffled
             # gst-projectm calls the preset folder "preset" (older builds "preset-path")
             _set(el, ("preset", "preset-path"), presets)
             _set(el, ("texture-dir", "texture-dir-path"), _first_dir(TEXTURE_DIRS))
@@ -131,8 +234,9 @@ def register(api):
             _set(el, "shuffle-presets", True)
             res = s.get("visualizer_resolution", "auto")
             size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
-            return sized(Gst, el, size, any_memory=True)
-        api.add_visualizer("projectM (MilkDrop)", element=make_projectm)
+            return sized(Gst, el, size, any_memory=True, isolate_gl=True)
+        api.add_visualizer("projectM (MilkDrop)", element=make_projectm,
+                           choices=lambda: preset_folders(preset_root()))
     else:
         api.log("projectM not found: install gst-projectm and libprojectM to use it")
 

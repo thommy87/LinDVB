@@ -1853,3 +1853,72 @@ msgstr "{done} von {v1} Sendern haben einen Programmführer-Sender"
 
 msgid "No suggestion for {name}"
 msgstr "Kein Vorschlag für {name}"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} konnte nicht starten ({m}), stattdessen läuft {other}"
+
+msgid "Off (station name only)"
+msgstr "Aus (nur Sendername)"
+
+msgid "Spectrum analyser (classic)"
+msgstr "Spektrumanalyse (klassisch)"
+
+msgid "VU meters (classic)"
+msgstr "VU-Meter (klassisch)"
+
+msgid "Oscilloscope (classic)"
+msgstr "Oszilloskop (klassisch)"
+
+msgid "Glow waves (modern)"
+msgstr "Leuchtwellen (modern)"
+
+msgid "Nebula particles (modern)"
+msgstr "Nebelpartikel (modern)"
+
+msgid "Light ribbons (modern)"
+msgstr "Lichtbänder (modern)"
+
+msgid "Pulsar (modern)"
+msgstr "Pulsar (modern)"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "Alle Presets (zufällig)"
+
+msgid "All of {name}"
+msgstr "Alle aus {name}"
+
+msgid "Dancer"
+msgstr "Tänzer"
+
+msgid "Drawing"
+msgstr "Zeichnungen"
+
+msgid "Fractal"
+msgstr "Fraktale"
+
+msgid "Geometric"
+msgstr "Geometrisch"
+
+msgid "Hypnotic"
+msgstr "Hypnotisch"
+
+msgid "Particles"
+msgstr "Partikel"
+
+msgid "Reaction"
+msgstr "Reaktion"
+
+msgid "Sparkle"
+msgstr "Funkeln"
+
+msgid "Supernova"
+msgstr "Supernova"
+
+msgid "Waveform"
+msgstr "Wellenformen"
+
+msgid "! Transition"
+msgstr "Übergänge"

@@ -175,6 +175,16 @@ def test_visualiser_sizes():
     assert parse_size(None, (640, 360)) == (640, 360)
 
 
+def test_projectm_preset_folders(tmp_path):
+    from lindvb.addons.gst_visualizers import preset_folders
+    for rel in ("Dancer/Aurora/a.milk", "Dancer/Aurora/Deep/b.milk", "! Transition/c.milk",
+                "Waveform/d.milk", "Empty/readme.txt", "top.milk"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text("")
+    assert preset_folders(str(tmp_path)) == ["Dancer", "Dancer/Aurora", "! Transition", "Waveform"]
+    assert preset_folders(None) == []
+
+
 def _frames(n, amp, spectrum_db):
     an, sm = AudioAnalysis(), Smoother()
     for k in range(n):

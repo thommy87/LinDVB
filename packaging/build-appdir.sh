@@ -36,7 +36,7 @@ echo "== GObject introspection typelibs"
 mkdir -p "$APPDIR/usr/lib/girepository-1.0"
 for t in GLib-2.0 GObject-2.0 Gio-2.0 GModule-2.0 Gtk-4.0 Gdk-4.0 Gsk-4.0 Graphene-1.0 \
          Pango-1.0 PangoCairo-1.0 cairo-1.0 HarfBuzz-0.0 freetype2-2.0 GdkPixbuf-2.0 \
-         Gst-1.0 GstBase-1.0 GstVideo-1.0 GstAudio-1.0 GstTag-1.0 GstMpegts-1.0 GstPbutils-1.0 \
+         Gst-1.0 GstBase-1.0 GstVideo-1.0 GstGL-1.0 GstAudio-1.0 GstTag-1.0 GstMpegts-1.0 GstPbutils-1.0 \
          PangoFT2-1.0 Fontconfig-2.0 GioUnix-2.0 GLibUnix-2.0; do
     if [ -f "$ARCH_LIB/girepository-1.0/$t.typelib" ]; then
         cp "$ARCH_LIB/girepository-1.0/$t.typelib" "$APPDIR/usr/lib/girepository-1.0/"

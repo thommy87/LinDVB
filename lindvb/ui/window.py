@@ -1,5 +1,6 @@
 """Main window: channel list, video area with OSD, transport controls, menus."""
 
+import functools
 import random
 import time
 from pathlib import Path
@@ -55,6 +56,17 @@ ZOOM = [(_("Fit"), Gtk.ContentFit.CONTAIN), (_("Fill (crop)"), Gtk.ContentFit.CO
         (_("Stretch"), Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
 AUDIO_DELAY_STEP = 100      # ms per key press / menu click
+
+
+def _menu_label(text):
+    """Menu labels treat "_" as a mnemonic; folder names keep theirs."""
+    return text.replace("_", "__")
+
+
+def _vis_item(label, vis_id):
+    item = Gio.MenuItem.new(_menu_label(label), None)
+    item.set_action_and_target_value("win.vis", GLib.Variant.new_string(vis_id))
+    return item
 
 class MainWindow(Gtk.ApplicationWindow):
     mpris = None
@@ -115,6 +127,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._build_ui()
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self._on_play_error(_("Playback error: {m}").format(m=m)))
+        self.player.connect("vis-error", self._on_vis_error)
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
@@ -207,9 +220,23 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self.player.set_rate(p.get_double()))
         self.add_action(a)
         # radio visualisations: built-in styles and those plugins registered
-        self.visualizers = {s.id: (s.label, "draw", s) for s in STYLES}
+        self.visualizers = {s.id: (_(s.label), "draw", s) for s in STYLES}
+        # a plugin's choices (projectM's preset folders) get ids "plugin:name|choice"
+        self._vis_choices = {}
+        choice_fns = getattr(self.app.plugins, "visualizer_choices", {})
         for _plugin, name, kind, factory in self.app.plugins.visualizers:
-            self.visualizers[f"plugin:{name}"] = (name, kind, factory)
+            vid = f"plugin:{name}"
+            self.visualizers[vid] = (name, kind, factory)
+            if name not in choice_fns:
+                continue
+            try:
+                choices = [str(c) for c in choice_fns[name]()]
+            except Exception as e:
+                print(f"{name}: no choices ({e})")
+                choices = []
+            self._vis_choices[vid] = choices
+            for c in choices:
+                self.visualizers[f"{vid}|{c}"] = (f"{name}: {c}", kind, functools.partial(factory, c))
         if self.settings.get("visualizer") not in self.visualizers:
             self.settings["visualizer"] = DEFAULT_STYLE
         a = Gio.SimpleAction.new_stateful("vis", GLib.VariantType.new("s"),
@@ -335,7 +362,12 @@ class MainWindow(Gtk.ApplicationWindow):
         # shared with the visualisation button in the control bar
         self.vis_menu = vis = Gio.Menu()
         for vid, (label, _kind, _f) in self.visualizers.items():
-            vis.append(label, f"win.vis::{vid}")
+            if "|" in vid:
+                continue
+            if self._vis_choices.get(vid):
+                vis.append_submenu(_menu_label(label), self._vis_choice_menu(vid))
+            else:
+                vis.append_item(_vis_item(label, vid))
         view.append_submenu(_("Radio Visualisation"), vis)
         view.append(_("Screenshot"), "win.screenshot")
         m.append_section(None, view)
@@ -1846,9 +1878,38 @@ class MainWindow(Gtk.ApplicationWindow):
         self._update_visualizer()
         self.flash(self.visualizers[vis_id][0])
 
+    def _on_vis_error(self, _player, message):
+        """A GStreamer visualiser failed: the sound plays on, Goom HD takes over."""
+        failed = self.visualizers.get(self.settings.get("visualizer"), ("?",))[0]
+        fallback = "goomhd" if "goomhd" in self.visualizers else DEFAULT_STYLE
+        self.set_visualizer(fallback)
+        self.set_status(_("{name} could not start ({m}), showing {other} instead").format(
+            name=failed, m=message, other=self.visualizers[fallback][0]))
+
+    def _vis_choice_menu(self, vid):
+        """The submenu of a visualiser with choices: all of them, then each top
+        folder (with its subfolders in a further submenu)."""
+        choices = self._vis_choices[vid]
+        menu, top, folders = Gio.Menu(), Gio.Menu(), Gio.Menu()
+        top.append_item(_vis_item(_("All presets (shuffled)"), vid))
+        menu.append_section(None, top)
+        for c in (c for c in choices if "/" not in c):
+            subs = [s for s in choices if s.startswith(c + "/")]
+            if not subs:
+                folders.append_item(_vis_item(_(c), f"{vid}|{c}"))
+                continue
+            sub, inner = Gio.Menu(), Gio.Menu()
+            sub.append_item(_vis_item(_("All of {name}").format(name=_(c)), f"{vid}|{c}"))
+            for s in subs:
+                inner.append_item(_vis_item(s.split("/", 1)[1], f"{vid}|{s}"))
+            sub.append_section(None, inner)
+            folders.append_submenu(_menu_label(_(c)), sub)
+        menu.append_section(None, folders)
+        return menu
+
     def cycle_visualizer(self):
-        ids = list(self.visualizers)
-        cur = self.settings.get("visualizer")
+        ids = [i for i in self.visualizers if "|" not in i]
+        cur = self.settings.get("visualizer", "").split("|")[0]
         i = ids.index(cur) if cur in ids else -1
         self.set_visualizer(ids[(i + 1) % len(ids)])
 

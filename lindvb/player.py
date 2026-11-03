@@ -189,6 +189,8 @@ class Player(GObject.Object):
     __gsignals__ = {
         "state": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        # a GStreamer visualiser failed (message); playback goes on without it
+        "vis-error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "tracks": (GObject.SignalFlags.RUN_LAST, None, ()),
         "eos": (GObject.SignalFlags.RUN_LAST, None, ()),
         # teletext subtitle text to show over the video ("" clears it)
@@ -240,6 +242,8 @@ class Player(GObject.Object):
         self._analyze = False
         self.spectrum = None
         self.vis_factory = None         # () -> Gst.Element for playbin's vis-plugin
+        self._vis_element = None
+        self._vis_error_token = None
         self._pending_seek = None
         self.metadata = {}
 
@@ -280,6 +284,7 @@ class Player(GObject.Object):
                 vis = None
                 self.emit("error", f"Visualisation not available: {e}")
             if vis is not None:
+                self._vis_element = vis
                 pb.set_property("vis-plugin", vis)
                 pb.set_property("flags", pb.get_property("flags") | PLAY_FLAGS_VIS)
         pb.connect("source-setup", self._on_source_setup)
@@ -349,6 +354,22 @@ class Player(GObject.Object):
             self.analysis.reset()
             if self.spectrum is not None:
                 self.spectrum.set_property("post-messages", on)
+
+    def _from_visualizer(self, src):
+        vis = getattr(self, "_vis_element", None)
+        while vis is not None and src is not None:
+            if src == vis:
+                return True
+            src = src.get_parent()
+        return False
+
+    def _drop_visualizer(self, message):
+        self.vis_factory = None
+        self._vis_element = None
+        self.emit("vis-error", message)
+        if self.playbin:
+            self.restart()
+        return False
 
     def set_visualizer(self, factory):
         """Use a GStreamer element as visualisation (``None`` = drawn by LinDVB).
@@ -1011,6 +1032,14 @@ class Player(GObject.Object):
         t = msg.type
         if t == Gst.MessageType.ERROR:
             err, _dbg = msg.parse_error()
+            if self._from_visualizer(msg.src):
+                # the visualiser (e.g. projectM without a usable OpenGL) must not
+                # stop the radio: drop it and play on
+                if self._vis_error_token != self._token:
+                    self._vis_error_token = self._token
+                    print(f"Visualisation failed: {err.message} ({_dbg})")
+                    GLib.idle_add(self._drop_visualizer, err.message)
+                return
             if self._pb3 and self.uri and not self.capture and not self._fallback_done:
                 # e.g. hlsdemux2 refusing a stream: try the classic pipeline once
                 self._fallback_done = True
