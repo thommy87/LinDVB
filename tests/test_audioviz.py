@@ -242,3 +242,18 @@ def test_scene_shaders_declare_what_the_renderer_sets():
     for shader in SceneRenderer.SHADERS.values():
         for name in ("u_t", "u_clock", "u_unit", "u_pulse", "u_energy", "u_spec"):
             assert f" {name}" in shader, name
+
+
+def test_supernova_veils_take_their_strength_from_the_music_at_birth():
+    from lindvb.visuals import Supernova
+    quiet, loud = Supernova(), Supernova()
+    for f in _frames(600, 0.01, -78.0):
+        quiet.params(f)
+    for f in _frames(600, 0.6, -15.0):
+        loud.params(f)
+    assert len(loud.veils) == Supernova.VEILS
+    assert min(loud.veils) > max(quiet.veils)
+    before, flow = list(loud.veils), loud.flow
+    for f in _frames(1, 0.0, -90.0):            # a single quiet frame changes no living veil
+        loud.params(f)
+    assert loud.flow >= flow and sum(a != b for a, b in zip(before, loud.veils)) <= 1

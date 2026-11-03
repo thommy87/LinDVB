@@ -694,6 +694,8 @@ SUPERNOVA = PRELUDE + SCENE_FN + """
 float specm(float turns) { return spec(1.0 - abs(2.0 * fract(turns) - 1.0)); }
 mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, s, -s, c); }
 const int VEILS = 9;
+uniform float u_flow;        // how far the veils have travelled (one unit: one veil's life)
+uniform float u_veil[9];     // the strength each veil got from the music when it was born
 const vec3 PAL[6] = vec3[6](vec3(1.0, 0.48, 0.10),     // orange
                             vec3(1.0, 0.82, 0.28),     // yellow
                             vec3(0.62, 0.30, 1.0),     // violet
@@ -744,7 +746,7 @@ void main() {
     col += starfield(px + 71.0, 4.0 * u_unit, 0.35, u_t, 0.7) * galaxy * 1.6;
     // veils: born somewhere in the white core, they drift outwards, grow and fade,
     // and a new one is born as an old one vanishes, so the picture keeps its size
-    float flow = c * 1.1 * (1.0 + 0.4 * level);
+    float flow = u_flow;
     vec3 neb = vec3(0.0);
     for (int k = 0; k < VEILS; k++) {
         float fk = float(k);
@@ -752,7 +754,8 @@ void main() {
         float s = fract(life);                                   // 0: born, 1: gone
         float seed = floor(life) * 7.31 + fk * 3.17;
         float R = 0.03 * pow(14.0, s);                          // its radius grows exponentially
-        float alpha = smoothstep(0.0, 0.10, s) * pow(1.0 - s, 1.15);
+        float strength = u_veil[k];
+        float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.15) * strength;
         vec2 u = rot(seed) * q / R;
         float ur = length(u);
         if (ur > 2.6) continue;
@@ -760,7 +763,8 @@ void main() {
         vec2 ud = u / max(ur, 1e-4);
         float place = smoothstep(0.30, 0.65, fbm(ud * 1.6 + seed * 1.37, 3));
         float rag = 0.45 * (fbm(ud * 2.5 + seed * 2.1, 3) - 0.5);
-        float ring = exp(-pow((ur - 1.0 - rag) / 0.38, 2.0)) + 0.3 * exp(-ur * 1.6);
+        float width = 0.30 + 0.16 * min(strength, 1.5);                // strong veils are thicker
+        float ring = exp(-pow((ur - 1.0 - rag) / width, 2.0)) + 0.3 * exp(-ur * 1.6);
         float m = ring * mix(0.35, 1.0, place) * alpha;
         if (m < 0.004) continue;
         // the veil itself: creased, swirled noise with fine fibres along the radius
@@ -775,14 +779,14 @@ void main() {
         int i1 = int(hash12(vec2(seed, 2.0)) * 6.0);
         vec3 vc = mix(PAL[i0], PAL[i1], smoothstep(0.3, 0.7, wisp));
         vc = mix(vec3(1.0, 0.95, 0.88), vc, smoothstep(0.0, 0.18, s));
-        float gain = 0.7 + 0.9 * specm(ang + seed * 0.1) + 0.4 * u_pulse;
+        float gain = 0.85 + 0.3 * specm(ang + seed * 0.1);
         neb += vc * m * (fil * fib + 0.22 * wisp * wisp) * gain;
     }
-    col += neb * (2.4 + 0.8 * mid);
-    // the white-hot core
-    float core = 0.03 + 0.02 * u_pulse + 0.01 * bass;
-    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.6 + 1.2 * u_pulse);
-    col += vec3(1.0, 0.80, 0.55) * exp(-r / (core * 4.0)) * (0.6 + 0.4 * level);
+    col += neb * 2.6;
+    // the white-hot core, glowing a little brighter with the music
+    float core = 0.032 + 0.008 * level;
+    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.7 + 0.4 * level);
+    col += vec3(1.0, 0.80, 0.55) * exp(-r / (core * 4.0)) * (0.6 + 0.3 * level);
     col += vec3(1.0, 0.70, 0.45) * exp(-r / 0.22) * 0.25;
     float lum = dot(col, vec3(0.3, 0.55, 0.15));
     col = max(mix(vec3(lum), col, 1.3), 0.0);                 // a little more colour
@@ -1370,6 +1374,9 @@ class SceneRenderer(Renderer):
         prog.set_array("u_spec", st.spectrum.values or [0.0] * 48, 1)
         if isinstance(st, visuals.OccasusSolis):
             prog.set("u_sun", *st.SUN)
+        if isinstance(st, visuals.Supernova):
+            prog.set("u_flow", st.flow)
+            prog.set_array("u_veil", st.veils, 1)
         ctx.fullscreen(prog)
         ctx.footer(f.caption)
 

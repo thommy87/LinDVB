@@ -826,6 +826,31 @@ class Supernova(_Scene):
     id, label = "supernova", "Supernova (modern)"
 
     PACE = (0.05, 0.08)
+    VEILS = 9             # veils alive at once, as in the shader
+    FLOW = 1.1            # veil lives per clock unit
+
+    def __init__(self):
+        super().__init__()
+        self.flow = 0.0
+        self.drive = 0.0
+        self.veils = [0.5] * self.VEILS
+        self.born = [None] * self.VEILS
+
+    def params(self, f):
+        """Also decides, when a veil is born, how strong it gets: the music
+        of that moment, smoothed, so a loud passage sends out bright, thick
+        veils that then drift outwards unchanged."""
+        p = super().params(f)
+        level, pulse = p[5], p[4]
+        target = min(1.6, 0.25 + 1.2 * level + 0.5 * pulse)
+        self.drive += (target - self.drive) * min(1.0, f.dt * 1.5)
+        self.flow = p[0] * self.FLOW
+        for k in range(self.VEILS):
+            gen = math.floor(self.flow + k / self.VEILS)
+            if gen != self.born[k]:
+                self.born[k] = gen
+                self.veils[k] = self.drive
+        return p
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
         cr.set_source_rgb(0.0, 0.0, 0.01)
