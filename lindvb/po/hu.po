@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: hu\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Csatornalista importálása (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Indítás ezzel a csatornával (név vagy szám)"
+
+msgid "{channel} at {time}"
+msgstr "{channel}, {time}"
+
+msgid "Watch"
+msgstr "Megtekintés"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Emlékeztető: {title} – {channel}, {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Először adjon meg egy XMLTV-címet a beállításokban"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV-műsorújság letöltése…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} műsorújság nélkül (TV ▸ IPTV-csatornák párosítása XMLTV-vel)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: szolgáltatáslista betöltése…"
+
+msgid "Search the web"
+msgstr "Keresés a weben"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Feliratok (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG-adatok (TS)"
+
+msgid "All audio tracks"
+msgstr "Minden hangsáv"
+
+msgid "Preferred language only"
+msgstr "Csak a kívánt nyelv"
+
+msgid "First audio track only"
+msgstr "Csak az első hangsáv"
+
+msgid "Record"
+msgstr "Felvétel"
+
+msgid "Record and tune"
+msgstr "Felvétel és átkapcsolás"
+
+msgid "Tune only"
+msgstr "Csak átkapcsolás"
+
+msgid "Hibernate"
+msgstr "Hibernálás"
+
+msgid "None"
+msgstr "Nincs"
+
+msgid "Power off"
+msgstr "Kikapcsolás"
+
+msgid "Quit LinDVB"
+msgstr "Kilépés a LinDVB-ből"
+
+msgid "Standby"
+msgstr "Készenlét"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Az internetes adásokban nincs teletext, felirat és EPG-adat."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "Az MP4 egy hangsávot tart meg (a kívánt nyelvet, ha sugározzák)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "A hangfájl egy sávot tart meg (a kívánt nyelvet, ha sugározzák)."
+
+msgid "Fr"
+msgstr "P"
+
+msgid "Mo"
+msgstr "H"
+
+msgid "Sa"
+msgstr "Szo"
+
+msgid "Su"
+msgstr "V"
+
+msgid "Th"
+msgstr "Cs"
+
+msgid "Tu"
+msgstr "K"
+
+msgid "We"
+msgstr "Sze"
+
+msgid "Scheduled"
+msgstr "Ütemezve"
+
+msgid "Done"
+msgstr "Kész"
+
+msgid "Channel missing"
+msgstr "Hiányzó csatorna"
+
+msgid "Tuned"
+msgstr "Átkapcsolva"
+
+msgid "Recording"
+msgstr "Felvétel folyik"
+
+msgid "Failed"
+msgstr "Sikertelen"
+
+msgid "Missed"
+msgstr "Elmaradt"
+
+msgid "After recording: {action}"
+msgstr "Felvétel után: {action}"
+
+msgid "The module was removed or reset."
+msgstr "A modult eltávolították vagy alaphelyzetbe állították."
+
+msgid "CAM Menu"
+msgstr "CAM menü"
+
+msgid "Cancel"
+msgstr "Mégse"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "CAM menü megnyitása"
+
+msgid "Select"
+msgstr "Kiválasztás"
+
+msgid "Back"
+msgstr "Vissza"
+
+msgid "Close Menu"
+msgstr "Menü bezárása"
+
+msgid "Device: {path} – {state}"
+msgstr "Eszköz: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Nyissa meg a CAM menüt a modul beállításaihoz, az intelligens kártya adataihoz és a szülői felügyelethez."
+
+msgid "The module has not finished starting yet."
+msgstr "A modul még nem indult el teljesen."
+
+msgid "Custom colour"
+msgstr "Egyéni szín"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB kék (alapértelmezett)"
+
+msgid "System accent colour"
+msgstr "A rendszer kiemelőszíne"
+
+msgid "Preferences"
+msgstr "Beállítások"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Appearance"
+msgstr "Megjelenés"
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "A LinDVB következő indításakor lép életbe."
+
+msgid "Accent colour"
+msgstr "Kiemelőszín"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Kiemelésekhez, kijelölésekhez és gombokhoz minden ablakban."
+
+msgid "On-screen display"
+msgstr "Képernyőkijelzés"
+
+msgid "OSD display time (s)"
+msgstr "OSD megjelenítési ideje (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizáció"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Mi jelenjen meg a rádióvizualizáció felett, amíg rádióadó vagy hangfájl szól. A dal adatai a DVB-rádió RadioTextjéből, az internetes rádió adáscíméből és a hangfájlok címkéiből származnak."
+
+msgid "Overlay"
+msgstr "Rátét"
+
+msgid "Station logo tile"
+msgstr "Adólogó csempe"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "A csatorna logója, vagy egy csempe az adó nevével, ha nincs logó."
+
+msgid "Album cover"
+msgstr "Albumborító"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "A szóló dal borítója, a fájlból vagy online keresve."
+
+msgid "Song information"
+msgstr "Daladatok"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Előadó, album és év, sávszám és cím. Daladatok nélkül az adó és az aktuális műsor jelenik meg."
+
+msgid "Clock in the top right corner"
+msgstr "Óra a jobb felső sarokban"
+
+msgid "Sources"
+msgstr "Források"
+
+msgid "Look up covers online"
+msgstr "Borítók keresése online"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Elküldi a szóló dal előadóját és címét az iTunes Search API-nak az album, az év és a borító megkereséséhez."
+
+msgid "Station logo folder"
+msgstr "Adólogók mappája"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "A csatornáról elnevezett képfájlok (PNG, SVG, JPG), pl. „Bayern 3.png”. A csatornáról elnevezett logók, ahogy a DVBViewer tárolja őket, változtatás nélkül működnek. Üres: {v0}"
+
+msgid "Playback"
+msgstr "Lejátszás"
+
+msgid "Deinterlace video"
+msgstr "Váltottsoros videó javítása"
+
+msgid "Screenshot folder"
+msgstr "Képernyőképek mappája"
+
+msgid "Timeshift"
+msgstr "Időcsúsztatás"
+
+msgid "Timeshift folder"
+msgstr "Időcsúsztatás mappája"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Időcsúsztatási puffer (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner és LNB"
+
+msgid "DVB hardware"
+msgstr "DVB-hardver"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "A LinDVB által használható adapterszámok vesszővel elválasztva."
+
+msgid "DVB adapters"
+msgstr "DVB-adapterek"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "A teljes transzponder rögzítése"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Minden hangsávhoz szükséges, ha a csatornalista csak egy hang-PID-et ismer."
+
+msgid "Satellite LNB"
+msgstr "Műholdas LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF alsó sáv (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF felső sáv (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Váltási frekvencia (kHz)"
+
+msgid "Recording folder"
+msgstr "Felvételek mappája"
+
+msgid "File naming scheme"
+msgstr "Fájlnévminta"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Helyőrzők: %year %date %time %end %station %name, / az almappákhoz"
+
+msgid "Timer padding"
+msgstr "Időzítők ráhagyása"
+
+msgid "Start earlier by (min)"
+msgstr "Korábbi kezdés (perc)"
+
+msgid "Stop later by (min)"
+msgstr "Későbbi befejezés (perc)"
+
+msgid "Timers"
+msgstr "Időzítők"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Az időzítőablak megnyitása időzítő létrehozása után"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "A műsorújság „Felvétel” gombja után azonnal szerkeszthető az új időzítő."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Műsorújság: sugárzott EPG, internetes EPG (XMLTV) és más szolgáltatók EPG-je."
+
+msgid "Conditional access"
+msgstr "Feltételes hozzáférés"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Az előfizetett kódolt csatornák dekódolása saját kártyával softcamban vagy CI-modulban."
+
+msgid "None (leave scrambled)"
+msgstr "Nincs (kódolt marad)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Külső softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Hardveres CI / CI+ modul"
+
+msgid "Descrambling via"
+msgstr "Dekódolás ezen keresztül"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI-foglalat"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix-foglalat útvonala vagy gép:port."
+
+msgid "CI module"
+msgstr "CI-modul"
+
+msgid "CI adapter number"
+msgstr "CI-adapter száma"
+
+msgid "CA device number"
+msgstr "CA-eszköz száma"
+
+msgid "Plugins"
+msgstr "Bővítmények"
+
+msgid "Load plugins at startup"
+msgstr "Bővítmények betöltése induláskor"
+
+msgid "Manage Plugins…"
+msgstr "Bővítmények kezelése…"
+
+msgid "Format and tracks"
+msgstr "Formátum és sávok"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Alapértékek az új időzítőkhöz és a Felvétel gombhoz. Minden időzítő és a „Felvétel beállításokkal…” paranccsal indított felvétel módosíthatja őket.\nTS: videó, minden hangsáv, felirat, teletext és EPG-adat. MKV: videó, több hangsáv és felirat. MPG: videó és több hangsáv. MP4: videó és egy hangsáv. Az internetes adásokban nincs teletext, felirat és EPG-adat; a HLS- és DASH-adások egy hangsávval kerülnek rögzítésre."
+
+msgid "TV format"
+msgstr "TV-formátum"
+
+msgid "Radio format"
+msgstr "Rádióformátum"
+
+msgid "Audio tracks"
+msgstr "Hangsávok"
+
+msgid "Preferred audio language"
+msgstr "Kívánt hangnyelv"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "A „Csak a kívánt nyelv” és az egy sávot megtartó MP4 használja. A hangalámondásos sávok kimaradnak. Egyezés nélkül az első sáv kerül rögzítésre."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} csak MPEG-TS-ben őrizhetők meg, ezért a felvételek TS-ként mentődnek."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} csak TS-ben vagy MKV-ben őrizhetők meg, ezért a felvételek TS-ként mentődnek."
+
+msgid " and "
+msgstr " és "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Nincs beállítva kívánt hangnyelv, ezért csak az első hangsáv kerül rögzítésre."
+
+msgid "Desktop accent: {found}"
+msgstr "Asztali kiemelőszín: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Nem található asztali kiemelőszín, a LinDVB kék lesz használva."
+
+msgid "Current accent: {color}"
+msgstr "Jelenlegi kiemelőszín: {color}"
+
+msgid "Channel Editor"
+msgstr "Csatornaszerkesztő"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Category"
+msgstr "Kategória"
+
+msgid "Group"
+msgstr "Csoport"
+
+msgid "Fav"
+msgstr "Kedv"
+
+msgid "Type"
+msgstr "Típus"
+
+msgid "Filter channels"
+msgstr "Csatornák szűrése"
+
+msgid "General"
+msgstr "Általános"
+
+msgid "Stream URL"
+msgstr "Adás címe"
+
+msgid "Favourite"
+msgstr "Kedvenc"
+
+msgid "Radio"
+msgstr "Rádió"
+
+msgid "Encrypted"
+msgstr "Kódolt"
+
+msgid "Tuning"
+msgstr "Hangolás"
+
+msgid "System"
+msgstr "Rendszer"
+
+msgid "Polarity"
+msgstr "Polaritás"
+
+msgid "Modulation"
+msgstr "Moduláció"
+
+msgid "Frequency (kHz)"
+msgstr "Frekvencia (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Szimbólumsebesség (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Sávszélesség (Hz)"
+
+msgid "Stream ID"
+msgstr "Adatfolyam-azonosító"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC-port (-1 nincs)"
+
+msgid "Service and PIDs"
+msgstr "Szolgáltatás és PID-ek"
+
+msgid "Service ID"
+msgstr "Szolgáltatásazonosító"
+
+msgid "Transport ID"
+msgstr "Transzportazonosító"
+
+msgid "Video PID"
+msgstr "Videó-PID"
+
+msgid "Audio PIDs"
+msgstr "Hang-PID-ek"
+
+msgid "Teletext PID"
+msgstr "Teletext-PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Módosítások alkalmazása (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Új csatorna"
+
+msgid "Delete channel"
+msgstr "Csatorna törlése"
+
+msgid "Move up"
+msgstr "Feljebb"
+
+msgid "Move down"
+msgstr "Lejjebb"
+
+msgid "Sort by group and name"
+msgstr "Rendezés csoport és név szerint"
+
+msgid "No channel selected"
+msgstr "Nincs kijelölt csatorna"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Válasszon ki egy csatornát a listában a szerkesztéshez."
+
+msgid "Unnamed channel"
+msgstr "Névtelen csatorna"
+
+msgid "Recording and Device Statistics"
+msgstr "Felvételi és eszközstatisztika"
+
+msgid "Active recordings:"
+msgstr "Folyamatban lévő felvételek:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nKövetkező időzítő: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletext – {name}"
+
+msgid "Find on page"
+msgstr "Keresés az oldalon"
+
+msgid "Copy page"
+msgstr "Oldal másolása"
+
+msgid "Save page"
+msgstr "Oldal mentése"
+
+msgid "Waiting for teletext…"
+msgstr "Várakozás a teletextre…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Hiányzik a teletextdec (gst-plugins-bad libzvbi-vel)."
+
+msgid "Searching page {page}…"
+msgstr "{page}. oldal keresése…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Nincs dekódolás beállítva. A jogosult kódolt csatornák dekódolhatók, ha a beállításokban a LinDVB-t a saját softcamjára vagy CI-moduljára irányítja."
+
+msgid "Provider '{v0}' is not available."
+msgstr "A(z) „{v0}” szolgáltató nem érhető el."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Szolgáltató: CI-modul – {status}\nA modul az Ön kártyájával dekódol a tunerben."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Szolgáltató: {name}\nA LinDVB az ECM-szakaszokat az Ön kártyakliensének továbbítja, és a visszakapott vezérlőszavakat alkalmazza; maga nem tárol kulcsokat."
+
+msgid "Open CAM Menu…"
+msgstr "CAM menü megnyitása…"
+
+msgid "Failed to load: {v0}"
+msgstr "A betöltés sikertelen: {v0}"
+
+msgid "Switched off"
+msgstr "Kikapcsolva"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "A módosítások a LinDVB következő indításakor lépnek életbe."
+
+msgid "No plugins installed."
+msgstr "Nincs telepített bővítmény."
+
+msgid "Plugin actions"
+msgstr "Bővítményműveletek"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Bővítménymappák: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I beállítása"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "A DVB-I az internetről tölti le a régiója csatornalistáját: számozást, neveket és logókat, valamint csatornánként a vételi módokat. A LinDVB lehetőség szerint a csatornakeresésből származó antennás, kábeles vagy műholdas csatornákat használja, egyébként az internetes adást."
+
+msgid "Privacy"
+msgstr "Adatvédelem"
+
+msgid "I have read the privacy notice"
+msgstr "Elolvastam az adatvédelmi tájékoztatót"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "A DVB-I-csatornák műsorújságjának (EPG) betöltése"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Váltás másik vételi módra (internet, antenna, kábel, műhold), ha az egyik kiesik"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "A lista műholdas csatornáinak hangolása csatornakeresés nélkül (műholdas csatornák kellenek a listájában)"
+
+msgid "Service list"
+msgstr "Szolgáltatáslista"
+
+msgid "Load Lists from Registry"
+msgstr "Listák betöltése a nyilvántartásból"
+
+msgid "In use: {current}"
+msgstr "Használatban: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Még nincs használatban DVB-I-lista."
+
+msgid "Region"
+msgstr "Régió"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Az irányítószám választja ki a regionális csatornákat és azok számozását. Csak a szolgáltatáslista szerverére kerül elküldésre."
+
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgid "No postcode: nationwide list"
+msgstr "Irányítószám nélkül: országos lista"
+
+msgid "Remove DVB-I Channels"
+msgstr "DVB-I-csatornák eltávolítása"
+
+msgid "Update Now"
+msgstr "Frissítés most"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "A kiválasztott lista újbóli betöltése (naponta is ellenőrzésre kerül)"
+
+msgid "Install Channel List"
+msgstr "Csatornalista telepítése"
+
+msgid "Close"
+msgstr "Bezárás"
+
+msgid "Asking the service list registry…"
+msgstr "A szolgáltatáslisták nyilvántartásának lekérdezése…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "A nyilvántartás nem érhető el: {error}"
+
+msgid "Default"
+msgstr "Alapértelmezett"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Szolgáltatáslisták innen: {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "A nyilvántartás nem kínál szolgáltatáslistát Németországhoz."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Adjon meg egy ötjegyű irányítószámot"
+
+msgid "Loading the service list…"
+msgstr "Szolgáltatáslista betöltése…"
+
+msgid "In use: {v0}"
+msgstr "Használatban: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nVálassza ki a régióját, és nyomja meg újra a Telepítés gombot."
+
+msgid "Enter Again"
+msgstr "Újbóli megadás"
+
+msgid "The service list does not know this postcode."
+msgstr "A szolgáltatáslista nem ismeri ezt az irányítószámot."
+
+msgid "The service list server answered {code}."
+msgstr "A szolgáltatáslista szervere ezt válaszolta: {code}."
+
+msgid "Try Again"
+msgstr "Újra"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Próbálkozhat újra, vagy használhatja az országos listát irányítószám nélkül."
+
+msgid "Nationwide List"
+msgstr "Országos lista"
+
+msgid "No DVB-I list is in use."
+msgstr "Nincs használatban DVB-I-lista."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Eltávolított DVB-I-csatornák: {removed}"
+
+msgid "All programmes"
+msgstr "Minden műsor"
+
+msgid "With audio description"
+msgstr "Hangalámondással"
+
+msgid "With subtitles"
+msgstr "Felirattal"
+
+msgid "Programme Guide"
+msgstr "Műsorújság"
+
+msgid "Now / Next"
+msgstr "Most / Utána"
+
+msgid "Per Channel"
+msgstr "Csatornánként"
+
+msgid "TV Guide"
+msgstr "TV-műsor"
+
+msgid "Search"
+msgstr "Keresés"
+
+msgid "Record Series"
+msgstr "Sorozat felvétele"
+
+msgid "Remind Me"
+msgstr "Emlékeztessen"
+
+msgid "Search Web"
+msgstr "Keresés a weben"
+
+msgid "Export the guide as XMLTV"
+msgstr "A műsorújság exportálása XMLTV-ként"
+
+msgid "Next"
+msgstr "Utána"
+
+msgid "Now"
+msgstr "Most"
+
+msgid "Only favourites"
+msgstr "Csak kedvencek"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Akadálymentesség (DVB-I műsorújság)"
+
+msgid "Show:"
+msgstr "Megjelenítés:"
+
+msgid "Channel"
+msgstr "Csatorna"
+
+msgid "Start"
+msgstr "Kezdés"
+
+msgid "End"
+msgstr "Vége"
+
+msgid "Title"
+msgstr "Cím"
+
+msgid "Genre"
+msgstr "Műfaj"
+
+msgid "Day"
+msgstr "Nap"
+
+msgid "Duration"
+msgstr "Időtartam"
+
+msgid "Subheading"
+msgstr "Alcím"
+
+msgid "Title or description"
+msgstr "Cím vagy leírás"
+
+msgid "Include description"
+msgstr "Leírással együtt"
+
+msgid "Case sensitive"
+msgstr "Kis- és nagybetűk megkülönböztetése"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} perc{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Sorozatfelvétel: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Emlékeztető eltávolítva: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} már elkezdődött"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Emlékeztető beállítva: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Emlékeztető eltávolítása"
+
+msgid "Save EPG data"
+msgstr "EPG-adatok mentése"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "A LinDVB bezárása után is megtartja a műsorújságot a lemezen."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "EPG-információ megjelenítése csatornaváltáskor (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nem jelenik meg."
+
+msgid "Remind before start (min)"
+msgstr "Emlékeztetés a kezdés előtt (perc)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "A műsorújságban beállított emlékeztetők ennyivel korábban jeleznek."
+
+msgid "Preferred language"
+msgstr "Kívánt nyelv"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Akkor használatos, ha egy műsort több nyelven sugároznak."
+
+msgid "Time zone"
+msgstr "Időzóna"
+
+msgid "Set time zone automatically"
+msgstr "Időzóna automatikus beállítása"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Ki: állandó GMT-eltérés használata a műsorújsághoz, az időzítőkhöz és az órához."
+
+msgid "Offset to GMT"
+msgstr "Eltérés a GMT-től"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Internetes EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Internetes EPG-forrás a sugárzott EPG mellett."
+
+msgid "Match IPTV Channels…"
+msgstr "IPTV-csatornák párosítása…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Ellenőrizze vagy javítsa, melyik műsorújság-csatorna melyik M3U-csatornához tartozik."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat frekvenciák"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Ha egy behangolt csatorna e transzponderek egyikén van, a LinDVB az adott szolgáltató EPG-jét is beolvassa. A módosítások a következő hangoláskor érvényesek."
+
+msgid "Frequency (MHz)"
+msgstr "Frekvencia (MHz)"
+
+msgid "Add"
+msgstr "Hozzáadás"
+
+msgid "Polarisation"
+msgstr "Polarizáció"
+
+msgid "Defaults"
+msgstr "Alapértékek"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Adja meg a transzponder frekvenciáját MHz-ben."
+
+msgid "Cover lookup failed: {e}"
+msgstr "A borítókeresés sikertelen: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Csere a főképpel"
+
+msgid "Close picture in picture"
+msgstr "Kép a képben bezárása"
+
+msgid "Picture in picture: {error}"
+msgstr "Kép a képben: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "A kép a képben internetes csatornákkal működik; a DVB-csatornákhoz második tuner kell."
+
+msgid "Channel Mosaic"
+msgstr "Csatornamozaik"
+
+msgid "Previous channels"
+msgstr "Előző csatornák"
+
+msgid "Next channels"
+msgstr "Következő csatornák"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "A mozaik internetes csatornákat mutat. A lista jelenlegi nézetében nincs ilyen."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "{page}/{pages}. oldal · {n} internetes csatorna"
+
+msgid "Click to watch {name}"
+msgstr "Kattintson a(z) {name} megtekintéséhez"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Univerzális (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Kiterjesztett"
+
+msgid "None / not satellite"
+msgstr "Nincs / nem műhold"
+
+msgid "Port 1 (A/A)"
+msgstr "1. port (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "2. port (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "3. port (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "4. port (B/B)"
+
+msgid "Frequency"
+msgstr "Frekvencia"
+
+msgid "Initial letter"
+msgstr "Kezdőbetű"
+
+msgid "Provider"
+msgstr "Szolgáltató"
+
+msgid "Channel Search"
+msgstr "Csatornakeresés"
+
+msgid "Device"
+msgstr "Eszköz"
+
+msgid "(choose…)"
+msgstr "(válasszon…)"
+
+msgid "Add folder…"
+msgstr "Mappa hozzáadása…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Transzponderlistákat tartalmazó mappa (dtv-scan-tables vagy DVBViewer-stílusú .ini)"
+
+msgid "Transponder list"
+msgstr "Transzponderlista"
+
+msgid "LNB type"
+msgstr "LNB-típus"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Célcsoport"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "pl. Astra 19,2° K"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "További frekvenciák keresése (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Csak szabadon fogható csatornák hozzáadása"
+
+msgid "Only update existing channels"
+msgstr "Csak a meglévő csatornák frissítése"
+
+msgid "Update channel names"
+msgstr "Csatornanevek frissítése"
+
+msgid "Group by"
+msgstr "Csoportosítás"
+
+msgid "Start Search"
+msgstr "Keresés indítása"
+
+msgid "Stop"
+msgstr "Leállítás"
+
+msgid "Folder with transponder lists"
+msgstr "Transzponderlistákat tartalmazó mappa"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nincs kiválasztott transzponderlista. Telepítse a dtv-scan-tables csomagot, vagy adjon hozzá egy mappát.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nNem található csatorna.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nKész: {added} új, {updated} frissített csatorna.\n"
+
+msgid "HH:MM"
+msgstr "ÓÓ:PP"
+
+msgid "Recording Timers"
+msgstr "Felvételi időzítők"
+
+msgid "Search channels"
+msgstr "Csatornák keresése"
+
+msgid "  (Radio)"
+msgstr "  (Rádió)"
+
+msgid "Date"
+msgstr "Dátum"
+
+msgid "Repeat"
+msgstr "Ismétlés"
+
+msgid "Once"
+msgstr "Egyszer"
+
+msgid "Series"
+msgstr "Sorozat"
+
+msgid "Action"
+msgstr "Művelet"
+
+msgid "Format"
+msgstr "Formátum"
+
+msgid "After"
+msgstr "Utána"
+
+msgid "Disabled"
+msgstr "Letiltva"
+
+msgid "Status"
+msgstr "Állapot"
+
+msgid "Repeat every {day}"
+msgstr "Ismétlés minden {day}"
+
+msgid "_Date"
+msgstr "_Dátum"
+
+msgid "_Lead (min)"
+msgstr "_Előtte (perc)"
+
+msgid "_End"
+msgstr "_Vége"
+
+msgid "_Start"
+msgstr "_Kezdés"
+
+msgid "Repeat on"
+msgstr "Ismétlés napjai"
+
+msgid "_Follow (min)"
+msgstr "_Utána (perc)"
+
+msgid "Pick a channel on the left"
+msgstr "Válasszon csatornát a bal oldalon"
+
+msgid "_Name"
+msgstr "_Név"
+
+msgid "_Timer action"
+msgstr "_Időzítő művelete"
+
+msgid "_After recording"
+msgstr "_Felvétel után"
+
+msgid "T_V format"
+msgstr "T_V-formátum"
+
+msgid "_Radio format"
+msgstr "_Rádióformátum"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Csak a kívánt nyelv: a beállítások hangnyelvén szóló sávok, hangalámondás nélkül. Az MP4 és a rádió hangfájlja egy sávot tart meg."
+
+msgid "Audi_o tracks"
+msgstr "_Hangsávok"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teletext csak MPEG-TS-ben létezik, ezért TS lesz használva."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG-adatok (EIT) csak MPEG-TS-ben léteznek, ezért TS lesz használva."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "A TS minden feliratfolyamot megtart. Az MKV a teletext feliratoldalát szövegsávként kapja meg; a DVB bitképes feliratok csak TS-ben maradnak meg."
+
+msgid "Tracks"
+msgstr "Sávok"
+
+msgid "File _naming scheme"
+msgstr "_Fájlnévminta"
+
+msgid "Folder…"
+msgstr "Mappa…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "A beállítások felvételi mappájának használata"
+
+msgid "Placeholders"
+msgstr "Helyőrzők"
+
+msgid "Folder: "
+msgstr "Mappa: "
+
+msgid "Clear the editor"
+msgstr "Szerkesztő ürítése"
+
+msgid "New"
+msgstr "Új"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "A szerkesztő beállításainak hozzáadása új időzítőként"
+
+msgid "Apply"
+msgstr "Alkalmaz"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "A szerkesztő beállításainak mentése a kijelölt időzítőbe"
+
+msgid "Delete the selected timer"
+msgstr "A kijelölt időzítő törlése"
+
+msgid "Enable/Disable"
+msgstr "Be/Ki"
+
+msgid "Switch the selected timer on or off"
+msgstr "A kijelölt időzítő be- vagy kikapcsolása"
+
+msgid "Save as default"
+msgstr "Mentés alapértékként"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Ezen formátumok és kiegészítő folyamok használata új időzítőkhöz és kézi felvételekhez"
+
+msgid "Series title"
+msgstr "Sorozat címe"
+
+msgid "Delete series rule"
+msgstr "Sorozatszabály törlése"
+
+msgid "Series recordings"
+msgstr "Sorozatfelvételek"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "A feliratok elférnek TS-ben vagy MKV-ben."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Nincs kívánt hangnyelv a beállításokban: az első sáv kerül rögzítésre."
+
+msgid "File: {v0}"
+msgstr "Fájl: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Érvénytelen kezdési vagy befejezési idő"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Használja az ÓÓ:PP formát, például 20:15."
+
+msgid "No channel"
+msgstr "Nincs csatorna"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Válassza ki a felveendő csatornát a bal oldali listában."
+
+msgid "Recording defaults saved"
+msgstr "Felvételi alapértékek mentve"
+
+msgid "Record with Options"
+msgstr "Felvétel beállításokkal"
+
+msgid "_Format"
+msgstr "_Formátum"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "A teletext és az EPG-adatok csak MPEG-TS-ben őrizhetők meg, ezért TS lesz használva."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Kívánt hangnyelv: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "A(z) „{v0}” vizualizáció sikertelen: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "Az OpenGL{v0} {major}.{minor} túl régi"
+
+msgid "Playback error: "
+msgstr "Lejátszási hiba: "
+
+msgid "All channels"
+msgstr "Minden csatorna"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Kedvencek (TV + rádió)"
+
+msgid "Free to air"
+msgstr "Szabadon fogható"
+
+msgid "Internet streams"
+msgstr "Internetes adások"
+
+msgid "Fill (crop)"
+msgstr "Kitöltés (vágás)"
+
+msgid "Fit"
+msgstr "Illesztés"
+
+msgid "Stretch"
+msgstr "Nyújtás"
+
+msgid "Playback error: {m}"
+msgstr "Lejátszási hiba: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "A bővítményművelet sikertelen: {e}"
+
+msgid "Open Media File…"
+msgstr "Médiafájl megnyitása…"
+
+msgid "Open URL…"
+msgstr "Cím megnyitása…"
+
+msgid "Import Channel List…"
+msgstr "Csatornalista importálása…"
+
+msgid "Export Channel List…"
+msgstr "Csatornalista exportálása…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Műsorújság exportálása (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Váltás TV / rádió"
+
+msgid "Recordings"
+msgstr "Felvételek"
+
+msgid "Programme Guide (EPG)"
+msgstr "Műsorújság (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Időzített felvételek"
+
+msgid "Record with Options…"
+msgstr "Felvétel beállításokkal…"
+
+msgid "Teletext"
+msgstr "Teletext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM menü (CI-modul)…"
+
+msgid "Channel Search…"
+msgstr "Csatornakeresés…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I beállítása…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Csatornaszerkesztő / kedvencek"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Internetes EPG frissítése (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "IPTV-csatornák párosítása XMLTV-vel…"
+
+msgid "Audio Track"
+msgstr "Hangsáv"
+
+msgid "Subtitles"
+msgstr "Feliratok"
+
+msgid "Play Rate"
+msgstr "Lejátszási sebesség"
+
+msgid "Back 10 s"
+msgstr "Vissza 10 s"
+
+msgid "Forward 10 s"
+msgstr "Előre 10 s"
+
+msgid "Back 1 min"
+msgstr "Vissza 1 perc"
+
+msgid "Forward 1 min"
+msgstr "Előre 1 perc"
+
+msgid "Back to Live"
+msgstr "Vissza az élő adáshoz"
+
+msgid "Jump"
+msgstr "Ugrás"
+
+msgid "Previous"
+msgstr "Előző"
+
+msgid "Random Order"
+msgstr "Véletlen sorrend"
+
+msgid "Endless Playback"
+msgstr "Végtelen lejátszás"
+
+msgid "Playlist"
+msgstr "Lejátszási lista"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Időcsúsztatás megtartása felvételként"
+
+msgid "Rebuild Playback"
+msgstr "Lejátszás újraépítése"
+
+msgid "Video Off (audio only)"
+msgstr "Videó ki (csak hang)"
+
+msgid "Show Selected Channel"
+msgstr "Kijelölt csatorna megjelenítése"
+
+msgid "Swap Pictures"
+msgstr "Képek cseréje"
+
+msgid "Picture in Picture"
+msgstr "Kép a képben"
+
+msgid "Channel Mosaic…"
+msgstr "Csatornamozaik…"
+
+msgid "Stop in {mins} min"
+msgstr "Leállítás {mins} perc múlva"
+
+msgid "Stop after current programme"
+msgstr "Leállítás az aktuális műsor után"
+
+msgid "Sleep Timer"
+msgstr "Elalvási időzítő"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Hang később (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Hang korábban (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Visszaállítás"
+
+msgid "Audio Delay (this channel)"
+msgstr "Hangkésleltetés (ez a csatorna)"
+
+msgid "Full Screen"
+msgstr "Teljes képernyő"
+
+msgid "Show/Hide Channel List"
+msgstr "Csatornalista megjelenítése/elrejtése"
+
+msgid "Aspect / Zoom"
+msgstr "Képarány / nagyítás"
+
+msgid "Window Size"
+msgstr "Ablakméret"
+
+msgid "Picture Settings…"
+msgstr "Képbeállítások…"
+
+msgid "Equalizer…"
+msgstr "Hangszínszabályzó…"
+
+msgid "Radio Visualisation"
+msgstr "Rádióvizualizáció"
+
+msgid "Screenshot"
+msgstr "Képernyőkép"
+
+msgid "Plugins…"
+msgstr "Bővítmények…"
+
+msgid "About LinDVB"
+msgstr "A LinDVB névjegye"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Csatornalista megjelenítése/elrejtése (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Főmenü (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Műsorújság (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletext (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "TV-csatornák megjelenítése (Ctrl+M vált)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Rádióadók megjelenítése (Ctrl+M vált)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Felvételek megjelenítése (dupla kattintás lejátssza)"
+
+msgid "Search name or number"
+msgstr "Név vagy szám keresése"
+
+msgid "All groups"
+msgstr "Minden csoport"
+
+msgid "Previous channel (Page Down)"
+msgstr "Előző csatorna (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Szünet / időcsúsztatás (szóköz)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Leállítás (csatorna kikapcsolása)"
+
+msgid "Next channel (Page Up)"
+msgstr "Következő csatorna (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Az aktuális csatorna felvétele (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Formátum és sávok kiválasztása ehhez a felvételhez"
+
+msgid "Seek"
+msgstr "Pozíció"
+
+msgid "LIVE"
+msgstr "ÉLŐ"
+
+msgid "Back to live (L)"
+msgstr "Vissza az élő adáshoz (L)"
+
+msgid "Mute (M)"
+msgstr "Némítás (M)"
+
+msgid "Volume"
+msgstr "Hangerő"
+
+msgid "Audio track"
+msgstr "Hangsáv"
+
+msgid "Playback and picture settings"
+msgstr "Lejátszási és képbeállítások"
+
+msgid "Full screen (F)"
+msgstr "Teljes képernyő (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nMost: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} / {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{n} / {total} felvétel látható"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{n} / {total} kedvenc látható"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{n} / {total} rádióadó látható"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{n} / {total} TV-csatorna látható"
+
+msgid "Add to Favourites"
+msgstr "Hozzáadás a kedvencekhez"
+
+msgid "Remove from Favourites"
+msgstr "Eltávolítás a kedvencek közül"
+
+msgid "Edit…"
+msgstr "Szerkesztés…"
+
+msgid "Show as Picture in Picture"
+msgstr "Megjelenítés kép a képben módban"
+
+msgid "Select a channel in the list first"
+msgstr "Először válasszon csatornát a listában"
+
+msgid "By channel"
+msgstr "Csatorna szerint"
+
+msgid "By title"
+msgstr "Cím szerint"
+
+msgid "Newest first"
+msgstr "Legújabb elöl"
+
+msgid "Oldest first"
+msgstr "Legrégebbi elöl"
+
+msgid "Largest first"
+msgstr "Legnagyobb elöl"
+
+msgid "Sort the recordings"
+msgstr "Felvételek rendezése"
+
+msgid "Open the recording folder"
+msgstr "Felvételi mappa megnyitása"
+
+msgid "Look for new recordings"
+msgstr "Új felvételek keresése"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Még nincsenek felvételek.\n\nA felvételek mentési helye:\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Nincs felvételi mappa beállítva a beállításokban."
+
+msgid "Recording in progress"
+msgstr "Felvétel folyamatban"
+
+msgid "Watched"
+msgstr "Megnézve"
+
+msgid "Watched up to {pos}"
+msgstr "Megnézve eddig: {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "A felvétel nem található: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Folytatás innen: {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "A mappa nem található: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Nem nyitható meg: {folder}: {message}"
+
+msgid "Play"
+msgstr "Lejátszás"
+
+msgid "Play from the Beginning"
+msgstr "Lejátszás az elejéről"
+
+msgid "Details…"
+msgstr "Részletek…"
+
+msgid "Mark as Unwatched"
+msgstr "Megjelölés nem megnézettként"
+
+msgid "Mark as Watched"
+msgstr "Megjelölés megnézettként"
+
+msgid "Show in Folder"
+msgstr "Megjelenítés a mappában"
+
+msgid "Delete…"
+msgstr "Törlés…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Állítsa le a felvételt a törlés előtt"
+
+msgid "Delete “{title}”?"
+msgstr "Törli ezt: „{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nA fájl törlődik a lemezről."
+
+msgid "Deleted {name}"
+msgstr "{name} törölve"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Nem törölhető: {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name} hangolása…"
+
+msgid "Search recordings"
+msgstr "Keresés a felvételekben"
+
+msgid "No radio stations in the channel list"
+msgstr "Nincs rádióadó a csatornalistában"
+
+msgid "No TV channels in the channel list"
+msgstr "Nincs TV-csatorna a csatornalistában"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – átváltva erre: {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} jelenleg nem sugároz"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Élő TV leállítva: a tuner egy időzített felvételhez kell"
+
+msgid "Stopped"
+msgstr "Leállítva"
+
+msgid "Sound {ms} ms later"
+msgstr "Hang {ms} ms-mal később"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Hang {v0} ms-mal korábban"
+
+msgid "Audio delay off"
+msgstr "Hangkésleltetés kikapcsolva"
+
+msgid "Playing {item}"
+msgstr "Lejátszás: {item}"
+
+msgid "Open media files"
+msgstr "Médiafájlok megnyitása"
+
+msgid "Open URL"
+msgstr "Cím megnyitása"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Megnyitás"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Csatornalista importálása (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Nem importálható: {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "{total_a} új és {total_u} frissített csatorna importálva"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Csatornák exportálása (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Exportálva ide: {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Műsorújság exportálása (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Nem írható: {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Nincs mit felvenni"
+
+msgid "This channel is already being recorded"
+msgstr "Ez a csatorna már felvétel alatt áll"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletext: hiányzik a dekóder (gst-plugins-bad libzvbi-vel)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletext: ezen a csatornán nem érhető el"
+
+msgid "Teletext needs a DVB channel"
+msgstr "A teletexthez DVB-csatorna kell"
+
+msgid "Volume {v0}%"
+msgstr "Hangerő {v0}%"
+
+msgid "Off"
+msgstr "Ki"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Zárt feliratok (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} nyelv"
+
+msgid "{n} audio tracks"
+msgstr "{n} hangsáv"
+
+msgid "Screenshot saved: {path}"
+msgstr "Képernyőkép mentve: {path}"
+
+msgid "Screenshot failed"
+msgstr "A képernyőkép sikertelen"
+
+msgid "Picture Settings"
+msgstr "Képbeállítások"
+
+msgid "Restore Defaults"
+msgstr "Alapértékek visszaállítása"
+
+msgid "Equalizer"
+msgstr "Hangszínszabályzó"
+
+msgid "Leave full screen (F)"
+msgstr "Kilépés a teljes képernyőből (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "A vizualizáció sikertelen: {e}"
+
+msgid "Radio visualisation"
+msgstr "Rádióvizualizáció"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Rádióvizualizáció (csak rádióhoz és hanghoz)"
+
+msgid "Playback stops at {v0}"
+msgstr "A lejátszás leáll: {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Nincs műsorinformáció az elalvási időzítőhöz"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Elalvási időzítő: lejátszás leállítva"
+
+msgid "No programme information"
+msgstr "Nincs műsorinformáció"
+
+msgid "Next: {v0}  {title}"
+msgstr "Utána: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Jel {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Élő"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Időcsúsztatás −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "DVB-S/S2, DVB-C, DVB-T/T2, ATSC és internetes TV nézése és felvétele a Linux DVB API és a GStreamer segítségével."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "IPTV-csatornák párosítása XMLTV-vel"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Még nincs betöltve XMLTV-műsorújság. Adja meg az XMLTV-címet az EPG-beállításokban, és először töltse le a műsorújságot; a párosítás a letöltés után automatikusan elindul."
+
+msgid "Download XMLTV guide now"
+msgstr "XMLTV-műsorújság letöltése most"
+
+msgid "Only channels without guide"
+msgstr "Csak műsorújság nélküli csatornák"
+
+msgid "Match"
+msgstr "Párosítás"
+
+msgid "Guide channel:"
+msgstr "Műsorújság-csatorna:"
+
+msgid "Assign"
+msgstr "Hozzárendelés"
+
+msgid "Suggest"
+msgstr "Javaslat"
+
+msgid "Auto-match all"
+msgstr "Mind automatikus párosítása"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Minden olyan csatorna párosítása, amelyet nem kézzel rendeltek hozzá"
+
+msgid "Reset to automatic"
+msgstr "Vissza automatikusra"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "A kijelölt csatornánál ismét az automatikus párosítás döntsön"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} / {v1} csatornának van műsorújság-csatornája"
+
+msgid "No suggestion for {name}"
+msgstr "Nincs javaslat ehhez: {name}"
