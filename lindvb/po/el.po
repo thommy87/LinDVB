@@ -25,8 +25,8 @@ msgstr "Ορίστε πρώτα μια διεύθυνση XMLTV στις προ�
 msgid "Downloading XMLTV guide…"
 msgstr "Λήψη οδηγού XMLTV…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} χωρίς οδηγό (TV ▸ Αντιστοίχιση καναλιών IPTV με XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} χωρίς οδηγό (Προτιμήσεις ▸ EPG ▸ Αντιστοίχιση καναλιών IPTV)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: φόρτωση λίστας υπηρεσιών…"
@@ -303,6 +303,33 @@ msgstr "LOF υψηλής ζώνης (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Συχνότητα εναλλαγής (kHz)"
+
+msgid "Channels"
+msgstr "Κανάλια"
+
+msgid "Channel Search…"
+msgstr "Αναζήτηση καναλιών…"
+
+msgid "Channel search"
+msgstr "Αναζήτηση καναλιών"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Αναζήτηση καναλιών από κεραία, καλωδιακή ή δορυφόρο (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Επεξεργασία καναλιών / αγαπημένα"
+
+msgid "Channel editor"
+msgstr "Επεξεργασία καναλιών"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Μετονομασία, ταξινόμηση, διαγραφή και προσθήκη καναλιών και σήμανση αγαπημένων (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Διαδίκτυο"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Λίστες καναλιών από το διαδίκτυο: η λίστα DVB-I της περιοχής σας και λίστες αναπαραγωγής IPTV. Οι ρυθμίσεις αυτές ισχύουν αμέσως."
 
 msgid "Recording folder"
 msgstr "Φάκελος εγγραφών"
@@ -595,9 +622,6 @@ msgstr "Ενέργειες πρόσθετων"
 msgid "Plugin folders: {dirs}"
 msgstr "Φάκελοι πρόσθετων: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "Ρύθμιση DVB-I"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "Το DVB-I λαμβάνει από το διαδίκτυο τη λίστα καναλιών της περιοχής σας: αρίθμηση, ονόματα και λογότυπα, και για κάθε κανάλι τους τρόπους λήψης του. Το LinDVB χρησιμοποιεί όπου μπορεί τα επίγεια, καλωδιακά ή δορυφορικά κανάλια από την αναζήτηση καναλιών σας και αλλιώς τη ροή διαδικτύου."
 
@@ -651,9 +675,6 @@ msgstr "Επαναφόρτωση της επιλεγμένης λίστας (ε�
 
 msgid "Install Channel List"
 msgstr "Εγκατάσταση λίστας καναλιών"
-
-msgid "Close"
-msgstr "Κλείσιμο"
 
 msgid "Asking the service list registry…"
 msgstr "Ερώτημα στο μητρώο λιστών υπηρεσιών…"
@@ -879,6 +900,51 @@ msgstr "Διαγραφή"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Εισαγάγετε τη συχνότητα του αναμεταδότη σε MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Λίστες καναλιών IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Όλα τα αρχεία"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Εισαγάγετε μία ή περισσότερες λίστες αναπαραγωγής M3U ή άλλες λίστες καναλιών με ροές διαδικτύου. Τα κανάλια που υπάρχουν ήδη στη λίστα σας ενημερώνονται, τα υπόλοιπα προστίθενται."
+
+msgid "Import Files…"
+msgstr "Εισαγωγή αρχείων…"
+
+msgid "From files"
+msgstr "Από αρχεία"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV ή dvbv5. Μπορείτε να επιλέξετε πολλά αρχεία μαζί."
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "From a web address"
+msgstr "Από διεύθυνση ιστού"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "Η διεύθυνση μιας λίστας αναπαραγωγής M3U. Εισαγάγετέ τη ξανά για να ενημερώσετε τα κανάλια."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Κανάλια IPTV στη λίστα σας: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Εισαγωγή λιστών καναλιών IPTV"
+
+msgid "Downloading {url}…"
+msgstr "Λήψη {url}…"
+
+msgid "Could not import {name}"
+msgstr "Αδύνατη η εισαγωγή του {name}"
+
+msgid "The address has no channels."
+msgstr "Η διεύθυνση δεν περιέχει κανάλια."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Εισήχθησαν νέα κανάλια: {total_a}, ενημερωμένα: {total_u}"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Η αναζήτηση εξωφύλλου απέτυχε: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Αποθήκευση ως προεπιλογή"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Χρήση αυτών των μορφών και επιπλέον ροών για νέους χρονοδιακόπτες και χειροκίνητες εγγραφές"
 
+msgid "Close"
+msgstr "Κλείσιμο"
+
 msgid "Series title"
 msgstr "Τίτλος σειράς"
 
@@ -1273,20 +1342,8 @@ msgstr "Teletext"
 msgid "CAM Menu (CI Module)…"
 msgstr "Μενού CAM (μονάδα CI)…"
 
-msgid "Channel Search…"
-msgstr "Αναζήτηση καναλιών…"
-
-msgid "DVB-I Setup…"
-msgstr "Ρύθμιση DVB-I…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Επεξεργασία καναλιών / αγαπημένα"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Ενημέρωση EPG διαδικτύου (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Αντιστοίχιση καναλιών IPTV με XMLTV…"
 
 msgid "Audio Track"
 msgstr "Κομμάτι ήχου"
@@ -1641,12 +1698,6 @@ msgstr "Άνοιγμα"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Εισαγωγή λίστας καναλιών (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Αδύνατη η εισαγωγή του {name}"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Εισήχθησαν νέα κανάλια: {total_a}, ενημερωμένα: {total_u}"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Εξαγωγή καναλιών (.conf = dvbv5, .m3u = IPTV, .csv)"

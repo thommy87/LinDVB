@@ -25,8 +25,8 @@ msgstr "Vispirms iestatiet XMLTV adresi iestatījumos"
 msgid "Downloading XMLTV guide…"
 msgstr "Lejupielādē XMLTV ceļvedi…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} bez ceļveža (TV ▸ Sasaistīt IPTV kanālus ar XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} bez programmas (Iestatījumi ▸ EPG ▸ Sasaistīt IPTV kanālus)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: ielādē pakalpojumu sarakstu…"
@@ -303,6 +303,33 @@ msgstr "LOF augstā josla (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Pārslēgšanas frekvence (kHz)"
+
+msgid "Channels"
+msgstr "Kanāli"
+
+msgid "Channel Search…"
+msgstr "Kanālu meklēšana…"
+
+msgid "Channel search"
+msgstr "Kanālu meklēšana"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Meklēt kanālus antenā, kabelī vai satelītā (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanālu redaktors / izlase"
+
+msgid "Channel editor"
+msgstr "Kanālu redaktors"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Pārdēvēt, kārtot, dzēst un pievienot kanālus un atzīmēt izlasi (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internets"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Kanālu saraksti no interneta: jūsu reģiona DVB-I saraksts un IPTV atskaņošanas saraksti. Šie iestatījumi stājas spēkā uzreiz."
 
 msgid "Recording folder"
 msgstr "Ierakstu mape"
@@ -595,9 +622,6 @@ msgstr "Spraudņu darbības"
 msgid "Plugin folders: {dirs}"
 msgstr "Spraudņu mapes: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "DVB-I iestatīšana"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I no interneta iegūst jūsu reģiona kanālu sarakstu: numerāciju, nosaukumus un logotipus, kā arī katra kanāla uztveršanas veidus. LinDVB, kad iespējams, izmanto antenas, kabeļa vai satelīta kanālus no jūsu kanālu meklēšanas, citādi interneta straumi."
 
@@ -651,9 +675,6 @@ msgstr "Atkārtoti ielādēt izvēlēto sarakstu (tas tiek pārbaudīts arī kat
 
 msgid "Install Channel List"
 msgstr "Instalēt kanālu sarakstu"
-
-msgid "Close"
-msgstr "Aizvērt"
 
 msgid "Asking the service list registry…"
 msgstr "Vaicā pakalpojumu sarakstu reģistram…"
@@ -879,6 +900,51 @@ msgstr "Dzēst"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Ievadiet transpondera frekvenci MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV kanālu saraksti (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Visi faili"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importējiet vienu vai vairākus M3U atskaņošanas sarakstus vai citus kanālu sarakstus ar interneta straumēm. Kanāli, kas jau ir jūsu sarakstā, tiek atjaunināti, pārējie pievienoti."
+
+msgid "Import Files…"
+msgstr "Importēt failus…"
+
+msgid "From files"
+msgstr "No failiem"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV vai dvbv5. Var izvēlēties vairākus failus vienlaikus."
+
+msgid "Import"
+msgstr "Importēt"
+
+msgid "From a web address"
+msgstr "No tīmekļa adreses"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U atskaņošanas saraksta adrese. Importējiet to vēlreiz, lai atjauninātu kanālus."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "IPTV kanāli jūsu sarakstā: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Importēt IPTV kanālu sarakstus"
+
+msgid "Downloading {url}…"
+msgstr "Lejupielādē {url}…"
+
+msgid "Could not import {name}"
+msgstr "Nevarēja importēt {name}"
+
+msgid "The address has no channels."
+msgstr "Šajā adresē nav kanālu."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importēti jauni kanāli: {total_a}, atjaunināti: {total_u}"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Vāciņa meklēšana neizdevās: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Saglabāt kā noklusējumu"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Izmantot šos formātus un papildu straumes jauniem taimeriem un manuāliem ierakstiem"
 
+msgid "Close"
+msgstr "Aizvērt"
+
 msgid "Series title"
 msgstr "Seriāla nosaukums"
 
@@ -1273,20 +1342,8 @@ msgstr "Teleteksts"
 msgid "CAM Menu (CI Module)…"
 msgstr "CAM izvēlne (CI modulis)…"
 
-msgid "Channel Search…"
-msgstr "Kanālu meklēšana…"
-
-msgid "DVB-I Setup…"
-msgstr "DVB-I iestatīšana…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Kanālu redaktors / izlase"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Atjaunināt interneta EPG (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Sasaistīt IPTV kanālus ar XMLTV…"
 
 msgid "Audio Track"
 msgstr "Audio celiņš"
@@ -1641,12 +1698,6 @@ msgstr "Atvērt"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Importēt kanālu sarakstu (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Nevarēja importēt {name}"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Importēti jauni kanāli: {total_a}, atjaunināti: {total_u}"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Eksportēt kanālus (.conf = dvbv5, .m3u = IPTV, .csv)"

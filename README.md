@@ -90,13 +90,14 @@ picture and hides itself when the mouse is still.
   channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
   (channel table, EIT and extended texts, GPS time)
 * Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
-* DVB-I (TV ▸ DVB-I Setup): the channel list of your region from the German
+* DVB-I (Preferences ▸ Internet): the channel list of your region from the German
   service list registry, with postcode, channel numbers (LCN), logos and a daily
   update; each channel uses your antenna/cable/satellite channel where the
   channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
-  DVBViewer channel lists (`*.ini`). Export: dvbv5, M3U, CSV
+  DVBViewer channel lists (`*.ini`); IPTV playlists also from a web address
+  (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer
@@ -202,7 +203,7 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 
 ## First steps
 
-1. **Menu → Channel Search**: pick your tuner, a transponder list (from
+1. **Preferences → Tuner and LNB → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
    dtv-scan-tables, or add a folder with DVBViewer-style transponder lists), LNB and
    DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
 2. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.

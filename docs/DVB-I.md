@@ -2,7 +2,8 @@
 
 LinDVB can load its channel list from DVB-I (ETSI TS 103 770), following the
 German profile "DTVP DVB-I Implementierungsprofil V1.1.0" (2026). Open it with
-**TV ▸ DVB-I Setup…**.
+**Preferences ▸ Internet**, section DVB-I. Its settings apply at once,
+without the Save button.
 
 ## What happens
 

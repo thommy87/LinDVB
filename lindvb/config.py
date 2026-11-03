@@ -124,7 +124,7 @@ DEFAULTS = {
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.
     "editor_sections_open": ["general"],
-    # DVB-I (TV ▸ DVB-I Setup, see lindvb.dvbi) --------------------------------
+    # DVB-I (Preferences ▸ Internet, see lindvb.dvbi) --------------------------
     # Service list registries, asked in this order; the chosen service list,
     # the postcode for the region, the region chosen when several match, and
     # the state of the daily update check.

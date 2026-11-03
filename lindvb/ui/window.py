@@ -270,11 +270,9 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append(_("Recording and Device Statistics"), "win.stats")
         tv.append(_("Teletext"), "win.teletext")
         tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
-        tv.append(_("Channel Search…"), "win.scan")
-        tv.append(_("DVB-I Setup…"), "win.dvbi-setup")
-        tv.append(_("Channel Editor / Favourites"), "win.editor")
+        # channel search, channel editor and DVB-I live in the preferences
+        # (Tuner and LNB, Internet); their shortcuts still work
         tv.append(_("Update Internet EPG (XMLTV)"), "win.xmltv")
-        tv.append(_("Match IPTV Channels to XMLTV…"), "win.xmltv-match")
         m.append_section(None, tv)
 
         play = Gio.Menu()
@@ -1522,19 +1520,27 @@ class MainWindow(Gtk.ApplicationWindow):
             files = dlg.open_multiple_finish(res)
         except GLib.Error:
             return
+        self.import_files([files.get_item(i).get_path() for i in range(files.get_n_items())])
+
+    def import_files(self, paths, parent=None):
+        """Merge the channel lists in *paths* into the channel list; returns
+        the status text."""
         total_a = total_u = 0
-        for i in range(files.get_n_items()):
-            path = files.get_item(i).get_path()
+        for path in paths:
             try:
                 a, u = self.app.db.merge(import_file(path))
             except (OSError, ValueError) as e:
-                message(self, _("Could not import {name}").format(name=Path(path).name), str(e))
+                message(parent or self, _("Could not import {name}").format(name=Path(path).name),
+                        str(e))
                 continue
             total_a += a
             total_u += u
         self.app.db.save()
         self.reload_channels()
-        self.set_status(_("Imported {total_a} new and {total_u} updated channels").format(total_a=total_a, total_u=total_u))
+        text = _("Imported {total_a} new and {total_u} updated channels").format(
+            total_a=total_a, total_u=total_u)
+        self.set_status(text)
+        return text
 
     def on_export(self):
         dlg = Gtk.FileDialog(title=_("Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"),

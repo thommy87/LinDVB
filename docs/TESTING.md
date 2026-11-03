@@ -28,7 +28,7 @@ sudo modprobe vidtv          # Ubuntu: needs linux-modules-extra-$(uname -r)
 sudo chmod -R a+rw /dev/dvb  # or add yourself to the "video" group
 ```
 
-In LinDVB, open **Channel search**: the adapter is listed as
+In LinDVB, open **Preferences ▸ Tuner and LNB ▸ Channel Search** (Shift+Ctrl+S): the adapter is listed as
 "Virtual tuner (vidtv)" and the transponder lists as `scantables/vidtv-…`.
 Search, then play "Beethoven": you hear a tone sequence, see the radio
 visualisation, the EPG fills, and recording, timeshift and timers work as with

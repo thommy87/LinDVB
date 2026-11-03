@@ -25,8 +25,8 @@ msgstr "Imposta prima un indirizzo XMLTV nelle preferenze"
 msgid "Downloading XMLTV guide…"
 msgstr "Download della guida XMLTV…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} senza guida (TV ▸ Associa canali IPTV a XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} senza guida (Preferenze ▸ EPG ▸ Associa canali IPTV)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: caricamento dell'elenco dei servizi…"
@@ -303,6 +303,33 @@ msgstr "LOF banda alta (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Frequenza di commutazione (kHz)"
+
+msgid "Channels"
+msgstr "Canali"
+
+msgid "Channel Search…"
+msgstr "Ricerca canali…"
+
+msgid "Channel search"
+msgstr "Ricerca canali"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Cerca i canali su antenna, cavo o satellite (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Editor canali / preferiti"
+
+msgid "Channel editor"
+msgstr "Editor canali"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Rinomina, ordina, elimina e aggiungi canali e segna i preferiti (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Liste canali da Internet: la lista DVB-I della tua regione e le playlist IPTV. Queste impostazioni hanno effetto subito."
 
 msgid "Recording folder"
 msgstr "Cartella delle registrazioni"
@@ -595,9 +622,6 @@ msgstr "Azioni dei plugin"
 msgid "Plugin folders: {dirs}"
 msgstr "Cartelle dei plugin: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "Configurazione DVB-I"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I scarica da internet la lista canali della tua regione: numerazione, nomi e loghi, e per ogni canale i modi per riceverlo. LinDVB usa, se possibile, i canali da antenna, cavo o satellite della tua ricerca canali, altrimenti il flusso internet."
 
@@ -651,9 +675,6 @@ msgstr "Ricarica l'elenco scelto (viene anche controllato ogni giorno)"
 
 msgid "Install Channel List"
 msgstr "Installa lista canali"
-
-msgid "Close"
-msgstr "Chiudi"
 
 msgid "Asking the service list registry…"
 msgstr "Interrogazione del registro degli elenchi dei servizi…"
@@ -879,6 +900,51 @@ msgstr "Elimina"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Inserisci la frequenza del transponder in MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Liste canali IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Tutti i file"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importa una o più playlist M3U o altre liste canali con flussi Internet. I canali già presenti nella tua lista vengono aggiornati, gli altri aggiunti."
+
+msgid "Import Files…"
+msgstr "Importa file…"
+
+msgid "From files"
+msgstr "Da file"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV o dvbv5. Si possono scegliere più file insieme."
+
+msgid "Import"
+msgstr "Importa"
+
+msgid "From a web address"
+msgstr "Da un indirizzo web"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "L'indirizzo di una playlist M3U. Importala di nuovo per aggiornare i canali."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Canali IPTV nella tua lista: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Importa liste canali IPTV"
+
+msgid "Downloading {url}…"
+msgstr "Download di {url}…"
+
+msgid "Could not import {name}"
+msgstr "Impossibile importare {name}"
+
+msgid "The address has no channels."
+msgstr "L'indirizzo non contiene canali."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importati {total_a} canali nuovi e {total_u} aggiornati"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Ricerca della copertina non riuscita: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Salva come predefinito"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Usa questi formati e flussi aggiuntivi per i nuovi timer e le registrazioni manuali"
 
+msgid "Close"
+msgstr "Chiudi"
+
 msgid "Series title"
 msgstr "Titolo della serie"
 
@@ -1273,20 +1342,8 @@ msgstr "Televideo"
 msgid "CAM Menu (CI Module)…"
 msgstr "Menu CAM (modulo CI)…"
 
-msgid "Channel Search…"
-msgstr "Ricerca canali…"
-
-msgid "DVB-I Setup…"
-msgstr "Configurazione DVB-I…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Editor canali / preferiti"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Aggiorna EPG internet (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Associa canali IPTV a XMLTV…"
 
 msgid "Audio Track"
 msgstr "Traccia audio"
@@ -1641,12 +1698,6 @@ msgstr "Apri"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Importa lista canali (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Impossibile importare {name}"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Importati {total_a} canali nuovi e {total_u} aggiornati"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Esporta canali (.conf = dvbv5, .m3u = IPTV, .csv)"

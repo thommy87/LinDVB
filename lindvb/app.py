@@ -192,7 +192,7 @@ class LinDVBApp(Gtk.Application):
         self.epg.save()
         msg = f"XMLTV: {len(items)} programmes loaded, {matched} IPTV channels matched"
         if unmatched:
-            msg += _(", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)").format(unmatched=unmatched)
+            msg += _(", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)").format(unmatched=unmatched)
         self.window.set_status(msg)
         return False
 
@@ -298,8 +298,7 @@ class LinDVBApp(Gtk.Application):
         return True
 
     def show_dvbi_setup(self):
-        from .ui.dvbi import DVBISetupWindow
-        DVBISetupWindow(self, self.window).present()
+        self.show_prefs("internet")
 
     def web_search(self, text, parent):
         urls = self.settings["epg_search_urls"]
@@ -337,9 +336,10 @@ class LinDVBApp(Gtk.Application):
         from .ui.xmltvmatch import XMLTVMatchWindow
         XMLTVMatchWindow(self, self.window).present()
 
-    def show_prefs(self):
+    def show_prefs(self, page=None):
+        """Open the preferences, on *page* ("tuner", "internet", "epg", ...) if given."""
         from .ui.dialogs import PrefsWindow
-        PrefsWindow(self, self.window).present()
+        PrefsWindow(self, self.window, page).present()
 
     def show_editor(self, channel=None):
         from .ui.dialogs import EditorWindow

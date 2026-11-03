@@ -25,8 +25,8 @@ msgstr "Nejprve nastavte adresu XMLTV v předvolbách"
 msgid "Downloading XMLTV guide…"
 msgstr "Stahování průvodce XMLTV…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} bez průvodce (TV ▸ Přiřadit kanály IPTV k XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} bez průvodce (Předvolby ▸ EPG ▸ Přiřadit kanály IPTV)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: načítání seznamu služeb…"
@@ -303,6 +303,33 @@ msgstr "LOF horní pásmo (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Přepínací frekvence (kHz)"
+
+msgid "Channels"
+msgstr "Kanály"
+
+msgid "Channel Search…"
+msgstr "Vyhledávání kanálů…"
+
+msgid "Channel search"
+msgstr "Vyhledávání kanálů"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Vyhledat kanály z antény, kabelu nebo satelitu (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Editor kanálů / oblíbené"
+
+msgid "Channel editor"
+msgstr "Editor kanálů"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Přejmenovat, řadit, mazat a přidávat kanály a označovat oblíbené (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Seznamy kanálů z internetu: seznam DVB-I vašeho regionu a seznamy skladeb IPTV. Tato nastavení platí okamžitě."
 
 msgid "Recording folder"
 msgstr "Složka nahrávek"
@@ -595,9 +622,6 @@ msgstr "Akce zásuvných modulů"
 msgid "Plugin folders: {dirs}"
 msgstr "Složky zásuvných modulů: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "Nastavení DVB-I"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I stahuje z internetu seznam kanálů vašeho regionu: číslování, názvy a loga a u každého kanálu způsoby příjmu. LinDVB podle možností používá anténní, kabelové nebo satelitní kanály z vašeho vyhledávání kanálů, jinak internetový stream."
 
@@ -651,9 +675,6 @@ msgstr "Znovu načíst vybraný seznam (kontroluje se také denně)"
 
 msgid "Install Channel List"
 msgstr "Nainstalovat seznam kanálů"
-
-msgid "Close"
-msgstr "Zavřít"
 
 msgid "Asking the service list registry…"
 msgstr "Dotazování registru seznamů služeb…"
@@ -879,6 +900,51 @@ msgstr "Smazat"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Zadejte frekvenci transpondéru v MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Seznamy kanálů IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Všechny soubory"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importujte jeden nebo více seznamů skladeb M3U nebo jiné seznamy kanálů s internetovými streamy. Kanály, které už ve vašem seznamu jsou, se aktualizují, ostatní se přidají."
+
+msgid "Import Files…"
+msgstr "Importovat soubory…"
+
+msgid "From files"
+msgstr "Ze souborů"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV nebo dvbv5. Lze vybrat více souborů najednou."
+
+msgid "Import"
+msgstr "Importovat"
+
+msgid "From a web address"
+msgstr "Z webové adresy"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "Adresa seznamu skladeb M3U. Importujte jej znovu, abyste kanály aktualizovali."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Kanály IPTV ve vašem seznamu: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Importovat seznamy kanálů IPTV"
+
+msgid "Downloading {url}…"
+msgstr "Stahuje se {url}…"
+
+msgid "Could not import {name}"
+msgstr "{name} se nepodařilo importovat"
+
+msgid "The address has no channels."
+msgstr "Na této adrese nejsou žádné kanály."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importováno nových kanálů: {total_a}, aktualizovaných: {total_u}"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Hledání obalu selhalo: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Uložit jako výchozí"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Používat tyto formáty a další proudy pro nové časovače a ruční nahrávky"
 
+msgid "Close"
+msgstr "Zavřít"
+
 msgid "Series title"
 msgstr "Název seriálu"
 
@@ -1273,20 +1342,8 @@ msgstr "Teletext"
 msgid "CAM Menu (CI Module)…"
 msgstr "Nabídka CAM (modul CI)…"
 
-msgid "Channel Search…"
-msgstr "Vyhledávání kanálů…"
-
-msgid "DVB-I Setup…"
-msgstr "Nastavení DVB-I…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Editor kanálů / oblíbené"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Aktualizovat internetové EPG (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Přiřadit kanály IPTV k XMLTV…"
 
 msgid "Audio Track"
 msgstr "Zvuková stopa"
@@ -1641,12 +1698,6 @@ msgstr "Otevřít"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Importovat seznam kanálů (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "{name} se nepodařilo importovat"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Importováno nových kanálů: {total_a}, aktualizovaných: {total_u}"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Exportovat kanály (.conf = dvbv5, .m3u = IPTV, .csv)"
