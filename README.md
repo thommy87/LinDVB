@@ -202,7 +202,7 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 
 ## First steps
 
-1. **Preferences → Tuner and LNB → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
+1. **Preferences → Tuner and Channels → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
    dtv-scan-tables, or add a folder with DVBViewer-style transponder lists), LNB and
    DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
 2. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.

@@ -271,8 +271,8 @@ msgstr "Laika nobīdes mape"
 msgid "Timeshift buffer (MB)"
 msgstr "Laika nobīdes buferis (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Uztvērējs un LNB"
+msgid "Tuner and Channels"
+msgstr "Uztvērējs un kanāli"
 
 msgid "DVB hardware"
 msgstr "DVB aparatūra"
@@ -330,6 +330,10 @@ msgstr "Internets"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Kanālu saraksti no interneta: jūsu reģiona DVB-I saraksts un IPTV atskaņošanas saraksti. Šie iestatījumi stājas spēkā uzreiz."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Ierakstīšana"
 
 msgid "Recording folder"
 msgstr "Ierakstu mape"

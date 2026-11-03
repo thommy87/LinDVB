@@ -3,7 +3,7 @@
 # into every lindvb/po/<lang>.po (needs gettext: xgettext, msgmerge).
 set -e
 cd "$(dirname "$0")/.."
-xgettext --language=Python --from-code=UTF-8 --keyword=_ --keyword=N_ \
+xgettext --language=Python --from-code=UTF-8 --keyword=_ --keyword=N_ --keyword=C_:1c,2 \
     --add-comments=TRANSLATORS --no-wrap --sort-by-file --package-name=LinDVB \
     -o lindvb/po/lindvb.pot $(find lindvb -name '*.py' | sort)
 for po in lindvb/po/*.po; do

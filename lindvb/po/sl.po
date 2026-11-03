@@ -271,8 +271,8 @@ msgstr "Mapa časovnega zamika"
 msgid "Timeshift buffer (MB)"
 msgstr "Medpomnilnik časovnega zamika (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Sprejemnik in LNB"
+msgid "Tuner and Channels"
+msgstr "Sprejemnik in kanali"
 
 msgid "DVB hardware"
 msgstr "Strojna oprema DVB"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Seznami kanalov z interneta: seznam DVB-I vaše regije in seznami predvajanja IPTV. Te nastavitve veljajo takoj."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Snemanje"
 
 msgid "Recording folder"
 msgstr "Mapa posnetkov"

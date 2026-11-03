@@ -271,8 +271,8 @@ msgstr "مجلد الإزاحة الزمنية"
 msgid "Timeshift buffer (MB)"
 msgstr "ذاكرة الإزاحة الزمنية (م.ب)"
 
-msgid "Tuner and LNB"
-msgstr "الموالف وLNB"
+msgid "Tuner and Channels"
+msgstr "الموالف والقنوات"
 
 msgid "DVB hardware"
 msgstr "عتاد DVB"
@@ -330,6 +330,10 @@ msgstr "الإنترنت"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "قوائم القنوات من الإنترنت: قائمة DVB-I لمنطقتك وقوائم تشغيل IPTV. تسري هذه الإعدادات فورًا."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "التسجيل"
 
 msgid "Recording folder"
 msgstr "مجلد التسجيلات"

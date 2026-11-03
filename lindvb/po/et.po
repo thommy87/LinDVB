@@ -271,8 +271,8 @@ msgstr "Ajanihke kaust"
 msgid "Timeshift buffer (MB)"
 msgstr "Ajanihke puhver (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tuuner ja LNB"
+msgid "Tuner and Channels"
+msgstr "Tuuner ja kanalid"
 
 msgid "DVB hardware"
 msgstr "DVB riistvara"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Kanalite loendid internetist: sinu piirkonna DVB-I loend ja IPTV esitusloendid. Need seaded rakenduvad kohe."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Salvestamine"
 
 msgid "Recording folder"
 msgstr "Salvestiste kaust"

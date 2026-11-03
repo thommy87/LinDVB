@@ -69,3 +69,21 @@ def test_every_catalogue_is_complete():
     for po in sorted(i18n.PO_DIR.glob("*.po")):
         done = len(i18n.parse_po(po.read_text(encoding="utf-8")))
         assert done >= total * 0.95, f"{po.stem}: {done} of {total} translated"
+
+
+def test_context_keeps_words_apart():
+    """msgctxt entries: "Recording" as a preferences page is not the timer status."""
+    po = ('msgid "Recording"\nmsgstr "Aufnahme läuft"\n\n'
+          '#, fuzzy\nmsgctxt "x"\nmsgid "Old"\nmsgstr "Alt"\n\n'
+          'msgctxt "preferences page"\nmsgid "Recording"\nmsgstr "Aufnahme"\n')
+    cat = i18n.parse_po(po)
+    assert cat == {"Recording": "Aufnahme läuft", "preferences page\x04Recording": "Aufnahme"}
+    try:
+        if "de" in i18n.LANGUAGES:
+            i18n.setup("de")
+            assert i18n.C_("preferences page", "Recording") == "Aufnahme"
+            assert i18n._("Recording") == "Aufnahme läuft"
+        i18n.setup("en")
+        assert i18n.C_("preferences page", "Recording") == "Recording"
+    finally:
+        i18n.setup("en")

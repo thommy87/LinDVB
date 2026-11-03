@@ -43,12 +43,17 @@ def parse_po(text):
 
     for raw in text.splitlines():
         line = raw.strip()
-        if line.startswith("#,") or line.startswith("msgid ") and entry["str"] is not None:
+        if line.startswith("#,") or \
+                line.startswith(("msgctxt ", "msgid ")) and entry["str"] is not None:
             flush()
             entry = {"flags": "", "id": None, "str": None}
             cur = None
         if line.startswith("#,"):
             entry["flags"] = line
+        elif line.startswith("msgctxt "):
+            entry["ctx"], cur = ast.literal_eval(line[8:]), "ctx"
+        elif line.startswith("msgid ") and entry.get("ctx") is not None:
+            entry["id"], cur = entry["ctx"] + "\x04" + ast.literal_eval(line[6:]), "id"
         elif line.startswith("msgid "):
             entry["id"], cur = ast.literal_eval(line[6:]), "id"
         elif line.startswith("msgstr "):
@@ -129,6 +134,17 @@ def _(message):
         # before the application calls setup()
         setup(_configured_language())
     return _translation.gettext(message)
+
+
+_lookup = _      # not spelled _(...) below, so xgettext does not take the key as a text
+
+
+def C_(context, message):
+    """Translate *message* in *context*, for a word that needs different
+    translations in different places (msgctxt in the catalogues)."""
+    key = f"{context}\x04{message}"
+    found = _lookup(key)
+    return message if found == key else found
 
 
 def is_rtl():

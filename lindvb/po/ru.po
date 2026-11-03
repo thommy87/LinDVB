@@ -271,8 +271,8 @@ msgstr "Папка timeshift"
 msgid "Timeshift buffer (MB)"
 msgstr "Буфер timeshift (МБ)"
 
-msgid "Tuner and LNB"
-msgstr "Тюнер и LNB"
+msgid "Tuner and Channels"
+msgstr "Тюнер и каналы"
 
 msgid "DVB hardware"
 msgstr "Оборудование DVB"
@@ -330,6 +330,10 @@ msgstr "Интернет"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Списки каналов из интернета: список DVB-I вашего региона и плейлисты IPTV. Эти настройки действуют сразу."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Запись"
 
 msgid "Recording folder"
 msgstr "Папка записей"
