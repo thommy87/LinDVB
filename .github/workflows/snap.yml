@@ -7,6 +7,14 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      release_id:
+        description: "Draft release to upload the package to (set by the Release workflow)"
+        type: string
+        default: ""
+      release_tag:
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -24,10 +32,28 @@ jobs:
         run: |
           unsquashfs -l "${{ steps.build.outputs.snap }}" | grep -E 'lib/lindvb/lindvb/app.py|bin/dvbv5-scan|libgstdvb.so|libgstteletext.so'
 
+      # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
+      # Release builds upload straight to the release instead.
       - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push'
         with:
           name: LinDVB-snap
           path: ${{ steps.build.outputs.snap }}
+          retention-days: 3
+
+      - name: Upload to the draft release
+        if: inputs.release_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ inputs.release_id }}
+          TAG: ${{ inputs.release_tag }}
+        run: |
+          f="$(ls ${{ steps.build.outputs.snap }} | head -1)"
+          name="lindvb_${TAG#v}_amd64.snap"
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/octet-stream" --data-binary "@$f" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$ID/assets?name=$name" >/dev/null
+          echo "Uploaded $f as $name"
 
       - name: Attach to release
         if: startsWith(github.ref, 'refs/tags/v')
