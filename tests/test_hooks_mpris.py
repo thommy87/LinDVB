@@ -91,3 +91,14 @@ def test_mpris_on_the_session_bus(tmp_path):
                          text=True, timeout=30)
     assert "'xesam:title': <'ZDF HD'>" in res.stdout, res.stdout + res.stderr
     assert "step 1" in res.stdout, res.stdout + res.stderr
+
+
+def test_pip_takes_internet_channels_only():
+    pytest.importorskip("gi")
+    try:
+        from lindvb.ui.pip import can_show
+    except (ImportError, ValueError):
+        pytest.skip("GTK 4 missing")
+    assert can_show(Channel(name="arte", delsys="iptv", url="https://example.org/a.m3u8"))
+    assert not can_show(Channel(name="arte HD", delsys="dvb-s2", sid=10302))
+    assert not can_show(None)

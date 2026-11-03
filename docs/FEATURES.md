@@ -48,7 +48,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Full screen, always on top, desktop TV | `English.lng:549,558,578` `actDesktop`, `actFullscreen`, `actOnTop` | **Partly**: full screen and hideable channel list; GTK 4 has no always-on-top or desktop-background mode |
 | Deinterlacing, pixel shaders | `Shaders/` holds 45 shader XML files (e.g. `Effect_Deinterlace.xml`, `Resample_Lanczos3.xml`, `Stereo3D_Anaglyph_Dubois.xml`); `mnuShaders` line 656 | **Partly**: deinterlace option; no shader effects |
 | Screenshot | `English.lng:592` `actScreenshot.Caption=Screenshot` | **Yes**: PNG to a configurable folder |
-| Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **No**: needs a second tuner pipeline and window; planned |
+| Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **Partly**: picture in picture (swap, close; Menu ▸ Playback, or the channel's context menu) and a mosaic of up to nine channels per page, for internet channels; DVB channels would need a second tuner |
 | Audio delay (lip sync) per channel | (LinDVB addition) | **Yes**: J/K or the gear menu shift the sound in 100 ms steps, saved per channel |
 | Video off / audio only | `English.lng:529-530` `acDisableAV`, `actDisableV` | **Yes** |
 | DVD and audio CD playback | `English.lng:552` `actDVDPlay.Caption=CD/DVD Playback`, `[frmDVDOptions]` | **No**: out of scope for a TV app |

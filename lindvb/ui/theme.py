@@ -61,6 +61,10 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
 .lv-sidebar listview > row:selected .lv-num { color: @lv_accent; }
 .lv-num { color: @lv_text_dim; font-feature-settings: "tnum"; font-size: 0.9em; }
 .lv-chan-icon { color: @lv_text_dim; }
+.lv-pip { border: 2px solid alpha(@lv_accent, 0.7); border-radius: 6px; background: black; box-shadow: 0 4px 16px rgba(0,0,0,0.6); }
+.lv-pip-bar { background: alpha(black, 0.55); }
+.lv-mosaic-tile { background: black; border-radius: 4px; }
+.lv-mosaic-name { background: alpha(black, 0.6); padding: 2px 6px; border-radius: 4px; }
 .lv-rec-thumb { border-radius: 4px; background: @lv_surface_2; }
 progressbar.lv-rec-progress trough, progressbar.lv-rec-progress progress { min-height: 3px; min-width: 0; }
 progressbar.lv-rec-progress { min-width: 0; }

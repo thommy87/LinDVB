@@ -179,6 +179,8 @@ class MainWindow(Gtk.ApplicationWindow):
             "mode-recordings": lambda: self.set_mode("recordings"),
             "rec-refresh": self.reload_recordings, "rec-folder": self.open_recording_folder,
             "vis-next": self.cycle_visualizer,
+            "pip": self.pip_selected, "pip-swap": self.pip_swap, "pip-close": self.pip_close,
+            "mosaic": self.show_mosaic,
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -298,6 +300,12 @@ class MainWindow(Gtk.ApplicationWindow):
         play.append(_("Keep Timeshift as Recording"), "win.keep-timeshift")
         play.append(_("Rebuild Playback"), "win.rebuild")
         play.append(_("Video Off (audio only)"), "win.video-off")
+        pip = Gio.Menu()
+        pip.append(_("Show Selected Channel"), "win.pip")
+        pip.append(_("Swap Pictures"), "win.pip-swap")
+        pip.append(_("Close"), "win.pip-close")
+        play.append_submenu(_("Picture in Picture"), pip)
+        play.append(_("Channel Mosaic…"), "win.mosaic")
         sleep = Gio.Menu()
         for mins in SLEEP_MINUTES:
             sleep.append(_("Stop in {mins} min").format(mins=mins), f"win.sleep-{mins}")
@@ -505,6 +513,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.oos.append(self.oos_label)
         self.oos.set_visible(False)
         overlay.add_overlay(self.oos)
+        from .pip import PipOverlay
+        self.pip = PipOverlay(self)
+        overlay.add_overlay(self.pip)
+        overlay.connect("get-child-position", self._place_overlay_child)
         dbl = Gtk.GestureClick()
         dbl.connect("pressed", lambda g, n, *_: self.toggle_fullscreen() if n == 2 else self.show_osd())
         self.picture.add_controller(dbl)
@@ -765,7 +777,8 @@ class MainWindow(Gtk.ApplicationWindow):
                          ("ctx-play", lambda: self.zap(c)),
                          ("ctx-rec", lambda: self.app.timers.record_now(c)),
                          ("ctx-edit", lambda: self.app.show_editor(c)),
-                         ("ctx-epg", lambda: self.app.show_epg(c))):
+                         ("ctx-epg", lambda: self.app.show_epg(c)),
+                         ("ctx-pip", lambda: self.pip.show_channel(c))):
             a = Gio.SimpleAction.new(name, None)
             a.connect("activate", lambda _a, _p, fn=fn: fn())
             self.add_action(a)
@@ -775,7 +788,52 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append(_("Record"), "win.ctx-rec")
         m.append(_("Programme Guide"), "win.ctx-epg")
         m.append(_("Edit…"), "win.ctx-edit")
+        if c.is_iptv:
+            m.append(_("Show as Picture in Picture"), "win.ctx-pip")
         return m
+
+    # ------------------------------------------------------------------ picture in picture
+    def pip_selected(self):
+        pos = self.selection.get_selected()
+        c = self.filtered.get_item(pos).data if pos != Gtk.INVALID_LIST_POSITION else None
+        if c is None or (self.current is not None and c.key == self.current.key):
+            c = self.previous
+        if c is None:
+            self.set_status(_("Select a channel in the list first"))
+            return
+        self.pip.show_channel(c)
+
+    def pip_swap(self):
+        """The small picture becomes the main one and the other way round."""
+        small = self.pip.channel
+        if small is None:
+            return
+        main = self.current
+        self.zap(small)
+        if main is not None and self.pip.show_channel(main):
+            return
+        self.pip.close()
+
+    def _place_overlay_child(self, overlay, widget, rect):
+        """Picture in picture: a quarter of the video width in the bottom right corner."""
+        if widget is not self.pip:
+            return False
+        w, h = overlay.get_width(), overlay.get_height()
+        pw = max(160, int(w * 0.28))
+        ph = pw * 9 // 16
+        rect.x, rect.y = max(0, w - pw - 18), max(0, h - ph - 18)
+        rect.width, rect.height = pw, ph
+        return True
+
+    def pip_close(self):
+        self.pip.close()
+
+    def show_mosaic(self):
+        from .pip import MosaicWindow
+        chans = [self.filtered.get_item(i).data for i in range(self.filtered.get_n_items())]
+        if not any(c.is_iptv for c in chans):
+            chans = [c for c in self.app.db.channels if c.is_iptv]
+        MosaicWindow(self.app, self, chans).present()
 
     def toggle_favourite(self, c):
         c.favourite = not c.favourite
@@ -2108,6 +2166,7 @@ class MainWindow(Gtk.ApplicationWindow):
                         license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb").present()
 
     def _on_close(self, *_):
+        self.pip.close()
         self._track_position()
         self._save_positions()
         self.settings.save()

@@ -80,6 +80,7 @@ picture and hides itself when the mouse is still.
 * Script hooks: your own programs in `~/.config/lindvb/hooks/` run on channel change,
   recording start/stop and reminders (environment variables `LINDVB_CHANNEL`,
   `LINDVB_TITLE`, `LINDVB_FILE`, ...)
+* Picture in picture and a channel mosaic (nine channels at once) for internet channels
 * Teletext window with page navigation, find, copy and save, opened from the "TXT"
   button in the header bar (greyed out when the channel carries no teletext)
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
@@ -250,7 +251,7 @@ See [docs/TESTING.md](docs/TESTING.md).
 
 ## Not yet implemented
 
-Picture in picture and mosaic, CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
+Picture in picture and mosaic for DVB channels (internet channels work), CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
 ## If LinDVB stops responding
