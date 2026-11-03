@@ -15,12 +15,13 @@ high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
 LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
 
+import os
 import re
 import sys
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.2"
+VERSION = "1.3"
 
 # the AppImage brings its own collection under its prefix (sys.prefix/share)
 PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
@@ -53,6 +54,23 @@ def _set(element, props, value):
         except (TypeError, ValueError, OverflowError):
             pass
         return
+
+
+def preset_folders(root, depth=2):
+    """Folders below ``root`` (up to ``depth`` levels) that hold .milk presets,
+    as sorted relative paths: ["Dancer", "Dancer/Aurora", ...]."""
+    if not root:
+        return []
+    base = os.path.expanduser(root)
+    found = set()
+    for path, _dirs, files in os.walk(base):
+        if not any(f.endswith(".milk") for f in files):
+            continue
+        parts = Path(os.path.relpath(path, base)).parts
+        parts = () if parts == (".",) else parts
+        for n in range(1, min(depth, len(parts)) + 1):
+            found.add("/".join(parts[:n]))
+    return sorted(found, key=lambda f: [p.lstrip("!# ").casefold() for p in f.split("/")])
 
 
 def parse_size(text, default):
@@ -199,10 +217,15 @@ def register(api):
         return api.app.settings if api.app is not None else {}
 
     if Gst.ElementFactory.find("projectm") is not None:
-        def make_projectm():
+        def preset_root():
+            return _first_dir([settings().get("projectm_preset_dir")] + PRESET_DIRS)
+
+        def make_projectm(choice=None):
             el = Gst.ElementFactory.make("projectm")
             s = settings()
-            presets = _first_dir([s.get("projectm_preset_dir")] + PRESET_DIRS)
+            presets = preset_root()
+            if presets and choice and (Path(presets) / choice).is_dir():
+                presets = str(Path(presets) / choice)   # just this folder, shuffled
             # gst-projectm calls the preset folder "preset" (older builds "preset-path")
             _set(el, ("preset", "preset-path"), presets)
             _set(el, ("texture-dir", "texture-dir-path"), _first_dir(TEXTURE_DIRS))
@@ -212,7 +235,8 @@ def register(api):
             res = s.get("visualizer_resolution", "auto")
             size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
             return sized(Gst, el, size, any_memory=True, isolate_gl=True)
-        api.add_visualizer("projectM (MilkDrop)", element=make_projectm)
+        api.add_visualizer("projectM (MilkDrop)", element=make_projectm,
+                           choices=lambda: preset_folders(preset_root()))
     else:
         api.log("projectM not found: install gst-projectm and libprojectM to use it")
 

@@ -1869,3 +1869,42 @@ msgstr "Pulsar (modern)"
 
 msgid "Goom HD (GPU)"
 msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "Alle Presets (zufällig)"
+
+msgid "All of {name}"
+msgstr "Alle aus {name}"
+
+msgid "Dancer"
+msgstr "Tänzer"
+
+msgid "Drawing"
+msgstr "Zeichnungen"
+
+msgid "Fractal"
+msgstr "Fraktale"
+
+msgid "Geometric"
+msgstr "Geometrisch"
+
+msgid "Hypnotic"
+msgstr "Hypnotisch"
+
+msgid "Particles"
+msgstr "Partikel"
+
+msgid "Reaction"
+msgstr "Reaktion"
+
+msgid "Sparkle"
+msgstr "Funkeln"
+
+msgid "Supernova"
+msgstr "Supernova"
+
+msgid "Waveform"
+msgstr "Wellenformen"
+
+msgid "! Transition"
+msgstr "Übergänge"

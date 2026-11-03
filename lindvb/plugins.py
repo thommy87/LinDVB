@@ -100,7 +100,7 @@ class PluginAPI:
         """Add an entry to the Plugins menu. ``callback(app)``."""
         self._manager.menu_actions.append((self._plugin.name, label, callback))
 
-    def add_visualizer(self, name, draw=None, element=None):
+    def add_visualizer(self, name, draw=None, element=None, choices=None):
         """Register a visualisation for radio and other audio-only playback.
 
         Give exactly one of:
@@ -115,11 +115,20 @@ class PluginAPI:
                     ``goom``) that playbin renders into the video area.
 
         ``name`` is shown in the View → Visualisation menu.
+
+        ``choices`` (element visualisers only), ``choices() -> [str]``: variants
+        the user can pick from a submenu, e.g. preset folders. A "/" in a choice
+        nests it under its parent ("Dancer", "Dancer/Aurora"). The picked choice
+        is passed as ``element(choice)``; "all" of them calls ``element()``.
         """
         if (draw is None) == (element is None):
             raise PluginError("add_visualizer needs exactly one of draw= or element=")
         kind, factory = ("draw", draw) if draw is not None else ("element", element)
+        if choices is not None and kind != "element":
+            raise PluginError("add_visualizer: choices= only works with element=")
         self._manager.visualizers.append((self._plugin.name, name, kind, factory))
+        if choices is not None:
+            self._manager.visualizer_choices[name] = choices
 
 
 class PluginManager:
@@ -135,6 +144,7 @@ class PluginManager:
         self.hooks = {}                     # event -> [(plugin, callback)]
         self.menu_actions = []              # (plugin, label, callback)
         self.visualizers = []               # (plugin, name, "draw"|"element", factory)
+        self.visualizer_choices = {}        # name -> choices() of an element visualiser
         self.failed = {}                    # module name -> error text
 
     def log(self, message):

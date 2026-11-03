@@ -128,7 +128,11 @@ def test_visualizer_registration(tmp_path):
 
         def register(api):
             api.add_visualizer("Drawn", draw=Style)
-            api.add_visualizer("Element", element=lambda: None)
+            api.add_visualizer("Element", element=lambda c=None: None, choices=lambda: ["A", "A/b"])
+            try:
+                api.add_visualizer("Drawn choices", draw=Style, choices=list)
+            except Exception:
+                pass
             try:
                 api.add_visualizer("Both", draw=Style, element=lambda: None)
             except Exception:
@@ -138,6 +142,8 @@ def test_visualizer_registration(tmp_path):
     mgr = PluginManager({}, log=lambda m: None)
     mgr.load_all()
     assert [(n, k) for _p, n, k, _f in mgr.visualizers] == [("Drawn", "draw"), ("Element", "element")]
+    assert list(mgr.visualizer_choices) == ["Element"]
+    assert mgr.visualizer_choices["Element"]() == ["A", "A/b"]
 
 
 def test_bundled_addon_loads(tmp_path, monkeypatch):

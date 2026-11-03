@@ -2613,3 +2613,53 @@ msgstr ""
 
 msgid "Goom HD (GPU)"
 msgstr ""
+
+msgid "All presets (shuffled)"
+msgstr ""
+
+msgid "All of {name}"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Dancer"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Drawing"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Fractal"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Geometric"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Hypnotic"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Particles"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Reaction"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Sparkle"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Supernova"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "Waveform"
+msgstr ""
+
+#. projectM preset folder (Cream of the Crop collection)
+msgid "! Transition"
+msgstr ""

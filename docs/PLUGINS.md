@@ -37,7 +37,7 @@ uses:
 | `add_ca_provider(name, factory)` | `factory(settings) -> CAProvider` selectable as `ca_provider` |
 | `add_hook(event, callback)` | `startup`, `channel-tuned(channel, capture)`, `shutdown` |
 | `add_menu_action(label, callback)` | `callback(app)` from the Plugins menu |
-| `add_visualizer(name, draw=… \| element=…)` | a radio visualisation, see below |
+| `add_visualizer(name, draw=… \| element=…, choices=…)` | a radio visualisation, see below |
 | `app` / `log(msg)` | the running application, and logging |
 
 See [`plugins/examples/hello_importer.py`](../plugins/examples/hello_importer.py)
@@ -80,6 +80,10 @@ style is drawn with cairo as before. A plugin can add two kinds:
 * **GStreamer element** — `api.add_visualizer("My vis", element=factory)`.
   `factory()` returns an audio visualiser element (audio in, video out) that
   playbin renders into the video area, like `goom`, `monoscope` or `projectm`.
+  With `choices=fn` the entry gets a submenu: `fn()` returns a list of variants
+  (a "/" nests one under its parent, e.g. `"Dancer"`, `"Dancer/Aurora"`) and the
+  picked one is passed as `factory(choice)`; "all" calls `factory()`. projectM
+  uses this for its preset folders.
 
 ### projectM
 
