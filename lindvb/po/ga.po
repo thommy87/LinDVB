@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ga\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Iompórtáil liosta stáisiún (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Tosaigh leis an stáisiún seo (ainm nó uimhir)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} ag {time}"
+
+msgid "Watch"
+msgstr "Féach"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Meabhrúchán: {title} ar {channel} ag {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Socraigh seoladh XMLTV sna sainroghanna ar dtús"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Treoir XMLTV á híoslódáil…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} gan treoir (TB ▸ Meaitseáil stáisiúin IPTV le XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: liosta seirbhísí á lódáil…"
+
+msgid "Search the web"
+msgstr "Cuardaigh ar an ngréasán"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teilithéacs (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Fotheidil (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Sonraí EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Gach rian fuaime"
+
+msgid "Preferred language only"
+msgstr "An teanga is fearr leat amháin"
+
+msgid "First audio track only"
+msgstr "An chéad rian fuaime amháin"
+
+msgid "Record"
+msgstr "Taifead"
+
+msgid "Record and tune"
+msgstr "Taifead agus athraigh"
+
+msgid "Tune only"
+msgstr "Athraigh amháin"
+
+msgid "Hibernate"
+msgstr "Geimhriú"
+
+msgid "None"
+msgstr "Faic"
+
+msgid "Power off"
+msgstr "Múch"
+
+msgid "Quit LinDVB"
+msgstr "Scoir de LinDVB"
+
+msgid "Standby"
+msgstr "Fuireachas"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Níl teilithéacs, fotheidil ná sonraí EPG ag sruthanna idirlín."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "Coinníonn MP4 rian fuaime amháin (an teanga is fearr leat nuair a chraoltar í)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Coinníonn an comhad fuaime rian amháin (an teanga is fearr leat nuair a chraoltar í)."
+
+msgid "Fr"
+msgstr "Lu"
+
+msgid "Mo"
+msgstr "Má"
+
+msgid "Sa"
+msgstr "Cé"
+
+msgid "Su"
+msgstr "Dé"
+
+msgid "Th"
+msgstr "Ao"
+
+msgid "Tu"
+msgstr "Sa"
+
+msgid "We"
+msgstr "Do"
+
+msgid "Scheduled"
+msgstr "Sceidealaithe"
+
+msgid "Done"
+msgstr "Críochnaithe"
+
+msgid "Channel missing"
+msgstr "Stáisiún ar iarraidh"
+
+msgid "Tuned"
+msgstr "Athraithe"
+
+msgid "Recording"
+msgstr "Á thaifeadadh"
+
+msgid "Failed"
+msgstr "Theip air"
+
+msgid "Missed"
+msgstr "Caillte"
+
+msgid "After recording: {action}"
+msgstr "Tar éis taifeadta: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Baineadh an modúl nó athshocraíodh é."
+
+msgid "CAM Menu"
+msgstr "Roghchlár CAM"
+
+msgid "Cancel"
+msgstr "Cealaigh"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Oscail an roghchlár CAM"
+
+msgid "Select"
+msgstr "Roghnaigh"
+
+msgid "Back"
+msgstr "Siar"
+
+msgid "Close Menu"
+msgstr "Dún an roghchlár"
+
+msgid "Device: {path} – {state}"
+msgstr "Gléas: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Oscail an roghchlár CAM chun socruithe an mhodúil, faisnéis an chárta chliste agus rialú tuismitheoirí a fheiceáil."
+
+msgid "The module has not finished starting yet."
+msgstr "Níl an modúl tosaithe go hiomlán fós."
+
+msgid "Custom colour"
+msgstr "Dath saincheaptha"
+
+msgid "LinDVB blue (default)"
+msgstr "Gorm LinDVB (réamhshocrú)"
+
+msgid "System accent colour"
+msgstr "Dath béime an chórais"
+
+msgid "Preferences"
+msgstr "Sainroghanna"
+
+msgid "Save"
+msgstr "Sábháil"
+
+msgid "Appearance"
+msgstr "Cuma"
+
+msgid "Language"
+msgstr "Teanga"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Beidh éifeacht leis nuair a atosófar LinDVB."
+
+msgid "Accent colour"
+msgstr "Dath béime"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Úsáidtear é le haghaidh aibhsithe, roghnúcháin agus cnaipí i ngach fuinneog."
+
+msgid "On-screen display"
+msgstr "Taispeáint ar an scáileán"
+
+msgid "OSD display time (s)"
+msgstr "Am taispeána OSD (s)"
+
+msgid "Visualisation"
+msgstr "Léirshamhlú"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Cad a thaispeántar ar léirshamhlú an raidió fad is atá stáisiún raidió nó comhad fuaime á sheinm. Tagann sonraí an amhráin ó RadioText raidió DVB, ó theideal srutha raidió idirlín agus ó chlibeanna comhad fuaime."
+
+msgid "Overlay"
+msgstr "Forleagan"
+
+msgid "Station logo tile"
+msgstr "Tíl le lógó an stáisiúin"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Lógó an stáisiúin, nó tíl le hainm an stáisiúin mura bhfuil ceann ann."
+
+msgid "Album cover"
+msgstr "Clúdach albaim"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Clúdach an amhráin atá á sheinm, ón gcomhad nó aimsithe ar líne."
+
+msgid "Song information"
+msgstr "Faisnéis faoin amhrán"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Ealaíontóir, albam agus bliain, rian agus teideal. Gan sonraí amhráin taispeántar an stáisiún agus an clár atá ar an aer."
+
+msgid "Clock in the top right corner"
+msgstr "Clog sa chúinne thuas ar dheis"
+
+msgid "Sources"
+msgstr "Foinsí"
+
+msgid "Look up covers online"
+msgstr "Cuardaigh clúdaigh ar líne"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Seolann sé ealaíontóir agus teideal an amhráin atá á sheinm chuig iTunes Search API chun an t-albam, an bhliain agus an clúdach a aimsiú."
+
+msgid "Station logo folder"
+msgstr "Fillteán lógónna stáisiún"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Comhaid íomhá (PNG, SVG, JPG) ainmnithe de réir an stáisiúin, m.sh. “Bayern 3.png”. Oibríonn lógónna ainmnithe de réir an stáisiúin, mar a choinníonn DVBViewer iad, mar atá. Folamh: {v0}"
+
+msgid "Playback"
+msgstr "Athsheinm"
+
+msgid "Deinterlace video"
+msgstr "Bain idirfhiteáil an fhíseáin"
+
+msgid "Screenshot folder"
+msgstr "Fillteán grianghraf scáileáin"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Fillteán timeshift"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Maolán timeshift (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tiúnóir agus LNB"
+
+msgid "DVB hardware"
+msgstr "Crua-earraí DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Uimhreacha na n-oiriúntóirí is féidir le LinDVB a úsáid, scartha le camóga."
+
+msgid "DVB adapters"
+msgstr "Oiriúntóirí DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Gabh an trasfhreagróir iomlán"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Riachtanach do gach rian fuaime nuair nach bhfuil ach PID fuaime amháin ar eolas ag an liosta stáisiún."
+
+msgid "Satellite LNB"
+msgstr "LNB satailíte"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF banda íseal (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF banda ard (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Minicíocht athraithe (kHz)"
+
+msgid "Recording folder"
+msgstr "Fillteán taifeadtaí"
+
+msgid "File naming scheme"
+msgstr "Patrún ainmneacha comhad"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Ionadchoinneálaithe: %year %date %time %end %station %name, / le haghaidh fofhillteán"
+
+msgid "Timer padding"
+msgstr "Corrlaigh na lasc ama"
+
+msgid "Start earlier by (min)"
+msgstr "Tosaigh níos luaithe (nóim)"
+
+msgid "Stop later by (min)"
+msgstr "Stop níos déanaí (nóim)"
+
+msgid "Timers"
+msgstr "Lasca ama"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Oscail fuinneog na lasc ama tar éis lasc ama a chruthú"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Tar éis “Taifead” sa treoir, cuir an lasc ama nua in eagar láithreach."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Treoir clár: EPG craolta, EPG idirlín (XMLTV) agus EPG soláthraithe eile."
+
+msgid "Conditional access"
+msgstr "Rochtain choinníollach"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Díchódú stáisiún criptithe a bhfuil síntiús agat leo, le do chárta i softcam nó i modúl CI."
+
+msgid "None (leave scrambled)"
+msgstr "Faic (fág criptithe)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Softcam seachtrach (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Modúl CI / CI+ crua-earraí"
+
+msgid "Descrambling via"
+msgstr "Díchódaigh trí"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Soicéad DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Conair soicéid Unix, nó host:port."
+
+msgid "CI module"
+msgstr "Modúl CI"
+
+msgid "CI adapter number"
+msgstr "Uimhir oiriúntóra CI"
+
+msgid "CA device number"
+msgstr "Uimhir ghléas CA"
+
+msgid "Plugins"
+msgstr "Breiseáin"
+
+msgid "Load plugins at startup"
+msgstr "Lódáil breiseáin ag an tosú"
+
+msgid "Manage Plugins…"
+msgstr "Bainistigh breiseáin…"
+
+msgid "Format and tracks"
+msgstr "Formáid agus rianta"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Réamhshocruithe do lasca ama nua agus don chnaipe Taifead. Is féidir le gach lasc ama, agus taifeadadh a thosaítear le “Taifead le roghanna…”, iad a athrú.\nTS: físeán, gach rian fuaime, fotheidil, teilithéacs agus sonraí EPG. MKV: físeán, roinnt rianta fuaime agus fotheidil. MPG: físeán agus roinnt rianta fuaime. MP4: físeán agus rian fuaime amháin. Níl teilithéacs, fotheidil ná sonraí EPG ag sruthanna idirlín; taifeadtar sruthanna HLS agus DASH le rian fuaime amháin."
+
+msgid "TV format"
+msgstr "Formáid TB"
+
+msgid "Radio format"
+msgstr "Formáid raidió"
+
+msgid "Audio tracks"
+msgstr "Rianta fuaime"
+
+msgid "Preferred audio language"
+msgstr "Teanga fuaime is fearr leat"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Úsáideann “An teanga is fearr leat amháin” í, agus MP4, a choinníonn rian amháin. Scipeáiltear rianta le cur síos fuaime. Mura bhfuil meaitseáil ann taifeadtar an chéad rian."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: ní féidir {items} a choinneáil ach in MPEG-TS, mar sin sábháiltear taifeadtaí mar TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: ní féidir {items} a choinneáil ach in TS nó MKV, mar sin sábháiltear taifeadtaí mar TS."
+
+msgid " and "
+msgstr " agus "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Níl teanga fuaime roghnaithe, mar sin ní thaifeadtar ach an chéad rian fuaime."
+
+msgid "Desktop accent: {found}"
+msgstr "Béim na deisce: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Níor aimsíodh béim deisce, gorm LinDVB in úsáid."
+
+msgid "Current accent: {color}"
+msgstr "Béim reatha: {color}"
+
+msgid "Channel Editor"
+msgstr "Eagarthóir stáisiún"
+
+msgid "Name"
+msgstr "Ainm"
+
+msgid "Category"
+msgstr "Catagóir"
+
+msgid "Group"
+msgstr "Grúpa"
+
+msgid "Fav"
+msgstr "Rogha"
+
+msgid "Type"
+msgstr "Cineál"
+
+msgid "Filter channels"
+msgstr "Scag stáisiúin"
+
+msgid "General"
+msgstr "Ginearálta"
+
+msgid "Stream URL"
+msgstr "Seoladh an tsrutha"
+
+msgid "Favourite"
+msgstr "Ceanán"
+
+msgid "Radio"
+msgstr "Raidió"
+
+msgid "Encrypted"
+msgstr "Criptithe"
+
+msgid "Tuning"
+msgstr "Tiúnadh"
+
+msgid "System"
+msgstr "Córas"
+
+msgid "Polarity"
+msgstr "Polaraíocht"
+
+msgid "Modulation"
+msgstr "Modhnú"
+
+msgid "Frequency (kHz)"
+msgstr "Minicíocht (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Ráta siombailí (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Leithead banda (Hz)"
+
+msgid "Stream ID"
+msgstr "ID srutha"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Port DiSEqC (-1 faic)"
+
+msgid "Service and PIDs"
+msgstr "Seirbhís agus PIDanna"
+
+msgid "Service ID"
+msgstr "ID seirbhíse"
+
+msgid "Transport ID"
+msgstr "ID iompair"
+
+msgid "Video PID"
+msgstr "PID físe"
+
+msgid "Audio PIDs"
+msgstr "PIDanna fuaime"
+
+msgid "Teletext PID"
+msgstr "PID teilithéacs"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Cuir na hathruithe i bhfeidhm (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Stáisiún nua"
+
+msgid "Delete channel"
+msgstr "Scrios an stáisiún"
+
+msgid "Move up"
+msgstr "Bog suas"
+
+msgid "Move down"
+msgstr "Bog síos"
+
+msgid "Sort by group and name"
+msgstr "Sórtáil de réir grúpa agus ainm"
+
+msgid "No channel selected"
+msgstr "Níl aon stáisiún roghnaithe"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Roghnaigh stáisiún ón liosta chun é a chur in eagar."
+
+msgid "Unnamed channel"
+msgstr "Stáisiún gan ainm"
+
+msgid "Recording and Device Statistics"
+msgstr "Staitisticí taifeadta agus gléis"
+
+msgid "Active recordings:"
+msgstr "Taifeadtaí gníomhacha:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nAn chéad lasc ama eile: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teilithéacs – {name}"
+
+msgid "Find on page"
+msgstr "Aimsigh ar an leathanach"
+
+msgid "Copy page"
+msgstr "Cóipeáil an leathanach"
+
+msgid "Save page"
+msgstr "Sábháil an leathanach"
+
+msgid "Waiting for teletext…"
+msgstr "Ag fanacht le teilithéacs…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec ar iarraidh (gst-plugins-bad le libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Leathanach {page} á chuardach…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Níl aon díchódú socraithe. Is féidir stáisiúin chriptithe a bhfuil teideal agat chucu a dhíchódú trí LinDVB a dhíriú ar do softcam nó do mhodúl CI sna sainroghanna."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Níl an soláthraí “{v0}” ar fáil."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Soláthraí: modúl CI – {status}\nDíchódaíonn an modúl le do chárta taobh istigh den tiúnóir."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Soláthraí: {name}\nCuireann LinDVB na rannáin ECM ar aghaidh chuig cliant do chárta agus cuireann sé na focail rialaithe a fhilleann sé i bhfeidhm; ní choinníonn sé féin eochair ar bith."
+
+msgid "Open CAM Menu…"
+msgstr "Oscail an roghchlár CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "Theip ar an lódáil: {v0}"
+
+msgid "Switched off"
+msgstr "Díchumasaithe"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Beidh éifeacht leis na hathruithe nuair a atosófar LinDVB."
+
+msgid "No plugins installed."
+msgstr "Níl aon bhreiseán suiteáilte."
+
+msgid "Plugin actions"
+msgstr "Gníomhartha breiseán"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Fillteáin bhreiseán: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "Socrú DVB-I"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "Faigheann DVB-I liosta stáisiún do réigiúin ón idirlíon: uimhriú, ainmneacha agus lógónna, agus do gach stáisiún na bealaí chun é a ghlacadh. Úsáideann LinDVB stáisiúin aeróige, cábla nó satailíte ó do scanadh nuair is féidir agus an sruth idirlín murach sin."
+
+msgid "Privacy"
+msgstr "Príobháideachas"
+
+msgid "I have read the privacy notice"
+msgstr "Léigh mé an fógra príobháideachais"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Lódáil treoir clár (EPG) na stáisiún DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Athraigh go bealach glactha eile (idirlíon, aeróg, cábla, satailít) nuair a theipeann ar cheann"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Tiúin stáisiúin satailíte ón liosta gan scanadh (teastaíonn stáisiúin satailíte i do liosta)"
+
+msgid "Service list"
+msgstr "Liosta seirbhísí"
+
+msgid "Load Lists from Registry"
+msgstr "Lódáil liostaí ón gclárlann"
+
+msgid "In use: {current}"
+msgstr "In úsáid: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Níl aon liosta DVB-I in úsáid fós."
+
+msgid "Region"
+msgstr "Réigiún"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Roghnaíonn do chód poist na stáisiúin réigiúnacha agus a n-uimhriú. Ní sheoltar é ach chuig freastalaí an liosta seirbhísí."
+
+msgid "Postcode"
+msgstr "Cód poist"
+
+msgid "No postcode: nationwide list"
+msgstr "Gan chód poist: liosta náisiúnta"
+
+msgid "Remove DVB-I Channels"
+msgstr "Bain stáisiúin DVB-I"
+
+msgid "Update Now"
+msgstr "Nuashonraigh anois"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Athlódáil an liosta roghnaithe (seiceáiltear é go laethúil freisin)"
+
+msgid "Install Channel List"
+msgstr "Suiteáil an liosta stáisiún"
+
+msgid "Close"
+msgstr "Dún"
+
+msgid "Asking the service list registry…"
+msgstr "Clárlann na liostaí seirbhísí á fiosrú…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Níorbh fhéidir an chlárlann a bhaint amach: {error}"
+
+msgid "Default"
+msgstr "Réamhshocrú"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Liostaí seirbhísí ó {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Ní thairgeann an chlárlann aon liosta seirbhísí don Ghearmáin."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Cuir isteach cód poist cúig dhigit"
+
+msgid "Loading the service list…"
+msgstr "Liosta seirbhísí á lódáil…"
+
+msgid "In use: {v0}"
+msgstr "In úsáid: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nRoghnaigh do réigiún agus brúigh Suiteáil arís."
+
+msgid "Enter Again"
+msgstr "Cuir isteach arís"
+
+msgid "The service list does not know this postcode."
+msgstr "Níl an cód poist seo ar eolas ag an liosta seirbhísí."
+
+msgid "The service list server answered {code}."
+msgstr "D'fhreagair freastalaí an liosta seirbhísí {code}."
+
+msgid "Try Again"
+msgstr "Bain triail eile as"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Is féidir leat triail eile a bhaint as nó an liosta náisiúnta gan chód poist a úsáid."
+
+msgid "Nationwide List"
+msgstr "Liosta náisiúnta"
+
+msgid "No DVB-I list is in use."
+msgstr "Níl aon liosta DVB-I in úsáid."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Stáisiúin DVB-I bainte: {removed}"
+
+msgid "All programmes"
+msgstr "Gach clár"
+
+msgid "With audio description"
+msgstr "Le cur síos fuaime"
+
+msgid "With subtitles"
+msgstr "Le fotheidil"
+
+msgid "Programme Guide"
+msgstr "Treoir clár"
+
+msgid "Now / Next"
+msgstr "Anois / Ar ball"
+
+msgid "Per Channel"
+msgstr "De réir stáisiúin"
+
+msgid "TV Guide"
+msgstr "Treoir TB"
+
+msgid "Search"
+msgstr "Cuardaigh"
+
+msgid "Record Series"
+msgstr "Taifead an tsraith"
+
+msgid "Remind Me"
+msgstr "Meabhraigh dom"
+
+msgid "Search Web"
+msgstr "Cuardaigh ar an ngréasán"
+
+msgid "Export the guide as XMLTV"
+msgstr "Easpórtáil an treoir mar XMLTV"
+
+msgid "Next"
+msgstr "Ar ball"
+
+msgid "Now"
+msgstr "Anois"
+
+msgid "Only favourites"
+msgstr "Ceanáin amháin"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Inrochtaineacht (treoir clár DVB-I)"
+
+msgid "Show:"
+msgstr "Taispeáin:"
+
+msgid "Channel"
+msgstr "Stáisiún"
+
+msgid "Start"
+msgstr "Tús"
+
+msgid "End"
+msgstr "Deireadh"
+
+msgid "Title"
+msgstr "Teideal"
+
+msgid "Genre"
+msgstr "Seánra"
+
+msgid "Day"
+msgstr "Lá"
+
+msgid "Duration"
+msgstr "Fad"
+
+msgid "Subheading"
+msgstr "Fotheideal"
+
+msgid "Title or description"
+msgstr "Teideal nó cur síos"
+
+msgid "Include description"
+msgstr "Cuir an cur síos san áireamh"
+
+msgid "Case sensitive"
+msgstr "Cásíogair"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} nóim{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Taifeadadh sraithe: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Meabhrúchán bainte: {title}"
+
+msgid "{title} has already started"
+msgstr "Tá {title} tosaithe cheana"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Meabhrúchán socraithe: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Bain an meabhrúchán"
+
+msgid "Save EPG data"
+msgstr "Sábháil sonraí EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Coinníonn sé an treoir ar an diosca tar éis LinDVB a dhúnadh."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Taispeáin faisnéis EPG nuair a athraítear stáisiún (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = ná taispeáin."
+
+msgid "Remind before start (min)"
+msgstr "Meabhraigh roimh an tús (nóim)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Tugann meabhrúcháin a shocraítear sa treoir rabhadh duit chomh luath seo."
+
+msgid "Preferred language"
+msgstr "Teanga is fearr leat"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Úsáidtear í nuair a chraoltar clár i roinnt teangacha."
+
+msgid "Time zone"
+msgstr "Crios ama"
+
+msgid "Set time zone automatically"
+msgstr "Socraigh an crios ama go huathoibríoch"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Múchta: úsáid difríocht sheasta ó GMT don treoir, do na lasca ama agus don chlog."
+
+msgid "Offset to GMT"
+msgstr "Difríocht ó GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG idirlín (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Foinse EPG idirlín, a úsáidtear in éineacht leis an EPG craolta."
+
+msgid "Match IPTV Channels…"
+msgstr "Meaitseáil stáisiúin IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Seiceáil nó ceartaigh cén stáisiún treorach a bhaineann le cén stáisiún M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Minicíochtaí MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Nuair a bhíonn stáisiún tiúnta ar cheann de na trasfhreagróirí seo, léann LinDVB EPG an tsoláthraí sin freisin. Tá feidhm ag athruithe an chéad uair eile a thiúntar stáisiún."
+
+msgid "Frequency (MHz)"
+msgstr "Minicíocht (MHz)"
+
+msgid "Add"
+msgstr "Cuir leis"
+
+msgid "Polarisation"
+msgstr "Polarú"
+
+msgid "Defaults"
+msgstr "Réamhshocruithe"
+
+msgid "Delete"
+msgstr "Bain"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Cuir isteach minicíocht an trasfhreagróra in MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Theip ar chuardach an chlúdaigh: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Babhtáil leis an bpríomhphictiúr"
+
+msgid "Close picture in picture"
+msgstr "Dún pictiúr i bpictiúr"
+
+msgid "Picture in picture: {error}"
+msgstr "Pictiúr i bpictiúr: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Oibríonn pictiúr i bpictiúr le stáisiúin idirlín; teastaíonn tiúnóir eile ó stáisiúin DVB."
+
+msgid "Channel Mosaic"
+msgstr "Mósáic stáisiún"
+
+msgid "Previous channels"
+msgstr "Stáisiúin roimhe seo"
+
+msgid "Next channels"
+msgstr "Na chéad stáisiúin eile"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Taispeánann an mhósáic stáisiúin idirlín. Níl aon cheann sa liosta san amharc reatha."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Leathanach {page} de {pages} · stáisiúin idirlín: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Cliceáil chun {name} a fheiceáil"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Uilíoch (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Leathnaithe"
+
+msgid "None / not satellite"
+msgstr "Faic / ní satailít"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Minicíocht"
+
+msgid "Initial letter"
+msgstr "Túslitir"
+
+msgid "Provider"
+msgstr "Soláthraí"
+
+msgid "Channel Search"
+msgstr "Scanadh stáisiún"
+
+msgid "Device"
+msgstr "Gléas"
+
+msgid "(choose…)"
+msgstr "(roghnaigh…)"
+
+msgid "Add folder…"
+msgstr "Cuir fillteán leis…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Fillteán le liostaí trasfhreagróirí (dtv-scan-tables nó .ini i stíl DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Liosta trasfhreagróirí"
+
+msgid "LNB type"
+msgstr "Cineál LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Spriocghrúpa"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "m.sh. Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Cuardaigh minicíochtaí breise (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Ná cuir leis ach stáisiúin saor in aisce"
+
+msgid "Only update existing channels"
+msgstr "Nuashonraigh stáisiúin atá ann cheana amháin"
+
+msgid "Update channel names"
+msgstr "Nuashonraigh ainmneacha stáisiún"
+
+msgid "Group by"
+msgstr "Grúpáil de réir"
+
+msgid "Start Search"
+msgstr "Tosaigh an scanadh"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Folder with transponder lists"
+msgstr "Fillteán le liostaí trasfhreagróirí"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Níl aon liosta trasfhreagróirí roghnaithe. Suiteáil dtv-scan-tables nó cuir fillteán leis.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nNíor aimsíodh aon stáisiún.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nCríochnaithe: {added} stáisiún nua, {updated} nuashonraithe.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Lasca ama taifeadta"
+
+msgid "Search channels"
+msgstr "Cuardaigh stáisiúin"
+
+msgid "  (Radio)"
+msgstr "  (Raidió)"
+
+msgid "Date"
+msgstr "Dáta"
+
+msgid "Repeat"
+msgstr "Athdhéan"
+
+msgid "Once"
+msgstr "Uair amháin"
+
+msgid "Series"
+msgstr "Sraith"
+
+msgid "Action"
+msgstr "Gníomh"
+
+msgid "Format"
+msgstr "Formáid"
+
+msgid "After"
+msgstr "Tar éis"
+
+msgid "Disabled"
+msgstr "Díchumasaithe"
+
+msgid "Status"
+msgstr "Stádas"
+
+msgid "Repeat every {day}"
+msgstr "Athdhéan gach {day}"
+
+msgid "_Date"
+msgstr "_Dáta"
+
+msgid "_Lead (min)"
+msgstr "_Roimh (nóim)"
+
+msgid "_End"
+msgstr "_Deireadh"
+
+msgid "_Start"
+msgstr "_Tús"
+
+msgid "Repeat on"
+msgstr "Athdhéan ar"
+
+msgid "_Follow (min)"
+msgstr "_Tar éis (nóim)"
+
+msgid "Pick a channel on the left"
+msgstr "Roghnaigh stáisiún ar chlé"
+
+msgid "_Name"
+msgstr "_Ainm"
+
+msgid "_Timer action"
+msgstr "Gníomh na _laisc ama"
+
+msgid "_After recording"
+msgstr "Tar éis an _taifeadta"
+
+msgid "T_V format"
+msgstr "Formáid _TB"
+
+msgid "_Radio format"
+msgstr "Formáid _raidió"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "An teanga is fearr leat amháin: rianta i dteanga fuaime na sainroghanna, gan cur síos fuaime. Coinníonn MP4 agus comhad fuaime raidió rian amháin."
+
+msgid "Audi_o tracks"
+msgstr "Rianta _fuaime"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Níl teilithéacs ann ach in MPEG-TS, mar sin úsáidtear TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Níl sonraí EPG (EIT) ann ach in MPEG-TS, mar sin úsáidtear TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "Coinníonn TS gach sruth fotheideal. Glacann MKV leathanach fotheideal an teilithéacs mar rian téacs; ní choinnítear fotheidil bhitmap DVB ach in TS."
+
+msgid "Tracks"
+msgstr "Rianta"
+
+msgid "File _naming scheme"
+msgstr "Patrún _ainmneacha comhad"
+
+msgid "Folder…"
+msgstr "Fillteán…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Úsáid fillteán na dtaifeadtaí ó na sainroghanna"
+
+msgid "Placeholders"
+msgstr "Ionadchoinneálaithe"
+
+msgid "Folder: "
+msgstr "Fillteán: "
+
+msgid "Clear the editor"
+msgstr "Glan an t-eagarthóir"
+
+msgid "New"
+msgstr "Nua"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Cuir socruithe an eagarthóra leis mar lasc ama nua"
+
+msgid "Apply"
+msgstr "Cuir i bhfeidhm"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Sábháil socruithe an eagarthóra sa lasc ama roghnaithe"
+
+msgid "Delete the selected timer"
+msgstr "Scrios an lasc ama roghnaithe"
+
+msgid "Enable/Disable"
+msgstr "Cumasaigh/Díchumasaigh"
+
+msgid "Switch the selected timer on or off"
+msgstr "Cas air nó as an lasc ama roghnaithe"
+
+msgid "Save as default"
+msgstr "Sábháil mar réamhshocrú"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Úsáid na formáidí agus na sruthanna breise seo do lasca ama nua agus do thaifeadtaí láimhe"
+
+msgid "Series title"
+msgstr "Teideal na sraithe"
+
+msgid "Delete series rule"
+msgstr "Scrios riail na sraithe"
+
+msgid "Series recordings"
+msgstr "Taifeadtaí sraithe"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Tá fotheidil oiriúnach do TS nó MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Níl teanga fuaime roghnaithe sna sainroghanna: taifeadtar an chéad rian."
+
+msgid "File: {v0}"
+msgstr "Comhad: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Am tosaigh nó deiridh neamhbhailí"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Úsáid HH:MM, mar shampla 20:15."
+
+msgid "No channel"
+msgstr "Níl aon stáisiún"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Roghnaigh an stáisiún le taifeadadh ón liosta ar chlé."
+
+msgid "Recording defaults saved"
+msgstr "Sábháladh réamhshocruithe an taifeadta"
+
+msgid "Record with Options"
+msgstr "Taifead le roghanna"
+
+msgid "_Format"
+msgstr "_Formáid"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Ní féidir teilithéacs agus sonraí EPG a choinneáil ach in MPEG-TS, mar sin úsáidtear TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Teanga fuaime is fearr leat: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Theip ar an léirshamhlú “{v0}”: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "Tá OpenGL{v0} {major}.{minor} ró-shean"
+
+msgid "Playback error: "
+msgstr "Earráid athsheinme: "
+
+msgid "All channels"
+msgstr "Gach stáisiún"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Ceanáin (TB + raidió)"
+
+msgid "Free to air"
+msgstr "Saor in aisce"
+
+msgid "Internet streams"
+msgstr "Sruthanna idirlín"
+
+msgid "Fill (crop)"
+msgstr "Líon (bearr)"
+
+msgid "Fit"
+msgstr "Cuir isteach"
+
+msgid "Stretch"
+msgstr "Sín"
+
+msgid "Playback error: {m}"
+msgstr "Earráid athsheinme: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Theip ar ghníomh an bhreiseáin: {e}"
+
+msgid "Open Media File…"
+msgstr "Oscail comhad meán…"
+
+msgid "Open URL…"
+msgstr "Oscail seoladh…"
+
+msgid "Import Channel List…"
+msgstr "Iompórtáil liosta stáisiún…"
+
+msgid "Export Channel List…"
+msgstr "Easpórtáil liosta stáisiún…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Easpórtáil treoir clár (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Athraigh TB / raidió"
+
+msgid "Recordings"
+msgstr "Taifeadtaí"
+
+msgid "Programme Guide (EPG)"
+msgstr "Treoir clár (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Taifeadtaí le lasc ama"
+
+msgid "Record with Options…"
+msgstr "Taifead le roghanna…"
+
+msgid "Teletext"
+msgstr "Teilithéacs"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Roghchlár CAM (modúl CI)…"
+
+msgid "Channel Search…"
+msgstr "Scanadh stáisiún…"
+
+msgid "DVB-I Setup…"
+msgstr "Socrú DVB-I…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Eagarthóir stáisiún / ceanáin"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Nuashonraigh EPG idirlín (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Meaitseáil stáisiúin IPTV le XMLTV…"
+
+msgid "Audio Track"
+msgstr "Rian fuaime"
+
+msgid "Subtitles"
+msgstr "Fotheidil"
+
+msgid "Play Rate"
+msgstr "Luas athsheinme"
+
+msgid "Back 10 s"
+msgstr "Siar 10 s"
+
+msgid "Forward 10 s"
+msgstr "Ar aghaidh 10 s"
+
+msgid "Back 1 min"
+msgstr "Siar 1 nóim"
+
+msgid "Forward 1 min"
+msgstr "Ar aghaidh 1 nóim"
+
+msgid "Back to Live"
+msgstr "Ar ais go dtí beo"
+
+msgid "Jump"
+msgstr "Scipeáil"
+
+msgid "Previous"
+msgstr "Roimhe seo"
+
+msgid "Random Order"
+msgstr "Ord randamach"
+
+msgid "Endless Playback"
+msgstr "Athsheinm gan stad"
+
+msgid "Playlist"
+msgstr "Seinmliosta"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Coinnigh timeshift mar thaifeadadh"
+
+msgid "Rebuild Playback"
+msgstr "Atóg an athsheinm"
+
+msgid "Video Off (audio only)"
+msgstr "Físeán múchta (fuaim amháin)"
+
+msgid "Show Selected Channel"
+msgstr "Taispeáin an stáisiún roghnaithe"
+
+msgid "Swap Pictures"
+msgstr "Babhtáil na pictiúir"
+
+msgid "Picture in Picture"
+msgstr "Pictiúr i bpictiúr"
+
+msgid "Channel Mosaic…"
+msgstr "Mósáic stáisiún…"
+
+msgid "Stop in {mins} min"
+msgstr "Stop i gceann {mins} nóim"
+
+msgid "Stop after current programme"
+msgstr "Stop tar éis an chláir reatha"
+
+msgid "Sleep Timer"
+msgstr "Lasc ama codlata"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Fuaim níos déanaí (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Fuaim níos luaithe (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Athshocraigh"
+
+msgid "Audio Delay (this channel)"
+msgstr "Moill fuaime (an stáisiún seo)"
+
+msgid "Full Screen"
+msgstr "Lánscáileán"
+
+msgid "Show/Hide Channel List"
+msgstr "Taispeáin/folaigh liosta na stáisiún"
+
+msgid "Aspect / Zoom"
+msgstr "Cóimheas / zúmáil"
+
+msgid "Window Size"
+msgstr "Méid na fuinneoige"
+
+msgid "Picture Settings…"
+msgstr "Socruithe pictiúir…"
+
+msgid "Equalizer…"
+msgstr "Cothromóir…"
+
+msgid "Radio Visualisation"
+msgstr "Léirshamhlú raidió"
+
+msgid "Screenshot"
+msgstr "Grianghraf scáileáin"
+
+msgid "Plugins…"
+msgstr "Breiseáin…"
+
+msgid "About LinDVB"
+msgstr "Maidir le LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Taispeáin/folaigh liosta na stáisiún (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Príomhroghchlár (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Treoir clár (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teilithéacs (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Taispeáin stáisiúin TB (athraíonn Ctrl+M)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Taispeáin stáisiúin raidió (athraíonn Ctrl+M)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Taispeáin do thaifeadtaí (seinneann déchliceáil)"
+
+msgid "Search name or number"
+msgstr "Cuardaigh ainm nó uimhir"
+
+msgid "All groups"
+msgstr "Gach grúpa"
+
+msgid "Previous channel (Page Down)"
+msgstr "Stáisiún roimhe seo (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Sos / timeshift (Spás)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Stop (múch an stáisiún)"
+
+msgid "Next channel (Page Up)"
+msgstr "An chéad stáisiún eile (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Taifead an stáisiún reatha (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Roghnaigh formáid agus rianta don taifeadadh seo"
+
+msgid "Seek"
+msgstr "Suíomh"
+
+msgid "LIVE"
+msgstr "BEO"
+
+msgid "Back to live (L)"
+msgstr "Ar ais go dtí beo (L)"
+
+msgid "Mute (M)"
+msgstr "Balbhaigh (M)"
+
+msgid "Volume"
+msgstr "Airde fuaime"
+
+msgid "Audio track"
+msgstr "Rian fuaime"
+
+msgid "Playback and picture settings"
+msgstr "Socruithe athsheinme agus pictiúir"
+
+msgid "Full screen (F)"
+msgstr "Lánscáileán (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nAnois: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} de {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{n} de {total} taifeadadh á dtaispeáint"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{n} de {total} ceanán á dtaispeáint"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{n} de {total} stáisiún raidió á dtaispeáint"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{n} de {total} stáisiún TB á dtaispeáint"
+
+msgid "Add to Favourites"
+msgstr "Cuir le ceanáin"
+
+msgid "Remove from Favourites"
+msgstr "Bain ó cheanáin"
+
+msgid "Edit…"
+msgstr "Cuir in eagar…"
+
+msgid "Show as Picture in Picture"
+msgstr "Taispeáin mar phictiúr i bpictiúr"
+
+msgid "Select a channel in the list first"
+msgstr "Roghnaigh stáisiún ón liosta ar dtús"
+
+msgid "By channel"
+msgstr "De réir stáisiúin"
+
+msgid "By title"
+msgstr "De réir teidil"
+
+msgid "Newest first"
+msgstr "Is nuaí ar dtús"
+
+msgid "Oldest first"
+msgstr "Is sine ar dtús"
+
+msgid "Largest first"
+msgstr "Is mó ar dtús"
+
+msgid "Sort the recordings"
+msgstr "Sórtáil taifeadtaí"
+
+msgid "Open the recording folder"
+msgstr "Oscail fillteán na dtaifeadtaí"
+
+msgid "Look for new recordings"
+msgstr "Cuardaigh taifeadtaí nua"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Níl aon taifeadtaí fós.\n\nSábháiltear taifeadtaí i\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Níl aon fhillteán taifeadtaí socraithe sna sainroghanna."
+
+msgid "Recording in progress"
+msgstr "Taifeadadh ar siúl"
+
+msgid "Watched"
+msgstr "Feicthe"
+
+msgid "Watched up to {pos}"
+msgstr "Feicthe go dtí {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Níor aimsíodh an taifeadadh: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Ag leanúint ar aghaidh ó {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Níor aimsíodh an fillteán: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Ní féidir {folder} a oscailt: {message}"
+
+msgid "Play"
+msgstr "Seinn"
+
+msgid "Play from the Beginning"
+msgstr "Seinn ón tús"
+
+msgid "Details…"
+msgstr "Sonraí…"
+
+msgid "Mark as Unwatched"
+msgstr "Marcáil mar nach bhfacthas"
+
+msgid "Mark as Watched"
+msgstr "Marcáil mar feicthe"
+
+msgid "Show in Folder"
+msgstr "Taispeáin san fhillteán"
+
+msgid "Delete…"
+msgstr "Scrios…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Stop an taifeadadh sula scriosann tú é"
+
+msgid "Delete “{title}”?"
+msgstr "Scrios “{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nBainfear an comhad ón diosca."
+
+msgid "Deleted {name}"
+msgstr "Scriosadh {name}"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Ní féidir {name} a scriosadh: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name} á thiúnadh…"
+
+msgid "Search recordings"
+msgstr "Cuardaigh sna taifeadtaí"
+
+msgid "No radio stations in the channel list"
+msgstr "Níl aon stáisiún raidió sa liosta"
+
+msgid "No TV channels in the channel list"
+msgstr "Níl aon stáisiún TB sa liosta"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – athraithe go {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "Níl {name} ar an aer faoi láthair"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Stopadh TB beo: tá an tiúnóir ag teastáil le haghaidh taifeadadh lasc ama"
+
+msgid "Stopped"
+msgstr "Stoptha"
+
+msgid "Sound {ms} ms later"
+msgstr "Fuaim {ms} ms níos déanaí"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Fuaim {v0} ms níos luaithe"
+
+msgid "Audio delay off"
+msgstr "Moill fuaime múchta"
+
+msgid "Playing {item}"
+msgstr "{item} á sheinm"
+
+msgid "Open media files"
+msgstr "Oscail comhaid meán"
+
+msgid "Open URL"
+msgstr "Oscail seoladh"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Oscail"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Iompórtáil liosta stáisiún (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Níorbh fhéidir {name} a iompórtáil"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Iompórtáladh {total_a} stáisiún nua agus {total_u} nuashonraithe"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Easpórtáil stáisiúin (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Easpórtáilte chuig {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Easpórtáil treoir clár (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Ní féidir {path} a scríobh: {error}"
+
+msgid "Nothing to record"
+msgstr "Níl aon rud le taifeadadh"
+
+msgid "This channel is already being recorded"
+msgstr "Tá an stáisiún seo á thaifeadadh cheana"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teilithéacs: díchódóir ar iarraidh (gst-plugins-bad le libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teilithéacs: níl sé ar fáil ar an stáisiún seo"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teastaíonn stáisiún DVB ón teilithéacs"
+
+msgid "Volume {v0}%"
+msgstr "Airde fuaime {v0}%"
+
+msgid "Off"
+msgstr "Balbh"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Fotheidil dhúnta (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Teangacha: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Rianta fuaime: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Sábháladh an grianghraf scáileáin: {path}"
+
+msgid "Screenshot failed"
+msgstr "Theip ar an ngrianghraf scáileáin"
+
+msgid "Picture Settings"
+msgstr "Socruithe pictiúir"
+
+msgid "Restore Defaults"
+msgstr "Athchóirigh na réamhshocruithe"
+
+msgid "Equalizer"
+msgstr "Cothromóir"
+
+msgid "Leave full screen (F)"
+msgstr "Fág an lánscáileán (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Theip ar an léirshamhlú: {e}"
+
+msgid "Radio visualisation"
+msgstr "Léirshamhlú raidió"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Léirshamhlú raidió (do raidió agus fuaim amháin)"
+
+msgid "Playback stops at {v0}"
+msgstr "Stopfaidh an athsheinm ag {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Níl faisnéis cláir ann don lasc ama codlata"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Lasc ama codlata: stopadh an athsheinm"
+
+msgid "No programme information"
+msgstr "Níl faisnéis cláir ann"
+
+msgid "Next: {v0}  {title}"
+msgstr "Ar ball: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Comhartha {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Beo"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Féach ar DVB-S/S2, DVB-C, DVB-T/T2, ATSC agus TB idirlín agus taifead iad le Linux DVB API agus GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Meaitseáil stáisiúin IPTV le XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Níl aon treoir XMLTV lódáilte fós. Socraigh an seoladh XMLTV i socruithe EPG agus íoslódáil an treoir ar dtús; tosaíonn an meaitseáil go huathoibríoch tar éis na híoslódála."
+
+msgid "Download XMLTV guide now"
+msgstr "Íoslódáil an treoir XMLTV anois"
+
+msgid "Only channels without guide"
+msgstr "Stáisiúin gan treoir amháin"
+
+msgid "Match"
+msgstr "Meaitseáil"
+
+msgid "Guide channel:"
+msgstr "Stáisiún treorach:"
+
+msgid "Assign"
+msgstr "Sann"
+
+msgid "Suggest"
+msgstr "Mol"
+
+msgid "Auto-match all"
+msgstr "Meaitseáil gach rud go huathoibríoch"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Meaitseáil gach stáisiún nár sannadh de láimh"
+
+msgid "Reset to automatic"
+msgstr "Athshocraigh go huathoibríoch"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Lig don mheaitseáil uathoibríoch cinneadh a dhéanamh arís don stáisiún roghnaithe"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Tá stáisiún treorach ag {done} de {v1} stáisiún"
+
+msgid "No suggestion for {name}"
+msgstr "Níl aon mholadh do {name}"

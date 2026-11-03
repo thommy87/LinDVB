@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: lv\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importēt kanālu sarakstu (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Sākt ar šo kanālu (nosaukums vai numurs)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} plkst. {time}"
+
+msgid "Watch"
+msgstr "Skatīties"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Atgādinājums: {title} kanālā {channel} plkst. {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Vispirms iestatiet XMLTV adresi iestatījumos"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Lejupielādē XMLTV ceļvedi…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} bez ceļveža (TV ▸ Sasaistīt IPTV kanālus ar XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: ielādē pakalpojumu sarakstu…"
+
+msgid "Search the web"
+msgstr "Meklēt tīmeklī"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teleteksts (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Subtitri (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG dati (TS)"
+
+msgid "All audio tracks"
+msgstr "Visi audio celiņi"
+
+msgid "Preferred language only"
+msgstr "Tikai vēlamā valoda"
+
+msgid "First audio track only"
+msgstr "Tikai pirmais audio celiņš"
+
+msgid "Record"
+msgstr "Ierakstīt"
+
+msgid "Record and tune"
+msgstr "Ierakstīt un pārslēgt"
+
+msgid "Tune only"
+msgstr "Tikai pārslēgt"
+
+msgid "Hibernate"
+msgstr "Hibernācija"
+
+msgid "None"
+msgstr "Nekas"
+
+msgid "Power off"
+msgstr "Izslēgt"
+
+msgid "Quit LinDVB"
+msgstr "Iziet no LinDVB"
+
+msgid "Standby"
+msgstr "Gaidīšanas režīms"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Interneta straumēm nav teleteksta, subtitru vai EPG datu."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 saglabā vienu audio celiņu (vēlamo valodu, ja tā tiek pārraidīta)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Audio fails saglabā vienu celiņu (vēlamo valodu, ja tā tiek pārraidīta)."
+
+msgid "Fr"
+msgstr "Pk"
+
+msgid "Mo"
+msgstr "Pr"
+
+msgid "Sa"
+msgstr "Se"
+
+msgid "Su"
+msgstr "Sv"
+
+msgid "Th"
+msgstr "Ce"
+
+msgid "Tu"
+msgstr "Ot"
+
+msgid "We"
+msgstr "Tr"
+
+msgid "Scheduled"
+msgstr "Ieplānots"
+
+msgid "Done"
+msgstr "Gatavs"
+
+msgid "Channel missing"
+msgstr "Trūkst kanāla"
+
+msgid "Tuned"
+msgstr "Pārslēgts"
+
+msgid "Recording"
+msgstr "Ieraksta"
+
+msgid "Failed"
+msgstr "Neizdevās"
+
+msgid "Missed"
+msgstr "Nokavēts"
+
+msgid "After recording: {action}"
+msgstr "Pēc ierakstīšanas: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Modulis tika izņemts vai atiestatīts."
+
+msgid "CAM Menu"
+msgstr "CAM izvēlne"
+
+msgid "Cancel"
+msgstr "Atcelt"
+
+msgid "OK"
+msgstr "Labi"
+
+msgid "Open CAM Menu"
+msgstr "Atvērt CAM izvēlni"
+
+msgid "Select"
+msgstr "Izvēlēties"
+
+msgid "Back"
+msgstr "Atpakaļ"
+
+msgid "Close Menu"
+msgstr "Aizvērt izvēlni"
+
+msgid "Device: {path} – {state}"
+msgstr "Ierīce: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Atveriet CAM izvēlni, lai redzētu moduļa iestatījumus, viedkartes informāciju un vecāku kontroli."
+
+msgid "The module has not finished starting yet."
+msgstr "Modulis vēl nav pabeidzis palaišanu."
+
+msgid "Custom colour"
+msgstr "Pielāgota krāsa"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB zilā (noklusējums)"
+
+msgid "System accent colour"
+msgstr "Sistēmas akcenta krāsa"
+
+msgid "Preferences"
+msgstr "Iestatījumi"
+
+msgid "Save"
+msgstr "Saglabāt"
+
+msgid "Appearance"
+msgstr "Izskats"
+
+msgid "Language"
+msgstr "Valoda"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Stāsies spēkā nākamajā LinDVB palaišanas reizē."
+
+msgid "Accent colour"
+msgstr "Akcenta krāsa"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Izmanto izcēlumiem, atlasēm un pogām visos logos."
+
+msgid "On-screen display"
+msgstr "Ekrāna displejs"
+
+msgid "OSD display time (s)"
+msgstr "OSD rādīšanas laiks (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizācija"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Kas tiek rādīts virs radio vizualizācijas, kamēr skan radio stacija vai audio fails. Dziesmas dati nāk no DVB radio RadioText, interneta radio straumes nosaukuma un audio failu birkām."
+
+msgid "Overlay"
+msgstr "Pārklājums"
+
+msgid "Station logo tile"
+msgstr "Stacijas logotipa flīze"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Kanāla logotips vai flīze ar stacijas nosaukumu, ja logotipa nav."
+
+msgid "Album cover"
+msgstr "Albuma vāciņš"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Skanošās dziesmas vāciņš no faila vai atrasts tiešsaistē."
+
+msgid "Song information"
+msgstr "Dziesmas informācija"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Izpildītājs, albums un gads, celiņš un nosaukums. Bez dziesmas datiem tiek rādīta stacija un pašreizējais raidījums."
+
+msgid "Clock in the top right corner"
+msgstr "Pulkstenis augšējā labajā stūrī"
+
+msgid "Sources"
+msgstr "Avoti"
+
+msgid "Look up covers online"
+msgstr "Meklēt vāciņus tiešsaistē"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Nosūta skanošās dziesmas izpildītāju un nosaukumu uz iTunes Search API, lai atrastu albumu, gadu un vāciņu."
+
+msgid "Station logo folder"
+msgstr "Staciju logotipu mape"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Attēlu faili (PNG, SVG, JPG), nosaukti pēc kanāla, piem., “Bayern 3.png”. Pēc kanāla nosaukti logotipi, kā tos glabā DVBViewer, darbojas bez izmaiņām. Tukšs: {v0}"
+
+msgid "Playback"
+msgstr "Atskaņošana"
+
+msgid "Deinterlace video"
+msgstr "Noņemt video rindpārlēkumu"
+
+msgid "Screenshot folder"
+msgstr "Ekrānuzņēmumu mape"
+
+msgid "Timeshift"
+msgstr "Laika nobīde"
+
+msgid "Timeshift folder"
+msgstr "Laika nobīdes mape"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Laika nobīdes buferis (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Uztvērējs un LNB"
+
+msgid "DVB hardware"
+msgstr "DVB aparatūra"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Adapteru numuri, ko LinDVB drīkst izmantot, atdalīti ar komatiem."
+
+msgid "DVB adapters"
+msgstr "DVB adapteri"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Tvert visu transponderi"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Vajadzīgs visiem audio celiņiem, ja kanālu saraksts zina tikai vienu audio PID."
+
+msgid "Satellite LNB"
+msgstr "Satelīta LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF zemā josla (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF augstā josla (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Pārslēgšanas frekvence (kHz)"
+
+msgid "Recording folder"
+msgstr "Ierakstu mape"
+
+msgid "File naming scheme"
+msgstr "Failu nosaukumu shēma"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Vietturi: %year %date %time %end %station %name, / apakšmapēm"
+
+msgid "Timer padding"
+msgstr "Taimeru rezerves"
+
+msgid "Start earlier by (min)"
+msgstr "Sākt agrāk par (min)"
+
+msgid "Stop later by (min)"
+msgstr "Beigt vēlāk par (min)"
+
+msgid "Timers"
+msgstr "Taimeri"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Pēc taimera izveides atvērt taimeru logu"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Pēc “Ierakstīt” ceļvedī uzreiz rediģēt jauno taimeri."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Programmu ceļvedis: pārraidītais EPG, interneta EPG (XMLTV) un citu pakalpojumu sniedzēju EPG."
+
+msgid "Conditional access"
+msgstr "Nosacīta piekļuve"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Abonēto kodēto kanālu atkodēšana ar savu karti softcam vai CI modulī."
+
+msgid "None (leave scrambled)"
+msgstr "Nekas (atstāt kodētu)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Ārējs softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Aparatūras CI / CI+ modulis"
+
+msgid "Descrambling via"
+msgstr "Atkodēt caur"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI ligzda"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix ligzdas ceļš vai resursdators:ports."
+
+msgid "CI module"
+msgstr "CI modulis"
+
+msgid "CI adapter number"
+msgstr "CI adaptera numurs"
+
+msgid "CA device number"
+msgstr "CA ierīces numurs"
+
+msgid "Plugins"
+msgstr "Spraudņi"
+
+msgid "Load plugins at startup"
+msgstr "Ielādēt spraudņus palaišanas laikā"
+
+msgid "Manage Plugins…"
+msgstr "Pārvaldīt spraudņus…"
+
+msgid "Format and tracks"
+msgstr "Formāts un celiņi"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Noklusējumi jauniem taimeriem un ierakstīšanas pogai. Katrs taimeris un ieraksts, kas sākts ar “Ierakstīt ar opcijām…”, var tos mainīt.\nTS: video, visi audio celiņi, subtitri, teleteksts un EPG dati. MKV: video, vairāki audio celiņi un subtitri. MPG: video un vairāki audio celiņi. MP4: video un viens audio celiņš. Interneta straumēm nav teleteksta, subtitru vai EPG datu; HLS un DASH straumes tiek ierakstītas ar vienu audio celiņu."
+
+msgid "TV format"
+msgstr "TV formāts"
+
+msgid "Radio format"
+msgstr "Radio formāts"
+
+msgid "Audio tracks"
+msgstr "Audio celiņi"
+
+msgid "Preferred audio language"
+msgstr "Vēlamā audio valoda"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Izmanto opcijai “Tikai vēlamā valoda” un MP4, kas saglabā vienu celiņu. Audioapraksta celiņi tiek izlaisti. Ja atbilstības nav, tiek ierakstīts pirmais celiņš."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} var saglabāt tikai MPEG-TS, tāpēc ieraksti tiek saglabāti kā TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} var saglabāt tikai TS vai MKV, tāpēc ieraksti tiek saglabāti kā TS."
+
+msgid " and "
+msgstr " un "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Vēlamā audio valoda nav iestatīta, tāpēc tiek ierakstīts tikai pirmais audio celiņš."
+
+msgid "Desktop accent: {found}"
+msgstr "Darbvirsmas akcents: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Darbvirsmas akcents nav atrasts, tiek izmantota LinDVB zilā."
+
+msgid "Current accent: {color}"
+msgstr "Pašreizējais akcents: {color}"
+
+msgid "Channel Editor"
+msgstr "Kanālu redaktors"
+
+msgid "Name"
+msgstr "Nosaukums"
+
+msgid "Category"
+msgstr "Kategorija"
+
+msgid "Group"
+msgstr "Grupa"
+
+msgid "Fav"
+msgstr "Izl"
+
+msgid "Type"
+msgstr "Tips"
+
+msgid "Filter channels"
+msgstr "Filtrēt kanālus"
+
+msgid "General"
+msgstr "Vispārīgi"
+
+msgid "Stream URL"
+msgstr "Straumes adrese"
+
+msgid "Favourite"
+msgstr "Izlase"
+
+msgid "Radio"
+msgstr "Radio"
+
+msgid "Encrypted"
+msgstr "Kodēts"
+
+msgid "Tuning"
+msgstr "Noskaņošana"
+
+msgid "System"
+msgstr "Sistēma"
+
+msgid "Polarity"
+msgstr "Polaritāte"
+
+msgid "Modulation"
+msgstr "Modulācija"
+
+msgid "Frequency (kHz)"
+msgstr "Frekvence (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Simbolu ātrums (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Joslas platums (Hz)"
+
+msgid "Stream ID"
+msgstr "Straumes ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC ports (-1 nav)"
+
+msgid "Service and PIDs"
+msgstr "Pakalpojums un PID"
+
+msgid "Service ID"
+msgstr "Pakalpojuma ID"
+
+msgid "Transport ID"
+msgstr "Transporta ID"
+
+msgid "Video PID"
+msgstr "Video PID"
+
+msgid "Audio PIDs"
+msgstr "Audio PID"
+
+msgid "Teletext PID"
+msgstr "Teleteksta PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Lietot izmaiņas (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Jauns kanāls"
+
+msgid "Delete channel"
+msgstr "Dzēst kanālu"
+
+msgid "Move up"
+msgstr "Pārvietot uz augšu"
+
+msgid "Move down"
+msgstr "Pārvietot uz leju"
+
+msgid "Sort by group and name"
+msgstr "Kārtot pēc grupas un nosaukuma"
+
+msgid "No channel selected"
+msgstr "Nav izvēlēts kanāls"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Izvēlieties kanālu sarakstā, lai to rediģētu."
+
+msgid "Unnamed channel"
+msgstr "Nenosaukts kanāls"
+
+msgid "Recording and Device Statistics"
+msgstr "Ierakstīšanas un ierīces statistika"
+
+msgid "Active recordings:"
+msgstr "Aktīvie ieraksti:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nNākamais taimeris: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teleteksts – {name}"
+
+msgid "Find on page"
+msgstr "Meklēt lapā"
+
+msgid "Copy page"
+msgstr "Kopēt lapu"
+
+msgid "Save page"
+msgstr "Saglabāt lapu"
+
+msgid "Waiting for teletext…"
+msgstr "Gaida teletekstu…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Trūkst teletextdec (gst-plugins-bad ar libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Meklē lapu {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Atkodēšana nav iestatīta. Kodētos kanālus, uz kuriem jums ir tiesības, var atkodēt, ja iestatījumos norādāt LinDVB savu softcam vai CI moduli."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Pakalpojumu sniedzējs “{v0}” nav pieejams."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Pakalpojumu sniedzējs: CI modulis – {status}\nModulis atkodē ar jūsu karti uztvērējā."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Pakalpojumu sniedzējs: {name}\nLinDVB pārsūta ECM sadaļas jūsu kartes klientam un izmanto atgrieztos vadības vārdus; pats tas atslēgas neglabā."
+
+msgid "Open CAM Menu…"
+msgstr "Atvērt CAM izvēlni…"
+
+msgid "Failed to load: {v0}"
+msgstr "Neizdevās ielādēt: {v0}"
+
+msgid "Switched off"
+msgstr "Izslēgts"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Izmaiņas stāsies spēkā nākamajā LinDVB palaišanas reizē."
+
+msgid "No plugins installed."
+msgstr "Nav instalētu spraudņu."
+
+msgid "Plugin actions"
+msgstr "Spraudņu darbības"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Spraudņu mapes: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I iestatīšana"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I no interneta iegūst jūsu reģiona kanālu sarakstu: numerāciju, nosaukumus un logotipus, kā arī katra kanāla uztveršanas veidus. LinDVB, kad iespējams, izmanto antenas, kabeļa vai satelīta kanālus no jūsu kanālu meklēšanas, citādi interneta straumi."
+
+msgid "Privacy"
+msgstr "Privātums"
+
+msgid "I have read the privacy notice"
+msgstr "Esmu izlasījis privātuma paziņojumu"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Ielādēt DVB-I kanālu programmu ceļvedi (EPG)"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Pārslēgties uz citu uztveršanas veidu (internets, antena, kabelis, satelīts), ja viens neizdodas"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Noskaņot saraksta satelīta kanālus bez kanālu meklēšanas (vajadzīgi satelīta kanāli jūsu sarakstā)"
+
+msgid "Service list"
+msgstr "Pakalpojumu saraksts"
+
+msgid "Load Lists from Registry"
+msgstr "Ielādēt sarakstus no reģistra"
+
+msgid "In use: {current}"
+msgstr "Tiek lietots: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Vēl netiek lietots neviens DVB-I saraksts."
+
+msgid "Region"
+msgstr "Reģions"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Jūsu pasta indekss izvēlas reģionālos kanālus un to numerāciju. Tas tiek nosūtīts tikai pakalpojumu saraksta serverim."
+
+msgid "Postcode"
+msgstr "Pasta indekss"
+
+msgid "No postcode: nationwide list"
+msgstr "Bez pasta indeksa: valsts saraksts"
+
+msgid "Remove DVB-I Channels"
+msgstr "Noņemt DVB-I kanālus"
+
+msgid "Update Now"
+msgstr "Atjaunināt tagad"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Atkārtoti ielādēt izvēlēto sarakstu (tas tiek pārbaudīts arī katru dienu)"
+
+msgid "Install Channel List"
+msgstr "Instalēt kanālu sarakstu"
+
+msgid "Close"
+msgstr "Aizvērt"
+
+msgid "Asking the service list registry…"
+msgstr "Vaicā pakalpojumu sarakstu reģistram…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Reģistrs nav sasniedzams: {error}"
+
+msgid "Default"
+msgstr "Noklusējums"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Pakalpojumu saraksti no {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Reģistrs nepiedāvā pakalpojumu sarakstu Vācijai."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Ievadiet piecciparu pasta indeksu"
+
+msgid "Loading the service list…"
+msgstr "Ielādē pakalpojumu sarakstu…"
+
+msgid "In use: {v0}"
+msgstr "Tiek lietots: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nIzvēlieties savu reģionu un vēlreiz nospiediet Instalēt."
+
+msgid "Enter Again"
+msgstr "Ievadīt vēlreiz"
+
+msgid "The service list does not know this postcode."
+msgstr "Pakalpojumu saraksts nezina šo pasta indeksu."
+
+msgid "The service list server answered {code}."
+msgstr "Pakalpojumu saraksta serveris atbildēja {code}."
+
+msgid "Try Again"
+msgstr "Mēģināt vēlreiz"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Varat mēģināt vēlreiz vai izmantot valsts sarakstu bez pasta indeksa."
+
+msgid "Nationwide List"
+msgstr "Valsts saraksts"
+
+msgid "No DVB-I list is in use."
+msgstr "Netiek lietots neviens DVB-I saraksts."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Noņemti DVB-I kanāli: {removed}"
+
+msgid "All programmes"
+msgstr "Visi raidījumi"
+
+msgid "With audio description"
+msgstr "Ar audioaprakstu"
+
+msgid "With subtitles"
+msgstr "Ar subtitriem"
+
+msgid "Programme Guide"
+msgstr "Programmu ceļvedis"
+
+msgid "Now / Next"
+msgstr "Tagad / Pēc tam"
+
+msgid "Per Channel"
+msgstr "Pēc kanāla"
+
+msgid "TV Guide"
+msgstr "TV programma"
+
+msgid "Search"
+msgstr "Meklēt"
+
+msgid "Record Series"
+msgstr "Ierakstīt seriālu"
+
+msgid "Remind Me"
+msgstr "Atgādināt"
+
+msgid "Search Web"
+msgstr "Meklēt tīmeklī"
+
+msgid "Export the guide as XMLTV"
+msgstr "Eksportēt ceļvedi kā XMLTV"
+
+msgid "Next"
+msgstr "Pēc tam"
+
+msgid "Now"
+msgstr "Tagad"
+
+msgid "Only favourites"
+msgstr "Tikai izlase"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Pieejamība (DVB-I programmu ceļvedis)"
+
+msgid "Show:"
+msgstr "Rādīt:"
+
+msgid "Channel"
+msgstr "Kanāls"
+
+msgid "Start"
+msgstr "Sākums"
+
+msgid "End"
+msgstr "Beigas"
+
+msgid "Title"
+msgstr "Nosaukums"
+
+msgid "Genre"
+msgstr "Žanrs"
+
+msgid "Day"
+msgstr "Diena"
+
+msgid "Duration"
+msgstr "Ilgums"
+
+msgid "Subheading"
+msgstr "Apakšvirsraksts"
+
+msgid "Title or description"
+msgstr "Nosaukums vai apraksts"
+
+msgid "Include description"
+msgstr "Iekļaut aprakstu"
+
+msgid "Case sensitive"
+msgstr "Reģistrjutīgs"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Seriāla ierakstīšana: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Atgādinājums noņemts: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} jau ir sācies"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Atgādinājums iestatīts: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Noņemt atgādinājumu"
+
+msgid "Save EPG data"
+msgstr "Saglabāt EPG datus"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Saglabā ceļvedi diskā pēc LinDVB aizvēršanas."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Rādīt EPG informāciju, mainot kanālu (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nerādīt."
+
+msgid "Remind before start (min)"
+msgstr "Atgādināt pirms sākuma (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Ceļvedī iestatītie atgādinājumi paziņo tik agri."
+
+msgid "Preferred language"
+msgstr "Vēlamā valoda"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Izmanto, ja raidījums tiek pārraidīts vairākās valodās."
+
+msgid "Time zone"
+msgstr "Laika josla"
+
+msgid "Set time zone automatically"
+msgstr "Iestatīt laika joslu automātiski"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Izslēgts: izmantot fiksētu nobīdi pret GMT ceļvedim, taimeriem un pulkstenim."
+
+msgid "Offset to GMT"
+msgstr "Nobīde pret GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Interneta EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Interneta EPG avots, ko izmanto papildus pārraidītajam EPG."
+
+msgid "Match IPTV Channels…"
+msgstr "Sasaistīt IPTV kanālus…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Pārbaudiet vai labojiet, kurš ceļveža kanāls atbilst kuram M3U kanālam."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat frekvences"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Ja noskaņotais kanāls ir kādā no šiem transponderiem, LinDVB nolasa arī šī pakalpojumu sniedzēja EPG. Izmaiņas stājas spēkā nākamajā noskaņošanas reizē."
+
+msgid "Frequency (MHz)"
+msgstr "Frekvence (MHz)"
+
+msgid "Add"
+msgstr "Pievienot"
+
+msgid "Polarisation"
+msgstr "Polarizācija"
+
+msgid "Defaults"
+msgstr "Noklusējumi"
+
+msgid "Delete"
+msgstr "Dzēst"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Ievadiet transpondera frekvenci MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Vāciņa meklēšana neizdevās: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Samainīt ar galveno attēlu"
+
+msgid "Close picture in picture"
+msgstr "Aizvērt attēlu attēlā"
+
+msgid "Picture in picture: {error}"
+msgstr "Attēls attēlā: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Attēls attēlā darbojas ar interneta kanāliem; DVB kanāliem vajag otru uztvērēju."
+
+msgid "Channel Mosaic"
+msgstr "Kanālu mozaīka"
+
+msgid "Previous channels"
+msgstr "Iepriekšējie kanāli"
+
+msgid "Next channels"
+msgstr "Nākamie kanāli"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mozaīka rāda interneta kanālus. Pašreizējā skatā sarakstā tādu nav."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Lapa {page} no {pages} · interneta kanāli: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Noklikšķiniet, lai skatītos {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universāls (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Paplašināts"
+
+msgid "None / not satellite"
+msgstr "Nekas / nav satelīts"
+
+msgid "Port 1 (A/A)"
+msgstr "Ports 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Ports 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Ports 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Ports 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frekvence"
+
+msgid "Initial letter"
+msgstr "Sākuma burts"
+
+msgid "Provider"
+msgstr "Pakalpojumu sniedzējs"
+
+msgid "Channel Search"
+msgstr "Kanālu meklēšana"
+
+msgid "Device"
+msgstr "Ierīce"
+
+msgid "(choose…)"
+msgstr "(izvēlieties…)"
+
+msgid "Add folder…"
+msgstr "Pievienot mapi…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Mape ar transponderu sarakstiem (dtv-scan-tables vai DVBViewer stila .ini)"
+
+msgid "Transponder list"
+msgstr "Transponderu saraksts"
+
+msgid "LNB type"
+msgstr "LNB tips"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Mērķa grupa"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "piem., Astra 19,2° A"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Meklēt papildu frekvences (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Pievienot tikai bezmaksas kanālus"
+
+msgid "Only update existing channels"
+msgstr "Tikai atjaunināt esošos kanālus"
+
+msgid "Update channel names"
+msgstr "Atjaunināt kanālu nosaukumus"
+
+msgid "Group by"
+msgstr "Grupēt pēc"
+
+msgid "Start Search"
+msgstr "Sākt meklēšanu"
+
+msgid "Stop"
+msgstr "Apturēt"
+
+msgid "Folder with transponder lists"
+msgstr "Mape ar transponderu sarakstiem"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nav izvēlēts transponderu saraksts. Instalējiet dtv-scan-tables vai pievienojiet mapi.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nKanāli nav atrasti.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nGatavs: jauni kanāli {added}, atjaunināti {updated}.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Ierakstīšanas taimeri"
+
+msgid "Search channels"
+msgstr "Meklēt kanālus"
+
+msgid "  (Radio)"
+msgstr "  (Radio)"
+
+msgid "Date"
+msgstr "Datums"
+
+msgid "Repeat"
+msgstr "Atkārtot"
+
+msgid "Once"
+msgstr "Vienreiz"
+
+msgid "Series"
+msgstr "Seriāls"
+
+msgid "Action"
+msgstr "Darbība"
+
+msgid "Format"
+msgstr "Formāts"
+
+msgid "After"
+msgstr "Pēc"
+
+msgid "Disabled"
+msgstr "Atspējots"
+
+msgid "Status"
+msgstr "Statuss"
+
+msgid "Repeat every {day}"
+msgstr "Atkārtot katru {day}"
+
+msgid "_Date"
+msgstr "_Datums"
+
+msgid "_Lead (min)"
+msgstr "_Pirms (min)"
+
+msgid "_End"
+msgstr "_Beigas"
+
+msgid "_Start"
+msgstr "_Sākums"
+
+msgid "Repeat on"
+msgstr "Atkārtot"
+
+msgid "_Follow (min)"
+msgstr "P_ēc (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Izvēlieties kanālu kreisajā pusē"
+
+msgid "_Name"
+msgstr "_Nosaukums"
+
+msgid "_Timer action"
+msgstr "_Taimera darbība"
+
+msgid "_After recording"
+msgstr "Pēc _ierakstīšanas"
+
+msgid "T_V format"
+msgstr "T_V formāts"
+
+msgid "_Radio format"
+msgstr "_Radio formāts"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Tikai vēlamā valoda: celiņi iestatījumos norādītajā audio valodā, bez audioapraksta. MP4 un radio audio fails saglabā vienu celiņu."
+
+msgid "Audi_o tracks"
+msgstr "Audi_o celiņi"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teleteksts pastāv tikai MPEG-TS, tāpēc tiek izmantots TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG dati (EIT) pastāv tikai MPEG-TS, tāpēc tiek izmantots TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS saglabā visas subtitru straumes. MKV saņem teleteksta subtitru lapu kā teksta celiņu; DVB bitkartes subtitri paliek tikai TS."
+
+msgid "Tracks"
+msgstr "Celiņi"
+
+msgid "File _naming scheme"
+msgstr "Failu _nosaukumu shēma"
+
+msgid "Folder…"
+msgstr "Mape…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Izmantot ierakstu mapi no iestatījumiem"
+
+msgid "Placeholders"
+msgstr "Vietturi"
+
+msgid "Folder: "
+msgstr "Mape: "
+
+msgid "Clear the editor"
+msgstr "Notīrīt redaktoru"
+
+msgid "New"
+msgstr "Jauns"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Pievienot redaktora iestatījumus kā jaunu taimeri"
+
+msgid "Apply"
+msgstr "Lietot"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Saglabāt redaktora iestatījumus izvēlētajā taimerī"
+
+msgid "Delete the selected timer"
+msgstr "Dzēst izvēlēto taimeri"
+
+msgid "Enable/Disable"
+msgstr "Ieslēgt/Izslēgt"
+
+msgid "Switch the selected timer on or off"
+msgstr "Ieslēgt vai izslēgt izvēlēto taimeri"
+
+msgid "Save as default"
+msgstr "Saglabāt kā noklusējumu"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Izmantot šos formātus un papildu straumes jauniem taimeriem un manuāliem ierakstiem"
+
+msgid "Series title"
+msgstr "Seriāla nosaukums"
+
+msgid "Delete series rule"
+msgstr "Dzēst seriāla noteikumu"
+
+msgid "Series recordings"
+msgstr "Seriālu ieraksti"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Subtitri ietilpst TS vai MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Iestatījumos nav vēlamās audio valodas: tiek ierakstīts pirmais celiņš."
+
+msgid "File: {v0}"
+msgstr "Fails: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Nederīgs sākuma vai beigu laiks"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Izmantojiet HH:MM, piemēram, 20:15."
+
+msgid "No channel"
+msgstr "Nav kanāla"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Kreisajā sarakstā izvēlieties ierakstāmo kanālu."
+
+msgid "Recording defaults saved"
+msgstr "Ierakstīšanas noklusējumi saglabāti"
+
+msgid "Record with Options"
+msgstr "Ierakstīt ar opcijām"
+
+msgid "_Format"
+msgstr "_Formāts"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teletekstu un EPG datus var saglabāt tikai MPEG-TS, tāpēc tiek izmantots TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Vēlamā audio valoda: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Vizualizācija “{v0}” neizdevās: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} ir pārāk vecs"
+
+msgid "Playback error: "
+msgstr "Atskaņošanas kļūda: "
+
+msgid "All channels"
+msgstr "Visi kanāli"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Izlase (TV + radio)"
+
+msgid "Free to air"
+msgstr "Bezmaksas"
+
+msgid "Internet streams"
+msgstr "Interneta straumes"
+
+msgid "Fill (crop)"
+msgstr "Aizpildīt (apgriezt)"
+
+msgid "Fit"
+msgstr "Ietilpināt"
+
+msgid "Stretch"
+msgstr "Izstiept"
+
+msgid "Playback error: {m}"
+msgstr "Atskaņošanas kļūda: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Spraudņa darbība neizdevās: {e}"
+
+msgid "Open Media File…"
+msgstr "Atvērt multivides failu…"
+
+msgid "Open URL…"
+msgstr "Atvērt adresi…"
+
+msgid "Import Channel List…"
+msgstr "Importēt kanālu sarakstu…"
+
+msgid "Export Channel List…"
+msgstr "Eksportēt kanālu sarakstu…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Eksportēt programmu ceļvedi (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Pārslēgt TV / radio"
+
+msgid "Recordings"
+msgstr "Ieraksti"
+
+msgid "Programme Guide (EPG)"
+msgstr "Programmu ceļvedis (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Taimera ieraksti"
+
+msgid "Record with Options…"
+msgstr "Ierakstīt ar opcijām…"
+
+msgid "Teletext"
+msgstr "Teleteksts"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM izvēlne (CI modulis)…"
+
+msgid "Channel Search…"
+msgstr "Kanālu meklēšana…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I iestatīšana…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanālu redaktors / izlase"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Atjaunināt interneta EPG (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Sasaistīt IPTV kanālus ar XMLTV…"
+
+msgid "Audio Track"
+msgstr "Audio celiņš"
+
+msgid "Subtitles"
+msgstr "Subtitri"
+
+msgid "Play Rate"
+msgstr "Atskaņošanas ātrums"
+
+msgid "Back 10 s"
+msgstr "Atpakaļ 10 s"
+
+msgid "Forward 10 s"
+msgstr "Uz priekšu 10 s"
+
+msgid "Back 1 min"
+msgstr "Atpakaļ 1 min"
+
+msgid "Forward 1 min"
+msgstr "Uz priekšu 1 min"
+
+msgid "Back to Live"
+msgstr "Atpakaļ uz tiešraidi"
+
+msgid "Jump"
+msgstr "Pārlēkt"
+
+msgid "Previous"
+msgstr "Iepriekšējais"
+
+msgid "Random Order"
+msgstr "Nejauša secība"
+
+msgid "Endless Playback"
+msgstr "Bezgalīga atskaņošana"
+
+msgid "Playlist"
+msgstr "Atskaņošanas saraksts"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Saglabāt laika nobīdi kā ierakstu"
+
+msgid "Rebuild Playback"
+msgstr "Pārbūvēt atskaņošanu"
+
+msgid "Video Off (audio only)"
+msgstr "Video izslēgts (tikai skaņa)"
+
+msgid "Show Selected Channel"
+msgstr "Rādīt izvēlēto kanālu"
+
+msgid "Swap Pictures"
+msgstr "Samainīt attēlus"
+
+msgid "Picture in Picture"
+msgstr "Attēls attēlā"
+
+msgid "Channel Mosaic…"
+msgstr "Kanālu mozaīka…"
+
+msgid "Stop in {mins} min"
+msgstr "Apturēt pēc {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Apturēt pēc pašreizējā raidījuma"
+
+msgid "Sleep Timer"
+msgstr "Miega taimeris"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Skaņa vēlāk (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Skaņa agrāk (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Atiestatīt"
+
+msgid "Audio Delay (this channel)"
+msgstr "Skaņas aizture (šis kanāls)"
+
+msgid "Full Screen"
+msgstr "Pilnekrāns"
+
+msgid "Show/Hide Channel List"
+msgstr "Rādīt/slēpt kanālu sarakstu"
+
+msgid "Aspect / Zoom"
+msgstr "Malu attiecība / tālummaiņa"
+
+msgid "Window Size"
+msgstr "Loga izmērs"
+
+msgid "Picture Settings…"
+msgstr "Attēla iestatījumi…"
+
+msgid "Equalizer…"
+msgstr "Ekvalaizers…"
+
+msgid "Radio Visualisation"
+msgstr "Radio vizualizācija"
+
+msgid "Screenshot"
+msgstr "Ekrānuzņēmums"
+
+msgid "Plugins…"
+msgstr "Spraudņi…"
+
+msgid "About LinDVB"
+msgstr "Par LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Rādīt/slēpt kanālu sarakstu (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Galvenā izvēlne (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Programmu ceļvedis (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teleteksts (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Rādīt TV kanālus (Ctrl+M pārslēdz)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Rādīt radio stacijas (Ctrl+M pārslēdz)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Rādīt jūsu ierakstus (dubultklikšķis atskaņo)"
+
+msgid "Search name or number"
+msgstr "Meklēt nosaukumu vai numuru"
+
+msgid "All groups"
+msgstr "Visas grupas"
+
+msgid "Previous channel (Page Down)"
+msgstr "Iepriekšējais kanāls (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pauze / laika nobīde (atstarpe)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Apturēt (izslēgt kanālu)"
+
+msgid "Next channel (Page Up)"
+msgstr "Nākamais kanāls (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Ierakstīt pašreizējo kanālu (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Izvēlēties šī ieraksta formātu un celiņus"
+
+msgid "Seek"
+msgstr "Pozīcija"
+
+msgid "LIVE"
+msgstr "TIEŠRAIDE"
+
+msgid "Back to live (L)"
+msgstr "Atpakaļ uz tiešraidi (L)"
+
+msgid "Mute (M)"
+msgstr "Izslēgt skaņu (M)"
+
+msgid "Volume"
+msgstr "Skaļums"
+
+msgid "Audio track"
+msgstr "Audio celiņš"
+
+msgid "Playback and picture settings"
+msgstr "Atskaņošanas un attēla iestatījumi"
+
+msgid "Full screen (F)"
+msgstr "Pilnekrāns (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nTagad: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} no {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Rāda {n} no {total} ierakstiem"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Rāda {n} no {total} izlases vienumiem"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Rāda {n} no {total} radio stacijām"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Rāda {n} no {total} TV kanāliem"
+
+msgid "Add to Favourites"
+msgstr "Pievienot izlasei"
+
+msgid "Remove from Favourites"
+msgstr "Noņemt no izlases"
+
+msgid "Edit…"
+msgstr "Rediģēt…"
+
+msgid "Show as Picture in Picture"
+msgstr "Rādīt kā attēlu attēlā"
+
+msgid "Select a channel in the list first"
+msgstr "Vispirms izvēlieties kanālu sarakstā"
+
+msgid "By channel"
+msgstr "Pēc kanāla"
+
+msgid "By title"
+msgstr "Pēc nosaukuma"
+
+msgid "Newest first"
+msgstr "Jaunākie vispirms"
+
+msgid "Oldest first"
+msgstr "Vecākie vispirms"
+
+msgid "Largest first"
+msgstr "Lielākie vispirms"
+
+msgid "Sort the recordings"
+msgstr "Kārtot ierakstus"
+
+msgid "Open the recording folder"
+msgstr "Atvērt ierakstu mapi"
+
+msgid "Look for new recordings"
+msgstr "Meklēt jaunus ierakstus"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Ierakstu vēl nav.\n\nIeraksti tiek saglabāti mapē\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Iestatījumos nav norādīta ierakstu mape."
+
+msgid "Recording in progress"
+msgstr "Notiek ierakstīšana"
+
+msgid "Watched"
+msgstr "Noskatīts"
+
+msgid "Watched up to {pos}"
+msgstr "Noskatīts līdz {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Ieraksts nav atrasts: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Turpina no {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Mape nav atrasta: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Nevar atvērt {folder}: {message}"
+
+msgid "Play"
+msgstr "Atskaņot"
+
+msgid "Play from the Beginning"
+msgstr "Atskaņot no sākuma"
+
+msgid "Details…"
+msgstr "Sīkāk…"
+
+msgid "Mark as Unwatched"
+msgstr "Atzīmēt kā neskatītu"
+
+msgid "Mark as Watched"
+msgstr "Atzīmēt kā skatītu"
+
+msgid "Show in Folder"
+msgstr "Rādīt mapē"
+
+msgid "Delete…"
+msgstr "Dzēst…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Pirms dzēšanas apturiet ierakstīšanu"
+
+msgid "Delete “{title}”?"
+msgstr "Dzēst “{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nFails tiks noņemts no diska."
+
+msgid "Deleted {name}"
+msgstr "{name} izdzēsts"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Nevar izdzēst {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Noskaņo {name}…"
+
+msgid "Search recordings"
+msgstr "Meklēt ierakstos"
+
+msgid "No radio stations in the channel list"
+msgstr "Kanālu sarakstā nav radio staciju"
+
+msgid "No TV channels in the channel list"
+msgstr "Kanālu sarakstā nav TV kanālu"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – pārslēgts uz {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} pašlaik neraida"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Tiešraides TV apturēta: uztvērējs vajadzīgs taimera ierakstam"
+
+msgid "Stopped"
+msgstr "Apturēts"
+
+msgid "Sound {ms} ms later"
+msgstr "Skaņa par {ms} ms vēlāk"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Skaņa par {v0} ms agrāk"
+
+msgid "Audio delay off"
+msgstr "Skaņas aizture izslēgta"
+
+msgid "Playing {item}"
+msgstr "Atskaņo {item}"
+
+msgid "Open media files"
+msgstr "Atvērt multivides failus"
+
+msgid "Open URL"
+msgstr "Atvērt adresi"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Atvērt"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importēt kanālu sarakstu (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Nevarēja importēt {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importēti jauni kanāli: {total_a}, atjaunināti: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Eksportēt kanālus (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Eksportēts uz {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Eksportēt programmu ceļvedi (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Nevar ierakstīt {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Nav ko ierakstīt"
+
+msgid "This channel is already being recorded"
+msgstr "Šis kanāls jau tiek ierakstīts"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teleteksts: trūkst dekodera (gst-plugins-bad ar libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teleteksts: šajā kanālā nav pieejams"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teletekstam vajadzīgs DVB kanāls"
+
+msgid "Volume {v0}%"
+msgstr "Skaļums {v0}%"
+
+msgid "Off"
+msgstr "Izslēgts"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Slēptie subtitri (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Valodas: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Audio celiņi: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Ekrānuzņēmums saglabāts: {path}"
+
+msgid "Screenshot failed"
+msgstr "Ekrānuzņēmums neizdevās"
+
+msgid "Picture Settings"
+msgstr "Attēla iestatījumi"
+
+msgid "Restore Defaults"
+msgstr "Atjaunot noklusējumus"
+
+msgid "Equalizer"
+msgstr "Ekvalaizers"
+
+msgid "Leave full screen (F)"
+msgstr "Iziet no pilnekrāna (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Vizualizācija neizdevās: {e}"
+
+msgid "Radio visualisation"
+msgstr "Radio vizualizācija"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Radio vizualizācija (tikai radio un audio)"
+
+msgid "Playback stops at {v0}"
+msgstr "Atskaņošana apstāsies plkst. {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Miega taimerim nav raidījuma informācijas"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Miega taimeris: atskaņošana apturēta"
+
+msgid "No programme information"
+msgstr "Nav raidījuma informācijas"
+
+msgid "Next: {v0}  {title}"
+msgstr "Pēc tam: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signāls {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Tiešraide"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Laika nobīde −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Skatieties un ierakstiet DVB-S/S2, DVB-C, DVB-T/T2, ATSC un interneta TV ar Linux DVB API un GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Sasaistīt IPTV kanālus ar XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV ceļvedis vēl nav ielādēts. Iestatiet XMLTV adresi EPG iestatījumos un vispirms lejupielādējiet ceļvedi; sasaiste sāksies automātiski pēc lejupielādes."
+
+msgid "Download XMLTV guide now"
+msgstr "Lejupielādēt XMLTV ceļvedi tagad"
+
+msgid "Only channels without guide"
+msgstr "Tikai kanāli bez ceļveža"
+
+msgid "Match"
+msgstr "Sasaiste"
+
+msgid "Guide channel:"
+msgstr "Ceļveža kanāls:"
+
+msgid "Assign"
+msgstr "Piešķirt"
+
+msgid "Suggest"
+msgstr "Ieteikt"
+
+msgid "Auto-match all"
+msgstr "Sasaistīt visu automātiski"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Sasaistīt katru kanālu, kas nav piešķirts manuāli"
+
+msgid "Reset to automatic"
+msgstr "Atiestatīt uz automātisko"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Ļaut automātiskajai sasaistei atkal izlemt izvēlētajam kanālam"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Ceļveža kanāls ir {done} no {v1} kanāliem"
+
+msgid "No suggestion for {name}"
+msgstr "Nav ieteikuma kanālam {name}"

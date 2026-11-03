@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: mt\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importa lista ta' stazzjonijiet (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Ibda b'dan l-istazzjon (isem jew numru)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} fil-{time}"
+
+msgid "Watch"
+msgstr "Ara"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Tfakkira: {title} fuq {channel} fil-{time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "L-ewwel issettja indirizz XMLTV fil-preferenzi"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Qed titniżżel il-gwida XMLTV…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} mingħajr gwida (TV ▸ Qabbel l-istazzjonijiet IPTV mal-XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: qed titgħabba l-lista tas-servizzi…"
+
+msgid "Search the web"
+msgstr "Fittex fuq il-web"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Sottotitoli (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Data tal-EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Il-binarji tal-awdjo kollha"
+
+msgid "Preferred language only"
+msgstr "Il-lingwa ppreferuta biss"
+
+msgid "First audio track only"
+msgstr "L-ewwel binarju tal-awdjo biss"
+
+msgid "Record"
+msgstr "Irrekordja"
+
+msgid "Record and tune"
+msgstr "Irrekordja u aqleb"
+
+msgid "Tune only"
+msgstr "Aqleb biss"
+
+msgid "Hibernate"
+msgstr "Ibernazzjoni"
+
+msgid "None"
+msgstr "Xejn"
+
+msgid "Power off"
+msgstr "Itfi"
+
+msgid "Quit LinDVB"
+msgstr "Oħroġ minn LinDVB"
+
+msgid "Standby"
+msgstr "Standby"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Il-flussi tal-internet m'għandhomx teletext, sottotitoli jew data tal-EPG."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "L-MP4 iżomm binarju tal-awdjo wieħed (il-lingwa ppreferuta meta tixxandar)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Il-fajl tal-awdjo jżomm binarju wieħed (il-lingwa ppreferuta meta tixxandar)."
+
+msgid "Fr"
+msgstr "Ġi"
+
+msgid "Mo"
+msgstr "Tn"
+
+msgid "Sa"
+msgstr "Si"
+
+msgid "Su"
+msgstr "Ħd"
+
+msgid "Th"
+msgstr "Ħa"
+
+msgid "Tu"
+msgstr "Tl"
+
+msgid "We"
+msgstr "Er"
+
+msgid "Scheduled"
+msgstr "Skedat"
+
+msgid "Done"
+msgstr "Lest"
+
+msgid "Channel missing"
+msgstr "L-istazzjon nieqes"
+
+msgid "Tuned"
+msgstr "Inqaleb"
+
+msgid "Recording"
+msgstr "Qed jirrekordja"
+
+msgid "Failed"
+msgstr "Falla"
+
+msgid "Missed"
+msgstr "Mitluf"
+
+msgid "After recording: {action}"
+msgstr "Wara r-reġistrazzjoni: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Il-modulu tneħħa jew ġie rrisettjat."
+
+msgid "CAM Menu"
+msgstr "Menu CAM"
+
+msgid "Cancel"
+msgstr "Ikkanċella"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Iftaħ il-menu CAM"
+
+msgid "Select"
+msgstr "Agħżel"
+
+msgid "Back"
+msgstr "Lura"
+
+msgid "Close Menu"
+msgstr "Agħlaq il-menu"
+
+msgid "Device: {path} – {state}"
+msgstr "Apparat: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Iftaħ il-menu CAM biex tara s-settings tal-modulu, it-tagħrif tal-karta intelliġenti u l-kontroll tal-ġenituri."
+
+msgid "The module has not finished starting yet."
+msgstr "Il-modulu għadu ma spiċċax jibda."
+
+msgid "Custom colour"
+msgstr "Kulur personalizzat"
+
+msgid "LinDVB blue (default)"
+msgstr "Blu ta' LinDVB (default)"
+
+msgid "System accent colour"
+msgstr "Kulur tal-enfasi tas-sistema"
+
+msgid "Preferences"
+msgstr "Preferenzi"
+
+msgid "Save"
+msgstr "Issejvja"
+
+msgid "Appearance"
+msgstr "Dehra"
+
+msgid "Language"
+msgstr "Lingwa"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Jidħol fis-seħħ meta LinDVB jerġa' jinbeda."
+
+msgid "Accent colour"
+msgstr "Kulur tal-enfasi"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Jintuża għall-enfasi, l-għażliet u l-buttuni f'kull tieqa."
+
+msgid "On-screen display"
+msgstr "Wiri fuq l-iskrin"
+
+msgid "OSD display time (s)"
+msgstr "Ħin tal-wiri tal-OSD (s)"
+
+msgid "Visualisation"
+msgstr "Viżwalizzazzjoni"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "X'jintwera fuq il-viżwalizzazzjoni tar-radju waqt li jdoqq stazzjon tar-radju jew fajl tal-awdjo. Id-dettalji tal-kanzunetta ġejjin mir-RadioText tar-radju DVB, mit-titlu tal-fluss tar-radju tal-internet u mit-tags tal-fajls tal-awdjo."
+
+msgid "Overlay"
+msgstr "Saff fuq"
+
+msgid "Station logo tile"
+msgstr "Madum bil-logo tal-istazzjon"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Il-logo tal-istazzjon, jew madum bl-isem tal-istazzjon jekk ma jkunx hemm."
+
+msgid "Album cover"
+msgstr "Qoxra tal-album"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Il-qoxra tal-kanzunetta li qed iddoqq, mill-fajl jew imfittxija online."
+
+msgid "Song information"
+msgstr "Tagħrif dwar il-kanzunetta"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Artist, album u sena, binarju u titlu. Mingħajr dettalji tal-kanzunetta jintwerew l-istazzjon u l-programm fuq l-arja."
+
+msgid "Clock in the top right corner"
+msgstr "Arloġġ fil-kantuniera ta' fuq fuq il-lemin"
+
+msgid "Sources"
+msgstr "Sorsi"
+
+msgid "Look up covers online"
+msgstr "Fittex il-qoxriet online"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Jibgħat l-artist u t-titlu tal-kanzunetta li qed iddoqq lill-iTunes Search API biex isib l-album, is-sena u l-qoxra."
+
+msgid "Station logo folder"
+msgstr "Folder tal-logos tal-istazzjonijiet"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Fajls tal-istampi (PNG, SVG, JPG) imsemmija għall-istazzjon, eż. “Bayern 3.png”. Logos imsemmija għall-istazzjon, kif iżommhom DVBViewer, jaħdmu kif inhuma. Vojt: {v0}"
+
+msgid "Playback"
+msgstr "Riproduzzjoni"
+
+msgid "Deinterlace video"
+msgstr "Neħħi l-interlacing tal-vidjo"
+
+msgid "Screenshot folder"
+msgstr "Folder tal-istampi tal-iskrin"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Folder tat-timeshift"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Buffer tat-timeshift (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner u LNB"
+
+msgid "DVB hardware"
+msgstr "Hardware DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "In-numri tal-adapters li LinDVB jista' juża, separati b'virgola."
+
+msgid "DVB adapters"
+msgstr "Adapters DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Aqbad it-transponder kollu"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Meħtieġ għall-binarji tal-awdjo kollha meta l-lista tal-istazzjonijiet taf PID tal-awdjo wieħed biss."
+
+msgid "Satellite LNB"
+msgstr "LNB tas-satellita"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF faxxa baxxa (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF faxxa għolja (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Frekwenza tal-qlib (kHz)"
+
+msgid "Recording folder"
+msgstr "Folder tar-reġistrazzjonijiet"
+
+msgid "File naming scheme"
+msgstr "Skema tal-ismijiet tal-fajls"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Placeholders: %year %date %time %end %station %name, / għas-sottofolders"
+
+msgid "Timer padding"
+msgstr "Marġini tat-timers"
+
+msgid "Start earlier by (min)"
+msgstr "Ibda qabel b' (min)"
+
+msgid "Stop later by (min)"
+msgstr "Waqqaf wara b' (min)"
+
+msgid "Timers"
+msgstr "Timers"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Iftaħ it-tieqa tat-timers wara li toħloq timer"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Wara “Irrekordja” fil-gwida, editja t-timer il-ġdid minnufih."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Gwida tal-programmi: EPG imxandar, EPG tal-internet (XMLTV) u l-EPG ta' fornituri oħra."
+
+msgid "Conditional access"
+msgstr "Aċċess kundizzjonali"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Dekodifikazzjoni tal-istazzjonijiet kriptati li inti abbonat fihom, bil-karta tiegħek f'softcam jew modulu CI."
+
+msgid "None (leave scrambled)"
+msgstr "Xejn (ħallih kriptat)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Softcam estern (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Modulu CI / CI+ tal-hardware"
+
+msgid "Descrambling via"
+msgstr "Iddekodifika permezz ta'"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Socket DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Mogħdija tas-socket Unix, jew host:port."
+
+msgid "CI module"
+msgstr "Modulu CI"
+
+msgid "CI adapter number"
+msgstr "Numru tal-adapter CI"
+
+msgid "CA device number"
+msgstr "Numru tal-apparat CA"
+
+msgid "Plugins"
+msgstr "Plugins"
+
+msgid "Load plugins at startup"
+msgstr "Għabbi l-plugins meta jibda"
+
+msgid "Manage Plugins…"
+msgstr "Immaniġġja l-plugins…"
+
+msgid "Format and tracks"
+msgstr "Format u binarji"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Defaults għal timers ġodda u għall-buttuna Irrekordja. Kull timer, u reġistrazzjoni mibdija b'“Irrekordja b'għażliet…”, jista' jibdilhom.\nTS: vidjo, il-binarji tal-awdjo kollha, sottotitoli, teletext u data tal-EPG. MKV: vidjo, diversi binarji tal-awdjo u sottotitoli. MPG: vidjo u diversi binarji tal-awdjo. MP4: vidjo u binarju tal-awdjo wieħed. Il-flussi tal-internet m'għandhomx teletext, sottotitoli jew data tal-EPG; il-flussi HLS u DASH jiġu rreġistrati b'binarju tal-awdjo wieħed."
+
+msgid "TV format"
+msgstr "Format tat-TV"
+
+msgid "Radio format"
+msgstr "Format tar-radju"
+
+msgid "Audio tracks"
+msgstr "Binarji tal-awdjo"
+
+msgid "Preferred audio language"
+msgstr "Lingwa tal-awdjo ppreferuta"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Tintuża minn “Il-lingwa ppreferuta biss” u mill-MP4, li jżomm binarju wieħed. Il-binarji b'deskrizzjoni awdjo jinqabżu. Mingħajr qbil jiġi rreġistrat l-ewwel binarju."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} jistgħu jinżammu biss f'MPEG-TS, għalhekk ir-reġistrazzjonijiet jiġu ssejvjati bħala TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} jistgħu jinżammu biss f'TS jew MKV, għalhekk ir-reġistrazzjonijiet jiġu ssejvjati bħala TS."
+
+msgid " and "
+msgstr " u "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Ma hemm l-ebda lingwa tal-awdjo ppreferuta, għalhekk jiġi rreġistrat l-ewwel binarju tal-awdjo biss."
+
+msgid "Desktop accent: {found}"
+msgstr "Enfasi tad-desktop: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Ma nstabet l-ebda enfasi tad-desktop, qed jintuża l-blu ta' LinDVB."
+
+msgid "Current accent: {color}"
+msgstr "Enfasi attwali: {color}"
+
+msgid "Channel Editor"
+msgstr "Editur tal-istazzjonijiet"
+
+msgid "Name"
+msgstr "Isem"
+
+msgid "Category"
+msgstr "Kategorija"
+
+msgid "Group"
+msgstr "Grupp"
+
+msgid "Fav"
+msgstr "Fav"
+
+msgid "Type"
+msgstr "Tip"
+
+msgid "Filter channels"
+msgstr "Iffiltra l-istazzjonijiet"
+
+msgid "General"
+msgstr "Ġenerali"
+
+msgid "Stream URL"
+msgstr "Indirizz tal-fluss"
+
+msgid "Favourite"
+msgstr "Favorit"
+
+msgid "Radio"
+msgstr "Radju"
+
+msgid "Encrypted"
+msgstr "Kriptat"
+
+msgid "Tuning"
+msgstr "Sintonizzazzjoni"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Polarity"
+msgstr "Polarità"
+
+msgid "Modulation"
+msgstr "Modulazzjoni"
+
+msgid "Frequency (kHz)"
+msgstr "Frekwenza (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Rata tas-simboli (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Wisa' tal-banda (Hz)"
+
+msgid "Stream ID"
+msgstr "ID tal-fluss"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Port DiSEqC (-1 xejn)"
+
+msgid "Service and PIDs"
+msgstr "Servizz u PIDs"
+
+msgid "Service ID"
+msgstr "ID tas-servizz"
+
+msgid "Transport ID"
+msgstr "ID tat-trasport"
+
+msgid "Video PID"
+msgstr "PID tal-vidjo"
+
+msgid "Audio PIDs"
+msgstr "PIDs tal-awdjo"
+
+msgid "Teletext PID"
+msgstr "PID tat-teletext"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Applika l-bidliet (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Stazzjon ġdid"
+
+msgid "Delete channel"
+msgstr "Ħassar l-istazzjon"
+
+msgid "Move up"
+msgstr "Ċaqlaq 'il fuq"
+
+msgid "Move down"
+msgstr "Ċaqlaq 'l isfel"
+
+msgid "Sort by group and name"
+msgstr "Issortja skont il-grupp u l-isem"
+
+msgid "No channel selected"
+msgstr "L-ebda stazzjon magħżul"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Agħżel stazzjon mil-lista biex teditjah."
+
+msgid "Unnamed channel"
+msgstr "Stazzjon mingħajr isem"
+
+msgid "Recording and Device Statistics"
+msgstr "Statistika tar-reġistrazzjoni u tal-apparat"
+
+msgid "Active recordings:"
+msgstr "Reġistrazzjonijiet attivi:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nIt-timer li jmiss: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletext – {name}"
+
+msgid "Find on page"
+msgstr "Sib fil-paġna"
+
+msgid "Copy page"
+msgstr "Ikkopja l-paġna"
+
+msgid "Save page"
+msgstr "Issejvja l-paġna"
+
+msgid "Waiting for teletext…"
+msgstr "Qed nistennew it-teletext…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec nieqes (gst-plugins-bad b'libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Qed tiġi mfittxija l-paġna {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "L-ebda dekodifikazzjoni ma ġiet issettjata. L-istazzjonijiet kriptati li għandek dritt għalihom jistgħu jiġu dekodifikati billi tindika lil LinDVB is-softcam jew il-modulu CI tiegħek fil-preferenzi."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Il-fornitur “{v0}” mhuwiex disponibbli."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Fornitur: modulu CI – {status}\nIl-modulu jiddekodifika bil-karta tiegħek ġewwa t-tuner."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Fornitur: {name}\nLinDVB jgħaddi s-sezzjonijiet ECM lill-klijent tal-karta tiegħek u japplika l-kliem tal-kontroll li jirritorna; huwa nnifsu ma jżomm l-ebda ċavetta."
+
+msgid "Open CAM Menu…"
+msgstr "Iftaħ il-menu CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "It-tagħbija falliet: {v0}"
+
+msgid "Switched off"
+msgstr "Mitfi"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Il-bidliet jidħlu fis-seħħ meta LinDVB jerġa' jinbeda."
+
+msgid "No plugins installed."
+msgstr "L-ebda plugin installat."
+
+msgid "Plugin actions"
+msgstr "Azzjonijiet tal-plugins"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Folders tal-plugins: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "Konfigurazzjoni DVB-I"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I jieħu mill-internet il-lista tal-istazzjonijiet tar-reġjun tiegħek: numerazzjoni, ismijiet u logos, u għal kull stazzjon il-modi kif tirċevih. LinDVB juża fejn jista' l-istazzjonijiet tal-antenna, tal-kejbil jew tas-satellita mit-tfittxija tiegħek u inkella l-fluss tal-internet."
+
+msgid "Privacy"
+msgstr "Privatezza"
+
+msgid "I have read the privacy notice"
+msgstr "Qrajt l-avviż ta' privatezza"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Għabbi l-gwida tal-programmi (EPG) tal-istazzjonijiet DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Aqleb għal mod ieħor ta' riċezzjoni (internet, antenna, kejbil, satellita) meta wieħed jonqos"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Issintonizza l-istazzjonijiet tas-satellita mil-lista mingħajr tfittxija (jeħtieġ stazzjonijiet tas-satellita fil-lista tiegħek)"
+
+msgid "Service list"
+msgstr "Lista tas-servizzi"
+
+msgid "Load Lists from Registry"
+msgstr "Għabbi l-listi mir-reġistru"
+
+msgid "In use: {current}"
+msgstr "Qed tintuża: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "L-ebda lista DVB-I għadha qed tintuża."
+
+msgid "Region"
+msgstr "Reġjun"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Il-kodiċi postali tiegħek jagħżel l-istazzjonijiet reġjonali u n-numerazzjoni tagħhom. Jintbagħat biss lis-server tal-lista tas-servizzi."
+
+msgid "Postcode"
+msgstr "Kodiċi postali"
+
+msgid "No postcode: nationwide list"
+msgstr "L-ebda kodiċi postali: lista nazzjonali"
+
+msgid "Remove DVB-I Channels"
+msgstr "Neħħi l-istazzjonijiet DVB-I"
+
+msgid "Update Now"
+msgstr "Aġġorna issa"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Erġa' għabbi l-lista magħżula (tiġi ċċekkjata wkoll kuljum)"
+
+msgid "Install Channel List"
+msgstr "Installa l-lista tal-istazzjonijiet"
+
+msgid "Close"
+msgstr "Agħlaq"
+
+msgid "Asking the service list registry…"
+msgstr "Qed jiġi mistoqsi r-reġistru tal-listi tas-servizzi…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Ir-reġistru ma setax jintlaħaq: {error}"
+
+msgid "Default"
+msgstr "Default"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Listi tas-servizzi minn {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Ir-reġistru ma joffri l-ebda lista tas-servizzi għall-Ġermanja."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Daħħal kodiċi postali ta' ħames ċifri"
+
+msgid "Loading the service list…"
+msgstr "Qed titgħabba l-lista tas-servizzi…"
+
+msgid "In use: {v0}"
+msgstr "Qed tintuża: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nAgħżel ir-reġjun tiegħek u erġa' agħfas Installa."
+
+msgid "Enter Again"
+msgstr "Erġa' daħħal"
+
+msgid "The service list does not know this postcode."
+msgstr "Il-lista tas-servizzi ma tafx dan il-kodiċi postali."
+
+msgid "The service list server answered {code}."
+msgstr "Is-server tal-lista tas-servizzi wieġeb {code}."
+
+msgid "Try Again"
+msgstr "Erġa' pprova"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Tista' terġa' tipprova jew tuża l-lista nazzjonali mingħajr kodiċi postali."
+
+msgid "Nationwide List"
+msgstr "Lista nazzjonali"
+
+msgid "No DVB-I list is in use."
+msgstr "L-ebda lista DVB-I mhi qed tintuża."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Stazzjonijiet DVB-I mneħħija: {removed}"
+
+msgid "All programmes"
+msgstr "Il-programmi kollha"
+
+msgid "With audio description"
+msgstr "B'deskrizzjoni awdjo"
+
+msgid "With subtitles"
+msgstr "B'sottotitoli"
+
+msgid "Programme Guide"
+msgstr "Gwida tal-programmi"
+
+msgid "Now / Next"
+msgstr "Issa / Wara"
+
+msgid "Per Channel"
+msgstr "Skont l-istazzjon"
+
+msgid "TV Guide"
+msgstr "Gwida tat-TV"
+
+msgid "Search"
+msgstr "Fittex"
+
+msgid "Record Series"
+msgstr "Irrekordja s-serje"
+
+msgid "Remind Me"
+msgstr "Fakkarni"
+
+msgid "Search Web"
+msgstr "Fittex fuq il-web"
+
+msgid "Export the guide as XMLTV"
+msgstr "Esporta l-gwida bħala XMLTV"
+
+msgid "Next"
+msgstr "Wara"
+
+msgid "Now"
+msgstr "Issa"
+
+msgid "Only favourites"
+msgstr "Favoriti biss"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Aċċessibbiltà (gwida tal-programmi DVB-I)"
+
+msgid "Show:"
+msgstr "Uri:"
+
+msgid "Channel"
+msgstr "Stazzjon"
+
+msgid "Start"
+msgstr "Bidu"
+
+msgid "End"
+msgstr "Tmiem"
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Genre"
+msgstr "Ġeneru"
+
+msgid "Day"
+msgstr "Jum"
+
+msgid "Duration"
+msgstr "Tul"
+
+msgid "Subheading"
+msgstr "Sottotitlu"
+
+msgid "Title or description"
+msgstr "Titlu jew deskrizzjoni"
+
+msgid "Include description"
+msgstr "Inkludi d-deskrizzjoni"
+
+msgid "Case sensitive"
+msgstr "Sensittiv għall-ittri kbar"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Reġistrazzjoni tas-serje: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Tfakkira mneħħija: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} diġà beda"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Tfakkira ssettjata: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Neħħi t-tfakkira"
+
+msgid "Save EPG data"
+msgstr "Issejvja d-data tal-EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Iżomm il-gwida fuq id-diska wara li LinDVB jingħalaq."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Uri t-tagħrif tal-EPG meta tibdel l-istazzjon (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = turix."
+
+msgid "Remind before start (min)"
+msgstr "Fakkar qabel il-bidu (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "It-tfakkiriet issettjati fil-gwida javżawk daqshekk kmieni."
+
+msgid "Preferred language"
+msgstr "Lingwa ppreferuta"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Tintuża meta programm jixxandar f'diversi lingwi."
+
+msgid "Time zone"
+msgstr "Żona tal-ħin"
+
+msgid "Set time zone automatically"
+msgstr "Issettja ż-żona tal-ħin awtomatikament"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Mitfi: uża differenza fissa mill-GMT għall-gwida, it-timers u l-arloġġ."
+
+msgid "Offset to GMT"
+msgstr "Differenza mill-GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG tal-internet (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Sors tal-EPG tal-internet, użat flimkien mal-EPG imxandar."
+
+msgid "Match IPTV Channels…"
+msgstr "Qabbel l-istazzjonijiet IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Iċċekkja jew ikkoreġi liema stazzjon tal-gwida jappartjeni għal liema stazzjon M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Frekwenzi MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Meta stazzjon sintonizzat ikun fuq wieħed minn dawn it-transponders, LinDVB jaqra wkoll l-EPG ta' dak il-fornitur. Il-bidliet japplikaw id-darba li jmiss li jiġi sintonizzat stazzjon."
+
+msgid "Frequency (MHz)"
+msgstr "Frekwenza (MHz)"
+
+msgid "Add"
+msgstr "Żid"
+
+msgid "Polarisation"
+msgstr "Polarizzazzjoni"
+
+msgid "Defaults"
+msgstr "Defaults"
+
+msgid "Delete"
+msgstr "Ħassar"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Daħħal il-frekwenza tat-transponder f'MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "It-tfittxija tal-qoxra falliet: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Ibdel mal-istampa ewlenija"
+
+msgid "Close picture in picture"
+msgstr "Agħlaq stampa fi stampa"
+
+msgid "Picture in picture: {error}"
+msgstr "Stampa fi stampa: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Stampa fi stampa taħdem mal-istazzjonijiet tal-internet; l-istazzjonijiet DVB jeħtieġu tuner ieħor."
+
+msgid "Channel Mosaic"
+msgstr "Mużajk tal-istazzjonijiet"
+
+msgid "Previous channels"
+msgstr "Stazzjonijiet preċedenti"
+
+msgid "Next channels"
+msgstr "Stazzjonijiet li jmiss"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Il-mużajk juri stazzjonijiet tal-internet. Il-lista m'għandha l-ebda wieħed fil-veduta attwali."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Paġna {page} minn {pages} · stazzjonijiet tal-internet: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Ikklikkja biex tara {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universali (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Estiż"
+
+msgid "None / not satellite"
+msgstr "Xejn / mhux satellita"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frekwenza"
+
+msgid "Initial letter"
+msgstr "Ittra inizjali"
+
+msgid "Provider"
+msgstr "Fornitur"
+
+msgid "Channel Search"
+msgstr "Tfittxija tal-istazzjonijiet"
+
+msgid "Device"
+msgstr "Apparat"
+
+msgid "(choose…)"
+msgstr "(agħżel…)"
+
+msgid "Add folder…"
+msgstr "Żid folder…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Folder b'listi ta' transponders (dtv-scan-tables jew .ini stil DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Lista tat-transponders"
+
+msgid "LNB type"
+msgstr "Tip ta' LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Grupp fil-mira"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "eż. Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Fittex frekwenzi addizzjonali (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Żid biss stazzjonijiet b'xejn"
+
+msgid "Only update existing channels"
+msgstr "Aġġorna biss l-istazzjonijiet eżistenti"
+
+msgid "Update channel names"
+msgstr "Aġġorna l-ismijiet tal-istazzjonijiet"
+
+msgid "Group by"
+msgstr "Iġbor skont"
+
+msgid "Start Search"
+msgstr "Ibda t-tfittxija"
+
+msgid "Stop"
+msgstr "Waqqaf"
+
+msgid "Folder with transponder lists"
+msgstr "Folder b'listi ta' transponders"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "L-ebda lista tat-transponders magħżula. Installa dtv-scan-tables jew żid folder.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nMa nstab l-ebda stazzjon.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nLest: {added} stazzjonijiet ġodda, {updated} aġġornati.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Timers tar-reġistrazzjoni"
+
+msgid "Search channels"
+msgstr "Fittex stazzjonijiet"
+
+msgid "  (Radio)"
+msgstr "  (Radju)"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Repeat"
+msgstr "Irrepeti"
+
+msgid "Once"
+msgstr "Darba"
+
+msgid "Series"
+msgstr "Serje"
+
+msgid "Action"
+msgstr "Azzjoni"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "After"
+msgstr "Wara"
+
+msgid "Disabled"
+msgstr "Diżattivat"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Repeat every {day}"
+msgstr "Irrepeti kull {day}"
+
+msgid "_Date"
+msgstr "_Data"
+
+msgid "_Lead (min)"
+msgstr "_Qabel (min)"
+
+msgid "_End"
+msgstr "_Tmiem"
+
+msgid "_Start"
+msgstr "_Bidu"
+
+msgid "Repeat on"
+msgstr "Irrepeti nhar"
+
+msgid "_Follow (min)"
+msgstr "_Wara (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Agħżel stazzjon fuq ix-xellug"
+
+msgid "_Name"
+msgstr "_Isem"
+
+msgid "_Timer action"
+msgstr "Azzjoni tat-_timer"
+
+msgid "_After recording"
+msgstr "Wara r-_reġistrazzjoni"
+
+msgid "T_V format"
+msgstr "Format tat-T_V"
+
+msgid "_Radio format"
+msgstr "Format tar-_radju"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Il-lingwa ppreferuta biss: il-binarji fil-lingwa tal-awdjo mill-preferenzi, mingħajr deskrizzjoni awdjo. L-MP4 u l-fajl tal-awdjo tar-radju jżommu binarju wieħed."
+
+msgid "Audi_o tracks"
+msgstr "Binarji tal-awdj_o"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "It-teletext jeżisti biss f'MPEG-TS, għalhekk jintuża TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Id-data tal-EPG (EIT) teżisti biss f'MPEG-TS, għalhekk jintuża TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS iżomm il-flussi kollha tas-sottotitoli. MKV jieħu l-paġna tas-sottotitoli tat-teletext bħala binarju tat-test; is-sottotitoli bitmap DVB jinżammu biss f'TS."
+
+msgid "Tracks"
+msgstr "Binarji"
+
+msgid "File _naming scheme"
+msgstr "Skema tal-_ismijiet tal-fajls"
+
+msgid "Folder…"
+msgstr "Folder…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Uża l-folder tar-reġistrazzjonijiet mill-preferenzi"
+
+msgid "Placeholders"
+msgstr "Placeholders"
+
+msgid "Folder: "
+msgstr "Folder: "
+
+msgid "Clear the editor"
+msgstr "Naddaf l-editur"
+
+msgid "New"
+msgstr "Ġdid"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Żid is-settings tal-editur bħala timer ġdid"
+
+msgid "Apply"
+msgstr "Applika"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Issejvja s-settings tal-editur fit-timer magħżul"
+
+msgid "Delete the selected timer"
+msgstr "Ħassar it-timer magħżul"
+
+msgid "Enable/Disable"
+msgstr "Attiva/Iddiżattiva"
+
+msgid "Switch the selected timer on or off"
+msgstr "Ixgħel jew itfi t-timer magħżul"
+
+msgid "Save as default"
+msgstr "Issejvja bħala default"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Uża dawn il-formati u l-flussi żejda għal timers ġodda u reġistrazzjonijiet manwali"
+
+msgid "Series title"
+msgstr "Titlu tas-serje"
+
+msgid "Delete series rule"
+msgstr "Ħassar ir-regola tas-serje"
+
+msgid "Series recordings"
+msgstr "Reġistrazzjonijiet tas-serje"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Is-sottotitoli joqogħdu f'TS jew MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "L-ebda lingwa tal-awdjo ppreferuta fil-preferenzi: jiġi rreġistrat l-ewwel binarju."
+
+msgid "File: {v0}"
+msgstr "Fajl: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Ħin tal-bidu jew tat-tmiem mhux validu"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Uża HH:MM, pereżempju 20:15."
+
+msgid "No channel"
+msgstr "L-ebda stazzjon"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Agħżel l-istazzjon li trid tirrekordja mil-lista fuq ix-xellug."
+
+msgid "Recording defaults saved"
+msgstr "Id-defaults tar-reġistrazzjoni ġew issejvjati"
+
+msgid "Record with Options"
+msgstr "Irrekordja b'għażliet"
+
+msgid "_Format"
+msgstr "_Format"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "It-teletext u d-data tal-EPG jistgħu jinżammu biss f'MPEG-TS, għalhekk jintuża TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Lingwa tal-awdjo ppreferuta: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Il-viżwalizzazzjoni “{v0}” falliet: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} huwa antik wisq"
+
+msgid "Playback error: "
+msgstr "Żball fir-riproduzzjoni: "
+
+msgid "All channels"
+msgstr "L-istazzjonijiet kollha"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Favoriti (TV + radju)"
+
+msgid "Free to air"
+msgstr "B'xejn"
+
+msgid "Internet streams"
+msgstr "Flussi tal-internet"
+
+msgid "Fill (crop)"
+msgstr "Imla (aqta')"
+
+msgid "Fit"
+msgstr "Daħħal"
+
+msgid "Stretch"
+msgstr "Iġbed"
+
+msgid "Playback error: {m}"
+msgstr "Żball fir-riproduzzjoni: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "L-azzjoni tal-plugin falliet: {e}"
+
+msgid "Open Media File…"
+msgstr "Iftaħ fajl tal-midja…"
+
+msgid "Open URL…"
+msgstr "Iftaħ indirizz…"
+
+msgid "Import Channel List…"
+msgstr "Importa l-lista tal-istazzjonijiet…"
+
+msgid "Export Channel List…"
+msgstr "Esporta l-lista tal-istazzjonijiet…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Esporta l-gwida tal-programmi (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Aqleb TV / radju"
+
+msgid "Recordings"
+msgstr "Reġistrazzjonijiet"
+
+msgid "Programme Guide (EPG)"
+msgstr "Gwida tal-programmi (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Reġistrazzjonijiet bit-timer"
+
+msgid "Record with Options…"
+msgstr "Irrekordja b'għażliet…"
+
+msgid "Teletext"
+msgstr "Teletext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Menu CAM (modulu CI)…"
+
+msgid "Channel Search…"
+msgstr "Tfittxija tal-istazzjonijiet…"
+
+msgid "DVB-I Setup…"
+msgstr "Konfigurazzjoni DVB-I…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Editur tal-istazzjonijiet / favoriti"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Aġġorna l-EPG tal-internet (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Qabbel l-istazzjonijiet IPTV mal-XMLTV…"
+
+msgid "Audio Track"
+msgstr "Binarju tal-awdjo"
+
+msgid "Subtitles"
+msgstr "Sottotitoli"
+
+msgid "Play Rate"
+msgstr "Veloċità tar-riproduzzjoni"
+
+msgid "Back 10 s"
+msgstr "Lura 10 s"
+
+msgid "Forward 10 s"
+msgstr "'Il quddiem 10 s"
+
+msgid "Back 1 min"
+msgstr "Lura 1 min"
+
+msgid "Forward 1 min"
+msgstr "'Il quddiem 1 min"
+
+msgid "Back to Live"
+msgstr "Lura għad-dirett"
+
+msgid "Jump"
+msgstr "Aqbeż"
+
+msgid "Previous"
+msgstr "Preċedenti"
+
+msgid "Random Order"
+msgstr "Ordni każwali"
+
+msgid "Endless Playback"
+msgstr "Riproduzzjoni bla tmiem"
+
+msgid "Playlist"
+msgstr "Playlist"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Żomm it-timeshift bħala reġistrazzjoni"
+
+msgid "Rebuild Playback"
+msgstr "Erġa' ibni r-riproduzzjoni"
+
+msgid "Video Off (audio only)"
+msgstr "Vidjo mitfi (awdjo biss)"
+
+msgid "Show Selected Channel"
+msgstr "Uri l-istazzjon magħżul"
+
+msgid "Swap Pictures"
+msgstr "Ibdel l-istampi"
+
+msgid "Picture in Picture"
+msgstr "Stampa fi stampa"
+
+msgid "Channel Mosaic…"
+msgstr "Mużajk tal-istazzjonijiet…"
+
+msgid "Stop in {mins} min"
+msgstr "Waqqaf f'{mins} min"
+
+msgid "Stop after current programme"
+msgstr "Waqqaf wara l-programm attwali"
+
+msgid "Sleep Timer"
+msgstr "Timer tal-irqad"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Ħoss aktar tard (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Ħoss aktar kmieni (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Irrisettja"
+
+msgid "Audio Delay (this channel)"
+msgstr "Dewmien tal-ħoss (dan l-istazzjon)"
+
+msgid "Full Screen"
+msgstr "Skrin sħiħ"
+
+msgid "Show/Hide Channel List"
+msgstr "Uri/aħbi l-lista tal-istazzjonijiet"
+
+msgid "Aspect / Zoom"
+msgstr "Proporzjon / zoom"
+
+msgid "Window Size"
+msgstr "Daqs tat-tieqa"
+
+msgid "Picture Settings…"
+msgstr "Settings tal-istampa…"
+
+msgid "Equalizer…"
+msgstr "Ekwalizzatur…"
+
+msgid "Radio Visualisation"
+msgstr "Viżwalizzazzjoni tar-radju"
+
+msgid "Screenshot"
+msgstr "Stampa tal-iskrin"
+
+msgid "Plugins…"
+msgstr "Plugins…"
+
+msgid "About LinDVB"
+msgstr "Dwar LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Uri/aħbi l-lista tal-istazzjonijiet (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Menu ewlieni (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Gwida tal-programmi (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletext (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Uri l-istazzjonijiet tat-TV (Ctrl+M jaqleb)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Uri l-istazzjonijiet tar-radju (Ctrl+M jaqleb)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Uri r-reġistrazzjonijiet tiegħek (double-click iddoqq)"
+
+msgid "Search name or number"
+msgstr "Fittex isem jew numru"
+
+msgid "All groups"
+msgstr "Il-gruppi kollha"
+
+msgid "Previous channel (Page Down)"
+msgstr "Stazzjon preċedenti (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pawża / timeshift (Spazju)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Waqqaf (itfi l-istazzjon)"
+
+msgid "Next channel (Page Up)"
+msgstr "Stazzjon li jmiss (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Irrekordja l-istazzjon attwali (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Agħżel il-format u l-binarji għal din ir-reġistrazzjoni"
+
+msgid "Seek"
+msgstr "Pożizzjoni"
+
+msgid "LIVE"
+msgstr "DIRETT"
+
+msgid "Back to live (L)"
+msgstr "Lura għad-dirett (L)"
+
+msgid "Mute (M)"
+msgstr "Bla ħoss (M)"
+
+msgid "Volume"
+msgstr "Volum"
+
+msgid "Audio track"
+msgstr "Binarju tal-awdjo"
+
+msgid "Playback and picture settings"
+msgstr "Settings tar-riproduzzjoni u tal-istampa"
+
+msgid "Full screen (F)"
+msgstr "Skrin sħiħ (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nIssa: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} minn {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Qed jintwerew {n} minn {total} reġistrazzjonijiet"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Qed jintwerew {n} minn {total} favoriti"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Qed jintwerew {n} minn {total} stazzjonijiet tar-radju"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Qed jintwerew {n} minn {total} stazzjonijiet tat-TV"
+
+msgid "Add to Favourites"
+msgstr "Żid mal-favoriti"
+
+msgid "Remove from Favourites"
+msgstr "Neħħi mill-favoriti"
+
+msgid "Edit…"
+msgstr "Editja…"
+
+msgid "Show as Picture in Picture"
+msgstr "Uri bħala stampa fi stampa"
+
+msgid "Select a channel in the list first"
+msgstr "L-ewwel agħżel stazzjon mil-lista"
+
+msgid "By channel"
+msgstr "Skont l-istazzjon"
+
+msgid "By title"
+msgstr "Skont it-titlu"
+
+msgid "Newest first"
+msgstr "L-iktar ġodda l-ewwel"
+
+msgid "Oldest first"
+msgstr "L-iktar qodma l-ewwel"
+
+msgid "Largest first"
+msgstr "L-ikbar l-ewwel"
+
+msgid "Sort the recordings"
+msgstr "Issortja r-reġistrazzjonijiet"
+
+msgid "Open the recording folder"
+msgstr "Iftaħ il-folder tar-reġistrazzjonijiet"
+
+msgid "Look for new recordings"
+msgstr "Fittex reġistrazzjonijiet ġodda"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Għad m'hemmx reġistrazzjonijiet.\n\nIr-reġistrazzjonijiet jiġu ssejvjati f'\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "L-ebda folder tar-reġistrazzjonijiet ma ġie ssettjat fil-preferenzi."
+
+msgid "Recording in progress"
+msgstr "Reġistrazzjoni għaddejja"
+
+msgid "Watched"
+msgstr "Rajt"
+
+msgid "Watched up to {pos}"
+msgstr "Rajt sa {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Ir-reġistrazzjoni ma nstabitx: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Qed ikompli minn {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Il-folder ma nstabx: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Ma jistax jinfetaħ {folder}: {message}"
+
+msgid "Play"
+msgstr "Doqq"
+
+msgid "Play from the Beginning"
+msgstr "Doqq mill-bidu"
+
+msgid "Details…"
+msgstr "Dettalji…"
+
+msgid "Mark as Unwatched"
+msgstr "Immarka bħala mhux rajt"
+
+msgid "Mark as Watched"
+msgstr "Immarka bħala rajt"
+
+msgid "Show in Folder"
+msgstr "Uri fil-folder"
+
+msgid "Delete…"
+msgstr "Ħassar…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Waqqaf ir-reġistrazzjoni qabel tħassarha"
+
+msgid "Delete “{title}”?"
+msgstr "Tħassar “{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nIl-fajl jitneħħa mid-diska."
+
+msgid "Deleted {name}"
+msgstr "{name} tħassar"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Ma jistax jitħassar {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Qed jiġi sintonizzat {name}…"
+
+msgid "Search recordings"
+msgstr "Fittex fir-reġistrazzjonijiet"
+
+msgid "No radio stations in the channel list"
+msgstr "L-ebda stazzjon tar-radju fil-lista"
+
+msgid "No TV channels in the channel list"
+msgstr "L-ebda stazzjon tat-TV fil-lista"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – inqaleb għal {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} mhux fuq l-arja bħalissa"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "It-TV dirett waqaf: it-tuner meħtieġ għal reġistrazzjoni bit-timer"
+
+msgid "Stopped"
+msgstr "Waqaf"
+
+msgid "Sound {ms} ms later"
+msgstr "Ħoss {ms} ms aktar tard"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Ħoss {v0} ms aktar kmieni"
+
+msgid "Audio delay off"
+msgstr "Dewmien tal-ħoss mitfi"
+
+msgid "Playing {item}"
+msgstr "Qed idoqq {item}"
+
+msgid "Open media files"
+msgstr "Iftaħ fajls tal-midja"
+
+msgid "Open URL"
+msgstr "Iftaħ indirizz"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Iftaħ"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importa l-lista tal-istazzjonijiet (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Ma setax jiġi importat {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Ġew importati {total_a} stazzjonijiet ġodda u {total_u} aġġornati"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Esporta l-istazzjonijiet (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Esportat lejn {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Esporta l-gwida tal-programmi (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Ma jistax jinkiteb {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Xejn x'tirrekordja"
+
+msgid "This channel is already being recorded"
+msgstr "Dan l-istazzjon diġà qed jiġi rreġistrat"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletext: id-dekoder nieqes (gst-plugins-bad b'libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletext: mhux disponibbli fuq dan l-istazzjon"
+
+msgid "Teletext needs a DVB channel"
+msgstr "It-teletext jeħtieġ stazzjon DVB"
+
+msgid "Volume {v0}%"
+msgstr "Volum {v0}%"
+
+msgid "Off"
+msgstr "Mitfi"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Sottotitoli magħluqa (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Lingwi: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Binarji tal-awdjo: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "L-istampa tal-iskrin ġiet issejvjata: {path}"
+
+msgid "Screenshot failed"
+msgstr "L-istampa tal-iskrin falliet"
+
+msgid "Picture Settings"
+msgstr "Settings tal-istampa"
+
+msgid "Restore Defaults"
+msgstr "Irrestawra d-defaults"
+
+msgid "Equalizer"
+msgstr "Ekwalizzatur"
+
+msgid "Leave full screen (F)"
+msgstr "Oħroġ mill-iskrin sħiħ (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Il-viżwalizzazzjoni falliet: {e}"
+
+msgid "Radio visualisation"
+msgstr "Viżwalizzazzjoni tar-radju"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Viżwalizzazzjoni tar-radju (għar-radju u l-awdjo biss)"
+
+msgid "Playback stops at {v0}"
+msgstr "Ir-riproduzzjoni tieqaf fil-{v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "L-ebda tagħrif dwar il-programm għat-timer tal-irqad"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Timer tal-irqad: ir-riproduzzjoni waqfet"
+
+msgid "No programme information"
+msgstr "L-ebda tagħrif dwar il-programm"
+
+msgid "Next: {v0}  {title}"
+msgstr "Wara: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Sinjal {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Dirett"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Ara u rrekordja DVB-S/S2, DVB-C, DVB-T/T2, ATSC u TV tal-internet bil-Linux DVB API u GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Qabbel l-istazzjonijiet IPTV mal-XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "L-ebda gwida XMLTV għadha ma tgħabbiet. Issettja l-indirizz XMLTV fis-settings tal-EPG u l-ewwel niżżel il-gwida; it-tqabbil jibda awtomatikament wara t-tniżżil."
+
+msgid "Download XMLTV guide now"
+msgstr "Niżżel il-gwida XMLTV issa"
+
+msgid "Only channels without guide"
+msgstr "Stazzjonijiet mingħajr gwida biss"
+
+msgid "Match"
+msgstr "Tqabbil"
+
+msgid "Guide channel:"
+msgstr "Stazzjon tal-gwida:"
+
+msgid "Assign"
+msgstr "Assenja"
+
+msgid "Suggest"
+msgstr "Issuġġerixxi"
+
+msgid "Auto-match all"
+msgstr "Qabbel kollox awtomatikament"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Qabbel kull stazzjon li ma ġiex assenjat bl-idejn"
+
+msgid "Reset to automatic"
+msgstr "Irrisettja għal awtomatiku"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Ħalli t-tqabbil awtomatiku jerġa' jiddeċiedi għall-istazzjon magħżul"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} minn {v1} stazzjonijiet għandhom stazzjon tal-gwida"
+
+msgid "No suggestion for {name}"
+msgstr "L-ebda suġġeriment għal {name}"
