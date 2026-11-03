@@ -25,8 +25,8 @@ msgstr "Először adjon meg egy XMLTV-címet a beállításokban"
 msgid "Downloading XMLTV guide…"
 msgstr "XMLTV-műsorújság letöltése…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} műsorújság nélkül (TV ▸ IPTV-csatornák párosítása XMLTV-vel)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} műsorújság nélkül (Beállítások ▸ EPG ▸ IPTV-csatornák párosítása)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: szolgáltatáslista betöltése…"
@@ -303,6 +303,33 @@ msgstr "LOF felső sáv (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Váltási frekvencia (kHz)"
+
+msgid "Channels"
+msgstr "Csatornák"
+
+msgid "Channel Search…"
+msgstr "Csatornakeresés…"
+
+msgid "Channel search"
+msgstr "Csatornakeresés"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Csatornák keresése antennán, kábelen vagy műholdon (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Csatornaszerkesztő / kedvencek"
+
+msgid "Channel editor"
+msgstr "Csatornaszerkesztő"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Csatornák átnevezése, rendezése, törlése és hozzáadása, kedvencek megjelölése (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Csatornalisták az internetről: a régió DVB-I listája és IPTV-lejátszási listák. Ezek a beállítások azonnal érvényesek."
 
 msgid "Recording folder"
 msgstr "Felvételek mappája"
@@ -595,9 +622,6 @@ msgstr "Bővítményműveletek"
 msgid "Plugin folders: {dirs}"
 msgstr "Bővítménymappák: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "DVB-I beállítása"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "A DVB-I az internetről tölti le a régiója csatornalistáját: számozást, neveket és logókat, valamint csatornánként a vételi módokat. A LinDVB lehetőség szerint a csatornakeresésből származó antennás, kábeles vagy műholdas csatornákat használja, egyébként az internetes adást."
 
@@ -651,9 +675,6 @@ msgstr "A kiválasztott lista újbóli betöltése (naponta is ellenőrzésre ke
 
 msgid "Install Channel List"
 msgstr "Csatornalista telepítése"
-
-msgid "Close"
-msgstr "Bezárás"
 
 msgid "Asking the service list registry…"
 msgstr "A szolgáltatáslisták nyilvántartásának lekérdezése…"
@@ -879,6 +900,51 @@ msgstr "Törlés"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Adja meg a transzponder frekvenciáját MHz-ben."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV-csatornalisták (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Minden fájl"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importáljon egy vagy több M3U lejátszási listát vagy más, internetes adásokat tartalmazó csatornalistát. A listájában már szereplő csatornák frissülnek, a többi hozzáadódik."
+
+msgid "Import Files…"
+msgstr "Fájlok importálása…"
+
+msgid "From files"
+msgstr "Fájlokból"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV vagy dvbv5. Egyszerre több fájl is választható."
+
+msgid "Import"
+msgstr "Importálás"
+
+msgid "From a web address"
+msgstr "Webcímről"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "Egy M3U lejátszási lista címe. A csatornák frissítéséhez importálja újra."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "IPTV-csatornák a listájában: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "IPTV-csatornalisták importálása"
+
+msgid "Downloading {url}…"
+msgstr "{url} letöltése…"
+
+msgid "Could not import {name}"
+msgstr "Nem importálható: {name}"
+
+msgid "The address has no channels."
+msgstr "Ezen a címen nincsenek csatornák."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "{total_a} új és {total_u} frissített csatorna importálva"
 
 msgid "Cover lookup failed: {e}"
 msgstr "A borítókeresés sikertelen: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Mentés alapértékként"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Ezen formátumok és kiegészítő folyamok használata új időzítőkhöz és kézi felvételekhez"
 
+msgid "Close"
+msgstr "Bezárás"
+
 msgid "Series title"
 msgstr "Sorozat címe"
 
@@ -1273,20 +1342,8 @@ msgstr "Teletext"
 msgid "CAM Menu (CI Module)…"
 msgstr "CAM menü (CI-modul)…"
 
-msgid "Channel Search…"
-msgstr "Csatornakeresés…"
-
-msgid "DVB-I Setup…"
-msgstr "DVB-I beállítása…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Csatornaszerkesztő / kedvencek"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Internetes EPG frissítése (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "IPTV-csatornák párosítása XMLTV-vel…"
 
 msgid "Audio Track"
 msgstr "Hangsáv"
@@ -1641,12 +1698,6 @@ msgstr "Megnyitás"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Csatornalista importálása (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Nem importálható: {name}"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "{total_a} új és {total_u} frissített csatorna importálva"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Csatornák exportálása (.conf = dvbv5, .m3u = IPTV, .csv)"

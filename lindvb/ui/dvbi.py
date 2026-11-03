@@ -1,4 +1,4 @@
-"""DVB-I setup: privacy notice, service list from the registry, postcode and
+"""DVB-I settings: privacy notice, service list from the registry, postcode and
 region (German DTVP profile, see lindvb.dvbi)."""
 
 import threading
@@ -11,24 +11,31 @@ from .common import message
 from ..i18n import _
 
 
-class DVBISetupWindow(Gtk.Window):
-    def __init__(self, app, parent):
-        super().__init__(title=_("DVB-I Setup"), transient_for=parent, modal=False,
-                         default_width=620, default_height=680)
-        self.set_destroy_with_parent(True)
+def _check(label, active=False):
+    """A check button whose label wraps, so long texts do not widen the page."""
+    btn = Gtk.CheckButton(active=active)
+    btn.set_child(Gtk.Label(label=label, xalign=0, wrap=True))
+    return btn
+
+
+class DVBIPanel(Gtk.Box):
+    """The DVB-I section of Preferences › Internet. Its settings apply at once,
+    the Save button of the preferences is not needed for them."""
+
+    def __init__(self, app):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=10,
+                         css_classes=["lv-group"])
         self.app = app
         self.s = app.settings
         self.offers = []
         self.region_ids = []
-
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, margin_start=16,
-                      margin_end=16, margin_top=16, margin_bottom=16)
-        sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
-        sw.set_child(box)
-        self.set_child(sw)
+        self._started = False
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, margin_top=10,
+                      margin_bottom=10)
+        self.append(box)
 
         def title(text):
-            box.append(Gtk.Label(label=text, xalign=0, css_classes=["lv-section-title"],
+            box.append(Gtk.Label(label=text, xalign=0, css_classes=["heading"],
                                  margin_top=6))
 
         def hint(text):
@@ -45,20 +52,20 @@ class DVBISetupWindow(Gtk.Window):
         title(_("Privacy"))
         notice = Gtk.Label(label=dvbi.PRIVACY_NOTICE, xalign=0, wrap=True)
         box.append(notice)
-        self.ack = Gtk.CheckButton(label=_("I have read the privacy notice"),
+        self.ack = _check(label=_("I have read the privacy notice"),
                                    active=bool(self.s.get("dvbi_privacy_ack")))
         self.ack.connect("toggled", lambda *_: self._sensitive())
         box.append(self.ack)
-        self.guide = Gtk.CheckButton(label=_("Load the programme guide (EPG) of the DVB-I channels"),
+        self.guide = _check(label=_("Load the programme guide (EPG) of the DVB-I channels"),
                                      active=bool(self.s.get("dvbi_guide", True)))
         self.guide.connect("toggled", lambda b: self._guide_toggled(b.get_active()))
         box.append(self.guide)
-        failover = Gtk.CheckButton(
+        failover = _check(
             label=_("Switch to another reception path (internet, antenna, cable, satellite) "
                   "when one fails"), active=bool(self.s.get("dvbi_failover", True)))
         failover.connect("toggled", lambda b: self._set("dvbi_failover", b.get_active()))
         box.append(failover)
-        sat = Gtk.CheckButton(
+        sat = _check(
             label=_("Tune satellite channels from the list without a channel search "
                   "(needs satellite channels in your list)"),
             active=bool(self.s.get("dvbi_sat_direct", True)))
@@ -93,7 +100,7 @@ class DVBISetupWindow(Gtk.Window):
                                   placeholder_text="e.g. 80331")
         self.postcode.connect("changed", lambda *_: self._sensitive())
         grid.attach(self.postcode, 1, 0, 1, 1)
-        self.nationwide = Gtk.CheckButton(label=_("No postcode: nationwide list"))
+        self.nationwide = _check(label=_("No postcode: nationwide list"))
         self.nationwide.set_active(bool(self.s.get("dvbi_list_url")) and
                                    not self.s.get("dvbi_postcode"))
         self.nationwide.connect("toggled", lambda *_: self._sensitive())
@@ -116,14 +123,18 @@ class DVBISetupWindow(Gtk.Window):
         self.update_btn.connect("clicked", lambda *_: self._update())
         self.install_btn = Gtk.Button(label=_("Install Channel List"), css_classes=["suggested-action"])
         self.install_btn.connect("clicked", lambda *_: self._install())
-        close = Gtk.Button(label=_("Close"))
-        close.connect("clicked", lambda *_: self.close())
-        for b in (self.remove_btn, self.update_btn, self.install_btn, close):
+        for b in (self.remove_btn, self.update_btn, self.install_btn):
             buttons.append(b)
         box.append(buttons)
         self._sensitive()
-        if self.ack.get_active():
-            self._load_registry()
+
+    def start(self):
+        """Called when the Internet page is shown: ask the registry only then,
+        not each time the preferences open."""
+        if not self._started:
+            self._started = True
+            if self.ack.get_active():
+                self._load_registry()
 
     # ------------------------------------------------------------------ state
     def _selected_offer(self):
@@ -223,7 +234,7 @@ class DVBISetupWindow(Gtk.Window):
         offer = self._selected_offer()
         postcode = "" if self.nationwide.get_active() else self.postcode.get_text().strip()
         if postcode and not dvbi.valid_postcode(postcode):
-            message(self, _("Please enter a postcode with five digits"))
+            message(self.get_root(), _("Please enter a postcode with five digits"))
             return
         region = None
         if self.region_dd.get_visible() and self.region_ids:
@@ -285,7 +296,7 @@ class DVBISetupWindow(Gtk.Window):
                     self._install()
             elif i == 1:
                 self._install(nationwide=True)
-        dlg.choose(self, None, chosen)
+        dlg.choose(self.get_root(), None, chosen)
 
     def _set(self, key, value):
         self.s[key] = value

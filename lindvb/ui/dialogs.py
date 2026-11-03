@@ -45,7 +45,7 @@ def _row(group, label, widget, hint=None):
 class PrefsWindow(Gtk.Window):
     """Preferences, split into pages with a sidebar."""
 
-    def __init__(self, app, parent):
+    def __init__(self, app, parent, page_name=None):
         super().__init__(title=_("Preferences"), transient_for=parent,
                          default_width=820, default_height=600)
         self.app = app
@@ -163,6 +163,30 @@ class PrefsWindow(Gtk.Window):
         spin(g, "lnb_lof1", _("LOF low band (kHz)"), 0, 20000000)
         spin(g, "lnb_lof2", _("LOF high band (kHz)"), 0, 20000000)
         spin(g, "lnb_slof", _("Switch frequency (kHz)"), 0, 20000000)
+        g = group(pg, _("Channels"))
+        scan = Gtk.Button(label=_("Channel Search…"))
+        scan.connect("clicked", lambda *_: app.show_scan())
+        _row(g, _("Channel search"), scan,
+             _("Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."))
+        edit = Gtk.Button(label=_("Channel Editor / Favourites"))
+        edit.connect("clicked", lambda *_: app.show_editor())
+        _row(g, _("Channel editor"), edit,
+             _("Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."))
+
+        # -- Internet: DVB-I and IPTV lists
+        from .dvbi import DVBIPanel
+        from .iptv import IPTVPanel
+        pg = page("internet", _("Internet"),
+                  _("Channel lists from the internet: the DVB-I list of your region and IPTV "
+                  "playlists. These settings apply at once."))
+        pg.append(Gtk.Label(label="DVB-I", xalign=0, css_classes=["lv-section-title"],
+                            margin_top=4))
+        self._dvbi = DVBIPanel(app)
+        pg.append(self._dvbi)
+        pg.append(Gtk.Label(label="IPTV", xalign=0, css_classes=["lv-section-title"],
+                            margin_top=4))
+        pg.append(IPTVPanel(app, _row))
+        self.stack.connect("notify::visible-child-name", lambda *_: self._page_shown())
 
         # -- Recording
         pg = page("recording", _("Recording"))
@@ -214,6 +238,12 @@ class PrefsWindow(Gtk.Window):
 
         self._preview_accent()
         self.connect("close-request", self._on_close)
+        if page_name and self.stack.get_child_by_name(page_name) is not None:
+            self.stack.set_visible_child_name(page_name)
+
+    def _page_shown(self):
+        if self.stack.get_visible_child_name() == "internet":
+            self._dvbi.start()
 
     # recording defaults -----------------------------------------------------
     def _recording_options(self, pg, group, switch):

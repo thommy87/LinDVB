@@ -14,6 +14,7 @@ import csv
 import io
 import json
 import re
+import urllib.parse
 from dataclasses import asdict, dataclass, field, fields
 
 from .config import CONFIG_DIR
@@ -581,10 +582,24 @@ def decode_text(raw: bytes):
 
 def import_file(path):
     """Detect the format of *path* and return a list of channels."""
-    raw = open(path, "rb").read()
+    with open(path, "rb") as f:
+        return import_data(f.read(), str(path))
+
+
+def download_name(url):
+    """The file name a downloaded list is imported under: it picks the format
+    and names the channel group (".../countries/de.m3u" → "de.m3u")."""
+    parts = urllib.parse.urlsplit(url)
+    name = parts.path.rstrip("/").rsplit("/", 1)[-1]
+    return name or parts.netloc or "IPTV"
+
+
+def import_data(raw, name):
+    """Detect the format of *raw* (the bytes of a file or a download called
+    *name*) and return a list of channels."""
     text = decode_text(raw)
-    low = str(path).lower()
-    stem = re.sub(r"^\d{4}_", "", path.rsplit("/", 1)[-1].rsplit(".", 1)[0])
+    low = name.lower()
+    stem = re.sub(r"^\d{4}_", "", name.rsplit("/", 1)[-1].rsplit(".", 1)[0])
     if low.endswith((".m3u", ".m3u8")) or text.lstrip().startswith("#EXTM3U"):
         return parse_m3u(text, root=stem)
     if low.endswith(".csv"):

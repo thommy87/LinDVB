@@ -25,8 +25,8 @@ msgstr "Socraigh seoladh XMLTV sna sainroghanna ar dtús"
 msgid "Downloading XMLTV guide…"
 msgstr "Treoir XMLTV á híoslódáil…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} gan treoir (TB ▸ Meaitseáil stáisiúin IPTV le XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} gan treoir (Sainroghanna ▸ EPG ▸ Meaitseáil stáisiúin IPTV)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: liosta seirbhísí á lódáil…"
@@ -303,6 +303,33 @@ msgstr "LOF banda ard (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Minicíocht athraithe (kHz)"
+
+msgid "Channels"
+msgstr "Stáisiúin"
+
+msgid "Channel Search…"
+msgstr "Scanadh stáisiún…"
+
+msgid "Channel search"
+msgstr "Scanadh stáisiún"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Cuardaigh an aeróg, an cábla nó an satailít le haghaidh stáisiún (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Eagarthóir stáisiún / ceanáin"
+
+msgid "Channel editor"
+msgstr "Eagarthóir stáisiún"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Athainmnigh, sórtáil, scrios agus cuir stáisiúin leis agus marcáil ceanáin (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Idirlíon"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Liostaí stáisiún ón idirlíon: liosta DVB-I do réigiúin agus seinmliostaí IPTV. Bíonn feidhm leis na socruithe seo láithreach."
 
 msgid "Recording folder"
 msgstr "Fillteán taifeadtaí"
@@ -595,9 +622,6 @@ msgstr "Gníomhartha breiseán"
 msgid "Plugin folders: {dirs}"
 msgstr "Fillteáin bhreiseán: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "Socrú DVB-I"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "Faigheann DVB-I liosta stáisiún do réigiúin ón idirlíon: uimhriú, ainmneacha agus lógónna, agus do gach stáisiún na bealaí chun é a ghlacadh. Úsáideann LinDVB stáisiúin aeróige, cábla nó satailíte ó do scanadh nuair is féidir agus an sruth idirlín murach sin."
 
@@ -651,9 +675,6 @@ msgstr "Athlódáil an liosta roghnaithe (seiceáiltear é go laethúil freisin)
 
 msgid "Install Channel List"
 msgstr "Suiteáil an liosta stáisiún"
-
-msgid "Close"
-msgstr "Dún"
 
 msgid "Asking the service list registry…"
 msgstr "Clárlann na liostaí seirbhísí á fiosrú…"
@@ -879,6 +900,51 @@ msgstr "Bain"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Cuir isteach minicíocht an trasfhreagróra in MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Liostaí stáisiún IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Gach comhad"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Iompórtáil seinmliosta M3U amháin nó níos mó, nó liostaí stáisiún eile le sruthanna idirlín. Nuashonraítear na stáisiúin atá i do liosta cheana féin, agus cuirtear na cinn eile leis."
+
+msgid "Import Files…"
+msgstr "Iompórtáil comhaid…"
+
+msgid "From files"
+msgstr "Ó chomhaid"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV nó dvbv5. Is féidir roinnt comhad a roghnú le chéile."
+
+msgid "Import"
+msgstr "Iompórtáil"
+
+msgid "From a web address"
+msgstr "Ó sheoladh gréasáin"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "Seoladh seinmliosta M3U. Iompórtáil arís é chun na stáisiúin a nuashonrú."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Stáisiúin IPTV i do liosta: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Iompórtáil liostaí stáisiún IPTV"
+
+msgid "Downloading {url}…"
+msgstr "{url} á íoslódáil…"
+
+msgid "Could not import {name}"
+msgstr "Níorbh fhéidir {name} a iompórtáil"
+
+msgid "The address has no channels."
+msgstr "Níl aon stáisiún ag an seoladh seo."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Iompórtáladh {total_a} stáisiún nua agus {total_u} nuashonraithe"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Theip ar chuardach an chlúdaigh: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Sábháil mar réamhshocrú"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Úsáid na formáidí agus na sruthanna breise seo do lasca ama nua agus do thaifeadtaí láimhe"
 
+msgid "Close"
+msgstr "Dún"
+
 msgid "Series title"
 msgstr "Teideal na sraithe"
 
@@ -1273,20 +1342,8 @@ msgstr "Teilithéacs"
 msgid "CAM Menu (CI Module)…"
 msgstr "Roghchlár CAM (modúl CI)…"
 
-msgid "Channel Search…"
-msgstr "Scanadh stáisiún…"
-
-msgid "DVB-I Setup…"
-msgstr "Socrú DVB-I…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Eagarthóir stáisiún / ceanáin"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Nuashonraigh EPG idirlín (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Meaitseáil stáisiúin IPTV le XMLTV…"
 
 msgid "Audio Track"
 msgstr "Rian fuaime"
@@ -1641,12 +1698,6 @@ msgstr "Oscail"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Iompórtáil liosta stáisiún (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Níorbh fhéidir {name} a iompórtáil"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Iompórtáladh {total_a} stáisiún nua agus {total_u} nuashonraithe"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Easpórtáil stáisiúin (.conf = dvbv5, .m3u = IPTV, .csv)"

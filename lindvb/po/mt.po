@@ -25,8 +25,8 @@ msgstr "L-ewwel issettja indirizz XMLTV fil-preferenzi"
 msgid "Downloading XMLTV guide…"
 msgstr "Qed titniżżel il-gwida XMLTV…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} mingħajr gwida (TV ▸ Qabbel l-istazzjonijiet IPTV mal-XMLTV)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} mingħajr gwida (Preferenzi ▸ EPG ▸ Qabbel l-istazzjonijiet IPTV)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: qed titgħabba l-lista tas-servizzi…"
@@ -303,6 +303,33 @@ msgstr "LOF faxxa għolja (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Frekwenza tal-qlib (kHz)"
+
+msgid "Channels"
+msgstr "Stazzjonijiet"
+
+msgid "Channel Search…"
+msgstr "Tfittxija tal-istazzjonijiet…"
+
+msgid "Channel search"
+msgstr "Tfittxija tal-istazzjonijiet"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Fittex stazzjonijiet fuq l-antenna, il-kejbil jew is-satellita (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Editur tal-istazzjonijiet / favoriti"
+
+msgid "Channel editor"
+msgstr "Editur tal-istazzjonijiet"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Ibdel l-isem, issortja, ħassar u żid stazzjonijiet u mmarka l-favoriti (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Listi tal-istazzjonijiet mill-internet: il-lista DVB-I tar-reġjun tiegħek u playlists IPTV. Dawn is-settings japplikaw minnufih."
 
 msgid "Recording folder"
 msgstr "Folder tar-reġistrazzjonijiet"
@@ -595,9 +622,6 @@ msgstr "Azzjonijiet tal-plugins"
 msgid "Plugin folders: {dirs}"
 msgstr "Folders tal-plugins: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "Konfigurazzjoni DVB-I"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I jieħu mill-internet il-lista tal-istazzjonijiet tar-reġjun tiegħek: numerazzjoni, ismijiet u logos, u għal kull stazzjon il-modi kif tirċevih. LinDVB juża fejn jista' l-istazzjonijiet tal-antenna, tal-kejbil jew tas-satellita mit-tfittxija tiegħek u inkella l-fluss tal-internet."
 
@@ -651,9 +675,6 @@ msgstr "Erġa' għabbi l-lista magħżula (tiġi ċċekkjata wkoll kuljum)"
 
 msgid "Install Channel List"
 msgstr "Installa l-lista tal-istazzjonijiet"
-
-msgid "Close"
-msgstr "Agħlaq"
 
 msgid "Asking the service list registry…"
 msgstr "Qed jiġi mistoqsi r-reġistru tal-listi tas-servizzi…"
@@ -879,6 +900,51 @@ msgstr "Ħassar"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Daħħal il-frekwenza tat-transponder f'MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Listi tal-istazzjonijiet IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Il-fajls kollha"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importa playlist M3U waħda jew aktar jew listi oħra tal-istazzjonijiet bi streams tal-internet. L-istazzjonijiet li diġà jinsabu fil-lista tiegħek jiġu aġġornati, il-bqija jiżdiedu."
+
+msgid "Import Files…"
+msgstr "Importa fajls…"
+
+msgid "From files"
+msgstr "Minn fajls"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV jew dvbv5. Tista' tagħżel diversi fajls f'daqqa."
+
+msgid "Import"
+msgstr "Importa"
+
+msgid "From a web address"
+msgstr "Minn indirizz web"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "L-indirizz ta' playlist M3U. Importaha mill-ġdid biex taġġorna l-istazzjonijiet."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Stazzjonijiet IPTV fil-lista tiegħek: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Importa listi tal-istazzjonijiet IPTV"
+
+msgid "Downloading {url}…"
+msgstr "Qed jitniżżel {url}…"
+
+msgid "Could not import {name}"
+msgstr "Ma setax jiġi importat {name}"
+
+msgid "The address has no channels."
+msgstr "L-indirizz m'għandux stazzjonijiet."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Ġew importati {total_a} stazzjonijiet ġodda u {total_u} aġġornati"
 
 msgid "Cover lookup failed: {e}"
 msgstr "It-tfittxija tal-qoxra falliet: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Issejvja bħala default"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Uża dawn il-formati u l-flussi żejda għal timers ġodda u reġistrazzjonijiet manwali"
 
+msgid "Close"
+msgstr "Agħlaq"
+
 msgid "Series title"
 msgstr "Titlu tas-serje"
 
@@ -1273,20 +1342,8 @@ msgstr "Teletext"
 msgid "CAM Menu (CI Module)…"
 msgstr "Menu CAM (modulu CI)…"
 
-msgid "Channel Search…"
-msgstr "Tfittxija tal-istazzjonijiet…"
-
-msgid "DVB-I Setup…"
-msgstr "Konfigurazzjoni DVB-I…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Editur tal-istazzjonijiet / favoriti"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Aġġorna l-EPG tal-internet (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Qabbel l-istazzjonijiet IPTV mal-XMLTV…"
 
 msgid "Audio Track"
 msgstr "Binarju tal-awdjo"
@@ -1641,12 +1698,6 @@ msgstr "Iftaħ"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Importa l-lista tal-istazzjonijiet (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Ma setax jiġi importat {name}"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Ġew importati {total_a} stazzjonijiet ġodda u {total_u} aġġornati"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Esporta l-istazzjonijiet (.conf = dvbv5, .m3u = IPTV, .csv)"

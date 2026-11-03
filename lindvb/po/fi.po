@@ -25,8 +25,8 @@ msgstr "Aseta ensin XMLTV-osoite asetuksissa"
 msgid "Downloading XMLTV guide…"
 msgstr "Ladataan XMLTV-opasta…"
 
-msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
-msgstr ", {unmatched} ilman opasta (TV ▸ Yhdistä IPTV-kanavat XMLTV:hen)"
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} ilman opasta (Asetukset ▸ EPG ▸ Yhdistä IPTV-kanavat)"
 
 msgid "DVB-I: loading the service list…"
 msgstr "DVB-I: ladataan palveluluetteloa…"
@@ -303,6 +303,33 @@ msgstr "LOF yläkaista (kHz)"
 
 msgid "Switch frequency (kHz)"
 msgstr "Vaihtotaajuus (kHz)"
+
+msgid "Channels"
+msgstr "Kanavat"
+
+msgid "Channel Search…"
+msgstr "Kanavahaku…"
+
+msgid "Channel search"
+msgstr "Kanavahaku"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Hae kanavia antennista, kaapelista tai satelliitista (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanavaeditori / suosikit"
+
+msgid "Channel editor"
+msgstr "Kanavaeditori"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Nimeä uudelleen, järjestä, poista ja lisää kanavia ja merkitse suosikit (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Kanavaluettelot internetistä: alueesi DVB-I-luettelo ja IPTV-soittolistat. Nämä asetukset tulevat voimaan heti."
 
 msgid "Recording folder"
 msgstr "Tallennuskansio"
@@ -595,9 +622,6 @@ msgstr "Liitännäisten toiminnot"
 msgid "Plugin folders: {dirs}"
 msgstr "Liitännäisten kansiot: {dirs}"
 
-msgid "DVB-I Setup"
-msgstr "DVB-I-asetukset"
-
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I hakee alueesi kanavaluettelon internetistä: numeroinnin, nimet ja logot sekä kunkin kanavan vastaanottotavat. LinDVB käyttää mahdollisuuksien mukaan kanavahaun antenni-, kaapeli- tai satelliittikanavia ja muuten internet-lähetystä."
 
@@ -651,9 +675,6 @@ msgstr "Lataa valittu luettelo uudelleen (se tarkistetaan myös päivittäin)"
 
 msgid "Install Channel List"
 msgstr "Asenna kanavaluettelo"
-
-msgid "Close"
-msgstr "Sulje"
 
 msgid "Asking the service list registry…"
 msgstr "Kysytään palveluluetteloiden rekisteriltä…"
@@ -879,6 +900,51 @@ msgstr "Poista"
 
 msgid "Enter the transponder frequency in MHz."
 msgstr "Anna transponderin taajuus megahertseinä."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV-kanavaluettelot (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Kaikki tiedostot"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Tuo yksi tai useampi M3U-soittolista tai muita kanavaluetteloita, joissa on internetvirtoja. Luettelossasi jo olevat kanavat päivitetään, muut lisätään."
+
+msgid "Import Files…"
+msgstr "Tuo tiedostoja…"
+
+msgid "From files"
+msgstr "Tiedostoista"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV tai dvbv5. Useita tiedostoja voi valita kerralla."
+
+msgid "Import"
+msgstr "Tuo"
+
+msgid "From a web address"
+msgstr "Verkko-osoitteesta"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U-soittolistan osoite. Tuo se uudelleen päivittääksesi kanavat."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "IPTV-kanavia kanavaluettelossasi: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Tuo IPTV-kanavaluetteloita"
+
+msgid "Downloading {url}…"
+msgstr "Ladataan {url}…"
+
+msgid "Could not import {name}"
+msgstr "Kohdetta {name} ei voitu tuoda"
+
+msgid "The address has no channels."
+msgstr "Osoitteessa ei ole kanavia."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Tuotiin {total_a} uutta ja {total_u} päivitettyä kanavaa"
 
 msgid "Cover lookup failed: {e}"
 msgstr "Kansikuvan haku epäonnistui: {e}"
@@ -1156,6 +1222,9 @@ msgstr "Tallenna oletukseksi"
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr "Käytä näitä muotoja ja lisävirtoja uusissa ajastuksissa ja käsin tehdyissä tallennuksissa"
 
+msgid "Close"
+msgstr "Sulje"
+
 msgid "Series title"
 msgstr "Sarjan nimi"
 
@@ -1273,20 +1342,8 @@ msgstr "Teksti-TV"
 msgid "CAM Menu (CI Module)…"
 msgstr "CAM-valikko (CI-moduuli)…"
 
-msgid "Channel Search…"
-msgstr "Kanavahaku…"
-
-msgid "DVB-I Setup…"
-msgstr "DVB-I-asetukset…"
-
-msgid "Channel Editor / Favourites"
-msgstr "Kanavaeditori / suosikit"
-
 msgid "Update Internet EPG (XMLTV)"
 msgstr "Päivitä internet-EPG (XMLTV)"
-
-msgid "Match IPTV Channels to XMLTV…"
-msgstr "Yhdistä IPTV-kanavat XMLTV:hen…"
 
 msgid "Audio Track"
 msgstr "Ääniraita"
@@ -1641,12 +1698,6 @@ msgstr "Avaa"
 
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Tuo kanavaluettelo (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
-
-msgid "Could not import {name}"
-msgstr "Kohdetta {name} ei voitu tuoda"
-
-msgid "Imported {total_a} new and {total_u} updated channels"
-msgstr "Tuotiin {total_a} uutta ja {total_u} päivitettyä kanavaa"
 
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr "Vie kanavat (.conf = dvbv5, .m3u = IPTV, .csv)"

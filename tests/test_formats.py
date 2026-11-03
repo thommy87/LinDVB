@@ -217,3 +217,15 @@ def test_reminders(tmp_path, monkeypatch):
     assert ReminderStore().has(c.key, now + 600)            # saved
     store.due(120, now + 3000)                              # programme over: dropped
     assert not store.upcoming(now)
+
+
+def test_import_data_from_a_download():
+    """Lists from a web address (Preferences › Internet › IPTV) are detected
+    by name and content like files."""
+    from lindvb.channels import download_name, import_data
+    assert download_name("https://iptv-org.github.io/iptv/countries/de.m3u") == "de.m3u"
+    assert download_name("https://example.org/") == "example.org"
+    raw = b"#EXTM3U\n#EXTINF:-1 tvg-id=\"a.de\",Kanal A\nhttp://example.org/a.m3u8\n"
+    chans = import_data(raw, download_name("https://example.org/get.php?user=x"))
+    assert [(c.name, c.delsys, c.url) for c in chans] == \
+        [("Kanal A", "iptv", "http://example.org/a.m3u8")]
