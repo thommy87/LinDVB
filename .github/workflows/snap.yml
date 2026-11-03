@@ -1,10 +1,10 @@
 name: Build Snap
 
+# Only built for releases (the Release workflow, or a pushed v* tag) and on
+# demand; normal pushes and pull requests build only the AppImage.
 on:
   push:
-    branches: [main]
     tags: ["v*"]
-  pull_request:
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -31,17 +31,6 @@ jobs:
       - name: Check the snap
         run: |
           unsquashfs -l "${{ steps.build.outputs.snap }}" | grep -E 'lib/lindvb/lindvb/app.py|bin/dvbv5-scan|libgstdvb.so|libgstteletext.so'
-
-      # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
-      # Release builds upload straight to the release instead.
-      - uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
-        # a full artifact store must not turn the push build red
-        continue-on-error: true
-        with:
-          name: LinDVB-snap
-          path: ${{ steps.build.outputs.snap }}
-          retention-days: 3
 
       - name: Upload to the draft release
         if: inputs.release_id != ''
