@@ -385,6 +385,8 @@ class TimerManager(GObject.Object):
             return None
         self.active[key] = (rec, cap)
         self._write_info(rec, channel, title, start, fmt)
+        rec.channel, rec.title = channel, title
+        self._plugin_event("recording-started", rec)
         self.emit("message", f"Recording: {path.name}")
         self.emit("changed")
         return rec
@@ -414,9 +416,16 @@ class TimerManager(GObject.Object):
             rec.stop()
             from .library import write_info
             write_info(rec.path, end=time.time())
+            self._plugin_event("recording-stopped", rec)
         if cap:
             self.app.tuners.release(cap, key)
         self.emit("changed")
+
+    def _plugin_event(self, event, rec):
+        plugins = getattr(self.app, "plugins", None)
+        if plugins is not None:
+            plugins.emit(event, getattr(rec, "channel", None),
+                         {"title": getattr(rec, "title", ""), "file": str(rec.path)})
 
     def stop_all(self):
         for key in list(self.active):

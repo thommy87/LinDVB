@@ -63,7 +63,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Timeline / TV guide grid | `English.lng:415-416` `tsTimeline`, `tsTVGuide` | **Yes**: drawn timeline with a now marker |
 | EPG search (case, whole word, description) | `English.lng:409-412` `mnuSearchCase`, `mnuSearchDescription`, `mnuSearchWord` | **Yes** (case and description options) |
 | Search the web for a programme | `Default/EPG_URLList.ini` (Google, IMDb, Wikipedia, TMDB…), `btnInternet` | **Yes**: configurable URL list |
-| EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Partly**: XMLTV import for internet channels; no export |
+| EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Yes**: XMLTV import for internet channels; the whole guide can be exported as XMLTV (Menu ▸ File, or the button in the programme guide) |
 | EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
 | EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
@@ -95,7 +95,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Plugins / add-ons | `Plugins/*.dll` (ImportCSV, ImportConf, ImportLamedb, Universal), `English.lng` plugin strings | **Yes**: Python plugin system for channel-list importers, conditional-access providers, life-cycle hooks and menu entries; see [PLUGINS.md](PLUGINS.md) |
 | Remote controls and key mapping | `Default/Remotes/default.remote` (XML command→key map), `Plugins/Universal.dll` (DVBSky, TeVii, Anysee, Twinhan, TechnoTrend IR), `[frmWinlircSettings]` | **Partly**: keyboard shortcuts; Linux IR receivers map to keys through the kernel's rc-core, so they work as keyboards |
 | Media server client, RTSP/UPnP/web | `English.lng:1267` `[frmServiceOptions]` (DVBViewer Media Server), `RTSP Server=` line 1919, `actUPnPOpen` | **No** |
-| Script hooks on events | `Scripts/channelchange.vbs`, `startrec.vbs`, `stoprec.vbs` | **No** |
+| Script hooks on events | `Scripts/channelchange.vbs`, `startrec.vbs`, `stoprec.vbs` | **Yes**: executable files in `~/.config/lindvb/hooks/` named after the event (`channel-tuned`, `recording-started`, `recording-stopped`, `reminder`, ...) get the details in `LINDVB_*` variables; see `lindvb/hooks.py` |
 | Tasks, standby/hibernate/wake-on-LAN commands | `[frmTaskOptions]`, `actions.ini` `Service Wake on LAN=8275`, `Hibernate=12323` | **Partly**: after-recording power actions |
 | OSD skins, HTPC home screen, weather, news (RSS) | `OSDSkins/Default/*.xml` (`home.xml`, `myweather.xml`, `myrss.xml`), `[frmWeatherOptions]`, `[frmNewsOptions]` | **No** |
 | 26 UI languages | `Language/*.lng` (Arabic … Turkish) | **No**: English only for now |

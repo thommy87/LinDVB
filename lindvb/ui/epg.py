@@ -61,10 +61,18 @@ class EPGWindow(Gtk.Window):
         det.set_size_request(-1, 130)
         bar = Gtk.Box(spacing=6)
         for label, fn in ((_("Watch"), self.on_watch), (_("Record"), self.on_record),
-                          (_("Record Series"), self.on_series), (_("Search Web"), self.on_web)):
+                          (_("Record Series"), self.on_series), (_("Remind Me"), self.on_remind),
+                          (_("Search Web"), self.on_web)):
             b = Gtk.Button(label=label)
             b.connect("clicked", lambda _b, fn=fn: fn())
             bar.append(b)
+            if fn == self.on_remind:
+                self.remind_btn = b
+        bar.append(Gtk.Box(hexpand=True))
+        export = Gtk.Button(icon_name="document-save-symbolic",
+                            tooltip_text=_("Export the guide as XMLTV"))
+        export.connect("clicked", lambda _b: self.app.window.on_export_epg())
+        bar.append(export)
         paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL, position=420)
         paned.set_start_child(nb)
         lower = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
@@ -243,6 +251,7 @@ class EPGWindow(Gtk.Window):
         if not row:
             return
         self.selected_event = row
+        self._update_remind_button()
         c, e = row
         extra = ""
         if e.access:
@@ -358,6 +367,27 @@ class EPGWindow(Gtk.Window):
             c, e = self.selected_event
             self.app.timers.add_series(e.title, c.key)
             self.app.window.set_status(_("Series recording: {title}").format(title=e.title))
+
+    def on_remind(self):
+        if not self.selected_event:
+            return
+        c, e = self.selected_event
+        rem = self.app.reminders
+        if rem.has(c.key, e.start):
+            rem.remove(c.key, e.start)
+            self.app.window.set_status(_("Reminder removed: {title}").format(title=e.title))
+        elif e.start <= time.time():
+            self.app.window.set_status(_("{title} has already started").format(title=e.title))
+        else:
+            rem.add(c, e)
+            self.app.window.set_status(_("Reminder set: {title}, {time}").format(
+                title=e.title, time=time.strftime("%a %H:%M", time.localtime(e.start))))
+        self._update_remind_button()
+
+    def _update_remind_button(self):
+        sel = self.selected_event
+        on = bool(sel and self.app.reminders.has(sel[0].key, sel[1].start))
+        self.remind_btn.set_label(_("Remove Reminder") if on else _("Remind Me"))
 
     def on_web(self):
         if self.selected_event:

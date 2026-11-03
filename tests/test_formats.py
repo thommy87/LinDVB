@@ -182,3 +182,38 @@ def test_transponder_lists_of_other_tv_systems(tmp_path):
     cable = tl("ATSC_America_Cable.ini", "America Cable", ["57000,6"])
     text = write_scan_file(cable)
     assert "DELIVERY_SYSTEM = DVBC/ANNEX_B" in text and "MODULATION = QAM/256" in text
+
+
+def test_xmltv_export_round_trip(tmp_path, monkeypatch):
+    from lindvb.epg import read_xmltv, write_xmltv
+    monkeypatch.setattr(EPGStore, "path", tmp_path / "epg.json")
+    epg = EPGStore(persist=False)
+    a = Channel(name="Das Erste HD", sid=28106, tsid=1019, number=1)
+    b = Channel(name="Leer", sid=1, tsid=2)
+    now = int(time.time()) // 60 * 60
+    epg.add(a.epg_key, Event(now - 600, 3600, "Tagesschau & mehr", "Folge 1", "Nachrichten <live>",
+                             "News", country="D", year=2026))
+    epg.add(a.epg_key, Event(now + 3000, 1800, "Tatort"))
+    channels, items = read_xmltv(write_xmltv(epg, [a, b]))
+    assert len(channels) == 1 and list(channels.values())[0][0] == "Das Erste HD"
+    assert [e.title for _, e in items] == ["Tagesschau & mehr", "Tatort"]
+    first = items[0][1]
+    assert (first.start, first.duration, first.subtitle, first.description, first.year) == \
+        (now - 600, 3600, "Folge 1", "Nachrichten <live>", 2026)
+
+
+def test_reminders(tmp_path, monkeypatch):
+    from lindvb.reminders import ReminderStore
+    monkeypatch.setattr(ReminderStore, "path", tmp_path / "reminders.json")
+    store = ReminderStore()
+    c = Channel(name="ZDF", sid=28006, tsid=1079)
+    now = 1_800_000_000
+    store.add(c, Event(now + 600, 1800, "heute journal"))
+    assert store.has(c.key, now + 600)
+    assert store.due(120, now) == []
+    (r,) = store.due(120, now + 480)
+    assert r.title == "heute journal" and r.channel_name == "ZDF"
+    assert store.due(120, now + 500) == []                  # fires once
+    assert ReminderStore().has(c.key, now + 600)            # saved
+    store.due(120, now + 3000)                              # programme over: dropped
+    assert not store.upcoming(now)

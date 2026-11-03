@@ -93,6 +93,10 @@ DEFAULTS = {
     # EPG ---------------------------------------------------------------------
     # Keep the guide on disk so it survives the end of the program.
     "epg_save": True,
+    # programme reminders: notify this many minutes before the start
+    "reminder_minutes": 2,
+    # media keys and the desktop media controls (MPRIS on the session bus)
+    "mpris": True,
     # Preferred EPG language (ISO 639-2, "" = as broadcast).
     "epg_language": "",
     # How long the programme info is shown on a channel change (0 = never).

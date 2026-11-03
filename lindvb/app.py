@@ -2,6 +2,7 @@
 
 import sys
 import threading
+import time
 import urllib.parse
 import urllib.request
 
@@ -76,6 +77,35 @@ class LinDVBApp(Gtk.Application):
         self._dvbi_busy = False
         self._guide_busy = False
         GLib.timeout_add_seconds(15, self._dvbi_check)
+        # programme reminders from the guide
+        from .reminders import ReminderStore
+        self.reminders = ReminderStore()
+        watch = Gio.SimpleAction.new("watch-channel", GLib.VariantType.new("s"))
+        watch.connect("activate", lambda _a, key: self._watch_key(key.get_string()))
+        self.add_action(watch)
+        GLib.timeout_add_seconds(15, self._check_reminders)
+
+    def _watch_key(self, key):
+        self.do_activate()
+        c = self.db.by_key(key)
+        if c is not None:
+            self.window.zap(c)
+
+    def _check_reminders(self):
+        lead = int(self.settings.get("reminder_minutes", 2)) * 60
+        for r in self.reminders.due(lead):
+            when = time.strftime("%H:%M", time.localtime(r.start))
+            n = Gio.Notification.new(r.title)
+            n.set_body(_("{channel} at {time}").format(channel=r.channel_name, time=when))
+            n.set_priority(Gio.NotificationPriority.HIGH)
+            n.add_button_with_target(_("Watch"), "app.watch-channel", GLib.Variant("s", r.channel_key))
+            n.set_default_action_and_target("app.watch-channel", GLib.Variant("s", r.channel_key))
+            self.send_notification("reminder-" + r.key, n)
+            if self.window is not None:
+                self.window.set_status(_("Reminder: {title} on {channel} at {time}").format(
+                    title=r.title, channel=r.channel_name, time=when))
+            self.plugins.emit("reminder", r)
+        return True
 
     def do_activate(self):
         from .ui.window import MainWindow

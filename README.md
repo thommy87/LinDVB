@@ -72,6 +72,14 @@ picture and hides itself when the mouse is still.
   web search links; on-screen now/next display; XMLTV for internet channels
   with automatic and manual matching of M3U channels to guide channels;
   MediaHighway 1/2 and Freesat EPG; preferred EPG language and time zone
+* Reminders: "Remind Me" in the programme guide sends a desktop notification a few
+  minutes before the programme starts (with a button to switch to the channel)
+* Export the programme guide as XMLTV for other programs
+* Media keys and the GNOME media controls (MPRIS): play/pause, stop, next/previous
+  channel, with channel, programme and logo shown
+* Script hooks: your own programs in `~/.config/lindvb/hooks/` run on channel change,
+  recording start/stop and reminders (environment variables `LINDVB_CHANNEL`,
+  `LINDVB_TITLE`, `LINDVB_FILE`, ...)
 * Teletext window with page navigation, find, copy and save, opened from the "TXT"
   button in the header bar (greyed out when the channel carries no teletext)
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,

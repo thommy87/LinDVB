@@ -57,6 +57,8 @@ SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
 AUDIO_DELAY_STEP = 100      # ms per key press / menu click
 
 class MainWindow(Gtk.ApplicationWindow):
+    mpris = None
+
     def __init__(self, app):
         super().__init__(application=app, title=APP_NAME, default_width=1200, default_height=720)
         self.app = app
@@ -81,6 +83,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
         self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
         # recording library: where each file was left, preview pictures
+        self.mpris = None
+        if self.settings.get("mpris", True):
+            try:
+                from ..mpris import MprisServer
+                self.mpris = MprisServer(app, self)
+            except Exception:       # noqa: BLE001 - no session bus: no media keys
+                self.mpris = None
         self.positions = Positions()
         self._positions_dirty = False
         self._resume_at = None
@@ -132,6 +141,7 @@ class MainWindow(Gtk.ApplicationWindow):
         acts = {
             "open-file": self.on_open_file, "open-url": self.on_open_url,
             "import": self.on_import, "export": self.on_export,
+            "export-epg": self.on_export_epg,
             "epg": lambda: self.app.show_epg(), "timers": lambda: self.app.show_timers(),
             "scan": lambda: self.app.show_scan(), "prefs": lambda: self.app.show_prefs(),
             "editor": lambda: self.app.show_editor(), "stats": lambda: self.app.show_stats(),
@@ -245,6 +255,7 @@ class MainWindow(Gtk.ApplicationWindow):
         file.append(_("Open URL…"), "win.open-url")
         file.append(_("Import Channel List…"), "win.import")
         file.append(_("Export Channel List…"), "win.export")
+        file.append(_("Export Programme Guide (XMLTV)…"), "win.export-epg")
         m.append_section(None, file)
         tv = Gio.Menu()
         tv.append(_("Switch TV / Radio"), "win.toggle-mode")
@@ -1183,6 +1194,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._nolock_since = None
         if c.is_iptv:
             self.player.play_uri(c.url)
+            from .. import hooks
+            hooks.run("channel-tuned", (c,))          # the user's scripts (DVB: via emit)
         else:
             self.capture = self.app.tuners.acquire(c, "live")
             self.capture.connect("stats", self._on_stats)
@@ -1317,6 +1330,8 @@ class MainWindow(Gtk.ApplicationWindow):
         """Switch the channel (or file) off completely; Play brings it back."""
         self._track_position()
         self._save_positions()
+        if self.current is not None or self.playlist:
+            self.app.plugins.emit("playback-stopped", self.current)
         if self.current:
             self.stopped = self.current
         self._release_capture()
@@ -1477,6 +1492,24 @@ class MainWindow(Gtk.ApplicationWindow):
             text = write_dvbv5(chans)
         Path(path).write_text(text)
         self.set_status(_("Exported to {path}").format(path=path))
+
+    def on_export_epg(self):
+        dlg = Gtk.FileDialog(title=_("Export the programme guide (XMLTV)"),
+                             initial_name="lindvb-guide.xml")
+        dlg.save(self, None, self._export_epg_done)
+
+    def _export_epg_done(self, dlg, res):
+        try:
+            path = dlg.save_finish(res).get_path()
+        except GLib.Error:
+            return
+        from ..epg import write_xmltv
+        data = write_xmltv(self.app.epg, self.app.db.channels)
+        try:
+            Path(path).write_bytes(data)
+            self.set_status(_("Exported to {path}").format(path=path))
+        except OSError as e:
+            self.set_status(_("Cannot write {path}: {error}").format(path=path, error=e.strerror))
 
     # ------------------------------------------------------------------ recording
     def _is_recording(self):
@@ -1813,6 +1846,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_metadata(self, _player, meta):
         self.nowplaying.set_metadata(meta)
+        self._mpris_update()
         if self.nowplaying.get_visible() and self.current is None:
             self._update_nowplaying()
 
@@ -1912,7 +1946,35 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.osd.get_visible():
             self.show_osd(getattr(self, "_osd_secs", None))
 
+    def mpris_status(self):
+        if not self.player.playbin:
+            return "Stopped"
+        return "Paused" if self.player.paused else "Playing"
+
+    def _mpris_update(self):
+        """Channel / file, programme or song, logo for the desktop's media controls."""
+        if self.mpris is None:
+            return
+        meta = self.player.metadata or {}
+        state = {"title": "", "artist": "", "album": "", "art": "", "length": 0}
+        if self.current is not None:
+            now, _unused = self.app.epg.now_next(self.current.epg_key)
+            state["title"] = self.current.name
+            state["artist"] = meta.get("title") and " – ".join(
+                x for x in (meta.get("artist"), meta.get("title")) if x) or (now.title if now else "")
+            logo = self.current.logo
+            state["art"] = Path(logo).as_uri() if logo and Path(logo).is_absolute() else ""
+        elif 0 <= self.playlist_pos < len(self.playlist):
+            item = self.playlist[self.playlist_pos]
+            state["title"] = meta.get("title") or Path(item).stem
+            state["artist"] = meta.get("artist", "")
+            state["album"] = meta.get("album", "")
+            pos = self.player.position()
+            state["length"] = pos[1] if pos else 0
+        self.mpris.update(**state)
+
     def _update_transport(self):
+        self._mpris_update()
         idle = self.player.paused or not self.player.playbin
         self.pause_btn.set_icon_name("media-playback-start-symbolic" if idle
                                      else "media-playback-pause-symbolic")

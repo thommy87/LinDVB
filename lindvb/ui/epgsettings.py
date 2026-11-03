@@ -37,8 +37,12 @@ class EPGPrefs:
         self.save_sw = row(g, _("Save EPG data"), Gtk.Switch(active=bool(s.get("epg_save", True))),
                            _("Keeps the guide on disk after LinDVB is closed."))
         self.info_spin = row(g, _("Show EPG info on channel change (s)"),
-                             Gtk.SpinButton.new_with_range(0, 60, 1), "0 = do not show it.")
+                             Gtk.SpinButton.new_with_range(0, 60, 1), _("0 = do not show it."))
         self.info_spin.set_value(int(s.get("epg_info_seconds", 4)))
+        self.remind_spin = row(g, _("Remind before start (min)"),
+                               Gtk.SpinButton.new_with_range(0, 60, 1),
+                               _("Reminders set in the programme guide notify you this early."))
+        self.remind_spin.set_value(int(s.get("reminder_minutes", 2)))
         codes = [c for c, _unused in LANGUAGES]
         cur = s.get("epg_language", "")
         if cur and cur not in codes:
@@ -143,6 +147,7 @@ class EPGPrefs:
         """Write the page into settings *s* and apply it (the caller saves)."""
         s["epg_save"] = self.save_sw.get_active()
         s["epg_info_seconds"] = int(self.info_spin.get_value())
+        s["reminder_minutes"] = int(self.remind_spin.get_value())
         s["epg_language"] = self._lang_codes[self.lang_dd.get_selected()]
         s["xmltv_url"] = self.xmltv.get_text().strip()
         s["epg_tz_auto"] = self.tz_auto.get_active()
