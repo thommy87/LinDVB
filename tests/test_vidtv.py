@@ -7,11 +7,9 @@ pipeline (dvbsrc ! tsparse ! multifilesink) and the DVB EIT parser. They are
 skipped when no vidtv adapter is present; see docs/TESTING.md.
 """
 
-import os
 import shutil
 import subprocess
 import time
-from pathlib import Path
 
 import pytest
 

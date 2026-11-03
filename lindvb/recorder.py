@@ -12,6 +12,7 @@ from pathlib import Path
 from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
+from .i18n import N_, _
 from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
                         SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
                         choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
@@ -19,7 +20,8 @@ from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa:
 from .tuner import SegmentReader
 # systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
 AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
-WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+# stored in timers as indices; the names are translated where they are shown
+WEEKDAYS = [N_("Mo"), N_("Tu"), N_("We"), N_("Th"), N_("Fr"), N_("Sa"), N_("Su")]
 
 
 def safe(s):
@@ -99,7 +101,7 @@ class Timer:
             while datetime.fromtimestamp(self.start).weekday() not in self.days:
                 self.start += 86400
             self.end = self.start + dur
-            self.status = "Scheduled"
+            self.status = N_("Scheduled")
 
 
 @dataclass
@@ -408,7 +410,7 @@ class TimerManager(GObject.Object):
             if t.id in self.active or t.status == "Tuned":
                 if now >= t.rec_end:
                     self._stop(t.id)
-                    t.status = "Done"
+                    t.status = N_("Done")
                     changed = True
                     if t.days:
                         t.next_occurrence(now)
@@ -416,19 +418,19 @@ class TimerManager(GObject.Object):
             elif t.rec_start <= now < t.rec_end and t.status == "Scheduled":
                 ch = self.app.db.by_key(t.channel_key)
                 if ch is None:
-                    t.status = "Channel missing"
+                    t.status = N_("Channel missing")
                 else:
                     if t.tunes and getattr(self.app, "window", None) is not None:
                         self.app.window.zap(ch)
                     if not t.records:
-                        t.status = "Tuned"
+                        t.status = N_("Tuned")
                     elif self._start(t.id, ch, t.title, timer=t):
-                        t.status = "Recording"
+                        t.status = N_("Recording")
                     else:
-                        t.status = "Failed"
+                        t.status = N_("Failed")
                 changed = True
             elif now >= t.rec_end and t.status == "Scheduled":
-                t.status = "Missed"
+                t.status = N_("Missed")
                 t.next_occurrence(now)
                 changed = True
         if changed:
@@ -439,7 +441,7 @@ class TimerManager(GObject.Object):
         """The action after recording, once no other recording is running."""
         if self.active or t.after == "None":
             return
-        self.emit("message", f"After recording: {t.after}")
+        self.emit("message", _("After recording: {action}").format(action=_(t.after)))
         if t.after in AFTER_COMMANDS:
             power_action(AFTER_COMMANDS[t.after])
         elif t.after == "Quit LinDVB":

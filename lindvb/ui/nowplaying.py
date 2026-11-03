@@ -22,6 +22,7 @@ from ..config import CACHE_DIR, DATA_DIR  # noqa: E402
 from ..nowplaying import find_logo, lookup_cover, song_from  # noqa: E402
 from ..visuals import rgb  # noqa: E402
 from .theme import ACCENT  # noqa: E402
+from ..i18n import _
 
 COVER_CACHE = CACHE_DIR / "covers"
 DEFAULT_LOGO_DIR = DATA_DIR / "logos"
@@ -150,7 +151,7 @@ class NowPlayingOverlay(Gtk.DrawingArea):
             try:
                 info = lookup_cover(artist, title, COVER_CACHE)
             except Exception as e:      # network down, odd answer: no cover then
-                print(f"Cover lookup failed: {e}")
+                print(_("Cover lookup failed: {e}").format(e=e))
                 info = None
             GLib.idle_add(self._lookup_done, gen, key, info)
         threading.Thread(target=work, daemon=True).start()
@@ -233,7 +234,7 @@ class NowPlayingOverlay(Gtk.DrawingArea):
         # shrink until the longest word fits on one line
         probe = PangoCairo.create_layout(cr)
         longest = max(name.split(), key=len)
-        for _ in range(12):
+        for _i in range(12):
             probe.set_font_description(
                 Pango.FontDescription.from_string(f"Sans Bold {fsize:.1f}px"))
             probe.set_text(longest, -1)

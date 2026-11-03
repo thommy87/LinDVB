@@ -112,6 +112,8 @@ DEFAULTS = {
     "audio_delays": {},
     # Accent colour: "default" (LinDVB blue), "system" (desktop accent) or
     # "custom" (accent_custom, "#RRGGBB").
+    # user interface language ("" follows the desktop); see lindvb/i18n.py
+    "language": "",
     "accent_mode": "default",
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.

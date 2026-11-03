@@ -10,12 +10,13 @@ from gi.repository import Gdk, GLib, Gtk, Pango
 from ..config import CACHE_DIR
 from ..contentguide import AUDIO_DESCRIPTION, SUBTITLES, badges, image_url
 from .common import day, dropdown, fill, hm, make_column_view, scrolled, selected
+from ..i18n import _
 
 ROW_H = 34
 IMAGE_DIR = CACHE_DIR / "dvbi" / "images"
 # Now/next filter (DTVP IT-16: let viewers find programmes with these features)
-ACCESS_FILTERS = [("All programmes", None), ("With audio description", AUDIO_DESCRIPTION),
-                  ("With subtitles", SUBTITLES)]
+ACCESS_FILTERS = [(_("All programmes"), None), (_("With audio description"), AUDIO_DESCRIPTION),
+                  (_("With subtitles"), SUBTITLES)]
 
 
 def _title(e):
@@ -27,7 +28,7 @@ NAME_W = 150
 
 class EPGWindow(Gtk.Window):
     def __init__(self, app, parent, channel=None):
-        super().__init__(title="Programme Guide", transient_for=parent,
+        super().__init__(title=_("Programme Guide"), transient_for=parent,
                          default_width=1000, default_height=640)
         self.app = app
         self.parent = parent
@@ -40,10 +41,10 @@ class EPGWindow(Gtk.Window):
         self._initial = True
 
         nb = Gtk.Notebook()
-        nb.append_page(self._now_page(), Gtk.Label(label="Now / Next"))
-        nb.append_page(self._channel_page(focus), Gtk.Label(label="Per Channel"))
-        nb.append_page(self._timeline_page(), Gtk.Label(label="TV Guide"))
-        nb.append_page(self._search_page(), Gtk.Label(label="Search"))
+        nb.append_page(self._now_page(), Gtk.Label(label=_("Now / Next")))
+        nb.append_page(self._channel_page(focus), Gtk.Label(label=_("Per Channel")))
+        nb.append_page(self._timeline_page(), Gtk.Label(label=_("TV Guide")))
+        nb.append_page(self._search_page(), Gtk.Label(label=_("Search")))
         if channel:
             nb.set_current_page(1)
 
@@ -59,8 +60,8 @@ class EPGWindow(Gtk.Window):
         det = scrolled(dbox)
         det.set_size_request(-1, 130)
         bar = Gtk.Box(spacing=6)
-        for label, fn in (("Watch", self.on_watch), ("Record", self.on_record),
-                          ("Record Series", self.on_series), ("Search Web", self.on_web)):
+        for label, fn in ((_("Watch"), self.on_watch), (_("Record"), self.on_record),
+                          (_("Record Series"), self.on_series), (_("Search Web"), self.on_web)):
             b = Gtk.Button(label=label)
             b.connect("clicked", lambda _b, fn=fn: fn())
             bar.append(b)
@@ -82,21 +83,21 @@ class EPGWindow(Gtk.Window):
     def _now_page(self):
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         top = Gtk.Box(spacing=6, margin_start=6, margin_top=6)
-        self.at_dd = dropdown(["Now", "Next", "20:15", "22:00"])
+        self.at_dd = dropdown([_("Now"), _("Next"), "20:15", "22:00"])
         self.at_dd.connect("notify::selected", lambda *_: self.refresh())
-        self.only_fav = Gtk.CheckButton(label="Only favourites")
+        self.only_fav = Gtk.CheckButton(label=_("Only favourites"))
         self.only_fav.connect("toggled", lambda *_: self.refresh())
         self.access_dd = dropdown([label for label, _a in ACCESS_FILTERS])
-        self.access_dd.set_tooltip_text("Accessibility features (DVB-I programme guide)")
+        self.access_dd.set_tooltip_text(_("Accessibility features (DVB-I programme guide)"))
         self.access_dd.connect("notify::selected", lambda *_: self.refresh())
-        top.append(Gtk.Label(label="Show:"))
+        top.append(Gtk.Label(label=_("Show:")))
         top.append(self.at_dd)
         top.append(self.only_fav)
         top.append(self.access_dd)
         box.append(top)
-        cols = [("Channel", lambda r: r[0].name, False), ("Start", lambda r: hm(r[1].start), False),
-                ("End", lambda r: hm(r[1].end), False), ("Title", lambda r: _title(r[1]), True),
-                ("Genre", lambda r: r[1].genre, False)]
+        cols = [(_("Channel"), lambda r: r[0].name, False), (_("Start"), lambda r: hm(r[1].start), False),
+                (_("End"), lambda r: hm(r[1].end), False), (_("Title"), lambda r: _title(r[1]), True),
+                (_("Genre"), lambda r: r[1].genre, False)]
         self.now_view, self.now_store, self.now_sel = make_column_view(cols, lambda r: self.app.window.zap(r[0]))
         self.now_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.now_view))
@@ -116,9 +117,9 @@ class EPGWindow(Gtk.Window):
         self.ch_dd.set_margin_top(6)
         self.ch_dd.set_halign(Gtk.Align.START)
         box.append(self.ch_dd)
-        cols = [("Day", lambda r: day(r[1].start), False), ("Start", lambda r: hm(r[1].start), False),
-                ("Duration", lambda r: f"{r[1].duration // 60} min", False),
-                ("Title", lambda r: _title(r[1]), True), ("Subheading", lambda r: r[1].subtitle, True)]
+        cols = [(_("Day"), lambda r: day(r[1].start), False), (_("Start"), lambda r: hm(r[1].start), False),
+                (_("Duration"), lambda r: f"{r[1].duration // 60} min", False),
+                (_("Title"), lambda r: _title(r[1]), True), (_("Subheading"), lambda r: r[1].subtitle, True)]
         self.ch_view, self.ch_store, self.ch_sel = make_column_view(cols, lambda r: self.on_record())
         self.ch_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.ch_view))
@@ -138,17 +139,17 @@ class EPGWindow(Gtk.Window):
     def _search_page(self):
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         top = Gtk.Box(spacing=6, margin_start=6, margin_top=6)
-        self.q = Gtk.SearchEntry(placeholder_text="Title or description", hexpand=True)
+        self.q = Gtk.SearchEntry(placeholder_text=_("Title or description"), hexpand=True)
         self.q.connect("activate", lambda *_: self.do_search())
-        self.q_desc = Gtk.CheckButton(label="Include description", active=True)
-        self.q_case = Gtk.CheckButton(label="Case sensitive")
-        go = Gtk.Button(label="Search")
+        self.q_desc = Gtk.CheckButton(label=_("Include description"), active=True)
+        self.q_case = Gtk.CheckButton(label=_("Case sensitive"))
+        go = Gtk.Button(label=_("Search"))
         go.connect("clicked", lambda *_: self.do_search())
         for w in (self.q, self.q_desc, self.q_case, go):
             top.append(w)
         box.append(top)
-        cols = [("Channel", lambda r: r[0].name, False), ("Day", lambda r: day(r[1].start), False),
-                ("Start", lambda r: hm(r[1].start), False), ("Title", lambda r: _title(r[1]), True)]
+        cols = [(_("Channel"), lambda r: r[0].name, False), (_("Day"), lambda r: day(r[1].start), False),
+                (_("Start"), lambda r: hm(r[1].start), False), (_("Title"), lambda r: _title(r[1]), True)]
         self.s_view, self.s_store, self.s_sel = make_column_view(cols, lambda r: self.on_record())
         self.s_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.s_view))
@@ -249,9 +250,7 @@ class EPGWindow(Gtk.Window):
         if e.min_age:
             extra += f" · FSK {e.min_age}"
         self.details.set_markup(
-            f"<b>{_esc(e.title)}</b>  {_esc(e.subtitle)}\n"
-            f"{_esc(c.name)} · {day(e.start)} {hm(e.start)}–{hm(e.end)} · {e.duration // 60} min"
-            f"{' · ' + _esc(e.genre) if e.genre else ''}{_esc(extra)}\n\n{_esc(e.description)}")
+            _("<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}").format(v0=_esc(e.title), v1=_esc(e.subtitle), v2=_esc(c.name), v3=day(e.start), v4=hm(e.start), v5=hm(e.end), v6=e.duration // 60, v7=' · ' + _esc(e.genre) if e.genre else '', v8=_esc(extra), v9=_esc(e.description)))
         self._show_image(e.image)
 
     def _show_image(self, url):
@@ -358,7 +357,7 @@ class EPGWindow(Gtk.Window):
         if self.selected_event:
             c, e = self.selected_event
             self.app.timers.add_series(e.title, c.key)
-            self.app.window.set_status(f"Series recording: {e.title}")
+            self.app.window.set_status(_("Series recording: {title}").format(title=e.title))
 
     def on_web(self):
         if self.selected_event:

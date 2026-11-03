@@ -19,6 +19,8 @@ from .epg import EPGStore, apply_timezone, read_xmltv  # noqa: E402
 from .plugins import PluginManager  # noqa: E402
 from .recorder import TimerManager  # noqa: E402
 from .tuner import TunerManager  # noqa: E402
+from . import i18n  # noqa: E402
+from .i18n import _  # noqa: E402
 
 
 GUIDE_INTERVAL = 6 * 3600         # DVB-I content guide refresh
@@ -30,9 +32,9 @@ class LinDVBApp(Gtk.Application):
                          Gio.ApplicationFlags.NON_UNIQUE)
         self.window = None
         self.add_main_option("import", ord("i"), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME_ARRAY,
-                             "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)", "FILE")
+                             _("Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"), "FILE")
         self.add_main_option("channel", ord("c"), GLib.OptionFlags.NONE, GLib.OptionArg.STRING,
-                             "Start with this channel (name or number)", "NAME")
+                             _("Start with this channel (name or number)"), "NAME")
         self._start_channel = None
         self._epg_dirty = False
 
@@ -40,6 +42,9 @@ class LinDVBApp(Gtk.Application):
         opts = options.end().unpack()
         Gst.init(None)
         self.settings = Settings()
+        i18n.setup(self.settings.get("language", ""))
+        if i18n.is_rtl():
+            Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
         channels_mod.DVBI_GUIDE_FIRST = bool(self.settings.get("dvbi_guide", True))
         self.plugins = PluginManager(self.settings)
         self.plugins.load_all()
@@ -118,9 +123,9 @@ class LinDVBApp(Gtk.Application):
     def update_xmltv(self):
         url = self.settings.get("xmltv_url")
         if not url:
-            self.window.set_status("Set an XMLTV URL in the preferences first")
+            self.window.set_status(_("Set an XMLTV URL in the preferences first"))
             return
-        self.window.set_status("Downloading XMLTV guide…")
+        self.window.set_status(_("Downloading XMLTV guide…"))
         language = self.settings.get("epg_language", "")
 
         def work():
@@ -144,7 +149,7 @@ class LinDVBApp(Gtk.Application):
         self.epg.save()
         msg = f"XMLTV: {len(items)} programmes loaded, {matched} IPTV channels matched"
         if unmatched:
-            msg += f", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+            msg += _(", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)").format(unmatched=unmatched)
         self.window.set_status(msg)
         return False
 
@@ -221,7 +226,7 @@ class LinDVBApp(Gtk.Application):
         updater = self.dvbi_updater()
         scanned = [c for c in self.db.channels if not c.dvbi_id]
         if self.window:
-            self.window.set_status("DVB-I: loading the service list…")
+            self.window.set_status(_("DVB-I: loading the service list…"))
 
         def work():
             try:
@@ -257,7 +262,7 @@ class LinDVBApp(Gtk.Application):
         urls = self.settings["epg_search_urls"]
         if not urls:
             return
-        pop = Gtk.Window(title="Search the web", transient_for=parent, modal=True)
+        pop = Gtk.Window(title=_("Search the web"), transient_for=parent, modal=True)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, margin_start=12,
                       margin_end=12, margin_top=12, margin_bottom=12)
         for name, tmpl in urls:
