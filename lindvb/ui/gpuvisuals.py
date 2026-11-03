@@ -876,10 +876,20 @@ void main() {
 
 AURORA = PRELUDE + SCENE_FN + """
 const int SAMPLES = 90;
-float ridge_y(float x) {      // the mountains: low on the left, a big slope on the right
-    float y = mix(1.03, 0.80, smoothstep(0.48, 1.0, x)) - 0.045 * exp(-pow((x - 0.03) / 0.07, 2.0));
-    y += 0.040 * (fbm(vec2(x * 7.0, 0.5), 5) - 0.5) + 0.010 * (ridged(vec2(x * 40.0, 2.0), 3) - 0.4);
-    return y;
+uniform float u_ridge[48];   // mountain heights (0..1 above the bottom), the newest on the right
+uniform float u_scroll;      // fraction of a point already scrolled to the left
+uniform float u_world;       // points scrolled in total, moves the snow's texture along
+const float VISIBLE = 40.0;
+float ridge_at(int i) { return u_ridge[clamp(i, 0, 47)]; }
+float ridge_y(float x) {      // Catmull-Rom through the points, plus rocky detail
+    float fx = x * VISIBLE + u_scroll;
+    int i = int(floor(fx));
+    float t = fx - float(i);
+    float a = ridge_at(i - 1), b = ridge_at(i), c = ridge_at(i + 1), d = ridge_at(i + 2);
+    float h = b + 0.5 * t * (c - a + t * (2.0 * a - 5.0 * b + 4.0 * c - d + t * (3.0 * (b - c) + d - a)));
+    float wx = (x * VISIBLE + u_world) / VISIBLE;
+    h += 0.018 * (fbm(vec2(wx * 9.0, 0.5), 4) - 0.5) + 0.008 * (ridged(vec2(wx * 45.0, 2.0), 3) - 0.4);
+    return 1.0 - h;
 }
 // stars that light up at random places and fade away again; new ones appear elsewhere
 vec3 blinking(vec2 px, float cell, float density, float size, float pace) {
@@ -899,7 +909,7 @@ vec2 path(float t, float c, float aspect, float seed) {
     // the sideways terms are strong enough to fold the band back on itself at times
     float x = mix(0.0, 1.0, t) + 0.20 * sin(TAU * (1.1 * t + c * 0.11) + seed) * (0.6 + 0.4 * sin(c * 0.05 + seed))
               + 0.12 * sin(TAU * (0.45 * t - c * 0.07) + 2.0 * seed) + 0.15 * sin(c * 0.04 + seed * 3.0);
-    float y = 0.55 + 0.16 * sin(TAU * (0.7 * t + c * 0.09) + seed)
+    float y = 0.58 + 0.16 * sin(TAU * (0.7 * t + c * 0.09) + seed)
               + 0.09 * sin(TAU * (1.6 * t - c * 0.13) + 3.0 * seed)
               + 0.05 * sin(TAU * (2.9 * t + c * 0.17) + 5.0 * seed);
     return vec2(x * aspect, y);
@@ -956,7 +966,7 @@ void main() {
     col += blinking(px, 34.0 * u_unit, 0.35, 1.1, 0.05) * 1.2;
     col += blinking(px + 91.0, 90.0 * u_unit, 0.45, 1.6, 0.03) * 1.4;
     // the band of light, and a fainter one further away
-    vec3 au = curtain(p, aspect, c, 1.3, 1.0, 0.11);
+    vec3 au = curtain(p, aspect, c, 1.3, 1.0, 0.17);
     au += curtain(p * vec2(1.0, 1.25) - vec2(0.0, 0.32), aspect, c * 0.8, 4.7, 0.35, 0.10);
     col += au;
     col += vec3(0.1, 0.6, 0.45) * 0.10 * smoothstep(0.0, 1.5, dot(au, vec3(0.33))) ;
@@ -967,7 +977,7 @@ void main() {
     // the snowy mountains, gently shimmering, with drifting blown snow
     if (p.y > ry - 0.02) {
         float depth = max(p.y - ry, 0.0);
-        vec2 sp = vec2(p.x * aspect, p.y);
+        vec2 sp = vec2((p.x + u_world / VISIBLE) * aspect, p.y);     // the texture moves with the hills
         float slope = fbm(sp * vec2(8.0, 14.0), 5);
         float lightdir = clamp(0.5 + (fbm(sp * vec2(8.0, 14.0) + vec2(0.02, -0.01), 5) - slope) * 18.0, 0.0, 1.0);
         vec3 snow = mix(vec3(0.42, 0.55, 0.70), vec3(0.82, 0.90, 0.98), lightdir);
@@ -979,7 +989,7 @@ void main() {
         m *= 1.0 - 0.35 * smoothstep(0.0, 0.25, depth);
         m += vec3(0.2, 0.9, 0.55) * 0.10 * (0.4 + u_energy.w);         // lit by the aurora
         // glitter on the snow and blown snow drifting along the slope
-        vec2 g = floor(px / (3.0 * u_unit));
+        vec2 g = floor((px + vec2(u_world / VISIBLE * u_res.x, 0.0)) / (3.0 * u_unit));
         float tw = step(0.996, hash12(g)) * pow(max(0.0, sin(u_t * (1.0 + 2.0 * hash12(g + 1.0)) + hash12(g) * 50.0)), 8.0);
         m += vec3(0.9, 0.95, 1.0) * tw * 0.8 * (1.0 - rock);
         float drift = fbm(vec2(sp.x * 4.0 - u_t * 0.05, sp.y * 12.0 + u_t * 0.01), 4);
@@ -1374,6 +1384,10 @@ class SceneRenderer(Renderer):
         prog.set_array("u_spec", st.spectrum.values or [0.0] * 48, 1)
         if isinstance(st, visuals.OccasusSolis):
             prog.set("u_sun", *st.SUN)
+        if isinstance(st, visuals.AuroraBorealis):
+            prog.set_array("u_ridge", st.ridge, 1)
+            prog.set("u_scroll", st.scroll)
+            prog.set("u_world", st.world)
         if isinstance(st, visuals.Supernova):
             prog.set("u_flow", st.flow)
             prog.set_array("u_veil", st.veils, 1)

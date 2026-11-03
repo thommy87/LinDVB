@@ -257,3 +257,16 @@ def test_supernova_veils_take_their_strength_from_the_music_at_birth():
     for f in _frames(1, 0.0, -90.0):            # a single quiet frame changes no living veil
         loud.params(f)
     assert loud.flow >= flow and sum(a != b for a, b in zip(before, loud.veils)) <= 1
+
+
+def test_aurora_mountains_scroll_left_and_grow_from_the_music():
+    from lindvb.visuals import AuroraBorealis
+    style = AuroraBorealis(seed=5)
+    first = list(style.ridge)
+    for f in _frames(600, 0.6, -15.0):              # 10 s
+        style.params(f)
+    assert len(style.ridge) == AuroraBorealis.RIDGE
+    assert 0.0 <= style.scroll < 1.0 and style.world > 5
+    shifted = int(style.world)
+    assert style.ridge[:AuroraBorealis.RIDGE - shifted] == first[shifted:]   # moved to the left
+    assert all(0.02 <= h <= 0.26 for h in style.ridge)

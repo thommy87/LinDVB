@@ -898,12 +898,53 @@ class AuroraBorealis(_Scene):
     is a free curve that slowly changes its shape and wanders across the sky.
     It glows most at one end, yellow-green, then turns turquoise and finally
     pink or violet, with rays reaching upwards. Behind the mountains there is
-    a yellow-green glow; snow drifts and glitters on the slopes, and stars
-    light up at random places and fade away. Each part of the band brightens
-    with its part of the spectrum, the bass lengthens its rays."""
+    a yellow-green glow; the mountains move slowly from right to left, the
+    new hills and peaks coming in grown from the music (higher and steeper
+    with the bass, a peak on a strong beat); snow drifts and glitters on the
+    slopes, and stars light up at random places and fade away. Each part of
+    the band brightens with its part of the spectrum, the bass lengthens its
+    rays."""
     id, label = "aurora", "Aurora borealis (modern)"
 
     PACE = (0.25, 0.20)
+    RIDGE = 48            # height points of the mountains, as in the shader
+    VISIBLE = 40          # of them across the width of the screen
+    SCROLL = (0.5, 0.5)   # points per second when silent, extra at full level
+
+    def __init__(self, seed=None):
+        super().__init__()
+        self.rng = random.Random(seed)
+        self.scroll = 0.0         # fraction of a point scrolled to the left
+        self.world = 0.0          # points scrolled in total
+        self.trend = 0.0
+        h = 0.10
+        self.ridge = []
+        for _ in range(self.RIDGE):
+            h = self._next(h, 0.0, 0.0)
+            self.ridge.append(h)
+
+    def _next(self, h, bass, beat):
+        """The height (0..1 of the screen above the bottom edge) of the next
+        point coming in from the right: a calm random walk for the hills,
+        steeper and higher with the bass, a peak on a strong beat."""
+        rng = self.rng
+        self.trend += rng.gauss(0.0, 0.012 + 0.03 * bass) - 0.25 * self.trend
+        h += self.trend + 0.12 * (0.08 + 0.08 * bass - h)
+        if beat > 0.8 and rng.random() < 0.5:
+            h += 0.04 + 0.06 * beat * rng.random()
+        return max(0.02, min(0.26, h))
+
+    def params(self, f):
+        p = super().params(f)
+        bass, level, pulse = p[1], p[5], p[4]
+        step = f.dt * (self.SCROLL[0] + self.SCROLL[1] * level)
+        self.scroll += step
+        self.world += step
+        while self.scroll >= 1.0:
+            self.scroll -= 1.0
+            self.ridge.pop(0)
+            self.ridge.append(self._next(self.ridge[-1], bass, max(pulse, f.beat)))
+        return p
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
         g = cairo.LinearGradient(0, 0, 0, h)
