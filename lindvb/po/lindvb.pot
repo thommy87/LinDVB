@@ -2624,6 +2624,15 @@ msgstr ""
 msgid "Pulsar (modern)"
 msgstr ""
 
+msgid "Supernova (modern)"
+msgstr ""
+
+msgid "Occasus solis (modern)"
+msgstr ""
+
+msgid "Aurora borealis (modern)"
+msgstr ""
+
 msgid "Goom HD (GPU)"
 msgstr ""
 

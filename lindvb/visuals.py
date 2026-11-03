@@ -768,6 +768,139 @@ class Pulsar(Style):
         footer(cr, w, h, f.caption)
 
 
+class _Scene(Style):
+    """Base of the slow painted scenes (supernova, sunset, aurora).
+
+    The picture is drawn entirely by a fragment shader
+    (:mod:`lindvb.ui.gpuvisuals`); the CPU only smooths the music into a few
+    numbers per frame. ``clock`` runs slowly and only a little faster when
+    the music is loud, so the scenes drift rather than dance."""
+
+    PACE = (0.06, 0.10)           # clock speed when silent, extra at full level
+    EASE = 2.5                    # how quickly the energies follow (1/s)
+
+    def __init__(self):
+        self.spectrum = _Spectrum(rise=6.0, fall=1.2, blur=3)
+        self.energy = [0.0, 0.0, 0.0]
+        self.pulse = 0.0
+        self.clock = 0.0
+
+    def params(self, f):
+        """Advance the state; returns (clock, bass, mid, treble, pulse, level)."""
+        self.spectrum.update(f)
+        for g, v in enumerate((f.bass, f.mid, f.treble)):
+            self.energy[g] += (v - self.energy[g]) * min(1.0, f.dt * self.EASE)
+        bass, mid, treble = self.energy
+        level = (bass + mid + treble) / 3
+        self.pulse += (f.beat - self.pulse) * min(1.0, f.dt * 4)
+        self.clock += f.dt * (self.PACE[0] + self.PACE[1] * level)
+        return self.clock, bass, mid, treble, self.pulse, level
+
+    # -- without OpenGL: a simple painted sketch of the scene -------------------------
+    def draw(self, cr, w, h, f):
+        p = self.params(f)
+        self.sketch(cr, w, h, *p)
+        footer(cr, w, h, f.caption)
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        raise NotImplementedError
+
+
+def _glow(cr, x, y, r, stops):
+    g = cairo.RadialGradient(x, y, 0, x, y, max(1.0, r))
+    for pos, col, alpha in stops:
+        g.add_color_stop_rgba(pos, *col, alpha)
+    cr.set_source(g)
+    cr.arc(x, y, max(1.0, r), 0, TAU)
+    cr.fill()
+
+
+class Supernova(_Scene):
+    """An exploding star: a white-hot core inside a ragged shell of glowing
+    filaments, gold and orange inside, blue and cyan at the rim, magenta
+    and red in patches, in front of a slowly turning spiral galaxy. The
+    spectrum shapes the rim around the star (bass at the top, treble at the
+    bottom), the beat makes the core flare."""
+    id, label = "supernova", "Supernova (modern)"
+
+    PACE = (0.05, 0.08)
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        cr.set_source_rgb(0.0, 0.0, 0.01)
+        cr.paint()
+        cx, cy, s = w / 2, h / 2, min(w, h)
+        r0 = s * 0.33 * (1 + 0.06 * bass)
+        cr.set_operator(cairo.OPERATOR_ADD)
+        _glow(cr, cx, cy, r0 * 1.25, ((0, (0.2, 0.5, 1.0), 0.0), (0.75, (0.15, 0.45, 1.0), 0.35),
+                                      (1, (0.1, 0.2, 0.8), 0.0)))
+        _glow(cr, cx, cy, r0, ((0, (1.0, 0.95, 0.85), 0.9), (0.4, (1.0, 0.6, 0.2), 0.45),
+                               (1, (0.9, 0.2, 0.3), 0.0)))
+        _glow(cr, cx, cy, r0 * (0.25 + 0.1 * pulse), ((0, (1, 1, 1), 1.0), (1, (1, 0.9, 0.7), 0.0)))
+        cr.set_operator(cairo.OPERATOR_OVER)
+
+
+class OccasusSolis(_Scene):
+    """A sunset (lat. *occasus solis*): a small sun low over the horizon in
+    an orange and red sky, rays fanning out between slowly drifting clouds
+    lit gold from below. The spectrum sets the rays from left (bass) to
+    right (treble), the bass the glow of the sun."""
+    id, label = "sunset", "Occasus solis (modern)"
+
+    PACE = (0.05, 0.07)
+    SUN = (0.5, 0.86)             # position, 0..1 of the width and the height
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        g = cairo.LinearGradient(0, 0, 0, h)
+        g.add_color_stop_rgb(0, 0.42, 0.33, 0.45)
+        g.add_color_stop_rgb(0.45, 0.93, 0.55, 0.32)
+        g.add_color_stop_rgb(0.8, 1.0, 0.45, 0.12)
+        g.add_color_stop_rgb(1, 0.85, 0.2, 0.08)
+        cr.set_source(g)
+        cr.paint()
+        sx, sy = w * self.SUN[0], h * self.SUN[1]
+        cr.set_operator(cairo.OPERATOR_ADD)
+        _glow(cr, sx, sy, h * (0.55 + 0.1 * bass), ((0, (1.0, 0.8, 0.4), 0.55), (1, (1.0, 0.4, 0.1), 0.0)))
+        cr.set_operator(cairo.OPERATOR_OVER)
+        _glow(cr, sx, sy, h * 0.03, ((0, (1, 1, 0.95), 1.0), (0.8, (1, 0.95, 0.75), 1.0),
+                                     (1, (1, 0.85, 0.5), 0.0)))
+
+
+class AuroraBorealis(_Scene):
+    """Northern lights over snowy mountains: curtains of light, yellow-green
+    at their lower edge and violet at the top, fold and sway slowly across a
+    starry deep blue sky. Each ray brightens with its part of the spectrum
+    (bass on the left, treble on the right); louder music lifts the
+    curtains."""
+    id, label = "aurora", "Aurora borealis (modern)"
+
+    PACE = (0.05, 0.08)
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        g = cairo.LinearGradient(0, 0, 0, h)
+        g.add_color_stop_rgb(0, 0.02, 0.12, 0.32)
+        g.add_color_stop_rgb(1, 0.05, 0.25, 0.55)
+        cr.set_source(g)
+        cr.paint()
+        cr.set_operator(cairo.OPERATOR_ADD)
+        for k in range(3):
+            x = w * (0.3 + 0.25 * k + 0.05 * math.sin(clock * 3 + k))
+            g = cairo.LinearGradient(0, h * 0.1, 0, h * 0.85)
+            g.add_color_stop_rgba(0, 0.6, 0.2, 0.8, 0.0)
+            g.add_color_stop_rgba(0.5, 0.6, 0.2, 0.8, 0.25 + 0.2 * level)
+            g.add_color_stop_rgba(1, 0.5, 1.0, 0.4, 0.55 + 0.3 * level)
+            cr.set_source(g)
+            cr.rectangle(x - w * 0.06, h * 0.1, w * 0.12, h * 0.75)
+            cr.fill()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        cr.set_source_rgb(0.75, 0.82, 0.9)
+        cr.move_to(w * 0.5, h)
+        cr.line_to(w * 0.75, h * 0.82)
+        cr.line_to(w, h * 0.77)
+        cr.line_to(w, h)
+        cr.close_path()
+        cr.fill()
+
+
 class GoomHD(Style):
     """GOOM 2k4 at the screen's own resolution.
 
@@ -857,7 +990,8 @@ class GoomHD(Style):
         footer(cr, w, h, f.caption)
 
 
-STYLES = [GlowWaves, Nebula, LightRibbons, Pulsar, GoomHD, SpectrumBars, VUMeters, Oscilloscope, Blank]
+STYLES = [GlowWaves, Nebula, LightRibbons, Pulsar, Supernova, OccasusSolis, AuroraBorealis, GoomHD,
+          SpectrumBars, VUMeters, Oscilloscope, Blank]
 DEFAULT_STYLE = GlowWaves.id
 
 

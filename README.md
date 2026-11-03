@@ -43,7 +43,9 @@ picture and hides itself when the mouse is still.
 * Radio visualisations, drawn on the graphics card (OpenGL) at full resolution:
   glow waves, nebula particles, light ribbons (threads of light over a
   rippling water reflection), pulsar (a core bursting into spectrum-shaped
-  colour flames with spokes, orbits and star dust) and Goom HD (the original GOOM logic, drawn by
+  colour flames with spokes, orbits and star dust), supernova (a white-hot core
+  in a shell of glowing filaments), occasus solis (a sunset with rays between
+  drifting clouds), aurora borealis (northern lights over snowy mountains) and Goom HD (the original GOOM logic, drawn by
   shaders natively up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
   and projectM (MilkDrop presets) or the original GOOM through the bundled
   GStreamer add-on; plugins can add their own.

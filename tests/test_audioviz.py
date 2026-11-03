@@ -220,3 +220,25 @@ def test_pulsar_bursts_with_the_music():
     for turn, gain, alpha, sharp, col in p["layers"]:
         assert gain > 0 and 0 < alpha <= 1 and len(col) == 3
     assert all(0.0 <= style.spec_at(a / 16) <= 1.0 for a in range(-16, 33))
+
+
+def test_painted_scenes_follow_the_music_slowly():
+    from lindvb.visuals import AuroraBorealis, OccasusSolis, Supernova
+    for cls in (Supernova, OccasusSolis, AuroraBorealis):
+        quiet, loud = cls(), cls()
+        for f in _frames(120, 0.01, -78.0):
+            pq = quiet.params(f)
+        for f in _frames(120, 0.6, -15.0):
+            pl = loud.params(f)
+        assert pl[5] > pq[5]                       # louder: more energy ...
+        assert pl[0] > pq[0]                       # ... and the scene drifts a little faster
+        assert pl[0] < 2 * 0.5                     # but slowly: under 1 unit in 2 s
+        assert len(loud.spectrum.values) == 48 and max(loud.spectrum.values) <= 1.0
+
+
+def test_scene_shaders_declare_what_the_renderer_sets():
+    pytest.importorskip("cairo")
+    from lindvb.ui.gpuvisuals import SceneRenderer
+    for shader in SceneRenderer.SHADERS.values():
+        for name in ("u_t", "u_clock", "u_unit", "u_pulse", "u_energy", "u_spec"):
+            assert f" {name}" in shader, name

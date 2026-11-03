@@ -1881,6 +1881,15 @@ msgstr "Lichtbänder (modern)"
 msgid "Pulsar (modern)"
 msgstr "Pulsar (modern)"
 
+msgid "Supernova (modern)"
+msgstr "Supernova (modern)"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis (modern)"
+
+msgid "Aurora borealis (modern)"
+msgstr "Aurora borealis (modern)"
+
 msgid "Goom HD (GPU)"
 msgstr "Goom HD (GPU)"
 
