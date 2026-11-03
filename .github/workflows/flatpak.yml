@@ -1,10 +1,10 @@
 name: Build Flatpak
 
+# Only built for releases (the Release workflow, or a pushed v* tag) and on
+# demand; normal pushes and pull requests build only the AppImage.
 on:
   push:
-    branches: [main]
     tags: ["v*"]
-  pull_request:
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -33,19 +33,10 @@ jobs:
           bundle: LinDVB.flatpak
           manifest-path: flatpak/io.github.thommy87.LinDVB.yml
           cache-key: flatpak-builder-${{ github.sha }}
-          # The tag-push release job below needs the artifact; PRs and Release-workflow
-          # builds don't, and the Actions storage quota is small.
+          # The tag-push release job below needs the artifact; Release-workflow
+          # builds upload straight to the draft release, and the Actions storage
+          # quota is small.
           upload-artifact: ${{ startsWith(github.ref, 'refs/tags/') }}
-
-      # Branch pushes keep a short-lived copy, but a full artifact store must not
-      # turn the build red.
-      - uses: actions/upload-artifact@v4
-        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
-        continue-on-error: true
-        with:
-          name: LinDVB-flatpak
-          path: LinDVB.flatpak
-          retention-days: 3
 
       - name: Upload to the draft release
         if: inputs.release_id != ''

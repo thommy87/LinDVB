@@ -141,8 +141,7 @@ Debian 13, Fedora 40 and later). To build it yourself: `packaging/build-appimage
 ### Flatpak
 
 Download `LinDVB-…-x86_64.flatpak` from the
-[releases](https://github.com/thommy87/LinDVB/releases) (or the latest
-[Build Flatpak](https://github.com/thommy87/LinDVB/actions/workflows/flatpak.yml) run), then:
+[releases](https://github.com/thommy87/LinDVB/releases), then:
 
 ```sh
 flatpak install --user LinDVB-*-x86_64.flatpak     # pulls the GNOME 48 runtime from Flathub
@@ -239,6 +238,8 @@ with these keys; use `ir-keytable` to remap buttons.
 
 Run the **Release** workflow from the Actions tab and enter a tag such as `v0.3.0`. It
 builds the AppImage, Flatpak and Snap and publishes all three in one GitHub release.
+Pushes and pull requests build only the AppImage; the Flatpak and Snap are built only for
+releases (or by starting their workflows by hand).
 
 ## Development
 
