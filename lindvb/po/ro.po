@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ro\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importă o listă de canale (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Pornește cu acest canal (nume sau număr)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} la {time}"
+
+msgid "Watch"
+msgstr "Vizionează"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Memento: {title} pe {channel} la {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Setează mai întâi o adresă XMLTV în preferințe"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Se descarcă ghidul XMLTV…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} fără ghid (TV ▸ Asociază canalele IPTV cu XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: se încarcă lista de servicii…"
+
+msgid "Search the web"
+msgstr "Caută pe web"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Subtitrări (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Date EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Toate pistele audio"
+
+msgid "Preferred language only"
+msgstr "Doar limba preferată"
+
+msgid "First audio track only"
+msgstr "Doar prima pistă audio"
+
+msgid "Record"
+msgstr "Înregistrează"
+
+msgid "Record and tune"
+msgstr "Înregistrează și comută"
+
+msgid "Tune only"
+msgstr "Doar comută"
+
+msgid "Hibernate"
+msgstr "Hibernare"
+
+msgid "None"
+msgstr "Nimic"
+
+msgid "Power off"
+msgstr "Oprește"
+
+msgid "Quit LinDVB"
+msgstr "Închide LinDVB"
+
+msgid "Standby"
+msgstr "Stare de veghe"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Fluxurile de internet nu au teletext, subtitrări sau date EPG."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 păstrează o pistă audio (limba preferată când este difuzată)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Fișierul audio păstrează o pistă (limba preferată când este difuzată)."
+
+msgid "Fr"
+msgstr "Vi"
+
+msgid "Mo"
+msgstr "Lu"
+
+msgid "Sa"
+msgstr "Sâ"
+
+msgid "Su"
+msgstr "Du"
+
+msgid "Th"
+msgstr "Jo"
+
+msgid "Tu"
+msgstr "Ma"
+
+msgid "We"
+msgstr "Mi"
+
+msgid "Scheduled"
+msgstr "Programat"
+
+msgid "Done"
+msgstr "Gata"
+
+msgid "Channel missing"
+msgstr "Canal lipsă"
+
+msgid "Tuned"
+msgstr "Comutat"
+
+msgid "Recording"
+msgstr "Se înregistrează"
+
+msgid "Failed"
+msgstr "Eșuat"
+
+msgid "Missed"
+msgstr "Ratat"
+
+msgid "After recording: {action}"
+msgstr "După înregistrare: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Modulul a fost scos sau resetat."
+
+msgid "CAM Menu"
+msgstr "Meniu CAM"
+
+msgid "Cancel"
+msgstr "Anulează"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Deschide meniul CAM"
+
+msgid "Select"
+msgstr "Selectează"
+
+msgid "Back"
+msgstr "Înapoi"
+
+msgid "Close Menu"
+msgstr "Închide meniul"
+
+msgid "Device: {path} – {state}"
+msgstr "Dispozitiv: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Deschide meniul CAM pentru a vedea setările modulului, informațiile cardului inteligent și controlul parental."
+
+msgid "The module has not finished starting yet."
+msgstr "Modulul nu a terminat încă pornirea."
+
+msgid "Custom colour"
+msgstr "Culoare personalizată"
+
+msgid "LinDVB blue (default)"
+msgstr "Albastru LinDVB (implicit)"
+
+msgid "System accent colour"
+msgstr "Culoarea de accent a sistemului"
+
+msgid "Preferences"
+msgstr "Preferințe"
+
+msgid "Save"
+msgstr "Salvează"
+
+msgid "Appearance"
+msgstr "Aspect"
+
+msgid "Language"
+msgstr "Limbă"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Intră în vigoare la următoarea pornire a LinDVB."
+
+msgid "Accent colour"
+msgstr "Culoare de accent"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Folosită pentru evidențieri, selecții și butoane în toate ferestrele."
+
+msgid "On-screen display"
+msgstr "Afișare pe ecran"
+
+msgid "OSD display time (s)"
+msgstr "Durata afișării OSD (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizare"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Ce se afișează peste vizualizarea radio cât timp rulează un post de radio sau un fișier audio. Datele melodiei vin din RadioText-ul radioului DVB, titlul fluxului radioului pe internet și etichetele fișierelor audio."
+
+msgid "Overlay"
+msgstr "Suprapunere"
+
+msgid "Station logo tile"
+msgstr "Placă cu sigla postului"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Sigla canalului sau o placă cu numele postului dacă nu există siglă."
+
+msgid "Album cover"
+msgstr "Copertă album"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Coperta melodiei difuzate, din fișier sau căutată online."
+
+msgid "Song information"
+msgstr "Informații despre melodie"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Artist, album și an, pistă și titlu. Fără datele melodiei se afișează postul și emisiunea difuzată."
+
+msgid "Clock in the top right corner"
+msgstr "Ceas în colțul din dreapta sus"
+
+msgid "Sources"
+msgstr "Surse"
+
+msgid "Look up covers online"
+msgstr "Caută coperte online"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Trimite artistul și titlul melodiei difuzate către iTunes Search API pentru a găsi albumul, anul și coperta."
+
+msgid "Station logo folder"
+msgstr "Dosar cu siglele posturilor"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Fișiere imagine (PNG, SVG, JPG) cu numele canalului, de ex. „Bayern 3.png”. Siglele cu numele canalului, cum le păstrează DVBViewer, funcționează ca atare. Gol: {v0}"
+
+msgid "Playback"
+msgstr "Redare"
+
+msgid "Deinterlace video"
+msgstr "Deîntrețesere video"
+
+msgid "Screenshot folder"
+msgstr "Dosar pentru capturi de ecran"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Dosar timeshift"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Tampon timeshift (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner și LNB"
+
+msgid "DVB hardware"
+msgstr "Hardware DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Numerele adaptoarelor pe care LinDVB le poate folosi, separate prin virgulă."
+
+msgid "DVB adapters"
+msgstr "Adaptoare DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Capturează tot transponderul"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Necesar pentru toate pistele audio când lista de canale știe doar un PID audio."
+
+msgid "Satellite LNB"
+msgstr "LNB prin satelit"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF bandă joasă (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF bandă înaltă (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Frecvență de comutare (kHz)"
+
+msgid "Recording folder"
+msgstr "Dosar înregistrări"
+
+msgid "File naming scheme"
+msgstr "Schemă pentru numele fișierelor"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Substituenți: %year %date %time %end %station %name, / pentru subdosare"
+
+msgid "Timer padding"
+msgstr "Marjele temporizatoarelor"
+
+msgid "Start earlier by (min)"
+msgstr "Începe mai devreme cu (min)"
+
+msgid "Stop later by (min)"
+msgstr "Termină mai târziu cu (min)"
+
+msgid "Timers"
+msgstr "Temporizatoare"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Deschide fereastra temporizatoarelor după crearea unuia"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "După „Înregistrează” în ghid, editează imediat noul temporizator."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Ghid de programe: EPG difuzat, EPG de pe internet (XMLTV) și EPG-ul altor furnizori."
+
+msgid "Conditional access"
+msgstr "Acces condiționat"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Decodarea canalelor criptate la care ești abonat, cu propriul card într-un softcam sau modul CI."
+
+msgid "None (leave scrambled)"
+msgstr "Nimic (lasă criptat)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Softcam extern (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Modul hardware CI / CI+"
+
+msgid "Descrambling via"
+msgstr "Decodare prin"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Socket DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Calea socketului Unix sau gazdă:port."
+
+msgid "CI module"
+msgstr "Modul CI"
+
+msgid "CI adapter number"
+msgstr "Numărul adaptorului CI"
+
+msgid "CA device number"
+msgstr "Numărul dispozitivului CA"
+
+msgid "Plugins"
+msgstr "Module suplimentare"
+
+msgid "Load plugins at startup"
+msgstr "Încarcă modulele suplimentare la pornire"
+
+msgid "Manage Plugins…"
+msgstr "Gestionează modulele suplimentare…"
+
+msgid "Format and tracks"
+msgstr "Format și piste"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Valori implicite pentru temporizatoarele noi și butonul Înregistrează. Fiecare temporizator și o înregistrare pornită cu „Înregistrează cu opțiuni…” le pot schimba.\nTS: video, toate pistele audio, subtitrări, teletext și date EPG. MKV: video, mai multe piste audio și subtitrări. MPG: video și mai multe piste audio. MP4: video și o pistă audio. Fluxurile de internet nu au teletext, subtitrări sau date EPG; fluxurile HLS și DASH se înregistrează cu o pistă audio."
+
+msgid "TV format"
+msgstr "Format TV"
+
+msgid "Radio format"
+msgstr "Format radio"
+
+msgid "Audio tracks"
+msgstr "Piste audio"
+
+msgid "Preferred audio language"
+msgstr "Limba audio preferată"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Folosită de „Doar limba preferată” și de MP4, care păstrează o pistă. Pistele cu descriere audio sunt omise. Fără potrivire se înregistrează prima pistă."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} pot fi păstrate doar în MPEG-TS, așa că înregistrările sunt salvate ca TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} pot fi păstrate doar în TS sau MKV, așa că înregistrările sunt salvate ca TS."
+
+msgid " and "
+msgstr " și "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Nu este setată o limbă audio preferată, așa că se înregistrează doar prima pistă audio."
+
+msgid "Desktop accent: {found}"
+msgstr "Accentul desktopului: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Nu s-a găsit accentul desktopului, se folosește albastrul LinDVB."
+
+msgid "Current accent: {color}"
+msgstr "Accent curent: {color}"
+
+msgid "Channel Editor"
+msgstr "Editor de canale"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Fav"
+msgstr "Fav"
+
+msgid "Type"
+msgstr "Tip"
+
+msgid "Filter channels"
+msgstr "Filtrează canalele"
+
+msgid "General"
+msgstr "General"
+
+msgid "Stream URL"
+msgstr "Adresa fluxului"
+
+msgid "Favourite"
+msgstr "Favorit"
+
+msgid "Radio"
+msgstr "Radio"
+
+msgid "Encrypted"
+msgstr "Criptat"
+
+msgid "Tuning"
+msgstr "Acord"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "Polarity"
+msgstr "Polaritate"
+
+msgid "Modulation"
+msgstr "Modulație"
+
+msgid "Frequency (kHz)"
+msgstr "Frecvență (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Rată de simboluri (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Lățime de bandă (Hz)"
+
+msgid "Stream ID"
+msgstr "ID flux"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Port DiSEqC (-1 niciunul)"
+
+msgid "Service and PIDs"
+msgstr "Serviciu și PID-uri"
+
+msgid "Service ID"
+msgstr "ID serviciu"
+
+msgid "Transport ID"
+msgstr "ID transport"
+
+msgid "Video PID"
+msgstr "PID video"
+
+msgid "Audio PIDs"
+msgstr "PID-uri audio"
+
+msgid "Teletext PID"
+msgstr "PID teletext"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Aplică modificările (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Canal nou"
+
+msgid "Delete channel"
+msgstr "Șterge canalul"
+
+msgid "Move up"
+msgstr "Mută în sus"
+
+msgid "Move down"
+msgstr "Mută în jos"
+
+msgid "Sort by group and name"
+msgstr "Sortează după grup și nume"
+
+msgid "No channel selected"
+msgstr "Niciun canal selectat"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Alege un canal din listă pentru a-l edita."
+
+msgid "Unnamed channel"
+msgstr "Canal fără nume"
+
+msgid "Recording and Device Statistics"
+msgstr "Statistici de înregistrare și dispozitiv"
+
+msgid "Active recordings:"
+msgstr "Înregistrări active:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nUrmătorul temporizator: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletext – {name}"
+
+msgid "Find on page"
+msgstr "Caută în pagină"
+
+msgid "Copy page"
+msgstr "Copiază pagina"
+
+msgid "Save page"
+msgstr "Salvează pagina"
+
+msgid "Waiting for teletext…"
+msgstr "Se așteaptă teletextul…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Lipsește teletextdec (gst-plugins-bad cu libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Se caută pagina {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Nu este configurată decodarea. Canalele criptate la care ai dreptul pot fi decodate dacă indici în preferințe propriul softcam sau modul CI pentru LinDVB."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Furnizorul „{v0}” nu este disponibil."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Furnizor: modul CI – {status}\nModulul decodează cu cardul tău în interiorul tunerului."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Furnizor: {name}\nLinDVB transmite secțiunile ECM către propriul client de card și aplică cuvintele de control returnate; nu conține el însuși chei."
+
+msgid "Open CAM Menu…"
+msgstr "Deschide meniul CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "Încărcarea a eșuat: {v0}"
+
+msgid "Switched off"
+msgstr "Dezactivat"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Modificările intră în vigoare la următoarea pornire a LinDVB."
+
+msgid "No plugins installed."
+msgstr "Nu sunt instalate module suplimentare."
+
+msgid "Plugin actions"
+msgstr "Acțiuni ale modulelor suplimentare"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Dosare pentru module suplimentare: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "Configurare DVB-I"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I preia de pe internet lista de canale a regiunii tale: numerotare, nume și sigle, iar pentru fiecare canal modurile de recepție. LinDVB folosește, când poate, canalele de antenă, cablu sau satelit din căutarea ta de canale și altfel fluxul de internet."
+
+msgid "Privacy"
+msgstr "Confidențialitate"
+
+msgid "I have read the privacy notice"
+msgstr "Am citit nota de confidențialitate"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Încarcă ghidul de programe (EPG) al canalelor DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Comută la altă cale de recepție (internet, antenă, cablu, satelit) când una cade"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Acordează canalele de satelit din listă fără căutare de canale (necesită canale de satelit în lista ta)"
+
+msgid "Service list"
+msgstr "Listă de servicii"
+
+msgid "Load Lists from Registry"
+msgstr "Încarcă listele din registru"
+
+msgid "In use: {current}"
+msgstr "În uz: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Nu este încă în uz nicio listă DVB-I."
+
+msgid "Region"
+msgstr "Regiune"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Codul tău poștal alege canalele regionale și numerotarea lor. Este trimis doar serverului listei de servicii."
+
+msgid "Postcode"
+msgstr "Cod poștal"
+
+msgid "No postcode: nationwide list"
+msgstr "Fără cod poștal: listă națională"
+
+msgid "Remove DVB-I Channels"
+msgstr "Elimină canalele DVB-I"
+
+msgid "Update Now"
+msgstr "Actualizează acum"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Reîncarcă lista aleasă (este verificată și zilnic)"
+
+msgid "Install Channel List"
+msgstr "Instalează lista de canale"
+
+msgid "Close"
+msgstr "Închide"
+
+msgid "Asking the service list registry…"
+msgstr "Se interoghează registrul listelor de servicii…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Registrul nu a putut fi accesat: {error}"
+
+msgid "Default"
+msgstr "Implicit"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Liste de servicii de la {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Registrul nu oferă nicio listă de servicii pentru Germania."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Introdu un cod poștal din cinci cifre"
+
+msgid "Loading the service list…"
+msgstr "Se încarcă lista de servicii…"
+
+msgid "In use: {v0}"
+msgstr "În uz: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nAlege regiunea și apasă din nou Instalează."
+
+msgid "Enter Again"
+msgstr "Introdu din nou"
+
+msgid "The service list does not know this postcode."
+msgstr "Lista de servicii nu cunoaște acest cod poștal."
+
+msgid "The service list server answered {code}."
+msgstr "Serverul listei de servicii a răspuns {code}."
+
+msgid "Try Again"
+msgstr "Încearcă din nou"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Poți încerca din nou sau poți folosi lista națională fără cod poștal."
+
+msgid "Nationwide List"
+msgstr "Listă națională"
+
+msgid "No DVB-I list is in use."
+msgstr "Nu este în uz nicio listă DVB-I."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Canale DVB-I eliminate: {removed}"
+
+msgid "All programmes"
+msgstr "Toate emisiunile"
+
+msgid "With audio description"
+msgstr "Cu descriere audio"
+
+msgid "With subtitles"
+msgstr "Cu subtitrări"
+
+msgid "Programme Guide"
+msgstr "Ghid de programe"
+
+msgid "Now / Next"
+msgstr "Acum / Urmează"
+
+msgid "Per Channel"
+msgstr "Pe canal"
+
+msgid "TV Guide"
+msgstr "Grilă TV"
+
+msgid "Search"
+msgstr "Caută"
+
+msgid "Record Series"
+msgstr "Înregistrează serialul"
+
+msgid "Remind Me"
+msgstr "Amintește-mi"
+
+msgid "Search Web"
+msgstr "Caută pe web"
+
+msgid "Export the guide as XMLTV"
+msgstr "Exportă ghidul ca XMLTV"
+
+msgid "Next"
+msgstr "Urmează"
+
+msgid "Now"
+msgstr "Acum"
+
+msgid "Only favourites"
+msgstr "Doar favorite"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Accesibilitate (ghid de programe DVB-I)"
+
+msgid "Show:"
+msgstr "Afișează:"
+
+msgid "Channel"
+msgstr "Canal"
+
+msgid "Start"
+msgstr "Început"
+
+msgid "End"
+msgstr "Sfârșit"
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Genre"
+msgstr "Gen"
+
+msgid "Day"
+msgstr "Zi"
+
+msgid "Duration"
+msgstr "Durată"
+
+msgid "Subheading"
+msgstr "Subtitlu"
+
+msgid "Title or description"
+msgstr "Titlu sau descriere"
+
+msgid "Include description"
+msgstr "Include descrierea"
+
+msgid "Case sensitive"
+msgstr "Sensibil la majuscule"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Înregistrare serial: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Memento eliminat: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} a început deja"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Memento setat: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Elimină mementoul"
+
+msgid "Save EPG data"
+msgstr "Salvează datele EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Păstrează ghidul pe disc după închiderea LinDVB."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Afișează informațiile EPG la schimbarea canalului (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nu afișa."
+
+msgid "Remind before start (min)"
+msgstr "Amintește înainte de început (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Mementourile setate în ghid te anunță cu atât de devreme."
+
+msgid "Preferred language"
+msgstr "Limbă preferată"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Folosită când o emisiune este difuzată în mai multe limbi."
+
+msgid "Time zone"
+msgstr "Fus orar"
+
+msgid "Set time zone automatically"
+msgstr "Setează fusul orar automat"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Dezactivat: folosește o diferență fixă față de GMT pentru ghid, temporizatoare și ceas."
+
+msgid "Offset to GMT"
+msgstr "Diferență față de GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG de pe internet (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Sursă EPG de pe internet, folosită pe lângă EPG-ul difuzat."
+
+msgid "Match IPTV Channels…"
+msgstr "Asociază canalele IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Verifică sau corectează ce canal din ghid aparține cărui canal M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Frecvențe MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Când un canal acordat se află pe unul dintre acești transpondere, LinDVB citește și EPG-ul acelui furnizor. Modificările se aplică la următorul acord."
+
+msgid "Frequency (MHz)"
+msgstr "Frecvență (MHz)"
+
+msgid "Add"
+msgstr "Adaugă"
+
+msgid "Polarisation"
+msgstr "Polarizare"
+
+msgid "Defaults"
+msgstr "Valori implicite"
+
+msgid "Delete"
+msgstr "Șterge"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Introdu frecvența transponderului în MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Căutarea copertei a eșuat: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Schimbă cu imaginea principală"
+
+msgid "Close picture in picture"
+msgstr "Închide imaginea în imagine"
+
+msgid "Picture in picture: {error}"
+msgstr "Imagine în imagine: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Imaginea în imagine funcționează cu canale de internet; canalele DVB au nevoie de un al doilea tuner."
+
+msgid "Channel Mosaic"
+msgstr "Mozaic de canale"
+
+msgid "Previous channels"
+msgstr "Canalele anterioare"
+
+msgid "Next channels"
+msgstr "Canalele următoare"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mozaicul afișează canale de internet. Lista nu are niciunul în vizualizarea curentă."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Pagina {page} din {pages} · canale de internet: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Clic pentru a viziona {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Extins"
+
+msgid "None / not satellite"
+msgstr "Nimic / nu e satelit"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frecvență"
+
+msgid "Initial letter"
+msgstr "Litera inițială"
+
+msgid "Provider"
+msgstr "Furnizor"
+
+msgid "Channel Search"
+msgstr "Căutare canale"
+
+msgid "Device"
+msgstr "Dispozitiv"
+
+msgid "(choose…)"
+msgstr "(alege…)"
+
+msgid "Add folder…"
+msgstr "Adaugă dosar…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Dosar cu liste de transpondere (dtv-scan-tables sau .ini în stil DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Listă de transpondere"
+
+msgid "LNB type"
+msgstr "Tip LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Grup țintă"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "de ex. Astra 19,2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Caută frecvențe suplimentare (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Adaugă doar canale necriptate"
+
+msgid "Only update existing channels"
+msgstr "Actualizează doar canalele existente"
+
+msgid "Update channel names"
+msgstr "Actualizează numele canalelor"
+
+msgid "Group by"
+msgstr "Grupează după"
+
+msgid "Start Search"
+msgstr "Pornește căutarea"
+
+msgid "Stop"
+msgstr "Oprește"
+
+msgid "Folder with transponder lists"
+msgstr "Dosar cu liste de transpondere"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nicio listă de transpondere aleasă. Instalează dtv-scan-tables sau adaugă un dosar.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nNu s-au găsit canale.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nGata: canale noi {added}, actualizate {updated}.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Temporizatoare de înregistrare"
+
+msgid "Search channels"
+msgstr "Caută canale"
+
+msgid "  (Radio)"
+msgstr "  (Radio)"
+
+msgid "Date"
+msgstr "Dată"
+
+msgid "Repeat"
+msgstr "Repetare"
+
+msgid "Once"
+msgstr "O dată"
+
+msgid "Series"
+msgstr "Serial"
+
+msgid "Action"
+msgstr "Acțiune"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "After"
+msgstr "După"
+
+msgid "Disabled"
+msgstr "Dezactivat"
+
+msgid "Status"
+msgstr "Stare"
+
+msgid "Repeat every {day}"
+msgstr "Repetă în fiecare {day}"
+
+msgid "_Date"
+msgstr "_Dată"
+
+msgid "_Lead (min)"
+msgstr "Înai_nte (min)"
+
+msgid "_End"
+msgstr "_Sfârșit"
+
+msgid "_Start"
+msgstr "Î_nceput"
+
+msgid "Repeat on"
+msgstr "Repetă în"
+
+msgid "_Follow (min)"
+msgstr "_După (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Alege un canal din stânga"
+
+msgid "_Name"
+msgstr "_Nume"
+
+msgid "_Timer action"
+msgstr "Acțiunea _temporizatorului"
+
+msgid "_After recording"
+msgstr "După î_nregistrare"
+
+msgid "T_V format"
+msgstr "Format T_V"
+
+msgid "_Radio format"
+msgstr "Format _radio"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Doar limba preferată: pistele în limba audio din preferințe, fără descriere audio. MP4 și fișierul audio radio păstrează o pistă."
+
+msgid "Audi_o tracks"
+msgstr "Piste audi_o"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teletextul există doar în MPEG-TS, așa că se folosește TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Datele EPG (EIT) există doar în MPEG-TS, așa că se folosește TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS păstrează toate fluxurile de subtitrări. MKV primește pagina de subtitrări teletext ca pistă text; subtitrările bitmap DVB rămân doar în TS."
+
+msgid "Tracks"
+msgstr "Piste"
+
+msgid "File _naming scheme"
+msgstr "Schemă pentru _numele fișierelor"
+
+msgid "Folder…"
+msgstr "Dosar…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Folosește dosarul de înregistrări din preferințe"
+
+msgid "Placeholders"
+msgstr "Substituenți"
+
+msgid "Folder: "
+msgstr "Dosar: "
+
+msgid "Clear the editor"
+msgstr "Golește editorul"
+
+msgid "New"
+msgstr "Nou"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Adaugă setările editorului ca temporizator nou"
+
+msgid "Apply"
+msgstr "Aplică"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Salvează setările editorului în temporizatorul selectat"
+
+msgid "Delete the selected timer"
+msgstr "Șterge temporizatorul selectat"
+
+msgid "Enable/Disable"
+msgstr "Activează/Dezactivează"
+
+msgid "Switch the selected timer on or off"
+msgstr "Pornește sau oprește temporizatorul selectat"
+
+msgid "Save as default"
+msgstr "Salvează ca implicit"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Folosește aceste formate și fluxuri suplimentare pentru temporizatoarele noi și înregistrările manuale"
+
+msgid "Series title"
+msgstr "Titlul serialului"
+
+msgid "Delete series rule"
+msgstr "Șterge regula serialului"
+
+msgid "Series recordings"
+msgstr "Înregistrări de seriale"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Subtitrările încap în TS sau MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Nicio limbă audio preferată în preferințe: se înregistrează prima pistă."
+
+msgid "File: {v0}"
+msgstr "Fișier: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Oră de început sau de sfârșit nevalidă"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Folosește HH:MM, de exemplu 20:15."
+
+msgid "No channel"
+msgstr "Niciun canal"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Alege canalul de înregistrat din lista din stânga."
+
+msgid "Recording defaults saved"
+msgstr "Valorile implicite de înregistrare au fost salvate"
+
+msgid "Record with Options"
+msgstr "Înregistrează cu opțiuni"
+
+msgid "_Format"
+msgstr "_Format"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teletextul și datele EPG pot fi păstrate doar în MPEG-TS, așa că se folosește TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Limba audio preferată: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Vizualizarea „{v0}” a eșuat: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} este prea vechi"
+
+msgid "Playback error: "
+msgstr "Eroare de redare: "
+
+msgid "All channels"
+msgstr "Toate canalele"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Favorite (TV + radio)"
+
+msgid "Free to air"
+msgstr "Necriptate"
+
+msgid "Internet streams"
+msgstr "Fluxuri de internet"
+
+msgid "Fill (crop)"
+msgstr "Umple (decupează)"
+
+msgid "Fit"
+msgstr "Potrivește"
+
+msgid "Stretch"
+msgstr "Întinde"
+
+msgid "Playback error: {m}"
+msgstr "Eroare de redare: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Acțiunea modulului suplimentar a eșuat: {e}"
+
+msgid "Open Media File…"
+msgstr "Deschide fișier media…"
+
+msgid "Open URL…"
+msgstr "Deschide adresă…"
+
+msgid "Import Channel List…"
+msgstr "Importă listă de canale…"
+
+msgid "Export Channel List…"
+msgstr "Exportă lista de canale…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Exportă ghidul de programe (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Comută TV / radio"
+
+msgid "Recordings"
+msgstr "Înregistrări"
+
+msgid "Programme Guide (EPG)"
+msgstr "Ghid de programe (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Înregistrări temporizate"
+
+msgid "Record with Options…"
+msgstr "Înregistrează cu opțiuni…"
+
+msgid "Teletext"
+msgstr "Teletext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Meniu CAM (modul CI)…"
+
+msgid "Channel Search…"
+msgstr "Căutare canale…"
+
+msgid "DVB-I Setup…"
+msgstr "Configurare DVB-I…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Editor de canale / favorite"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Actualizează EPG-ul de pe internet (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Asociază canalele IPTV cu XMLTV…"
+
+msgid "Audio Track"
+msgstr "Pistă audio"
+
+msgid "Subtitles"
+msgstr "Subtitrări"
+
+msgid "Play Rate"
+msgstr "Viteză de redare"
+
+msgid "Back 10 s"
+msgstr "Înapoi 10 s"
+
+msgid "Forward 10 s"
+msgstr "Înainte 10 s"
+
+msgid "Back 1 min"
+msgstr "Înapoi 1 min"
+
+msgid "Forward 1 min"
+msgstr "Înainte 1 min"
+
+msgid "Back to Live"
+msgstr "Înapoi la direct"
+
+msgid "Jump"
+msgstr "Salt"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Random Order"
+msgstr "Ordine aleatorie"
+
+msgid "Endless Playback"
+msgstr "Redare continuă"
+
+msgid "Playlist"
+msgstr "Listă de redare"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Păstrează timeshift-ul ca înregistrare"
+
+msgid "Rebuild Playback"
+msgstr "Reconstruiește redarea"
+
+msgid "Video Off (audio only)"
+msgstr "Video oprit (doar audio)"
+
+msgid "Show Selected Channel"
+msgstr "Arată canalul selectat"
+
+msgid "Swap Pictures"
+msgstr "Schimbă imaginile"
+
+msgid "Picture in Picture"
+msgstr "Imagine în imagine"
+
+msgid "Channel Mosaic…"
+msgstr "Mozaic de canale…"
+
+msgid "Stop in {mins} min"
+msgstr "Oprește peste {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Oprește după emisiunea curentă"
+
+msgid "Sleep Timer"
+msgstr "Temporizator de somn"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Sunet mai târziu (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Sunet mai devreme (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Resetează"
+
+msgid "Audio Delay (this channel)"
+msgstr "Întârziere audio (acest canal)"
+
+msgid "Full Screen"
+msgstr "Ecran complet"
+
+msgid "Show/Hide Channel List"
+msgstr "Arată/ascunde lista de canale"
+
+msgid "Aspect / Zoom"
+msgstr "Aspect / zoom"
+
+msgid "Window Size"
+msgstr "Dimensiunea ferestrei"
+
+msgid "Picture Settings…"
+msgstr "Setări imagine…"
+
+msgid "Equalizer…"
+msgstr "Egalizator…"
+
+msgid "Radio Visualisation"
+msgstr "Vizualizare radio"
+
+msgid "Screenshot"
+msgstr "Captură de ecran"
+
+msgid "Plugins…"
+msgstr "Module suplimentare…"
+
+msgid "About LinDVB"
+msgstr "Despre LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Arată/ascunde lista de canale (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Meniu principal (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Ghid de programe (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletext (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Arată canalele TV (Ctrl+M comută)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Arată posturile de radio (Ctrl+M comută)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Arată înregistrările tale (dublu clic redă)"
+
+msgid "Search name or number"
+msgstr "Caută nume sau număr"
+
+msgid "All groups"
+msgstr "Toate grupurile"
+
+msgid "Previous channel (Page Down)"
+msgstr "Canalul anterior (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pauză / timeshift (spațiu)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Oprește (închide canalul)"
+
+msgid "Next channel (Page Up)"
+msgstr "Canalul următor (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Înregistrează canalul curent (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Alege formatul și pistele pentru această înregistrare"
+
+msgid "Seek"
+msgstr "Poziție"
+
+msgid "LIVE"
+msgstr "DIRECT"
+
+msgid "Back to live (L)"
+msgstr "Înapoi la direct (L)"
+
+msgid "Mute (M)"
+msgstr "Fără sonor (M)"
+
+msgid "Volume"
+msgstr "Volum"
+
+msgid "Audio track"
+msgstr "Pistă audio"
+
+msgid "Playback and picture settings"
+msgstr "Setări de redare și imagine"
+
+msgid "Full screen (F)"
+msgstr "Ecran complet (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nAcum: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} din {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Se afișează {n} din {total} înregistrări"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Se afișează {n} din {total} favorite"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Se afișează {n} din {total} posturi de radio"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Se afișează {n} din {total} canale TV"
+
+msgid "Add to Favourites"
+msgstr "Adaugă la favorite"
+
+msgid "Remove from Favourites"
+msgstr "Elimină din favorite"
+
+msgid "Edit…"
+msgstr "Editează…"
+
+msgid "Show as Picture in Picture"
+msgstr "Arată ca imagine în imagine"
+
+msgid "Select a channel in the list first"
+msgstr "Alege mai întâi un canal din listă"
+
+msgid "By channel"
+msgstr "După canal"
+
+msgid "By title"
+msgstr "După titlu"
+
+msgid "Newest first"
+msgstr "Cele mai noi întâi"
+
+msgid "Oldest first"
+msgstr "Cele mai vechi întâi"
+
+msgid "Largest first"
+msgstr "Cele mai mari întâi"
+
+msgid "Sort the recordings"
+msgstr "Sortează înregistrările"
+
+msgid "Open the recording folder"
+msgstr "Deschide dosarul de înregistrări"
+
+msgid "Look for new recordings"
+msgstr "Caută înregistrări noi"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Încă nu există înregistrări.\n\nÎnregistrările sunt salvate în\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Nu este setat un dosar de înregistrări în preferințe."
+
+msgid "Recording in progress"
+msgstr "Înregistrare în curs"
+
+msgid "Watched"
+msgstr "Vizionat"
+
+msgid "Watched up to {pos}"
+msgstr "Vizionat până la {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Înregistrarea nu a fost găsită: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Se continuă de la {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Dosarul nu a fost găsit: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Nu se poate deschide {folder}: {message}"
+
+msgid "Play"
+msgstr "Redă"
+
+msgid "Play from the Beginning"
+msgstr "Redă de la început"
+
+msgid "Details…"
+msgstr "Detalii…"
+
+msgid "Mark as Unwatched"
+msgstr "Marchează ca nevizionat"
+
+msgid "Mark as Watched"
+msgstr "Marchează ca vizionat"
+
+msgid "Show in Folder"
+msgstr "Arată în dosar"
+
+msgid "Delete…"
+msgstr "Șterge…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Oprește înregistrarea înainte de a o șterge"
+
+msgid "Delete “{title}”?"
+msgstr "Ștergi „{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nFișierul este eliminat de pe disc."
+
+msgid "Deleted {name}"
+msgstr "{name} a fost șters"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Nu se poate șterge {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Se acordează {name}…"
+
+msgid "Search recordings"
+msgstr "Caută în înregistrări"
+
+msgid "No radio stations in the channel list"
+msgstr "Nu există posturi de radio în lista de canale"
+
+msgid "No TV channels in the channel list"
+msgstr "Nu există canale TV în lista de canale"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – comutat la {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} nu emite în acest moment"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "TV în direct oprit: tunerul este necesar pentru o înregistrare temporizată"
+
+msgid "Stopped"
+msgstr "Oprit"
+
+msgid "Sound {ms} ms later"
+msgstr "Sunet cu {ms} ms mai târziu"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Sunet cu {v0} ms mai devreme"
+
+msgid "Audio delay off"
+msgstr "Întârziere audio dezactivată"
+
+msgid "Playing {item}"
+msgstr "Se redă {item}"
+
+msgid "Open media files"
+msgstr "Deschide fișiere media"
+
+msgid "Open URL"
+msgstr "Deschide adresă"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Deschide"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importă listă de canale (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Nu s-a putut importa {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importate canale noi: {total_a}, actualizate: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Exportă canalele (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Exportat în {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Exportă ghidul de programe (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Nu se poate scrie {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Nimic de înregistrat"
+
+msgid "This channel is already being recorded"
+msgstr "Acest canal se înregistrează deja"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletext: lipsește decodorul (gst-plugins-bad cu libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletext: indisponibil pe acest canal"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teletextul necesită un canal DVB"
+
+msgid "Volume {v0}%"
+msgstr "Volum {v0}%"
+
+msgid "Off"
+msgstr "Dezactivat"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Subtitrări ascunse (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Limbi: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Piste audio: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Captură de ecran salvată: {path}"
+
+msgid "Screenshot failed"
+msgstr "Captura de ecran a eșuat"
+
+msgid "Picture Settings"
+msgstr "Setări imagine"
+
+msgid "Restore Defaults"
+msgstr "Restabilește valorile implicite"
+
+msgid "Equalizer"
+msgstr "Egalizator"
+
+msgid "Leave full screen (F)"
+msgstr "Ieși din ecran complet (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Vizualizarea a eșuat: {e}"
+
+msgid "Radio visualisation"
+msgstr "Vizualizare radio"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Vizualizare radio (doar pentru radio și audio)"
+
+msgid "Playback stops at {v0}"
+msgstr "Redarea se oprește la {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Nu există informații despre emisiune pentru temporizatorul de somn"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Temporizator de somn: redare oprită"
+
+msgid "No programme information"
+msgstr "Nu există informații despre emisiune"
+
+msgid "Next: {v0}  {title}"
+msgstr "Urmează: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Semnal {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Direct"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Vizionează și înregistrează DVB-S/S2, DVB-C, DVB-T/T2, ATSC și TV pe internet cu Linux DVB API și GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Asociază canalele IPTV cu XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Încă nu este încărcat niciun ghid XMLTV. Setează adresa XMLTV în setările EPG și descarcă mai întâi ghidul; asocierea pornește automat după descărcare."
+
+msgid "Download XMLTV guide now"
+msgstr "Descarcă acum ghidul XMLTV"
+
+msgid "Only channels without guide"
+msgstr "Doar canalele fără ghid"
+
+msgid "Match"
+msgstr "Asociere"
+
+msgid "Guide channel:"
+msgstr "Canal din ghid:"
+
+msgid "Assign"
+msgstr "Atribuie"
+
+msgid "Suggest"
+msgstr "Sugerează"
+
+msgid "Auto-match all"
+msgstr "Asociază totul automat"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Asociază fiecare canal care nu a fost atribuit manual"
+
+msgid "Reset to automatic"
+msgstr "Revino la automat"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Lasă din nou asocierea automată să decidă pentru canalul selectat"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} din {v1} canale au un canal din ghid"
+
+msgid "No suggestion for {name}"
+msgstr "Nicio sugestie pentru {name}"

@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: et\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Impordi kanalite loend (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Käivita selle kanaliga (nimi või number)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} kell {time}"
+
+msgid "Watch"
+msgstr "Vaata"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Meeldetuletus: {title} kanalil {channel} kell {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Määra esmalt eelistustes XMLTV aadress"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV kava allalaadimine…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} kavata (TV ▸ Seo IPTV kanalid XMLTV-ga)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: teenuste loendi laadimine…"
+
+msgid "Search the web"
+msgstr "Otsi veebist"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletekst (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Subtiitrid (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG andmed (TS)"
+
+msgid "All audio tracks"
+msgstr "Kõik helirajad"
+
+msgid "Preferred language only"
+msgstr "Ainult eelistatud keel"
+
+msgid "First audio track only"
+msgstr "Ainult esimene helirada"
+
+msgid "Record"
+msgstr "Salvesta"
+
+msgid "Record and tune"
+msgstr "Salvesta ja lülita"
+
+msgid "Tune only"
+msgstr "Ainult lülita"
+
+msgid "Hibernate"
+msgstr "Talveuni"
+
+msgid "None"
+msgstr "Puudub"
+
+msgid "Power off"
+msgstr "Lülita välja"
+
+msgid "Quit LinDVB"
+msgstr "Välju LinDVB-st"
+
+msgid "Standby"
+msgstr "Ooterežiim"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Internetivoogudel pole teleteksti, subtiitreid ega EPG andmeid."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 säilitab ühe heliraja (eelistatud keele, kui seda edastatakse)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Helifail säilitab ühe raja (eelistatud keele, kui seda edastatakse)."
+
+msgid "Fr"
+msgstr "R"
+
+msgid "Mo"
+msgstr "E"
+
+msgid "Sa"
+msgstr "L"
+
+msgid "Su"
+msgstr "P"
+
+msgid "Th"
+msgstr "N"
+
+msgid "Tu"
+msgstr "T"
+
+msgid "We"
+msgstr "K"
+
+msgid "Scheduled"
+msgstr "Ajastatud"
+
+msgid "Done"
+msgstr "Valmis"
+
+msgid "Channel missing"
+msgstr "Kanal puudub"
+
+msgid "Tuned"
+msgstr "Lülitatud"
+
+msgid "Recording"
+msgstr "Salvestab"
+
+msgid "Failed"
+msgstr "Nurjus"
+
+msgid "Missed"
+msgstr "Vahele jäänud"
+
+msgid "After recording: {action}"
+msgstr "Pärast salvestamist: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Moodul eemaldati või lähtestati."
+
+msgid "CAM Menu"
+msgstr "CAM-menüü"
+
+msgid "Cancel"
+msgstr "Loobu"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Ava CAM-menüü"
+
+msgid "Select"
+msgstr "Vali"
+
+msgid "Back"
+msgstr "Tagasi"
+
+msgid "Close Menu"
+msgstr "Sulge menüü"
+
+msgid "Device: {path} – {state}"
+msgstr "Seade: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Ava CAM-menüü, et näha mooduli seadeid, kiipkaardi teavet ja vanemlikku järelevalvet."
+
+msgid "The module has not finished starting yet."
+msgstr "Moodul pole veel käivitumist lõpetanud."
+
+msgid "Custom colour"
+msgstr "Kohandatud värv"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB sinine (vaikimisi)"
+
+msgid "System accent colour"
+msgstr "Süsteemi rõhuvärv"
+
+msgid "Preferences"
+msgstr "Eelistused"
+
+msgid "Save"
+msgstr "Salvesta"
+
+msgid "Appearance"
+msgstr "Välimus"
+
+msgid "Language"
+msgstr "Keel"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Rakendub LinDVB järgmisel käivitamisel."
+
+msgid "Accent colour"
+msgstr "Rõhuvärv"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Kasutatakse esiletõstmiseks, valikuteks ja nuppudeks kõigis akendes."
+
+msgid "On-screen display"
+msgstr "Ekraanikuva"
+
+msgid "OSD display time (s)"
+msgstr "OSD kuvamise aeg (s)"
+
+msgid "Visualisation"
+msgstr "Visualiseerimine"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Mida näidatakse raadio visualiseeringu kohal, kui mängib raadiokanal või helifail. Loo andmed tulevad DVB-raadio RadioTextist, internetiraadio voo pealkirjast ja helifailide siltidest."
+
+msgid "Overlay"
+msgstr "Ülekate"
+
+msgid "Station logo tile"
+msgstr "Jaama logo paan"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Kanali logo või jaama nimega paan, kui logo pole."
+
+msgid "Album cover"
+msgstr "Albumi kaanepilt"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Mängiva loo kaanepilt failist või veebist otsitud."
+
+msgid "Song information"
+msgstr "Loo teave"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Esitaja, album ja aasta, lugu ja pealkiri. Loo andmeteta näidatakse jaama ja eetris olevat saadet."
+
+msgid "Clock in the top right corner"
+msgstr "Kell paremas ülanurgas"
+
+msgid "Sources"
+msgstr "Allikad"
+
+msgid "Look up covers online"
+msgstr "Otsi kaanepilte veebist"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Saadab mängiva loo esitaja ja pealkirja iTunes Search API-le, et leida album, aasta ja kaanepilt."
+
+msgid "Station logo folder"
+msgstr "Jaamade logode kaust"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Kanali järgi nimetatud pildifailid (PNG, SVG, JPG), nt „Bayern 3.png“. Kanali järgi nimetatud logod, nagu DVBViewer neid hoiab, töötavad muutmata. Tühi: {v0}"
+
+msgid "Playback"
+msgstr "Taasesitus"
+
+msgid "Deinterlace video"
+msgstr "Eemalda video ridade põimumine"
+
+msgid "Screenshot folder"
+msgstr "Ekraanipiltide kaust"
+
+msgid "Timeshift"
+msgstr "Ajanihe"
+
+msgid "Timeshift folder"
+msgstr "Ajanihke kaust"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Ajanihke puhver (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuuner ja LNB"
+
+msgid "DVB hardware"
+msgstr "DVB riistvara"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Adapterite numbrid, mida LinDVB tohib kasutada, komadega eraldatud."
+
+msgid "DVB adapters"
+msgstr "DVB adapterid"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Haara kogu transponder"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Vajalik kõigi helirajade jaoks, kui kanalite loend teab ainult üht heli-PID-i."
+
+msgid "Satellite LNB"
+msgstr "Satelliidi LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF madal sagedusala (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF kõrge sagedusala (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Lülitussagedus (kHz)"
+
+msgid "Recording folder"
+msgstr "Salvestiste kaust"
+
+msgid "File naming scheme"
+msgstr "Failinimede muster"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Kohatäited: %year %date %time %end %station %name, / alamkaustade jaoks"
+
+msgid "Timer padding"
+msgstr "Taimerite varud"
+
+msgid "Start earlier by (min)"
+msgstr "Alusta varem (min)"
+
+msgid "Stop later by (min)"
+msgstr "Lõpeta hiljem (min)"
+
+msgid "Timers"
+msgstr "Taimerid"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Ava taimerite aken pärast taimeri loomist"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Pärast kavas „Salvesta“ vajutamist muuda uut taimerit kohe."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Telekava: edastatav EPG, interneti-EPG (XMLTV) ja teiste pakkujate EPG."
+
+msgid "Conditional access"
+msgstr "Tingimuslik juurdepääs"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Tellitud krüptitud kanalite dekodeerimine oma kaardiga softcamis või CI-moodulis."
+
+msgid "None (leave scrambled)"
+msgstr "Puudub (jäta krüptituks)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Väline softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Riistvaraline CI / CI+ moodul"
+
+msgid "Descrambling via"
+msgstr "Dekodeerimine läbi"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI sokkel"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unixi sokli tee või host:port."
+
+msgid "CI module"
+msgstr "CI-moodul"
+
+msgid "CI adapter number"
+msgstr "CI-adapteri number"
+
+msgid "CA device number"
+msgstr "CA-seadme number"
+
+msgid "Plugins"
+msgstr "Pluginad"
+
+msgid "Load plugins at startup"
+msgstr "Laadi pluginad käivitamisel"
+
+msgid "Manage Plugins…"
+msgstr "Halda pluginaid…"
+
+msgid "Format and tracks"
+msgstr "Vorming ja rajad"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Vaikeväärtused uutele taimeritele ja salvestusnupule. Iga taimer ja käsuga „Salvesta valikutega…“ alustatud salvestus saab neid muuta.\nTS: video, kõik helirajad, subtiitrid, teletekst ja EPG andmed. MKV: video, mitu heliraja ja subtiitrid. MPG: video ja mitu heliraja. MP4: video ja üks helirada. Internetivoogudel pole teleteksti, subtiitreid ega EPG andmeid; HLS- ja DASH-voogusid salvestatakse ühe helirajaga."
+
+msgid "TV format"
+msgstr "TV vorming"
+
+msgid "Radio format"
+msgstr "Raadio vorming"
+
+msgid "Audio tracks"
+msgstr "Helirajad"
+
+msgid "Preferred audio language"
+msgstr "Eelistatud helikeel"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Kasutatakse valikus „Ainult eelistatud keel“ ja MP4 puhul, mis säilitab ühe raja. Kirjeldustõlke rajad jäetakse vahele. Vaste puudumisel salvestatakse esimene rada."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} saab säilitada ainult MPEG-TS-is, seega salvestatakse salvestised TS-ina."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} saab säilitada ainult TS-is või MKV-s, seega salvestatakse salvestised TS-ina."
+
+msgid " and "
+msgstr " ja "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Eelistatud helikeelt pole määratud, seega salvestatakse ainult esimene helirada."
+
+msgid "Desktop accent: {found}"
+msgstr "Töölaua rõhuvärv: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Töölaua rõhuvärvi ei leitud, kasutatakse LinDVB sinist."
+
+msgid "Current accent: {color}"
+msgstr "Praegune rõhuvärv: {color}"
+
+msgid "Channel Editor"
+msgstr "Kanalite redaktor"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Category"
+msgstr "Kategooria"
+
+msgid "Group"
+msgstr "Rühm"
+
+msgid "Fav"
+msgstr "Lemm"
+
+msgid "Type"
+msgstr "Tüüp"
+
+msgid "Filter channels"
+msgstr "Filtreeri kanaleid"
+
+msgid "General"
+msgstr "Üldine"
+
+msgid "Stream URL"
+msgstr "Voo aadress"
+
+msgid "Favourite"
+msgstr "Lemmik"
+
+msgid "Radio"
+msgstr "Raadio"
+
+msgid "Encrypted"
+msgstr "Krüptitud"
+
+msgid "Tuning"
+msgstr "Häälestus"
+
+msgid "System"
+msgstr "Süsteem"
+
+msgid "Polarity"
+msgstr "Polaarsus"
+
+msgid "Modulation"
+msgstr "Modulatsioon"
+
+msgid "Frequency (kHz)"
+msgstr "Sagedus (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Sümbolikiirus (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Ribalaius (Hz)"
+
+msgid "Stream ID"
+msgstr "Voo ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC port (-1 puudub)"
+
+msgid "Service and PIDs"
+msgstr "Teenus ja PID-id"
+
+msgid "Service ID"
+msgstr "Teenuse ID"
+
+msgid "Transport ID"
+msgstr "Transpordi ID"
+
+msgid "Video PID"
+msgstr "Video-PID"
+
+msgid "Audio PIDs"
+msgstr "Heli-PID-id"
+
+msgid "Teletext PID"
+msgstr "Teleteksti PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Rakenda muudatused (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Uus kanal"
+
+msgid "Delete channel"
+msgstr "Kustuta kanal"
+
+msgid "Move up"
+msgstr "Liiguta üles"
+
+msgid "Move down"
+msgstr "Liiguta alla"
+
+msgid "Sort by group and name"
+msgstr "Sordi rühma ja nime järgi"
+
+msgid "No channel selected"
+msgstr "Kanalit pole valitud"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Vali loendist kanal, et seda muuta."
+
+msgid "Unnamed channel"
+msgstr "Nimetu kanal"
+
+msgid "Recording and Device Statistics"
+msgstr "Salvestamise ja seadme statistika"
+
+msgid "Active recordings:"
+msgstr "Käimasolevad salvestused:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nJärgmine taimer: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletekst – {name}"
+
+msgid "Find on page"
+msgstr "Otsi lehelt"
+
+msgid "Copy page"
+msgstr "Kopeeri leht"
+
+msgid "Save page"
+msgstr "Salvesta leht"
+
+msgid "Waiting for teletext…"
+msgstr "Teleteksti ootamine…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec puudub (gst-plugins-bad koos libzvbi-ga)."
+
+msgid "Searching page {page}…"
+msgstr "Lehe {page} otsimine…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Dekodeerimine pole seadistatud. Krüptitud kanaleid, mille jaoks sul on õigus, saab dekodeerida, kui suunad eelistustes LinDVB oma softcamile või CI-moodulile."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Pakkuja „{v0}“ pole saadaval."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Pakkuja: CI-moodul – {status}\nMoodul dekodeerib sinu kaardiga tuuneri sees."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Pakkuja: {name}\nLinDVB edastab ECM-sektsioonid sinu kaardikliendile ja kasutab tagastatud juhtsõnu; ise ei hoia see võtmeid."
+
+msgid "Open CAM Menu…"
+msgstr "Ava CAM-menüü…"
+
+msgid "Failed to load: {v0}"
+msgstr "Laadimine nurjus: {v0}"
+
+msgid "Switched off"
+msgstr "Välja lülitatud"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Muudatused rakenduvad LinDVB järgmisel käivitamisel."
+
+msgid "No plugins installed."
+msgstr "Pluginaid pole paigaldatud."
+
+msgid "Plugin actions"
+msgstr "Pluginate toimingud"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Pluginate kaustad: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I seadistus"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I laadib internetist sinu piirkonna kanalite loendi: numeratsiooni, nimed ja logod ning iga kanali vastuvõtuviisid. LinDVB kasutab võimaluse korral sinu kanaliotsingu antenni-, kaabli- või satelliitkanaleid ja muidu internetivoogu."
+
+msgid "Privacy"
+msgstr "Privaatsus"
+
+msgid "I have read the privacy notice"
+msgstr "Olen privaatsusteatise läbi lugenud"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Laadi DVB-I kanalite telekava (EPG)"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Lülitu teisele vastuvõtuviisile (internet, antenn, kaabel, satelliit), kui üks katkeb"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Häälesta loendi satelliitkanalid ilma kanaliotsinguta (vajab sinu loendis satelliitkanaleid)"
+
+msgid "Service list"
+msgstr "Teenuste loend"
+
+msgid "Load Lists from Registry"
+msgstr "Laadi loendid registrist"
+
+msgid "In use: {current}"
+msgstr "Kasutusel: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Ühtki DVB-I loendit pole veel kasutusel."
+
+msgid "Region"
+msgstr "Piirkond"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Sinu postiindeks valib piirkondlikud kanalid ja nende numeratsiooni. See saadetakse ainult teenuste loendi serverile."
+
+msgid "Postcode"
+msgstr "Postiindeks"
+
+msgid "No postcode: nationwide list"
+msgstr "Postiindeksita: üleriigiline loend"
+
+msgid "Remove DVB-I Channels"
+msgstr "Eemalda DVB-I kanalid"
+
+msgid "Update Now"
+msgstr "Uuenda kohe"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Laadi valitud loend uuesti (seda kontrollitakse ka iga päev)"
+
+msgid "Install Channel List"
+msgstr "Paigalda kanalite loend"
+
+msgid "Close"
+msgstr "Sulge"
+
+msgid "Asking the service list registry…"
+msgstr "Teenuste loendite registri päring…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Registrit ei õnnestunud kätte saada: {error}"
+
+msgid "Default"
+msgstr "Vaikimisi"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Teenuste loendid saidilt {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Register ei paku Saksamaa jaoks teenuste loendit."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Sisesta viiekohaline postiindeks"
+
+msgid "Loading the service list…"
+msgstr "Teenuste loendi laadimine…"
+
+msgid "In use: {v0}"
+msgstr "Kasutusel: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nVali oma piirkond ja vajuta uuesti Paigalda."
+
+msgid "Enter Again"
+msgstr "Sisesta uuesti"
+
+msgid "The service list does not know this postcode."
+msgstr "Teenuste loend ei tunne seda postiindeksit."
+
+msgid "The service list server answered {code}."
+msgstr "Teenuste loendi server vastas {code}."
+
+msgid "Try Again"
+msgstr "Proovi uuesti"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Võid uuesti proovida või kasutada üleriigilist loendit ilma postiindeksita."
+
+msgid "Nationwide List"
+msgstr "Üleriigiline loend"
+
+msgid "No DVB-I list is in use."
+msgstr "Ühtki DVB-I loendit pole kasutusel."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Eemaldatud DVB-I kanalid: {removed}"
+
+msgid "All programmes"
+msgstr "Kõik saated"
+
+msgid "With audio description"
+msgstr "Kirjeldustõlkega"
+
+msgid "With subtitles"
+msgstr "Subtiitritega"
+
+msgid "Programme Guide"
+msgstr "Telekava"
+
+msgid "Now / Next"
+msgstr "Praegu / Järgmisena"
+
+msgid "Per Channel"
+msgstr "Kanali kaupa"
+
+msgid "TV Guide"
+msgstr "TV kava"
+
+msgid "Search"
+msgstr "Otsi"
+
+msgid "Record Series"
+msgstr "Salvesta sari"
+
+msgid "Remind Me"
+msgstr "Tuleta meelde"
+
+msgid "Search Web"
+msgstr "Otsi veebist"
+
+msgid "Export the guide as XMLTV"
+msgstr "Ekspordi kava XMLTV-na"
+
+msgid "Next"
+msgstr "Järgmisena"
+
+msgid "Now"
+msgstr "Praegu"
+
+msgid "Only favourites"
+msgstr "Ainult lemmikud"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Hõlbustusvõimalused (DVB-I telekava)"
+
+msgid "Show:"
+msgstr "Näita:"
+
+msgid "Channel"
+msgstr "Kanal"
+
+msgid "Start"
+msgstr "Algus"
+
+msgid "End"
+msgstr "Lõpp"
+
+msgid "Title"
+msgstr "Pealkiri"
+
+msgid "Genre"
+msgstr "Žanr"
+
+msgid "Day"
+msgstr "Päev"
+
+msgid "Duration"
+msgstr "Kestus"
+
+msgid "Subheading"
+msgstr "Alapealkiri"
+
+msgid "Title or description"
+msgstr "Pealkiri või kirjeldus"
+
+msgid "Include description"
+msgstr "Kaasa kirjeldus"
+
+msgid "Case sensitive"
+msgstr "Tõstutundlik"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Sarja salvestamine: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Meeldetuletus eemaldatud: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} on juba alanud"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Meeldetuletus määratud: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Eemalda meeldetuletus"
+
+msgid "Save EPG data"
+msgstr "Salvesta EPG andmed"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Hoiab kava kettal ka pärast LinDVB sulgemist."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Näita kanali vahetamisel EPG teavet (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = ära näita."
+
+msgid "Remind before start (min)"
+msgstr "Tuleta meelde enne algust (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Kavas määratud meeldetuletused annavad nii vara teada."
+
+msgid "Preferred language"
+msgstr "Eelistatud keel"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Kasutatakse, kui saadet edastatakse mitmes keeles."
+
+msgid "Time zone"
+msgstr "Ajavöönd"
+
+msgid "Set time zone automatically"
+msgstr "Määra ajavöönd automaatselt"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Väljas: kasuta kava, taimerite ja kella jaoks püsivat nihet GMT suhtes."
+
+msgid "Offset to GMT"
+msgstr "Nihe GMT suhtes"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Interneti-EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Interneti-EPG allikas, kasutatakse lisaks edastatavale EPG-le."
+
+msgid "Match IPTV Channels…"
+msgstr "Seo IPTV kanalid…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Kontrolli või paranda, milline kava kanal kuulub millisele M3U kanalile."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat sagedused"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Kui häälestatud kanal on mõnel neist transponderitest, loeb LinDVB ka selle pakkuja EPG-d. Muudatused kehtivad järgmisel häälestamisel."
+
+msgid "Frequency (MHz)"
+msgstr "Sagedus (MHz)"
+
+msgid "Add"
+msgstr "Lisa"
+
+msgid "Polarisation"
+msgstr "Polarisatsioon"
+
+msgid "Defaults"
+msgstr "Vaikeväärtused"
+
+msgid "Delete"
+msgstr "Kustuta"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Sisesta transponderi sagedus MHz-des."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Kaanepildi otsing nurjus: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Vaheta põhipildiga"
+
+msgid "Close picture in picture"
+msgstr "Sulge pilt pildis"
+
+msgid "Picture in picture: {error}"
+msgstr "Pilt pildis: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Pilt pildis töötab internetikanalitega; DVB-kanalid vajavad teist tuunerit."
+
+msgid "Channel Mosaic"
+msgstr "Kanalite mosaiik"
+
+msgid "Previous channels"
+msgstr "Eelmised kanalid"
+
+msgid "Next channels"
+msgstr "Järgmised kanalid"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mosaiik näitab internetikanaleid. Loendi praeguses vaates neid pole."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Leht {page}/{pages} · internetikanaleid: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Klõpsa, et vaadata kanalit {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universaalne (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Laiendatud"
+
+msgid "None / not satellite"
+msgstr "Puudub / pole satelliit"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Sagedus"
+
+msgid "Initial letter"
+msgstr "Algustäht"
+
+msgid "Provider"
+msgstr "Pakkuja"
+
+msgid "Channel Search"
+msgstr "Kanaliotsing"
+
+msgid "Device"
+msgstr "Seade"
+
+msgid "(choose…)"
+msgstr "(vali…)"
+
+msgid "Add folder…"
+msgstr "Lisa kaust…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Transponderite loenditega kaust (dtv-scan-tables või DVBViewer-stiilis .ini)"
+
+msgid "Transponder list"
+msgstr "Transponderite loend"
+
+msgid "LNB type"
+msgstr "LNB tüüp"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Sihtrühm"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "nt Astra 19,2° I"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Otsi lisasagedusi (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Lisa ainult vabalt vaadatavad kanalid"
+
+msgid "Only update existing channels"
+msgstr "Uuenda ainult olemasolevaid kanaleid"
+
+msgid "Update channel names"
+msgstr "Uuenda kanalite nimesid"
+
+msgid "Group by"
+msgstr "Rühmita"
+
+msgid "Start Search"
+msgstr "Alusta otsingut"
+
+msgid "Stop"
+msgstr "Peata"
+
+msgid "Folder with transponder lists"
+msgstr "Transponderite loenditega kaust"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Transponderite loendit pole valitud. Paigalda dtv-scan-tables või lisa kaust.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nKanaleid ei leitud.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nValmis: uusi kanaleid {added}, uuendatud {updated}.\n"
+
+msgid "HH:MM"
+msgstr "TT:MM"
+
+msgid "Recording Timers"
+msgstr "Salvestustaimerid"
+
+msgid "Search channels"
+msgstr "Otsi kanaleid"
+
+msgid "  (Radio)"
+msgstr "  (Raadio)"
+
+msgid "Date"
+msgstr "Kuupäev"
+
+msgid "Repeat"
+msgstr "Kordus"
+
+msgid "Once"
+msgstr "Üks kord"
+
+msgid "Series"
+msgstr "Sari"
+
+msgid "Action"
+msgstr "Toiming"
+
+msgid "Format"
+msgstr "Vorming"
+
+msgid "After"
+msgstr "Pärast"
+
+msgid "Disabled"
+msgstr "Keelatud"
+
+msgid "Status"
+msgstr "Olek"
+
+msgid "Repeat every {day}"
+msgstr "Korda igal {day}"
+
+msgid "_Date"
+msgstr "_Kuupäev"
+
+msgid "_Lead (min)"
+msgstr "_Enne (min)"
+
+msgid "_End"
+msgstr "_Lõpp"
+
+msgid "_Start"
+msgstr "_Algus"
+
+msgid "Repeat on"
+msgstr "Korda päevadel"
+
+msgid "_Follow (min)"
+msgstr "_Pärast (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Vali vasakult kanal"
+
+msgid "_Name"
+msgstr "_Nimi"
+
+msgid "_Timer action"
+msgstr "_Taimeri toiming"
+
+msgid "_After recording"
+msgstr "Pärast _salvestamist"
+
+msgid "T_V format"
+msgstr "T_V vorming"
+
+msgid "_Radio format"
+msgstr "_Raadio vorming"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Ainult eelistatud keel: eelistustes määratud helikeele rajad, ilma kirjeldustõlketa. MP4 ja raadio helifail säilitavad ühe raja."
+
+msgid "Audi_o tracks"
+msgstr "Heli_rajad"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teletekst on olemas ainult MPEG-TS-is, seega kasutatakse TS-i."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG andmed (EIT) on olemas ainult MPEG-TS-is, seega kasutatakse TS-i."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS säilitab kõik subtiitrivood. MKV saab teleteksti subtiitrilehe tekstirajana; DVB bitikaardi subtiitrid jäävad ainult TS-i."
+
+msgid "Tracks"
+msgstr "Rajad"
+
+msgid "File _naming scheme"
+msgstr "_Failinimede muster"
+
+msgid "Folder…"
+msgstr "Kaust…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Kasuta eelistuste salvestiste kausta"
+
+msgid "Placeholders"
+msgstr "Kohatäited"
+
+msgid "Folder: "
+msgstr "Kaust: "
+
+msgid "Clear the editor"
+msgstr "Tühjenda redaktor"
+
+msgid "New"
+msgstr "Uus"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Lisa redaktori seaded uue taimerina"
+
+msgid "Apply"
+msgstr "Rakenda"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Salvesta redaktori seaded valitud taimerisse"
+
+msgid "Delete the selected timer"
+msgstr "Kustuta valitud taimer"
+
+msgid "Enable/Disable"
+msgstr "Sees/Väljas"
+
+msgid "Switch the selected timer on or off"
+msgstr "Lülita valitud taimer sisse või välja"
+
+msgid "Save as default"
+msgstr "Salvesta vaikeväärtuseks"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Kasuta neid vorminguid ja lisavoogusid uute taimerite ja käsitsi salvestuste jaoks"
+
+msgid "Series title"
+msgstr "Sarja pealkiri"
+
+msgid "Delete series rule"
+msgstr "Kustuta sarja reegel"
+
+msgid "Series recordings"
+msgstr "Sarjade salvestused"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Subtiitrid mahuvad TS-i või MKV-sse."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Eelistustes pole eelistatud helikeelt: salvestatakse esimene rada."
+
+msgid "File: {v0}"
+msgstr "Fail: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Vigane algus- või lõpuaeg"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Kasuta kuju TT:MM, näiteks 20:15."
+
+msgid "No channel"
+msgstr "Kanal puudub"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Vali vasakpoolsest loendist salvestatav kanal."
+
+msgid "Recording defaults saved"
+msgstr "Salvestamise vaikeväärtused salvestatud"
+
+msgid "Record with Options"
+msgstr "Salvesta valikutega"
+
+msgid "_Format"
+msgstr "_Vorming"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teleteksti ja EPG andmeid saab säilitada ainult MPEG-TS-is, seega kasutatakse TS-i."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Eelistatud helikeel: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Visualiseerimine „{v0}“ nurjus: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} on liiga vana"
+
+msgid "Playback error: "
+msgstr "Taasesituse viga: "
+
+msgid "All channels"
+msgstr "Kõik kanalid"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Lemmikud (TV + raadio)"
+
+msgid "Free to air"
+msgstr "Vabalt vaadatavad"
+
+msgid "Internet streams"
+msgstr "Internetivood"
+
+msgid "Fill (crop)"
+msgstr "Täida (kärbi)"
+
+msgid "Fit"
+msgstr "Mahuta"
+
+msgid "Stretch"
+msgstr "Venita"
+
+msgid "Playback error: {m}"
+msgstr "Taasesituse viga: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Plugina toiming nurjus: {e}"
+
+msgid "Open Media File…"
+msgstr "Ava meediafail…"
+
+msgid "Open URL…"
+msgstr "Ava aadress…"
+
+msgid "Import Channel List…"
+msgstr "Impordi kanalite loend…"
+
+msgid "Export Channel List…"
+msgstr "Ekspordi kanalite loend…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Ekspordi telekava (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Lülita TV / raadio"
+
+msgid "Recordings"
+msgstr "Salvestised"
+
+msgid "Programme Guide (EPG)"
+msgstr "Telekava (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Taimeriga salvestused"
+
+msgid "Record with Options…"
+msgstr "Salvesta valikutega…"
+
+msgid "Teletext"
+msgstr "Teletekst"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM-menüü (CI-moodul)…"
+
+msgid "Channel Search…"
+msgstr "Kanaliotsing…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I seadistus…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanalite redaktor / lemmikud"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Uuenda interneti-EPG-d (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Seo IPTV kanalid XMLTV-ga…"
+
+msgid "Audio Track"
+msgstr "Helirada"
+
+msgid "Subtitles"
+msgstr "Subtiitrid"
+
+msgid "Play Rate"
+msgstr "Taasesituse kiirus"
+
+msgid "Back 10 s"
+msgstr "Tagasi 10 s"
+
+msgid "Forward 10 s"
+msgstr "Edasi 10 s"
+
+msgid "Back 1 min"
+msgstr "Tagasi 1 min"
+
+msgid "Forward 1 min"
+msgstr "Edasi 1 min"
+
+msgid "Back to Live"
+msgstr "Tagasi otse-eetrisse"
+
+msgid "Jump"
+msgstr "Hüppa"
+
+msgid "Previous"
+msgstr "Eelmine"
+
+msgid "Random Order"
+msgstr "Juhuslik järjekord"
+
+msgid "Endless Playback"
+msgstr "Lõputu taasesitus"
+
+msgid "Playlist"
+msgstr "Esitusloend"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Säilita ajanihe salvestisena"
+
+msgid "Rebuild Playback"
+msgstr "Ehita taasesitus uuesti"
+
+msgid "Video Off (audio only)"
+msgstr "Video väljas (ainult heli)"
+
+msgid "Show Selected Channel"
+msgstr "Näita valitud kanalit"
+
+msgid "Swap Pictures"
+msgstr "Vaheta pildid"
+
+msgid "Picture in Picture"
+msgstr "Pilt pildis"
+
+msgid "Channel Mosaic…"
+msgstr "Kanalite mosaiik…"
+
+msgid "Stop in {mins} min"
+msgstr "Peata {mins} min pärast"
+
+msgid "Stop after current programme"
+msgstr "Peata pärast praegust saadet"
+
+msgid "Sleep Timer"
+msgstr "Unetaimer"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Heli hiljem (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Heli varem (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Lähtesta"
+
+msgid "Audio Delay (this channel)"
+msgstr "Heli viivitus (see kanal)"
+
+msgid "Full Screen"
+msgstr "Täisekraan"
+
+msgid "Show/Hide Channel List"
+msgstr "Näita/peida kanalite loend"
+
+msgid "Aspect / Zoom"
+msgstr "Kuvasuhe / suum"
+
+msgid "Window Size"
+msgstr "Akna suurus"
+
+msgid "Picture Settings…"
+msgstr "Pildi seaded…"
+
+msgid "Equalizer…"
+msgstr "Ekvalaiser…"
+
+msgid "Radio Visualisation"
+msgstr "Raadio visualiseerimine"
+
+msgid "Screenshot"
+msgstr "Ekraanipilt"
+
+msgid "Plugins…"
+msgstr "Pluginad…"
+
+msgid "About LinDVB"
+msgstr "LinDVB teave"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Näita/peida kanalite loend (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Peamenüü (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Telekava (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletekst (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Näita telekanaleid (Ctrl+M vahetab)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Näita raadiojaamu (Ctrl+M vahetab)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Näita oma salvestisi (topeltklõps esitab)"
+
+msgid "Search name or number"
+msgstr "Otsi nime või numbrit"
+
+msgid "All groups"
+msgstr "Kõik rühmad"
+
+msgid "Previous channel (Page Down)"
+msgstr "Eelmine kanal (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Paus / ajanihe (tühik)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Peata (lülita kanal välja)"
+
+msgid "Next channel (Page Up)"
+msgstr "Järgmine kanal (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Salvesta praegune kanal (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Vali selle salvestuse vorming ja rajad"
+
+msgid "Seek"
+msgstr "Asukoht"
+
+msgid "LIVE"
+msgstr "OTSE"
+
+msgid "Back to live (L)"
+msgstr "Tagasi otse-eetrisse (L)"
+
+msgid "Mute (M)"
+msgstr "Vaigista (M)"
+
+msgid "Volume"
+msgstr "Helitugevus"
+
+msgid "Audio track"
+msgstr "Helirada"
+
+msgid "Playback and picture settings"
+msgstr "Taasesituse ja pildi seaded"
+
+msgid "Full screen (F)"
+msgstr "Täisekraan (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nPraegu: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n}/{total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Näidatakse {n}/{total} salvestist"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Näidatakse {n}/{total} lemmikut"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Näidatakse {n}/{total} raadiojaama"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Näidatakse {n}/{total} telekanalit"
+
+msgid "Add to Favourites"
+msgstr "Lisa lemmikutesse"
+
+msgid "Remove from Favourites"
+msgstr "Eemalda lemmikutest"
+
+msgid "Edit…"
+msgstr "Muuda…"
+
+msgid "Show as Picture in Picture"
+msgstr "Näita pilt pildis kujul"
+
+msgid "Select a channel in the list first"
+msgstr "Vali esmalt loendist kanal"
+
+msgid "By channel"
+msgstr "Kanali järgi"
+
+msgid "By title"
+msgstr "Pealkirja järgi"
+
+msgid "Newest first"
+msgstr "Uusimad eespool"
+
+msgid "Oldest first"
+msgstr "Vanimad eespool"
+
+msgid "Largest first"
+msgstr "Suurimad eespool"
+
+msgid "Sort the recordings"
+msgstr "Sordi salvestisi"
+
+msgid "Open the recording folder"
+msgstr "Ava salvestiste kaust"
+
+msgid "Look for new recordings"
+msgstr "Otsi uusi salvestisi"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Salvestisi veel pole.\n\nSalvestised salvestatakse kausta\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Eelistustes pole salvestiste kausta määratud."
+
+msgid "Recording in progress"
+msgstr "Salvestamine käib"
+
+msgid "Watched"
+msgstr "Vaadatud"
+
+msgid "Watched up to {pos}"
+msgstr "Vaadatud kuni {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Salvestist ei leitud: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Jätkatakse kohast {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Kausta ei leitud: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder} ei saa avada: {message}"
+
+msgid "Play"
+msgstr "Esita"
+
+msgid "Play from the Beginning"
+msgstr "Esita algusest"
+
+msgid "Details…"
+msgstr "Üksikasjad…"
+
+msgid "Mark as Unwatched"
+msgstr "Märgi vaatamata"
+
+msgid "Mark as Watched"
+msgstr "Märgi vaadatuks"
+
+msgid "Show in Folder"
+msgstr "Näita kaustas"
+
+msgid "Delete…"
+msgstr "Kustuta…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Peata salvestamine enne selle kustutamist"
+
+msgid "Delete “{title}”?"
+msgstr "Kas kustutada „{title}“?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nFail eemaldatakse kettalt."
+
+msgid "Deleted {name}"
+msgstr "{name} kustutatud"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name} ei saa kustutada: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name} häälestamine…"
+
+msgid "Search recordings"
+msgstr "Otsi salvestistest"
+
+msgid "No radio stations in the channel list"
+msgstr "Kanalite loendis pole raadiojaamu"
+
+msgid "No TV channels in the channel list"
+msgstr "Kanalite loendis pole telekanaleid"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – lülitatud: {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} ei ole praegu eetris"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Otse-TV peatatud: tuunerit on vaja taimeriga salvestuseks"
+
+msgid "Stopped"
+msgstr "Peatatud"
+
+msgid "Sound {ms} ms later"
+msgstr "Heli {ms} ms hiljem"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Heli {v0} ms varem"
+
+msgid "Audio delay off"
+msgstr "Heli viivitus väljas"
+
+msgid "Playing {item}"
+msgstr "Esitatakse {item}"
+
+msgid "Open media files"
+msgstr "Ava meediafailid"
+
+msgid "Open URL"
+msgstr "Ava aadress"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Ava"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Impordi kanalite loend (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "{name} ei õnnestunud importida"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Imporditi uusi kanaleid: {total_a}, uuendatud: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Ekspordi kanalid (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Eksporditud: {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Ekspordi telekava (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path} ei saa kirjutada: {error}"
+
+msgid "Nothing to record"
+msgstr "Pole midagi salvestada"
+
+msgid "This channel is already being recorded"
+msgstr "Seda kanalit juba salvestatakse"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletekst: dekooder puudub (gst-plugins-bad koos libzvbi-ga)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletekst: sellel kanalil pole saadaval"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teletekst vajab DVB-kanalit"
+
+msgid "Volume {v0}%"
+msgstr "Helitugevus {v0}%"
+
+msgid "Off"
+msgstr "Väljas"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Peidetud subtiitrid (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Keeli: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Helirajasid: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Ekraanipilt salvestatud: {path}"
+
+msgid "Screenshot failed"
+msgstr "Ekraanipilt nurjus"
+
+msgid "Picture Settings"
+msgstr "Pildi seaded"
+
+msgid "Restore Defaults"
+msgstr "Taasta vaikeväärtused"
+
+msgid "Equalizer"
+msgstr "Ekvalaiser"
+
+msgid "Leave full screen (F)"
+msgstr "Välju täisekraanist (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Visualiseerimine nurjus: {e}"
+
+msgid "Radio visualisation"
+msgstr "Raadio visualiseerimine"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Raadio visualiseerimine (ainult raadiole ja helile)"
+
+msgid "Playback stops at {v0}"
+msgstr "Taasesitus peatub kell {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Unetaimeri jaoks pole saateteavet"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Unetaimer: taasesitus peatatud"
+
+msgid "No programme information"
+msgstr "Saateteave puudub"
+
+msgid "Next: {v0}  {title}"
+msgstr "Järgmisena: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signaal {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Otse"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Ajanihe −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Vaata ja salvesta DVB-S/S2, DVB-C, DVB-T/T2, ATSC ja internetitelevisiooni Linux DVB API ja GStreameri abil."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Seo IPTV kanalid XMLTV-ga"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV kava pole veel laaditud. Määra EPG seadetes XMLTV aadress ja laadi kava esmalt alla; sidumine algab pärast allalaadimist automaatselt."
+
+msgid "Download XMLTV guide now"
+msgstr "Laadi XMLTV kava kohe alla"
+
+msgid "Only channels without guide"
+msgstr "Ainult kavata kanalid"
+
+msgid "Match"
+msgstr "Sidumine"
+
+msgid "Guide channel:"
+msgstr "Kava kanal:"
+
+msgid "Assign"
+msgstr "Määra"
+
+msgid "Suggest"
+msgstr "Soovita"
+
+msgid "Auto-match all"
+msgstr "Seo kõik automaatselt"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Seo iga kanal, mida pole käsitsi määratud"
+
+msgid "Reset to automatic"
+msgstr "Lähtesta automaatseks"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Lase valitud kanali puhul taas automaatsel sidumisel otsustada"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Kava kanal on {done} kanalil {v1}-st"
+
+msgid "No suggestion for {name}"
+msgstr "Kanalile {name} pole soovitust"

@@ -14,6 +14,8 @@ FEC_CODES = {"12": "1/2", "23": "2/3", "34": "3/4", "35": "3/5", "45": "4/5",
 # Standard locations of the dtv-scan-tables package on common distributions.
 SCAN_TABLE_DIRS = ["/usr/share/dvb", "/usr/share/dvbv5", "/usr/share/dvb-scan-tables",
                    "/usr/local/share/dvb"]
+# lists that ship with LinDVB (the kernel's virtual tuner vidtv, for testing)
+BUNDLED_TABLES = Path(__file__).with_name("scantables")
 
 
 @dataclass
@@ -31,7 +33,7 @@ class Transponder:
 @dataclass
 class TransponderList:
     name: str
-    kind: str                # "sat", "cable", "terrestrial", "atsc"
+    kind: str                # "sat", "cable", "terrestrial", "atsc", "atsc-cable"
     transponders: list
     path: str = ""
 
@@ -48,10 +50,19 @@ def parse_transponder_ini(path):
     elif stem.startswith("DVB-C"):
         kind = "cable"
     elif stem.startswith("ATSC"):
-        kind = "atsc"
+        # US cable (ATSC_America_Cable.ini) is QAM annex B, not 8VSB
+        kind = "atsc-cable" if "CABLE" in stem else "atsc"
     else:
         kind = "terrestrial"
-    t2 = "T2" in stem
+    # terrestrial lists of other TV systems: DVBViewer names them ISDB.ini, DTMB.ini
+    if stem.startswith("ISDB") or "ISDB" in name.upper() or "ISBD" in name.upper():
+        terr = "isdb-t"
+    elif stem.startswith("DTMB") or "DTMB" in name.upper():
+        terr = "dtmb"
+    elif "T2" in stem:
+        terr = "dvb-t2"
+    else:
+        terr = "dvb-t"
     tps = []
     for k, v in cp.items("DVB") if cp.has_section("DVB") else []:
         if k == "0":
@@ -72,10 +83,11 @@ def parse_transponder_ini(path):
                                    CABLE_QAM.get(int(f[1]), "auto"), label=label))
         elif kind == "terrestrial":
             bw = int(f[1]) if len(f) > 1 and f[1].isdigit() else 8
-            tps.append(Transponder("dvb-t2" if t2 else "dvb-t", freq,
-                                   bandwidth_hz=bw * 1000000, label=label))
+            tps.append(Transponder(terr, freq, bandwidth_hz=bw * 1000000, label=label))
         elif kind == "atsc":
             tps.append(Transponder("atsc", freq, modulation="8vsb", label=label))
+        elif kind == "atsc-cable":
+            tps.append(Transponder("dvb-c-b", freq, modulation="qam-256", label=label))
     return TransponderList(name, kind, tps, str(path))
 
 
@@ -106,7 +118,7 @@ def write_scan_file(tplist, diseqc=-1):
 def find_transponder_lists(extra_dirs=()):
     """Return (name, path) of transponder lists found on this system."""
     found = []
-    for d in [*extra_dirs, *SCAN_TABLE_DIRS]:
+    for d in [*extra_dirs, *SCAN_TABLE_DIRS, BUNDLED_TABLES]:
         p = Path(d).expanduser()
         if not p.is_dir():
             continue
@@ -155,5 +167,22 @@ def find_adapters():
                 break
             except OSError:
                 pass
+        if not name and is_virtual_adapter(a, f):
+            name = "Virtual tuner (vidtv)"
         res.append((a, f, name or f"Adapter {a}"))
     return res
+
+
+def is_virtual_adapter(adapter, frontend=0):
+    """True for the kernel's virtual DVB driver vidtv (a test tuner, no hardware)."""
+    dev = Path(f"/sys/class/dvb/dvb{adapter}.frontend{frontend}/device")
+    for link in (dev / "driver", dev):
+        try:
+            if "vidtv" in link.resolve().name:
+                return True
+        except OSError:
+            pass
+    try:
+        return "vidtv" in (dev / "modalias").read_text()
+    except OSError:
+        return False

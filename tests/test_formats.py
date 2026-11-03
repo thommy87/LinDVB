@@ -151,3 +151,69 @@ def test_file_name_scheme():
 def test_channel_pids():
     c = Channel(name="x", pmt_pid=100, video_pid=101, audio_pids=[102], teletext_pid=104)
     assert {0, 17, 18, 100, 101, 102, 104} <= set(c.pids())
+
+
+def test_transponder_lists_of_other_tv_systems(tmp_path):
+    """DVBViewer's ISDB.ini, DTMB.ini, DVB-T_Australia.ini and ATSC lists."""
+    def tl(fname, title, rows):
+        p = tmp_path / fname
+        p.write_text(f"[SATTYPE]\n1=5000\n2={title}\n\n[DVB]\n0={len(rows)}\n"
+                     + "".join(f"{i}={r}\n" for i, r in enumerate(rows, 1)))
+        return parse_transponder_ini(p)
+
+    isdb = tl("ISDB.ini", "ISBD-T", ["473000,6"])
+    assert isdb.kind == "terrestrial" and isdb.transponders[0].delsys == "isdb-t"
+    assert "DELIVERY_SYSTEM = ISDBT" in write_scan_file(isdb)
+    assert "BANDWIDTH_HZ = 6000000" in write_scan_file(isdb)
+
+    dtmb = tl("DTMB.ini", "DTMB", ["474000,8,0,|CH21"])
+    assert dtmb.transponders[0].delsys == "dtmb" and dtmb.transponders[0].label == "CH21"
+    assert "DELIVERY_SYSTEM = DTMB" in write_scan_file(dtmb)
+
+    au = tl("DVB-T_Australia.ini", "DVB-T Australia", ["177500,7"])
+    assert au.transponders[0].delsys == "dvb-t"
+    assert au.transponders[0].bandwidth_hz == 7000000
+
+    t2 = tl("DVB-T2_Germany.ini", "DVB-T2 Deutschland", ["474000,8,4"])
+    assert t2.transponders[0].delsys == "dvb-t2"
+
+    us = tl("ATSC_America.ini", "America ATSC", ["57000,6"])
+    assert us.kind == "atsc" and "MODULATION = VSB/8" in write_scan_file(us)
+    cable = tl("ATSC_America_Cable.ini", "America Cable", ["57000,6"])
+    text = write_scan_file(cable)
+    assert "DELIVERY_SYSTEM = DVBC/ANNEX_B" in text and "MODULATION = QAM/256" in text
+
+
+def test_xmltv_export_round_trip(tmp_path, monkeypatch):
+    from lindvb.epg import read_xmltv, write_xmltv
+    monkeypatch.setattr(EPGStore, "path", tmp_path / "epg.json")
+    epg = EPGStore(persist=False)
+    a = Channel(name="Das Erste HD", sid=28106, tsid=1019, number=1)
+    b = Channel(name="Leer", sid=1, tsid=2)
+    now = int(time.time()) // 60 * 60
+    epg.add(a.epg_key, Event(now - 600, 3600, "Tagesschau & mehr", "Folge 1", "Nachrichten <live>",
+                             "News", country="D", year=2026))
+    epg.add(a.epg_key, Event(now + 3000, 1800, "Tatort"))
+    channels, items = read_xmltv(write_xmltv(epg, [a, b]))
+    assert len(channels) == 1 and list(channels.values())[0][0] == "Das Erste HD"
+    assert [e.title for _, e in items] == ["Tagesschau & mehr", "Tatort"]
+    first = items[0][1]
+    assert (first.start, first.duration, first.subtitle, first.description, first.year) == \
+        (now - 600, 3600, "Folge 1", "Nachrichten <live>", 2026)
+
+
+def test_reminders(tmp_path, monkeypatch):
+    from lindvb.reminders import ReminderStore
+    monkeypatch.setattr(ReminderStore, "path", tmp_path / "reminders.json")
+    store = ReminderStore()
+    c = Channel(name="ZDF", sid=28006, tsid=1079)
+    now = 1_800_000_000
+    store.add(c, Event(now + 600, 1800, "heute journal"))
+    assert store.has(c.key, now + 600)
+    assert store.due(120, now) == []
+    (r,) = store.due(120, now + 480)
+    assert r.title == "heute journal" and r.channel_name == "ZDF"
+    assert store.due(120, now + 500) == []                  # fires once
+    assert ReminderStore().has(c.key, now + 600)            # saved
+    store.due(120, now + 3000)                              # programme over: dropped
+    assert not store.upcoming(now)

@@ -185,6 +185,7 @@ class VideoBin:
 
 
 class Player(GObject.Object):
+    cc = None                    # cc708overlay of the current pipeline
     __gsignals__ = {
         "state": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
@@ -252,6 +253,13 @@ class Player(GObject.Object):
         pb.set_property("video-sink", self.video.sink)
         vf = Gst.Bin.new("vfilter")
         chain = [Gst.ElementFactory.make("videoconvert")]
+        # ATSC / US cable closed captions (CEA-608/708 in the video stream);
+        # Subtitles > Closed Captions switches them on and off
+        self.cc = None
+        if Gst.ElementFactory.find("cc708overlay"):
+            self.cc = Gst.ElementFactory.make("cc708overlay")
+            self.cc.set_property("silent", not self.settings.get("closed_captions", False))
+            chain.insert(0, self.cc)
         if self.settings["deinterlace"] and Gst.ElementFactory.find("deinterlace"):
             chain.append(Gst.ElementFactory.make("deinterlace"))
         self.vbal = Gst.ElementFactory.make("videobalance")
@@ -260,7 +268,8 @@ class Player(GObject.Object):
             vf.add(e)
         for a, b in zip(chain, chain[1:]):
             a.link(b)
-        vf.add_pad(Gst.GhostPad.new("sink", chain[0].get_static_pad("sink")))
+        first = chain[0].get_static_pad("sink") or chain[0].get_static_pad("video_sink")
+        vf.add_pad(Gst.GhostPad.new("sink", first))
         vf.add_pad(Gst.GhostPad.new("src", chain[-1].get_static_pad("src")))
         pb.set_property("video-filter", vf)
         pb.set_property("audio-filter", self._audio_filter())
@@ -747,6 +756,15 @@ class Player(GObject.Object):
         if self.playbin and not self.capture:
             self.playbin.seek_simple(Gst.Format.TIME, Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT,
                                      int(seconds * Gst.SECOND))
+
+    def set_closed_captions(self, on):
+        """Show the CEA-608/708 captions of the video (ATSC, US cable, some IPTV)."""
+        self.settings["closed_captions"] = bool(on)
+        if self.cc is not None:
+            self.cc.set_property("silent", not on)
+
+    def has_closed_captions(self):
+        return self.cc is not None
 
     def set_rate(self, rate):
         """Play rate for files (0.5 .. 2.0)."""

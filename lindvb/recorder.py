@@ -12,6 +12,7 @@ from pathlib import Path
 from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
+from .i18n import N_, _
 from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
                         SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
                         choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
@@ -19,7 +20,8 @@ from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa:
 from .tuner import SegmentReader
 # systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
 AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
-WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+# stored in timers as indices; the names are translated where they are shown
+WEEKDAYS = [N_("Mo"), N_("Tu"), N_("We"), N_("Th"), N_("Fr"), N_("Sa"), N_("Su")]
 
 
 def safe(s):
@@ -99,7 +101,7 @@ class Timer:
             while datetime.fromtimestamp(self.start).weekday() not in self.days:
                 self.start += 86400
             self.end = self.start + dur
-            self.status = "Scheduled"
+            self.status = N_("Scheduled")
 
 
 @dataclass
@@ -382,17 +384,48 @@ class TimerManager(GObject.Object):
             self.emit("message", f"Recording failed: {e}")
             return None
         self.active[key] = (rec, cap)
+        self._write_info(rec, channel, title, start, fmt)
+        rec.channel, rec.title = channel, title
+        self._plugin_event("recording-started", rec)
         self.emit("message", f"Recording: {path.name}")
         self.emit("changed")
         return rec
+
+    def _write_info(self, rec, channel, title, start, fmt):
+        """Programme details beside the recording for the Recordings tab."""
+        from .library import write_info
+        event = None
+        epg = getattr(self.app, "epg", None)
+        if epg is not None and getattr(channel, "epg_key", None):
+            try:
+                now, nxt = epg.now_next(channel.epg_key)
+            except Exception:       # noqa: BLE001 - details are optional
+                now = nxt = None
+            # a timer with lead time starts before its programme: take the next one
+            for ev in (now, nxt):
+                if ev is not None and ev.start <= start + 15 * 60 < ev.start + ev.duration:
+                    event = ev
+                    break
+            if event is None and now is not None and now.title.lower() in title.lower():
+                event = now
+        write_info(rec.path, channel.name, title, event, start, fmt=fmt)
 
     def _stop(self, key):
         rec, cap = self.active.pop(key, (None, None))
         if rec:
             rec.stop()
+            from .library import write_info
+            write_info(rec.path, end=time.time())
+            self._plugin_event("recording-stopped", rec)
         if cap:
             self.app.tuners.release(cap, key)
         self.emit("changed")
+
+    def _plugin_event(self, event, rec):
+        plugins = getattr(self.app, "plugins", None)
+        if plugins is not None:
+            plugins.emit(event, getattr(rec, "channel", None),
+                         {"title": getattr(rec, "title", ""), "file": str(rec.path)})
 
     def stop_all(self):
         for key in list(self.active):
@@ -408,7 +441,7 @@ class TimerManager(GObject.Object):
             if t.id in self.active or t.status == "Tuned":
                 if now >= t.rec_end:
                     self._stop(t.id)
-                    t.status = "Done"
+                    t.status = N_("Done")
                     changed = True
                     if t.days:
                         t.next_occurrence(now)
@@ -416,19 +449,19 @@ class TimerManager(GObject.Object):
             elif t.rec_start <= now < t.rec_end and t.status == "Scheduled":
                 ch = self.app.db.by_key(t.channel_key)
                 if ch is None:
-                    t.status = "Channel missing"
+                    t.status = N_("Channel missing")
                 else:
                     if t.tunes and getattr(self.app, "window", None) is not None:
                         self.app.window.zap(ch)
                     if not t.records:
-                        t.status = "Tuned"
+                        t.status = N_("Tuned")
                     elif self._start(t.id, ch, t.title, timer=t):
-                        t.status = "Recording"
+                        t.status = N_("Recording")
                     else:
-                        t.status = "Failed"
+                        t.status = N_("Failed")
                 changed = True
             elif now >= t.rec_end and t.status == "Scheduled":
-                t.status = "Missed"
+                t.status = N_("Missed")
                 t.next_occurrence(now)
                 changed = True
         if changed:
@@ -439,7 +472,7 @@ class TimerManager(GObject.Object):
         """The action after recording, once no other recording is running."""
         if self.active or t.after == "None":
             return
-        self.emit("message", f"After recording: {t.after}")
+        self.emit("message", _("After recording: {action}").format(action=_(t.after)))
         if t.after in AFTER_COMMANDS:
             power_action(AFTER_COMMANDS[t.after])
         elif t.after == "Quit LinDVB":

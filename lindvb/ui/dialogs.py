@@ -13,13 +13,14 @@ from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LA
 from ..tuner import SegmentReader
 from .common import dropdown, fill, make_column_view, scrolled, selected
 from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
+from ..i18n import LANGUAGES as LANGUAGES_UI, _
 
 DELSYS = ["dvb-s", "dvb-s2", "dvb-c-a", "dvb-c-b", "dvb-t", "dvb-t2", "atsc", "isdb-t", "dtmb", "iptv"]
 MODS = ["auto", "qpsk", "8psk", "16apsk", "32apsk", "qam-16", "qam-32", "qam-64", "qam-128",
         "qam-256", "8vsb"]
 
 
-ACCENT_LABELS = ["LinDVB blue (default)", "System accent colour", "Custom colour"]
+ACCENT_LABELS = [_("LinDVB blue (default)"), _("System accent colour"), _("Custom colour")]
 
 
 def _row(group, label, widget, hint=None):
@@ -45,7 +46,7 @@ class PrefsWindow(Gtk.Window):
     """Preferences, split into pages with a sidebar."""
 
     def __init__(self, app, parent):
-        super().__init__(title="Preferences", transient_for=parent,
+        super().__init__(title=_("Preferences"), transient_for=parent,
                          default_width=820, default_height=600)
         self.app = app
         self._saved = False
@@ -53,10 +54,10 @@ class PrefsWindow(Gtk.Window):
         self.w = {}
 
         hb = Gtk.HeaderBar()
-        cancel = Gtk.Button(label="Cancel")
+        cancel = Gtk.Button(label=_("Cancel"))
         cancel.connect("clicked", lambda *_: self.close())
         hb.pack_start(cancel)
-        save = Gtk.Button(label="Save", css_classes=["suggested-action"])
+        save = Gtk.Button(label=_("Save"), css_classes=["suggested-action"])
         save.connect("clicked", lambda *_: self.on_save())
         hb.pack_end(save)
         self.set_titlebar(hb)
@@ -98,111 +99,116 @@ class PrefsWindow(Gtk.Window):
             self.w[key] = (_row(g, label, Gtk.Switch(active=bool(s[key])), hint), bool)
 
         # -- Appearance
-        pg = page("appearance", "Appearance")
-        g = group(pg, "Accent colour")
+        pg = page("appearance", _("Appearance"))
+        g = group(pg, _("Language"))
+        lang = s.get("language", "")
+        self._lang_codes = list(LANGUAGES_UI)
+        self._lang_drop = _row(g, _("Language"), dropdown(
+            [_(n) if c == "" else n for c, n in LANGUAGES_UI.items()],
+            self._lang_codes.index(lang) if lang in self._lang_codes else 0),
+            _("Takes effect when LinDVB is started again."))
+        g = group(pg, _("Accent colour"))
         mode = s.get("accent_mode", "default")
-        self._accent_drop = _row(g, "Accent colour", dropdown(
+        self._accent_drop = _row(g, _("Accent colour"), dropdown(
             ACCENT_LABELS, ACCENT_MODES.index(mode) if mode in ACCENT_MODES else 0),
-            "Used for highlights, selections and buttons in every window.")
+            _("Used for highlights, selections and buttons in every window."))
         self._accent_btn = self._color_button(s.get("accent_custom") or ACCENT)
-        self._custom_row = _row(g, "Custom colour", self._accent_btn)
+        self._custom_row = _row(g, _("Custom colour"), self._accent_btn)
         self._accent_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"],
                                       margin_top=4, margin_bottom=6)
         g.append(self._accent_hint)
         self._accent_drop.connect("notify::selected", lambda *_: self._preview_accent())
-        g = group(pg, "On-screen display")
-        spin(g, "osd_seconds", "OSD display time (s)", 1, 30)
+        g = group(pg, _("On-screen display"))
+        spin(g, "osd_seconds", _("OSD display time (s)"), 1, 30)
 
         # -- Visualisation
-        pg = page("visualisation", "Visualisation",
-                  "What is shown over the radio visualisation while a radio channel or an "
+        pg = page("visualisation", _("Visualisation"),
+                  _("What is shown over the radio visualisation while a radio channel or an "
                   "audio file plays. Song details come from the RadioText of DVB radio, the "
-                  "stream title of internet radio and the tags of audio files.")
-        g = group(pg, "Overlay")
-        switch(g, "vis_show_logo", "Station logo tile",
-               "The channel's logo, or a tile with the station name when there is none.")
-        switch(g, "vis_show_cover", "Album cover",
-               "The cover of the song on air, from the file or looked up online.")
-        switch(g, "vis_show_song", "Song information",
-               "Artist, album and year, track and title. Without song details the station "
-               "and the programme on air are shown.")
-        switch(g, "vis_show_clock", "Clock in the top right corner")
-        g = group(pg, "Sources")
-        switch(g, "vis_cover_online", "Look up covers online",
-               "Sends artist and title of the song on air to the iTunes Search API to find "
-               "the album, year and cover.")
-        entry(g, "logo_dir", "Station logo folder",
-              "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". "
-              "Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: "
-              f"{DATA_DIR / 'logos'}")
+                  "stream title of internet radio and the tags of audio files."))
+        g = group(pg, _("Overlay"))
+        switch(g, "vis_show_logo", _("Station logo tile"),
+               _("The channel's logo, or a tile with the station name when there is none."))
+        switch(g, "vis_show_cover", _("Album cover"),
+               _("The cover of the song on air, from the file or looked up online."))
+        switch(g, "vis_show_song", _("Song information"),
+               _("Artist, album and year, track and title. Without song details the station "
+               "and the programme on air are shown."))
+        switch(g, "vis_show_clock", _("Clock in the top right corner"))
+        g = group(pg, _("Sources"))
+        switch(g, "vis_cover_online", _("Look up covers online"),
+               _("Sends artist and title of the song on air to the iTunes Search API to find "
+               "the album, year and cover."))
+        entry(g, "logo_dir", _("Station logo folder"),
+              _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}").format(v0=DATA_DIR / 'logos'))
 
         # -- Playback
-        pg = page("playback", "Playback")
+        pg = page("playback", _("Playback"))
         g = group(pg)
-        switch(g, "deinterlace", "Deinterlace video")
-        entry(g, "screenshot_dir", "Screenshot folder")
-        g = group(pg, "Timeshift")
-        entry(g, "timeshift_dir", "Timeshift folder")
-        spin(g, "timeshift_max_mb", "Timeshift buffer (MB)", 128, 200000)
+        switch(g, "deinterlace", _("Deinterlace video"))
+        entry(g, "screenshot_dir", _("Screenshot folder"))
+        g = group(pg, _("Timeshift"))
+        entry(g, "timeshift_dir", _("Timeshift folder"))
+        spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
 
         # -- Tuner
-        pg = page("tuner", "Tuner and LNB")
-        g = group(pg, "DVB hardware")
-        entry(g, "adapters", "DVB adapters", "Adapter numbers LinDVB may use, comma separated.")
+        pg = page("tuner", _("Tuner and LNB"))
+        g = group(pg, _("DVB hardware"))
+        entry(g, "adapters", _("DVB adapters"), _("Adapter numbers LinDVB may use, comma separated."))
         self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
-        spin(g, "frontend", "Frontend", 0, 7)
-        switch(g, "full_transponder", "Capture whole transponder",
-               "Needed for all audio tracks when the channel list knows only one audio PID.")
-        g = group(pg, "Satellite LNB")
-        spin(g, "lnb_lof1", "LOF low band (kHz)", 0, 20000000)
-        spin(g, "lnb_lof2", "LOF high band (kHz)", 0, 20000000)
-        spin(g, "lnb_slof", "Switch frequency (kHz)", 0, 20000000)
+        spin(g, "frontend", _("Frontend"), 0, 7)
+        switch(g, "full_transponder", _("Capture whole transponder"),
+               _("Needed for all audio tracks when the channel list knows only one audio PID."))
+        g = group(pg, _("Satellite LNB"))
+        spin(g, "lnb_lof1", _("LOF low band (kHz)"), 0, 20000000)
+        spin(g, "lnb_lof2", _("LOF high band (kHz)"), 0, 20000000)
+        spin(g, "lnb_slof", _("Switch frequency (kHz)"), 0, 20000000)
 
         # -- Recording
-        pg = page("recording", "Recording")
+        pg = page("recording", _("Recording"))
         g = group(pg)
-        entry(g, "recording_dir", "Recording folder")
-        entry(g, "name_scheme", "File naming scheme",
-              "Placeholders: %year %date %time %end %station %name, / for sub-folders")
+        entry(g, "recording_dir", _("Recording folder"))
+        entry(g, "name_scheme", _("File naming scheme"),
+              _("Placeholders: %year %date %time %end %station %name, / for sub-folders"))
         self._recording_options(pg, group, switch)
-        g = group(pg, "Timer padding")
-        spin(g, "lead_minutes", "Start earlier by (min)", 0, 60)
-        spin(g, "follow_minutes", "Stop later by (min)", 0, 180)
-        g = group(pg, "Timers")
-        switch(g, "timer_edit_after_create", "Open the timer window after creating a timer",
-               "After Record in the programme guide, edit the new timer straight away.")
+        g = group(pg, _("Timer padding"))
+        spin(g, "lead_minutes", _("Start earlier by (min)"), 0, 60)
+        spin(g, "follow_minutes", _("Stop later by (min)"), 0, 180)
+        g = group(pg, _("Timers"))
+        switch(g, "timer_edit_after_create", _("Open the timer window after creating a timer"),
+               _("After Record in the programme guide, edit the new timer straight away."))
 
         # -- EPG
         from .epgsettings import EPGPrefs
-        pg = page("epg", "EPG", "Programme guide: broadcast EPG, internet EPG (XMLTV) and the "
-                                "EPG of other providers.")
+        pg = page("epg", _("EPG"), _("Programme guide: broadcast EPG, internet EPG (XMLTV) and the "
+                                "EPG of other providers."))
         self._epg = EPGPrefs(app, self, pg, group, _row)
 
         # -- Conditional access
-        pg = page("ca", "Conditional access",
-                  "Descrambling of the encrypted channels you subscribe to, with your own "
-                  "card in a softcam or CI module.")
+        pg = page("ca", _("Conditional access"),
+                  _("Descrambling of the encrypted channels you subscribe to, with your own "
+                  "card in a softcam or CI module."))
         g = group(pg)
         self._ca_names = ["none", "dvbapi", "ci"] + \
             [n for n in app.plugins.ca_providers if n not in ("dvbapi", "ci")]
-        ca_labels = {"none": "None (leave scrambled)",
-                     "dvbapi": "External softcam (DVBAPI / OSCam)",
-                     "ci": "Hardware CI / CI+ module"}
+        ca_labels = {"none": _("None (leave scrambled)"),
+                     "dvbapi": _("External softcam (DVBAPI / OSCam)"),
+                     "ci": _("Hardware CI / CI+ module")}
         cur = s.get("ca_provider", "none")
         idx = self._ca_names.index(cur) if cur in self._ca_names else 0
-        self._ca_drop = _row(g, "Descrambling via",
+        self._ca_drop = _row(g, _("Descrambling via"),
                              dropdown([ca_labels.get(n, n) for n in self._ca_names], idx))
-        g = group(pg, "Softcam")
-        entry(g, "ca_dvbapi_socket", "DVBAPI socket", "Unix socket path, or host:port.")
-        g = group(pg, "CI module")
-        spin(g, "ca_ci_adapter", "CI adapter number", 0, 15)
-        spin(g, "ca_ci_device", "CA device number", 0, 7)
+        g = group(pg, _("Softcam"))
+        entry(g, "ca_dvbapi_socket", _("DVBAPI socket"), _("Unix socket path, or host:port."))
+        g = group(pg, _("CI module"))
+        spin(g, "ca_ci_adapter", _("CI adapter number"), 0, 15)
+        spin(g, "ca_ci_device", _("CA device number"), 0, 7)
 
         # -- Plugins
-        pg = page("plugins", "Plugins")
+        pg = page("plugins", _("Plugins"))
         g = group(pg)
-        switch(g, "plugins_enabled", "Load plugins at startup")
-        manage = Gtk.Button(label="Manage Plugins…", halign=Gtk.Align.START)
+        switch(g, "plugins_enabled", _("Load plugins at startup"))
+        manage = Gtk.Button(label=_("Manage Plugins…"), halign=Gtk.Align.START)
         manage.connect("clicked", lambda *_: app.show_plugins())
         pg.append(manage)
 
@@ -213,15 +219,15 @@ class PrefsWindow(Gtk.Window):
     def _recording_options(self, pg, group, switch):
         """Default container and streams for new timers and manual recordings."""
         s = self.app.settings
-        g = group(pg, "Format and tracks")
+        g = group(pg, _("Format and tracks"))
         g.append(Gtk.Label(
-            label="Defaults for new timers and the Record button. Each timer, and a "
+            label=_("Defaults for new timers and the Record button. Each timer, and a "
                   "recording started with \"Record with options…\", can change them.\n"
                   "TS: video, all audio tracks, subtitles, teletext and EPG data. "
                   "MKV: video, several audio tracks and subtitles. "
                   "MPG: video and several audio tracks. MP4: video and one audio track. "
                   "Internet streams have no teletext, subtitles or EPG data; HLS and DASH "
-                  "streams are recorded with one audio track.",
+                  "streams are recorded with one audio track."),
             xalign=0, wrap=True, css_classes=["lv-hint"], margin_top=6, margin_bottom=6))
 
         def pick(key, values, labels, label, hint=None):
@@ -232,15 +238,15 @@ class PrefsWindow(Gtk.Window):
             self._rec[key] = (dd, values)
 
         self._rec = {}
-        pick("rec_tv_format", TV_FORMATS, FORMAT_LABELS, "TV format")
-        pick("rec_radio_format", RADIO_FORMATS, FORMAT_LABELS, "Radio format")
-        pick("rec_audio_mode", AUDIO_MODES, AUDIO_MODE_LABELS, "Audio tracks")
-        codes = [c for c, _ in LANGUAGES]
-        names = {c: ("None" if not c else name) for c, name in LANGUAGES}
-        pick("rec_audio_language", codes, names, "Preferred audio language",
-             "Used by \"Preferred language only\" and by MP4, which keeps one track. "
+        pick("rec_tv_format", TV_FORMATS, FORMAT_LABELS, _("TV format"))
+        pick("rec_radio_format", RADIO_FORMATS, FORMAT_LABELS, _("Radio format"))
+        pick("rec_audio_mode", AUDIO_MODES, AUDIO_MODE_LABELS, _("Audio tracks"))
+        codes = [c for c, _unused in LANGUAGES]
+        names = {c: (_("None") if not c else name) for c, name in LANGUAGES}
+        pick("rec_audio_language", codes, names, _("Preferred audio language"),
+             _("Used by \"Preferred language only\" and by MP4, which keeps one track. "
              "Audio description tracks are skipped. Without a match the first track is "
-             "recorded.")
+             "recorded."))
         for e in ("subtitles", "teletext", "epg_data"):
             switch(g, "rec_" + e, EXTRA_LABELS[e])
             self.w["rec_" + e][0].connect("notify::active", lambda *_: self._rec_hint_update())
@@ -261,18 +267,22 @@ class PrefsWindow(Gtk.Window):
                                  (v["rec_radio_format"], True, "Radio")):
             used = effective_format(fmt, extras, radio)
             if used != fmt:
-                why = [EXTRA_LABELS[e].split(" (")[0] for e in extras if e != "subtitles"] \
-                    or ["Subtitles"]
-                notes.append(f"{what}: {' and '.join(why)} can only be kept in "
-                             f"{'MPEG-TS' if why != ['Subtitles'] else 'TS or MKV'}, so "
-                             f"recordings are saved as TS.")
+                why = [EXTRA_LABELS[e].split(" (")[0] for e in extras if e != "subtitles"]
+                if why:
+                    text = _("{what}: {items} can only be kept in MPEG-TS, so recordings are "
+                             "saved as TS.")
+                else:
+                    why = [EXTRA_LABELS["subtitles"].split(" (")[0]]
+                    text = _("{what}: {items} can only be kept in TS or MKV, so recordings "
+                             "are saved as TS.")
+                notes.append(text.format(what=what, items=_(" and ").join(why)))
             else:
                 note = audio_note(used, v["rec_audio_mode"])
                 if note:
                     notes.append(f"{what}: {note}")
         if v["rec_audio_mode"] == "language" and not v["rec_audio_language"]:
-            notes.append("No preferred audio language is set, so only the first audio track "
-                         "is recorded.")
+            notes.append(_("No preferred audio language is set, so only the first audio track "
+                         "is recorded."))
         self._rec_hint.set_text("\n".join(notes))
         self._rec_hint.set_visible(bool(notes))
 
@@ -282,7 +292,7 @@ class PrefsWindow(Gtk.Window):
         rgba.parse(color)
         if hasattr(Gtk, "ColorDialogButton"):
             btn = Gtk.ColorDialogButton(dialog=Gtk.ColorDialog(with_alpha=False,
-                                                               title="Accent colour"))
+                                                               title=_("Accent colour")))
             btn.set_rgba(rgba)
         else:  # GTK < 4.10
             btn = Gtk.ColorButton(rgba=rgba, use_alpha=False)
@@ -300,10 +310,10 @@ class PrefsWindow(Gtk.Window):
         color = apply_accent(a)
         if a["accent_mode"] == "system":
             found = system_accent()
-            self._accent_hint.set_text(f"Desktop accent: {found}" if found else
-                                       "No desktop accent found, using LinDVB blue.")
+            self._accent_hint.set_text(_("Desktop accent: {found}").format(found=found) if found else
+                                       _("No desktop accent found, using LinDVB blue."))
         else:
-            self._accent_hint.set_text(f"Current accent: {color}")
+            self._accent_hint.set_text(_("Current accent: {color}").format(color=color))
 
     def _on_close(self, *_):
         if not self._saved:
@@ -313,6 +323,7 @@ class PrefsWindow(Gtk.Window):
     def on_save(self):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
+        s["language"] = self._lang_codes[self._lang_drop.get_selected()]
         s.update(self._accent_settings())
         s.update(self._rec_values())
         for k, (w, typ) in self.w.items():
@@ -342,17 +353,17 @@ class EditorWindow(Gtk.Window):
     SECTIONS = ("general", "tuning", "pids")
 
     def __init__(self, app, parent, channel=None):
-        super().__init__(title="Channel Editor", transient_for=parent,
+        super().__init__(title=_("Channel Editor"), transient_for=parent,
                          default_width=1040, default_height=640)
         self.app = app
         self.current = None
-        cols = [("#", lambda c: str(c.number), False), ("Name", lambda c: c.name, True),
-                ("Group", lambda c: c.root, False), ("Category", lambda c: c.category, False),
-                ("Fav", lambda c: "★" if c.favourite else "", False),
-                ("Type", lambda c: c.delsys, False)]
+        cols = [("#", lambda c: str(c.number), False), (_("Name"), lambda c: c.name, True),
+                (_("Group"), lambda c: c.root, False), (_("Category"), lambda c: c.category, False),
+                (_("Fav"), lambda c: "★" if c.favourite else "", False),
+                (_("Type"), lambda c: c.delsys, False)]
         self.view, self.store, self.sel = make_column_view(cols)
         self.sel.connect("notify::selected-item", lambda *_: self._load(selected(self.sel)))
-        self.filter = Gtk.SearchEntry(placeholder_text="Filter channels")
+        self.filter = Gtk.SearchEntry(placeholder_text=_("Filter channels"))
         self.filter.connect("search-changed", lambda *_: self.refresh())
 
         # -- details, grouped in collapsible sections
@@ -384,44 +395,44 @@ class EditorWindow(Gtk.Window):
             return widget
 
         self._exp = {}
-        g = section("general", "General")
-        for r, (k, lbl) in enumerate([("name", "Name"), ("root", "Group"),
-                                      ("category", "Category"), ("url", "Stream URL")]):
+        g = section("general", _("General"))
+        for r, (k, lbl) in enumerate([("name", _("Name")), ("root", _("Group")),
+                                      ("category", _("Category")), ("url", _("Stream URL"))]):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
-        self.fav = field(g, 4, "Favourite", Gtk.Switch())
-        self.radio = field(g, 5, "Radio", Gtk.Switch())
-        self.enc = field(g, 6, "Encrypted", Gtk.Switch())
+        self.fav = field(g, 4, _("Favourite"), Gtk.Switch())
+        self.radio = field(g, 5, _("Radio"), Gtk.Switch())
+        self.enc = field(g, 6, _("Encrypted"), Gtk.Switch())
 
-        g = section("tuning", "Tuning")
-        self.delsys = field(g, 0, "System", dropdown(DELSYS))
-        self.pol = field(g, 1, "Polarity", dropdown(["", "h", "v", "l", "r"]))
-        self.mod = field(g, 2, "Modulation", dropdown(MODS))
-        for r, (k, lbl) in enumerate([("frequency", "Frequency (kHz)"),
-                                      ("symbol_rate", "Symbol rate (kBd)"),
-                                      ("bandwidth_hz", "Bandwidth (Hz)"),
-                                      ("stream_id", "Stream ID"),
-                                      ("diseqc", "DiSEqC port (-1 none)")], start=3):
+        g = section("tuning", _("Tuning"))
+        self.delsys = field(g, 0, _("System"), dropdown(DELSYS))
+        self.pol = field(g, 1, _("Polarity"), dropdown(["", "h", "v", "l", "r"]))
+        self.mod = field(g, 2, _("Modulation"), dropdown(MODS))
+        for r, (k, lbl) in enumerate([("frequency", _("Frequency (kHz)")),
+                                      ("symbol_rate", _("Symbol rate (kBd)")),
+                                      ("bandwidth_hz", _("Bandwidth (Hz)")),
+                                      ("stream_id", _("Stream ID")),
+                                      ("diseqc", _("DiSEqC port (-1 none)"))], start=3):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
 
-        g = section("pids", "Service and PIDs")
-        for r, (k, lbl) in enumerate([("sid", "Service ID"), ("tsid", "Transport ID"),
-                                      ("pmt_pid", "PMT PID"), ("video_pid", "Video PID"),
-                                      ("audio_pids", "Audio PIDs"), ("pcr_pid", "PCR PID"),
-                                      ("teletext_pid", "Teletext PID")]):
+        g = section("pids", _("Service and PIDs"))
+        for r, (k, lbl) in enumerate([("sid", _("Service ID")), ("tsid", _("Transport ID")),
+                                      ("pmt_pid", "PMT PID"), ("video_pid", _("Video PID")),
+                                      ("audio_pids", _("Audio PIDs")), ("pcr_pid", "PCR PID"),
+                                      ("teletext_pid", _("Teletext PID"))]):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
 
         # -- slim vertical strip of actions beside the details
         strip = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
                         css_classes=["lv-toolstrip"])
-        for item in (("object-select-symbolic", "Apply changes (Ctrl+S)", self.on_apply,
+        for item in (("object-select-symbolic", _("Apply changes (Ctrl+S)"), self.on_apply,
                       "lv-primary"),
                      None,
-                     ("list-add-symbolic", "New channel", self.on_new, None),
-                     ("user-trash-symbolic", "Delete channel", self.on_delete, "lv-danger"),
+                     ("list-add-symbolic", _("New channel"), self.on_new, None),
+                     ("user-trash-symbolic", _("Delete channel"), self.on_delete, "lv-danger"),
                      None,
-                     ("go-up-symbolic", "Move up", lambda: self.on_move(-1), None),
-                     ("go-down-symbolic", "Move down", lambda: self.on_move(1), None),
-                     ("view-sort-ascending-symbolic", "Sort by group and name", self.on_sort,
+                     ("go-up-symbolic", _("Move up"), lambda: self.on_move(-1), None),
+                     ("go-down-symbolic", _("Move down"), lambda: self.on_move(1), None),
+                     ("view-sort-ascending-symbolic", _("Sort by group and name"), self.on_sort,
                       None)):
             if item is None:
                 strip.append(Gtk.Separator())
@@ -470,11 +481,11 @@ class EditorWindow(Gtk.Window):
     def _load(self, c):
         self.current = c
         if not c:
-            self.title.set_text("No channel selected")
-            self.subtitle.set_text("Pick a channel in the list to edit it.")
+            self.title.set_text(_("No channel selected"))
+            self.subtitle.set_text(_("Pick a channel in the list to edit it."))
             return
-        self.title.set_text(c.name or "Unnamed channel")
-        kind = "Radio" if c.radio else "TV"
+        self.title.set_text(c.name or _("Unnamed channel"))
+        kind = _("Radio") if c.radio else "TV"
         self.subtitle.set_text(f"#{c.number} · {kind} · {c.delsys}")
         for k, w in self.f.items():
             v = getattr(c, k)
@@ -518,7 +529,7 @@ class EditorWindow(Gtk.Window):
             self._load(self.current)
 
     def on_new(self):
-        c = Channel(name="New channel", delsys="iptv")
+        c = Channel(name=_("New channel"), delsys="iptv")
         self.app.db.channels.append(c)
         self._load(c)
         self._commit()
@@ -550,7 +561,7 @@ class StatsWindow(Gtk.Window):
     """Recording and device statistics."""
 
     def __init__(self, app, parent):
-        super().__init__(title="Recording and Device Statistics", transient_for=parent,
+        super().__init__(title=_("Recording and Device Statistics"), transient_for=parent,
                          default_width=620, default_height=360)
         self.app = app
         self.label = Gtk.Label(xalign=0, yalign=0, selectable=True, margin_start=12, margin_top=12)
@@ -573,7 +584,7 @@ class StatsWindow(Gtk.Window):
         if len(lines) == 1:
             lines.append("  (idle)")
         lines.append("")
-        lines.append("Active recordings:")
+        lines.append(_("Active recordings:"))
         for key, (rec, _cap) in self.app.timers.active.items():
             size = rec.bytes if rec.capture else (rec.path.stat().st_size if rec.path.exists() else 0)
             lines.append(f"  {rec.path.name}: {size / 1e6:.1f} MB, "
@@ -582,7 +593,7 @@ class StatsWindow(Gtk.Window):
             lines.append("  (none)")
         nxt = self.app.timers.next_wakeup()
         if nxt:
-            lines.append(f"\nNext timer: {time.strftime('%a %d.%m. %H:%M', time.localtime(nxt))}")
+            lines.append(_("\nNext timer: {v0}").format(v0=time.strftime('%a %d.%m. %H:%M', time.localtime(nxt))))
         self.label.set_text("\n".join(lines))
         return True
 
@@ -591,7 +602,7 @@ class TeletextWindow(Gtk.Window):
     """Teletext pages decoded with GStreamer's teletextdec (libzvbi)."""
 
     def __init__(self, app, parent, capture, channel):
-        super().__init__(title=f"Teletext – {channel.name}", transient_for=parent,
+        super().__init__(title=_("Teletext – {name}").format(name=channel.name), transient_for=parent,
                          default_width=560, default_height=620)
         self.capture = capture
         self.channel = channel
@@ -606,25 +617,25 @@ class TeletextWindow(Gtk.Window):
         prev.connect("clicked", lambda *_: self.goto(self.page - 1))
         nxt = Gtk.Button(icon_name="go-next-symbolic")
         nxt.connect("clicked", lambda *_: self.goto(self.page + 1))
-        back = Gtk.Button(icon_name="edit-undo-symbolic", tooltip_text="Back")
+        back = Gtk.Button(icon_name="edit-undo-symbolic", tooltip_text=_("Back"))
         back.connect("clicked", lambda *_: self.history and self.goto(self.history.pop(), False))
-        self.find_e = Gtk.SearchEntry(placeholder_text="Find on page", hexpand=True)
+        self.find_e = Gtk.SearchEntry(placeholder_text=_("Find on page"), hexpand=True)
         self.find_e.connect("activate", lambda *_: self.find())
-        copy = Gtk.Button(icon_name="edit-copy-symbolic", tooltip_text="Copy page")
+        copy = Gtk.Button(icon_name="edit-copy-symbolic", tooltip_text=_("Copy page"))
         copy.connect("clicked", lambda *_: self.get_clipboard().set(self.text.get_buffer().props.text))
-        save = Gtk.Button(icon_name="document-save-symbolic", tooltip_text="Save page")
+        save = Gtk.Button(icon_name="document-save-symbolic", tooltip_text=_("Save page"))
         save.connect("clicked", lambda *_: self.save())
         for w in (prev, self.page_e, nxt, back, self.find_e, copy, save):
             top.append(w)
         self.text = Gtk.TextView(editable=False, monospace=True, cursor_visible=False)
-        self.text.get_buffer().set_text("Waiting for teletext…")
+        self.text.get_buffer().set_text(_("Waiting for teletext…"))
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         box.append(top)
         box.append(scrolled(self.text))
         self.set_child(box)
         self.pipeline = None
         if Gst.ElementFactory.find("teletextdec") is None:
-            self.text.get_buffer().set_text("teletextdec is missing (gst-plugins-bad with libzvbi).")
+            self.text.get_buffer().set_text(_("teletextdec is missing (gst-plugins-bad with libzvbi)."))
         else:
             self._build()
         self.connect("close-request", lambda *_: (self._teardown(), False)[1])
@@ -679,7 +690,7 @@ class TeletextWindow(Gtk.Window):
             self.history.append(self.page)
         self.page = page
         self.page_e.set_value(page)
-        self.text.get_buffer().set_text(f"Searching page {page}…")
+        self.text.get_buffer().set_text(_("Searching page {page}…").format(page=page))
         if self.pipeline:
             self.dec.set_property("page", page)
 
@@ -710,35 +721,32 @@ class PluginsWindow(Gtk.Window):
     """Lists the loaded plugins and the conditional-access status."""
 
     def __init__(self, app, parent):
-        super().__init__(title="Plugins", transient_for=parent, default_width=560,
+        super().__init__(title=_("Plugins"), transient_for=parent, default_width=560,
                          default_height=440)
         self.app = app
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=12,
                       margin_end=12, margin_top=12, margin_bottom=12)
 
         pm = app.plugins
-        box.append(Gtk.Label(label="Conditional access", css_classes=["heading"], xalign=0))
+        box.append(Gtk.Label(label=_("Conditional access"), css_classes=["heading"], xalign=0))
         provider = app.tuners.ca_factory() if app.tuners.ca_factory else None
         if app.settings.get("ca_provider", "none") == "none":
-            ca_text = ("No descrambling configured. Encrypted channels you are entitled to "
+            ca_text = (_("No descrambling configured. Encrypted channels you are entitled to "
                        "can be descrambled by pointing LinDVB at your own softcam or CI module "
-                       "in Preferences.")
+                       "in Preferences."))
         elif provider is None:
-            ca_text = f"Provider '{app.settings['ca_provider']}' is not available."
+            ca_text = _("Provider '{v0}' is not available.").format(v0=app.settings['ca_provider'])
         elif provider.name == "ci":
-            ca_text = (f"Provider: CI module – {provider.status}\n"
-                       "The module descrambles with your card inside the tuner.")
+            ca_text = (_("Provider: CI module – {status}\nThe module descrambles with your card inside the tuner.").format(status=provider.status))
         else:
-            ca_text = (f"Provider: {provider.name}\n"
-                       "LinDVB forwards ECM sections to your own card client and applies the "
-                       "control words it returns; it holds no keys itself.")
+            ca_text = (_("Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself.").format(name=provider.name))
         lab = Gtk.Label(label=ca_text, xalign=0, wrap=True, css_classes=["dim-label"])
         box.append(lab)
-        cam = Gtk.Button(label="Open CAM Menu…", halign=Gtk.Align.START)
+        cam = Gtk.Button(label=_("Open CAM Menu…"), halign=Gtk.Align.START)
         cam.connect("clicked", lambda *_: app.show_cam_menu())
         box.append(cam)
 
-        box.append(Gtk.Label(label="Plugins", css_classes=["heading"], xalign=0))
+        box.append(Gtk.Label(label=_("Plugins"), css_classes=["heading"], xalign=0))
         loaded = {getattr(p, "module_name", p.name): p for p in pm.plugins}
         found = pm.discover()
         if found:
@@ -751,11 +759,11 @@ class PluginsWindow(Gtk.Window):
                 title = f"{p.name} {p.version}".rstrip() if p else name
                 text.append(Gtk.Label(label=title, xalign=0, css_classes=["heading"]))
                 if name in pm.failed:
-                    detail = f"Failed to load: {pm.failed[name]}"
+                    detail = _("Failed to load: {v0}").format(v0=pm.failed[name])
                 elif p and p.description:
                     detail = p.description.splitlines()[0]
                 elif not pm.is_enabled(name):
-                    detail = "Switched off"
+                    detail = _("Switched off")
                 else:
                     detail = str(path)
                 text.append(Gtk.Label(label=detail, xalign=0, wrap=True, css_classes=["dim-label"]))
@@ -765,21 +773,21 @@ class PluginsWindow(Gtk.Window):
                 row.append(sw)
                 lst.append(row)
             box.append(lst)
-            self.restart_note = Gtk.Label(label="Changes take effect when LinDVB is started again.",
+            self.restart_note = Gtk.Label(label=_("Changes take effect when LinDVB is started again."),
                                           xalign=0, css_classes=["dim-label"], visible=False)
             box.append(self.restart_note)
         else:
-            box.append(Gtk.Label(label="No plugins installed.", xalign=0,
+            box.append(Gtk.Label(label=_("No plugins installed."), xalign=0,
                                   css_classes=["dim-label"]))
         if pm.menu_actions:
-            box.append(Gtk.Label(label="Plugin actions", css_classes=["heading"], xalign=0))
+            box.append(Gtk.Label(label=_("Plugin actions"), css_classes=["heading"], xalign=0))
             for _plugin, label, cb in pm.menu_actions:
                 b = Gtk.Button(label=label, halign=Gtk.Align.START)
                 b.connect("clicked", lambda _b, cb=cb: cb(app))
                 box.append(b)
 
         dirs = ", ".join(str(d) for d in pm.plugin_dirs())
-        box.append(Gtk.Label(label=f"Plugin folders: {dirs}", xalign=0, wrap=True,
+        box.append(Gtk.Label(label=_("Plugin folders: {dirs}").format(dirs=dirs), xalign=0, wrap=True,
                              css_classes=["dim-label"]))
         self.set_child(scrolled(box))
 

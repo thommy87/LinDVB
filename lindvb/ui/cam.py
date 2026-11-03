@@ -4,6 +4,7 @@ from gi.repository import GLib, Gtk
 
 from .. import en50221
 from .common import scrolled
+from ..i18n import _
 
 
 class _Bridge(en50221.CIListener):
@@ -25,14 +26,14 @@ class _Bridge(en50221.CIListener):
         GLib.idle_add(self.window.show_closed)
 
     def ci_removed(self, stack):
-        GLib.idle_add(self.window.show_closed, "The module was removed or reset.")
+        GLib.idle_add(self.window.show_closed, _("The module was removed or reset."))
 
 
 class CamMenuWindow(Gtk.Window):
     """Shows the CI module's menus, lists and enquiries and sends the answers."""
 
     def __init__(self, app, parent):
-        super().__init__(title="CAM Menu", transient_for=parent, default_width=520,
+        super().__init__(title=_("CAM Menu"), transient_for=parent, default_width=520,
                          default_height=480)
         self.app = app
         self.device = en50221.shared_device(app.settings)
@@ -64,9 +65,9 @@ class CamMenuWindow(Gtk.Window):
         for e in (self.enq_entry, self.enq_plain):
             e.connect("activate", lambda *_: self._answer(True))
         bar = Gtk.Box(spacing=6, halign=Gtk.Align.END)
-        cancel = Gtk.Button(label="Cancel")
+        cancel = Gtk.Button(label=_("Cancel"))
         cancel.connect("clicked", lambda *_: self._answer(False))
-        ok = Gtk.Button(label="OK", css_classes=["suggested-action"])
+        ok = Gtk.Button(label=_("OK"), css_classes=["suggested-action"])
         ok.connect("clicked", lambda *_: self._answer(True))
         bar.append(cancel)
         bar.append(ok)
@@ -82,13 +83,13 @@ class CamMenuWindow(Gtk.Window):
         outer.append(self.bottom_l)
 
         buttons = Gtk.Box(spacing=6, halign=Gtk.Align.END)
-        self.open_b = Gtk.Button(label="Open CAM Menu", css_classes=["suggested-action"])
+        self.open_b = Gtk.Button(label=_("Open CAM Menu"), css_classes=["suggested-action"])
         self.open_b.connect("clicked", lambda *_: self._enter())
-        self.select_b = Gtk.Button(label="Select")
+        self.select_b = Gtk.Button(label=_("Select"))
         self.select_b.connect("clicked", lambda *_: self._choose_selected())
-        self.back_b = Gtk.Button(label="Back")
+        self.back_b = Gtk.Button(label=_("Back"))
         self.back_b.connect("clicked", lambda *_: self._choose(0))
-        self.close_b = Gtk.Button(label="Close Menu")
+        self.close_b = Gtk.Button(label=_("Close Menu"))
         self.close_b.connect("clicked", lambda *_: self._close_mmi())
         for b in (self.open_b, self.select_b, self.back_b, self.close_b):
             buttons.append(b)
@@ -107,7 +108,7 @@ class CamMenuWindow(Gtk.Window):
 
     def refresh_info(self):
         st = self.device.stack
-        parts = [f"Device: {self.device.path} – {self.device.state}"]
+        parts = [_("Device: {path} – {state}").format(path=self.device.path, state=self.device.state)]
         if st.module_name:
             parts.append(f"Module: {st.module_name}")
         if st.ca_system_ids:
@@ -137,7 +138,7 @@ class CamMenuWindow(Gtk.Window):
             row.set_child(Gtk.Label(label=item, xalign=0, wrap=True, margin_top=6,
                                     margin_bottom=6, margin_start=8, margin_end=8))
             self.items.append(row)
-        self.back_b.set_label("OK" if menu.is_list else "Back")
+        self.back_b.set_label(_("OK") if menu.is_list else _("Back"))
         self._set_mode("menu")
         self.present()
         return False
@@ -165,15 +166,15 @@ class CamMenuWindow(Gtk.Window):
         self.subtitle_l.set_visible(False)
         self.bottom_l.set_text("")
         self.items.remove_all()
-        self.idle_l.set_text(note or "Open the CAM menu to see the module's settings, "
-                             "smart card information and parental control.")
+        self.idle_l.set_text(note or _("Open the CAM menu to see the module's settings, "
+                             "smart card information and parental control."))
         self._set_mode("idle")
         return False
 
     # -- actions -----------------------------------------------------------
     def _enter(self):
         if not self.device.enter_menu():
-            self.idle_l.set_text("The module has not finished starting yet.")
+            self.idle_l.set_text(_("The module has not finished starting yet."))
 
     def _choose_selected(self):
         row = self.items.get_selected_row()

@@ -14,6 +14,7 @@ from gi.repository import Gdk, Gtk
 from ..audioviz import Smoother
 from ..visuals import Blank, rgb
 from .theme import ACCENT
+from ..i18n import _
 
 FPS = 30                # cairo drawing
 GPU_FPS = 60            # the GPU path follows the display, up to this rate
@@ -131,7 +132,7 @@ class VisualizerArea(Gtk.Box):
         except Exception as e:      # a broken plugin style falls back to the plain one
             if not self._failed:
                 self._failed = True
-                print(f"Visualisation '{getattr(self.style, 'label', self.style)}' failed: {e}")
+                print(_("Visualisation '{v0}' failed: {e}").format(v0=getattr(self.style, 'label', self.style), e=e))
             Blank().draw(cr, width, height, frame)
 
     def _gpu_failed(self, reason):
@@ -150,7 +151,7 @@ class VisualizerArea(Gtk.Box):
         es = ctx.get_use_es()
         major, minor = ctx.get_version()
         if (major, minor) < ((3, 0) if es else (3, 3)):
-            self._gpu_failed(f"OpenGL{' ES' if es else ''} {major}.{minor} is too old")
+            self._gpu_failed(_("OpenGL{v0} {major}.{minor} is too old").format(v0=' ES' if es else '', major=major, minor=minor))
             return
         try:
             from .gpuvisuals import Context

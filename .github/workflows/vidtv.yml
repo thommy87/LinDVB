@@ -1,0 +1,38 @@
+name: Virtual tuner tests
+
+# Channel search, tuning and EPG against the kernel's virtual DVB driver
+# (vidtv), so the DVB code paths are tested without tuner hardware. When the
+# runner's kernel has no vidtv module the tests are skipped, not failed.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  vidtv:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi python3-pytest gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 \
+            gir1.2-gst-plugins-bad-1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-bad \
+            dvb-tools
+          sudo apt-get install -y --no-install-recommends "linux-modules-extra-$(uname -r)" || true
+
+      - name: Load vidtv
+        run: |
+          if sudo modprobe vidtv; then
+            for i in $(seq 20); do [ -e /dev/dvb/adapter0/frontend0 ] && break; sleep 0.5; done
+            sudo chmod -R a+rw /dev/dvb
+            ls -lR /dev/dvb
+          else
+            echo "::notice title=vidtv::The runner kernel $(uname -r) has no vidtv module; the virtual tuner tests are skipped."
+          fi
+
+      - name: Run tests
+        run: python3 -m pytest -v -rs tests/test_vidtv.py

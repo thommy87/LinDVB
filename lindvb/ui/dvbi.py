@@ -8,11 +8,12 @@ from gi.repository import GLib, Gtk
 
 from .. import channels, dvbi
 from .common import message
+from ..i18n import _
 
 
 class DVBISetupWindow(Gtk.Window):
     def __init__(self, app, parent):
-        super().__init__(title="DVB-I Setup", transient_for=parent, modal=False,
+        super().__init__(title=_("DVB-I Setup"), transient_for=parent, modal=False,
                          default_width=620, default_height=680)
         self.set_destroy_with_parent(True)
         self.app = app
@@ -35,39 +36,39 @@ class DVBISetupWindow(Gtk.Window):
             box.append(lbl)
             return lbl
 
-        hint("DVB-I gets the channel list of your region from the internet: numbering, "
+        hint(_("DVB-I gets the channel list of your region from the internet: numbering, "
              "names and logos, and for each channel the ways to receive it. LinDVB uses the "
              "antenna, cable or satellite channels from your channel search where it can and "
-             "the internet stream otherwise.")
+             "the internet stream otherwise."))
 
         # IT-17: privacy notice before any request
-        title("Privacy")
+        title(_("Privacy"))
         notice = Gtk.Label(label=dvbi.PRIVACY_NOTICE, xalign=0, wrap=True)
         box.append(notice)
-        self.ack = Gtk.CheckButton(label="I have read the privacy notice",
+        self.ack = Gtk.CheckButton(label=_("I have read the privacy notice"),
                                    active=bool(self.s.get("dvbi_privacy_ack")))
         self.ack.connect("toggled", lambda *_: self._sensitive())
         box.append(self.ack)
-        self.guide = Gtk.CheckButton(label="Load the programme guide (EPG) of the DVB-I channels",
+        self.guide = Gtk.CheckButton(label=_("Load the programme guide (EPG) of the DVB-I channels"),
                                      active=bool(self.s.get("dvbi_guide", True)))
         self.guide.connect("toggled", lambda b: self._guide_toggled(b.get_active()))
         box.append(self.guide)
         failover = Gtk.CheckButton(
-            label="Switch to another reception path (internet, antenna, cable, satellite) "
-                  "when one fails", active=bool(self.s.get("dvbi_failover", True)))
+            label=_("Switch to another reception path (internet, antenna, cable, satellite) "
+                  "when one fails"), active=bool(self.s.get("dvbi_failover", True)))
         failover.connect("toggled", lambda b: self._set("dvbi_failover", b.get_active()))
         box.append(failover)
         sat = Gtk.CheckButton(
-            label="Tune satellite channels from the list without a channel search "
-                  "(needs satellite channels in your list)",
+            label=_("Tune satellite channels from the list without a channel search "
+                  "(needs satellite channels in your list)"),
             active=bool(self.s.get("dvbi_sat_direct", True)))
         sat.connect("toggled", lambda b: self._set("dvbi_sat_direct", b.get_active()))
         box.append(sat)
 
         # IT-7/IT-8: lists from the national registry, default list first
-        title("Service list")
+        title(_("Service list"))
         row = Gtk.Box(spacing=8)
-        self.load_btn = Gtk.Button(label="Load Lists from Registry")
+        self.load_btn = Gtk.Button(label=_("Load Lists from Registry"))
         self.load_btn.connect("clicked", lambda *_: self._load_registry())
         row.append(self.load_btn)
         self.spinner = Gtk.Spinner()
@@ -78,26 +79,26 @@ class DVBISetupWindow(Gtk.Window):
         self.lists.connect("row-selected", lambda *_: self._sensitive())
         box.append(self.lists)
         current = self.s.get("dvbi_list_name") or self.s.get("dvbi_list_url")
-        self.current_lbl = hint(f"In use: {current}" if current else
-                                "No DVB-I list is in use yet.")
+        self.current_lbl = hint(_("In use: {current}").format(current=current) if current else
+                                _("No DVB-I list is in use yet."))
 
         # IT-5: postcode for the region
-        title("Region")
-        hint("Your postcode selects the regional channels and their numbering. It is sent "
-             "to the service list server only.")
+        title(_("Region"))
+        hint(_("Your postcode selects the regional channels and their numbering. It is sent "
+             "to the service list server only."))
         grid = Gtk.Grid(column_spacing=12, row_spacing=8)
-        grid.attach(Gtk.Label(label="Postcode", xalign=0), 0, 0, 1, 1)
+        grid.attach(Gtk.Label(label=_("Postcode"), xalign=0), 0, 0, 1, 1)
         self.postcode = Gtk.Entry(text=self.s.get("dvbi_postcode", ""), max_length=5,
                                   width_chars=8, input_purpose=Gtk.InputPurpose.DIGITS,
                                   placeholder_text="e.g. 80331")
         self.postcode.connect("changed", lambda *_: self._sensitive())
         grid.attach(self.postcode, 1, 0, 1, 1)
-        self.nationwide = Gtk.CheckButton(label="No postcode: nationwide list")
+        self.nationwide = Gtk.CheckButton(label=_("No postcode: nationwide list"))
         self.nationwide.set_active(bool(self.s.get("dvbi_list_url")) and
                                    not self.s.get("dvbi_postcode"))
         self.nationwide.connect("toggled", lambda *_: self._sensitive())
         grid.attach(self.nationwide, 2, 0, 1, 1)
-        self.region_lbl = Gtk.Label(label="Region", xalign=0)
+        self.region_lbl = Gtk.Label(label=_("Region"), xalign=0)
         self.region_dd = Gtk.DropDown.new_from_strings([])
         grid.attach(self.region_lbl, 0, 1, 1, 1)
         grid.attach(self.region_dd, 1, 1, 2, 1)
@@ -108,14 +109,14 @@ class DVBISetupWindow(Gtk.Window):
         box.append(self.status)
 
         buttons = Gtk.Box(spacing=8, halign=Gtk.Align.END, margin_top=8)
-        self.remove_btn = Gtk.Button(label="Remove DVB-I Channels")
+        self.remove_btn = Gtk.Button(label=_("Remove DVB-I Channels"))
         self.remove_btn.connect("clicked", lambda *_: self._remove())
-        self.update_btn = Gtk.Button(label="Update Now")
-        self.update_btn.set_tooltip_text("Load the chosen list again (it is also checked daily)")
+        self.update_btn = Gtk.Button(label=_("Update Now"))
+        self.update_btn.set_tooltip_text(_("Load the chosen list again (it is also checked daily)"))
         self.update_btn.connect("clicked", lambda *_: self._update())
-        self.install_btn = Gtk.Button(label="Install Channel List", css_classes=["suggested-action"])
+        self.install_btn = Gtk.Button(label=_("Install Channel List"), css_classes=["suggested-action"])
         self.install_btn.connect("clicked", lambda *_: self._install())
-        close = Gtk.Button(label="Close")
+        close = Gtk.Button(label=_("Close"))
         close.connect("clicked", lambda *_: self.close())
         for b in (self.remove_btn, self.update_btn, self.install_btn, close):
             buttons.append(b)
@@ -164,7 +165,7 @@ class DVBISetupWindow(Gtk.Window):
     def _load_registry(self):
         self.s["dvbi_privacy_ack"] = True
         self.load_btn.set_sensitive(False)
-        self._busy(True, "Asking the service list registry…")
+        self._busy(True, _("Asking the service list registry…"))
         registries = self.s.get("dvbi_registries") or list(dvbi.REGISTRIES)
 
         def work():
@@ -179,7 +180,7 @@ class DVBISetupWindow(Gtk.Window):
         self._busy(False)
         self.load_btn.set_sensitive(self.ack.get_active())
         if error:
-            self.status.set_text(f"The registry could not be reached: {error}")
+            self.status.set_text(_("The registry could not be reached: {error}").format(error=error))
             return False
         self.offers = offers
         while (row := self.lists.get_row_at_index(0)) is not None:
@@ -194,7 +195,7 @@ class DVBISetupWindow(Gtk.Window):
                                   css_classes=["heading"] if o.default else []))
             tags = []
             if o.default:
-                tags.append("Default")
+                tags.append(_("Default"))
             if o.official:
                 tags.append("✓ official")          # IT-8: mark checked lists
             if tags:
@@ -210,8 +211,8 @@ class DVBISetupWindow(Gtk.Window):
                 select = i
         if select is not None:
             self.lists.select_row(self.lists.get_row_at_index(select))
-        self.status.set_text(f"{len(offers)} service lists from {urllib.parse.urlsplit(used).netloc}"
-                             if offers else "The registry offers no service list for Germany.")
+        self.status.set_text(_("{v0} service lists from {netloc}").format(v0=len(offers), netloc=urllib.parse.urlsplit(used).netloc)
+                             if offers else _("The registry offers no service list for Germany."))
         self._sensitive()
         return False
 
@@ -222,7 +223,7 @@ class DVBISetupWindow(Gtk.Window):
         offer = self._selected_offer()
         postcode = "" if self.nationwide.get_active() else self.postcode.get_text().strip()
         if postcode and not dvbi.valid_postcode(postcode):
-            message(self, "Please enter a postcode with five digits")
+            message(self, _("Please enter a postcode with five digits"))
             return
         region = None
         if self.region_dd.get_visible() and self.region_ids:
@@ -248,28 +249,28 @@ class DVBISetupWindow(Gtk.Window):
 
     def _run(self, force, region):
         if self.app.update_dvbi(force=force, region=region, done=self._done):
-            self._busy(True, "Loading the service list…")
+            self._busy(True, _("Loading the service list…"))
 
     def _done(self, res, msg):
         self._busy(False, msg)
-        self.current_lbl.set_text(f"In use: {self.s.get('dvbi_list_name') or self.s.get('dvbi_list_url')}")
+        self.current_lbl.set_text(_("In use: {v0}").format(v0=self.s.get('dvbi_list_name') or self.s.get('dvbi_list_url')))
         if res.error_code:
             self._ask_after_error(res.error_code)
             return
         if res.service_list is not None:
             cands = res.regions if len(res.regions) > 1 else []
             if cands:
-                self.status.set_text(msg + "\nChoose your region and press Install again.")
+                self.status.set_text(msg + _("\nChoose your region and press Install again."))
             self._show_regions(cands, res.region)
 
     def _ask_after_error(self, code):
         """IT-5: tell the user and offer to try again or the nationwide list."""
         if code == "ERROR_INVALID_POSTCODE":
-            text, first = "The service list does not know this postcode.", "Enter Again"
+            text, first = _("The service list does not know this postcode."), _("Enter Again")
         else:
-            text, first = f"The service list server answered {code}.", "Try Again"
-        dlg = Gtk.AlertDialog(message=text, detail="You can try again or use the nationwide "
-                              "list without a postcode.", buttons=[first, "Nationwide List", "Cancel"],
+            text, first = _("The service list server answered {code}.").format(code=code), _("Try Again")
+        dlg = Gtk.AlertDialog(message=text, detail=_("You can try again or use the nationwide "
+                              "list without a postcode."), buttons=[first, _("Nationwide List"), _("Cancel")],
                               cancel_button=2, default_button=0)
 
         def chosen(d, result):
@@ -308,7 +309,7 @@ class DVBISetupWindow(Gtk.Window):
         self.app.db.save()
         if self.app.window:
             self.app.window.reload_channels()
-        self.current_lbl.set_text("No DVB-I list is in use.")
-        self.status.set_text(f"{removed} DVB-I channels removed")
+        self.current_lbl.set_text(_("No DVB-I list is in use."))
+        self.status.set_text(_("{removed} DVB-I channels removed").format(removed=removed))
         self._sensitive()
 

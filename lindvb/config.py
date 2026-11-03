@@ -93,6 +93,10 @@ DEFAULTS = {
     # EPG ---------------------------------------------------------------------
     # Keep the guide on disk so it survives the end of the program.
     "epg_save": True,
+    # programme reminders: notify this many minutes before the start
+    "reminder_minutes": 2,
+    # media keys and the desktop media controls (MPRIS on the session bus)
+    "mpris": True,
     # Preferred EPG language (ISO 639-2, "" = as broadcast).
     "epg_language": "",
     # How long the programme info is shown on a channel change (0 = never).
@@ -104,6 +108,8 @@ DEFAULTS = {
     # with type "mhw1", "mhw2" or "freesat" (see lindvb.epgsources).
     "epg_provider_freqs": [[10847, "v", "mhw2"], [11428, "h", "freesat"]],
     "deinterlace": True,
+    # CEA-608/708 closed captions (ATSC, US cable)
+    "closed_captions": False,
     # Internet streams: "auto" plays HLS with separate audio renditions on
     # playbin3 (keeps sound and picture in sync), everything else on playbin;
     # "playbin" or "playbin3" forces one of them.
@@ -112,6 +118,8 @@ DEFAULTS = {
     "audio_delays": {},
     # Accent colour: "default" (LinDVB blue), "system" (desktop accent) or
     # "custom" (accent_custom, "#RRGGBB").
+    # user interface language ("" follows the desktop); see lindvb/i18n.py
+    "language": "",
     "accent_mode": "default",
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.

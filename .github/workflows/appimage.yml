@@ -64,6 +64,8 @@ jobs:
       # Release builds upload straight to the release instead.
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'push'
+        # a full artifact store must not turn the push build red
+        continue-on-error: true
         with:
           name: LinDVB-AppImage
           path: build/*.AppImage

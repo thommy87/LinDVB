@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: el\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Εισαγωγή λίστας καναλιών (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Έναρξη με αυτό το κανάλι (όνομα ή αριθμός)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} στις {time}"
+
+msgid "Watch"
+msgstr "Παρακολούθηση"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Υπενθύμιση: {title} στο {channel} στις {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Ορίστε πρώτα μια διεύθυνση XMLTV στις προτιμήσεις"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Λήψη οδηγού XMLTV…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} χωρίς οδηγό (TV ▸ Αντιστοίχιση καναλιών IPTV με XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: φόρτωση λίστας υπηρεσιών…"
+
+msgid "Search the web"
+msgstr "Αναζήτηση στον ιστό"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Υπότιτλοι (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Δεδομένα EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Όλα τα κομμάτια ήχου"
+
+msgid "Preferred language only"
+msgstr "Μόνο η προτιμώμενη γλώσσα"
+
+msgid "First audio track only"
+msgstr "Μόνο το πρώτο κομμάτι ήχου"
+
+msgid "Record"
+msgstr "Εγγραφή"
+
+msgid "Record and tune"
+msgstr "Εγγραφή και συντονισμός"
+
+msgid "Tune only"
+msgstr "Μόνο συντονισμός"
+
+msgid "Hibernate"
+msgstr "Αδρανοποίηση"
+
+msgid "None"
+msgstr "Κανένα"
+
+msgid "Power off"
+msgstr "Τερματισμός"
+
+msgid "Quit LinDVB"
+msgstr "Έξοδος από το LinDVB"
+
+msgid "Standby"
+msgstr "Αναμονή"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Οι ροές διαδικτύου δεν έχουν teletext, υπότιτλους ή δεδομένα EPG."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "Το MP4 κρατά ένα κομμάτι ήχου (την προτιμώμενη γλώσσα όταν μεταδίδεται)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Το αρχείο ήχου κρατά ένα κομμάτι (την προτιμώμενη γλώσσα όταν μεταδίδεται)."
+
+msgid "Fr"
+msgstr "Πα"
+
+msgid "Mo"
+msgstr "Δε"
+
+msgid "Sa"
+msgstr "Σα"
+
+msgid "Su"
+msgstr "Κυ"
+
+msgid "Th"
+msgstr "Πε"
+
+msgid "Tu"
+msgstr "Τρ"
+
+msgid "We"
+msgstr "Τε"
+
+msgid "Scheduled"
+msgstr "Προγραμματισμένο"
+
+msgid "Done"
+msgstr "Ολοκληρώθηκε"
+
+msgid "Channel missing"
+msgstr "Λείπει το κανάλι"
+
+msgid "Tuned"
+msgstr "Συντονίστηκε"
+
+msgid "Recording"
+msgstr "Εγγραφή"
+
+msgid "Failed"
+msgstr "Απέτυχε"
+
+msgid "Missed"
+msgstr "Χάθηκε"
+
+msgid "After recording: {action}"
+msgstr "Μετά την εγγραφή: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Η μονάδα αφαιρέθηκε ή επαναφέρθηκε."
+
+msgid "CAM Menu"
+msgstr "Μενού CAM"
+
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Άνοιγμα μενού CAM"
+
+msgid "Select"
+msgstr "Επιλογή"
+
+msgid "Back"
+msgstr "Πίσω"
+
+msgid "Close Menu"
+msgstr "Κλείσιμο μενού"
+
+msgid "Device: {path} – {state}"
+msgstr "Συσκευή: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Ανοίξτε το μενού CAM για τις ρυθμίσεις της μονάδας, τις πληροφορίες της έξυπνης κάρτας και τον γονικό έλεγχο."
+
+msgid "The module has not finished starting yet."
+msgstr "Η μονάδα δεν έχει ολοκληρώσει την εκκίνηση ακόμα."
+
+msgid "Custom colour"
+msgstr "Προσαρμοσμένο χρώμα"
+
+msgid "LinDVB blue (default)"
+msgstr "Μπλε LinDVB (προεπιλογή)"
+
+msgid "System accent colour"
+msgstr "Χρώμα έμφασης συστήματος"
+
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Appearance"
+msgstr "Εμφάνιση"
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Ισχύει στην επόμενη εκκίνηση του LinDVB."
+
+msgid "Accent colour"
+msgstr "Χρώμα έμφασης"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Χρησιμοποιείται για επισημάνσεις, επιλογές και κουμπιά σε κάθε παράθυρο."
+
+msgid "On-screen display"
+msgstr "Εμφάνιση στην οθόνη"
+
+msgid "OSD display time (s)"
+msgstr "Χρόνος εμφάνισης OSD (s)"
+
+msgid "Visualisation"
+msgstr "Οπτικοποίηση"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Τι εμφανίζεται πάνω από την οπτικοποίηση του ραδιοφώνου όσο παίζει ένας σταθμός ή ένα αρχείο ήχου. Τα στοιχεία του τραγουδιού προέρχονται από το RadioText του ραδιοφώνου DVB, τον τίτλο ροής του διαδικτυακού ραδιοφώνου και τις ετικέτες των αρχείων ήχου."
+
+msgid "Overlay"
+msgstr "Επικάλυψη"
+
+msgid "Station logo tile"
+msgstr "Πλακίδιο με το λογότυπο του σταθμού"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Το λογότυπο του καναλιού, ή ένα πλακίδιο με το όνομα του σταθμού αν δεν υπάρχει."
+
+msgid "Album cover"
+msgstr "Εξώφυλλο άλμπουμ"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Το εξώφυλλο του τραγουδιού που παίζει, από το αρχείο ή από αναζήτηση στο διαδίκτυο."
+
+msgid "Song information"
+msgstr "Πληροφορίες τραγουδιού"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Καλλιτέχνης, άλμπουμ και έτος, κομμάτι και τίτλος. Χωρίς στοιχεία τραγουδιού εμφανίζονται ο σταθμός και η τρέχουσα εκπομπή."
+
+msgid "Clock in the top right corner"
+msgstr "Ρολόι πάνω δεξιά"
+
+msgid "Sources"
+msgstr "Πηγές"
+
+msgid "Look up covers online"
+msgstr "Αναζήτηση εξωφύλλων στο διαδίκτυο"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Στέλνει τον καλλιτέχνη και τον τίτλο του τραγουδιού που παίζει στο iTunes Search API για να βρει άλμπουμ, έτος και εξώφυλλο."
+
+msgid "Station logo folder"
+msgstr "Φάκελος λογοτύπων σταθμών"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Αρχεία εικόνας (PNG, SVG, JPG) με το όνομα του καναλιού, π.χ. «Bayern 3.png». Λογότυπα με το όνομα του καναλιού, όπως τα κρατά το DVBViewer, λειτουργούν ως έχουν. Κενό: {v0}"
+
+msgid "Playback"
+msgstr "Αναπαραγωγή"
+
+msgid "Deinterlace video"
+msgstr "Απεμπλοκή βίντεο"
+
+msgid "Screenshot folder"
+msgstr "Φάκελος στιγμιότυπων"
+
+msgid "Timeshift"
+msgstr "Χρονομετατόπιση"
+
+msgid "Timeshift folder"
+msgstr "Φάκελος χρονομετατόπισης"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Buffer χρονομετατόπισης (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Δέκτης και LNB"
+
+msgid "DVB hardware"
+msgstr "Υλικό DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Αριθμοί προσαρμογέων που μπορεί να χρησιμοποιεί το LinDVB, χωρισμένοι με κόμμα."
+
+msgid "DVB adapters"
+msgstr "Προσαρμογείς DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Λήψη ολόκληρου του αναμεταδότη"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Απαιτείται για όλα τα κομμάτια ήχου όταν η λίστα καναλιών γνωρίζει μόνο ένα PID ήχου."
+
+msgid "Satellite LNB"
+msgstr "Δορυφορικό LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF χαμηλής ζώνης (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF υψηλής ζώνης (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Συχνότητα εναλλαγής (kHz)"
+
+msgid "Recording folder"
+msgstr "Φάκελος εγγραφών"
+
+msgid "File naming scheme"
+msgstr "Μοτίβο ονομάτων αρχείων"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Σύμβολα κράτησης: %year %date %time %end %station %name, / για υποφακέλους"
+
+msgid "Timer padding"
+msgstr "Περιθώρια χρονοδιακοπτών"
+
+msgid "Start earlier by (min)"
+msgstr "Έναρξη νωρίτερα κατά (min)"
+
+msgid "Stop later by (min)"
+msgstr "Λήξη αργότερα κατά (min)"
+
+msgid "Timers"
+msgstr "Χρονοδιακόπτες"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Άνοιγμα του παραθύρου χρονοδιακοπτών μετά τη δημιουργία ενός"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Μετά την «Εγγραφή» στον οδηγό, επεξεργασία του νέου χρονοδιακόπτη αμέσως."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Οδηγός προγράμματος: EPG εκπομπής, EPG διαδικτύου (XMLTV) και EPG άλλων παρόχων."
+
+msgid "Conditional access"
+msgstr "Υπό όρους πρόσβαση"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Αποκωδικοποίηση των κρυπτογραφημένων καναλιών στα οποία είστε συνδρομητής, με τη δική σας κάρτα σε softcam ή μονάδα CI."
+
+msgid "None (leave scrambled)"
+msgstr "Κανένα (παραμένει κρυπτογραφημένο)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Εξωτερικό softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Μονάδα CI / CI+ υλικού"
+
+msgid "Descrambling via"
+msgstr "Αποκωδικοποίηση μέσω"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Υποδοχή DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Διαδρομή υποδοχής Unix ή host:port."
+
+msgid "CI module"
+msgstr "Μονάδα CI"
+
+msgid "CI adapter number"
+msgstr "Αριθμός προσαρμογέα CI"
+
+msgid "CA device number"
+msgstr "Αριθμός συσκευής CA"
+
+msgid "Plugins"
+msgstr "Πρόσθετα"
+
+msgid "Load plugins at startup"
+msgstr "Φόρτωση πρόσθετων κατά την εκκίνηση"
+
+msgid "Manage Plugins…"
+msgstr "Διαχείριση πρόσθετων…"
+
+msgid "Format and tracks"
+msgstr "Μορφή και κομμάτια"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Προεπιλογές για νέους χρονοδιακόπτες και το κουμπί εγγραφής. Κάθε χρονοδιακόπτης, και μια εγγραφή που ξεκίνησε με «Εγγραφή με επιλογές…», μπορεί να τις αλλάξει.\nTS: βίντεο, όλα τα κομμάτια ήχου, υπότιτλοι, teletext και δεδομένα EPG. MKV: βίντεο, πολλά κομμάτια ήχου και υπότιτλοι. MPG: βίντεο και πολλά κομμάτια ήχου. MP4: βίντεο και ένα κομμάτι ήχου. Οι ροές διαδικτύου δεν έχουν teletext, υπότιτλους ή δεδομένα EPG· οι ροές HLS και DASH εγγράφονται με ένα κομμάτι ήχου."
+
+msgid "TV format"
+msgstr "Μορφή TV"
+
+msgid "Radio format"
+msgstr "Μορφή ραδιοφώνου"
+
+msgid "Audio tracks"
+msgstr "Κομμάτια ήχου"
+
+msgid "Preferred audio language"
+msgstr "Προτιμώμενη γλώσσα ήχου"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Χρησιμοποιείται από το «Μόνο η προτιμώμενη γλώσσα» και από το MP4, που κρατά ένα κομμάτι. Τα κομμάτια ακουστικής περιγραφής παραλείπονται. Χωρίς αντιστοιχία εγγράφεται το πρώτο κομμάτι."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} διατηρούνται μόνο σε MPEG-TS, οπότε οι εγγραφές αποθηκεύονται ως TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} διατηρούνται μόνο σε TS ή MKV, οπότε οι εγγραφές αποθηκεύονται ως TS."
+
+msgid " and "
+msgstr " και "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Δεν έχει οριστεί προτιμώμενη γλώσσα ήχου, οπότε εγγράφεται μόνο το πρώτο κομμάτι ήχου."
+
+msgid "Desktop accent: {found}"
+msgstr "Έμφαση επιφάνειας εργασίας: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Δεν βρέθηκε έμφαση επιφάνειας εργασίας, χρησιμοποιείται το μπλε LinDVB."
+
+msgid "Current accent: {color}"
+msgstr "Τρέχουσα έμφαση: {color}"
+
+msgid "Channel Editor"
+msgstr "Επεξεργασία καναλιών"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Category"
+msgstr "Κατηγορία"
+
+msgid "Group"
+msgstr "Ομάδα"
+
+msgid "Fav"
+msgstr "Αγαπ"
+
+msgid "Type"
+msgstr "Τύπος"
+
+msgid "Filter channels"
+msgstr "Φιλτράρισμα καναλιών"
+
+msgid "General"
+msgstr "Γενικά"
+
+msgid "Stream URL"
+msgstr "Διεύθυνση ροής"
+
+msgid "Favourite"
+msgstr "Αγαπημένο"
+
+msgid "Radio"
+msgstr "Ραδιόφωνο"
+
+msgid "Encrypted"
+msgstr "Κρυπτογραφημένο"
+
+msgid "Tuning"
+msgstr "Συντονισμός"
+
+msgid "System"
+msgstr "Σύστημα"
+
+msgid "Polarity"
+msgstr "Πόλωση"
+
+msgid "Modulation"
+msgstr "Διαμόρφωση"
+
+msgid "Frequency (kHz)"
+msgstr "Συχνότητα (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Ρυθμός συμβόλων (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Εύρος ζώνης (Hz)"
+
+msgid "Stream ID"
+msgstr "ID ροής"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Θύρα DiSEqC (-1 καμία)"
+
+msgid "Service and PIDs"
+msgstr "Υπηρεσία και PID"
+
+msgid "Service ID"
+msgstr "ID υπηρεσίας"
+
+msgid "Transport ID"
+msgstr "ID μεταφοράς"
+
+msgid "Video PID"
+msgstr "PID βίντεο"
+
+msgid "Audio PIDs"
+msgstr "PID ήχου"
+
+msgid "Teletext PID"
+msgstr "PID teletext"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Εφαρμογή αλλαγών (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Νέο κανάλι"
+
+msgid "Delete channel"
+msgstr "Διαγραφή καναλιού"
+
+msgid "Move up"
+msgstr "Μετακίνηση πάνω"
+
+msgid "Move down"
+msgstr "Μετακίνηση κάτω"
+
+msgid "Sort by group and name"
+msgstr "Ταξινόμηση κατά ομάδα και όνομα"
+
+msgid "No channel selected"
+msgstr "Δεν επιλέχθηκε κανάλι"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Επιλέξτε ένα κανάλι στη λίστα για να το επεξεργαστείτε."
+
+msgid "Unnamed channel"
+msgstr "Κανάλι χωρίς όνομα"
+
+msgid "Recording and Device Statistics"
+msgstr "Στατιστικά εγγραφής και συσκευής"
+
+msgid "Active recordings:"
+msgstr "Ενεργές εγγραφές:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nΕπόμενος χρονοδιακόπτης: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletext – {name}"
+
+msgid "Find on page"
+msgstr "Εύρεση στη σελίδα"
+
+msgid "Copy page"
+msgstr "Αντιγραφή σελίδας"
+
+msgid "Save page"
+msgstr "Αποθήκευση σελίδας"
+
+msgid "Waiting for teletext…"
+msgstr "Αναμονή για teletext…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Λείπει το teletextdec (gst-plugins-bad με libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Αναζήτηση σελίδας {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Δεν έχει ρυθμιστεί αποκωδικοποίηση. Τα κρυπτογραφημένα κανάλια στα οποία έχετε δικαίωμα αποκωδικοποιούνται αν δείξετε στο LinDVB το δικό σας softcam ή μονάδα CI στις προτιμήσεις."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Ο πάροχος «{v0}» δεν είναι διαθέσιμος."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Πάροχος: μονάδα CI – {status}\nΗ μονάδα αποκωδικοποιεί με την κάρτα σας μέσα στον δέκτη."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Πάροχος: {name}\nΤο LinDVB προωθεί τις ενότητες ECM στον δικό σας πελάτη κάρτας και εφαρμόζει τις λέξεις ελέγχου που επιστρέφει· το ίδιο δεν περιέχει κλειδιά."
+
+msgid "Open CAM Menu…"
+msgstr "Άνοιγμα μενού CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "Αποτυχία φόρτωσης: {v0}"
+
+msgid "Switched off"
+msgstr "Απενεργοποιημένο"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Οι αλλαγές ισχύουν στην επόμενη εκκίνηση του LinDVB."
+
+msgid "No plugins installed."
+msgstr "Δεν υπάρχουν εγκατεστημένα πρόσθετα."
+
+msgid "Plugin actions"
+msgstr "Ενέργειες πρόσθετων"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Φάκελοι πρόσθετων: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "Ρύθμιση DVB-I"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "Το DVB-I λαμβάνει από το διαδίκτυο τη λίστα καναλιών της περιοχής σας: αρίθμηση, ονόματα και λογότυπα, και για κάθε κανάλι τους τρόπους λήψης του. Το LinDVB χρησιμοποιεί όπου μπορεί τα επίγεια, καλωδιακά ή δορυφορικά κανάλια από την αναζήτηση καναλιών σας και αλλιώς τη ροή διαδικτύου."
+
+msgid "Privacy"
+msgstr "Απόρρητο"
+
+msgid "I have read the privacy notice"
+msgstr "Διάβασα τη δήλωση απορρήτου"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Φόρτωση του οδηγού προγράμματος (EPG) των καναλιών DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Μετάβαση σε άλλο τρόπο λήψης (διαδίκτυο, κεραία, καλώδιο, δορυφόρος) όταν ένας αποτύχει"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Συντονισμός δορυφορικών καναλιών από τη λίστα χωρίς αναζήτηση καναλιών (απαιτεί δορυφορικά κανάλια στη λίστα σας)"
+
+msgid "Service list"
+msgstr "Λίστα υπηρεσιών"
+
+msgid "Load Lists from Registry"
+msgstr "Φόρτωση λιστών από το μητρώο"
+
+msgid "In use: {current}"
+msgstr "Σε χρήση: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Δεν χρησιμοποιείται ακόμα λίστα DVB-I."
+
+msgid "Region"
+msgstr "Περιοχή"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Ο ταχυδρομικός σας κώδικας επιλέγει τα περιφερειακά κανάλια και την αρίθμησή τους. Στέλνεται μόνο στον διακομιστή της λίστας υπηρεσιών."
+
+msgid "Postcode"
+msgstr "Ταχυδρομικός κώδικας"
+
+msgid "No postcode: nationwide list"
+msgstr "Χωρίς ταχυδρομικό κώδικα: εθνική λίστα"
+
+msgid "Remove DVB-I Channels"
+msgstr "Αφαίρεση καναλιών DVB-I"
+
+msgid "Update Now"
+msgstr "Ενημέρωση τώρα"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Επαναφόρτωση της επιλεγμένης λίστας (ελέγχεται και καθημερινά)"
+
+msgid "Install Channel List"
+msgstr "Εγκατάσταση λίστας καναλιών"
+
+msgid "Close"
+msgstr "Κλείσιμο"
+
+msgid "Asking the service list registry…"
+msgstr "Ερώτημα στο μητρώο λιστών υπηρεσιών…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Δεν ήταν δυνατή η πρόσβαση στο μητρώο: {error}"
+
+msgid "Default"
+msgstr "Προεπιλογή"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Λίστες υπηρεσιών από {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Το μητρώο δεν προσφέρει λίστα υπηρεσιών για τη Γερμανία."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Εισαγάγετε πενταψήφιο ταχυδρομικό κώδικα"
+
+msgid "Loading the service list…"
+msgstr "Φόρτωση λίστας υπηρεσιών…"
+
+msgid "In use: {v0}"
+msgstr "Σε χρήση: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nΕπιλέξτε την περιοχή σας και πατήστε ξανά Εγκατάσταση."
+
+msgid "Enter Again"
+msgstr "Νέα εισαγωγή"
+
+msgid "The service list does not know this postcode."
+msgstr "Η λίστα υπηρεσιών δεν γνωρίζει αυτόν τον ταχυδρομικό κώδικα."
+
+msgid "The service list server answered {code}."
+msgstr "Ο διακομιστής της λίστας υπηρεσιών απάντησε {code}."
+
+msgid "Try Again"
+msgstr "Δοκιμή ξανά"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Μπορείτε να δοκιμάσετε ξανά ή να χρησιμοποιήσετε την εθνική λίστα χωρίς ταχυδρομικό κώδικα."
+
+msgid "Nationwide List"
+msgstr "Εθνική λίστα"
+
+msgid "No DVB-I list is in use."
+msgstr "Δεν χρησιμοποιείται λίστα DVB-I."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Αφαιρέθηκαν κανάλια DVB-I: {removed}"
+
+msgid "All programmes"
+msgstr "Όλα τα προγράμματα"
+
+msgid "With audio description"
+msgstr "Με ακουστική περιγραφή"
+
+msgid "With subtitles"
+msgstr "Με υπότιτλους"
+
+msgid "Programme Guide"
+msgstr "Οδηγός προγράμματος"
+
+msgid "Now / Next"
+msgstr "Τώρα / Μετά"
+
+msgid "Per Channel"
+msgstr "Ανά κανάλι"
+
+msgid "TV Guide"
+msgstr "Πρόγραμμα TV"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Record Series"
+msgstr "Εγγραφή σειράς"
+
+msgid "Remind Me"
+msgstr "Υπενθύμιση"
+
+msgid "Search Web"
+msgstr "Αναζήτηση στον ιστό"
+
+msgid "Export the guide as XMLTV"
+msgstr "Εξαγωγή του οδηγού ως XMLTV"
+
+msgid "Next"
+msgstr "Μετά"
+
+msgid "Now"
+msgstr "Τώρα"
+
+msgid "Only favourites"
+msgstr "Μόνο αγαπημένα"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Προσβασιμότητα (οδηγός προγράμματος DVB-I)"
+
+msgid "Show:"
+msgstr "Εμφάνιση:"
+
+msgid "Channel"
+msgstr "Κανάλι"
+
+msgid "Start"
+msgstr "Έναρξη"
+
+msgid "End"
+msgstr "Λήξη"
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Genre"
+msgstr "Είδος"
+
+msgid "Day"
+msgstr "Ημέρα"
+
+msgid "Duration"
+msgstr "Διάρκεια"
+
+msgid "Subheading"
+msgstr "Υπότιτλος"
+
+msgid "Title or description"
+msgstr "Τίτλος ή περιγραφή"
+
+msgid "Include description"
+msgstr "Συμπερίληψη περιγραφής"
+
+msgid "Case sensitive"
+msgstr "Διάκριση πεζών-κεφαλαίων"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} λεπ.{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Εγγραφή σειράς: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Η υπενθύμιση αφαιρέθηκε: {title}"
+
+msgid "{title} has already started"
+msgstr "Το {title} έχει ήδη αρχίσει"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Η υπενθύμιση ορίστηκε: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Αφαίρεση υπενθύμισης"
+
+msgid "Save EPG data"
+msgstr "Αποθήκευση δεδομένων EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Κρατά τον οδηγό στον δίσκο μετά το κλείσιμο του LinDVB."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Εμφάνιση πληροφοριών EPG στην αλλαγή καναλιού (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = καμία εμφάνιση."
+
+msgid "Remind before start (min)"
+msgstr "Υπενθύμιση πριν την έναρξη (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Οι υπενθυμίσεις του οδηγού ειδοποιούν τόσο νωρίτερα."
+
+msgid "Preferred language"
+msgstr "Προτιμώμενη γλώσσα"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Χρησιμοποιείται όταν μια εκπομπή μεταδίδεται σε πολλές γλώσσες."
+
+msgid "Time zone"
+msgstr "Ζώνη ώρας"
+
+msgid "Set time zone automatically"
+msgstr "Αυτόματος ορισμός ζώνης ώρας"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Ανενεργό: χρήση σταθερής διαφοράς από GMT για τον οδηγό, τους χρονοδιακόπτες και το ρολόι."
+
+msgid "Offset to GMT"
+msgstr "Διαφορά από GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG διαδικτύου (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Πηγή EPG διαδικτύου, επιπλέον του EPG εκπομπής."
+
+msgid "Match IPTV Channels…"
+msgstr "Αντιστοίχιση καναλιών IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Ελέγξτε ή διορθώστε ποιο κανάλι οδηγού αντιστοιχεί σε ποιο κανάλι M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Συχνότητες MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Όταν ένα συντονισμένο κανάλι βρίσκεται σε έναν από αυτούς τους αναμεταδότες, το LinDVB διαβάζει και το EPG του παρόχου. Οι αλλαγές ισχύουν στον επόμενο συντονισμό."
+
+msgid "Frequency (MHz)"
+msgstr "Συχνότητα (MHz)"
+
+msgid "Add"
+msgstr "Προσθήκη"
+
+msgid "Polarisation"
+msgstr "Πόλωση"
+
+msgid "Defaults"
+msgstr "Προεπιλογές"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Εισαγάγετε τη συχνότητα του αναμεταδότη σε MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Η αναζήτηση εξωφύλλου απέτυχε: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Εναλλαγή με την κύρια εικόνα"
+
+msgid "Close picture in picture"
+msgstr "Κλείσιμο εικόνας σε εικόνα"
+
+msgid "Picture in picture: {error}"
+msgstr "Εικόνα σε εικόνα: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Η εικόνα σε εικόνα λειτουργεί με κανάλια διαδικτύου· τα κανάλια DVB χρειάζονται δεύτερο δέκτη."
+
+msgid "Channel Mosaic"
+msgstr "Μωσαϊκό καναλιών"
+
+msgid "Previous channels"
+msgstr "Προηγούμενα κανάλια"
+
+msgid "Next channels"
+msgstr "Επόμενα κανάλια"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Το μωσαϊκό δείχνει κανάλια διαδικτύου. Η λίστα δεν έχει κανένα στην τρέχουσα προβολή."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Σελίδα {page} από {pages} · κανάλια διαδικτύου: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Κάντε κλικ για να δείτε {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Εκτεταμένο"
+
+msgid "None / not satellite"
+msgstr "Κανένα / όχι δορυφόρος"
+
+msgid "Port 1 (A/A)"
+msgstr "Θύρα 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Θύρα 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Θύρα 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Θύρα 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Συχνότητα"
+
+msgid "Initial letter"
+msgstr "Αρχικό γράμμα"
+
+msgid "Provider"
+msgstr "Πάροχος"
+
+msgid "Channel Search"
+msgstr "Αναζήτηση καναλιών"
+
+msgid "Device"
+msgstr "Συσκευή"
+
+msgid "(choose…)"
+msgstr "(επιλέξτε…)"
+
+msgid "Add folder…"
+msgstr "Προσθήκη φακέλου…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Φάκελος με λίστες αναμεταδοτών (dtv-scan-tables ή .ini τύπου DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Λίστα αναμεταδοτών"
+
+msgid "LNB type"
+msgstr "Τύπος LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Ομάδα προορισμού"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "π.χ. Astra 19,2°A"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Αναζήτηση επιπλέον συχνοτήτων (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Προσθήκη μόνο ελεύθερων καναλιών"
+
+msgid "Only update existing channels"
+msgstr "Μόνο ενημέρωση υπαρχόντων καναλιών"
+
+msgid "Update channel names"
+msgstr "Ενημέρωση ονομάτων καναλιών"
+
+msgid "Group by"
+msgstr "Ομαδοποίηση κατά"
+
+msgid "Start Search"
+msgstr "Έναρξη αναζήτησης"
+
+msgid "Stop"
+msgstr "Διακοπή"
+
+msgid "Folder with transponder lists"
+msgstr "Φάκελος με λίστες αναμεταδοτών"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Δεν επιλέχθηκε λίστα αναμεταδοτών. Εγκαταστήστε το dtv-scan-tables ή προσθέστε έναν φάκελο.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nΔεν βρέθηκαν κανάλια.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nΟλοκληρώθηκε: νέα κανάλια {added}, ενημερωμένα {updated}.\n"
+
+msgid "HH:MM"
+msgstr "ΩΩ:ΛΛ"
+
+msgid "Recording Timers"
+msgstr "Χρονοδιακόπτες εγγραφής"
+
+msgid "Search channels"
+msgstr "Αναζήτηση καναλιών"
+
+msgid "  (Radio)"
+msgstr "  (Ραδιόφωνο)"
+
+msgid "Date"
+msgstr "Ημερομηνία"
+
+msgid "Repeat"
+msgstr "Επανάληψη"
+
+msgid "Once"
+msgstr "Μία φορά"
+
+msgid "Series"
+msgstr "Σειρά"
+
+msgid "Action"
+msgstr "Ενέργεια"
+
+msgid "Format"
+msgstr "Μορφή"
+
+msgid "After"
+msgstr "Μετά"
+
+msgid "Disabled"
+msgstr "Ανενεργός"
+
+msgid "Status"
+msgstr "Κατάσταση"
+
+msgid "Repeat every {day}"
+msgstr "Επανάληψη κάθε {day}"
+
+msgid "_Date"
+msgstr "_Ημερομηνία"
+
+msgid "_Lead (min)"
+msgstr "_Πριν (min)"
+
+msgid "_End"
+msgstr "_Λήξη"
+
+msgid "_Start"
+msgstr "Έ_ναρξη"
+
+msgid "Repeat on"
+msgstr "Επανάληψη την"
+
+msgid "_Follow (min)"
+msgstr "_Μετά (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Επιλέξτε ένα κανάλι αριστερά"
+
+msgid "_Name"
+msgstr "Ό_νομα"
+
+msgid "_Timer action"
+msgstr "Ενέργεια _χρονοδιακόπτη"
+
+msgid "_After recording"
+msgstr "Μετά την _εγγραφή"
+
+msgid "T_V format"
+msgstr "Μορφή T_V"
+
+msgid "_Radio format"
+msgstr "Μορφή _ραδιοφώνου"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Μόνο η προτιμώμενη γλώσσα: τα κομμάτια στη γλώσσα ήχου των προτιμήσεων, χωρίς ακουστική περιγραφή. Το MP4 και το αρχείο ήχου ραδιοφώνου κρατούν ένα κομμάτι."
+
+msgid "Audi_o tracks"
+msgstr "Κομμάτια ή_χου"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Το teletext υπάρχει μόνο σε MPEG-TS, οπότε χρησιμοποιείται TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Τα δεδομένα EPG (EIT) υπάρχουν μόνο σε MPEG-TS, οπότε χρησιμοποιείται TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "Το TS κρατά όλες τις ροές υποτίτλων. Το MKV παίρνει τη σελίδα υποτίτλων teletext ως κομμάτι κειμένου· οι υπότιτλοι bitmap DVB μένουν μόνο στο TS."
+
+msgid "Tracks"
+msgstr "Κομμάτια"
+
+msgid "File _naming scheme"
+msgstr "Μοτίβο _ονομάτων αρχείων"
+
+msgid "Folder…"
+msgstr "Φάκελος…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Χρήση του φακέλου εγγραφών από τις προτιμήσεις"
+
+msgid "Placeholders"
+msgstr "Σύμβολα κράτησης"
+
+msgid "Folder: "
+msgstr "Φάκελος: "
+
+msgid "Clear the editor"
+msgstr "Καθαρισμός επεξεργαστή"
+
+msgid "New"
+msgstr "Νέο"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Προσθήκη των ρυθμίσεων του επεξεργαστή ως νέου χρονοδιακόπτη"
+
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Αποθήκευση των ρυθμίσεων του επεξεργαστή στον επιλεγμένο χρονοδιακόπτη"
+
+msgid "Delete the selected timer"
+msgstr "Διαγραφή του επιλεγμένου χρονοδιακόπτη"
+
+msgid "Enable/Disable"
+msgstr "Ενεργοποίηση/Απενεργοποίηση"
+
+msgid "Switch the selected timer on or off"
+msgstr "Ενεργοποίηση ή απενεργοποίηση του επιλεγμένου χρονοδιακόπτη"
+
+msgid "Save as default"
+msgstr "Αποθήκευση ως προεπιλογή"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Χρήση αυτών των μορφών και επιπλέον ροών για νέους χρονοδιακόπτες και χειροκίνητες εγγραφές"
+
+msgid "Series title"
+msgstr "Τίτλος σειράς"
+
+msgid "Delete series rule"
+msgstr "Διαγραφή κανόνα σειράς"
+
+msgid "Series recordings"
+msgstr "Εγγραφές σειρών"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Οι υπότιτλοι χωρούν σε TS ή MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Δεν υπάρχει προτιμώμενη γλώσσα ήχου στις προτιμήσεις: εγγράφεται το πρώτο κομμάτι."
+
+msgid "File: {v0}"
+msgstr "Αρχείο: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Μη έγκυρη ώρα έναρξης ή λήξης"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Χρησιμοποιήστε ΩΩ:ΛΛ, για παράδειγμα 20:15."
+
+msgid "No channel"
+msgstr "Κανένα κανάλι"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Επιλέξτε το κανάλι για εγγραφή στη λίστα αριστερά."
+
+msgid "Recording defaults saved"
+msgstr "Οι προεπιλογές εγγραφής αποθηκεύτηκαν"
+
+msgid "Record with Options"
+msgstr "Εγγραφή με επιλογές"
+
+msgid "_Format"
+msgstr "_Μορφή"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Το teletext και τα δεδομένα EPG διατηρούνται μόνο σε MPEG-TS, οπότε χρησιμοποιείται TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Προτιμώμενη γλώσσα ήχου: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Η οπτικοποίηση «{v0}» απέτυχε: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "Το OpenGL{v0} {major}.{minor} είναι πολύ παλιό"
+
+msgid "Playback error: "
+msgstr "Σφάλμα αναπαραγωγής: "
+
+msgid "All channels"
+msgstr "Όλα τα κανάλια"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Αγαπημένα (TV + ραδιόφωνο)"
+
+msgid "Free to air"
+msgstr "Ελεύθερα"
+
+msgid "Internet streams"
+msgstr "Ροές διαδικτύου"
+
+msgid "Fill (crop)"
+msgstr "Γέμισμα (περικοπή)"
+
+msgid "Fit"
+msgstr "Προσαρμογή"
+
+msgid "Stretch"
+msgstr "Τέντωμα"
+
+msgid "Playback error: {m}"
+msgstr "Σφάλμα αναπαραγωγής: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Η ενέργεια πρόσθετου απέτυχε: {e}"
+
+msgid "Open Media File…"
+msgstr "Άνοιγμα αρχείου πολυμέσων…"
+
+msgid "Open URL…"
+msgstr "Άνοιγμα διεύθυνσης…"
+
+msgid "Import Channel List…"
+msgstr "Εισαγωγή λίστας καναλιών…"
+
+msgid "Export Channel List…"
+msgstr "Εξαγωγή λίστας καναλιών…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Εξαγωγή οδηγού προγράμματος (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Εναλλαγή TV / ραδιόφωνο"
+
+msgid "Recordings"
+msgstr "Εγγραφές"
+
+msgid "Programme Guide (EPG)"
+msgstr "Οδηγός προγράμματος (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Εγγραφές χρονοδιακόπτη"
+
+msgid "Record with Options…"
+msgstr "Εγγραφή με επιλογές…"
+
+msgid "Teletext"
+msgstr "Teletext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Μενού CAM (μονάδα CI)…"
+
+msgid "Channel Search…"
+msgstr "Αναζήτηση καναλιών…"
+
+msgid "DVB-I Setup…"
+msgstr "Ρύθμιση DVB-I…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Επεξεργασία καναλιών / αγαπημένα"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Ενημέρωση EPG διαδικτύου (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Αντιστοίχιση καναλιών IPTV με XMLTV…"
+
+msgid "Audio Track"
+msgstr "Κομμάτι ήχου"
+
+msgid "Subtitles"
+msgstr "Υπότιτλοι"
+
+msgid "Play Rate"
+msgstr "Ταχύτητα αναπαραγωγής"
+
+msgid "Back 10 s"
+msgstr "Πίσω 10 s"
+
+msgid "Forward 10 s"
+msgstr "Μπροστά 10 s"
+
+msgid "Back 1 min"
+msgstr "Πίσω 1 min"
+
+msgid "Forward 1 min"
+msgstr "Μπροστά 1 min"
+
+msgid "Back to Live"
+msgstr "Επιστροφή σε ζωντανό"
+
+msgid "Jump"
+msgstr "Μετάβαση"
+
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+msgid "Random Order"
+msgstr "Τυχαία σειρά"
+
+msgid "Endless Playback"
+msgstr "Συνεχής αναπαραγωγή"
+
+msgid "Playlist"
+msgstr "Λίστα αναπαραγωγής"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Διατήρηση χρονομετατόπισης ως εγγραφή"
+
+msgid "Rebuild Playback"
+msgstr "Ανακατασκευή αναπαραγωγής"
+
+msgid "Video Off (audio only)"
+msgstr "Βίντεο ανενεργό (μόνο ήχος)"
+
+msgid "Show Selected Channel"
+msgstr "Εμφάνιση επιλεγμένου καναλιού"
+
+msgid "Swap Pictures"
+msgstr "Εναλλαγή εικόνων"
+
+msgid "Picture in Picture"
+msgstr "Εικόνα σε εικόνα"
+
+msgid "Channel Mosaic…"
+msgstr "Μωσαϊκό καναλιών…"
+
+msgid "Stop in {mins} min"
+msgstr "Διακοπή σε {mins} λεπ."
+
+msgid "Stop after current programme"
+msgstr "Διακοπή μετά την τρέχουσα εκπομπή"
+
+msgid "Sleep Timer"
+msgstr "Χρονοδιακόπτης ύπνου"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Ήχος αργότερα (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Ήχος νωρίτερα (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+msgid "Audio Delay (this channel)"
+msgstr "Καθυστέρηση ήχου (αυτό το κανάλι)"
+
+msgid "Full Screen"
+msgstr "Πλήρης οθόνη"
+
+msgid "Show/Hide Channel List"
+msgstr "Εμφάνιση/απόκρυψη λίστας καναλιών"
+
+msgid "Aspect / Zoom"
+msgstr "Αναλογία / μεγέθυνση"
+
+msgid "Window Size"
+msgstr "Μέγεθος παραθύρου"
+
+msgid "Picture Settings…"
+msgstr "Ρυθμίσεις εικόνας…"
+
+msgid "Equalizer…"
+msgstr "Ισοσταθμιστής…"
+
+msgid "Radio Visualisation"
+msgstr "Οπτικοποίηση ραδιοφώνου"
+
+msgid "Screenshot"
+msgstr "Στιγμιότυπο οθόνης"
+
+msgid "Plugins…"
+msgstr "Πρόσθετα…"
+
+msgid "About LinDVB"
+msgstr "Σχετικά με το LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Εμφάνιση/απόκρυψη λίστας καναλιών (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Κύριο μενού (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Οδηγός προγράμματος (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletext (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Εμφάνιση καναλιών TV (Ctrl+M για εναλλαγή)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Εμφάνιση ραδιοφωνικών σταθμών (Ctrl+M για εναλλαγή)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Εμφάνιση των εγγραφών σας (διπλό κλικ για αναπαραγωγή)"
+
+msgid "Search name or number"
+msgstr "Αναζήτηση ονόματος ή αριθμού"
+
+msgid "All groups"
+msgstr "Όλες οι ομάδες"
+
+msgid "Previous channel (Page Down)"
+msgstr "Προηγούμενο κανάλι (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Παύση / χρονομετατόπιση (διάστημα)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Διακοπή (απενεργοποίηση καναλιού)"
+
+msgid "Next channel (Page Up)"
+msgstr "Επόμενο κανάλι (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Εγγραφή τρέχοντος καναλιού (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Επιλογή μορφής και κομματιών για αυτή την εγγραφή"
+
+msgid "Seek"
+msgstr "Θέση"
+
+msgid "LIVE"
+msgstr "ΖΩΝΤΑΝΑ"
+
+msgid "Back to live (L)"
+msgstr "Επιστροφή σε ζωντανό (L)"
+
+msgid "Mute (M)"
+msgstr "Σίγαση (M)"
+
+msgid "Volume"
+msgstr "Ένταση"
+
+msgid "Audio track"
+msgstr "Κομμάτι ήχου"
+
+msgid "Playback and picture settings"
+msgstr "Ρυθμίσεις αναπαραγωγής και εικόνας"
+
+msgid "Full screen (F)"
+msgstr "Πλήρης οθόνη (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nΤώρα: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} από {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Εμφανίζονται {n} από {total} εγγραφές"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Εμφανίζονται {n} από {total} αγαπημένα"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Εμφανίζονται {n} από {total} ραδιοφωνικοί σταθμοί"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Εμφανίζονται {n} από {total} κανάλια TV"
+
+msgid "Add to Favourites"
+msgstr "Προσθήκη στα αγαπημένα"
+
+msgid "Remove from Favourites"
+msgstr "Αφαίρεση από τα αγαπημένα"
+
+msgid "Edit…"
+msgstr "Επεξεργασία…"
+
+msgid "Show as Picture in Picture"
+msgstr "Εμφάνιση ως εικόνα σε εικόνα"
+
+msgid "Select a channel in the list first"
+msgstr "Επιλέξτε πρώτα ένα κανάλι στη λίστα"
+
+msgid "By channel"
+msgstr "Κατά κανάλι"
+
+msgid "By title"
+msgstr "Κατά τίτλο"
+
+msgid "Newest first"
+msgstr "Νεότερα πρώτα"
+
+msgid "Oldest first"
+msgstr "Παλαιότερα πρώτα"
+
+msgid "Largest first"
+msgstr "Μεγαλύτερα πρώτα"
+
+msgid "Sort the recordings"
+msgstr "Ταξινόμηση εγγραφών"
+
+msgid "Open the recording folder"
+msgstr "Άνοιγμα φακέλου εγγραφών"
+
+msgid "Look for new recordings"
+msgstr "Αναζήτηση νέων εγγραφών"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Δεν υπάρχουν ακόμα εγγραφές.\n\nΟι εγγραφές αποθηκεύονται στο\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Δεν έχει οριστεί φάκελος εγγραφών στις προτιμήσεις."
+
+msgid "Recording in progress"
+msgstr "Εγγραφή σε εξέλιξη"
+
+msgid "Watched"
+msgstr "Προβλήθηκε"
+
+msgid "Watched up to {pos}"
+msgstr "Προβλήθηκε έως {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Η εγγραφή δεν βρέθηκε: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Συνέχεια από {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Ο φάκελος δεν βρέθηκε: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Αδύνατο το άνοιγμα του {folder}: {message}"
+
+msgid "Play"
+msgstr "Αναπαραγωγή"
+
+msgid "Play from the Beginning"
+msgstr "Αναπαραγωγή από την αρχή"
+
+msgid "Details…"
+msgstr "Λεπτομέρειες…"
+
+msgid "Mark as Unwatched"
+msgstr "Σήμανση ως μη προβληθέν"
+
+msgid "Mark as Watched"
+msgstr "Σήμανση ως προβληθέν"
+
+msgid "Show in Folder"
+msgstr "Εμφάνιση στον φάκελο"
+
+msgid "Delete…"
+msgstr "Διαγραφή…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Σταματήστε την εγγραφή πριν τη διαγράψετε"
+
+msgid "Delete “{title}”?"
+msgstr "Διαγραφή του «{title}»;"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nΤο αρχείο αφαιρείται από τον δίσκο."
+
+msgid "Deleted {name}"
+msgstr "Διαγράφηκε: {name}"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Αδύνατη η διαγραφή του {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Συντονισμός {name}…"
+
+msgid "Search recordings"
+msgstr "Αναζήτηση στις εγγραφές"
+
+msgid "No radio stations in the channel list"
+msgstr "Δεν υπάρχουν ραδιοφωνικοί σταθμοί στη λίστα καναλιών"
+
+msgid "No TV channels in the channel list"
+msgstr "Δεν υπάρχουν κανάλια TV στη λίστα καναλιών"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – έγινε εναλλαγή σε {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "Το {name} δεν εκπέμπει αυτή τη στιγμή"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Η ζωντανή TV σταμάτησε: ο δέκτης χρειάζεται για εγγραφή χρονοδιακόπτη"
+
+msgid "Stopped"
+msgstr "Σταμάτησε"
+
+msgid "Sound {ms} ms later"
+msgstr "Ήχος {ms} ms αργότερα"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Ήχος {v0} ms νωρίτερα"
+
+msgid "Audio delay off"
+msgstr "Καθυστέρηση ήχου ανενεργή"
+
+msgid "Playing {item}"
+msgstr "Αναπαραγωγή {item}"
+
+msgid "Open media files"
+msgstr "Άνοιγμα αρχείων πολυμέσων"
+
+msgid "Open URL"
+msgstr "Άνοιγμα διεύθυνσης"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Άνοιγμα"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Εισαγωγή λίστας καναλιών (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Αδύνατη η εισαγωγή του {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Εισήχθησαν νέα κανάλια: {total_a}, ενημερωμένα: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Εξαγωγή καναλιών (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Εξήχθη στο {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Εξαγωγή του οδηγού προγράμματος (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Αδύνατη η εγγραφή του {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Τίποτα για εγγραφή"
+
+msgid "This channel is already being recorded"
+msgstr "Αυτό το κανάλι εγγράφεται ήδη"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletext: λείπει ο αποκωδικοποιητής (gst-plugins-bad με libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletext: δεν είναι διαθέσιμο σε αυτό το κανάλι"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Το teletext απαιτεί κανάλι DVB"
+
+msgid "Volume {v0}%"
+msgstr "Ένταση {v0}%"
+
+msgid "Off"
+msgstr "Ανενεργό"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Κρυφοί υπότιτλοι (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Γλώσσες: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Κομμάτια ήχου: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Το στιγμιότυπο αποθηκεύτηκε: {path}"
+
+msgid "Screenshot failed"
+msgstr "Το στιγμιότυπο απέτυχε"
+
+msgid "Picture Settings"
+msgstr "Ρυθμίσεις εικόνας"
+
+msgid "Restore Defaults"
+msgstr "Επαναφορά προεπιλογών"
+
+msgid "Equalizer"
+msgstr "Ισοσταθμιστής"
+
+msgid "Leave full screen (F)"
+msgstr "Έξοδος από πλήρη οθόνη (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Η οπτικοποίηση απέτυχε: {e}"
+
+msgid "Radio visualisation"
+msgstr "Οπτικοποίηση ραδιοφώνου"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Οπτικοποίηση ραδιοφώνου (μόνο για ραδιόφωνο και ήχο)"
+
+msgid "Playback stops at {v0}"
+msgstr "Η αναπαραγωγή σταματά στις {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Δεν υπάρχουν πληροφορίες προγράμματος για τον χρονοδιακόπτη ύπνου"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Χρονοδιακόπτης ύπνου: η αναπαραγωγή σταμάτησε"
+
+msgid "No programme information"
+msgstr "Δεν υπάρχουν πληροφορίες προγράμματος"
+
+msgid "Next: {v0}  {title}"
+msgstr "Μετά: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Σήμα {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Ζωντανά"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Χρονομετατόπιση −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Παρακολουθήστε και εγγράψτε DVB-S/S2, DVB-C, DVB-T/T2, ATSC και τηλεόραση διαδικτύου με το Linux DVB API και το GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Αντιστοίχιση καναλιών IPTV με XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Δεν έχει φορτωθεί ακόμα οδηγός XMLTV. Ορίστε τη διεύθυνση XMLTV στις ρυθμίσεις EPG και κατεβάστε πρώτα τον οδηγό· η αντιστοίχιση ξεκινά αυτόματα μετά τη λήψη."
+
+msgid "Download XMLTV guide now"
+msgstr "Λήψη του οδηγού XMLTV τώρα"
+
+msgid "Only channels without guide"
+msgstr "Μόνο κανάλια χωρίς οδηγό"
+
+msgid "Match"
+msgstr "Αντιστοίχιση"
+
+msgid "Guide channel:"
+msgstr "Κανάλι οδηγού:"
+
+msgid "Assign"
+msgstr "Ανάθεση"
+
+msgid "Suggest"
+msgstr "Πρόταση"
+
+msgid "Auto-match all"
+msgstr "Αυτόματη αντιστοίχιση όλων"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Αντιστοίχιση κάθε καναλιού που δεν ανατέθηκε χειροκίνητα"
+
+msgid "Reset to automatic"
+msgstr "Επαναφορά σε αυτόματο"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Να αποφασίσει ξανά η αυτόματη αντιστοίχιση για το επιλεγμένο κανάλι"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Κανάλι οδηγού έχουν {done} από {v1} κανάλια"
+
+msgid "No suggestion for {name}"
+msgstr "Καμία πρόταση για {name}"

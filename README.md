@@ -59,6 +59,10 @@ picture and hides itself when the mouse is still.
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
 * Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
   after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
+* Recordings tab: a library of the recordings with preview picture, programme title,
+  subheading, channel, date, length and description (saved beside each recording as
+  `<name>.lindvb.json`), sorting, search, and "continue watching": a recording starts
+  where you stopped it, with a bar showing how much you have seen
 * Recording formats: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3 for radio,
   with teletext, subtitles and EPG data; audio tracks: all, preferred language only or
   the first (MP4 keeps one). Defaults in Preferences > Recording, changeable per timer
@@ -68,10 +72,23 @@ picture and hides itself when the mouse is still.
   web search links; on-screen now/next display; XMLTV for internet channels
   with automatic and manual matching of M3U channels to guide channels;
   MediaHighway 1/2 and Freesat EPG; preferred EPG language and time zone
+* Reminders: "Remind Me" in the programme guide sends a desktop notification a few
+  minutes before the programme starts (with a button to switch to the channel)
+* Export the programme guide as XMLTV for other programs
+* Media keys and the GNOME media controls (MPRIS): play/pause, stop, next/previous
+  channel, with channel, programme and logo shown
+* Script hooks: your own programs in `~/.config/lindvb/hooks/` run on channel change,
+  recording start/stop and reminders (environment variables `LINDVB_CHANNEL`,
+  `LINDVB_TITLE`, `LINDVB_FILE`, ...)
+* Picture in picture and a channel mosaic (nine channels at once) for internet channels
 * Teletext window with page navigation, find, copy and save, opened from the "TXT"
   button in the header bar (greyed out when the channel carries no teletext)
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
-  e.g. 150 or 777) drawn over the video in sync
+  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-608/708) for
+  ATSC and US cable channels (Subtitles ▸ Closed Captions)
+* ATSC (USA, Canada, Mexico, South Korea): virtual channel numbers like 7.1 in the
+  channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
+  (channel table, EIT and extended texts, GPS time)
 * Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
 * DVB-I (TV ▸ DVB-I Setup): the channel list of your region from the German
   service list registry, with postcode, channel numbers (LCN), logos and a daily
@@ -219,7 +236,7 @@ with these keys; use `ir-keytable` to remap buttons.
 
 ## Releasing
 
-Run the **Release** workflow from the Actions tab and enter a tag such as `v0.2.0`. It
+Run the **Release** workflow from the Actions tab and enter a tag such as `v0.3.0`. It
 builds the AppImage, Flatpak and Snap and publishes all three in one GitHub release.
 
 ## Development
@@ -232,9 +249,13 @@ LINDVB_TEST_TS=sample.ts python3 -m lindvb   # replay a TS file instead of a tun
 `LINDVB_TEST_TS` makes every DVB channel play the given transport stream at real
 time, which lets you test timeshift, recording, EPG and teletext without hardware.
 
+The kernel's virtual DVB tuner **vidtv** (`sudo modprobe vidtv`) tests channel
+search, tuning and the EPG like a real tuner; LinDVB ships scan files for it.
+See [docs/TESTING.md](docs/TESTING.md).
+
 ## Not yet implemented
 
-Picture in picture and mosaic, CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins, translations. See
+Picture in picture and mosaic for DVB channels (internet channels work), CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
 ## If LinDVB stops responding

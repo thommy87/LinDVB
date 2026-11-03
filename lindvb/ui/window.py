@@ -13,12 +13,14 @@ from ..epg import details_line, programme_details
 from ..media_info import audio_summary
 from ..nowplaying import content_box
 from ..player import EQ_BANDS, Player
-from ..recordings import find_recordings
+from ..library import Positions, delete_info
+from ..recordings import find_recordings, sort_recordings
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
+from ..i18n import _
 
 NO_LOCK_SECONDS = 8          # DVB-I failover after this long without a signal lock
 
@@ -37,24 +39,26 @@ def _instance_kind(c):
 
 def _short(text, n=90):
     text = (text or "").strip()
-    if text.startswith("Playback error: "):
-        text = text[len("Playback error: "):]
+    if text.startswith(_("Playback error: ")):
+        text = text[len(_("Playback error: ")):]
     text = text.split(". ")[0].rstrip(".")
     return text if len(text) <= n else text[:n - 1] + "…"
 
 # The channel list shows either TV or radio channels; only the favourites mix both.
-FILTERS = ["All channels", "Favourites (TV + Radio)", "Free to air", "Encrypted",
-           "HD channels", "Internet streams"]
+FILTERS = [_("All channels"), _("Favourites (TV + Radio)"), _("Free to air"), _("Encrypted"),
+           "HD channels", _("Internet streams")]
 F_ALL, F_FAV, F_FTA, F_ENC, F_HD, F_IPTV = range(len(FILTERS))
 MODES = ("tv", "radio")
 # The list tabs: TV channels, radio stations, and the recordings on disk.
 TABS = MODES + ("recordings",)
-ZOOM = [("Fit", Gtk.ContentFit.CONTAIN), ("Fill (crop)", Gtk.ContentFit.COVER),
-        ("Stretch", Gtk.ContentFit.FILL)]
+ZOOM = [(_("Fit"), Gtk.ContentFit.CONTAIN), (_("Fill (crop)"), Gtk.ContentFit.COVER),
+        (_("Stretch"), Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
 AUDIO_DELAY_STEP = 100      # ms per key press / menu click
 
 class MainWindow(Gtk.ApplicationWindow):
+    mpris = None
+
     def __init__(self, app):
         super().__init__(application=app, title=APP_NAME, default_width=1200, default_height=720)
         self.app = app
@@ -78,6 +82,20 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
         self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
+        # recording library: where each file was left, preview pictures
+        self.mpris = None
+        if self.settings.get("mpris", True):
+            try:
+                from ..mpris import MprisServer
+                self.mpris = MprisServer(app, self)
+            except Exception:       # noqa: BLE001 - no session bus: no media keys
+                self.mpris = None
+        self.positions = Positions()
+        self._positions_dirty = False
+        self._resume_at = None
+        self.thumbnailer = None
+        GLib.timeout_add_seconds(2, self._track_position)
+        GLib.timeout_add_seconds(30, self._save_positions)
         self._vis_id = None          # visualisation style currently drawn
 
         # The player is always dark, whatever the desktop theme.
@@ -96,7 +114,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._build_actions()
         self._build_ui()
         self.player = Player(self.picture, self.settings)
-        self.player.connect("error", lambda _p, m: self._on_play_error(f"Playback error: {m}"))
+        self.player.connect("error", lambda _p, m: self._on_play_error(_("Playback error: {m}").format(m=m)))
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
@@ -123,6 +141,7 @@ class MainWindow(Gtk.ApplicationWindow):
         acts = {
             "open-file": self.on_open_file, "open-url": self.on_open_url,
             "import": self.on_import, "export": self.on_export,
+            "export-epg": self.on_export_epg,
             "epg": lambda: self.app.show_epg(), "timers": lambda: self.app.show_timers(),
             "scan": lambda: self.app.show_scan(), "prefs": lambda: self.app.show_prefs(),
             "editor": lambda: self.app.show_editor(), "stats": lambda: self.app.show_stats(),
@@ -160,6 +179,8 @@ class MainWindow(Gtk.ApplicationWindow):
             "mode-recordings": lambda: self.set_mode("recordings"),
             "rec-refresh": self.reload_recordings, "rec-folder": self.open_recording_folder,
             "vis-next": self.cycle_visualizer,
+            "pip": self.pip_selected, "pip-swap": self.pip_swap, "pip-close": self.pip_close,
+            "mosaic": self.show_mosaic,
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -199,6 +220,8 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self._run_plugin_action(p.get_int32()))
         self.add_action(a)
         for name, init, fn in (("video-off", False, lambda v: self.player.disable_video(v)),
+                               ("closed-captions", bool(self.settings.get("closed_captions")),
+                                lambda v: self.player.set_closed_captions(v)),
                                ("pl-random", False, lambda v: setattr(self, "playlist_random", v)),
                                ("pl-repeat", False, lambda v: setattr(self, "playlist_repeat", v))):
             a = Gio.SimpleAction.new_stateful(name, None, GLib.Variant.new_boolean(init))
@@ -227,100 +250,107 @@ class MainWindow(Gtk.ApplicationWindow):
             _plugin, _label, cb = self.app.plugins.menu_actions[index]
             cb(self.app)
         except Exception as e:
-            self.set_status(f"Plugin action failed: {e}")
+            self.set_status(_("Plugin action failed: {e}").format(e=e))
 
     def _menu(self):
         m = Gio.Menu()
         file = Gio.Menu()
-        file.append("Open Media File…", "win.open-file")
-        file.append("Open URL…", "win.open-url")
-        file.append("Import Channel List…", "win.import")
-        file.append("Export Channel List…", "win.export")
+        file.append(_("Open Media File…"), "win.open-file")
+        file.append(_("Open URL…"), "win.open-url")
+        file.append(_("Import Channel List…"), "win.import")
+        file.append(_("Export Channel List…"), "win.export")
+        file.append(_("Export Programme Guide (XMLTV)…"), "win.export-epg")
         m.append_section(None, file)
         tv = Gio.Menu()
-        tv.append("Switch TV / Radio", "win.toggle-mode")
-        tv.append("Recordings", "win.mode-recordings")
-        tv.append("Programme Guide (EPG)", "win.epg")
-        tv.append("Timer Recordings", "win.timers")
-        tv.append("Record with Options…", "win.record-options")
-        tv.append("Recording and Device Statistics", "win.stats")
-        tv.append("Teletext", "win.teletext")
-        tv.append("CAM Menu (CI Module)…", "win.cam-menu")
-        tv.append("Channel Search…", "win.scan")
-        tv.append("DVB-I Setup…", "win.dvbi-setup")
-        tv.append("Channel Editor / Favourites", "win.editor")
-        tv.append("Update Internet EPG (XMLTV)", "win.xmltv")
-        tv.append("Match IPTV Channels to XMLTV…", "win.xmltv-match")
+        tv.append(_("Switch TV / Radio"), "win.toggle-mode")
+        tv.append(_("Recordings"), "win.mode-recordings")
+        tv.append(_("Programme Guide (EPG)"), "win.epg")
+        tv.append(_("Timer Recordings"), "win.timers")
+        tv.append(_("Record with Options…"), "win.record-options")
+        tv.append(_("Recording and Device Statistics"), "win.stats")
+        tv.append(_("Teletext"), "win.teletext")
+        tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
+        tv.append(_("Channel Search…"), "win.scan")
+        tv.append(_("DVB-I Setup…"), "win.dvbi-setup")
+        tv.append(_("Channel Editor / Favourites"), "win.editor")
+        tv.append(_("Update Internet EPG (XMLTV)"), "win.xmltv")
+        tv.append(_("Match IPTV Channels to XMLTV…"), "win.xmltv-match")
         m.append_section(None, tv)
 
         play = Gio.Menu()
         self.audio_menu = Gio.Menu()
         self.sub_menu = Gio.Menu()
-        play.append_submenu("Audio Track", self.audio_menu)
-        play.append_submenu("Subtitles", self.sub_menu)
+        play.append_submenu(_("Audio Track"), self.audio_menu)
+        play.append_submenu(_("Subtitles"), self.sub_menu)
         rate = Gio.Menu()
         for r in (0.5, 0.75, 1.0, 1.25, 1.5, 2.0):
             rate.append(f"{r:g}×", f"win.rate({r})")
-        play.append_submenu("Play Rate", rate)
+        play.append_submenu(_("Play Rate"), rate)
         jump = Gio.Menu()
-        jump.append("Back 10 s", "win.back10")
-        jump.append("Forward 10 s", "win.fwd10")
-        jump.append("Back 1 min", "win.back60")
-        jump.append("Forward 1 min", "win.fwd60")
-        jump.append("Back to Live", "win.live")
-        play.append_submenu("Jump", jump)
+        jump.append(_("Back 10 s"), "win.back10")
+        jump.append(_("Forward 10 s"), "win.fwd10")
+        jump.append(_("Back 1 min"), "win.back60")
+        jump.append(_("Forward 1 min"), "win.fwd60")
+        jump.append(_("Back to Live"), "win.live")
+        play.append_submenu(_("Jump"), jump)
         pl = Gio.Menu()
-        pl.append("Next", "win.playlist-next")
-        pl.append("Previous", "win.playlist-prev")
-        pl.append("Random Order", "win.pl-random")
-        pl.append("Endless Playback", "win.pl-repeat")
-        play.append_submenu("Playlist", pl)
-        play.append("Keep Timeshift as Recording", "win.keep-timeshift")
-        play.append("Rebuild Playback", "win.rebuild")
-        play.append("Video Off (audio only)", "win.video-off")
+        pl.append(_("Next"), "win.playlist-next")
+        pl.append(_("Previous"), "win.playlist-prev")
+        pl.append(_("Random Order"), "win.pl-random")
+        pl.append(_("Endless Playback"), "win.pl-repeat")
+        play.append_submenu(_("Playlist"), pl)
+        play.append(_("Keep Timeshift as Recording"), "win.keep-timeshift")
+        play.append(_("Rebuild Playback"), "win.rebuild")
+        play.append(_("Video Off (audio only)"), "win.video-off")
+        pip = Gio.Menu()
+        pip.append(_("Show Selected Channel"), "win.pip")
+        pip.append(_("Swap Pictures"), "win.pip-swap")
+        pip.append(_("Close"), "win.pip-close")
+        play.append_submenu(_("Picture in Picture"), pip)
+        play.append(_("Channel Mosaic…"), "win.mosaic")
         sleep = Gio.Menu()
         for mins in SLEEP_MINUTES:
-            sleep.append(f"Stop in {mins} min", f"win.sleep-{mins}")
-        sleep.append("Stop after current programme", "win.sleep-programme")
-        sleep.append("Cancel", "win.sleep-off")
-        play.append_submenu("Sleep Timer", sleep)
+            sleep.append(_("Stop in {mins} min").format(mins=mins), f"win.sleep-{mins}")
+        sleep.append(_("Stop after current programme"), "win.sleep-programme")
+        sleep.append(_("Cancel"), "win.sleep-off")
+        play.append_submenu(_("Sleep Timer"), sleep)
         delay = Gio.Menu()
-        delay.append(f"Sound Later (+{AUDIO_DELAY_STEP} ms, K)", "win.audio-later")
-        delay.append(f"Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)", "win.audio-earlier")
-        delay.append("Reset", "win.audio-delay-reset")
-        play.append_submenu("Audio Delay (this channel)", delay)
+        delay.append(_("Sound Later (+{AUDIO_DELAY_STEP} ms, K)").format(AUDIO_DELAY_STEP=AUDIO_DELAY_STEP), "win.audio-later")
+        delay.append(_("Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)").format(AUDIO_DELAY_STEP=AUDIO_DELAY_STEP), "win.audio-earlier")
+        delay.append(_("Reset"), "win.audio-delay-reset")
+        play.append_submenu(_("Audio Delay (this channel)"), delay)
         m.append_section(None, play)
 
         view = Gio.Menu()
-        view.append("Full Screen", "win.fullscreen")
-        view.append("Show/Hide Channel List", "win.toggle-list")
+        view.append(_("Full Screen"), "win.fullscreen")
+        view.append(_("Show/Hide Channel List"), "win.toggle-list")
         zoom = Gio.Menu()
         for i, (name, _f) in enumerate(ZOOM):
             zoom.append(name, f"win.zoom({i})")
-        view.append_submenu("Aspect / Zoom", zoom)
+        view.append_submenu(_("Aspect / Zoom"), zoom)
         ws = Gio.Menu()
         for p in (50, 75, 100, 200):
             ws.append(f"{p}%", f"win.winsize({p})")
-        view.append_submenu("Window Size", ws)
-        view.append("Picture Settings…", "win.picture")
-        view.append("Equalizer…", "win.equalizer")
+        view.append_submenu(_("Window Size"), ws)
+        view.append(_("Picture Settings…"), "win.picture")
+        view.append(_("Equalizer…"), "win.equalizer")
         # shared with the visualisation button in the control bar
         self.vis_menu = vis = Gio.Menu()
         for vid, (label, _kind, _f) in self.visualizers.items():
             vis.append(label, f"win.vis::{vid}")
-        view.append_submenu("Radio Visualisation", vis)
-        view.append("Screenshot", "win.screenshot")
+        view.append_submenu(_("Radio Visualisation"), vis)
+        view.append(_("Screenshot"), "win.screenshot")
         m.append_section(None, view)
         # the gear in the control bar shows just the playback and view sections
         self.settings_menu = Gio.Menu()
         self.settings_menu.append_section(None, play)
         self.settings_menu.append_section(None, view)
         end = Gio.Menu()
-        end.append("Preferences", "win.prefs")
-        end.append("Plugins…", "win.plugins")
+        end.append(_("Preferences"), "win.prefs")
+        end.append(_("Plugins…"), "win.plugins")
         for i, (_plugin, label, _cb) in enumerate(self.app.plugins.menu_actions):
             end.append(label, f"win.plugin-action({i})")
-        end.append("About LinDVB", "win.about")
+        end.append(_("About LinDVB"), "win.about")
         m.append_section(None, end)
         return m
 
@@ -332,7 +362,7 @@ class MainWindow(Gtk.ApplicationWindow):
         hb = Gtk.HeaderBar()
         self.set_titlebar(hb)
         self.list_btn = Gtk.ToggleButton(icon_name="sidebar-show-symbolic", active=True,
-                                         tooltip_text="Show/hide channel list (F9)")
+                                         tooltip_text=_("Show/hide channel list (F9)"))
         self.list_btn.connect("toggled", lambda b: self.sidebar.set_visible(b.get_active()))
         hb.pack_start(self.list_btn)
         title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
@@ -344,13 +374,13 @@ class MainWindow(Gtk.ApplicationWindow):
         title_box.append(self.subtitle_label)
         hb.set_title_widget(title_box)
         menu = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu_model,
-                              tooltip_text="Main menu (F10)")
+                              tooltip_text=_("Main menu (F10)"))
         menu.set_primary(True)
         hb.pack_end(menu)
         hb.pack_end(Gtk.Button(icon_name="x-office-calendar-symbolic", action_name="win.epg",
-                               tooltip_text="Programme guide (Ctrl+E)"))
-        self.ttx_btn = Gtk.Button(label="TXT", action_name="win.teletext",
-                                  tooltip_text="Teletext (Ctrl+Shift+T)")
+                               tooltip_text=_("Programme guide (Ctrl+E)")))
+        self.ttx_btn = Gtk.Button(label=_("TXT"), action_name="win.teletext",
+                                  tooltip_text=_("Teletext (Ctrl+Shift+T)"))
         hb.pack_end(self.ttx_btn)
 
         # sidebar
@@ -362,11 +392,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mode_btns = {}
         group = None
         for mode, label, icon, tip in (
-                ("tv", "TV", "video-display-symbolic", "Show TV channels (Ctrl+M switches)"),
-                ("radio", "Radio", "audio-x-generic-symbolic",
-                 "Show radio stations (Ctrl+M switches)"),
-                ("recordings", "Recordings", "media-record-symbolic",
-                 "Show your recordings (double-click plays one)")):
+                ("tv", "TV", "video-display-symbolic", _("Show TV channels (Ctrl+M switches)")),
+                ("radio", _("Radio"), "audio-x-generic-symbolic",
+                 _("Show radio stations (Ctrl+M switches)")),
+                ("recordings", _("Recordings"), "media-record-symbolic",
+                 _("Show your recordings (double-click plays one)"))):
             content = Gtk.Box(spacing=6, halign=Gtk.Align.CENTER)
             content.append(Gtk.Image(icon_name=icon))
             content.append(Gtk.Label(label=label))
@@ -382,7 +412,7 @@ class MainWindow(Gtk.ApplicationWindow):
         head.append(seg)
         side.append(head)
         srow = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
-        self.search = Gtk.SearchEntry(placeholder_text="Search name or number", hexpand=True)
+        self.search = Gtk.SearchEntry(placeholder_text=_("Search name or number"), hexpand=True)
         self.search.connect("search-changed", lambda _e: self._refilter())
         self.search.connect("activate", lambda _e: self._activate_first())
         srow.append(self.search)
@@ -397,7 +427,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.filter_dd = Gtk.DropDown.new_from_strings(FILTERS)
         self.filter_dd.connect("notify::selected", lambda *_: self._refilter())
         self.filter_dd.set_hexpand(True)
-        self.group_dd = Gtk.DropDown.new_from_strings(["All groups"])
+        self.group_dd = Gtk.DropDown.new_from_strings([_("All groups")])
         self.group_dd.connect("notify::selected", lambda *_: self._refilter())
         self.group_dd.set_hexpand(True)
         row.append(self.filter_dd)
@@ -485,6 +515,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.oos.append(self.oos_label)
         self.oos.set_visible(False)
         overlay.add_overlay(self.oos)
+        from .pip import PipOverlay
+        self.pip = PipOverlay(self)
+        overlay.add_overlay(self.pip)
+        overlay.connect("get-child-position", self._place_overlay_child)
         dbl = Gtk.GestureClick()
         dbl.connect("pressed", lambda g, n, *_: self.toggle_fullscreen() if n == 2 else self.show_osd())
         self.picture.add_controller(dbl)
@@ -543,21 +577,21 @@ class MainWindow(Gtk.ApplicationWindow):
             return Gtk.Separator(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-sep"])
 
         # transport
-        self.prev_btn = btn("media-skip-backward-symbolic", "win.prev-item", "Previous channel (Page Down)")
+        self.prev_btn = btn("media-skip-backward-symbolic", "win.prev-item", _("Previous channel (Page Down)"))
         self.pause_btn = btn("media-playback-pause-symbolic", "win.pause",
-                             "Pause / timeshift (Space)", "lv-play")
-        self.stop_btn = btn("media-playback-stop-symbolic", "win.stop", "Stop (switch the channel off)")
-        self.next_btn = btn("media-skip-forward-symbolic", "win.next-item", "Next channel (Page Up)")
+                             _("Pause / timeshift (Space)"), "lv-play")
+        self.stop_btn = btn("media-playback-stop-symbolic", "win.stop", _("Stop (switch the channel off)"))
+        self.next_btn = btn("media-skip-forward-symbolic", "win.next-item", _("Next channel (Page Up)"))
         self.rec_btn = Gtk.ToggleButton(icon_name="media-record-symbolic", valign=Gtk.Align.CENTER,
-                                        tooltip_text="Record current channel (Ctrl+R)",
+                                        tooltip_text=_("Record current channel (Ctrl+R)"),
                                         css_classes=["lv-rec"])
         self.rec_btn.connect("clicked", lambda b: self.on_record() if b.get_active() !=
                              self._is_recording() else None)
         rec_menu = Gio.Menu()
-        rec_menu.append("Record with Options…", "win.record-options")
+        rec_menu.append(_("Record with Options…"), "win.record-options")
         self.rec_more = Gtk.MenuButton(menu_model=rec_menu, valign=Gtk.Align.CENTER,
                                        direction=Gtk.ArrowType.UP, css_classes=["lv-rec-more"],
-                                       tooltip_text="Choose format and tracks for this recording")
+                                       tooltip_text=_("Choose format and tracks for this recording"))
         rec_box = Gtk.Box(css_classes=["linked"], valign=Gtk.Align.CENTER)
         rec_box.append(self.rec_btn)
         rec_box.append(self.rec_more)
@@ -571,24 +605,24 @@ class MainWindow(Gtk.ApplicationWindow):
         self.seek.set_hexpand(True)
         self.seek.set_sensitive(False)
         self.seek.add_css_class("lv-seek")
-        self.seek.set_tooltip_text("Seek")
+        self.seek.set_tooltip_text(_("Seek"))
         self.seek.connect("change-value", self._on_seek_changed)
         self.dur_label = Gtk.Label(label="--:--", css_classes=["lv-time"], xalign=0)
-        self.live_btn = Gtk.Button(label="LIVE", action_name="win.live", valign=Gtk.Align.CENTER,
-                                   tooltip_text="Back to live (L)", css_classes=["lv-live"], visible=False)
+        self.live_btn = Gtk.Button(label=_("LIVE"), action_name="win.live", valign=Gtk.Align.CENTER,
+                                   tooltip_text=_("Back to live (L)"), css_classes=["lv-live"], visible=False)
         for w in (self.pos_label, self.seek, self.dur_label, self.live_btn):
             bar.append(w)
         bar.append(sep())
 
         # volume
-        self.mute_btn = Gtk.ToggleButton(icon_name="audio-volume-high-symbolic", tooltip_text="Mute (M)",
+        self.mute_btn = Gtk.ToggleButton(icon_name="audio-volume-high-symbolic", tooltip_text=_("Mute (M)"),
                                          valign=Gtk.Align.CENTER)
         self.mute_btn.connect("toggled", lambda b: self._set_mute(b.get_active()))
         self.vol = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 1.5, 0.05)
         self.vol.set_size_request(96, -1)
         self.vol.set_draw_value(False)
         self.vol.add_css_class("lv-volume")
-        self.vol.set_tooltip_text("Volume")
+        self.vol.set_tooltip_text(_("Volume"))
         self.vol.set_value(self.settings["volume"])
         self.vol.connect("value-changed", lambda s: self._set_volume(s.get_value()))
         bar.append(self.mute_btn)
@@ -596,14 +630,14 @@ class MainWindow(Gtk.ApplicationWindow):
         bar.append(sep())
 
         # tracks, settings, full screen
-        bar.append(menubtn("audio-x-generic-symbolic", self.audio_menu, "Audio track"))
-        bar.append(menubtn("media-view-subtitles-symbolic", self.sub_menu, "Subtitles"))
-        bar.append(menubtn("emblem-system-symbolic", self.settings_menu, "Playback and picture settings"))
+        bar.append(menubtn("audio-x-generic-symbolic", self.audio_menu, _("Audio track")))
+        bar.append(menubtn("media-view-subtitles-symbolic", self.sub_menu, _("Subtitles")))
+        bar.append(menubtn("emblem-system-symbolic", self.settings_menu, _("Playback and picture settings")))
         # radio visualisation picker: only usable while radio / audio is playing
         self.vis_btn = menubtn("lindvb-sine-wave-symbolic", self.vis_menu, "")
         self._set_vis_button(False)
         bar.append(self.vis_btn)
-        self.fs_btn = btn("view-fullscreen-symbolic", "win.fullscreen", "Full screen (F)")
+        self.fs_btn = btn("view-fullscreen-symbolic", "win.fullscreen", _("Full screen (F)"))
         bar.append(self.fs_btn)
         self._update_volume_icon()
         return bar
@@ -622,7 +656,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _row_bind(self, _f, li):
         c = li.get_item().data
         num, icon, lbl, extra = list(_children(li.get_child()))
-        num.set_text(str(c.number))
+        num.set_text(c.vchannel or str(c.number))
         logo = self._logo_texture(c.logo) if c.logo else None
         if logo is not None:
             icon.set_from_paintable(logo)
@@ -632,9 +666,9 @@ class MainWindow(Gtk.ApplicationWindow):
             icon.set_from_icon_name("audio-x-generic-symbolic" if c.radio else
                                     "network-wireless-symbolic" if c.is_iptv else
                                     "video-display-symbolic")
-        now, _ = self.app.epg.now_next(c.epg_key)
+        now, _unused = self.app.epg.now_next(c.epg_key)
         lbl.set_text(c.name)
-        lbl.set_tooltip_text(f"{c.root} / {c.category}" + (f"\nNow: {now.title}" if now else ""))
+        lbl.set_tooltip_text(f"{c.root} / {c.category}" + (_("\nNow: {title}").format(title=now.title) if now else ""))
         extra.set_from_icon_name("starred-symbolic" if c.favourite else
                                  "channel-secure-symbolic" if c.encrypted else None)
         if c.favourite:
@@ -686,6 +720,8 @@ class MainWindow(Gtk.ApplicationWindow):
         if q:
             if q.isdigit():
                 return str(c.number).startswith(q)
+            if c.vchannel and q.replace("-", ".").replace(".", "").isdigit():
+                return c.vchannel.startswith(q.replace("-", "."))      # ATSC "7.1"
             return q in c.name.lower()
         return True
 
@@ -693,7 +729,7 @@ class MainWindow(Gtk.ApplicationWindow):
         chans = self.app.db.channels
         self.store.remove_all()
         self.store.splice(0, 0, [Row(c) for c in chans])
-        self._groups = ["All groups"] + self.app.db.roots()
+        self._groups = [_("All groups")] + self.app.db.roots()
         self.group_dd.set_model(Gtk.StringList.new(self._groups))
         self._refilter()
 
@@ -702,18 +738,23 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.tab == "recordings":
             self.rec_filter.changed(Gtk.FilterChange.DIFFERENT)
             n, total = self.rec_filtered.get_n_items(), self.rec_store.get_n_items()
-            self.count_label.set_text(f"{n} of {total}")
-            self.count_label.set_tooltip_text(f"{n} of {total} recordings shown")
+            self.count_label.set_text(_("{n} of {total}").format(n=n, total=total))
+            self.count_label.set_tooltip_text(_("{n} of {total} recordings shown").format(n=n, total=total))
             return
         radio = self.mode == "radio"
         if self.filter_dd.get_selected() == F_FAV:
             total = sum(1 for c in self.app.db.channels if c.favourite)
         else:
             total = sum(1 for c in self.app.db.channels if c.radio == radio)
-        self.count_label.set_text(f"{self.filtered.get_n_items()} of {total}")
-        self.count_label.set_tooltip_text(
-            f"{self.filtered.get_n_items()} of {total} "
-            f"{'favourites' if self.filter_dd.get_selected() == F_FAV else 'radio stations' if radio else 'TV channels'} shown")
+        n = self.filtered.get_n_items()
+        self.count_label.set_text(_("{n} of {total}").format(n=n, total=total))
+        if self.filter_dd.get_selected() == F_FAV:
+            tip = _("{n} of {total} favourites shown")
+        elif radio:
+            tip = _("{n} of {total} radio stations shown")
+        else:
+            tip = _("{n} of {total} TV channels shown")
+        self.count_label.set_tooltip_text(tip.format(n=n, total=total))
 
     def _activate_first(self):
         if self.tab == "recordings":
@@ -740,17 +781,63 @@ class MainWindow(Gtk.ApplicationWindow):
                          ("ctx-play", lambda: self.zap(c)),
                          ("ctx-rec", lambda: self.app.timers.record_now(c)),
                          ("ctx-edit", lambda: self.app.show_editor(c)),
-                         ("ctx-epg", lambda: self.app.show_epg(c))):
+                         ("ctx-epg", lambda: self.app.show_epg(c)),
+                         ("ctx-pip", lambda: self.pip.show_channel(c))):
             a = Gio.SimpleAction.new(name, None)
             a.connect("activate", lambda _a, _p, fn=fn: fn())
             self.add_action(a)
         m = Gio.Menu()
-        m.append("Watch", "win.ctx-play")
-        m.append("Remove from Favourites" if c.favourite else "Add to Favourites", "win.ctx-fav")
-        m.append("Record", "win.ctx-rec")
-        m.append("Programme Guide", "win.ctx-epg")
-        m.append("Edit…", "win.ctx-edit")
+        m.append(_("Watch"), "win.ctx-play")
+        m.append(_("Remove from Favourites") if c.favourite else _("Add to Favourites"), "win.ctx-fav")
+        m.append(_("Record"), "win.ctx-rec")
+        m.append(_("Programme Guide"), "win.ctx-epg")
+        m.append(_("Edit…"), "win.ctx-edit")
+        if c.is_iptv:
+            m.append(_("Show as Picture in Picture"), "win.ctx-pip")
         return m
+
+    # ------------------------------------------------------------------ picture in picture
+    def pip_selected(self):
+        pos = self.selection.get_selected()
+        c = self.filtered.get_item(pos).data if pos != Gtk.INVALID_LIST_POSITION else None
+        if c is None or (self.current is not None and c.key == self.current.key):
+            c = self.previous
+        if c is None:
+            self.set_status(_("Select a channel in the list first"))
+            return
+        self.pip.show_channel(c)
+
+    def pip_swap(self):
+        """The small picture becomes the main one and the other way round."""
+        small = self.pip.channel
+        if small is None:
+            return
+        main = self.current
+        self.zap(small)
+        if main is not None and self.pip.show_channel(main):
+            return
+        self.pip.close()
+
+    def _place_overlay_child(self, overlay, widget, rect):
+        """Picture in picture: a quarter of the video width in the bottom right corner."""
+        if widget is not self.pip:
+            return False
+        w, h = overlay.get_width(), overlay.get_height()
+        pw = max(160, int(w * 0.28))
+        ph = pw * 9 // 16
+        rect.x, rect.y = max(0, w - pw - 18), max(0, h - ph - 18)
+        rect.width, rect.height = pw, ph
+        return True
+
+    def pip_close(self):
+        self.pip.close()
+
+    def show_mosaic(self):
+        from .pip import MosaicWindow
+        chans = [self.filtered.get_item(i).data for i in range(self.filtered.get_n_items())]
+        if not any(c.is_iptv for c in chans):
+            chans = [c for c in self.app.db.channels if c.is_iptv]
+        MosaicWindow(self.app, self, chans).present()
 
     def toggle_favourite(self, c):
         c.favourite = not c.favourite
@@ -762,14 +849,25 @@ class MainWindow(Gtk.ApplicationWindow):
     def _build_recordings_page(self):
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         bar = Gtk.Box(spacing=6, margin_start=10, margin_end=10)
-        self.rec_folder_label = Gtk.Label(xalign=0, hexpand=True, css_classes=["lv-count"],
-                                          ellipsize=Pango.EllipsizeMode.MIDDLE)
-        bar.append(self.rec_folder_label)
+        self.rec_folder_label = Gtk.Label(xalign=0, css_classes=["lv-count"], margin_start=10,
+                                          margin_end=10, ellipsize=Pango.EllipsizeMode.MIDDLE)
+        self.rec_sort_keys = ["newest", "oldest", "title", "channel", "size"]
+        self.rec_sort = Gtk.DropDown.new_from_strings(
+            [_("Newest first"), _("Oldest first"), _("By title"), _("By channel"),
+             _("Largest first")])
+        self.rec_sort.set_tooltip_text(_("Sort the recordings"))
+        how = self.settings.get("rec_sort", "newest")
+        self.rec_sort.set_selected(self.rec_sort_keys.index(how)
+                                   if how in self.rec_sort_keys else 0)
+        self.rec_sort.connect("notify::selected", lambda *_a: self._on_rec_sort())
+        self.rec_sort.set_hexpand(True)
+        bar.append(self.rec_sort)
         bar.append(Gtk.Button(icon_name="folder-open-symbolic", action_name="win.rec-folder",
-                              tooltip_text="Open the recording folder", css_classes=["flat"]))
+                              tooltip_text=_("Open the recording folder"), css_classes=["flat"]))
         bar.append(Gtk.Button(icon_name="view-refresh-symbolic", action_name="win.rec-refresh",
-                              tooltip_text="Look for new recordings", css_classes=["flat"]))
+                              tooltip_text=_("Look for new recordings"), css_classes=["flat"]))
         page.append(bar)
+        page.append(self.rec_folder_label)
 
         self.rec_store = Gio.ListStore(item_type=Row)
         self.rec_filter = Gtk.CustomFilter.new(self._rec_filter_func)
@@ -814,67 +912,160 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def reload_recordings(self):
         folders = self._recording_folders()
-        recs = find_recordings(folders)
+        recs = sort_recordings(find_recordings(folders), self.settings.get("rec_sort", "newest"))
         self._recording_now = self._active_recording_paths()
         self.rec_store.remove_all()
         self.rec_store.splice(0, 0, [Row(r) for r in recs])
         main = folders[0] if folders else ""
         self.rec_folder_label.set_text(main)
         self.rec_folder_label.set_tooltip_text("\n".join(folders))
-        self.rec_empty.set_text(f"No recordings yet.\n\nRecordings are saved in\n{main}"
-                                if main else "No recording folder set in the preferences.")
+        self.rec_empty.set_text(_("No recordings yet.\n\nRecordings are saved in\n{main}").format(main=main)
+                                if main else _("No recording folder set in the preferences."))
         self.rec_stack.set_visible_child_name("list" if recs else "empty")
         self._refilter()
 
+    def _on_rec_sort(self):
+        self.settings["rec_sort"] = self.rec_sort_keys[self.rec_sort.get_selected()]
+        self.reload_recordings()
+
     def _rec_filter_func(self, item):
         q = self.search.get_text().strip().lower()
-        return not q or q in item.data.title.lower()
+        return not q or q in item.data.search_text()
 
     def _rec_row_setup(self, _f, li):
         b = Gtk.Box(spacing=10)
-        icon = Gtk.Image(css_classes=["lv-chan-icon"], valign=Gtk.Align.CENTER)
-        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True)
+        # a fixed 80x45 slot: the preview picture, or a file-type icon
+        thumb = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.START, width_request=80,
+                        height_request=45)
+        thumb.append(Gtk.Image(css_classes=["lv-chan-icon"], pixel_size=24, width_request=80))
+        area = Gtk.DrawingArea(content_width=80, content_height=45, css_classes=["lv-rec-thumb"])
+        area.set_draw_func(_draw_thumb)
+        thumb.append(area)
+        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True, spacing=1)
         title = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END)
+        sub = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-count"])
         info = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-count"])
-        text.append(title)
-        text.append(info)
+        watched = Gtk.ProgressBar(css_classes=["lv-rec-progress"], margin_top=2, width_request=40)
+        for w in (title, sub, info, watched):
+            text.append(w)
         badge = Gtk.Image(icon_name="media-record-symbolic", css_classes=["rec"],
-                          tooltip_text="Recording in progress")
-        for w in (icon, text, badge):
+                          tooltip_text=_("Recording in progress"))
+        for w in (thumb, text, badge):
             b.append(w)
         li.set_child(b)
 
     def _rec_row_bind(self, _f, li):
         r = li.get_item().data
-        icon, text, badge = list(_children(li.get_child()))
-        title, info = list(_children(text))
+        thumb, text, badge = list(_children(li.get_child()))
+        title, sub, info, watched = list(_children(text))
+        icon, picture = list(_children(thumb))
         icon.set_from_icon_name("audio-x-generic-symbolic" if r.is_audio
                                 else "video-x-generic-symbolic")
+        png = None if r.is_audio else self._thumbnail(r)
+        pix = _thumb_pixbuf(png) if png is not None else None
+        picture.pixbuf = pix
+        picture.queue_draw()
+        picture.set_visible(pix is not None)
+        icon.set_visible(pix is None)
         title.set_text(r.title)
+        sub.set_text(r.subtitle)
+        sub.set_visible(bool(r.subtitle))
         info.set_text(r.details())
-        li.get_child().set_tooltip_text(str(r.path))
+        progress = self.positions.progress(r.path)
+        watched.set_fraction(progress)
+        watched.set_visible(progress > 0)
+        watched.set_tooltip_text(_("Watched") if self.positions.watched(r.path) else
+                                 _("Watched up to {pos}").format(
+                                     pos=_mmss(self.positions.get(r.path)["pos"]))
+                                 if progress > 0 else None)
+        tip = [str(r.path)]
+        if r.description:
+            tip.insert(0, r.description[:600])
+        li.get_child().set_tooltip_text("\n\n".join(tip))
         try:
             running = str(r.path.resolve()) in getattr(self, "_recording_now", ())
         except OSError:
             running = False
         badge.set_visible(running)
 
-    def play_recording(self, r):
+    def _thumbnail(self, r):
+        if self.thumbnailer is None:
+            try:
+                from ..thumbnails import Thumbnailer
+                self.thumbnailer = Thumbnailer()
+            except (ImportError, ValueError):
+                self.thumbnailer = False
+        if not self.thumbnailer:
+            return None
+        return self.thumbnailer.request(r.path, r.mtime, self._thumbnail_ready)
+
+    def _thumbnail_ready(self, path, _png):
+        # rebind the row of that recording
+        for i in range(self.rec_store.get_n_items()):
+            row = self.rec_store.get_item(i)
+            if row.data.path == path:
+                self.rec_store.splice(i, 1, [Row(row.data)])     # rebinds the row
+                break
+        return False
+
+    def play_recording(self, r, from_start=False):
         if not r.path.exists():
-            self.set_status(f"Recording not found: {r.path}")
+            self.set_status(_("Recording not found: {path}").format(path=r.path))
             self.reload_recordings()
             return
+        resume = None if from_start else self.positions.resume_at(r.path)
         self.play_files([str(r.path)])
+        if resume:
+            self._resume_at = (str(r.path), resume)
+            self.set_status(_("Continuing at {pos}").format(pos=_mmss(resume)))
+
+    def _track_position(self):
+        """Remember how far the playing file got (every few seconds)."""
+        if not (0 <= self.playlist_pos < len(self.playlist)) or self.current is not None:
+            return True
+        item = self.playlist[self.playlist_pos]
+        pos = self.player.position()
+        if pos is None:
+            return True
+        if self._resume_at and self._resume_at[0] == item:
+            if pos[0] < self._resume_at[1] - 5:
+                self.player.seek_to(self._resume_at[1])
+            self._resume_at = None
+            return True
+        self.positions.update(item, pos[0], pos[1])
+        self._positions_dirty = True
+        return True
+
+    def _save_positions(self):
+        if self._positions_dirty:
+            self.positions.save()
+            self._positions_dirty = False
+        return True
+
+    def _set_watched(self, r, watched):
+        p = self.positions.get(r.path)
+        dur = (p or {}).get("dur") or r.duration or 1
+        if watched:
+            self.positions.update(r.path, dur, dur)
+        else:
+            self.positions.forget(r.path)
+        self.positions.save()
+        self.reload_recordings()
+
+    def _show_recording_details(self, r):
+        lines = [r.subtitle, r.details(), r.info.get("genre", ""), "", r.description,
+                 "", str(r.path)]
+        message(self, r.title, "\n".join(x for x in lines if x is not None).strip())
 
     def open_recording_folder(self, path=None):
         folder = Path(path) if path else Path(self.settings.get("recording_dir", "")).expanduser()
         if not folder.is_dir():
-            self.set_status(f"Folder not found: {folder}")
+            self.set_status(_("Folder not found: {folder}").format(folder=folder))
             return
         try:
             Gio.AppInfo.launch_default_for_uri(folder.as_uri(), None)
         except GLib.Error as e:
-            self.set_status(f"Cannot open {folder}: {e.message}")
+            self.set_status(_("Cannot open {folder}: {message}").format(folder=folder, message=e.message))
 
     def _rec_context(self, _gesture, _n, x, y):
         pos = self.rec_selection.get_selected()
@@ -882,15 +1073,26 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         r = self.rec_filtered.get_item(pos).data
         for name, fn in (("rec-ctx-play", lambda: self.play_recording(r)),
+                         ("rec-ctx-restart", lambda: self.play_recording(r, from_start=True)),
+                         ("rec-ctx-details", lambda: self._show_recording_details(r)),
+                         ("rec-ctx-watched", lambda: self._set_watched(r, True)),
+                         ("rec-ctx-unwatched", lambda: self._set_watched(r, False)),
                          ("rec-ctx-folder", lambda: self.open_recording_folder(r.path.parent)),
                          ("rec-ctx-delete", lambda: self._confirm_delete_recording(r))):
             a = Gio.SimpleAction.new(name, None)
             a.connect("activate", lambda _a, _p, fn=fn: fn())
             self.add_action(a)
         m = Gio.Menu()
-        m.append("Play", "win.rec-ctx-play")
-        m.append("Show in Folder", "win.rec-ctx-folder")
-        m.append("Delete…", "win.rec-ctx-delete")
+        m.append(_("Play"), "win.rec-ctx-play")
+        if self.positions.resume_at(r.path):
+            m.append(_("Play from the Beginning"), "win.rec-ctx-restart")
+        m.append(_("Details…"), "win.rec-ctx-details")
+        if self.positions.watched(r.path):
+            m.append(_("Mark as Unwatched"), "win.rec-ctx-unwatched")
+        else:
+            m.append(_("Mark as Watched"), "win.rec-ctx-watched")
+        m.append(_("Show in Folder"), "win.rec-ctx-folder")
+        m.append(_("Delete…"), "win.rec-ctx-delete")
         pop = Gtk.PopoverMenu.new_from_model(m)
         pop.set_parent(self.rec_view)
         rect = Gdk.Rectangle()
@@ -904,11 +1106,11 @@ class MainWindow(Gtk.ApplicationWindow):
         except OSError:
             running = False
         if running:
-            self.set_status("Stop the recording before deleting it")
+            self.set_status(_("Stop the recording before deleting it"))
             return
-        dlg = Gtk.AlertDialog(message=f"Delete \u201c{r.title}\u201d?",
-                              detail=f"{r.path}\n\nThe file is removed from the disk.",
-                              buttons=["Cancel", "Delete"], cancel_button=0, default_button=0)
+        dlg = Gtk.AlertDialog(message=_("Delete “{title}”?").format(title=r.title),
+                              detail=_("{path}\n\nThe file is removed from the disk.").format(path=r.path),
+                              buttons=[_("Cancel"), _("Delete")], cancel_button=0, default_button=0)
 
         def done(d, res):
             try:
@@ -921,9 +1123,12 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.stop_playback()
             try:
                 r.path.unlink()
-                self.set_status(f"Deleted {r.path.name}")
+                delete_info(r.path)
+                self.positions.forget(r.path)
+                self.positions.save()
+                self.set_status(_("Deleted {name}").format(name=r.path.name))
             except OSError as e:
-                self.set_status(f"Cannot delete {r.path.name}: {e.strerror}")
+                self.set_status(_("Cannot delete {name}: {strerror}").format(name=r.path.name, strerror=e.strerror))
             self.reload_recordings()
 
         dlg.choose(self, None, done)
@@ -963,7 +1168,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.mode = "radio" if c.radio else "tv"
         self._select_in_list(c)
         if not off_air:
-            self.set_status(f"Tuning {c.name}…")
+            self.set_status(_("Tuning {name}…").format(name=c.name))
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
         if secs > 0:
             self.show_osd(secs)
@@ -994,8 +1199,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._mode_sync = True
         self.mode_btns[mode].set_active(True)
         self._mode_sync = False
-        self.search.set_placeholder_text("Search recordings" if mode == "recordings"
-                                         else "Search name or number")
+        self.search.set_placeholder_text(_("Search recordings") if mode == "recordings"
+                                         else _("Search name or number"))
         if mode == "recordings":
             self.side_stack.set_visible_child_name("recordings")
             self.reload_recordings()
@@ -1011,8 +1216,8 @@ class MainWindow(Gtk.ApplicationWindow):
         if target is None or target.radio != radio:
             target = next((c for c in self.app.db.channels if c.radio == radio), None)
         if target is None:
-            self.set_status("No radio stations in the channel list" if radio
-                            else "No TV channels in the channel list")
+            self.set_status(_("No radio stations in the channel list") if radio
+                            else _("No TV channels in the channel list"))
             return
         self.zap(target)
 
@@ -1051,11 +1256,14 @@ class MainWindow(Gtk.ApplicationWindow):
         self._nolock_since = None
         if c.is_iptv:
             self.player.play_uri(c.url)
+            from .. import hooks
+            hooks.run("channel-tuned", (c,))          # the user's scripts (DVB: via emit)
         else:
             self.capture = self.app.tuners.acquire(c, "live")
             self.capture.connect("stats", self._on_stats)
             self.capture.connect("error", lambda _c, m: self._on_play_error(m))
             self.capture.connect("eit", self.app.on_eit)
+            self.capture.connect("tsid", self.app.on_tsid)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
 
@@ -1089,7 +1297,7 @@ class MainWindow(Gtk.ApplicationWindow):
             kind = _instance_kind(alt)
             if alt.is_iptv and self._tuned_before_iptv:
                 kind = "another internet stream"
-            self.set_status(f"{c.name}: {_short(reason)} – switched to {kind}")
+            self.set_status(_("{name}: {v1} – switched to {kind}").format(name=c.name, v1=_short(reason), kind=kind))
             self._update_teletext()
             return True
         return False
@@ -1105,10 +1313,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _show_off_air(self, c):
         """IT-4: a pop-up channel outside its availability: banner, no tuning."""
-        self.oos_label.set_text(f"{c.name} is not on air at the moment")
+        self.oos_label.set_text(_("{name} is not on air at the moment").format(name=c.name))
         self.oos_image.set_paintable(None)
         self.oos.set_visible(True)
-        self.set_status(f"{c.name} is not on air at the moment")
+        self.set_status(_("{name} is not on air at the moment").format(name=c.name))
         url = c.dvbi_oos_logo
         if not url:
             return
@@ -1153,7 +1361,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.stop()
         self.capture = None
         self._update_teletext()
-        self.set_status("Live TV stopped: tuner needed for a timer recording")
+        self.set_status(_("Live TV stopped: tuner needed for a timer recording"))
 
     def zap_relative(self, step, favs=False):
         n = self.filtered.get_n_items()
@@ -1183,6 +1391,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def stop_playback(self):
         """Switch the channel (or file) off completely; Play brings it back."""
+        self._track_position()
+        self._save_positions()
+        if self.current is not None or self.playlist:
+            self.app.plugins.emit("playback-stopped", self.current)
         if self.current:
             self.stopped = self.current
         self._release_capture()
@@ -1193,7 +1405,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._hide_osd()
         self.sublabel.set_visible(False)
         self.signal_label.set_text("")
-        self.set_status("Stopped")
+        self.set_status(_("Stopped"))
         self._update_transport()
         self._update_visualizer()
 
@@ -1209,11 +1421,11 @@ class MainWindow(Gtk.ApplicationWindow):
             else:
                 delays.pop(self.current.key, None)
         if ms > 0:
-            self.flash(f"Sound {ms} ms later")
+            self.flash(_("Sound {ms} ms later").format(ms=ms))
         elif ms < 0:
-            self.flash(f"Sound {-ms} ms earlier")
+            self.flash(_("Sound {v0} ms earlier").format(v0=-ms))
         else:
-            self.flash("Audio delay off")
+            self.flash(_("Audio delay off"))
 
     def rebuild_playback(self):
         if self.current:
@@ -1244,14 +1456,20 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.play_uri(item)
         self.set_title(f"{Path(item).name} – {APP_NAME}")
         self._update_visualizer()
-        self.set_status(f"Playing {item}")
+        self.set_status(_("Playing {item}").format(item=item))
 
     def _on_eos(self, _p):
+        if 0 <= self.playlist_pos < len(self.playlist) and self.current is None:
+            item = self.playlist[self.playlist_pos]
+            p = self.positions.get(item)
+            if p:
+                self.positions.update(item, p["dur"], p["dur"])     # watched to the end
+                self._positions_dirty = True
         if self.playlist:
             self.playlist_step(1)
 
     def on_open_file(self):
-        dlg = Gtk.FileDialog(title="Open media files")
+        dlg = Gtk.FileDialog(title=_("Open media files"))
         dlg.open_multiple(self, None, self._opened_files)
 
     def _opened_files(self, dlg, res):
@@ -1264,10 +1482,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.play_files([p for p in paths if p not in lists] + _read_playlists(lists))
 
     def on_open_url(self):
-        win = Gtk.Window(title="Open URL", transient_for=self, modal=True, default_width=500)
+        win = Gtk.Window(title=_("Open URL"), transient_for=self, modal=True, default_width=500)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_top=12,
                       margin_bottom=12, margin_start=12, margin_end=12)
-        entry = Gtk.Entry(placeholder_text="http://…, rtp://…, udp://…, rtsp://…")
+        entry = Gtk.Entry(placeholder_text=_("http://…, rtp://…, udp://…, rtsp://…"))
         def go(*_):
             url = entry.get_text().strip()
             if url:
@@ -1281,7 +1499,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.set_title(f"{url} – {APP_NAME}")
             win.close()
         entry.connect("activate", go)
-        b = Gtk.Button(label="Open", css_classes=["suggested-action"], halign=Gtk.Align.END)
+        b = Gtk.Button(label=_("Open"), css_classes=["suggested-action"], halign=Gtk.Align.END)
         b.connect("clicked", go)
         box.append(entry)
         box.append(b)
@@ -1296,7 +1514,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # ------------------------------------------------------------------ import / export
     def on_import(self):
-        dlg = Gtk.FileDialog(title="Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)")
+        dlg = Gtk.FileDialog(title=_("Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"))
         dlg.open_multiple(self, None, self._import_done)
 
     def _import_done(self, dlg, res):
@@ -1310,16 +1528,16 @@ class MainWindow(Gtk.ApplicationWindow):
             try:
                 a, u = self.app.db.merge(import_file(path))
             except (OSError, ValueError) as e:
-                message(self, f"Could not import {Path(path).name}", str(e))
+                message(self, _("Could not import {name}").format(name=Path(path).name), str(e))
                 continue
             total_a += a
             total_u += u
         self.app.db.save()
         self.reload_channels()
-        self.set_status(f"Imported {total_a} new and {total_u} updated channels")
+        self.set_status(_("Imported {total_a} new and {total_u} updated channels").format(total_a=total_a, total_u=total_u))
 
     def on_export(self):
-        dlg = Gtk.FileDialog(title="Export channels (.conf = dvbv5, .m3u = IPTV, .csv)",
+        dlg = Gtk.FileDialog(title=_("Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"),
                              initial_name="channels.conf")
         dlg.save(self, None, self._export_done)
 
@@ -1336,7 +1554,25 @@ class MainWindow(Gtk.ApplicationWindow):
         else:
             text = write_dvbv5(chans)
         Path(path).write_text(text)
-        self.set_status(f"Exported to {path}")
+        self.set_status(_("Exported to {path}").format(path=path))
+
+    def on_export_epg(self):
+        dlg = Gtk.FileDialog(title=_("Export the programme guide (XMLTV)"),
+                             initial_name="lindvb-guide.xml")
+        dlg.save(self, None, self._export_epg_done)
+
+    def _export_epg_done(self, dlg, res):
+        try:
+            path = dlg.save_finish(res).get_path()
+        except GLib.Error:
+            return
+        from ..epg import write_xmltv
+        data = write_xmltv(self.app.epg, self.app.db.channels)
+        try:
+            Path(path).write_bytes(data)
+            self.set_status(_("Exported to {path}").format(path=path))
+        except OSError as e:
+            self.set_status(_("Cannot write {path}: {error}").format(path=path, error=e.strerror))
 
     # ------------------------------------------------------------------ recording
     def _is_recording(self):
@@ -1344,11 +1580,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def on_record(self):
         if not self.current:
-            self.set_status("Nothing to record")
+            self.set_status(_("Nothing to record"))
             self.rec_btn.set_active(False)
             return
         title = ""
-        now, _ = self.app.epg.now_next(self.current.epg_key)
+        now, _unused = self.app.epg.now_next(self.current.epg_key)
         if now:
             title = now.title
         self.app.timers.record_now(self.current, self.capture, title)
@@ -1357,17 +1593,17 @@ class MainWindow(Gtk.ApplicationWindow):
     def on_record_options(self):
         """Choose format and tracks for one manual recording, then start it."""
         if not self.current:
-            self.set_status("Nothing to record")
+            self.set_status(_("Nothing to record"))
             return
         if self._is_recording():
-            self.set_status("This channel is already being recorded")
+            self.set_status(_("This channel is already being recorded"))
             return
         channel = self.current
 
         def start(options):
             if self.current is not channel or self._is_recording():
                 return
-            now, _ = self.app.epg.now_next(channel.epg_key)
+            now, _unused = self.app.epg.now_next(channel.epg_key)
             self.app.timers.record_now(channel, self.capture, now.title if now else "",
                                        options=options)
             self._update_transport()
@@ -1379,7 +1615,7 @@ class MainWindow(Gtk.ApplicationWindow):
         """Save the whole timeshift buffer, then continue recording live."""
         if self.current and self.capture:
             start, _ = self.capture.store.bounds()
-            self.app.timers.record_now(self.current, self.capture, "Timeshift", start_offset=start)
+            self.app.timers.record_now(self.current, self.capture, _("Timeshift"), start_offset=start)
 
     # ------------------------------------------------------------------ teletext
     def _update_teletext(self):
@@ -1391,13 +1627,13 @@ class MainWindow(Gtk.ApplicationWindow):
         decoder = Gst.ElementFactory.find("teletextdec") is not None
         self.lookup_action("teletext").set_enabled(has and decoder)
         self.ttx_btn.set_tooltip_text(
-            "Teletext (Ctrl+Shift+T)" if has and decoder else
-            "Teletext: decoder missing (gst-plugins-bad with libzvbi)" if has else
-            "Teletext: not available on this channel")
+            _("Teletext (Ctrl+Shift+T)") if has and decoder else
+            _("Teletext: decoder missing (gst-plugins-bad with libzvbi)") if has else
+            _("Teletext: not available on this channel"))
 
     def on_teletext(self):
         if not self.capture:
-            self.set_status("Teletext needs a DVB channel")
+            self.set_status(_("Teletext needs a DVB channel"))
             return
         self.app.show_teletext(self.capture, self.current)
 
@@ -1428,7 +1664,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def change_volume(self, d):
         self.vol.set_value(self.vol.get_value() + d)
-        self.flash(f"Volume {int(self.vol.get_value() * 100)}%")
+        self.flash(_("Volume {v0}%").format(v0=int(self.vol.get_value() * 100)))
 
     def _on_subtitle_text(self, _player, text):
         self.sublabel.set_text(text)
@@ -1440,10 +1676,14 @@ class MainWindow(Gtk.ApplicationWindow):
         for i, t in enumerate(tracks):
             self.audio_menu.append(("● " if i == cur else "") + t, f"win.audio-track({i})")
         self.sub_menu.remove_all()
-        self.sub_menu.append("Off", "win.subtitle(-1)")
+        self.sub_menu.append(_("Off"), "win.subtitle(-1)")
         subs, cur = self.player.subtitle_tracks()
         for i, t in enumerate(subs):
             self.sub_menu.append(("● " if i == cur else "") + t, f"win.subtitle({i})")
+        if self.player.has_closed_captions():
+            cc = Gio.Menu()
+            cc.append(_("Closed Captions (CEA-608/708)"), "win.closed-captions")
+            self.sub_menu.append_section(None, cc)
         self._update_osd_tags()
 
     def _update_osd_tags(self):
@@ -1457,11 +1697,11 @@ class MainWindow(Gtk.ApplicationWindow):
         layouts, languages = audio_summary(tracks, cur)
         tags = [(lay, i == 0, None) for i, lay in enumerate(layouts)]
         if len(languages) > 1:
-            tags.append((f"{len(languages)} languages", False, " / ".join(languages)))
+            tags.append((_("{n} languages").format(n=len(languages)), False, " / ".join(languages)))
         elif len(tracks) > 1:
-            tags.append((f"{len(tracks)} audio tracks", False, None))
+            tags.append((_("{n} audio tracks").format(n=len(tracks)), False, None))
         if self.player.subtitle_tracks()[0]:
-            tags.append(("Subtitles", False, None))
+            tags.append((_("Subtitles"), False, None))
         for text, current, tip in tags:
             lbl = Gtk.Label(label=text, css_classes=["lv-osd-tag"], tooltip_text=tip)
             if current:
@@ -1474,11 +1714,11 @@ class MainWindow(Gtk.ApplicationWindow):
         d.mkdir(parents=True, exist_ok=True)
         name = (self.current.name if self.current else "video").replace("/", "_")
         path = d / f"{name}_{time.strftime('%Y%m%d_%H%M%S')}.png"
-        self.set_status(f"Screenshot saved: {path}" if self.player.screenshot(str(path))
-                        else "Screenshot failed")
+        self.set_status(_("Screenshot saved: {path}").format(path=path) if self.player.screenshot(str(path))
+                        else _("Screenshot failed"))
 
     def on_picture_settings(self):
-        win = Gtk.Window(title="Picture Settings", transient_for=self, default_width=380)
+        win = Gtk.Window(title=_("Picture Settings"), transient_for=self, default_width=380)
         grid = Gtk.Grid(row_spacing=6, column_spacing=12, margin_top=12, margin_bottom=12,
                         margin_start=12, margin_end=12)
         specs = [("brightness", -1, 1, 0.0), ("contrast", 0, 2, 1.0),
@@ -1492,14 +1732,14 @@ class MainWindow(Gtk.ApplicationWindow):
             grid.attach(Gtk.Label(label=k.capitalize(), xalign=0), 0, r, 1, 1)
             grid.attach(s, 1, r, 1, 1)
             scales[k] = (s, default)
-        reset = Gtk.Button(label="Restore Defaults")
+        reset = Gtk.Button(label=_("Restore Defaults"))
         reset.connect("clicked", lambda _b: [s.set_value(d) for s, d in scales.values()])
         grid.attach(reset, 1, len(specs), 1, 1)
         win.set_child(grid)
         win.present()
 
     def on_equalizer(self):
-        win = Gtk.Window(title="Equalizer", transient_for=self, default_height=300)
+        win = Gtk.Window(title=_("Equalizer"), transient_for=self, default_height=300)
         box = Gtk.Box(spacing=6, margin_top=12, margin_bottom=12, margin_start=12, margin_end=12)
         for i, name in enumerate(EQ_BANDS):
             col = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -1558,7 +1798,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.sublabel.set_margin_bottom(36)
             self._show_controls()
         self.fs_btn.set_icon_name("view-restore-symbolic" if floating else "view-fullscreen-symbolic")
-        self.fs_btn.set_tooltip_text("Leave full screen (F)" if floating else "Full screen (F)")
+        self.fs_btn.set_tooltip_text(_("Leave full screen (F)") if floating else _("Full screen (F)"))
 
     def _on_pointer_motion(self, _ctl, x, y):
         if getattr(self, "_last_xy", None) == (int(x), int(y)):
@@ -1628,7 +1868,7 @@ class MainWindow(Gtk.ApplicationWindow):
             try:
                 self.vis.set_style(factory())
             except Exception as e:
-                self.set_status(f"Visualisation failed: {e}")
+                self.set_status(_("Visualisation failed: {e}").format(e=e))
                 self.vis.set_style(None)
             self._vis_id = vis_id
         self.vis.set_caption(name)
@@ -1644,8 +1884,8 @@ class MainWindow(Gtk.ApplicationWindow):
         if not enabled:
             btn.popdown()
         btn.set_sensitive(enabled)
-        btn.set_tooltip_text("Radio visualisation" if enabled
-                             else "Radio visualisation (only for radio and audio)")
+        btn.set_tooltip_text(_("Radio visualisation") if enabled
+                             else _("Radio visualisation (only for radio and audio)"))
 
     def _update_nowplaying(self, audio_only=None, name=None):
         """Logo, cover, song and clock over the visualisation (Preferences ›
@@ -1673,6 +1913,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_metadata(self, _player, meta):
         self.nowplaying.set_metadata(meta)
+        self._mpris_update()
         if self.nowplaying.get_visible() and self.current is None:
             self._update_nowplaying()
 
@@ -1680,15 +1921,15 @@ class MainWindow(Gtk.ApplicationWindow):
     def sleep_in(self, seconds):
         self.sleep_cancel()
         self.sleep_source = GLib.timeout_add_seconds(int(seconds), self._sleep_fire)
-        self.set_status(f"Playback stops at {hm(time.time() + seconds)}")
+        self.set_status(_("Playback stops at {v0}").format(v0=hm(time.time() + seconds)))
 
     def sleep_after_programme(self):
         if self.current:
-            now, _ = self.app.epg.now_next(self.current.epg_key)
+            now, _unused = self.app.epg.now_next(self.current.epg_key)
             if now:
                 self.sleep_in(max(1, now.end - time.time()))
                 return
-        self.set_status("No programme information for the sleep timer")
+        self.set_status(_("No programme information for the sleep timer"))
 
     def sleep_cancel(self):
         if self.sleep_source:
@@ -1698,7 +1939,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _sleep_fire(self):
         self.sleep_source = None
         self.stop_playback()
-        self.set_status("Sleep timer: playback stopped")
+        self.set_status(_("Sleep timer: playback stopped"))
         return False
 
     # ------------------------------------------------------------------ OSD / status
@@ -1708,7 +1949,7 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         self._osd_secs = seconds
         now, nxt = self.app.epg.now_next(c.epg_key)
-        self.osd_num.set_text(str(c.number))
+        self.osd_num.set_text(c.vchannel or str(c.number))
         self.osd_title.set_text(c.name)
         self.osd_clock.set_text(hm(now.start) + "–" + hm(now.end) if now else hm(time.time()))
         self._update_heading()
@@ -1722,9 +1963,9 @@ class MainWindow(Gtk.ApplicationWindow):
             self.osd_prog.set_fraction(min(1, max(0, (time.time() - now.start) / max(1, now.duration))))
             self.osd_prog.set_visible(True)
         else:
-            self.osd_now.set_text("No programme information")
+            self.osd_now.set_text(_("No programme information"))
             self.osd_prog.set_visible(False)
-        self.osd_next.set_text(f"Next: {hm(nxt.start)}  {nxt.title}" if nxt else "")
+        self.osd_next.set_text(_("Next: {v0}  {title}").format(v0=hm(nxt.start), title=nxt.title) if nxt else "")
         self.osd.set_visible(True)
         if self._osd_timeout:
             GLib.source_remove(self._osd_timeout)
@@ -1758,7 +1999,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if "lock" in st:
             parts.append("LOCK" if st["lock"] else "no lock")
         if "signal" in st:
-            parts.append(f"Signal {st['signal'] * 100 // 65535}%")
+            parts.append(_("Signal {v0}%").format(v0=st['signal'] * 100 // 65535))
         if "snr" in st:
             parts.append(f"SNR {st['snr'] * 100 // 65535}%")
         if st.get("unc"):
@@ -1772,7 +2013,35 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.osd.get_visible():
             self.show_osd(getattr(self, "_osd_secs", None))
 
+    def mpris_status(self):
+        if not self.player.playbin:
+            return "Stopped"
+        return "Paused" if self.player.paused else "Playing"
+
+    def _mpris_update(self):
+        """Channel / file, programme or song, logo for the desktop's media controls."""
+        if self.mpris is None:
+            return
+        meta = self.player.metadata or {}
+        state = {"title": "", "artist": "", "album": "", "art": "", "length": 0}
+        if self.current is not None:
+            now, _unused = self.app.epg.now_next(self.current.epg_key)
+            state["title"] = self.current.name
+            state["artist"] = meta.get("title") and " – ".join(
+                x for x in (meta.get("artist"), meta.get("title")) if x) or (now.title if now else "")
+            logo = self.current.logo
+            state["art"] = Path(logo).as_uri() if logo and Path(logo).is_absolute() else ""
+        elif 0 <= self.playlist_pos < len(self.playlist):
+            item = self.playlist[self.playlist_pos]
+            state["title"] = meta.get("title") or Path(item).stem
+            state["artist"] = meta.get("artist", "")
+            state["album"] = meta.get("album", "")
+            pos = self.player.position()
+            state["length"] = pos[1] if pos else 0
+        self.mpris.update(**state)
+
     def _update_transport(self):
+        self._mpris_update()
         idle = self.player.paused or not self.player.playbin
         self.pause_btn.set_icon_name("media-playback-start-symbolic" if idle
                                      else "media-playback-pause-symbolic")
@@ -1780,7 +2049,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.rec_btn.get_active() != rec:
             self.rec_btn.set_active(rec)
         n = len(self.app.timers.active)
-        self.rec_label.set_text(f"● REC {n}" if n else "")
+        self.rec_label.set_text(_("● REC {n}").format(n=n) if n else "")
         if self.controls_revealer.get_parent() is self.overlay and self.player.paused:
             self._show_controls()
 
@@ -1789,8 +2058,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self.nowplaying.tick()
         if self.capture and self.player.capture:
             d = self.player.timeshift_delay()
-            self.ts_label.set_text(f"Timeshift −{int(d) // 60}:{int(d) % 60:02d}" if d > 3 else "Live")
-            if self.status.get_text().startswith("Tuning") and self.capture.store.bounds()[1] > 0:
+            self.ts_label.set_text(_("Timeshift −{v0}:{v1:02d}").format(v0=int(d) // 60, v1=int(d) % 60) if d > 3 else _("Live"))
+            if self.status.get_text().startswith(_("Tuning {name}…").split("{")[0]) and self.capture.store.bounds()[1] > 0:
                 self.set_status(self.current.name)
             start, end = self.capture.store.bounds()
             buffered = max(1.0, (end - start) / self.capture.byte_rate())
@@ -1825,7 +2094,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.live_btn.set_label(f"−{_mmss(behind)}")
             else:
                 self.live_btn.add_css_class("lv-at-live")
-                self.live_btn.set_label("LIVE")
+                self.live_btn.set_label(_("LIVE"))
         else:
             self.pos_label.set_text(_mmss(value))
             self.dur_label.set_text(_mmss(upper))
@@ -1901,14 +2170,35 @@ class MainWindow(Gtk.ApplicationWindow):
     # ------------------------------------------------------------------ misc
     def on_about(self):
         Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version="0.1",
-                        comments="Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
-                                 "internet TV with the Linux DVB API and GStreamer.",
+                        comments=_("Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
+                                 "internet TV with the Linux DVB API and GStreamer."),
                         license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb").present()
 
     def _on_close(self, *_):
+        self.pip.close()
+        self._track_position()
+        self._save_positions()
         self.settings.save()
         self._release_capture()
         return False
+
+
+def _thumb_pixbuf(png, width=80, height=45):
+    """A recording preview at list size."""
+    try:
+        from gi.repository import GdkPixbuf
+        return GdkPixbuf.Pixbuf.new_from_file_at_scale(str(png), width * 2, height * 2, False)
+    except GLib.Error:
+        return None
+
+
+def _draw_thumb(area, cr, w, h):
+    pix = getattr(area, "pixbuf", None)
+    if pix is None:
+        return
+    cr.scale(w / pix.get_width(), h / pix.get_height())
+    Gdk.cairo_set_source_pixbuf(cr, pix, 0, 0)
+    cr.paint()
 
 
 def _children(w):

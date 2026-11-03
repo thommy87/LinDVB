@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lindvb"
-version = "0.2.0"
+version = "0.3.0"
 description = "DVB and internet TV viewer and recorder for GNOME (GTK 4, GStreamer, Linux DVB API)"
 readme = "README.md"
 license = {text = "GPL-2.0-or-later"}
@@ -17,7 +17,7 @@ lindvb = "lindvb.app:main"
 packages = ["lindvb", "lindvb.ui", "lindvb.addons"]
 
 [tool.setuptools.package-data]
-lindvb = ["icons/hicolor/scalable/actions/*.svg"]
+lindvb = ["icons/hicolor/scalable/actions/*.svg", "scantables/*"]
 
 [tool.setuptools.data-files]
 "share/applications" = ["data/io.github.thommy87.LinDVB.desktop"]

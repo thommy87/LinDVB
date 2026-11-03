@@ -9,17 +9,18 @@ from ..channels import parse_dvbv5
 from ..scan import (find_adapters, find_transponder_lists, load_transponder_list,
                     scan_command, write_scan_file)
 from .common import dropdown, labeled, scrolled
+from ..i18n import _
 
-LNB_TYPES = [("Universal (9750/10600, 11700)", "UNIVERSAL"), ("Single 10750", "L10750"),
-             ("Single 10700", "L10700"), ("Single 11300", "L11300"), ("C-Band", "C-BAND"),
-             ("Extended", "EXTENDED"), ("None / not satellite", "")]
-DISEQC = ["None", "Port 1 (A/A)", "Port 2 (B/A)", "Port 3 (A/B)", "Port 4 (B/B)"]
-GROUP_BY = ["Provider", "Frequency", "Initial letter"]
+LNB_TYPES = [(_("Universal (9750/10600, 11700)"), "UNIVERSAL"), (_("Single 10750"), "L10750"),
+             (_("Single 10700"), "L10700"), (_("Single 11300"), "L11300"), ("C-Band", "C-BAND"),
+             (_("Extended"), "EXTENDED"), (_("None / not satellite"), "")]
+DISEQC = [_("None"), _("Port 1 (A/A)"), _("Port 2 (B/A)"), _("Port 3 (A/B)"), _("Port 4 (B/B)")]
+GROUP_BY = [_("Provider"), _("Frequency"), _("Initial letter")]
 
 
 class ScanWindow(Gtk.Window):
     def __init__(self, app, parent):
-        super().__init__(title="Channel Search", transient_for=parent,
+        super().__init__(title=_("Channel Search"), transient_for=parent,
                          default_width=820, default_height=620)
         self.app = app
         self.proc = None
@@ -29,36 +30,36 @@ class ScanWindow(Gtk.Window):
         adapters = find_adapters()
         self.adapters = adapters or [(a, app.settings["frontend"], f"Adapter {a}")
                                      for a in app.settings["adapters"]]
-        self.adapter = labeled(g, 0, "Device", dropdown([f"{n} (adapter{a}/frontend{f})"
+        self.adapter = labeled(g, 0, _("Device"), dropdown([f"{n} (adapter{a}/frontend{f})"
                                                          for a, f, n in self.adapters]))
         lbox = Gtk.Box(spacing=6)
-        self.list_dd = Gtk.DropDown.new_from_strings(["(choose…)"])
+        self.list_dd = Gtk.DropDown.new_from_strings([_("(choose…)")])
         self.list_dd.set_hexpand(True)
         self.list_dd.set_enable_search(True)
         self.list_dd.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
-        add = Gtk.Button(label="Add folder…", tooltip_text="Folder with transponder lists "
-                         "(dtv-scan-tables or DVBViewer style .ini)")
+        add = Gtk.Button(label=_("Add folder…"), tooltip_text=_("Folder with transponder lists "
+                         "(dtv-scan-tables or DVBViewer style .ini)"))
         add.connect("clicked", lambda *_: self.on_add_folder())
         lbox.append(self.list_dd)
         lbox.append(add)
-        labeled(g, 1, "Transponder list", lbox)
-        self.lnb = labeled(g, 2, "LNB type", dropdown([n for n, _ in LNB_TYPES]))
-        self.diseqc = labeled(g, 3, "DiSEqC", dropdown(DISEQC))
-        self.root = labeled(g, 4, "Target group", Gtk.Entry(placeholder_text="e.g. Astra 19.2°E"))
+        labeled(g, 1, _("Transponder list"), lbox)
+        self.lnb = labeled(g, 2, _("LNB type"), dropdown([n for n, _unused in LNB_TYPES]))
+        self.diseqc = labeled(g, 3, _("DiSEqC"), dropdown(DISEQC))
+        self.root = labeled(g, 4, _("Target group"), Gtk.Entry(placeholder_text=_("e.g. Astra 19.2°E")))
         opts = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=2)
-        self.nit = Gtk.CheckButton(label="Search for additional frequencies (NIT)")
-        self.fta = Gtk.CheckButton(label="Only add free-to-air channels")
-        self.upd_only = Gtk.CheckButton(label="Only update existing channels")
-        self.upd_names = Gtk.CheckButton(label="Update channel names", active=True)
+        self.nit = Gtk.CheckButton(label=_("Search for additional frequencies (NIT)"))
+        self.fta = Gtk.CheckButton(label=_("Only add free-to-air channels"))
+        self.upd_only = Gtk.CheckButton(label=_("Only update existing channels"))
+        self.upd_names = Gtk.CheckButton(label=_("Update channel names"), active=True)
         for w in (self.nit, self.fta, self.upd_only, self.upd_names):
             opts.append(w)
         g.attach(opts, 0, 5, 2, 1)
-        self.group_by = labeled(g, 6, "Group by", dropdown(GROUP_BY))
+        self.group_by = labeled(g, 6, _("Group by"), dropdown(GROUP_BY))
 
         bar = Gtk.Box(spacing=6, margin_start=12, margin_end=12)
-        self.start_btn = Gtk.Button(label="Start Search", css_classes=["suggested-action"])
+        self.start_btn = Gtk.Button(label=_("Start Search"), css_classes=["suggested-action"])
         self.start_btn.connect("clicked", lambda *_: self.on_start())
-        self.stop_btn = Gtk.Button(label="Stop", sensitive=False)
+        self.stop_btn = Gtk.Button(label=_("Stop"), sensitive=False)
         self.stop_btn.connect("clicked", lambda *_: self.proc and self.proc.force_exit())
         self.progress = Gtk.ProgressBar(hexpand=True, valign=Gtk.Align.CENTER, show_text=True)
         for w in (self.start_btn, self.stop_btn, self.progress):
@@ -80,7 +81,7 @@ class ScanWindow(Gtk.Window):
         self.list_dd.set_model(Gtk.StringList.new([n for n, _ in self.lists] or ["(no lists found)"]))
 
     def on_add_folder(self):
-        dlg = Gtk.FileDialog(title="Folder with transponder lists")
+        dlg = Gtk.FileDialog(title=_("Folder with transponder lists"))
         dlg.select_folder(self, None, self._folder_chosen)
 
     def _folder_chosen(self, dlg, res):
@@ -102,7 +103,7 @@ class ScanWindow(Gtk.Window):
 
     def on_start(self):
         if not self.lists:
-            self.log_line("No transponder list selected. Install dtv-scan-tables or add a folder.\n")
+            self.log_line(_("No transponder list selected. Install dtv-scan-tables or add a folder.\n"))
             return
         name, path = self.lists[self.list_dd.get_selected()]
         tpl = load_transponder_list(path)
@@ -117,7 +118,7 @@ class ScanWindow(Gtk.Window):
         self.out_file = tmp / "channels.conf"
         if not self.root.get_text().strip():
             self.root.set_text(tpl.name)
-        a, f, _ = self.adapters[self.adapter.get_selected()]
+        a, f, _unused = self.adapters[self.adapter.get_selected()]
         lnb = LNB_TYPES[self.lnb.get_selected()][1] if tpl.kind == "sat" else ""
         try:
             cmd = scan_command(a, f, str(scan_file), str(self.out_file), lnb, diseqc,
@@ -160,7 +161,7 @@ class ScanWindow(Gtk.Window):
         try:
             text = self.out_file.read_text(errors="replace")
         except OSError:
-            self.log_line("\nNo channels found.\n")
+            self.log_line(_("\nNo channels found.\n"))
             return
         chans = parse_dvbv5(text, root=self.root.get_text().strip())
         grp = self.group_by.get_selected()
@@ -175,4 +176,4 @@ class ScanWindow(Gtk.Window):
         self.app.db.save()
         self.app.window.reload_channels()
         self.progress.set_fraction(1)
-        self.log_line(f"\nDone: {added} new, {updated} updated channels.\n")
+        self.log_line(_("\nDone: {added} new, {updated} updated channels.\n").format(added=added, updated=updated))

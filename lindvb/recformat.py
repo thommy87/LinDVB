@@ -22,16 +22,17 @@ DASH streams are recorded with one audio track (see choose_streams).
 import re
 from datetime import datetime
 
+from .i18n import N_, _
 from .ca import TS_PACKET, TS_SYNC, parse_pmt, ts_payload_offset, ts_pid
 
 TV_FORMATS = ["TS", "MPG", "MP4", "MKV"]
 RADIO_FORMATS = ["Audio", "TS"]          # "Audio": the native MP2 / MP3 / AAC / AC-3 stream
 
 FORMAT_LABELS = {
-    "TS": "MPEG-TS (.ts)",
-    "MPG": "MPEG-PS (.mpg)",
+    "TS": _("MPEG-TS (.ts)"),
+    "MPG": _("MPEG-PS (.mpg)"),
     "MP4": "MP4 (.mp4)",
-    "MKV": "Matroska (.mkv)",
+    "MKV": _("Matroska (.mkv)"),
     "Audio": "MP2 / MP3 / AAC / AC3",
 }
 
@@ -42,9 +43,9 @@ EXTENSIONS = {"TS": ".ts", "MPG": ".mpg", "MP4": ".mp4", "MKV": ".mkv", "Audio":
 # Extra streams, in the order the timer dialog shows them.
 EXTRAS = ("teletext", "subtitles", "epg_data")
 EXTRA_LABELS = {
-    "teletext": "Teletext (TS)",
-    "subtitles": "Subtitles (TS / MKV)",
-    "epg_data": "EPG data (TS)",
+    "teletext": _("Teletext (TS)"),
+    "subtitles": _("Subtitles (TS / MKV)"),
+    "epg_data": _("EPG data (TS)"),
 }
 
 # Which extra streams each container can hold.
@@ -59,15 +60,16 @@ CAN_HOLD = {
 # Which audio tracks to record.
 AUDIO_MODES = ["all", "language", "first"]
 AUDIO_MODE_LABELS = {
-    "all": "All audio tracks",
-    "language": "Preferred language only",
-    "first": "First audio track only",
+    "all": _("All audio tracks"),
+    "language": _("Preferred language only"),
+    "first": _("First audio track only"),
 }
 # Containers that keep a single audio track.
 SINGLE_AUDIO = {"MP4", "Audio"}
 
-TIMER_ACTIONS = ["Record", "Tune only", "Record and tune"]
-AFTER_ACTIONS = ["None", "Standby", "Hibernate", "Power off", "Quit LinDVB"]
+# stored in timers.json; translated where they are shown
+TIMER_ACTIONS = [N_("Record"), N_("Tune only"), N_("Record and tune")]
+AFTER_ACTIONS = [N_("None"), N_("Standby"), N_("Hibernate"), N_("Power off"), N_("Quit LinDVB")]
 
 PLACEHOLDERS = [
     ("%date", "Date (MM-DD)"),
@@ -111,7 +113,7 @@ def unavailable_reason(fmt, extras, radio=False, iptv=False):
     return f"{FORMAT_LABELS[fmt].split(' (')[0]} cannot hold {' and '.join(missing)}."
 
 
-IPTV_EXTRAS_NOTE = "Internet streams have no teletext, subtitle or EPG data streams."
+IPTV_EXTRAS_NOTE = _("Internet streams have no teletext, subtitle or EPG data streams.")
 
 
 def audio_mode_from_legacy(all_audio):
@@ -122,12 +124,12 @@ def audio_mode_from_legacy(all_audio):
 def audio_note(fmt, mode, iptv=False):
     """A short note on how many audio tracks the chosen container keeps."""
     if iptv and mode != "first":
-        return ("HLS and DASH internet streams are recorded with one audio track "
-                "(the preferred language when it is offered).")
+        return _(("HLS and DASH internet streams are recorded with one audio track "
+                "(the preferred language when it is offered)."))
     if fmt == "MP4" and mode != "first":
-        return "MP4 keeps one audio track (the preferred language when it is on air)."
+        return _("MP4 keeps one audio track (the preferred language when it is on air).")
     if fmt == "Audio" and mode != "first":
-        return "The audio file keeps one track (the preferred language when it is on air)."
+        return _("The audio file keeps one track (the preferred language when it is on air).")
     return ""
 
 

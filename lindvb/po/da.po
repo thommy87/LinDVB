@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: da\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importér en kanalliste (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Start med denne kanal (navn eller nummer)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} kl. {time}"
+
+msgid "Watch"
+msgstr "Se"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Påmindelse: {title} på {channel} kl. {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Angiv først en XMLTV-adresse i indstillingerne"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Henter XMLTV-guiden…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} uden guide (TV ▸ Knyt IPTV-kanaler til XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: indlæser tjenestelisten…"
+
+msgid "Search the web"
+msgstr "Søg på nettet"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Tekst-tv (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Undertekster (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG-data (TS)"
+
+msgid "All audio tracks"
+msgstr "Alle lydspor"
+
+msgid "Preferred language only"
+msgstr "Kun foretrukket sprog"
+
+msgid "First audio track only"
+msgstr "Kun første lydspor"
+
+msgid "Record"
+msgstr "Optag"
+
+msgid "Record and tune"
+msgstr "Optag og skift kanal"
+
+msgid "Tune only"
+msgstr "Kun skift kanal"
+
+msgid "Hibernate"
+msgstr "Dvale"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Power off"
+msgstr "Sluk"
+
+msgid "Quit LinDVB"
+msgstr "Afslut LinDVB"
+
+msgid "Standby"
+msgstr "Standby"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Internetstreams har ingen tekst-tv, undertekster eller EPG-data."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 beholder ét lydspor (det foretrukne sprog, når det sendes)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Lydfilen beholder ét spor (det foretrukne sprog, når det sendes)."
+
+msgid "Fr"
+msgstr "Fr"
+
+msgid "Mo"
+msgstr "Ma"
+
+msgid "Sa"
+msgstr "Lø"
+
+msgid "Su"
+msgstr "Sø"
+
+msgid "Th"
+msgstr "To"
+
+msgid "Tu"
+msgstr "Ti"
+
+msgid "We"
+msgstr "On"
+
+msgid "Scheduled"
+msgstr "Planlagt"
+
+msgid "Done"
+msgstr "Færdig"
+
+msgid "Channel missing"
+msgstr "Kanal mangler"
+
+msgid "Tuned"
+msgstr "Indstillet"
+
+msgid "Recording"
+msgstr "Optager"
+
+msgid "Failed"
+msgstr "Mislykkedes"
+
+msgid "Missed"
+msgstr "Misset"
+
+msgid "After recording: {action}"
+msgstr "Efter optagelse: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Modulet blev fjernet eller nulstillet."
+
+msgid "CAM Menu"
+msgstr "CAM-menu"
+
+msgid "Cancel"
+msgstr "Annullér"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Åbn CAM-menuen"
+
+msgid "Select"
+msgstr "Vælg"
+
+msgid "Back"
+msgstr "Tilbage"
+
+msgid "Close Menu"
+msgstr "Luk menu"
+
+msgid "Device: {path} – {state}"
+msgstr "Enhed: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Åbn CAM-menuen for at se modulets indstillinger, oplysninger om smartkortet og forældrekontrol."
+
+msgid "The module has not finished starting yet."
+msgstr "Modulet er ikke færdigt med at starte endnu."
+
+msgid "Custom colour"
+msgstr "Egen farve"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB-blå (standard)"
+
+msgid "System accent colour"
+msgstr "Systemets accentfarve"
+
+msgid "Preferences"
+msgstr "Indstillinger"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Appearance"
+msgstr "Udseende"
+
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Træder i kraft, når LinDVB startes igen."
+
+msgid "Accent colour"
+msgstr "Accentfarve"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Bruges til fremhævninger, markeringer og knapper i alle vinduer."
+
+msgid "On-screen display"
+msgstr "Skærmvisning"
+
+msgid "OSD display time (s)"
+msgstr "Visningstid for OSD (s)"
+
+msgid "Visualisation"
+msgstr "Visualisering"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Det, der vises over radiovisualiseringen, mens en radiokanal eller lydfil spiller. Sangoplysninger kommer fra RadioText i DVB-radio, streamtitlen i internetradio og taggene i lydfiler."
+
+msgid "Overlay"
+msgstr "Overlejring"
+
+msgid "Station logo tile"
+msgstr "Felt med stationslogo"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Kanalens logo, eller et felt med stationsnavnet, hvis der ikke er noget."
+
+msgid "Album cover"
+msgstr "Albumcover"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Coveret til sangen, der spiller, fra filen eller fundet online."
+
+msgid "Song information"
+msgstr "Sangoplysninger"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Kunstner, album og år, nummer og titel. Uden sangoplysninger vises stationen og det aktuelle program."
+
+msgid "Clock in the top right corner"
+msgstr "Ur i øverste højre hjørne"
+
+msgid "Sources"
+msgstr "Kilder"
+
+msgid "Look up covers online"
+msgstr "Søg efter covers online"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Sender kunstner og titel på sangen, der spiller, til iTunes Search API for at finde album, år og cover."
+
+msgid "Station logo folder"
+msgstr "Mappe med stationslogoer"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Billedfiler (PNG, SVG, JPG) navngivet efter kanalen, f.eks. »Bayern 3.png«. Logoer navngivet efter kanalen, som DVBViewer gemmer dem, virker som de er. Tom: {v0}"
+
+msgid "Playback"
+msgstr "Afspilning"
+
+msgid "Deinterlace video"
+msgstr "Deinterlace video"
+
+msgid "Screenshot folder"
+msgstr "Mappe til skærmbilleder"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Timeshift-mappe"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Timeshift-buffer (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner og LNB"
+
+msgid "DVB hardware"
+msgstr "DVB-hardware"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Adapternumre, som LinDVB må bruge, kommasepareret."
+
+msgid "DVB adapters"
+msgstr "DVB-adaptere"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Optag hele transponderen"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Nødvendigt for alle lydspor, når kanallisten kun kender ét lyd-PID."
+
+msgid "Satellite LNB"
+msgstr "Satellit-LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF lavt bånd (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF højt bånd (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Skiftefrekvens (kHz)"
+
+msgid "Recording folder"
+msgstr "Optagelsesmappe"
+
+msgid "File naming scheme"
+msgstr "Skema for filnavne"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Pladsholdere: %year %date %time %end %station %name, / til undermapper"
+
+msgid "Timer padding"
+msgstr "Marginer for timere"
+
+msgid "Start earlier by (min)"
+msgstr "Start tidligere med (min)"
+
+msgid "Stop later by (min)"
+msgstr "Stop senere med (min)"
+
+msgid "Timers"
+msgstr "Timere"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Åbn timervinduet, når en timer er oprettet"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Efter »Optag« i programguiden redigeres den nye timer med det samme."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Programguide: udsendt EPG, internet-EPG (XMLTV) og EPG fra andre udbydere."
+
+msgid "Conditional access"
+msgstr "Betinget adgang"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Afkodning af de krypterede kanaler, du abonnerer på, med dit eget kort i en softcam eller et CI-modul."
+
+msgid "None (leave scrambled)"
+msgstr "Ingen (lad være krypteret)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Ekstern softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "CI / CI+-modul i hardware"
+
+msgid "Descrambling via"
+msgstr "Afkod via"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI-sokkel"
+
+msgid "Unix socket path, or host:port."
+msgstr "Sti til Unix-sokkel, eller vært:port."
+
+msgid "CI module"
+msgstr "CI-modul"
+
+msgid "CI adapter number"
+msgstr "CI-adapternummer"
+
+msgid "CA device number"
+msgstr "CA-enhedsnummer"
+
+msgid "Plugins"
+msgstr "Udvidelsesmoduler"
+
+msgid "Load plugins at startup"
+msgstr "Indlæs udvidelsesmoduler ved start"
+
+msgid "Manage Plugins…"
+msgstr "Administrér udvidelsesmoduler…"
+
+msgid "Format and tracks"
+msgstr "Format og spor"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Standarder for nye timere og optageknappen. Hver timer, og en optagelse startet med »Optag med indstillinger…«, kan ændre dem.\nTS: video, alle lydspor, undertekster, tekst-tv og EPG-data. MKV: video, flere lydspor og undertekster. MPG: video og flere lydspor. MP4: video og ét lydspor. Internetstreams har ingen tekst-tv, undertekster eller EPG-data; HLS- og DASH-streams optages med ét lydspor."
+
+msgid "TV format"
+msgstr "TV-format"
+
+msgid "Radio format"
+msgstr "Radioformat"
+
+msgid "Audio tracks"
+msgstr "Lydspor"
+
+msgid "Preferred audio language"
+msgstr "Foretrukket lydsprog"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Bruges af »Kun foretrukket sprog« og af MP4, der beholder ét spor. Spor med synstolkning springes over. Uden match optages det første spor."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} kan kun bevares i MPEG-TS, så optagelser gemmes som TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} kan kun bevares i TS eller MKV, så optagelser gemmes som TS."
+
+msgid " and "
+msgstr " og "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Der er ikke valgt et foretrukket lydsprog, så kun det første lydspor optages."
+
+msgid "Desktop accent: {found}"
+msgstr "Skrivebordets accent: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Ingen accentfarve fundet på skrivebordet, LinDVB-blå bruges."
+
+msgid "Current accent: {color}"
+msgstr "Aktuel accent: {color}"
+
+msgid "Channel Editor"
+msgstr "Kanalredigering"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Fav"
+msgstr "Fav"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Filter channels"
+msgstr "Filtrér kanaler"
+
+msgid "General"
+msgstr "Generelt"
+
+msgid "Stream URL"
+msgstr "Streamadresse"
+
+msgid "Favourite"
+msgstr "Favorit"
+
+msgid "Radio"
+msgstr "Radio"
+
+msgid "Encrypted"
+msgstr "Krypteret"
+
+msgid "Tuning"
+msgstr "Indstilling"
+
+msgid "System"
+msgstr "System"
+
+msgid "Polarity"
+msgstr "Polaritet"
+
+msgid "Modulation"
+msgstr "Modulation"
+
+msgid "Frequency (kHz)"
+msgstr "Frekvens (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Symbolrate (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Båndbredde (Hz)"
+
+msgid "Stream ID"
+msgstr "Stream-ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC-port (-1 ingen)"
+
+msgid "Service and PIDs"
+msgstr "Tjeneste og PID'er"
+
+msgid "Service ID"
+msgstr "Tjeneste-ID"
+
+msgid "Transport ID"
+msgstr "Transport-ID"
+
+msgid "Video PID"
+msgstr "Video-PID"
+
+msgid "Audio PIDs"
+msgstr "Lyd-PID'er"
+
+msgid "Teletext PID"
+msgstr "Tekst-tv-PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Anvend ændringer (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Ny kanal"
+
+msgid "Delete channel"
+msgstr "Slet kanal"
+
+msgid "Move up"
+msgstr "Flyt op"
+
+msgid "Move down"
+msgstr "Flyt ned"
+
+msgid "Sort by group and name"
+msgstr "Sortér efter gruppe og navn"
+
+msgid "No channel selected"
+msgstr "Ingen kanal valgt"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Vælg en kanal på listen for at redigere den."
+
+msgid "Unnamed channel"
+msgstr "Unavngiven kanal"
+
+msgid "Recording and Device Statistics"
+msgstr "Optagelses- og enhedsstatistik"
+
+msgid "Active recordings:"
+msgstr "Aktive optagelser:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nNæste timer: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Tekst-tv – {name}"
+
+msgid "Find on page"
+msgstr "Find på siden"
+
+msgid "Copy page"
+msgstr "Kopiér side"
+
+msgid "Save page"
+msgstr "Gem side"
+
+msgid "Waiting for teletext…"
+msgstr "Venter på tekst-tv…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec mangler (gst-plugins-bad med libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Søger side {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Ingen afkodning sat op. Krypterede kanaler, du har ret til, kan afkodes ved at pege LinDVB på din egen softcam eller dit eget CI-modul i indstillingerne."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Udbyderen »{v0}« er ikke tilgængelig."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Udbyder: CI-modul – {status}\nModulet afkoder med dit kort i tuneren."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Udbyder: {name}\nLinDVB sender ECM-sektioner videre til din egen kortklient og bruger de kontrolord, der kommer tilbage; selv indeholder det ingen nøgler."
+
+msgid "Open CAM Menu…"
+msgstr "Åbn CAM-menuen…"
+
+msgid "Failed to load: {v0}"
+msgstr "Kunne ikke indlæse: {v0}"
+
+msgid "Switched off"
+msgstr "Slået fra"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Ændringer træder i kraft, når LinDVB startes igen."
+
+msgid "No plugins installed."
+msgstr "Ingen udvidelsesmoduler installeret."
+
+msgid "Plugin actions"
+msgstr "Handlinger fra udvidelsesmoduler"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Mapper til udvidelsesmoduler: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "DVB-I-opsætning"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I henter kanallisten for din region fra internettet: nummerering, navne og logoer, og for hver kanal måderne at modtage den på. LinDVB bruger så vidt muligt antenne-, kabel- eller satellitkanalerne fra din kanalsøgning og ellers internetstreamen."
+
+msgid "Privacy"
+msgstr "Privatliv"
+
+msgid "I have read the privacy notice"
+msgstr "Jeg har læst privatlivserklæringen"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Indlæs programguiden (EPG) for DVB-I-kanalerne"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Skift til en anden modtagevej (internet, antenne, kabel, satellit), når en svigter"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Indstil satellitkanaler fra listen uden kanalsøgning (kræver satellitkanaler i din liste)"
+
+msgid "Service list"
+msgstr "Tjenesteliste"
+
+msgid "Load Lists from Registry"
+msgstr "Indlæs lister fra registret"
+
+msgid "In use: {current}"
+msgstr "I brug: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Ingen DVB-I-liste er i brug endnu."
+
+msgid "Region"
+msgstr "Region"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Dit postnummer vælger de regionale kanaler og deres nummerering. Det sendes kun til tjenestelistens server."
+
+msgid "Postcode"
+msgstr "Postnummer"
+
+msgid "No postcode: nationwide list"
+msgstr "Intet postnummer: landsdækkende liste"
+
+msgid "Remove DVB-I Channels"
+msgstr "Fjern DVB-I-kanaler"
+
+msgid "Update Now"
+msgstr "Opdatér nu"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Indlæs den valgte liste igen (den tjekkes også dagligt)"
+
+msgid "Install Channel List"
+msgstr "Installér kanalliste"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Asking the service list registry…"
+msgstr "Spørger registret over tjenestelister…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Registret kunne ikke nås: {error}"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} tjenestelister fra {netloc}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Registret tilbyder ingen tjenesteliste for Tyskland."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Indtast et postnummer med fem cifre"
+
+msgid "Loading the service list…"
+msgstr "Indlæser tjenestelisten…"
+
+msgid "In use: {v0}"
+msgstr "I brug: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nVælg din region, og tryk på Installér igen."
+
+msgid "Enter Again"
+msgstr "Indtast igen"
+
+msgid "The service list does not know this postcode."
+msgstr "Tjenestelisten kender ikke dette postnummer."
+
+msgid "The service list server answered {code}."
+msgstr "Tjenestelistens server svarede {code}."
+
+msgid "Try Again"
+msgstr "Prøv igen"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Du kan prøve igen eller bruge den landsdækkende liste uden postnummer."
+
+msgid "Nationwide List"
+msgstr "Landsdækkende liste"
+
+msgid "No DVB-I list is in use."
+msgstr "Ingen DVB-I-liste er i brug."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "{removed} DVB-I-kanaler fjernet"
+
+msgid "All programmes"
+msgstr "Alle programmer"
+
+msgid "With audio description"
+msgstr "Med synstolkning"
+
+msgid "With subtitles"
+msgstr "Med undertekster"
+
+msgid "Programme Guide"
+msgstr "Programguide"
+
+msgid "Now / Next"
+msgstr "Nu / Derefter"
+
+msgid "Per Channel"
+msgstr "Pr. kanal"
+
+msgid "TV Guide"
+msgstr "TV-oversigt"
+
+msgid "Search"
+msgstr "Søg"
+
+msgid "Record Series"
+msgstr "Optag serie"
+
+msgid "Remind Me"
+msgstr "Påmind mig"
+
+msgid "Search Web"
+msgstr "Søg på nettet"
+
+msgid "Export the guide as XMLTV"
+msgstr "Eksportér guiden som XMLTV"
+
+msgid "Next"
+msgstr "Derefter"
+
+msgid "Now"
+msgstr "Nu"
+
+msgid "Only favourites"
+msgstr "Kun favoritter"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Tilgængelighed (DVB-I-programguide)"
+
+msgid "Show:"
+msgstr "Vis:"
+
+msgid "Channel"
+msgstr "Kanal"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "End"
+msgstr "Slut"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Genre"
+msgstr "Genre"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Duration"
+msgstr "Varighed"
+
+msgid "Subheading"
+msgstr "Undertitel"
+
+msgid "Title or description"
+msgstr "Titel eller beskrivelse"
+
+msgid "Include description"
+msgstr "Medtag beskrivelse"
+
+msgid "Case sensitive"
+msgstr "Forskel på store og små bogstaver"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Serieoptagelse: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Påmindelse fjernet: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} er allerede begyndt"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Påmindelse sat: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Fjern påmindelse"
+
+msgid "Save EPG data"
+msgstr "Gem EPG-data"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Beholder guiden på disken, efter LinDVB er lukket."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Vis EPG-info ved kanalskift (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = vis ikke."
+
+msgid "Remind before start (min)"
+msgstr "Påmind før start (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Påmindelser fra programguiden melder sig så tidligt."
+
+msgid "Preferred language"
+msgstr "Foretrukket sprog"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Bruges, når et program sendes på flere sprog."
+
+msgid "Time zone"
+msgstr "Tidszone"
+
+msgid "Set time zone automatically"
+msgstr "Indstil tidszone automatisk"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Fra: brug en fast forskel til GMT for guiden, timere og uret."
+
+msgid "Offset to GMT"
+msgstr "Forskel til GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Internet-EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Kilde til internet-EPG, bruges ud over den udsendte EPG."
+
+msgid "Match IPTV Channels…"
+msgstr "Knyt IPTV-kanaler…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Kontrollér eller ret, hvilken guidekanal der hører til hvilken M3U-kanal."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway-/Freesat-frekvenser"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Når en indstillet kanal ligger på en af disse transpondere, læser LinDVB også udbyderens EPG. Ændringer gælder næste gang en kanal indstilles."
+
+msgid "Frequency (MHz)"
+msgstr "Frekvens (MHz)"
+
+msgid "Add"
+msgstr "Tilføj"
+
+msgid "Polarisation"
+msgstr "Polarisering"
+
+msgid "Defaults"
+msgstr "Standarder"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Indtast transponderens frekvens i MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Kunne ikke finde cover: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Byt med hovedbilledet"
+
+msgid "Close picture in picture"
+msgstr "Luk billede-i-billede"
+
+msgid "Picture in picture: {error}"
+msgstr "Billede-i-billede: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Billede-i-billede virker med internetkanaler; DVB-kanaler kræver en tuner mere."
+
+msgid "Channel Mosaic"
+msgstr "Kanalmosaik"
+
+msgid "Previous channels"
+msgstr "Forrige kanaler"
+
+msgid "Next channels"
+msgstr "Næste kanaler"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mosaikken viser internetkanaler. Listen har ingen i den aktuelle visning."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Side {page} af {pages} · {n} internetkanaler"
+
+msgid "Click to watch {name}"
+msgstr "Klik for at se {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Udvidet"
+
+msgid "None / not satellite"
+msgstr "Ingen / ikke satellit"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frekvens"
+
+msgid "Initial letter"
+msgstr "Forbogstav"
+
+msgid "Provider"
+msgstr "Udbyder"
+
+msgid "Channel Search"
+msgstr "Kanalsøgning"
+
+msgid "Device"
+msgstr "Enhed"
+
+msgid "(choose…)"
+msgstr "(vælg…)"
+
+msgid "Add folder…"
+msgstr "Tilføj mappe…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Mappe med transponderlister (dtv-scan-tables eller .ini i DVBViewer-stil)"
+
+msgid "Transponder list"
+msgstr "Transponderliste"
+
+msgid "LNB type"
+msgstr "LNB-type"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Målgruppe"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "f.eks. Astra 19,2°Ø"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Søg efter flere frekvenser (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Tilføj kun frie kanaler"
+
+msgid "Only update existing channels"
+msgstr "Opdatér kun eksisterende kanaler"
+
+msgid "Update channel names"
+msgstr "Opdatér kanalnavne"
+
+msgid "Group by"
+msgstr "Gruppér efter"
+
+msgid "Start Search"
+msgstr "Start søgning"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Folder with transponder lists"
+msgstr "Mappe med transponderlister"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Ingen transponderliste valgt. Installér dtv-scan-tables, eller tilføj en mappe.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nIngen kanaler fundet.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nFærdig: {added} nye, {updated} opdaterede kanaler.\n"
+
+msgid "HH:MM"
+msgstr "TT:MM"
+
+msgid "Recording Timers"
+msgstr "Optagetimere"
+
+msgid "Search channels"
+msgstr "Søg kanaler"
+
+msgid "  (Radio)"
+msgstr "  (Radio)"
+
+msgid "Date"
+msgstr "Dato"
+
+msgid "Repeat"
+msgstr "Gentag"
+
+msgid "Once"
+msgstr "Én gang"
+
+msgid "Series"
+msgstr "Serie"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "After"
+msgstr "Efter"
+
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Repeat every {day}"
+msgstr "Gentag hver {day}"
+
+msgid "_Date"
+msgstr "_Dato"
+
+msgid "_Lead (min)"
+msgstr "_Før (min)"
+
+msgid "_End"
+msgstr "_Slut"
+
+msgid "_Start"
+msgstr "_Start"
+
+msgid "Repeat on"
+msgstr "Gentag på"
+
+msgid "_Follow (min)"
+msgstr "_Efter (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Vælg en kanal til venstre"
+
+msgid "_Name"
+msgstr "_Navn"
+
+msgid "_Timer action"
+msgstr "_Timerhandling"
+
+msgid "_After recording"
+msgstr "Efter _optagelse"
+
+msgid "T_V format"
+msgstr "T_V-format"
+
+msgid "_Radio format"
+msgstr "_Radioformat"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Kun foretrukket sprog: sporene på lydsproget fra indstillingerne, uden synstolkning. MP4 og radioens lydfil beholder ét spor."
+
+msgid "Audi_o tracks"
+msgstr "Ly_dspor"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Tekst-tv findes kun i MPEG-TS, så TS bruges."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG-data (EIT) findes kun i MPEG-TS, så TS bruges."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS beholder alle undertekststreams. MKV får tekst-tv-undertekstsiden som tekstspor; DVB-bitmapundertekster beholdes kun i TS."
+
+msgid "Tracks"
+msgstr "Spor"
+
+msgid "File _naming scheme"
+msgstr "Skema for _filnavne"
+
+msgid "Folder…"
+msgstr "Mappe…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Brug optagelsesmappen fra indstillingerne"
+
+msgid "Placeholders"
+msgstr "Pladsholdere"
+
+msgid "Folder: "
+msgstr "Mappe: "
+
+msgid "Clear the editor"
+msgstr "Ryd redigeringen"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Tilføj redigeringens indstillinger som en ny timer"
+
+msgid "Apply"
+msgstr "Anvend"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Gem redigeringens indstillinger i den valgte timer"
+
+msgid "Delete the selected timer"
+msgstr "Slet den valgte timer"
+
+msgid "Enable/Disable"
+msgstr "Til/Fra"
+
+msgid "Switch the selected timer on or off"
+msgstr "Slå den valgte timer til eller fra"
+
+msgid "Save as default"
+msgstr "Gem som standard"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Brug disse formater og ekstra streams til nye timere og manuelle optagelser"
+
+msgid "Series title"
+msgstr "Serietitel"
+
+msgid "Delete series rule"
+msgstr "Slet serieregel"
+
+msgid "Series recordings"
+msgstr "Serieoptagelser"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Undertekster passer i TS eller MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Intet foretrukket lydsprog i indstillingerne: det første spor optages."
+
+msgid "File: {v0}"
+msgstr "Fil: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Ugyldigt start- eller sluttidspunkt"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Brug TT:MM, for eksempel 20:15."
+
+msgid "No channel"
+msgstr "Ingen kanal"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Vælg den kanal, der skal optages, på listen til venstre."
+
+msgid "Recording defaults saved"
+msgstr "Standarder for optagelse gemt"
+
+msgid "Record with Options"
+msgstr "Optag med indstillinger"
+
+msgid "_Format"
+msgstr "_Format"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Tekst-tv og EPG-data kan kun bevares i MPEG-TS, så TS bruges."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Foretrukket lydsprog: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Visualiseringen »{v0}« mislykkedes: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} er for gammel"
+
+msgid "Playback error: "
+msgstr "Afspilningsfejl: "
+
+msgid "All channels"
+msgstr "Alle kanaler"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Favoritter (TV + radio)"
+
+msgid "Free to air"
+msgstr "Frie kanaler"
+
+msgid "Internet streams"
+msgstr "Internetstreams"
+
+msgid "Fill (crop)"
+msgstr "Udfyld (beskær)"
+
+msgid "Fit"
+msgstr "Tilpas"
+
+msgid "Stretch"
+msgstr "Stræk"
+
+msgid "Playback error: {m}"
+msgstr "Afspilningsfejl: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Handling fra udvidelsesmodul mislykkedes: {e}"
+
+msgid "Open Media File…"
+msgstr "Åbn mediefil…"
+
+msgid "Open URL…"
+msgstr "Åbn adresse…"
+
+msgid "Import Channel List…"
+msgstr "Importér kanalliste…"
+
+msgid "Export Channel List…"
+msgstr "Eksportér kanalliste…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Eksportér programguiden (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Skift TV / radio"
+
+msgid "Recordings"
+msgstr "Optagelser"
+
+msgid "Programme Guide (EPG)"
+msgstr "Programguide (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Timeroptagelser"
+
+msgid "Record with Options…"
+msgstr "Optag med indstillinger…"
+
+msgid "Teletext"
+msgstr "Tekst-tv"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM-menu (CI-modul)…"
+
+msgid "Channel Search…"
+msgstr "Kanalsøgning…"
+
+msgid "DVB-I Setup…"
+msgstr "DVB-I-opsætning…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Kanalredigering / favoritter"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Opdatér internet-EPG (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Knyt IPTV-kanaler til XMLTV…"
+
+msgid "Audio Track"
+msgstr "Lydspor"
+
+msgid "Subtitles"
+msgstr "Undertekster"
+
+msgid "Play Rate"
+msgstr "Afspilningshastighed"
+
+msgid "Back 10 s"
+msgstr "Tilbage 10 s"
+
+msgid "Forward 10 s"
+msgstr "Frem 10 s"
+
+msgid "Back 1 min"
+msgstr "Tilbage 1 min"
+
+msgid "Forward 1 min"
+msgstr "Frem 1 min"
+
+msgid "Back to Live"
+msgstr "Tilbage til direkte"
+
+msgid "Jump"
+msgstr "Spring"
+
+msgid "Previous"
+msgstr "Forrige"
+
+msgid "Random Order"
+msgstr "Tilfældig rækkefølge"
+
+msgid "Endless Playback"
+msgstr "Uendelig afspilning"
+
+msgid "Playlist"
+msgstr "Afspilningsliste"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Behold timeshift som optagelse"
+
+msgid "Rebuild Playback"
+msgstr "Genopbyg afspilningen"
+
+msgid "Video Off (audio only)"
+msgstr "Video fra (kun lyd)"
+
+msgid "Show Selected Channel"
+msgstr "Vis valgt kanal"
+
+msgid "Swap Pictures"
+msgstr "Byt billeder"
+
+msgid "Picture in Picture"
+msgstr "Billede-i-billede"
+
+msgid "Channel Mosaic…"
+msgstr "Kanalmosaik…"
+
+msgid "Stop in {mins} min"
+msgstr "Stop om {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Stop efter det aktuelle program"
+
+msgid "Sleep Timer"
+msgstr "Sleep-timer"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Lyd senere (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Lyd tidligere (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Nulstil"
+
+msgid "Audio Delay (this channel)"
+msgstr "Lydforsinkelse (denne kanal)"
+
+msgid "Full Screen"
+msgstr "Fuld skærm"
+
+msgid "Show/Hide Channel List"
+msgstr "Vis/skjul kanallisten"
+
+msgid "Aspect / Zoom"
+msgstr "Billedformat / zoom"
+
+msgid "Window Size"
+msgstr "Vinduesstørrelse"
+
+msgid "Picture Settings…"
+msgstr "Billedindstillinger…"
+
+msgid "Equalizer…"
+msgstr "Equalizer…"
+
+msgid "Radio Visualisation"
+msgstr "Radiovisualisering"
+
+msgid "Screenshot"
+msgstr "Skærmbillede"
+
+msgid "Plugins…"
+msgstr "Udvidelsesmoduler…"
+
+msgid "About LinDVB"
+msgstr "Om LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Vis/skjul kanallisten (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Hovedmenu (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Programguide (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Tekst-tv (Ctrl+Skift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Vis TV-kanaler (Ctrl+M skifter)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Vis radiostationer (Ctrl+M skifter)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Vis dine optagelser (dobbeltklik afspiller)"
+
+msgid "Search name or number"
+msgstr "Søg navn eller nummer"
+
+msgid "All groups"
+msgstr "Alle grupper"
+
+msgid "Previous channel (Page Down)"
+msgstr "Forrige kanal (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pause / timeshift (mellemrum)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Stop (sluk kanalen)"
+
+msgid "Next channel (Page Up)"
+msgstr "Næste kanal (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Optag aktuel kanal (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Vælg format og spor til denne optagelse"
+
+msgid "Seek"
+msgstr "Position"
+
+msgid "LIVE"
+msgstr "DIREKTE"
+
+msgid "Back to live (L)"
+msgstr "Tilbage til direkte (L)"
+
+msgid "Mute (M)"
+msgstr "Lyd fra (M)"
+
+msgid "Volume"
+msgstr "Lydstyrke"
+
+msgid "Audio track"
+msgstr "Lydspor"
+
+msgid "Playback and picture settings"
+msgstr "Afspilnings- og billedindstillinger"
+
+msgid "Full screen (F)"
+msgstr "Fuld skærm (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nNu: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} af {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{n} af {total} optagelser vist"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{n} af {total} favoritter vist"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{n} af {total} radiostationer vist"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{n} af {total} TV-kanaler vist"
+
+msgid "Add to Favourites"
+msgstr "Føj til favoritter"
+
+msgid "Remove from Favourites"
+msgstr "Fjern fra favoritter"
+
+msgid "Edit…"
+msgstr "Redigér…"
+
+msgid "Show as Picture in Picture"
+msgstr "Vis som billede-i-billede"
+
+msgid "Select a channel in the list first"
+msgstr "Vælg først en kanal på listen"
+
+msgid "By channel"
+msgstr "Efter kanal"
+
+msgid "By title"
+msgstr "Efter titel"
+
+msgid "Newest first"
+msgstr "Nyeste først"
+
+msgid "Oldest first"
+msgstr "Ældste først"
+
+msgid "Largest first"
+msgstr "Største først"
+
+msgid "Sort the recordings"
+msgstr "Sortér optagelserne"
+
+msgid "Open the recording folder"
+msgstr "Åbn optagelsesmappen"
+
+msgid "Look for new recordings"
+msgstr "Kig efter nye optagelser"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Ingen optagelser endnu.\n\nOptagelser gemmes i\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Der er ikke angivet en optagelsesmappe i indstillingerne."
+
+msgid "Recording in progress"
+msgstr "Optagelse i gang"
+
+msgid "Watched"
+msgstr "Set"
+
+msgid "Watched up to {pos}"
+msgstr "Set til {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Optagelsen blev ikke fundet: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Fortsætter ved {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Mappen blev ikke fundet: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Kan ikke åbne {folder}: {message}"
+
+msgid "Play"
+msgstr "Afspil"
+
+msgid "Play from the Beginning"
+msgstr "Afspil fra begyndelsen"
+
+msgid "Details…"
+msgstr "Detaljer…"
+
+msgid "Mark as Unwatched"
+msgstr "Markér som ikke set"
+
+msgid "Mark as Watched"
+msgstr "Markér som set"
+
+msgid "Show in Folder"
+msgstr "Vis i mappe"
+
+msgid "Delete…"
+msgstr "Slet…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Stop optagelsen, før du sletter den"
+
+msgid "Delete “{title}”?"
+msgstr "Slet »{title}«?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nFilen fjernes fra disken."
+
+msgid "Deleted {name}"
+msgstr "{name} slettet"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Kan ikke slette {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Indstiller {name}…"
+
+msgid "Search recordings"
+msgstr "Søg i optagelser"
+
+msgid "No radio stations in the channel list"
+msgstr "Ingen radiostationer i kanallisten"
+
+msgid "No TV channels in the channel list"
+msgstr "Ingen TV-kanaler i kanallisten"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – skiftede til {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} sender ikke lige nu"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Direkte TV stoppet: tuneren skal bruges til en timeroptagelse"
+
+msgid "Stopped"
+msgstr "Stoppet"
+
+msgid "Sound {ms} ms later"
+msgstr "Lyd {ms} ms senere"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Lyd {v0} ms tidligere"
+
+msgid "Audio delay off"
+msgstr "Lydforsinkelse fra"
+
+msgid "Playing {item}"
+msgstr "Afspiller {item}"
+
+msgid "Open media files"
+msgstr "Åbn mediefiler"
+
+msgid "Open URL"
+msgstr "Åbn adresse"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Åbn"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importér kanalliste (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "Kunne ikke importere {name}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importerede {total_a} nye og {total_u} opdaterede kanaler"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Eksportér kanaler (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Eksporteret til {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Eksportér programguiden (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Kan ikke skrive {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Intet at optage"
+
+msgid "This channel is already being recorded"
+msgstr "Denne kanal optages allerede"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Tekst-tv: dekoder mangler (gst-plugins-bad med libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Tekst-tv: ikke tilgængelig på denne kanal"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Tekst-tv kræver en DVB-kanal"
+
+msgid "Volume {v0}%"
+msgstr "Lydstyrke {v0} %"
+
+msgid "Off"
+msgstr "Fra"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Skjulte undertekster (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} sprog"
+
+msgid "{n} audio tracks"
+msgstr "{n} lydspor"
+
+msgid "Screenshot saved: {path}"
+msgstr "Skærmbillede gemt: {path}"
+
+msgid "Screenshot failed"
+msgstr "Skærmbillede mislykkedes"
+
+msgid "Picture Settings"
+msgstr "Billedindstillinger"
+
+msgid "Restore Defaults"
+msgstr "Gendan standarder"
+
+msgid "Equalizer"
+msgstr "Equalizer"
+
+msgid "Leave full screen (F)"
+msgstr "Forlad fuld skærm (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Visualiseringen mislykkedes: {e}"
+
+msgid "Radio visualisation"
+msgstr "Radiovisualisering"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Radiovisualisering (kun til radio og lyd)"
+
+msgid "Playback stops at {v0}"
+msgstr "Afspilningen stopper kl. {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Ingen programoplysninger til sleep-timeren"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Sleep-timer: afspilning stoppet"
+
+msgid "No programme information"
+msgstr "Ingen programoplysninger"
+
+msgid "Next: {v0}  {title}"
+msgstr "Derefter: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signal {v0} %"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Direkte"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Se og optag DVB-S/S2, DVB-C, DVB-T/T2, ATSC og internet-TV med Linux DVB API og GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Knyt IPTV-kanaler til XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Ingen XMLTV-guide indlæst endnu. Angiv XMLTV-adressen i EPG-indstillingerne, og hent guiden først; tilknytningen starter automatisk efter hentningen."
+
+msgid "Download XMLTV guide now"
+msgstr "Hent XMLTV-guiden nu"
+
+msgid "Only channels without guide"
+msgstr "Kun kanaler uden guide"
+
+msgid "Match"
+msgstr "Tilknytning"
+
+msgid "Guide channel:"
+msgstr "Guidekanal:"
+
+msgid "Assign"
+msgstr "Tildel"
+
+msgid "Suggest"
+msgstr "Foreslå"
+
+msgid "Auto-match all"
+msgstr "Knyt alle automatisk"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Knyt hver kanal, der ikke er tildelt manuelt"
+
+msgid "Reset to automatic"
+msgstr "Nulstil til automatisk"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Lad den automatiske tilknytning bestemme igen for den valgte kanal"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} af {v1} kanaler har en guidekanal"
+
+msgid "No suggestion for {name}"
+msgstr "Intet forslag til {name}"

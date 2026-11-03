@@ -35,7 +35,17 @@ jobs:
           cache-key: flatpak-builder-${{ github.sha }}
           # The tag-push release job below needs the artifact; PRs and Release-workflow
           # builds don't, and the Actions storage quota is small.
-          upload-artifact: ${{ github.event_name == 'push' }}
+          upload-artifact: ${{ startsWith(github.ref, 'refs/tags/') }}
+
+      # Branch pushes keep a short-lived copy, but a full artifact store must not
+      # turn the build red.
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+        continue-on-error: true
+        with:
+          name: LinDVB-flatpak
+          path: LinDVB.flatpak
+          retention-days: 3
 
       - name: Upload to the draft release
         if: inputs.release_id != ''

@@ -48,7 +48,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Full screen, always on top, desktop TV | `English.lng:549,558,578` `actDesktop`, `actFullscreen`, `actOnTop` | **Partly**: full screen and hideable channel list; GTK 4 has no always-on-top or desktop-background mode |
 | Deinterlacing, pixel shaders | `Shaders/` holds 45 shader XML files (e.g. `Effect_Deinterlace.xml`, `Resample_Lanczos3.xml`, `Stereo3D_Anaglyph_Dubois.xml`); `mnuShaders` line 656 | **Partly**: deinterlace option; no shader effects |
 | Screenshot | `English.lng:592` `actScreenshot.Caption=Screenshot` | **Yes**: PNG to a configurable folder |
-| Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **No**: needs a second tuner pipeline and window; planned |
+| Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **Partly**: picture in picture (swap, close; Menu ▸ Playback, or the channel's context menu) and a mosaic of up to nine channels per page, for internet channels; DVB channels would need a second tuner |
 | Audio delay (lip sync) per channel | (LinDVB addition) | **Yes**: J/K or the gear menu shift the sound in 100 ms steps, saved per channel |
 | Video off / audio only | `English.lng:529-530` `acDisableAV`, `actDisableV` | **Yes** |
 | DVD and audio CD playback | `English.lng:552` `actDVDPlay.Caption=CD/DVD Playback`, `[frmDVDOptions]` | **No**: out of scope for a TV app |
@@ -63,7 +63,9 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Timeline / TV guide grid | `English.lng:415-416` `tsTimeline`, `tsTVGuide` | **Yes**: drawn timeline with a now marker |
 | EPG search (case, whole word, description) | `English.lng:409-412` `mnuSearchCase`, `mnuSearchDescription`, `mnuSearchWord` | **Yes** (case and description options) |
 | Search the web for a programme | `Default/EPG_URLList.ini` (Google, IMDb, Wikipedia, TMDB…), `btnInternet` | **Yes**: configurable URL list |
-| EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Partly**: XMLTV import for internet channels; no export |
+| EPG export / internet EPG | `English.lng:388` `btnEPGSave.Caption=&Export EPG`; `[frmOptEPG]` | **Yes**: XMLTV import for internet channels; the whole guide can be exported as XMLTV (Menu ▸ File, or the button in the programme guide) |
+| ATSC programme guide (PSIP) | – | **Yes**: virtual channel table (TVCT/CVCT) with major.minor numbers, EIT and ETT descriptions, system time table for GPS time; parsed from the raw sections |
+| Closed captions (CEA-608/708) | – | **Yes**: `cc708overlay`, switchable in the Subtitles menu |
 | EPG of other providers (MediaHighway 1/2, Freesat) | `[frmOptEPG]` MediaHighway/Freesat frequency list with Add / Delete / Default | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
 | EPG options: save to disk, preferred language, info on channel change, time zone | `[frmOptEPG]` | **Yes**: Preferences ▸ EPG |
 | Match IPTV channels to the XMLTV guide | – | **Yes**: tvg-id, then normalised names, then fuzzy matching; a dialog to check and fix the matches, which are kept |
@@ -84,7 +86,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Recording formats (TS, MPG, MP4, MKV, native radio audio), include teletext/subtitles/all audio/EPG | `English.lng:1078-1085` `cbTVFormat`, `cbRecTeletext`, `cbRecSubs`, `cbRecAllAudio`, `cbRecEPG` | **Yes**: defaults in Preferences > Recording, per timer and per instant recording ("Record with Options…"); teletext and EPG data force TS, subtitles TS or MKV (teletext subtitles as a text track); audio tracks all / preferred language (from the PMT ISO 639 descriptors, audio description skipped) / first, MP4 keeps one track; formats that cannot hold the ticked extras are greyed out; internet streams (HLS / DASH with separate audio renditions, TS or fragmented MP4 segments) are recorded in every format with video and one audio track (the preferred language when offered), their teletext / subtitle / EPG options are greyed out; no re-encoding |
 | Recording and device statistics | `English.lng:590` `actRecorderControls.Caption=Recording and Device Statistics` | **Yes**: per-tuner lock/signal/SNR/BER/bitrate, active recordings |
 | Sleep timer, stop recording after programme | `English.lng:624-633` `sr10…sr180`, `srCurrent.Caption=Stop after current programme` | **Yes** (playback sleep timer) |
-| Recording database, media libraries (video, music, pictures) | `actions.ini` `Refresh RecDB=8260`; `[frmMovieLibrary]` line 819; `OSDSkins/Default/myrecordings.xml`, `mymusicfiles.xml`, `mypics.xml` | **No**: recordings are plain `.ts` files in a folder |
+| Recording database, media libraries (video, music, pictures) | `actions.ini` `Refresh RecDB=8260`; `[frmMovieLibrary]` line 819; `OSDSkins/Default/myrecordings.xml`, `mymusicfiles.xml`, `mypics.xml` | **Partly**: the Recordings tab lists the recordings with preview picture, programme details (title, subheading, channel, description from the EPG at recording time), sorting and search, and remembers where each one was left; no music or picture library |
 | Multiple tuners | `English.lng:462` `[frmHardware]` | **Yes**: list of adapters; a timer can take a tuner from live TV |
 
 ## Integration and other functions
@@ -95,7 +97,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Plugins / add-ons | `Plugins/*.dll` (ImportCSV, ImportConf, ImportLamedb, Universal), `English.lng` plugin strings | **Yes**: Python plugin system for channel-list importers, conditional-access providers, life-cycle hooks and menu entries; see [PLUGINS.md](PLUGINS.md) |
 | Remote controls and key mapping | `Default/Remotes/default.remote` (XML command→key map), `Plugins/Universal.dll` (DVBSky, TeVii, Anysee, Twinhan, TechnoTrend IR), `[frmWinlircSettings]` | **Partly**: keyboard shortcuts; Linux IR receivers map to keys through the kernel's rc-core, so they work as keyboards |
 | Media server client, RTSP/UPnP/web | `English.lng:1267` `[frmServiceOptions]` (DVBViewer Media Server), `RTSP Server=` line 1919, `actUPnPOpen` | **No** |
-| Script hooks on events | `Scripts/channelchange.vbs`, `startrec.vbs`, `stoprec.vbs` | **No** |
+| Script hooks on events | `Scripts/channelchange.vbs`, `startrec.vbs`, `stoprec.vbs` | **Yes**: executable files in `~/.config/lindvb/hooks/` named after the event (`channel-tuned`, `recording-started`, `recording-stopped`, `reminder`, ...) get the details in `LINDVB_*` variables; see `lindvb/hooks.py` |
 | Tasks, standby/hibernate/wake-on-LAN commands | `[frmTaskOptions]`, `actions.ini` `Service Wake on LAN=8275`, `Hibernate=12323` | **Partly**: after-recording power actions |
 | OSD skins, HTPC home screen, weather, news (RSS) | `OSDSkins/Default/*.xml` (`home.xml`, `myweather.xml`, `myrss.xml`), `[frmWeatherOptions]`, `[frmNewsOptions]` | **No** |
 | 26 UI languages | `Language/*.lng` (Arabic … Turkish) | **No**: English only for now |

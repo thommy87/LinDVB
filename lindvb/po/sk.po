@@ -1,0 +1,1790 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: sk\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importovať zoznam kanálov (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Spustiť s týmto kanálom (názov alebo číslo)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} o {time}"
+
+msgid "Watch"
+msgstr "Pozerať"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Pripomienka: {title} na {channel} o {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Najprv nastavte adresu XMLTV v predvoľbách"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Sťahovanie sprievodcu XMLTV…"
+
+msgid ", {unmatched} without guide (TV ▸ Match IPTV Channels to XMLTV)"
+msgstr ", {unmatched} bez sprievodcu (TV ▸ Priradiť kanály IPTV k XMLTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: načítava sa zoznam služieb…"
+
+msgid "Search the web"
+msgstr "Hľadať na webe"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletext (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Titulky (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Údaje EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Všetky zvukové stopy"
+
+msgid "Preferred language only"
+msgstr "Len preferovaný jazyk"
+
+msgid "First audio track only"
+msgstr "Len prvá zvuková stopa"
+
+msgid "Record"
+msgstr "Nahrávať"
+
+msgid "Record and tune"
+msgstr "Nahrávať a prepnúť"
+
+msgid "Tune only"
+msgstr "Len prepnúť"
+
+msgid "Hibernate"
+msgstr "Hibernácia"
+
+msgid "None"
+msgstr "Žiadna"
+
+msgid "Power off"
+msgstr "Vypnúť"
+
+msgid "Quit LinDVB"
+msgstr "Ukončiť LinDVB"
+
+msgid "Standby"
+msgstr "Pohotovostný režim"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Internetové streamy nemajú teletext, titulky ani údaje EPG."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 ponechá jednu zvukovú stopu (preferovaný jazyk, ak sa vysiela)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Zvukový súbor ponechá jednu stopu (preferovaný jazyk, ak sa vysiela)."
+
+msgid "Fr"
+msgstr "Pi"
+
+msgid "Mo"
+msgstr "Po"
+
+msgid "Sa"
+msgstr "So"
+
+msgid "Su"
+msgstr "Ne"
+
+msgid "Th"
+msgstr "Št"
+
+msgid "Tu"
+msgstr "Ut"
+
+msgid "We"
+msgstr "St"
+
+msgid "Scheduled"
+msgstr "Naplánované"
+
+msgid "Done"
+msgstr "Hotovo"
+
+msgid "Channel missing"
+msgstr "Chýba kanál"
+
+msgid "Tuned"
+msgstr "Prepnuté"
+
+msgid "Recording"
+msgstr "Nahráva sa"
+
+msgid "Failed"
+msgstr "Zlyhalo"
+
+msgid "Missed"
+msgstr "Zmeškané"
+
+msgid "After recording: {action}"
+msgstr "Po nahrávaní: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Modul bol vybratý alebo resetovaný."
+
+msgid "CAM Menu"
+msgstr "Ponuka CAM"
+
+msgid "Cancel"
+msgstr "Zrušiť"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Otvoriť ponuku CAM"
+
+msgid "Select"
+msgstr "Vybrať"
+
+msgid "Back"
+msgstr "Späť"
+
+msgid "Close Menu"
+msgstr "Zavrieť ponuku"
+
+msgid "Device: {path} – {state}"
+msgstr "Zariadenie: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Otvorte ponuku CAM a uvidíte nastavenia modulu, informácie o čipovej karte a rodičovskú kontrolu."
+
+msgid "The module has not finished starting yet."
+msgstr "Modul sa ešte nespustil."
+
+msgid "Custom colour"
+msgstr "Vlastná farba"
+
+msgid "LinDVB blue (default)"
+msgstr "Modrá LinDVB (predvolená)"
+
+msgid "System accent colour"
+msgstr "Farba zvýraznenia systému"
+
+msgid "Preferences"
+msgstr "Predvoľby"
+
+msgid "Save"
+msgstr "Uložiť"
+
+msgid "Appearance"
+msgstr "Vzhľad"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Prejaví sa po ďalšom spustení LinDVB."
+
+msgid "Accent colour"
+msgstr "Farba zvýraznenia"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Používa sa na zvýraznenie, výber a tlačidlá vo všetkých oknách."
+
+msgid "On-screen display"
+msgstr "Zobrazenie na obrazovke"
+
+msgid "OSD display time (s)"
+msgstr "Čas zobrazenia OSD (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizácia"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Čo sa zobrazuje cez vizualizáciu rádia, keď hrá rozhlasová stanica alebo zvukový súbor. Údaje o skladbe pochádzajú z RadioTextu rádia DVB, názvu streamu internetového rádia a značiek zvukových súborov."
+
+msgid "Overlay"
+msgstr "Prekrytie"
+
+msgid "Station logo tile"
+msgstr "Dlaždica s logom stanice"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Logo kanála alebo dlaždica s názvom stanice, ak logo chýba."
+
+msgid "Album cover"
+msgstr "Obal albumu"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Obal práve hrajúcej skladby, zo súboru alebo vyhľadaný online."
+
+msgid "Song information"
+msgstr "Informácie o skladbe"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Interpret, album a rok, číslo a názov. Bez údajov o skladbe sa zobrazí stanica a vysielaný program."
+
+msgid "Clock in the top right corner"
+msgstr "Hodiny v pravom hornom rohu"
+
+msgid "Sources"
+msgstr "Zdroje"
+
+msgid "Look up covers online"
+msgstr "Hľadať obaly online"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Odošle interpreta a názov práve hrajúcej skladby do iTunes Search API, aby našiel album, rok a obal."
+
+msgid "Station logo folder"
+msgstr "Priečinok s logami staníc"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Obrázky (PNG, SVG, JPG) pomenované podľa kanála, napr. „Bayern 3.png“. Logá pomenované podľa kanála, ako ich ukladá DVBViewer, fungujú bez zmeny. Prázdne: {v0}"
+
+msgid "Playback"
+msgstr "Prehrávanie"
+
+msgid "Deinterlace video"
+msgstr "Odstrániť prekladanie"
+
+msgid "Screenshot folder"
+msgstr "Priečinok snímok obrazovky"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Priečinok timeshiftu"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Vyrovnávacia pamäť timeshiftu (MB)"
+
+msgid "Tuner and LNB"
+msgstr "Tuner a LNB"
+
+msgid "DVB hardware"
+msgstr "Hardvér DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Čísla adaptérov, ktoré smie LinDVB používať, oddelené čiarkami."
+
+msgid "DVB adapters"
+msgstr "Adaptéry DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Zachytávať celý transpondér"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Potrebné pre všetky zvukové stopy, keď zoznam kanálov pozná len jeden zvukový PID."
+
+msgid "Satellite LNB"
+msgstr "Satelitný LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF dolné pásmo (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF horné pásmo (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Prepínacia frekvencia (kHz)"
+
+msgid "Recording folder"
+msgstr "Priečinok nahrávok"
+
+msgid "File naming scheme"
+msgstr "Schéma názvov súborov"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Zástupné symboly: %year %date %time %end %station %name, / pre podpriečinky"
+
+msgid "Timer padding"
+msgstr "Rezervy časovačov"
+
+msgid "Start earlier by (min)"
+msgstr "Začať skôr o (min)"
+
+msgid "Stop later by (min)"
+msgstr "Skončiť neskôr o (min)"
+
+msgid "Timers"
+msgstr "Časovače"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Po vytvorení časovača otvoriť okno časovačov"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Po „Nahrávať“ v sprievodcovi hneď upraviť nový časovač."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Programový sprievodca: vysielané EPG, internetové EPG (XMLTV) a EPG iných poskytovateľov."
+
+msgid "Conditional access"
+msgstr "Podmienený prístup"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Dekódovanie kódovaných kanálov, ktoré máte predplatené, vlastnou kartou v softcame alebo module CI."
+
+msgid "None (leave scrambled)"
+msgstr "Žiadne (ponechať kódované)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Externý softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Hardvérový modul CI / CI+"
+
+msgid "Descrambling via"
+msgstr "Dekódovať cez"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Soket DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Cesta k unixovému soketu alebo hostiteľ:port."
+
+msgid "CI module"
+msgstr "Modul CI"
+
+msgid "CI adapter number"
+msgstr "Číslo adaptéra CI"
+
+msgid "CA device number"
+msgstr "Číslo zariadenia CA"
+
+msgid "Plugins"
+msgstr "Zásuvné moduly"
+
+msgid "Load plugins at startup"
+msgstr "Načítať zásuvné moduly pri spustení"
+
+msgid "Manage Plugins…"
+msgstr "Spravovať zásuvné moduly…"
+
+msgid "Format and tracks"
+msgstr "Formát a stopy"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Predvolené hodnoty pre nové časovače a tlačidlo Nahrávať. Každý časovač aj nahrávka spustená cez „Nahrávať s možnosťami…“ ich môže zmeniť.\nTS: video, všetky zvukové stopy, titulky, teletext a údaje EPG. MKV: video, viac zvukových stôp a titulky. MPG: video a viac zvukových stôp. MP4: video a jedna zvuková stopa. Internetové streamy nemajú teletext, titulky ani údaje EPG; streamy HLS a DASH sa nahrávajú s jednou zvukovou stopou."
+
+msgid "TV format"
+msgstr "Formát TV"
+
+msgid "Radio format"
+msgstr "Formát rádia"
+
+msgid "Audio tracks"
+msgstr "Zvukové stopy"
+
+msgid "Preferred audio language"
+msgstr "Preferovaný jazyk zvuku"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Používa sa pre „Len preferovaný jazyk“ a pre MP4, ktorý ponechá jednu stopu. Stopy s audiokomentárom sa preskakujú. Bez zhody sa nahrá prvá stopa."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} sa dajú zachovať len v MPEG-TS, preto sa nahrávky ukladajú ako TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} sa dajú zachovať len v TS alebo MKV, preto sa nahrávky ukladajú ako TS."
+
+msgid " and "
+msgstr " a "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Nie je nastavený preferovaný jazyk zvuku, preto sa nahráva len prvá zvuková stopa."
+
+msgid "Desktop accent: {found}"
+msgstr "Zvýraznenie pracovnej plochy: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Zvýraznenie pracovnej plochy sa nenašlo, použije sa modrá LinDVB."
+
+msgid "Current accent: {color}"
+msgstr "Aktuálne zvýraznenie: {color}"
+
+msgid "Channel Editor"
+msgstr "Editor kanálov"
+
+msgid "Name"
+msgstr "Názov"
+
+msgid "Category"
+msgstr "Kategória"
+
+msgid "Group"
+msgstr "Skupina"
+
+msgid "Fav"
+msgstr "Obľ"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Filter channels"
+msgstr "Filtrovať kanály"
+
+msgid "General"
+msgstr "Všeobecné"
+
+msgid "Stream URL"
+msgstr "Adresa streamu"
+
+msgid "Favourite"
+msgstr "Obľúbený"
+
+msgid "Radio"
+msgstr "Rádio"
+
+msgid "Encrypted"
+msgstr "Kódovaný"
+
+msgid "Tuning"
+msgstr "Ladenie"
+
+msgid "System"
+msgstr "Systém"
+
+msgid "Polarity"
+msgstr "Polarita"
+
+msgid "Modulation"
+msgstr "Modulácia"
+
+msgid "Frequency (kHz)"
+msgstr "Frekvencia (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Symbolová rýchlosť (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Šírka pásma (Hz)"
+
+msgid "Stream ID"
+msgstr "ID streamu"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Port DiSEqC (-1 žiadny)"
+
+msgid "Service and PIDs"
+msgstr "Služba a PID"
+
+msgid "Service ID"
+msgstr "ID služby"
+
+msgid "Transport ID"
+msgstr "ID transportu"
+
+msgid "Video PID"
+msgstr "PID videa"
+
+msgid "Audio PIDs"
+msgstr "PID zvuku"
+
+msgid "Teletext PID"
+msgstr "PID teletextu"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Použiť zmeny (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Nový kanál"
+
+msgid "Delete channel"
+msgstr "Odstrániť kanál"
+
+msgid "Move up"
+msgstr "Posunúť nahor"
+
+msgid "Move down"
+msgstr "Posunúť nadol"
+
+msgid "Sort by group and name"
+msgstr "Zoradiť podľa skupiny a názvu"
+
+msgid "No channel selected"
+msgstr "Nie je vybraný žiadny kanál"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Vyberte kanál v zozname a upravte ho."
+
+msgid "Unnamed channel"
+msgstr "Kanál bez názvu"
+
+msgid "Recording and Device Statistics"
+msgstr "Štatistiky nahrávania a zariadenia"
+
+msgid "Active recordings:"
+msgstr "Prebiehajúce nahrávky:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nĎalší časovač: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletext – {name}"
+
+msgid "Find on page"
+msgstr "Hľadať na stránke"
+
+msgid "Copy page"
+msgstr "Kopírovať stránku"
+
+msgid "Save page"
+msgstr "Uložiť stránku"
+
+msgid "Waiting for teletext…"
+msgstr "Čaká sa na teletext…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Chýba teletextdec (gst-plugins-bad s libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Hľadá sa stránka {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Dekódovanie nie je nastavené. Kódované kanály, na ktoré máte nárok, možno dekódovať, keď v predvoľbách nasmerujete LinDVB na vlastný softcam alebo modul CI."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Poskytovateľ „{v0}“ nie je dostupný."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Poskytovateľ: modul CI – {status}\nModul dekóduje vašou kartou vnútri tunera."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Poskytovateľ: {name}\nLinDVB odovzdáva sekcie ECM vášmu vlastnému klientovi karty a používa vrátené riadiace slová; sám žiadne kľúče neobsahuje."
+
+msgid "Open CAM Menu…"
+msgstr "Otvoriť ponuku CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "Načítanie zlyhalo: {v0}"
+
+msgid "Switched off"
+msgstr "Vypnuté"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Zmeny sa prejavia po ďalšom spustení LinDVB."
+
+msgid "No plugins installed."
+msgstr "Nie sú nainštalované žiadne zásuvné moduly."
+
+msgid "Plugin actions"
+msgstr "Akcie zásuvných modulov"
+
+msgid "Plugin folders: {dirs}"
+msgstr "Priečinky zásuvných modulov: {dirs}"
+
+msgid "DVB-I Setup"
+msgstr "Nastavenie DVB-I"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I sťahuje z internetu zoznam kanálov vášho regiónu: číslovanie, názvy a logá a pri každom kanáli spôsoby príjmu. LinDVB podľa možností používa anténne, káblové alebo satelitné kanály z vášho vyhľadávania kanálov, inak internetový stream."
+
+msgid "Privacy"
+msgstr "Súkromie"
+
+msgid "I have read the privacy notice"
+msgstr "Prečítal(a) som vyhlásenie o ochrane súkromia"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Načítať programového sprievodcu (EPG) kanálov DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Pri výpadku prepnúť na iný spôsob príjmu (internet, anténa, kábel, satelit)"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Ladiť satelitné kanály zo zoznamu bez vyhľadávania kanálov (vyžaduje satelitné kanály vo vašom zozname)"
+
+msgid "Service list"
+msgstr "Zoznam služieb"
+
+msgid "Load Lists from Registry"
+msgstr "Načítať zoznamy z registra"
+
+msgid "In use: {current}"
+msgstr "Používa sa: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Zatiaľ sa nepoužíva žiadny zoznam DVB-I."
+
+msgid "Region"
+msgstr "Región"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Vaše PSČ vyberá regionálne kanály a ich číslovanie. Odosiela sa len na server zoznamu služieb."
+
+msgid "Postcode"
+msgstr "PSČ"
+
+msgid "No postcode: nationwide list"
+msgstr "Bez PSČ: celoštátny zoznam"
+
+msgid "Remove DVB-I Channels"
+msgstr "Odstrániť kanály DVB-I"
+
+msgid "Update Now"
+msgstr "Aktualizovať teraz"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Znova načítať vybraný zoznam (kontroluje sa aj denne)"
+
+msgid "Install Channel List"
+msgstr "Nainštalovať zoznam kanálov"
+
+msgid "Close"
+msgstr "Zavrieť"
+
+msgid "Asking the service list registry…"
+msgstr "Dotazuje sa register zoznamov služieb…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Register nie je dostupný: {error}"
+
+msgid "Default"
+msgstr "Predvolené"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "Zoznamy služieb z {netloc}: {v0}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Register neponúka žiadny zoznam služieb pre Nemecko."
+
+msgid "Please enter a postcode with five digits"
+msgstr "Zadajte päťmiestne PSČ"
+
+msgid "Loading the service list…"
+msgstr "Načítava sa zoznam služieb…"
+
+msgid "In use: {v0}"
+msgstr "Používa sa: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nVyberte svoj región a znova stlačte Nainštalovať."
+
+msgid "Enter Again"
+msgstr "Zadať znova"
+
+msgid "The service list does not know this postcode."
+msgstr "Zoznam služieb toto PSČ nepozná."
+
+msgid "The service list server answered {code}."
+msgstr "Server zoznamu služieb odpovedal {code}."
+
+msgid "Try Again"
+msgstr "Skúsiť znova"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Môžete to skúsiť znova alebo použiť celoštátny zoznam bez PSČ."
+
+msgid "Nationwide List"
+msgstr "Celoštátny zoznam"
+
+msgid "No DVB-I list is in use."
+msgstr "Nepoužíva sa žiadny zoznam DVB-I."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Odstránené kanály DVB-I: {removed}"
+
+msgid "All programmes"
+msgstr "Všetky programy"
+
+msgid "With audio description"
+msgstr "S audiokomentárom"
+
+msgid "With subtitles"
+msgstr "S titulkami"
+
+msgid "Programme Guide"
+msgstr "Programový sprievodca"
+
+msgid "Now / Next"
+msgstr "Teraz / Potom"
+
+msgid "Per Channel"
+msgstr "Podľa kanála"
+
+msgid "TV Guide"
+msgstr "TV program"
+
+msgid "Search"
+msgstr "Hľadať"
+
+msgid "Record Series"
+msgstr "Nahrávať seriál"
+
+msgid "Remind Me"
+msgstr "Pripomenúť"
+
+msgid "Search Web"
+msgstr "Hľadať na webe"
+
+msgid "Export the guide as XMLTV"
+msgstr "Exportovať sprievodcu ako XMLTV"
+
+msgid "Next"
+msgstr "Potom"
+
+msgid "Now"
+msgstr "Teraz"
+
+msgid "Only favourites"
+msgstr "Len obľúbené"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Prístupnosť (programový sprievodca DVB-I)"
+
+msgid "Show:"
+msgstr "Zobraziť:"
+
+msgid "Channel"
+msgstr "Kanál"
+
+msgid "Start"
+msgstr "Začiatok"
+
+msgid "End"
+msgstr "Koniec"
+
+msgid "Title"
+msgstr "Názov"
+
+msgid "Genre"
+msgstr "Žáner"
+
+msgid "Day"
+msgstr "Deň"
+
+msgid "Duration"
+msgstr "Dĺžka"
+
+msgid "Subheading"
+msgstr "Podtitul"
+
+msgid "Title or description"
+msgstr "Názov alebo popis"
+
+msgid "Include description"
+msgstr "Zahrnúť popis"
+
+msgid "Case sensitive"
+msgstr "Rozlišovať veľkosť písmen"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "Nahrávanie seriálu: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Pripomienka odstránená: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} už začal"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Pripomienka nastavená: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Odstrániť pripomienku"
+
+msgid "Save EPG data"
+msgstr "Ukladať údaje EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Ponechá sprievodcu na disku po zatvorení LinDVB."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Zobraziť informácie EPG pri prepnutí kanála (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = nezobrazovať."
+
+msgid "Remind before start (min)"
+msgstr "Pripomenúť pred začiatkom (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Pripomienky nastavené v sprievodcovi upozornia s takýmto predstihom."
+
+msgid "Preferred language"
+msgstr "Preferovaný jazyk"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Použije sa, keď sa program vysiela vo viacerých jazykoch."
+
+msgid "Time zone"
+msgstr "Časové pásmo"
+
+msgid "Set time zone automatically"
+msgstr "Nastaviť časové pásmo automaticky"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Vypnuté: použiť pevný posun voči GMT pre sprievodcu, časovače a hodiny."
+
+msgid "Offset to GMT"
+msgstr "Posun voči GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Internetové EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Zdroj internetového EPG, používa sa popri vysielanom EPG."
+
+msgid "Match IPTV Channels…"
+msgstr "Priradiť kanály IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Skontrolovať alebo opraviť, ktorý kanál sprievodcu patrí ku ktorému kanálu M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Frekvencie MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Keď je naladený kanál na niektorom z týchto transpondérov, LinDVB číta aj EPG tohto poskytovateľa. Zmeny platia od ďalšieho naladenia kanála."
+
+msgid "Frequency (MHz)"
+msgstr "Frekvencia (MHz)"
+
+msgid "Add"
+msgstr "Pridať"
+
+msgid "Polarisation"
+msgstr "Polarizácia"
+
+msgid "Defaults"
+msgstr "Predvolené"
+
+msgid "Delete"
+msgstr "Odstrániť"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Zadajte frekvenciu transpondéra v MHz."
+
+msgid "Cover lookup failed: {e}"
+msgstr "Hľadanie obalu zlyhalo: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Vymeniť s hlavným obrazom"
+
+msgid "Close picture in picture"
+msgstr "Zavrieť obraz v obraze"
+
+msgid "Picture in picture: {error}"
+msgstr "Obraz v obraze: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Obraz v obraze funguje s internetovými kanálmi; kanály DVB potrebujú druhý tuner."
+
+msgid "Channel Mosaic"
+msgstr "Mozaika kanálov"
+
+msgid "Previous channels"
+msgstr "Predchádzajúce kanály"
+
+msgid "Next channels"
+msgstr "Ďalšie kanály"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mozaika zobrazuje internetové kanály. V aktuálnom zobrazení ich zoznam neobsahuje."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Strana {page} z {pages} · internetové kanály: {n}"
+
+msgid "Click to watch {name}"
+msgstr "Kliknutím pozerať {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Univerzálny (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Rozšírený"
+
+msgid "None / not satellite"
+msgstr "Žiadny / nie satelit"
+
+msgid "Port 1 (A/A)"
+msgstr "Port 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Port 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Port 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Port 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frekvencia"
+
+msgid "Initial letter"
+msgstr "Začiatočné písmeno"
+
+msgid "Provider"
+msgstr "Poskytovateľ"
+
+msgid "Channel Search"
+msgstr "Vyhľadávanie kanálov"
+
+msgid "Device"
+msgstr "Zariadenie"
+
+msgid "(choose…)"
+msgstr "(vyberte…)"
+
+msgid "Add folder…"
+msgstr "Pridať priečinok…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Priečinok so zoznamami transpondérov (dtv-scan-tables alebo .ini v štýle DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Zoznam transpondérov"
+
+msgid "LNB type"
+msgstr "Typ LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Cieľová skupina"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "napr. Astra 19,2° v. d."
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Hľadať ďalšie frekvencie (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Pridávať len voľne šírené kanály"
+
+msgid "Only update existing channels"
+msgstr "Len aktualizovať existujúce kanály"
+
+msgid "Update channel names"
+msgstr "Aktualizovať názvy kanálov"
+
+msgid "Group by"
+msgstr "Zoskupiť podľa"
+
+msgid "Start Search"
+msgstr "Spustiť vyhľadávanie"
+
+msgid "Stop"
+msgstr "Zastaviť"
+
+msgid "Folder with transponder lists"
+msgstr "Priečinok so zoznamami transpondérov"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nie je vybraný zoznam transpondérov. Nainštalujte dtv-scan-tables alebo pridajte priečinok.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nNenašli sa žiadne kanály.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nHotovo: nových kanálov {added}, aktualizovaných {updated}.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Časovače nahrávania"
+
+msgid "Search channels"
+msgstr "Hľadať kanály"
+
+msgid "  (Radio)"
+msgstr "  (Rádio)"
+
+msgid "Date"
+msgstr "Dátum"
+
+msgid "Repeat"
+msgstr "Opakovanie"
+
+msgid "Once"
+msgstr "Raz"
+
+msgid "Series"
+msgstr "Seriál"
+
+msgid "Action"
+msgstr "Akcia"
+
+msgid "Format"
+msgstr "Formát"
+
+msgid "After"
+msgstr "Potom"
+
+msgid "Disabled"
+msgstr "Vypnuté"
+
+msgid "Status"
+msgstr "Stav"
+
+msgid "Repeat every {day}"
+msgstr "Opakovať každý {day}"
+
+msgid "_Date"
+msgstr "_Dátum"
+
+msgid "_Lead (min)"
+msgstr "_Predstih (min)"
+
+msgid "_End"
+msgstr "_Koniec"
+
+msgid "_Start"
+msgstr "_Začiatok"
+
+msgid "Repeat on"
+msgstr "Opakovať v"
+
+msgid "_Follow (min)"
+msgstr "_Presah (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Vyberte kanál vľavo"
+
+msgid "_Name"
+msgstr "_Názov"
+
+msgid "_Timer action"
+msgstr "Akcia _časovača"
+
+msgid "_After recording"
+msgstr "Po _nahrávaní"
+
+msgid "T_V format"
+msgstr "Formát T_V"
+
+msgid "_Radio format"
+msgstr "Formát _rádia"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Len preferovaný jazyk: stopy v jazyku zvuku z predvolieb, bez audiokomentára. MP4 a zvukový súbor rádia ponechajú jednu stopu."
+
+msgid "Audi_o tracks"
+msgstr "Zvukové st_opy"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teletext existuje len v MPEG-TS, preto sa použije TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Údaje EPG (EIT) existujú len v MPEG-TS, preto sa použije TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS ponechá všetky prúdy titulkov. MKV dostane stránku titulkov teletextu ako textovú stopu; bitmapové titulky DVB zostanú len v TS."
+
+msgid "Tracks"
+msgstr "Stopy"
+
+msgid "File _naming scheme"
+msgstr "Schéma _názvov súborov"
+
+msgid "Folder…"
+msgstr "Priečinok…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Použiť priečinok nahrávok z predvolieb"
+
+msgid "Placeholders"
+msgstr "Zástupné symboly"
+
+msgid "Folder: "
+msgstr "Priečinok: "
+
+msgid "Clear the editor"
+msgstr "Vyprázdniť editor"
+
+msgid "New"
+msgstr "Nový"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Pridať nastavenia editora ako nový časovač"
+
+msgid "Apply"
+msgstr "Použiť"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Uložiť nastavenia editora do vybraného časovača"
+
+msgid "Delete the selected timer"
+msgstr "Odstrániť vybraný časovač"
+
+msgid "Enable/Disable"
+msgstr "Zapnúť/Vypnúť"
+
+msgid "Switch the selected timer on or off"
+msgstr "Zapnúť alebo vypnúť vybraný časovač"
+
+msgid "Save as default"
+msgstr "Uložiť ako predvolené"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Používať tieto formáty a ďalšie prúdy pre nové časovače a ručné nahrávky"
+
+msgid "Series title"
+msgstr "Názov seriálu"
+
+msgid "Delete series rule"
+msgstr "Odstrániť pravidlo seriálu"
+
+msgid "Series recordings"
+msgstr "Nahrávky seriálov"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Titulky sa zmestia do TS alebo MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "V predvoľbách nie je preferovaný jazyk zvuku: nahrá sa prvá stopa."
+
+msgid "File: {v0}"
+msgstr "Súbor: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Neplatný čas začiatku alebo konca"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Použite HH:MM, napríklad 20:15."
+
+msgid "No channel"
+msgstr "Žiadny kanál"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Vyberte kanál na nahrávanie v zozname vľavo."
+
+msgid "Recording defaults saved"
+msgstr "Predvolené nastavenia nahrávania uložené"
+
+msgid "Record with Options"
+msgstr "Nahrávať s možnosťami"
+
+msgid "_Format"
+msgstr "_Formát"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teletext a údaje EPG sa dajú zachovať len v MPEG-TS, preto sa použije TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Preferovaný jazyk zvuku: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Vizualizácia „{v0}“ zlyhala: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} je príliš starý"
+
+msgid "Playback error: "
+msgstr "Chyba prehrávania: "
+
+msgid "All channels"
+msgstr "Všetky kanály"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Obľúbené (TV + rádio)"
+
+msgid "Free to air"
+msgstr "Voľne šírené"
+
+msgid "Internet streams"
+msgstr "Internetové streamy"
+
+msgid "Fill (crop)"
+msgstr "Vyplniť (orezať)"
+
+msgid "Fit"
+msgstr "Prispôsobiť"
+
+msgid "Stretch"
+msgstr "Roztiahnuť"
+
+msgid "Playback error: {m}"
+msgstr "Chyba prehrávania: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Akcia zásuvného modulu zlyhala: {e}"
+
+msgid "Open Media File…"
+msgstr "Otvoriť mediálny súbor…"
+
+msgid "Open URL…"
+msgstr "Otvoriť adresu…"
+
+msgid "Import Channel List…"
+msgstr "Importovať zoznam kanálov…"
+
+msgid "Export Channel List…"
+msgstr "Exportovať zoznam kanálov…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Exportovať programového sprievodcu (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Prepnúť TV / rádio"
+
+msgid "Recordings"
+msgstr "Nahrávky"
+
+msgid "Programme Guide (EPG)"
+msgstr "Programový sprievodca (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Nahrávky z časovača"
+
+msgid "Record with Options…"
+msgstr "Nahrávať s možnosťami…"
+
+msgid "Teletext"
+msgstr "Teletext"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Ponuka CAM (modul CI)…"
+
+msgid "Channel Search…"
+msgstr "Vyhľadávanie kanálov…"
+
+msgid "DVB-I Setup…"
+msgstr "Nastavenie DVB-I…"
+
+msgid "Channel Editor / Favourites"
+msgstr "Editor kanálov / obľúbené"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Aktualizovať internetové EPG (XMLTV)"
+
+msgid "Match IPTV Channels to XMLTV…"
+msgstr "Priradiť kanály IPTV k XMLTV…"
+
+msgid "Audio Track"
+msgstr "Zvuková stopa"
+
+msgid "Subtitles"
+msgstr "Titulky"
+
+msgid "Play Rate"
+msgstr "Rýchlosť prehrávania"
+
+msgid "Back 10 s"
+msgstr "Späť 10 s"
+
+msgid "Forward 10 s"
+msgstr "Dopredu 10 s"
+
+msgid "Back 1 min"
+msgstr "Späť 1 min"
+
+msgid "Forward 1 min"
+msgstr "Dopredu 1 min"
+
+msgid "Back to Live"
+msgstr "Späť na živé vysielanie"
+
+msgid "Jump"
+msgstr "Skok"
+
+msgid "Previous"
+msgstr "Predchádzajúci"
+
+msgid "Random Order"
+msgstr "Náhodné poradie"
+
+msgid "Endless Playback"
+msgstr "Nekonečné prehrávanie"
+
+msgid "Playlist"
+msgstr "Zoznam skladieb"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Ponechať timeshift ako nahrávku"
+
+msgid "Rebuild Playback"
+msgstr "Znova zostaviť prehrávanie"
+
+msgid "Video Off (audio only)"
+msgstr "Video vypnuté (len zvuk)"
+
+msgid "Show Selected Channel"
+msgstr "Zobraziť vybraný kanál"
+
+msgid "Swap Pictures"
+msgstr "Vymeniť obrazy"
+
+msgid "Picture in Picture"
+msgstr "Obraz v obraze"
+
+msgid "Channel Mosaic…"
+msgstr "Mozaika kanálov…"
+
+msgid "Stop in {mins} min"
+msgstr "Zastaviť o {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Zastaviť po aktuálnom programe"
+
+msgid "Sleep Timer"
+msgstr "Časovač vypnutia"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Zvuk neskôr (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Zvuk skôr (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Obnoviť"
+
+msgid "Audio Delay (this channel)"
+msgstr "Oneskorenie zvuku (tento kanál)"
+
+msgid "Full Screen"
+msgstr "Celá obrazovka"
+
+msgid "Show/Hide Channel List"
+msgstr "Zobraziť/skryť zoznam kanálov"
+
+msgid "Aspect / Zoom"
+msgstr "Pomer strán / priblíženie"
+
+msgid "Window Size"
+msgstr "Veľkosť okna"
+
+msgid "Picture Settings…"
+msgstr "Nastavenia obrazu…"
+
+msgid "Equalizer…"
+msgstr "Ekvalizér…"
+
+msgid "Radio Visualisation"
+msgstr "Vizualizácia rádia"
+
+msgid "Screenshot"
+msgstr "Snímka obrazovky"
+
+msgid "Plugins…"
+msgstr "Zásuvné moduly…"
+
+msgid "About LinDVB"
+msgstr "O LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Zobraziť/skryť zoznam kanálov (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Hlavná ponuka (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Programový sprievodca (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teletext (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Zobraziť TV kanály (Ctrl+M prepína)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Zobraziť rozhlasové stanice (Ctrl+M prepína)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Zobraziť vaše nahrávky (dvojklik prehrá)"
+
+msgid "Search name or number"
+msgstr "Hľadať názov alebo číslo"
+
+msgid "All groups"
+msgstr "Všetky skupiny"
+
+msgid "Previous channel (Page Down)"
+msgstr "Predchádzajúci kanál (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pauza / timeshift (medzerník)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Zastaviť (vypnúť kanál)"
+
+msgid "Next channel (Page Up)"
+msgstr "Ďalší kanál (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Nahrávať aktuálny kanál (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Vybrať formát a stopy pre túto nahrávku"
+
+msgid "Seek"
+msgstr "Pozícia"
+
+msgid "LIVE"
+msgstr "NAŽIVO"
+
+msgid "Back to live (L)"
+msgstr "Späť na živé vysielanie (L)"
+
+msgid "Mute (M)"
+msgstr "Stlmiť (M)"
+
+msgid "Volume"
+msgstr "Hlasitosť"
+
+msgid "Audio track"
+msgstr "Zvuková stopa"
+
+msgid "Playback and picture settings"
+msgstr "Nastavenia prehrávania a obrazu"
+
+msgid "Full screen (F)"
+msgstr "Celá obrazovka (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nTeraz: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} z {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Zobrazené {n} z {total} nahrávok"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Zobrazené {n} z {total} obľúbených"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Zobrazené {n} z {total} rozhlasových staníc"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Zobrazené {n} z {total} TV kanálov"
+
+msgid "Add to Favourites"
+msgstr "Pridať do obľúbených"
+
+msgid "Remove from Favourites"
+msgstr "Odstrániť z obľúbených"
+
+msgid "Edit…"
+msgstr "Upraviť…"
+
+msgid "Show as Picture in Picture"
+msgstr "Zobraziť ako obraz v obraze"
+
+msgid "Select a channel in the list first"
+msgstr "Najprv vyberte kanál v zozname"
+
+msgid "By channel"
+msgstr "Podľa kanála"
+
+msgid "By title"
+msgstr "Podľa názvu"
+
+msgid "Newest first"
+msgstr "Najnovšie prvé"
+
+msgid "Oldest first"
+msgstr "Najstaršie prvé"
+
+msgid "Largest first"
+msgstr "Najväčšie prvé"
+
+msgid "Sort the recordings"
+msgstr "Zoradiť nahrávky"
+
+msgid "Open the recording folder"
+msgstr "Otvoriť priečinok nahrávok"
+
+msgid "Look for new recordings"
+msgstr "Hľadať nové nahrávky"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Zatiaľ žiadne nahrávky.\n\nNahrávky sa ukladajú do\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "V predvoľbách nie je nastavený priečinok nahrávok."
+
+msgid "Recording in progress"
+msgstr "Prebieha nahrávanie"
+
+msgid "Watched"
+msgstr "Pozreté"
+
+msgid "Watched up to {pos}"
+msgstr "Pozreté do {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Nahrávka sa nenašla: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Pokračuje sa od {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Priečinok sa nenašiel: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Nedá sa otvoriť {folder}: {message}"
+
+msgid "Play"
+msgstr "Prehrať"
+
+msgid "Play from the Beginning"
+msgstr "Prehrať od začiatku"
+
+msgid "Details…"
+msgstr "Podrobnosti…"
+
+msgid "Mark as Unwatched"
+msgstr "Označiť ako nepozreté"
+
+msgid "Mark as Watched"
+msgstr "Označiť ako pozreté"
+
+msgid "Show in Folder"
+msgstr "Zobraziť v priečinku"
+
+msgid "Delete…"
+msgstr "Odstrániť…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Pred odstránením zastavte nahrávanie"
+
+msgid "Delete “{title}”?"
+msgstr "Odstrániť „{title}“?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nSúbor sa odstráni z disku."
+
+msgid "Deleted {name}"
+msgstr "{name} odstránené"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Nedá sa odstrániť {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Ladí sa {name}…"
+
+msgid "Search recordings"
+msgstr "Hľadať v nahrávkach"
+
+msgid "No radio stations in the channel list"
+msgstr "V zozname kanálov nie sú žiadne rozhlasové stanice"
+
+msgid "No TV channels in the channel list"
+msgstr "V zozname kanálov nie sú žiadne TV kanály"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – prepnuté na {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} momentálne nevysiela"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Živé vysielanie zastavené: tuner je potrebný na nahrávanie z časovača"
+
+msgid "Stopped"
+msgstr "Zastavené"
+
+msgid "Sound {ms} ms later"
+msgstr "Zvuk o {ms} ms neskôr"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Zvuk o {v0} ms skôr"
+
+msgid "Audio delay off"
+msgstr "Oneskorenie zvuku vypnuté"
+
+msgid "Playing {item}"
+msgstr "Prehráva sa {item}"
+
+msgid "Open media files"
+msgstr "Otvoriť mediálne súbory"
+
+msgid "Open URL"
+msgstr "Otvoriť adresu"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Otvoriť"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importovať zoznam kanálov (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Could not import {name}"
+msgstr "{name} sa nepodarilo importovať"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Importované nové kanály: {total_a}, aktualizované: {total_u}"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Exportovať kanály (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Exportované do {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Exportovať programového sprievodcu (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Nedá sa zapísať {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "Nie je čo nahrávať"
+
+msgid "This channel is already being recorded"
+msgstr "Tento kanál sa už nahráva"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teletext: chýba dekodér (gst-plugins-bad s libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teletext: na tomto kanáli nie je k dispozícii"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teletext vyžaduje kanál DVB"
+
+msgid "Volume {v0}%"
+msgstr "Hlasitosť {v0} %"
+
+msgid "Off"
+msgstr "Vypnuté"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Skryté titulky (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "Jazyky: {n}"
+
+msgid "{n} audio tracks"
+msgstr "Zvukové stopy: {n}"
+
+msgid "Screenshot saved: {path}"
+msgstr "Snímka obrazovky uložená: {path}"
+
+msgid "Screenshot failed"
+msgstr "Snímka obrazovky zlyhala"
+
+msgid "Picture Settings"
+msgstr "Nastavenia obrazu"
+
+msgid "Restore Defaults"
+msgstr "Obnoviť predvolené"
+
+msgid "Equalizer"
+msgstr "Ekvalizér"
+
+msgid "Leave full screen (F)"
+msgstr "Opustiť celú obrazovku (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Vizualizácia zlyhala: {e}"
+
+msgid "Radio visualisation"
+msgstr "Vizualizácia rádia"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Vizualizácia rádia (len pre rádio a zvuk)"
+
+msgid "Playback stops at {v0}"
+msgstr "Prehrávanie skončí o {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Pre časovač vypnutia nie sú informácie o programe"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Časovač vypnutia: prehrávanie zastavené"
+
+msgid "No programme information"
+msgstr "Žiadne informácie o programe"
+
+msgid "Next: {v0}  {title}"
+msgstr "Potom: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Signál {v0} %"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "Naživo"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Pozerajte a nahrávajte DVB-S/S2, DVB-C, DVB-T/T2, ATSC a internetovú televíziu pomocou Linux DVB API a GStreameru."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Priradiť kanály IPTV k XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Zatiaľ nie je načítaný žiadny sprievodca XMLTV. Nastavte adresu XMLTV v nastaveniach EPG a najprv sprievodcu stiahnite; priraďovanie sa začne automaticky po stiahnutí."
+
+msgid "Download XMLTV guide now"
+msgstr "Stiahnuť sprievodcu XMLTV teraz"
+
+msgid "Only channels without guide"
+msgstr "Len kanály bez sprievodcu"
+
+msgid "Match"
+msgstr "Priradenie"
+
+msgid "Guide channel:"
+msgstr "Kanál sprievodcu:"
+
+msgid "Assign"
+msgstr "Priradiť"
+
+msgid "Suggest"
+msgstr "Navrhnúť"
+
+msgid "Auto-match all"
+msgstr "Priradiť všetko automaticky"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Priradiť každý kanál, ktorý nebol priradený ručne"
+
+msgid "Reset to automatic"
+msgstr "Vrátiť na automatické"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Nechať pri vybranom kanáli znova rozhodnúť automatické priradenie"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "Kanál sprievodcu má {done} z {v1} kanálov"
+
+msgid "No suggestion for {name}"
+msgstr "Žiadny návrh pre {name}"

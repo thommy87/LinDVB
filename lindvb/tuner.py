@@ -27,6 +27,8 @@ except (ImportError, ValueError):
     GstMpegts = None
 
 SEGMENT_BYTES = 64 * 1024 * 1024
+# ATSC terrestrial (8VSB) and US cable (QAM annex B): the guide is in PSIP
+ATSC_SYSTEMS = ("atsc", "dvb-c-b")
 TS_PACKET = 188
 
 
@@ -55,7 +57,8 @@ def dvbsrc_properties(ch, settings, adapter, frontend):
     if ch.stream_id >= 0:
         p["stream-id"] = ch.stream_id
     software_ca = ch.encrypted and settings.get("ca_provider", "none") not in ("none", "ci", "")
-    if settings["full_transponder"] or not ch.pmt_pid or software_ca:
+    # ATSC: the PSIP guide PIDs are only known from the MGT, so take the whole stream
+    if settings["full_transponder"] or not ch.pmt_pid or software_ca or ch.delsys in ATSC_SYSTEMS:
         # whole transponder: also when a softcam descrambles, so that the ECM
         # PIDs (not in the channel list) reach it
         p["pids"] = "8192"
@@ -173,6 +176,8 @@ class Capture(GObject.Object):
         "stats": (GObject.SignalFlags.RUN_LAST, None, (object,)),
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "eit": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
+        # the transport stream id from the PAT, when the channel list lacks it
+        "tsid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
     }
 
     def __init__(self, channel, adapter, frontend, settings, ca_provider=None):
@@ -187,6 +192,12 @@ class Capture(GObject.Object):
         self._pat_asm = None
         self._pmt_pid = channel.pmt_pid
         self.epg_language = settings.get("epg_language", "")
+        self.tsid = channel.tsid
+        # ATSC carries its guide in PSIP tables instead of DVB EIT
+        self._atsc = None
+        if channel.delsys in ATSC_SYSTEMS:
+            from .atsc import AtscGuide
+            self._atsc = AtscGuide(self.epg_language)
         base = Path(settings["timeshift_dir"])
         base.mkdir(parents=True, exist_ok=True)
         self.store = SegmentStore(tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base))
@@ -347,6 +358,13 @@ class Capture(GObject.Object):
             elif GstMpegts is not None:
                 section = GstMpegts.message_parse_mpegts_section(msg)
                 if section is not None:
+                    if section.section_type == GstMpegts.SectionType.PAT and not self.tsid:
+                        self.tsid = section.subtable_extension
+                        self.emit("tsid", self.tsid)
+                    if self._atsc is not None:
+                        for key, events in self._atsc.feed(section, GstMpegts):
+                            self.emit("eit", key, events)
+                        return
                     res = parse_eit_section(section, GstMpegts, self.epg_language)
                     if res and res[1]:
                         self.emit("eit", res[0], res[1])

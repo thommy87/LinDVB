@@ -230,6 +230,63 @@ def read_xmltv(data: bytes, language=""):
     return channels, items
 
 
+def _xmltv_stamp(t):
+    return datetime.fromtimestamp(int(t), timezone.utc).strftime("%Y%m%d%H%M%S +0000")
+
+
+def xmltv_channel_id(channel):
+    """A stable XMLTV id for a channel: its own XMLTV id, else name + key."""
+    if getattr(channel, "xmltv_id", ""):
+        return channel.xmltv_id
+    slug = re.sub(r"[^A-Za-z0-9]+", "", channel.name) or "channel"
+    return f"{slug}.{abs(hash_key(channel.epg_key)) % 100000:05d}.lindvb"
+
+
+def hash_key(text):
+    """A small hash that is the same in every run (``hash()`` is salted)."""
+    h = 0
+    for ch in text.encode():
+        h = (h * 131 + ch) & 0xFFFFFFFF
+    return h
+
+
+def write_xmltv(store, channels, since=None):
+    """The guide of ``channels`` as XMLTV (bytes), for other programs or backups."""
+    root = ET.Element("tv", {"generator-info-name": "LinDVB"})
+    progs = []
+    seen = set()
+    for c in channels:
+        key = c.epg_key
+        events = store.for_key(key, since)
+        if not events or key in seen:
+            continue
+        seen.add(key)
+        cid = xmltv_channel_id(c)
+        ch = ET.SubElement(root, "channel", {"id": cid})
+        ET.SubElement(ch, "display-name").text = c.name
+        if getattr(c, "number", 0):
+            ET.SubElement(ch, "display-name").text = str(c.number)
+        for e in events:
+            progs.append((cid, e))
+    for cid, e in progs:
+        p = ET.SubElement(root, "programme", {"start": _xmltv_stamp(e.start),
+                                              "stop": _xmltv_stamp(e.end), "channel": cid})
+        ET.SubElement(p, "title").text = e.title
+        if e.subtitle:
+            ET.SubElement(p, "sub-title").text = e.subtitle
+        if e.description:
+            ET.SubElement(p, "desc").text = e.description
+        if e.genre:
+            ET.SubElement(p, "category").text = e.genre
+        if e.year:
+            ET.SubElement(p, "date").text = str(e.year)
+        if e.country:
+            ET.SubElement(p, "country").text = e.country
+    ET.indent(root)
+    return b'<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE tv SYSTEM "xmltv.dtd">\n' + \
+        ET.tostring(root, encoding="utf-8")
+
+
 def parse_xmltv(data: bytes):
     """Yield (channel display-name lowercased, Event)."""
     channels, items = read_xmltv(data)

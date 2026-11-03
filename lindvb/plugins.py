@@ -220,7 +220,13 @@ class PluginManager:
         self.app = app
 
     def emit(self, event, *args):
-        """Call every hook registered for ``event``; never raise to the caller."""
+        """Call every hook registered for ``event``; never raise to the caller.
+        Also starts the user's scripts for the event (see lindvb.hooks)."""
+        from . import hooks
+        try:
+            hooks.run(event, args)
+        except Exception as e:      # noqa: BLE001 - a script must not break the app
+            self.log(f"Script hook '{event}' failed: {e}")
         for plugin_name, cb in self.hooks.get(event, []):
             try:
                 cb(*args)
