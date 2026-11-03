@@ -799,7 +799,9 @@ vec3 sky(float y) {
     return mix(c, d, (y - 0.72) / 0.28);
 }
 vec2 cloud_warp(vec2 p, float c) {
-    return p + 0.35 * vec2(fbm(p * 0.9 + vec2(c * 0.3, 0.0), 3), fbm(p * 0.9 + vec2(4.0, c * 0.2), 3));
+    // the music reshapes the clouds: the mids stir them, the bass swells them
+    float a = 0.30 + 0.25 * u_energy.y + 0.15 * u_pulse;
+    return p + a * vec2(fbm(p * 0.9 + vec2(c * 0.10, 0.0), 3), fbm(p * 0.9 + vec2(4.0, c * 0.08), 3));
 }
 float clouds(vec2 w, float cover, float soft, int octaves) {
     return smoothstep(cover, cover + soft, fbm(w, octaves));
@@ -817,11 +819,20 @@ void main() {
     col += vec3(1.0, 0.62, 0.30) * exp(-dist / (0.32 + 0.08 * bass)) * (0.55 + 0.35 * bass);
     col += vec3(1.0, 0.85, 0.60) * exp(-dist / 0.07) * (0.8 + 0.5 * u_pulse);
     // rays fanning out from the sun; the spectrum from left (bass) to right (treble)
+    // the fan of rays turns slowly around the sun (sampled on a circle, so it has no seam)
     float th = atan(d.x, -d.y);                        // 0 straight up
     float m = clamp(th / 3.1 + 0.5, 0.0, 1.0);
-    float rays = vnoise(vec2(th * 7.0, c * 0.6)) * 0.65 + vnoise(vec2(th * 19.0, -c * 0.9)) * 0.35;
-    rays = smoothstep(0.35, 0.85, rays) * (0.25 + 1.1 * spec(m)) * (0.6 + 0.6 * mid);
-    float raymask = smoothstep(0.03, 0.15, dist) * exp(-dist / 0.75) * smoothstep(1.0, 0.92, p.y);
+    float spin = c * 0.12;
+    vec2 rd = d / max(dist, 1e-4);
+    vec2 r1 = vec2(cos(spin) * rd.x - sin(spin) * rd.y, sin(spin) * rd.x + cos(spin) * rd.y);
+    vec2 r2 = vec2(cos(-spin * 0.6) * rd.x - sin(-spin * 0.6) * rd.y, sin(-spin * 0.6) * rd.x + cos(-spin * 0.6) * rd.y);
+    float rays = vnoise(r1 * 5.0 + 11.0) * 0.6 + vnoise(r2 * 13.0 + 31.0) * 0.4;
+    // the spectrum shapes them, bass on the left, treble on the right: louder bands
+    // give wider, brighter and longer rays
+    float sp = spec(m);
+    rays = smoothstep(0.55 - 0.25 * sp, 0.9, rays) * (0.3 + 1.2 * sp) * (0.6 + 0.6 * mid);
+    float raymask = smoothstep(0.03, 0.15, dist) * exp(-dist / (0.55 + 0.45 * sp + 0.2 * bass))
+                    * smoothstep(1.0, 0.92, p.y);
     // two cloud layers drifting at their own speed; lit gold from below and from the sun
     vec2 toSun = normalize(-d + vec2(0.0, 0.001));
     col += vec3(1.0, 0.82, 0.55) * rays * raymask;
@@ -829,9 +840,10 @@ void main() {
         int k = 1 - j;                                   // the far, lower layer first
         float fk = float(k);
         float scale = k == 0 ? 1.0 : 1.9;
-        vec2 cp = vec2(p.x * aspect * 1.1 * scale + c * (0.18 + 0.12 * fk) + fk * 7.0, p.y * (5.0 + 2.0 * fk) * scale);
+        // drifting from left to right, the near layer a little faster
+        vec2 cp = vec2(p.x * aspect * 1.1 * scale - c * (0.20 - 0.06 * fk) + fk * 7.0, p.y * (5.0 + 2.0 * fk) * scale);
         float band = k == 0 ? smoothstep(0.80, 0.30, p.y) : smoothstep(0.95, 0.55, p.y) * smoothstep(0.35, 0.6, p.y);
-        float cover = mix(0.80, 0.47, band);
+        float cover = mix(0.80, 0.47, band) - 0.06 * spec(clamp(p.x, 0.0, 1.0)) - 0.03 * u_pulse;
         vec2 w = cloud_warp(cp, c);
         float dn = clouds(w, cover, 0.20, 6);
         // light from the sun through the cloud: thin parts and edges facing it glow

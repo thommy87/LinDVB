@@ -843,12 +843,13 @@ class Supernova(_Scene):
 
 class OccasusSolis(_Scene):
     """A sunset (lat. *occasus solis*): a small sun low over the horizon in
-    an orange and red sky, rays fanning out between slowly drifting clouds
-    lit gold from below. The spectrum sets the rays from left (bass) to
-    right (treble), the bass the glow of the sun."""
+    an orange and red sky, a fan of rays turning slowly around it and clouds
+    lit gold from below drifting from left to right. The spectrum shapes the
+    rays from left (bass) to right (treble) and thickens the clouds above
+    it, the mids stir the clouds, the bass sets the glow of the sun."""
     id, label = "sunset", "Occasus solis (modern)"
 
-    PACE = (0.05, 0.07)
+    PACE = (0.25, 0.20)
     SUN = (0.5, 0.86)             # position, 0..1 of the width and the height
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
