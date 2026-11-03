@@ -871,10 +871,41 @@ class OccasusSolis(_Scene):
     an orange and red sky, a fan of rays turning slowly around it and clouds
     lit gold from below drifting from left to right. The spectrum shapes the
     rays from left (bass) to right (treble) and thickens the clouds above
-    it, the mids stir the clouds, the bass sets the glow of the sun."""
+    it, the mids stir the clouds, the bass sets the glow of the sun. New
+    clouds coming in from the left are grown from the music: the louder,
+    the cloudier."""
     id, label = "sunset", "Occasus solis (modern)"
 
-    PACE = (0.25, 0.20)
+    PACE = (0.30, 0.10)
+    COLUMNS = 32          # cloud columns across the screen, as in the shader
+    DRIFT = (0.022, 0.010)  # screen widths per second when silent, extra at full level
+
+    def __init__(self, seed=None):
+        super().__init__()
+        self.rng = random.Random(seed)
+        self.drift = 0.0          # screen widths the clouds have moved to the right
+        self.cfrac = 0.0          # fraction of a column
+        self.drive = 0.35
+        self.clouds = [self._next(0.5) for _ in range(self.COLUMNS + 8)]
+
+    def _next(self, prev):
+        """How cloudy (0..1) the next stretch of sky coming in from the left is:
+        the music of the moment, smoothed, with some chance in it."""
+        target = min(1.0, self.drive * (0.6 + 0.8 * self.rng.random()))
+        return prev + (target - prev) * 0.45
+
+    def params(self, f):
+        p = super().params(f)
+        level, pulse = p[5], p[4]
+        self.drive += (min(1.0, 0.15 + 1.1 * level + 0.3 * pulse) - self.drive) * min(1.0, f.dt * 1.0)
+        step = f.dt * (self.DRIFT[0] + self.DRIFT[1] * level)
+        self.drift += step
+        self.cfrac += step * self.COLUMNS
+        while self.cfrac >= 1.0:
+            self.cfrac -= 1.0
+            self.clouds.pop()
+            self.clouds.insert(0, self._next(self.clouds[0]))
+        return p
     SUN = (0.5, 0.86)             # position, 0..1 of the width and the height
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):

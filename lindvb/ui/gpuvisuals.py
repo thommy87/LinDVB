@@ -799,6 +799,24 @@ void main() {
 
 SUNSET = PRELUDE + SCENE_FN + """
 uniform vec2 u_sun;          // 0..1 of the width and the height
+uniform float u_cloud[40];   // how cloudy each column is, grown from the music (newest on the left)
+uniform float u_cfrac;       // fraction of a column the clouds have moved to the right
+uniform float u_drift;       // how far the clouds have drifted, in screen widths
+const float COLUMNS = 32.0;
+float cloudiness(float x) {
+    float fx = clamp(x, 0.0, 1.0) * COLUMNS + 1.0 - u_cfrac;
+    int i = int(floor(fx));
+    float t = fx - float(i);
+    t = t * t * (3.0 - 2.0 * t);
+    return mix(u_cloud[clamp(i, 0, 39)], u_cloud[clamp(i + 1, 0, 39)], t);
+}
+// a quick estimate of the near clouds at a point, for the shadows they cast into the rays
+float cloud_shadow(vec2 p, float aspect) {
+    vec2 cp = vec2((p.x - u_drift) * aspect, p.y * 4.0);
+    float band = smoothstep(0.92, 0.25, p.y);
+    float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5);
+    return clamp((fbm(cp + 0.25, 3) - cover) * 3.2, 0.0, 1.0);
+}
 vec3 aces(vec3 x) {          // filmic tone curve: soft highlights, rich mid tones
     return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
 }
@@ -814,8 +832,8 @@ vec3 sky(float y, float dist) {
 float density(vec2 p, float c) {
     // soft, wispy cloud density: warped fbm, thinned towards the sun's horizon
     float amp = 0.45 + 0.25 * u_energy.y + 0.12 * u_pulse;     // the music stirs the shapes
-    vec2 w = p + amp * vec2(fbm(p * 0.6 + vec2(c * 0.10, 1.3), 4), fbm(p * 0.6 + vec2(5.1, c * 0.08), 4));
-    float n = fbm(w, 6);
+    vec2 w = p + amp * vec2(fbm(p * 0.6 + vec2(c * 0.10, 1.3), 3), fbm(p * 0.6 + vec2(5.1, c * 0.08), 3));
+    float n = fbm(w, 5);
     n += 0.10 * (vnoise(w * 7.0) - 0.5) + 0.05 * (vnoise(w * 17.0) - 0.5);   // frayed edges
     return n;
 }
@@ -844,10 +862,16 @@ void main() {
     vec2 r2 = vec2(cos(-spin * 0.6) * rd.x - sin(-spin * 0.6) * rd.y, sin(-spin * 0.6) * rd.x + cos(-spin * 0.6) * rd.y);
     float rays = vnoise(r1 * 4.0 + 11.0) * 0.6 + vnoise(r2 * 9.0 + 31.0) * 0.4;
     float sp = spec(m);
-    rays = pow(rays, 1.6) * (0.35 + 0.9 * sp) * (0.7 + 0.5 * mid);
+    rays = pow(rays, 1.3) * (0.45 + 1.0 * sp) * (0.8 + 0.5 * mid);
     float raymask = smoothstep(0.02, 0.2, dist) * exp(-dist / (0.5 + 0.35 * sp + 0.15 * bass))
                     * smoothstep(1.0, 0.9, p.y);
-    vec3 rayc = vec3(1.0, 0.70, 0.40) * rays * raymask * 0.6;
+    // light shafts: the rays reach this point only where no cloud stands between it and the sun
+    float lit = 1.0;
+    for (int i = 1; i <= 6; i++) {
+        vec2 sp = mix(p, u_sun, float(i) / 7.0);
+        lit *= 1.0 - 0.85 * cloud_shadow(sp, aspect);
+    }
+    vec3 rayc = vec3(1.0, 0.72, 0.42) * rays * raymask * 1.05 * lit;
     // two layers of clouds drifting from left to right; each lit through its own
     // thickness towards the sun, dark underneath, glowing at thin, sunward edges
     vec2 toSun = normalize(-d + vec2(0.0, 0.001));
@@ -856,17 +880,19 @@ void main() {
         int k = 1 - j;                                  // the far, lower layer first
         float fk = float(k);
         float scale = k == 0 ? 1.0 : 1.8;
-        vec2 cp = vec2(p.x * aspect * 1.0 * scale - c * (0.20 - 0.06 * fk) + fk * 7.0, p.y * (4.0 + 2.0 * fk) * scale);
-        float band = k == 0 ? smoothstep(0.80, 0.25, p.y) : smoothstep(0.95, 0.60, p.y) * smoothstep(0.40, 0.62, p.y);
-        float cover = mix(0.82, 0.46, band) - 0.05 * spec(clamp(p.x, 0.0, 1.0));
+        // drifting from left to right (the far layer slower); the music decides how
+        // cloudy each new stretch of sky coming in from the left is
+        vec2 cp = vec2((p.x - u_drift * (1.0 - 0.3 * fk)) * aspect * scale + fk * 7.0, p.y * (4.0 + 2.0 * fk) * scale);
+        float band = k == 0 ? smoothstep(0.92, 0.25, p.y) : smoothstep(0.99, 0.66, p.y) * smoothstep(0.40, 0.62, p.y);
+        float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5);
         float n = density(cp, c);
         float dens = clamp((n - cover) * 3.2, 0.0, 1.0);
         if (dens <= 0.0) continue;
         // optical depth towards the sun
         float od = 0.0;
         vec2 stepv = toSun * vec2(scale * aspect * 0.0 + 1.0, (4.0 + 2.0 * fk) * scale) * 0.025;
-        for (int i = 1; i <= 4; i++) od += clamp((fbm(cp + stepv * float(i), 4) - cover) * 3.2, 0.0, 1.0);
-        float T = exp(-od * 0.9);
+        for (int i = 1; i <= 3; i++) od += clamp((fbm(cp + stepv * float(i) * 1.33, 3) - cover) * 3.2, 0.0, 1.0);
+        float T = exp(-od * 1.2);
         float forward = exp(-dist / 0.35);              // light shines through near the sun
         vec3 ambient = mix(sky(p.y, dist) * 0.5, vec3(0.32, 0.16, 0.24), 0.5) * (1.0 - 0.35 * dens);
         vec3 sunlit = vec3(1.0, 0.55, 0.25) * (0.45 + 1.5 * forward) * (0.9 + 0.4 * treble);
@@ -879,7 +905,7 @@ void main() {
         col = mix(col, cc, alpha);
         shade_all = max(shade_all, alpha);
     }
-    col += rayc * (1.0 - 0.7 * shade_all);
+    col += rayc * (1.0 - shade_all);              // and never through a cloud
     // the sun: a small disc, a little darker at its rim, behind thin cloud
     float sr = 0.022;
     float disc = smoothstep(sr, sr - 2.0 / u_res.y, dist);
@@ -1405,6 +1431,9 @@ class SceneRenderer(Renderer):
         prog.set_array("u_spec", st.spectrum.values or [0.0] * 48, 1)
         if isinstance(st, visuals.OccasusSolis):
             prog.set("u_sun", *st.SUN)
+            prog.set_array("u_cloud", st.clouds, 1)
+            prog.set("u_cfrac", st.cfrac)
+            prog.set("u_drift", st.drift)
         if isinstance(st, visuals.AuroraBorealis):
             prog.set_array("u_ridge", st.ridge, 1)
             prog.set("u_scroll", st.scroll)

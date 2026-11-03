@@ -270,3 +270,15 @@ def test_aurora_mountains_scroll_left_and_grow_from_the_music():
     shifted = int(style.world)
     assert style.ridge[:AuroraBorealis.RIDGE - shifted] == first[shifted:]   # moved to the left
     assert all(0.02 <= h <= 0.26 for h in style.ridge)
+
+
+def test_sunset_clouds_drift_right_and_grow_from_the_music():
+    from lindvb.visuals import OccasusSolis
+    quiet, loud = OccasusSolis(seed=2), OccasusSolis(seed=2)
+    for f in _frames(1800, 0.01, -78.0):            # 30 s
+        quiet.params(f)
+    for f in _frames(1800, 0.6, -15.0):
+        loud.params(f)
+    assert len(loud.clouds) == OccasusSolis.COLUMNS + 8 and 0.0 <= loud.cfrac < 1.0
+    assert loud.drift > quiet.drift > 0.5              # visibly moving: over half a screen in 30 s
+    assert sum(loud.clouds[:16]) > sum(quiet.clouds[:16])   # newest (left) columns: louder, cloudier
