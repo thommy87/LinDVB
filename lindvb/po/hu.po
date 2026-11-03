@@ -619,8 +619,18 @@ msgstr "Nincs telepített bővítmény."
 msgid "Plugin actions"
 msgstr "Bővítményműveletek"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Bővítménymappák: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Bővítménymappa: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Másolja a bővítményeket ebbe a mappába: egy Python-fájlt (.py) vagy egy __init__.py fájlt tartalmazó mappát."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Bővítménymappa megnyitása"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "A DVB-I az internetről tölti le a régiója csatornalistáját: számozást, neveket és logókat, valamint csatornánként a vételi módokat. A LinDVB lehetőség szerint a csatornakeresésből származó antennás, kábeles vagy műholdas csatornákat használja, egyébként az internetes adást."

@@ -619,8 +619,18 @@ msgstr "Nema instaliranih dodataka."
 msgid "Plugin actions"
 msgstr "Radnje dodataka"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Mape dodataka: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Mapa dodataka: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopirajte dodatke u ovu mapu: Python datoteku (.py) ili mapu s __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Otvori mapu dodataka"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I preuzima s interneta popis kanala vaše regije: numeraciju, nazive i logotipe te za svaki kanal načine prijema. LinDVB po mogućnosti koristi antenske, kabelske ili satelitske kanale iz vašeg pretraživanja kanala, a inače internetski stream."

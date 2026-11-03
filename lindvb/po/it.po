@@ -619,8 +619,18 @@ msgstr "Nessun plugin installato."
 msgid "Plugin actions"
 msgstr "Azioni dei plugin"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Cartelle dei plugin: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Cartella dei plugin: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Copia i plugin in questa cartella: un file Python (.py) o una cartella contenente __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Apri cartella dei plugin"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I scarica da internet la lista canali della tua regione: numerazione, nomi e loghi, e per ogni canale i modi per riceverlo. LinDVB usa, se possibile, i canali da antenna, cavo o satellite della tua ricerca canali, altrimenti il flusso internet."

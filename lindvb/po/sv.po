@@ -619,8 +619,18 @@ msgstr "Inga insticksmoduler installerade."
 msgid "Plugin actions"
 msgstr "Åtgärder från insticksmoduler"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Mappar för insticksmoduler: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Insticksmapp: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopiera insticksmoduler till den här mappen: en Python-fil (.py) eller en mapp med __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Öppna insticksmapp"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I hämtar kanallistan för din region från internet: numrering, namn och loggor, och för varje kanal sätten att ta emot den. LinDVB använder om möjligt antenn-, kabel- eller satellitkanalerna från din kanalsökning och annars internetströmmen."

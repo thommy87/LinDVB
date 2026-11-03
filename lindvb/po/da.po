@@ -619,8 +619,18 @@ msgstr "Ingen udvidelsesmoduler installeret."
 msgid "Plugin actions"
 msgstr "Handlinger fra udvidelsesmoduler"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Mapper til udvidelsesmoduler: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Plugin-mappe: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopiér plugins til denne mappe: en Python-fil (.py) eller en mappe med __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Åbn plugin-mappe"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I henter kanallisten for din region fra internettet: nummerering, navne og logoer, og for hver kanal måderne at modtage den på. LinDVB bruger så vidt muligt antenne-, kabel- eller satellitkanalerne fra din kanalsøgning og ellers internetstreamen."

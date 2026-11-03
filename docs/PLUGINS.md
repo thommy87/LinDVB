@@ -13,6 +13,16 @@ plugin directory:
 * any folder listed in the `LINDVB_PLUGIN_PATH` environment variable
   (`os.pathsep`-separated)
 
+LinDVB creates `~/.local/share/lindvb/plugins/` at startup, and
+*Plugins → Manage Plugins…* has an *Open Plugin Folder* button for it. The add-ons
+that ship with LinDVB (such as the projectM/GOOM visualisations) live inside the
+application and need nothing copied there.
+
+Plugins are not Enigma2 packages: an `.ipk` (for example an OSCam build for a
+set-top box) is not a LinDVB plugin. A softcam such as OSCam runs as its own
+program, and LinDVB talks to it over the DVBAPI socket (Preferences →
+Conditional access).
+
 Each plugin defines a `register(api)` function and, optionally, `NAME` and
 `VERSION`:
 

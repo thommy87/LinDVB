@@ -619,8 +619,18 @@ msgstr "No hay complementos instalados."
 msgid "Plugin actions"
 msgstr "Acciones de complementos"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Carpetas de complementos: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Carpeta de complementos: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Copie los complementos en esta carpeta: un archivo Python (.py) o una carpeta que contenga __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Abrir carpeta de complementos"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I obtiene de internet la lista de canales de su región: numeración, nombres y logotipos, y para cada canal las formas de recibirlo. LinDVB usa, cuando puede, los canales de antena, cable o satélite de su búsqueda de canales y, si no, la emisión por internet."

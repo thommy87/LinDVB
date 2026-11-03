@@ -148,3 +148,16 @@ def test_bundled_addon_loads(tmp_path, monkeypatch):
     assert "gst_visualizers" in names
     mgr.load_all()                      # with or without GStreamer, it must not fail
     assert "gst_visualizers" not in mgr.failed
+
+
+def test_user_dirs_leave_out_bundled_addons(tmp_path, monkeypatch):
+    from lindvb import plugins
+    monkeypatch.delenv("LINDVB_NO_BUNDLED_PLUGINS", raising=False)
+    monkeypatch.setenv("LINDVB_PLUGIN_PATH", str(tmp_path / "extra"))
+    monkeypatch.setattr(plugins, "PLUGIN_DIR", tmp_path / "user")
+    monkeypatch.setattr(plugins.PluginManager, "plugin_dirs",
+                        lambda self: [tmp_path / "user", tmp_path / "extra", plugins.BUNDLED_DIR])
+    mgr = PluginManager({})
+    assert mgr.user_dirs() == [tmp_path / "user", tmp_path / "extra"]
+    assert mgr.ensure_plugin_dir() == tmp_path / "user"
+    assert (tmp_path / "user").is_dir()

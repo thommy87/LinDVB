@@ -619,8 +619,18 @@ msgstr "Brak zainstalowanych wtyczek."
 msgid "Plugin actions"
 msgstr "Akcje wtyczek"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Foldery wtyczek: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Folder wtyczek: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Skopiuj wtyczki do tego folderu: plik Pythona (.py) lub folder zawierający __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Otwórz folder wtyczek"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I pobiera z internetu listę kanałów Twojego regionu: numerację, nazwy i logo oraz dla każdego kanału sposoby jego odbioru. LinDVB używa w miarę możliwości kanałów antenowych, kablowych lub satelitarnych z Twojego wyszukiwania kanałów, a w przeciwnym razie strumienia internetowego."

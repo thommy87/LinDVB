@@ -619,8 +619,18 @@ msgstr "Pluginaid pole paigaldatud."
 msgid "Plugin actions"
 msgstr "Pluginate toimingud"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Pluginate kaustad: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Pluginate kaust: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopeeri pluginad sellesse kausta: Pythoni fail (.py) või kaust, milles on __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Ava pluginate kaust"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I laadib internetist sinu piirkonna kanalite loendi: numeratsiooni, nimed ja logod ning iga kanali vastuvõtuviisid. LinDVB kasutab võimaluse korral sinu kanaliotsingu antenni-, kaabli- või satelliitkanaleid ja muidu internetivoogu."

@@ -619,8 +619,18 @@ msgstr "Плагіни не встановлено."
 msgid "Plugin actions"
 msgstr "Дії плагінів"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Теки плагінів: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Тека плагінів: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Скопіюйте плагіни в цю теку: файл Python (.py) або теку з __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Відкрити теку плагінів"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I завантажує з інтернету список каналів вашого регіону: нумерацію, назви й логотипи, а для кожного каналу — способи приймання. LinDVB за можливості використовує ефірні, кабельні або супутникові канали з вашого пошуку каналів, а інакше — інтернет-потік."

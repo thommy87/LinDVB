@@ -619,8 +619,18 @@ msgstr "Aucune extension installée."
 msgid "Plugin actions"
 msgstr "Actions des extensions"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Dossiers des extensions : {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Dossier des extensions : {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Copiez les extensions dans ce dossier : un fichier Python (.py) ou un dossier contenant __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Ouvrir le dossier des extensions"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I récupère sur internet la liste des chaînes de votre région : numérotation, noms et logos, et pour chaque chaîne les moyens de la recevoir. LinDVB utilise si possible les chaînes antenne, câble ou satellite de votre recherche de chaînes, et sinon le flux internet."

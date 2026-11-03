@@ -619,8 +619,18 @@ msgstr "Ni nameščenih vtičnikov."
 msgid "Plugin actions"
 msgstr "Dejanja vtičnikov"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Mape vtičnikov: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Mapa vtičnikov: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Vtičnike kopirajte v to mapo: datoteko Python (.py) ali mapo z __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Odpri mapo vtičnikov"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I prenese s spleta seznam kanalov vaše regije: številčenje, imena in logotipe ter za vsak kanal načine sprejema. LinDVB po možnosti uporabi antenske, kabelske ali satelitske kanale iz vašega iskanja kanalov, sicer pa spletni tok."

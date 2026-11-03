@@ -619,8 +619,18 @@ msgstr "Nie sú nainštalované žiadne zásuvné moduly."
 msgid "Plugin actions"
 msgstr "Akcie zásuvných modulov"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Priečinky zásuvných modulov: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Priečinok zásuvných modulov: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Skopírujte zásuvné moduly do tohto priečinka: súbor Pythonu (.py) alebo priečinok obsahujúci __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Otvoriť priečinok zásuvných modulov"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I sťahuje z internetu zoznam kanálov vášho regiónu: číslovanie, názvy a logá a pri každom kanáli spôsoby príjmu. LinDVB podľa možností používa anténne, káblové alebo satelitné kanály z vášho vyhľadávania kanálov, inak internetový stream."
