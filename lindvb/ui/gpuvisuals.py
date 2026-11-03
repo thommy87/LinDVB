@@ -756,7 +756,8 @@ void main() {
         float R = 0.03 * pow(18.0, s);                          // its radius grows exponentially
         float strength = u_veil[k];
         float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.0) * strength;
-        vec2 u = rot(seed) * (q * vec2(0.78, 1.0)) / R;   // wider than high, like the screen
+        // wider than high, like the screen, and turning a little as it travels
+        vec2 u = rot(seed + s * 0.35) * (q * vec2(0.78, 1.0)) / R;
         float ur = length(u);
         if (ur > 2.6) continue;
         // where on the ring this veil lies (it is born at a random place, not all around)
@@ -768,8 +769,10 @@ void main() {
         float m = ring * mix(0.35, 1.0, place) * alpha;
         if (m < 0.004) continue;
         // the veil itself: creased, swirled noise with fine fibres along the radius
+        // the veil itself; the swirl keeps changing as it drifts, so its shape morphs
         vec2 w = u * 1.8 + seed;
-        w += 0.9 * vec2(fbm(w * 0.7 + 1.7, 3), fbm(w * 0.7 + 5.2, 3));
+        vec2 morph = vec2(s * 1.6, -s * 1.3);
+        w += 0.9 * vec2(fbm(w * 0.7 + 1.7 + morph, 3), fbm(w * 0.7 + 5.2 - morph.yx, 3));
         float fil = pow(ridged(w, 5), 3.0) * 4.0 + pow(ridged(w * 2.7 + 9.0, 3), 4.0) * 2.0;
         float fib = 0.7 + 0.6 * vnoise(ud * 30.0 + seed * 11.0 + ur * 1.5);
         float wisp = fbm(w * 0.6 - 3.0, 3);
