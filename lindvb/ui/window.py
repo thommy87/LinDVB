@@ -115,6 +115,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._build_ui()
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self._on_play_error(_("Playback error: {m}").format(m=m)))
+        self.player.connect("vis-error", self._on_vis_error)
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
@@ -207,7 +208,7 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self.player.set_rate(p.get_double()))
         self.add_action(a)
         # radio visualisations: built-in styles and those plugins registered
-        self.visualizers = {s.id: (s.label, "draw", s) for s in STYLES}
+        self.visualizers = {s.id: (_(s.label), "draw", s) for s in STYLES}
         for _plugin, name, kind, factory in self.app.plugins.visualizers:
             self.visualizers[f"plugin:{name}"] = (name, kind, factory)
         if self.settings.get("visualizer") not in self.visualizers:
@@ -1845,6 +1846,14 @@ class MainWindow(Gtk.ApplicationWindow):
         self.lookup_action("vis").set_state(GLib.Variant.new_string(vis_id))
         self._update_visualizer()
         self.flash(self.visualizers[vis_id][0])
+
+    def _on_vis_error(self, _player, message):
+        """A GStreamer visualiser failed: the sound plays on, Goom HD takes over."""
+        failed = self.visualizers.get(self.settings.get("visualizer"), ("?",))[0]
+        fallback = "goomhd" if "goomhd" in self.visualizers else DEFAULT_STYLE
+        self.set_visualizer(fallback)
+        self.set_status(_("{name} could not start ({m}), showing {other} instead").format(
+            name=failed, m=message, other=self.visualizers[fallback][0]))
 
     def cycle_visualizer(self):
         ids = list(self.visualizers)

@@ -88,10 +88,90 @@ def screen_size(limit=MAX_SIZE, default=DEFAULT_SIZE):
     return int(w * f) & ~1, int(h * f) & ~1
 
 
-def sized(Gst, element, size, any_memory=False):
+_ISOLATED = {}
+
+
+def _isolated_bin_class(Gst):
+    """A bin that keeps its OpenGL elements away from the application's GL context.
+
+    GStreamer GL elements share the GL context of the video sink, which is GTK's.
+    On Wayland GTK draws with OpenGL ES, and projectM needs desktop OpenGL: with
+    GTK's context it fails ("Subclass failed to initialize"). projectM hands out
+    ordinary video frames, so it does not need to share: this bin answers no GL
+    context query or request, and projectM creates its own context."""
+    cls = _ISOLATED.get("cls")
+    if cls is not None:
+        return cls
+
+    def is_gl(context_type):
+        return (context_type or "").startswith("gst.gl")
+
+    try:
+        import gi
+        gi.require_version("GstGL", "1.0")
+        from gi.repository import GstGL
+    except (ImportError, ValueError):
+        GstGL = None
+
+    class IsolatedGLBin(Gst.Bin):
+        __gtype_name__ = "LinDVBIsolatedGLBin"
+        display = None
+
+        def _display_context(self):
+            """A GL display of our own that only offers desktop OpenGL (projectM
+            needs it; on EGL GStreamer would otherwise pick OpenGL ES)."""
+            if GstGL is None:
+                return None
+            if self.display is None:
+                display = GstGL.GLDisplay.new()
+                display.filter_gl_api(GstGL.GLAPI.OPENGL3 | GstGL.GLAPI.OPENGL)
+                self.display = display
+            context = Gst.Context.new("gst.gl.GLDisplay", True)
+            GstGL.context_set_gl_display(context, self.display)
+            return context
+
+        def do_handle_message(self, message):
+            if message.type == Gst.MessageType.NEED_CONTEXT:
+                ok, context_type = message.parse_context_type()
+                if ok and is_gl(context_type):
+                    if context_type == "gst.gl.GLDisplay" and message.src is not None:
+                        context = self._display_context()
+                        if context is not None:
+                            message.src.set_context(context)
+                    return          # nothing from outside: no sharing with GTK's context
+            elif message.type == Gst.MessageType.HAVE_CONTEXT:
+                if is_gl(message.parse_have_context().get_context_type()):
+                    return          # and its context stays inside
+            Gst.Bin.do_handle_message(self, message)
+
+        def do_set_context(self, context):
+            if not is_gl(context.get_context_type()):
+                Gst.Bin.do_set_context(self, context)
+
+    _ISOLATED["cls"] = IsolatedGLBin
+    return IsolatedGLBin
+
+
+def _block_gl_queries(Gst, element):
+    def probe(_pad, info):
+        query = info.get_query()
+        if query is not None and query.type == Gst.QueryType.CONTEXT:
+            ok, context_type = query.parse_context_type()
+            if ok and (context_type or "").startswith("gst.gl"):
+                return Gst.PadProbeReturn.DROP
+        return Gst.PadProbeReturn.OK
+    for pad in element.pads:
+        pad.add_probe(Gst.PadProbeType.QUERY_BOTH, probe)
+
+
+def sized(Gst, element, size, any_memory=False, isolate_gl=False):
     """Wrap a visualiser so it renders at ``size`` instead of its default 320x240."""
     w, h = size
-    bin_ = Gst.Bin.new(None)
+    if isolate_gl:
+        bin_ = _isolated_bin_class(Gst)()
+        _block_gl_queries(Gst, element)
+    else:
+        bin_ = Gst.Bin.new(None)
     caps = Gst.ElementFactory.make("capsfilter")
     feature = "(ANY)" if any_memory else ""
     caps.set_property("caps", Gst.Caps.from_string(
@@ -131,7 +211,7 @@ def register(api):
             _set(el, "shuffle-presets", True)
             res = s.get("visualizer_resolution", "auto")
             size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
-            return sized(Gst, el, size, any_memory=True)
+            return sized(Gst, el, size, any_memory=True, isolate_gl=True)
         api.add_visualizer("projectM (MilkDrop)", element=make_projectm)
     else:
         api.log("projectM not found: install gst-projectm and libprojectM to use it")

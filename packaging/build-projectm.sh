@@ -10,9 +10,10 @@ set -euo pipefail
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 PREFIX="$(realpath -m "${1:-$SRC/build/projectm}")"
 WORK="$PREFIX.src"
-# Pinned versions: gst-projectm has no releases yet and needs libprojectM 4.2
-# (frame time API), which is not released yet either.
-PROJECTM_COMMIT=eae22de40144ee8ded92f3c04b93a4c2f82adcc0
+# Pinned versions: the released libprojectM 4.1 (the unreleased 4.2 changed how
+# it finds OpenGL and failed on some desktops) and gst-projectm, which has no
+# releases yet; its one call into the 4.2 API (frame time) is patched out.
+PROJECTM_TAG=v4.1.8
 GST_PROJECTM_COMMIT=54c481c0b063065406cfeedffe0aecfa13a43f0e
 PRESETS_COMMIT=${PRESETS_COMMIT:-}
 TEXTURES_COMMIT=${TEXTURES_COMMIT:-}
@@ -29,9 +30,9 @@ clone() {   # url dir [ref]
     if [ -n "${3:-}" ]; then git -C "$WORK/$2" checkout -q "$3"; fi
 }
 
-echo "== libprojectM ${PROJECTM_COMMIT:0:10}"
-clone https://github.com/projectM-visualizer/projectm.git projectm "$PROJECTM_COMMIT"
-git -C "$WORK/projectm" submodule update -q --init --recursive --depth 1
+echo "== libprojectM $PROJECTM_TAG"
+git clone -q --depth 1 --branch "$PROJECTM_TAG" --recurse-submodules --shallow-submodules \
+    https://github.com/projectM-visualizer/projectm.git "$WORK/projectm"
 cmake -S "$WORK/projectm" -B "$WORK/projectm/build" -G Ninja \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON -DENABLE_PLAYLIST=ON -DBUILD_TESTING=OFF -DENABLE_SDL_UI=OFF
@@ -40,8 +41,11 @@ cmake --install "$WORK/projectm/build"
 
 echo "== gst-projectm"
 clone https://github.com/projectM-visualizer/gst-projectm.git gst-projectm "$GST_PROJECTM_COMMIT"
+# projectm_set_frame_time() only exists in libprojectM 4.2; 4.1 times frames itself
+sed -i '/projectm_set_frame_time(/d' "$WORK/gst-projectm/src/plugin.c"
 cmake -S "$WORK/gst-projectm" -B "$WORK/gst-projectm/build" -G Ninja \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" \
+    -DCMAKE_C_FLAGS="-include stdbool.h" \
     -DCMAKE_INSTALL_RPATH='$ORIGIN/..'
 cmake --build "$WORK/gst-projectm/build"
 mkdir -p "$PREFIX/lib/gstreamer-1.0"
