@@ -619,8 +619,18 @@ msgstr "Nu sunt instalate module suplimentare."
 msgid "Plugin actions"
 msgstr "Acțiuni ale modulelor suplimentare"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Dosare pentru module suplimentare: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Dosarul de pluginuri: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Copiați pluginurile în acest dosar: un fișier Python (.py) sau un dosar care conține __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Deschide dosarul de pluginuri"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I preia de pe internet lista de canale a regiunii tale: numerotare, nume și sigle, iar pentru fiecare canal modurile de recepție. LinDVB folosește, când poate, canalele de antenă, cablu sau satelit din căutarea ta de canale și altfel fluxul de internet."

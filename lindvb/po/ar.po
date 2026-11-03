@@ -619,8 +619,18 @@ msgstr "لا توجد إضافات مثبتة."
 msgid "Plugin actions"
 msgstr "إجراءات الإضافات"
 
-msgid "Plugin folders: {dirs}"
-msgstr "مجلدات الإضافات: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "مجلد الإضافات: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "انسخ الإضافات إلى هذا المجلد: ملف Python ‏(.py) أو مجلد يحتوي على __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "فتح مجلد الإضافات"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "يجلب DVB-I قائمة قنوات منطقتك من الإنترنت: الترقيم والأسماء والشعارات، ولكل قناة طرق استقبالها. يستخدم LinDVB قنوات الهوائي أو الكابل أو القمر الصناعي من بحث القنوات حيثما أمكن، وإلا فالبث عبر الإنترنت."

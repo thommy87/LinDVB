@@ -619,8 +619,18 @@ msgstr "Δεν υπάρχουν εγκατεστημένα πρόσθετα."
 msgid "Plugin actions"
 msgstr "Ενέργειες πρόσθετων"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Φάκελοι πρόσθετων: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Φάκελος πρόσθετων: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Αντιγράψτε τα πρόσθετα σε αυτόν τον φάκελο: ένα αρχείο Python (.py) ή έναν φάκελο που περιέχει __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Άνοιγμα φακέλου πρόσθετων"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "Το DVB-I λαμβάνει από το διαδίκτυο τη λίστα καναλιών της περιοχής σας: αρίθμηση, ονόματα και λογότυπα, και για κάθε κανάλι τους τρόπους λήψης του. Το LinDVB χρησιμοποιεί όπου μπορεί τα επίγεια, καλωδιακά ή δορυφορικά κανάλια από την αναζήτηση καναλιών σας και αλλιώς τη ροή διαδικτύου."

@@ -155,6 +155,20 @@ class PluginManager:
                 out.append(d)
         return out
 
+    def user_dirs(self):
+        """The folders the user installs plugins into: the plugins directory and any
+        ``LINDVB_PLUGIN_PATH`` entries, without the add-ons built into LinDVB."""
+        bundled = BUNDLED_DIR.expanduser()
+        return [d for d in self.plugin_dirs() if d != bundled]
+
+    def ensure_plugin_dir(self):
+        """Create the user plugins directory if needed; return it."""
+        try:
+            PLUGIN_DIR.mkdir(parents=True, exist_ok=True)
+        except OSError as e:
+            self.log(f"Cannot create plugin folder {PLUGIN_DIR}: {e}")
+        return PLUGIN_DIR
+
     def discover(self):
         """Return candidate ``(name, path)`` plugin modules, without loading them.
 
@@ -174,6 +188,7 @@ class PluginManager:
         return list(found.items())
 
     def load_all(self):
+        self.ensure_plugin_dir()
         if not self.settings.get("plugins_enabled", True):
             return
         disabled = set(self.settings.get("plugins_disabled", []))

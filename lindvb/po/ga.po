@@ -619,8 +619,18 @@ msgstr "Níl aon bhreiseán suiteáilte."
 msgid "Plugin actions"
 msgstr "Gníomhartha breiseán"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Fillteáin bhreiseán: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Fillteán breiseán: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Cóipeáil breiseáin chuig an bhfillteán seo: comhad Python (.py) nó fillteán ina bhfuil __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Oscail fillteán na mbreiseán"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "Faigheann DVB-I liosta stáisiún do réigiúin ón idirlíon: uimhriú, ainmneacha agus lógónna, agus do gach stáisiún na bealaí chun é a ghlacadh. Úsáideann LinDVB stáisiúin aeróige, cábla nó satailíte ó do scanadh nuair is féidir agus an sruth idirlín murach sin."

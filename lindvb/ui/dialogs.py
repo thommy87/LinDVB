@@ -3,7 +3,7 @@
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, GLib, Gst, Gtk
+from gi.repository import Gdk, Gio, GLib, Gst, Gtk
 
 from ..channels import Channel
 from ..config import DATA_DIR
@@ -816,10 +816,30 @@ class PluginsWindow(Gtk.Window):
                 b.connect("clicked", lambda _b, cb=cb: cb(app))
                 box.append(b)
 
-        dirs = ", ".join(str(d) for d in pm.plugin_dirs())
-        box.append(Gtk.Label(label=_("Plugin folders: {dirs}").format(dirs=dirs), xalign=0, wrap=True,
-                             css_classes=["dim-label"]))
+        # only the folders the user copies plugins into; the built-in add-ons live
+        # inside LinDVB (in the AppImage a temporary mount) and are listed above
+        folder = pm.ensure_plugin_dir()
+        box.append(Gtk.Label(label=_("Plugin folder: {path}").format(path=folder), xalign=0,
+                             wrap=True, selectable=True, css_classes=["dim-label"]))
+        for extra in pm.user_dirs()[1:]:
+            box.append(Gtk.Label(label=_("Plugin folder: {path}").format(path=extra), xalign=0,
+                                 wrap=True, selectable=True, css_classes=["dim-label"]))
+        box.append(Gtk.Label(label=_("Copy plugins into this folder: a Python file (.py), or a "
+                                     "folder containing __init__.py."),
+                             xalign=0, wrap=True, css_classes=["dim-label"]))
+        opener = Gtk.Button(label=_("Open Plugin Folder"), halign=Gtk.Align.START)
+        opener.connect("clicked", lambda *_: self._open_folder(folder))
+        box.append(opener)
         self.set_child(scrolled(box))
+
+    def _open_folder(self, folder):
+        try:
+            Gio.AppInfo.launch_default_for_uri(Path(folder).as_uri(), None)
+        except GLib.Error as e:
+            win = getattr(self.app, "window", None)
+            if win is not None:
+                win.set_status(_("Cannot open {folder}: {message}").format(folder=folder,
+                                                                           message=e.message))
 
     def _toggled(self, sw, _pspec, name):
         self.app.plugins.set_enabled(name, sw.get_active())

@@ -619,8 +619,18 @@ msgstr "L-ebda plugin installat."
 msgid "Plugin actions"
 msgstr "Azzjonijiet tal-plugins"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Folders tal-plugins: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Folder tal-plugins: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Ikkopja l-plugins f'dan il-folder: fajl Python (.py) jew folder li fih __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Iftaħ il-folder tal-plugins"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I jieħu mill-internet il-lista tal-istazzjonijiet tar-reġjun tiegħek: numerazzjoni, ismijiet u logos, u għal kull stazzjon il-modi kif tirċevih. LinDVB juża fejn jista' l-istazzjonijiet tal-antenna, tal-kejbil jew tas-satellita mit-tfittxija tiegħek u inkella l-fluss tal-internet."

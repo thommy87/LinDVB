@@ -866,9 +866,17 @@ msgstr ""
 msgid "Plugin actions"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:820
+#: lindvb/ui/dialogs.py
 #, python-brace-format
-msgid "Plugin folders: {dirs}"
+msgid "Plugin folder: {path}"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
 msgstr ""
 
 #: lindvb/ui/dvbi.py:46

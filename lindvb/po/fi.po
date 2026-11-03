@@ -619,8 +619,18 @@ msgstr "Liitännäisiä ei ole asennettu."
 msgid "Plugin actions"
 msgstr "Liitännäisten toiminnot"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Liitännäisten kansiot: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Liitännäiskansio: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopioi liitännäiset tähän kansioon: Python-tiedosto (.py) tai kansio, jossa on __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Avaa liitännäiskansio"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I hakee alueesi kanavaluettelon internetistä: numeroinnin, nimet ja logot sekä kunkin kanavan vastaanottotavat. LinDVB käyttää mahdollisuuksien mukaan kanavahaun antenni-, kaapeli- tai satelliittikanavia ja muuten internet-lähetystä."

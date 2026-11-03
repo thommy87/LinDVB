@@ -619,8 +619,18 @@ msgstr "Nav instalētu spraudņu."
 msgid "Plugin actions"
 msgstr "Spraudņu darbības"
 
-msgid "Plugin folders: {dirs}"
-msgstr "Spraudņu mapes: {dirs}"
+#: lindvb/ui/dialogs.py
+#, python-brace-format
+msgid "Plugin folder: {path}"
+msgstr "Spraudņu mape: {path}"
+
+#: lindvb/ui/dialogs.py
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopējiet spraudņus šajā mapē: Python failu (.py) vai mapi ar __init__.py."
+
+#: lindvb/ui/dialogs.py
+msgid "Open Plugin Folder"
+msgstr "Atvērt spraudņu mapi"
 
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr "DVB-I no interneta iegūst jūsu reģiona kanālu sarakstu: numerāciju, nosaukumus un logotipus, kā arī katra kanāla uztveršanas veidus. LinDVB, kad iespējams, izmanto antenas, kabeļa vai satelīta kanālus no jūsu kanālu meklēšanas, citādi interneta straumi."
