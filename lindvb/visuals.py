@@ -869,14 +869,16 @@ class OccasusSolis(_Scene):
 
 
 class AuroraBorealis(_Scene):
-    """Northern lights over snowy mountains: curtains of light, yellow-green
-    at their lower edge and violet at the top, fold and sway slowly across a
-    starry deep blue sky. Each ray brightens with its part of the spectrum
-    (bass on the left, treble on the right); louder music lifts the
-    curtains."""
+    """Northern lights over snowy mountains: a band of light whose lower edge
+    is a free curve that slowly changes its shape and wanders across the sky.
+    It glows most at one end, yellow-green, then turns turquoise and finally
+    pink or violet, with rays reaching upwards. Behind the mountains there is
+    a yellow-green glow; snow drifts and glitters on the slopes, and stars
+    light up at random places and fade away. Each part of the band brightens
+    with its part of the spectrum, the bass lengthens its rays."""
     id, label = "aurora", "Aurora borealis (modern)"
 
-    PACE = (0.05, 0.08)
+    PACE = (0.25, 0.20)
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
         g = cairo.LinearGradient(0, 0, 0, h)

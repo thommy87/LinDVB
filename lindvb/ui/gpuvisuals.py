@@ -871,69 +871,120 @@ void main() {
 """
 
 AURORA = PRELUDE + SCENE_FN + """
+const int SAMPLES = 90;
 float ridge_y(float x) {      // the mountains: low on the left, a big slope on the right
-    float y = mix(1.02, 0.80, smoothstep(0.50, 1.0, x)) - 0.05 * exp(-pow((x - 0.02) / 0.06, 2.0));
-    y += 0.035 * (fbm(vec2(x * 9.0, 0.5), 4) - 0.5) + 0.006 * (vnoise(vec2(x * 80.0, 2.0)) - 0.5);
+    float y = mix(1.03, 0.80, smoothstep(0.48, 1.0, x)) - 0.045 * exp(-pow((x - 0.03) / 0.07, 2.0));
+    y += 0.040 * (fbm(vec2(x * 7.0, 0.5), 5) - 0.5) + 0.010 * (ridged(vec2(x * 40.0, 2.0), 3) - 0.4);
     return y;
 }
-// one curtain: k sets its place, h its height, b its brightness, x0/x1 where it hangs
-vec3 curtain(vec2 p, float aspect, float c, float base, float amp, float freq, float speed,
-             float height, float bright, float x0, float x1, float seed) {
-    float x = p.x;
-    // folds: the curtain is bent sideways more the higher it reaches
-    float xw = x + 0.06 * sin(p.y * 5.0 + c * 0.8 + seed) + 0.04 * (fbm(vec2(p.y * 3.0, c * 0.3 + seed), 3) - 0.5);
-    float edge = base + amp * (fbm(vec2(xw * freq + seed, c * speed), 4) - 0.5) * 2.0
-                 + 0.03 * sin(xw * 9.0 + c * 1.3 + seed);
-    float hgt = edge - p.y;                              // above the lower edge, in screen heights
-    if (hgt < -0.03) return vec3(0.0);
-    float H = height * (1.0 + 0.35 * u_energy.x + 0.15 * u_pulse);
-    float body = smoothstep(-0.012, 0.006, hgt) * exp(-max(hgt, 0.0) / H);
-    body *= smoothstep(H * 3.5, H * 1.2, hgt);              // the top fades out
-    body += 0.9 * exp(-abs(hgt) / 0.010);                 // the bright lower rim
-    // rays: thin vertical streaks drifting along the curtain
-    float rx = xw * aspect;
-    float rays = vnoise(vec2(rx * 70.0 + c * 0.7, seed)) * 0.55 + vnoise(vec2(rx * 190.0 - c * 1.1, seed + 3.0)) * 0.45;
-    rays = 0.65 + 0.6 * smoothstep(0.3, 0.9, rays);
-    rays *= 0.6 + 0.6 * vnoise(vec2(rx * 6.0 + c * 0.3, seed + 8.0));      // brighter and fainter folds
-    float sp = spec(clamp(x, 0.0, 1.0));
-    float win = smoothstep(x0, x0 + 0.12, x) * smoothstep(x1, x1 - 0.12, x);
-    float t = clamp(max(hgt, 0.0) / (H * 2.2), 0.0, 1.0);
-    vec3 col = mix(vec3(0.80, 1.00, 0.35), vec3(0.20, 1.00, 0.55), smoothstep(0.0, 0.25, t));
-    col = mix(col, vec3(0.15, 0.75, 0.80), smoothstep(0.3, 0.6, t));
-    col = mix(col, vec3(0.70, 0.22, 0.85), smoothstep(0.5, 0.95, t));
-    return col * body * rays * win * bright * (0.55 + 1.2 * sp + 0.3 * u_energy.y);
+// stars that light up at random places and fade away again; new ones appear elsewhere
+vec3 blinking(vec2 px, float cell, float density, float size, float pace) {
+    vec2 c = floor(px / cell);
+    float h = hash12(c);
+    float life = u_t * pace * (0.5 + hash12(c + 4.4)) + h * 13.0;
+    float gen = floor(life);
+    if (hash12(c + gen * 1.7) > density) return vec3(0.0);       // this cell is dark this time
+    vec2 pos = (c + 0.15 + 0.7 * vec2(hash12(c + gen + 3.1), hash12(c + gen + 7.7))) * cell;
+    vec2 d = (px - pos) / (u_unit * size);
+    float on = sin(3.14159 * fract(life));
+    vec3 col = mix(vec3(0.75, 0.85, 1.0), vec3(1.0, 0.95, 0.85), hash12(c + gen + 9.4));
+    return col * exp(-dot(d, d)) * on * on * (0.5 + 0.8 * hash12(c + gen + 5.5));
+}
+// the curtain's lower edge: a free curve across the sky, slowly changing its shape
+vec2 path(float t, float c, float aspect, float seed) {
+    // the sideways terms are strong enough to fold the band back on itself at times
+    float x = mix(0.0, 1.0, t) + 0.20 * sin(TAU * (1.1 * t + c * 0.11) + seed) * (0.6 + 0.4 * sin(c * 0.05 + seed))
+              + 0.12 * sin(TAU * (0.45 * t - c * 0.07) + 2.0 * seed) + 0.15 * sin(c * 0.04 + seed * 3.0);
+    float y = 0.55 + 0.16 * sin(TAU * (0.7 * t + c * 0.09) + seed)
+              + 0.09 * sin(TAU * (1.6 * t - c * 0.13) + 3.0 * seed)
+              + 0.05 * sin(TAU * (2.9 * t + c * 0.17) + 5.0 * seed);
+    return vec2(x * aspect, y);
+}
+vec3 curtain(vec2 p, float aspect, float c, float seed, float gain, float height) {
+    float bass = u_energy.x;
+    // where it glows most: one end, wandering slowly along the band
+    float peak = 0.5 + 0.45 * sin(c * 0.13 + seed);
+    float second = 0.5 + 0.5 * sin(c * 0.07 + seed * 2.0);       // pink or violet at the far end
+    vec3 far = mix(vec3(1.0, 0.25, 0.65), vec3(0.55, 0.25, 1.0), second);
+    vec3 acc = vec3(0.0);
+    vec2 prev = path(0.0, c, aspect, seed);
+    for (int i = 1; i <= SAMPLES; i++) {
+        float t = float(i) / float(SAMPLES);
+        vec2 q = path(t, c, aspect, seed);
+        float seg = max(length(q - prev), 1e-3);
+        vec2 a = prev, mid = 0.5 * (prev + q);
+        prev = q;
+        // each piece of the edge sends a ray straight up
+        float dx = abs(p.x * aspect - mid.x);
+        vec2 pa = vec2(p.x * aspect, p.y) - a, ba = q - a;
+        float dseg = length(pa - ba * clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0));
+        float w = seg * 0.9 + 0.004;
+        float side = exp(-dx * dx / (w * w));
+        float rim = exp(-dseg / 0.008);
+        if (side < 0.01 && rim < 0.01) continue;
+        float h = mid.y - p.y;                                     // above the edge
+        float H = height * (0.75 + 0.5 * vnoise(vec2(t * 9.0, c * 0.4 + seed)) + 0.45 * bass + 0.2 * u_pulse);
+        float prof = smoothstep(-0.015, 0.006, h) * exp(-max(h, 0.0) / H) * smoothstep(H * 3.2, H * 1.1, h);
+        float along = abs(t - peak);
+        float bright = gain * (0.25 + 2.2 * exp(-along * along / 0.05)) * (0.5 + 1.1 * spec(t));
+        // colour: yellow-green at the bright end and the lower rim, turquoise, then pink or violet
+        float k = clamp(along * 1.4 + max(h, 0.0) / (H * 2.5), 0.0, 1.0);
+        vec3 col = mix(vec3(0.75, 1.0, 0.30), vec3(0.25, 1.0, 0.55), smoothstep(0.0, 0.25, k));
+        col = mix(col, vec3(0.15, 0.85, 0.85), smoothstep(0.25, 0.55, k));
+        col = mix(col, far, smoothstep(0.55, 0.95, k));
+        acc += col * bright * (side * prof * (seg / w) + 0.35 * rim);
+    }
+    // fine rays running upwards
+    float rays = 0.65 + 0.55 * vnoise(vec2(p.x * aspect * 120.0 + c * 0.6, seed))
+                      * (0.6 + 0.4 * vnoise(vec2(p.x * aspect * 31.0 - c * 0.3, seed + 4.0)));
+    return acc * rays * 0.6;
 }
 void main() {
     vec2 px = v_uv * u_res;
     vec2 p = v_uv;
     float aspect = u_res.x / u_res.y;
     float c = u_clock;
-    // deep blue sky with stars
-    vec3 col = mix(vec3(0.02, 0.10, 0.30), vec3(0.04, 0.26, 0.52), p.y);
-    col += vec3(0.0, 0.25, 0.25) * 0.25 * fbm(vec2(p.x * 2.0 * aspect, p.y * 2.0) + c * 0.05, 3);
-    col += starfield(px, 6.0 * u_unit, 0.12, u_t, 0.8) * 0.9;
-    col += starfield(px + 31.0, 19.0 * u_unit, 0.35, u_t, 1.2) * 1.2;
-    // the curtains of light
-    vec3 au = vec3(0.0);
-    au += curtain(p, aspect, c, 0.33, 0.06, 1.6, 0.40, 0.06, 0.55, -0.2, 0.55, 1.0);    // faint band, top left
-    au += curtain(p, aspect, c, 0.80, 0.12, 2.2, 0.55, 0.16, 1.25, 0.30, 0.80, 7.0);    // the main curtain
-    au += curtain(p, aspect, c, 0.72, 0.08, 1.8, 0.35, 0.20, 0.55, 0.62, 1.20, 13.0);  // pale, behind the slope
+    // deep blue sky, lighter towards the horizon
+    vec3 col = mix(vec3(0.01, 0.06, 0.22), vec3(0.05, 0.22, 0.48), smoothstep(0.0, 1.0, p.y));
+    col += vec3(0.0, 0.18, 0.22) * 0.25 * fbm(vec2(p.x * aspect * 1.5, p.y * 1.5) + c * 0.03, 3);
+    // a realistic number of stars: a few faint steady ones, others come and go
+    col += starfield(px, 13.0 * u_unit, 0.06, u_t, 0.7) * 0.5;
+    col += blinking(px, 34.0 * u_unit, 0.35, 1.1, 0.05) * 1.2;
+    col += blinking(px + 91.0, 90.0 * u_unit, 0.45, 1.6, 0.03) * 1.4;
+    // the band of light, and a fainter one further away
+    vec3 au = curtain(p, aspect, c, 1.3, 1.0, 0.11);
+    au += curtain(p * vec2(1.0, 1.25) - vec2(0.0, 0.32), aspect, c * 0.8, 4.7, 0.35, 0.10);
     col += au;
-    col += vec3(0.1, 0.7, 0.5) * 0.08 * fbm(p * 3.0 + c * 0.1, 3) * (0.5 + u_energy.w);
-    // snowy mountains, lit a little by the aurora
+    col += vec3(0.1, 0.6, 0.45) * 0.10 * smoothstep(0.0, 1.5, dot(au, vec3(0.33))) ;
+    // a yellow-green glow behind the mountains on the right
     float ry = ridge_y(p.x);
-    if (p.y > ry) {
-        float depth = (p.y - ry) * 6.0;
-        float snow = smoothstep(0.30, 0.45, fbm(vec2(p.x * aspect * 30.0, p.y * 45.0), 5));
-        float trees = smoothstep(0.62, 0.70, fbm(vec2(p.x * aspect * 120.0, p.y * 160.0) + 5.0, 3))
-                      * smoothstep(0.1, 0.6, depth);
-        float slope = 0.75 + 0.5 * fbm(vec2(p.x * aspect * 6.0, p.y * 10.0), 3);
-        vec3 m = mix(vec3(0.28, 0.38, 0.50), vec3(0.72, 0.82, 0.92), snow) * slope;
-        m = mix(m, vec3(0.04, 0.07, 0.10), trees * 0.75);
-        m *= 1.0 - 0.45 * smoothstep(0.0, 1.0, depth);
-        m += vec3(0.25, 0.9, 0.6) * 0.06 * (0.5 + u_energy.w);
+    float glow = exp(-max(ry - p.y, 0.0) / 0.20) * smoothstep(0.30, 0.95, p.x);
+    col += vec3(0.65, 0.90, 0.35) * glow * (0.45 + 0.30 * u_energy.w);
+    // the snowy mountains, gently shimmering, with drifting blown snow
+    if (p.y > ry - 0.02) {
+        float depth = max(p.y - ry, 0.0);
+        vec2 sp = vec2(p.x * aspect, p.y);
+        float slope = fbm(sp * vec2(8.0, 14.0), 5);
+        float lightdir = clamp(0.5 + (fbm(sp * vec2(8.0, 14.0) + vec2(0.02, -0.01), 5) - slope) * 18.0, 0.0, 1.0);
+        vec3 snow = mix(vec3(0.42, 0.55, 0.70), vec3(0.82, 0.90, 0.98), lightdir);
+        snow *= 0.80 + 0.25 * slope;
+        float rock = smoothstep(0.60, 0.72, fbm(sp * vec2(60.0, 90.0) + 5.0, 4)) * smoothstep(0.0, 0.10, depth);
+        float trees = smoothstep(0.55, 0.68, fbm(sp * vec2(140.0, 200.0) + 9.0, 3)) * smoothstep(0.04, 0.2, depth);
+        vec3 m = mix(snow, vec3(0.10, 0.16, 0.22), rock * 0.85);
+        m = mix(m, vec3(0.04, 0.08, 0.10), trees * 0.7);
+        m *= 1.0 - 0.35 * smoothstep(0.0, 0.25, depth);
+        m += vec3(0.2, 0.9, 0.55) * 0.10 * (0.4 + u_energy.w);         // lit by the aurora
+        // glitter on the snow and blown snow drifting along the slope
+        vec2 g = floor(px / (3.0 * u_unit));
+        float tw = step(0.996, hash12(g)) * pow(max(0.0, sin(u_t * (1.0 + 2.0 * hash12(g + 1.0)) + hash12(g) * 50.0)), 8.0);
+        m += vec3(0.9, 0.95, 1.0) * tw * 0.8 * (1.0 - rock);
+        float drift = fbm(vec2(sp.x * 4.0 - u_t * 0.05, sp.y * 12.0 + u_t * 0.01), 4);
+        m = mix(m, vec3(0.75, 0.85, 0.95), smoothstep(0.55, 0.85, drift) * 0.25 * exp(-depth / 0.06));
         col = mix(col, m, smoothstep(ry, ry + 1.5 / u_res.y, p.y));
     }
+    // drifting mist along the ridge
+    float mist = fbm(vec2(p.x * aspect * 3.0 - u_t * 0.03, p.y * 9.0), 3);
+    col += vec3(0.55, 0.75, 0.85) * 0.10 * mist * exp(-abs(p.y - ry) / 0.035);
     fragColor = vec4(tonemap(col * 1.2) + dither(), 1.0);
 }
 """
