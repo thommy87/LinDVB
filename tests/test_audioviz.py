@@ -222,17 +222,18 @@ def test_pulsar_bursts_with_the_music():
     assert all(0.0 <= style.spec_at(a / 16) <= 1.0 for a in range(-16, 33))
 
 
-def test_painted_scenes_follow_the_music_slowly():
+def test_painted_scenes_move_only_with_the_music():
     from lindvb.visuals import AuroraBorealis, OccasusSolis, Supernova
     for cls in (Supernova, OccasusSolis, AuroraBorealis):
         quiet, loud = cls(), cls()
-        for f in _frames(120, 0.01, -78.0):
+        for f in _frames(120, 0.0, -90.0):
             pq = quiet.params(f)
         for f in _frames(120, 0.6, -15.0):
             pl = loud.params(f)
         assert pl[5] > pq[5]                       # louder: more energy ...
-        assert pl[0] > pq[0]                       # ... and the scene drifts a little faster
-        assert pl[0] < 2 * 0.5                     # but slowly: under 1 unit in 2 s
+        assert pq[0] == 0.0 and quiet.motion == 0.0   # silence: nothing moves at all
+        assert 0.0 < pl[0] < 2 * 0.6               # music: it drifts, slowly
+        assert loud.motion > 1.0
         assert len(loud.spectrum.values) == 48 and max(loud.spectrum.values) <= 1.0
 
 
@@ -251,7 +252,7 @@ def test_supernova_veils_take_their_strength_from_the_music_at_birth():
         quiet.params(f)
     for f in _frames(600, 0.6, -15.0):
         loud.params(f)
-    assert len(loud.veils) == Supernova.VEILS
+    assert len(loud.veils) == Supernova.VEILS and all(0.0 <= h <= 1.0 for h in loud.hues)
     assert min(loud.veils) > max(quiet.veils)
     before, flow = list(loud.veils), loud.flow
     for f in _frames(1, 0.0, -90.0):            # a single quiet frame changes no living veil
@@ -272,6 +273,31 @@ def test_aurora_mountains_scroll_left_and_grow_from_the_music():
     assert all(0.02 <= h <= 0.26 for h in style.ridge)
 
 
+def test_aurora_fades_away_when_the_music_stops():
+    from lindvb.visuals import AuroraBorealis
+    style = AuroraBorealis(seed=3)
+    for f in _frames(300, 0.6, -15.0):               # 5 s of music
+        style.params(f)
+    assert style.presence == 1.0
+    for f in _frames(300, 0.0, -90.0):               # 5 s of silence: fading ...
+        style.params(f)
+    assert 0.0 < style.presence < 0.6
+    for f in _frames(300, 0.0, -90.0):               # ... and gone
+        style.params(f)
+    assert style.presence == 0.0
+
+
+def test_sun_sets_when_the_music_stops():
+    from lindvb.visuals import OccasusSolis
+    style = OccasusSolis(seed=1)
+    for f in _frames(300, 0.6, -15.0):
+        style.params(f)
+    assert style.sun == OccasusSolis.SUN
+    for f in _frames(600, 0.0, -90.0):               # 10 s of silence
+        style.params(f)
+    assert style.presence == 0.0 and style.sun[1] > 1.05     # below the bottom edge
+
+
 def test_sunset_clouds_drift_right_and_grow_from_the_music():
     from lindvb.visuals import OccasusSolis
     quiet, loud = OccasusSolis(seed=2), OccasusSolis(seed=2)
@@ -280,5 +306,5 @@ def test_sunset_clouds_drift_right_and_grow_from_the_music():
     for f in _frames(1800, 0.6, -15.0):
         loud.params(f)
     assert len(loud.clouds) == OccasusSolis.COLUMNS + 8 and 0.0 <= loud.cfrac < 1.0
-    assert loud.drift > quiet.drift > 0.5              # visibly moving: over half a screen in 30 s
+    assert loud.drift > 0.5 > 0.05 > quiet.drift      # music: over half a screen in 30 s; silence: still
     assert sum(loud.clouds[:16]) > sum(quiet.clouds[:16])   # newest (left) columns: louder, cloudier

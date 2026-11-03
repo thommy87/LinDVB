@@ -641,7 +641,7 @@ void main() {
 # --- painted scenes: supernova, sunset, aurora -----------------------------------------
 # Everything is computed per pixel from noise; the CPU only passes the music, smoothed.
 SCENE_FN = SPECTRUM_FN + """
-uniform float u_t, u_clock, u_unit, u_pulse;
+uniform float u_t, u_clock, u_unit, u_pulse;   // u_t and u_clock only run with the music
 uniform vec4 u_energy;       // bass, mid, treble, level (smoothed)
 const float TAU = 6.2831853;
 float hash12(vec2 p) {       // without sin: stable for large inputs
@@ -696,12 +696,13 @@ mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, s, -s, c); }
 const int VEILS = 9;
 uniform float u_flow;        // how far the veils have travelled (one unit: one veil's life)
 uniform float u_veil[9];     // the strength each veil got from the music when it was born
-const vec3 PAL[6] = vec3[6](vec3(1.0, 0.48, 0.10),     // orange
+uniform float u_hue[9];      // and its tone: 0 bass-heavy (warm) .. 1 bright (cool)
+const vec3 PAL[6] = vec3[6](vec3(1.0, 0.48, 0.10),     // orange       (warm: bass)
                             vec3(1.0, 0.82, 0.28),     // yellow
-                            vec3(0.62, 0.30, 1.0),     // violet
                             vec3(1.0, 0.32, 0.68),     // pink
+                            vec3(0.62, 0.30, 1.0),     // violet
                             vec3(0.22, 0.45, 1.0),     // blue
-                            vec3(0.18, 0.92, 0.88));   // turquoise
+                            vec3(0.18, 0.92, 0.88));   // turquoise    (cool: treble)
 // stars that slowly light up and go out again, each at its own pace
 vec3 blinking(vec2 px, float cell, float density, float size) {
     vec2 c = floor(px / cell);
@@ -776,20 +777,21 @@ void main() {
         float fil = pow(ridged(w, 5), 3.0) * 4.0 + pow(ridged(w * 2.7 + 9.0, 3), 4.0) * 2.0;
         float fib = 0.7 + 0.6 * vnoise(ud * 30.0 + seed * 11.0 + ur * 1.5);
         float wisp = fbm(w * 0.6 - 3.0, 3);
-        // colours: two of orange, yellow, violet, pink, blue, turquoise per veil,
-        // white while it is still near the core
-        int i0 = int(hash12(vec2(seed, 1.0)) * 6.0);
-        int i1 = int(hash12(vec2(seed, 2.0)) * 6.0);
+        // colours: two neighbours on the palette, chosen by the tone of the music
+        // when the veil was born; white while it is still near the core
+        float hue = clamp(u_hue[k] * 5.0 + 1.6 * (hash12(vec2(seed, 1.0)) - 0.5), 0.0, 5.0);
+        int i0 = int(floor(hue));
+        int i1 = min(5, i0 + 1 + int(step(0.6, hash12(vec2(seed, 2.0)))));
         vec3 vc = mix(PAL[i0], PAL[i1], smoothstep(0.3, 0.7, wisp));
         vc = mix(vec3(1.0, 0.95, 0.88), vc, smoothstep(0.0, 0.18, s));
         float gain = 0.85 + 0.3 * specm(ang + seed * 0.1);
         neb += vc * m * (fil * fib + 0.22 * wisp * wisp) * gain;
     }
     col += neb * 2.6;
-    // the white-hot core, glowing a little brighter with the music
-    float core = 0.032 + 0.008 * level;
-    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.7 + 0.4 * level);
-    col += vec3(1.0, 0.80, 0.55) * exp(-r / (core * 4.0)) * (0.6 + 0.3 * level);
+    // the white-hot core, glowing with the music and flaring on the beat
+    float core = 0.028 + 0.012 * level + 0.010 * u_pulse;
+    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.5 + 0.6 * level + 0.5 * u_pulse);
+    col += vec3(1.0, 0.80, 0.55) * exp(-r / (core * 4.0)) * (0.5 + 0.4 * level + 0.4 * u_pulse);
     col += vec3(1.0, 0.70, 0.45) * exp(-r / 0.22) * 0.25;
     float lum = dot(col, vec3(0.3, 0.55, 0.15));
     col = max(mix(vec3(lum), col, 1.3), 0.0);                 // a little more colour
@@ -798,10 +800,12 @@ void main() {
 """
 
 SUNSET = PRELUDE + SCENE_FN + """
-uniform vec2 u_sun;          // 0..1 of the width and the height
+uniform vec2 u_sun;          // 0..1 of the width and the height; it sets when the music stops
+const float HORIZON = 0.86;  // the hazy horizon the sun sinks behind
 uniform float u_cloud[40];   // how cloudy each column is, grown from the music (newest on the left)
 uniform float u_cfrac;       // fraction of a column the clouds have moved to the right
 uniform float u_drift;       // how far the clouds have drifted, in screen widths
+uniform float u_presence;    // 1 while music plays, sinks to 0 when it stops
 const float COLUMNS = 32.0;
 float cloudiness(float x) {
     float fx = clamp(x, 0.0, 1.0) * COLUMNS + 1.0 - u_cfrac;
@@ -814,7 +818,7 @@ float cloudiness(float x) {
 float cloud_shadow(vec2 p, float aspect) {
     vec2 cp = vec2((p.x - u_drift) * aspect, p.y * 4.0);
     float band = smoothstep(0.92, 0.25, p.y);
-    float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5);
+    float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5) + 0.6 * (1.0 - u_presence);
     return clamp((fbm(cp + 0.25, 3) - cover) * 3.2, 0.0, 1.0);
 }
 vec3 aces(vec3 x) {          // filmic tone curve: soft highlights, rich mid tones
@@ -852,7 +856,8 @@ void main() {
     col += vec3(1.00, 0.70, 0.35) * exp(-dist / 0.16) * 0.55 * glow;
     col += vec3(1.00, 0.88, 0.62) * exp(-dist / 0.05) * 0.9;
     // a bright band of haze along the horizon
-    col += vec3(1.0, 0.62, 0.25) * exp(-abs(p.y - u_sun.y) / 0.05) * 0.25 * exp(-abs(d.x) / 0.9);
+    col += vec3(1.0, 0.62, 0.25) * exp(-abs(p.y - HORIZON) / 0.05) * 0.25 * exp(-abs(d.x) / 0.9)
+           * (0.3 + 0.7 * u_presence);
     // soft rays, turning slowly around the sun; the spectrum from left (bass) to right
     float th = atan(d.x, -d.y);
     float m = clamp(th / 3.1 + 0.5, 0.0, 1.0);
@@ -862,7 +867,7 @@ void main() {
     vec2 r2 = vec2(cos(-spin * 0.6) * rd.x - sin(-spin * 0.6) * rd.y, sin(-spin * 0.6) * rd.x + cos(-spin * 0.6) * rd.y);
     float rays = vnoise(r1 * 4.0 + 11.0) * 0.6 + vnoise(r2 * 9.0 + 31.0) * 0.4;
     float sp = spec(m);
-    rays = pow(rays, 1.3) * (0.45 + 1.0 * sp) * (0.8 + 0.5 * mid);
+    rays = pow(rays, 1.3) * (0.35 + 1.1 * sp) * (0.7 + 0.5 * mid + 0.5 * u_pulse);
     float raymask = smoothstep(0.02, 0.2, dist) * exp(-dist / (0.5 + 0.35 * sp + 0.15 * bass))
                     * smoothstep(1.0, 0.9, p.y);
     // light shafts: the rays reach this point only where no cloud stands between it and the sun
@@ -871,7 +876,7 @@ void main() {
         vec2 sp = mix(p, u_sun, float(i) / 7.0);
         lit *= 1.0 - 0.85 * cloud_shadow(sp, aspect);
     }
-    vec3 rayc = vec3(1.0, 0.72, 0.42) * rays * raymask * 1.05 * lit;
+    vec3 rayc = vec3(1.0, 0.72, 0.42) * rays * raymask * 1.05 * lit * u_presence * u_presence;   // gone in silence
     // two layers of clouds drifting from left to right; each lit through its own
     // thickness towards the sun, dark underneath, glowing at thin, sunward edges
     vec2 toSun = normalize(-d + vec2(0.0, 0.001));
@@ -884,7 +889,8 @@ void main() {
         // cloudy each new stretch of sky coming in from the left is
         vec2 cp = vec2((p.x - u_drift * (1.0 - 0.3 * fk)) * aspect * scale + fk * 7.0, p.y * (4.0 + 2.0 * fk) * scale);
         float band = k == 0 ? smoothstep(0.92, 0.25, p.y) : smoothstep(0.99, 0.66, p.y) * smoothstep(0.40, 0.62, p.y);
-        float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5);
+        // in silence no new clouds form and the ones there dissolve
+        float cover = mix(0.84, 0.46, band) - 0.30 * (cloudiness(p.x) - 0.5) + 0.6 * (1.0 - u_presence);
         float n = density(cp, c);
         float dens = clamp((n - cover) * 3.2, 0.0, 1.0);
         if (dens <= 0.0) continue;
@@ -912,6 +918,9 @@ void main() {
     vec3 sunc = mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.98, 0.93), smoothstep(sr, 0.0, dist));
     col = mix(col, sunc * 1.6, disc * (1.0 - 0.6 * shade_all));
     col += vec3(1.0, 0.85, 0.6) * exp(-max(dist - sr, 0.0) / 0.015) * 0.5;
+    // after sunset: the sky turns to dusk, deep violet blue above a last red glow
+    vec3 dusk = mix(vec3(0.03, 0.03, 0.10), vec3(0.32, 0.10, 0.10), smoothstep(0.3, 1.0, p.y));
+    col = mix(col, dusk + col * 0.15, 0.85 * (1.0 - u_presence));
     // a slight vignette, as through a lens
     vec2 vq = v_uv - 0.5;
     col *= 1.0 - 0.25 * dot(vq, vq);
@@ -926,6 +935,7 @@ const int SAMPLES = 90;
 uniform float u_ridge[48];   // mountain heights (0..1 above the bottom), the newest on the right
 uniform float u_scroll;      // fraction of a point already scrolled to the left
 uniform float u_world;       // points scrolled in total, moves the snow's texture along
+uniform float u_presence;    // 1 while music plays, sinks to 0 when it stops
 const float VISIBLE = 40.0;
 float ridge_at(int i) { return u_ridge[clamp(i, 0, 47)]; }
 float ridge_y(float x) {      // Catmull-Rom through the points, plus rocky detail
@@ -936,7 +946,8 @@ float ridge_y(float x) {      // Catmull-Rom through the points, plus rocky deta
     float h = b + 0.5 * t * (c - a + t * (2.0 * a - 5.0 * b + 4.0 * c - d + t * (3.0 * (b - c) + d - a)));
     float wx = (x * VISIBLE + u_world) / VISIBLE;
     h += 0.018 * (fbm(vec2(wx * 9.0, 0.5), 4) - 0.5) + 0.008 * (ridged(vec2(wx * 45.0, 2.0), 3) - 0.4);
-    return 1.0 - h;
+    float pr = smoothstep(0.0, 1.0, u_presence);          // in silence the mountains sink away
+    return 1.0 - h * pr + 0.04 * (1.0 - pr);
 }
 // stars that light up at random places and fade away again; new ones appear elsewhere
 vec3 blinking(vec2 px, float cell, float density, float size, float pace) {
@@ -987,7 +998,7 @@ vec3 curtain(vec2 p, float aspect, float c, float seed, float gain, float height
         float H = height * (0.75 + 0.5 * vnoise(vec2(t * 9.0, c * 0.4 + seed)) + 0.45 * bass + 0.2 * u_pulse);
         float prof = smoothstep(-0.015, 0.006, h) * exp(-max(h, 0.0) / H) * smoothstep(H * 3.2, H * 1.1, h);
         float along = abs(t - peak);
-        float bright = gain * (0.25 + 2.2 * exp(-along * along / 0.05)) * (0.5 + 1.1 * spec(t));
+        float bright = gain * (0.25 + 2.2 * exp(-along * along / 0.05)) * (0.4 + 1.2 * spec(t)) * (1.0 + 0.5 * u_pulse);
         // colour: yellow-green at the bright end and the lower rim, turquoise, then pink or violet
         float k = clamp(along * 1.4 + max(h, 0.0) / (H * 2.5), 0.0, 1.0);
         vec3 col = mix(vec3(0.75, 1.0, 0.30), vec3(0.25, 1.0, 0.55), smoothstep(0.0, 0.25, k));
@@ -1005,22 +1016,29 @@ void main() {
     vec2 p = v_uv;
     float aspect = u_res.x / u_res.y;
     float c = u_clock;
-    // deep blue sky, lighter towards the horizon
-    vec3 col = mix(vec3(0.01, 0.06, 0.22), vec3(0.05, 0.22, 0.48), smoothstep(0.0, 1.0, p.y));
-    col += vec3(0.0, 0.18, 0.22) * 0.25 * fbm(vec2(p.x * aspect * 1.5, p.y * 1.5) + c * 0.03, 3);
-    // a realistic number of stars: a few faint steady ones, others come and go
-    col += starfield(px, 13.0 * u_unit, 0.06, u_t, 0.7) * 0.5;
-    col += blinking(px, 34.0 * u_unit, 0.35, 1.1, 0.05) * 1.2;
-    col += blinking(px + 91.0, 90.0 * u_unit, 0.45, 1.6, 0.03) * 1.4;
-    // the band of light, and a fainter one further away
-    vec3 au = curtain(p, aspect, c, 1.3, 1.0, 0.17);
-    au += curtain(p * vec2(1.0, 1.25) - vec2(0.0, 0.32), aspect, c * 0.8, 4.7, 0.35, 0.10);
+    // deep blue sky, lighter towards the horizon; in silence all deep blue, as at the top
+    float pr = u_presence;
+    vec3 col = mix(vec3(0.01, 0.06, 0.22), vec3(0.05, 0.22, 0.48), smoothstep(0.0, 1.0, p.y) * pr);
+    col += vec3(0.0, 0.18, 0.22) * 0.25 * pr * fbm(vec2(p.x * aspect * 1.5, p.y * 1.5) + c * 0.03, 3);
+    // a realistic number of stars: a few faint steady ones, others come and go;
+    // in silence they dim to 40 %
+    float sdim = 0.4 + 0.6 * pr;
+    col += starfield(px, 13.0 * u_unit, 0.06, u_t, 0.7) * 0.5 * sdim;
+    col += blinking(px, 34.0 * u_unit, 0.35, 1.1, 0.05) * 1.2 * sdim;
+    col += blinking(px + 91.0, 90.0 * u_unit, 0.45, 1.6, 0.03) * 1.4 * sdim;
+    // the band of light, and a fainter one further away; it fades out in silence
+    vec3 au = vec3(0.0);
+    if (pr > 0.002) {
+        au = curtain(p, aspect, c, 1.3, 1.0, 0.17);
+        au += curtain(p * vec2(1.0, 1.25) - vec2(0.0, 0.32), aspect, c * 0.8, 4.7, 0.35, 0.10);
+        au *= pr * pr;
+    }
     col += au;
     col += vec3(0.1, 0.6, 0.45) * 0.10 * smoothstep(0.0, 1.5, dot(au, vec3(0.33))) ;
     // a yellow-green glow behind the mountains on the right
     float ry = ridge_y(p.x);
     float glow = exp(-max(ry - p.y, 0.0) / 0.20) * smoothstep(0.30, 0.95, p.x);
-    col += vec3(0.65, 0.90, 0.35) * glow * (0.45 + 0.30 * u_energy.w);
+    col += vec3(0.65, 0.90, 0.35) * glow * (0.45 + 0.30 * u_energy.w) * pr;
     // the snowy mountains, gently shimmering, with drifting blown snow
     if (p.y > ry - 0.02) {
         float depth = max(p.y - ry, 0.0);
@@ -1045,7 +1063,7 @@ void main() {
     }
     // drifting mist along the ridge
     float mist = fbm(vec2(p.x * aspect * 3.0 - u_t * 0.03, p.y * 9.0), 3);
-    col += vec3(0.55, 0.75, 0.85) * 0.10 * mist * exp(-abs(p.y - ry) / 0.035);
+    col += vec3(0.55, 0.75, 0.85) * 0.10 * mist * exp(-abs(p.y - ry) / 0.035) * pr;
     fragColor = vec4(tonemap(col * 1.2) + dither(), 1.0);
 }
 """
@@ -1423,24 +1441,27 @@ class SceneRenderer(Renderer):
         ctx, st = self.ctx, self.style
         clock, bass, mid, treble, pulse, level = st.params(f)
         prog = ctx.program(st.id, self.SHADERS[type(st)]).use()
-        prog.set("u_t", f.t)
+        prog.set("u_t", st.motion)               # music time: stands still in silence
         prog.set("u_clock", clock)
         prog.set("u_unit", min(ctx.width, ctx.height) / 1080)
         prog.set("u_pulse", pulse)
         prog.set("u_energy", bass, mid, treble, level)
         prog.set_array("u_spec", st.spectrum.values or [0.0] * 48, 1)
         if isinstance(st, visuals.OccasusSolis):
-            prog.set("u_sun", *st.SUN)
+            prog.set("u_sun", *st.sun)
             prog.set_array("u_cloud", st.clouds, 1)
             prog.set("u_cfrac", st.cfrac)
             prog.set("u_drift", st.drift)
+            prog.set("u_presence", st.presence)
         if isinstance(st, visuals.AuroraBorealis):
             prog.set_array("u_ridge", st.ridge, 1)
             prog.set("u_scroll", st.scroll)
             prog.set("u_world", st.world)
+            prog.set("u_presence", st.presence)
         if isinstance(st, visuals.Supernova):
             prog.set("u_flow", st.flow)
             prog.set_array("u_veil", st.veils, 1)
+            prog.set_array("u_hue", st.hues, 1)
         ctx.fullscreen(prog)
         ctx.footer(f.caption)
 

@@ -773,17 +773,26 @@ class _Scene(Style):
 
     The picture is drawn entirely by a fragment shader
     (:mod:`lindvb.ui.gpuvisuals`); the CPU only smooths the music into a few
-    numbers per frame. ``clock`` runs slowly and only a little faster when
-    the music is loud, so the scenes drift rather than dance."""
+    numbers per frame. Every movement comes from the music: ``speed``
+    follows the loudness and jumps on each beat, and both clocks only run
+    with it, so the scenes stand still in silence, drift with quiet music
+    and surge forward on the beat. ``clock`` drives the large, slow
+    movements, ``motion`` (in seconds of music) the small ones such as
+    twinkling stars."""
 
-    PACE = (0.06, 0.10)           # clock speed when silent, extra at full level
+    PACE = 0.1                    # clock units per second at a speed of 1
     EASE = 2.5                    # how quickly the energies follow (1/s)
 
     def __init__(self):
         self.spectrum = _Spectrum(rise=6.0, fall=1.2, blur=3)
         self.energy = [0.0, 0.0, 0.0]
         self.pulse = 0.0
+        self.speed = 0.0
         self.clock = 0.0
+        self.motion = 0.0
+        self.presence = 0.0       # 1 while music plays, sinks to 0 when it stops
+
+    FADE_IN, FADE_OUT = 2.0, 8.0  # seconds for ``presence`` to come and go
 
     def params(self, f):
         """Advance the state; returns (clock, bass, mid, treble, pulse, level)."""
@@ -793,7 +802,14 @@ class _Scene(Style):
         bass, mid, treble = self.energy
         level = (bass + mid + treble) / 3
         self.pulse += (f.beat - self.pulse) * min(1.0, f.dt * 4)
-        self.clock += f.dt * (self.PACE[0] + self.PACE[1] * level)
+        target = min(1.8, 1.8 * level + 0.9 * f.beat)
+        self.speed += (target - self.speed) * min(1.0, f.dt * 3.0)
+        self.clock += f.dt * self.PACE * self.speed
+        self.motion += f.dt * self.speed
+        if not f.silent and level > 0.01:
+            self.presence = min(1.0, self.presence + f.dt / self.FADE_IN)
+        else:
+            self.presence = max(0.0, self.presence - f.dt / self.FADE_OUT)
         return self.clock, bass, mid, treble, self.pulse, level
 
     # -- without OpenGL: a simple painted sketch of the scene -------------------------
@@ -821,11 +837,13 @@ class Supernova(_Scene):
     and drift outwards, growing more transparent until they vanish while new
     ones follow, so the star keeps spreading without ever getting bigger.
     Behind it a spiral galaxy turns slowly and stars light up and go out.
-    The spectrum sets the veils' brightness around the star (bass at the
-    top, treble at the bottom), the beat makes the core flare."""
+    Veils are born only while music plays; their strength and colours come
+    from the music of their birth, the spectrum sets their brightness around
+    the star (bass at the top, treble at the bottom), the beat makes the
+    core flare."""
     id, label = "supernova", "Supernova (modern)"
 
-    PACE = (0.05, 0.08)
+    PACE = 0.10
     VEILS = 9             # veils alive at once, as in the shader
     FLOW = 1.1            # veil lives per clock unit
 
@@ -834,22 +852,29 @@ class Supernova(_Scene):
         self.flow = 0.0
         self.drive = 0.0
         self.veils = [0.5] * self.VEILS
+        self.hues = [0.5] * self.VEILS
+        self.tone = 0.5
         self.born = [None] * self.VEILS
 
     def params(self, f):
-        """Also decides, when a veil is born, how strong it gets: the music
-        of that moment, smoothed, so a loud passage sends out bright, thick
-        veils that then drift outwards unchanged."""
+        """Also decides, when a veil is born, how strong it gets and its
+        colours: the music of that moment, smoothed, so a loud passage sends
+        out bright, thick veils, a bass-heavy one warm orange and yellow
+        veils, a bright one pink, blue and turquoise ones; they then drift
+        outwards unchanged. Veils are only born while music plays."""
         p = super().params(f)
-        level, pulse = p[5], p[4]
-        target = min(1.6, 0.25 + 1.2 * level + 0.5 * pulse)
+        bass, mid, treble, pulse, level = p[1], p[2], p[3], p[4], p[5]
+        target = min(1.6, 0.1 + 1.3 * level + 0.6 * pulse)
         self.drive += (target - self.drive) * min(1.0, f.dt * 1.5)
+        tone = 0.5 + 1.5 * (treble - bass) / max(0.05, bass + mid + treble)
+        self.tone += (min(1.0, max(0.0, tone)) - self.tone) * min(1.0, f.dt * 1.5)
         self.flow = p[0] * self.FLOW
         for k in range(self.VEILS):
             gen = math.floor(self.flow + k / self.VEILS)
             if gen != self.born[k]:
                 self.born[k] = gen
                 self.veils[k] = self.drive
+                self.hues[k] = self.tone
         return p
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
@@ -873,12 +898,15 @@ class OccasusSolis(_Scene):
     rays from left (bass) to right (treble) and thickens the clouds above
     it, the mids stir the clouds, the bass sets the glow of the sun. New
     clouds coming in from the left are grown from the music: the louder,
-    the cloudier."""
+    the cloudier. Clouds and rays only move while music plays, faster when
+    it is loud and with a push on every beat; when the music stops no new
+    clouds form, the ones there dissolve, the rays fade away and the sun
+    slowly sets."""
     id, label = "sunset", "Occasus solis (modern)"
 
-    PACE = (0.30, 0.10)
+    PACE = 0.40
     COLUMNS = 32          # cloud columns across the screen, as in the shader
-    DRIFT = (0.022, 0.010)  # screen widths per second when silent, extra at full level
+    DRIFT = 0.032         # screen widths per second at a speed of 1
 
     def __init__(self, seed=None):
         super().__init__()
@@ -898,7 +926,7 @@ class OccasusSolis(_Scene):
         p = super().params(f)
         level, pulse = p[5], p[4]
         self.drive += (min(1.0, 0.15 + 1.1 * level + 0.3 * pulse) - self.drive) * min(1.0, f.dt * 1.0)
-        step = f.dt * (self.DRIFT[0] + self.DRIFT[1] * level)
+        step = f.dt * self.DRIFT * self.speed
         self.drift += step
         self.cfrac += step * self.COLUMNS
         while self.cfrac >= 1.0:
@@ -907,6 +935,15 @@ class OccasusSolis(_Scene):
             self.clouds.insert(0, self._next(self.clouds[0]))
         return p
     SUN = (0.5, 0.86)             # position, 0..1 of the width and the height
+    SET = 0.24                    # how far the sun sinks when the music stops
+
+    @property
+    def sun(self):
+        """Where the sun stands: low over the horizon while music plays; when
+        it stops the sun slowly sets below the bottom edge, and rises again
+        when the music comes back."""
+        pr = self.presence
+        return self.SUN[0], self.SUN[1] + self.SET * (1.0 - pr * pr * (3 - 2 * pr))
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
         g = cairo.LinearGradient(0, 0, 0, h)
@@ -934,13 +971,15 @@ class AuroraBorealis(_Scene):
     with the bass, a peak on a strong beat); snow drifts and glitters on the
     slopes, and stars light up at random places and fade away. Each part of
     the band brightens with its part of the spectrum, the bass lengthens its
-    rays."""
+    rays and the beat makes it flare. Nothing moves in silence; when the
+    music stops the aurora fades away, the stars dim and the mountains sink
+    until only the deep blue night sky with a few stars is left."""
     id, label = "aurora", "Aurora borealis (modern)"
 
-    PACE = (0.25, 0.20)
+    PACE = 0.40
     RIDGE = 48            # height points of the mountains, as in the shader
     VISIBLE = 40          # of them across the width of the screen
-    SCROLL = (0.5, 0.5)   # points per second when silent, extra at full level
+    SCROLL = 0.85         # points per second at a speed of 1
 
     def __init__(self, seed=None):
         super().__init__()
@@ -967,8 +1006,8 @@ class AuroraBorealis(_Scene):
 
     def params(self, f):
         p = super().params(f)
-        bass, level, pulse = p[1], p[5], p[4]
-        step = f.dt * (self.SCROLL[0] + self.SCROLL[1] * level)
+        bass, pulse = p[1], p[4]
+        step = f.dt * self.SCROLL * self.speed
         self.scroll += step
         self.world += step
         while self.scroll >= 1.0:
