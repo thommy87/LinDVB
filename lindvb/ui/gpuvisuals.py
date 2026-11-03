@@ -753,10 +753,10 @@ void main() {
         float life = flow + fk / float(VEILS);
         float s = fract(life);                                   // 0: born, 1: gone
         float seed = floor(life) * 7.31 + fk * 3.17;
-        float R = 0.03 * pow(14.0, s);                          // its radius grows exponentially
+        float R = 0.03 * pow(18.0, s);                          // its radius grows exponentially
         float strength = u_veil[k];
-        float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.15) * strength;
-        vec2 u = rot(seed) * q / R;
+        float alpha = smoothstep(0.0, 0.22, s) * pow(1.0 - s, 1.0) * strength;
+        vec2 u = rot(seed) * (q * vec2(0.78, 1.0)) / R;   // wider than high, like the screen
         float ur = length(u);
         if (ur > 2.6) continue;
         // where on the ring this veil lies (it is born at a random place, not all around)
