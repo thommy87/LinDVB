@@ -236,7 +236,7 @@ with these keys; use `ir-keytable` to remap buttons.
 
 ## Releasing
 
-Run the **Release** workflow from the Actions tab and enter a tag such as `v0.2.0`. It
+Run the **Release** workflow from the Actions tab and enter a tag such as `v0.3.0`. It
 builds the AppImage, Flatpak and Snap and publishes all three in one GitHub release.
 
 ## Development
