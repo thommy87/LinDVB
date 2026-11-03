@@ -57,6 +57,19 @@ for p in $PLUGINS; do
     f="$ARCH_LIB/gstreamer-$GSTVER/libgst$p.so"
     if [ -f "$f" ]; then cp "$f" "$APPDIR/usr/lib/gstreamer-$GSTVER/"; fi
 done
+# projectM (libprojectM 4 + gst-projectm, presets, textures) from packaging/build-projectm.sh
+PROJECTM_PREFIX="${PROJECTM_PREFIX:-$SRC/build/projectm}"
+if [ -f "$PROJECTM_PREFIX/lib/gstreamer-$GSTVER/libgstprojectm.so" ]; then
+    echo "== projectM"
+    cp "$PROJECTM_PREFIX/lib/gstreamer-$GSTVER/libgstprojectm.so" "$APPDIR/usr/lib/gstreamer-$GSTVER/"
+    cp -a "$PROJECTM_PREFIX"/lib/libprojectM-4*.so* "$APPDIR/usr/lib/"
+    mkdir -p "$APPDIR/usr/share/projectM"
+    cp -r "$PROJECTM_PREFIX/share/projectM/." "$APPDIR/usr/share/projectM/"
+    # the shared library step below resolves the plugin's dependencies from here
+    export LD_LIBRARY_PATH="$APPDIR/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+else
+    echo "== projectM not built ($PROJECTM_PREFIX), the AppImage will offer GOOM only"
+fi
 SCANNER="$(ls "$ARCH_LIB"/gstreamer$GSTVER/gstreamer-$GSTVER/gst-plugin-scanner 2>/dev/null || true)"
 [ -n "$SCANNER" ] && cp "$SCANNER" "$APPDIR/usr/lib/gst-plugin-scanner"
 

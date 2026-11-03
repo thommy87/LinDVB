@@ -16,15 +16,17 @@ LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
 
 import re
+import sys
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.1"
+VERSION = "1.2"
 
-PRESET_DIRS = ["/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
+# the AppImage brings its own collection under its prefix (sys.prefix/share)
+PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
                "/usr/share/projectm-presets", "/app/share/projectM/presets",
                "~/.local/share/projectM/presets"]
-TEXTURE_DIRS = ["/usr/share/projectM/textures", "/usr/local/share/projectM/textures",
+TEXTURE_DIRS = [str(Path(sys.prefix) / "share/projectM/textures"), "/usr/share/projectM/textures", "/usr/local/share/projectM/textures",
                 "~/.local/share/projectM/textures"]
 MAX_SIZE = (2560, 1440)
 DEFAULT_SIZE = (1920, 1080)
@@ -39,14 +41,18 @@ def _first_dir(candidates):
     return None
 
 
-def _set(element, prop, value):
-    """Set a property if this projectM build has it (they differ by version)."""
-    if value is None or element.find_property(prop) is None:
+def _set(element, props, value):
+    """Set the first of ``props`` this projectM build has (names differ by version)."""
+    if value is None:
         return
-    try:
-        element.set_property(prop, value)
-    except (TypeError, ValueError, OverflowError):
-        pass
+    for prop in (props,) if isinstance(props, str) else props:
+        if element.find_property(prop) is None:
+            continue
+        try:
+            element.set_property(prop, value)
+        except (TypeError, ValueError, OverflowError):
+            pass
+        return
 
 
 def parse_size(text, default):
@@ -117,9 +123,11 @@ def register(api):
             el = Gst.ElementFactory.make("projectm")
             s = settings()
             presets = _first_dir([s.get("projectm_preset_dir")] + PRESET_DIRS)
-            _set(el, "preset-path", presets)
-            _set(el, "texture-dir-path", _first_dir(TEXTURE_DIRS))
+            # gst-projectm calls the preset folder "preset" (older builds "preset-path")
+            _set(el, ("preset", "preset-path"), presets)
+            _set(el, ("texture-dir", "texture-dir-path"), _first_dir(TEXTURE_DIRS))
             _set(el, "preset-duration", float(s.get("projectm_preset_seconds", 20)))
+            _set(el, "enable-playlist", True)
             _set(el, "shuffle-presets", True)
             res = s.get("visualizer_resolution", "auto")
             size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
