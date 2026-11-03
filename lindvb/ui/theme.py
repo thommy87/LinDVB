@@ -61,6 +61,10 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
 .lv-sidebar listview > row:selected .lv-num { color: @lv_accent; }
 .lv-num { color: @lv_text_dim; font-feature-settings: "tnum"; font-size: 0.9em; }
 .lv-chan-icon { color: @lv_text_dim; }
+.lv-rec-thumb { border-radius: 4px; background: @lv_surface_2; }
+progressbar.lv-rec-progress trough, progressbar.lv-rec-progress progress { min-height: 3px; min-width: 0; }
+progressbar.lv-rec-progress { min-width: 0; }
+progressbar.lv-rec-progress progress { background: @lv_accent; }
 .lv-badge { color: @lv_text_dim; }
 .lv-fav { color: #FFC83D; }
 /* TV / Radio switch */

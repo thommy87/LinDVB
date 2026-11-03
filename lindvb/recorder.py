@@ -384,14 +384,36 @@ class TimerManager(GObject.Object):
             self.emit("message", f"Recording failed: {e}")
             return None
         self.active[key] = (rec, cap)
+        self._write_info(rec, channel, title, start, fmt)
         self.emit("message", f"Recording: {path.name}")
         self.emit("changed")
         return rec
+
+    def _write_info(self, rec, channel, title, start, fmt):
+        """Programme details beside the recording for the Recordings tab."""
+        from .library import write_info
+        event = None
+        epg = getattr(self.app, "epg", None)
+        if epg is not None and getattr(channel, "epg_key", None):
+            try:
+                now, nxt = epg.now_next(channel.epg_key)
+            except Exception:       # noqa: BLE001 - details are optional
+                now = nxt = None
+            # a timer with lead time starts before its programme: take the next one
+            for ev in (now, nxt):
+                if ev is not None and ev.start <= start + 15 * 60 < ev.start + ev.duration:
+                    event = ev
+                    break
+            if event is None and now is not None and now.title.lower() in title.lower():
+                event = now
+        write_info(rec.path, channel.name, title, event, start, fmt=fmt)
 
     def _stop(self, key):
         rec, cap = self.active.pop(key, (None, None))
         if rec:
             rec.stop()
+            from .library import write_info
+            write_info(rec.path, end=time.time())
         if cap:
             self.app.tuners.release(cap, key)
         self.emit("changed")

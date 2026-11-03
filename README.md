@@ -59,6 +59,10 @@ picture and hides itself when the mouse is still.
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
 * Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
   after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
+* Recordings tab: a library of the recordings with preview picture, programme title,
+  subheading, channel, date, length and description (saved beside each recording as
+  `<name>.lindvb.json`), sorting, search, and "continue watching": a recording starts
+  where you stopped it, with a bar showing how much you have seen
 * Recording formats: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3 for radio,
   with teletext, subtitles and EPG data; audio tracks: all, preferred language only or
   the first (MP4 keeps one). Defaults in Preferences > Recording, changeable per timer

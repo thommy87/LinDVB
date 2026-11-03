@@ -13,7 +13,8 @@ from ..epg import details_line, programme_details
 from ..media_info import audio_summary
 from ..nowplaying import content_box
 from ..player import EQ_BANDS, Player
-from ..recordings import find_recordings
+from ..library import Positions, delete_info
+from ..recordings import find_recordings, sort_recordings
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
@@ -79,6 +80,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
         self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
+        # recording library: where each file was left, preview pictures
+        self.positions = Positions()
+        self._positions_dirty = False
+        self._resume_at = None
+        self.thumbnailer = None
+        GLib.timeout_add_seconds(2, self._track_position)
+        GLib.timeout_add_seconds(30, self._save_positions)
         self._vis_id = None          # visualisation style currently drawn
 
         # The player is always dark, whatever the desktop theme.
@@ -768,14 +776,25 @@ class MainWindow(Gtk.ApplicationWindow):
     def _build_recordings_page(self):
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         bar = Gtk.Box(spacing=6, margin_start=10, margin_end=10)
-        self.rec_folder_label = Gtk.Label(xalign=0, hexpand=True, css_classes=["lv-count"],
-                                          ellipsize=Pango.EllipsizeMode.MIDDLE)
-        bar.append(self.rec_folder_label)
+        self.rec_folder_label = Gtk.Label(xalign=0, css_classes=["lv-count"], margin_start=10,
+                                          margin_end=10, ellipsize=Pango.EllipsizeMode.MIDDLE)
+        self.rec_sort_keys = ["newest", "oldest", "title", "channel", "size"]
+        self.rec_sort = Gtk.DropDown.new_from_strings(
+            [_("Newest first"), _("Oldest first"), _("By title"), _("By channel"),
+             _("Largest first")])
+        self.rec_sort.set_tooltip_text(_("Sort the recordings"))
+        how = self.settings.get("rec_sort", "newest")
+        self.rec_sort.set_selected(self.rec_sort_keys.index(how)
+                                   if how in self.rec_sort_keys else 0)
+        self.rec_sort.connect("notify::selected", lambda *_a: self._on_rec_sort())
+        self.rec_sort.set_hexpand(True)
+        bar.append(self.rec_sort)
         bar.append(Gtk.Button(icon_name="folder-open-symbolic", action_name="win.rec-folder",
                               tooltip_text=_("Open the recording folder"), css_classes=["flat"]))
         bar.append(Gtk.Button(icon_name="view-refresh-symbolic", action_name="win.rec-refresh",
                               tooltip_text=_("Look for new recordings"), css_classes=["flat"]))
         page.append(bar)
+        page.append(self.rec_folder_label)
 
         self.rec_store = Gio.ListStore(item_type=Row)
         self.rec_filter = Gtk.CustomFilter.new(self._rec_filter_func)
@@ -820,7 +839,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def reload_recordings(self):
         folders = self._recording_folders()
-        recs = find_recordings(folders)
+        recs = sort_recordings(find_recordings(folders), self.settings.get("rec_sort", "newest"))
         self._recording_now = self._active_recording_paths()
         self.rec_store.remove_all()
         self.rec_store.splice(0, 0, [Row(r) for r in recs])
@@ -832,45 +851,138 @@ class MainWindow(Gtk.ApplicationWindow):
         self.rec_stack.set_visible_child_name("list" if recs else "empty")
         self._refilter()
 
+    def _on_rec_sort(self):
+        self.settings["rec_sort"] = self.rec_sort_keys[self.rec_sort.get_selected()]
+        self.reload_recordings()
+
     def _rec_filter_func(self, item):
         q = self.search.get_text().strip().lower()
-        return not q or q in item.data.title.lower()
+        return not q or q in item.data.search_text()
 
     def _rec_row_setup(self, _f, li):
         b = Gtk.Box(spacing=10)
-        icon = Gtk.Image(css_classes=["lv-chan-icon"], valign=Gtk.Align.CENTER)
-        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True)
+        # a fixed 80x45 slot: the preview picture, or a file-type icon
+        thumb = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.START, width_request=80,
+                        height_request=45)
+        thumb.append(Gtk.Image(css_classes=["lv-chan-icon"], pixel_size=24, width_request=80))
+        area = Gtk.DrawingArea(content_width=80, content_height=45, css_classes=["lv-rec-thumb"])
+        area.set_draw_func(_draw_thumb)
+        thumb.append(area)
+        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True, spacing=1)
         title = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END)
+        sub = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-count"])
         info = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-count"])
-        text.append(title)
-        text.append(info)
+        watched = Gtk.ProgressBar(css_classes=["lv-rec-progress"], margin_top=2, width_request=40)
+        for w in (title, sub, info, watched):
+            text.append(w)
         badge = Gtk.Image(icon_name="media-record-symbolic", css_classes=["rec"],
                           tooltip_text=_("Recording in progress"))
-        for w in (icon, text, badge):
+        for w in (thumb, text, badge):
             b.append(w)
         li.set_child(b)
 
     def _rec_row_bind(self, _f, li):
         r = li.get_item().data
-        icon, text, badge = list(_children(li.get_child()))
-        title, info = list(_children(text))
+        thumb, text, badge = list(_children(li.get_child()))
+        title, sub, info, watched = list(_children(text))
+        icon, picture = list(_children(thumb))
         icon.set_from_icon_name("audio-x-generic-symbolic" if r.is_audio
                                 else "video-x-generic-symbolic")
+        png = None if r.is_audio else self._thumbnail(r)
+        pix = _thumb_pixbuf(png) if png is not None else None
+        picture.pixbuf = pix
+        picture.queue_draw()
+        picture.set_visible(pix is not None)
+        icon.set_visible(pix is None)
         title.set_text(r.title)
+        sub.set_text(r.subtitle)
+        sub.set_visible(bool(r.subtitle))
         info.set_text(r.details())
-        li.get_child().set_tooltip_text(str(r.path))
+        progress = self.positions.progress(r.path)
+        watched.set_fraction(progress)
+        watched.set_visible(progress > 0)
+        watched.set_tooltip_text(_("Watched") if self.positions.watched(r.path) else
+                                 _("Watched up to {pos}").format(
+                                     pos=_mmss(self.positions.get(r.path)["pos"]))
+                                 if progress > 0 else None)
+        tip = [str(r.path)]
+        if r.description:
+            tip.insert(0, r.description[:600])
+        li.get_child().set_tooltip_text("\n\n".join(tip))
         try:
             running = str(r.path.resolve()) in getattr(self, "_recording_now", ())
         except OSError:
             running = False
         badge.set_visible(running)
 
-    def play_recording(self, r):
+    def _thumbnail(self, r):
+        if self.thumbnailer is None:
+            try:
+                from ..thumbnails import Thumbnailer
+                self.thumbnailer = Thumbnailer()
+            except (ImportError, ValueError):
+                self.thumbnailer = False
+        if not self.thumbnailer:
+            return None
+        return self.thumbnailer.request(r.path, r.mtime, self._thumbnail_ready)
+
+    def _thumbnail_ready(self, path, _png):
+        # rebind the row of that recording
+        for i in range(self.rec_store.get_n_items()):
+            row = self.rec_store.get_item(i)
+            if row.data.path == path:
+                self.rec_store.splice(i, 1, [Row(row.data)])     # rebinds the row
+                break
+        return False
+
+    def play_recording(self, r, from_start=False):
         if not r.path.exists():
             self.set_status(_("Recording not found: {path}").format(path=r.path))
             self.reload_recordings()
             return
+        resume = None if from_start else self.positions.resume_at(r.path)
         self.play_files([str(r.path)])
+        if resume:
+            self._resume_at = (str(r.path), resume)
+            self.set_status(_("Continuing at {pos}").format(pos=_mmss(resume)))
+
+    def _track_position(self):
+        """Remember how far the playing file got (every few seconds)."""
+        if not (0 <= self.playlist_pos < len(self.playlist)) or self.current is not None:
+            return True
+        item = self.playlist[self.playlist_pos]
+        pos = self.player.position()
+        if pos is None:
+            return True
+        if self._resume_at and self._resume_at[0] == item:
+            if pos[0] < self._resume_at[1] - 5:
+                self.player.seek_to(self._resume_at[1])
+            self._resume_at = None
+            return True
+        self.positions.update(item, pos[0], pos[1])
+        self._positions_dirty = True
+        return True
+
+    def _save_positions(self):
+        if self._positions_dirty:
+            self.positions.save()
+            self._positions_dirty = False
+        return True
+
+    def _set_watched(self, r, watched):
+        p = self.positions.get(r.path)
+        dur = (p or {}).get("dur") or r.duration or 1
+        if watched:
+            self.positions.update(r.path, dur, dur)
+        else:
+            self.positions.forget(r.path)
+        self.positions.save()
+        self.reload_recordings()
+
+    def _show_recording_details(self, r):
+        lines = [r.subtitle, r.details(), r.info.get("genre", ""), "", r.description,
+                 "", str(r.path)]
+        message(self, r.title, "\n".join(x for x in lines if x is not None).strip())
 
     def open_recording_folder(self, path=None):
         folder = Path(path) if path else Path(self.settings.get("recording_dir", "")).expanduser()
@@ -888,6 +1000,10 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         r = self.rec_filtered.get_item(pos).data
         for name, fn in (("rec-ctx-play", lambda: self.play_recording(r)),
+                         ("rec-ctx-restart", lambda: self.play_recording(r, from_start=True)),
+                         ("rec-ctx-details", lambda: self._show_recording_details(r)),
+                         ("rec-ctx-watched", lambda: self._set_watched(r, True)),
+                         ("rec-ctx-unwatched", lambda: self._set_watched(r, False)),
                          ("rec-ctx-folder", lambda: self.open_recording_folder(r.path.parent)),
                          ("rec-ctx-delete", lambda: self._confirm_delete_recording(r))):
             a = Gio.SimpleAction.new(name, None)
@@ -895,6 +1011,13 @@ class MainWindow(Gtk.ApplicationWindow):
             self.add_action(a)
         m = Gio.Menu()
         m.append(_("Play"), "win.rec-ctx-play")
+        if self.positions.resume_at(r.path):
+            m.append(_("Play from the Beginning"), "win.rec-ctx-restart")
+        m.append(_("Details…"), "win.rec-ctx-details")
+        if self.positions.watched(r.path):
+            m.append(_("Mark as Unwatched"), "win.rec-ctx-unwatched")
+        else:
+            m.append(_("Mark as Watched"), "win.rec-ctx-watched")
         m.append(_("Show in Folder"), "win.rec-ctx-folder")
         m.append(_("Delete…"), "win.rec-ctx-delete")
         pop = Gtk.PopoverMenu.new_from_model(m)
@@ -927,6 +1050,9 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.stop_playback()
             try:
                 r.path.unlink()
+                delete_info(r.path)
+                self.positions.forget(r.path)
+                self.positions.save()
                 self.set_status(_("Deleted {name}").format(name=r.path.name))
             except OSError as e:
                 self.set_status(_("Cannot delete {name}: {strerror}").format(name=r.path.name, strerror=e.strerror))
@@ -1189,6 +1315,8 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def stop_playback(self):
         """Switch the channel (or file) off completely; Play brings it back."""
+        self._track_position()
+        self._save_positions()
         if self.current:
             self.stopped = self.current
         self._release_capture()
@@ -1253,6 +1381,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_status(_("Playing {item}").format(item=item))
 
     def _on_eos(self, _p):
+        if 0 <= self.playlist_pos < len(self.playlist) and self.current is None:
+            item = self.playlist[self.playlist_pos]
+            p = self.positions.get(item)
+            if p:
+                self.positions.update(item, p["dur"], p["dur"])     # watched to the end
+                self._positions_dirty = True
         if self.playlist:
             self.playlist_step(1)
 
@@ -1912,9 +2046,29 @@ class MainWindow(Gtk.ApplicationWindow):
                         license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb").present()
 
     def _on_close(self, *_):
+        self._track_position()
+        self._save_positions()
         self.settings.save()
         self._release_capture()
         return False
+
+
+def _thumb_pixbuf(png, width=80, height=45):
+    """A recording preview at list size."""
+    try:
+        from gi.repository import GdkPixbuf
+        return GdkPixbuf.Pixbuf.new_from_file_at_scale(str(png), width * 2, height * 2, False)
+    except GLib.Error:
+        return None
+
+
+def _draw_thumb(area, cr, w, h):
+    pix = getattr(area, "pixbuf", None)
+    if pix is None:
+        return
+    cr.scale(w / pix.get_width(), h / pix.get_height())
+    Gdk.cairo_set_source_pixbuf(cr, pix, 0, 0)
+    cr.paint()
 
 
 def _children(w):
