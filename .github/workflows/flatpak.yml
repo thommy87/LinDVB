@@ -7,6 +7,14 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      release_id:
+        description: "Draft release to upload the package to (set by the Release workflow)"
+        type: string
+        default: ""
+      release_tag:
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -25,6 +33,23 @@ jobs:
           bundle: LinDVB.flatpak
           manifest-path: flatpak/io.github.thommy87.LinDVB.yml
           cache-key: flatpak-builder-${{ github.sha }}
+          # The tag-push release job below needs the artifact; PRs and Release-workflow
+          # builds don't, and the Actions storage quota is small.
+          upload-artifact: ${{ github.event_name == 'push' }}
+
+      - name: Upload to the draft release
+        if: inputs.release_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ inputs.release_id }}
+          TAG: ${{ inputs.release_tag }}
+        run: |
+          f="$(ls *.flatpak | head -1)"
+          name="LinDVB-${TAG}-x86_64.flatpak"
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/octet-stream" --data-binary "@$f" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$ID/assets?name=$name" >/dev/null
+          echo "Uploaded $f as $name"
 
   release:
     needs: flatpak

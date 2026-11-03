@@ -2,42 +2,70 @@ name: Release
 
 # Builds the AppImage, Flatpak and Snap and publishes them together as a
 # GitHub release. Start it from the Actions tab ("Run workflow").
+#
+# The packages go straight into a draft release rather than through workflow
+# artifacts, so a full Actions storage quota can't block a release. The draft
+# is published once all three packages are attached.
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release tag, e.g. v0.1.1"
+        description: "Release tag, e.g. v0.2.0"
         required: true
 
 permissions:
   contents: write
 
 jobs:
-  appimage:
-    uses: ./.github/workflows/appimage.yml
-  flatpak:
-    uses: ./.github/workflows/flatpak.yml
-  snap:
-    uses: ./.github/workflows/snap.yml
-
-  publish:
-    needs: [appimage, flatpak, snap]
+  draft:
     runs-on: ubuntu-24.04
+    outputs:
+      id: ${{ steps.create.outputs.id }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          path: dist
-      - name: Create release
+      - name: Create draft release
+        id: create
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.version }}
-          NOTES: packaging/release-notes.md
         run: |
-          mkdir out
-          cp "$(find dist -type f -name '*.AppImage' | head -1)" "out/LinDVB-${TAG}-x86_64.AppImage"
-          cp "$(find dist -type f -name '*.flatpak' | head -1)" "out/LinDVB-${TAG}-x86_64.flatpak"
-          cp "$(find dist -type f -name '*.snap' | head -1)" "out/lindvb_${TAG#v}_amd64.snap"
-          ls -lh out
-          gh release create "$TAG" out/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-            --title "LinDVB ${TAG}" --notes-file "$NOTES" --generate-notes
+          # Release notes: the changelog for this tag (if there is one), then the
+          # install notes; GitHub appends the list of merged pull requests.
+          : > notes.md
+          if [ -f "packaging/changelog/${TAG}.md" ]; then
+            cat "packaging/changelog/${TAG}.md" >> notes.md
+          fi
+          cat packaging/release-notes.md >> notes.md
+          id=$(gh api -X POST "repos/$GITHUB_REPOSITORY/releases" \
+            -f tag_name="$TAG" -f target_commitish="$GITHUB_SHA" -f name="LinDVB ${TAG}" \
+            -F body=@notes.md -F draft=true -F generate_release_notes=true --jq .id)
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+  appimage:
+    needs: draft
+    uses: ./.github/workflows/appimage.yml
+    with:
+      release_id: ${{ needs.draft.outputs.id }}
+      release_tag: ${{ inputs.version }}
+  flatpak:
+    needs: draft
+    uses: ./.github/workflows/flatpak.yml
+    with:
+      release_id: ${{ needs.draft.outputs.id }}
+      release_tag: ${{ inputs.version }}
+  snap:
+    needs: draft
+    uses: ./.github/workflows/snap.yml
+    with:
+      release_id: ${{ needs.draft.outputs.id }}
+      release_tag: ${{ inputs.version }}
+
+  publish:
+    needs: [draft, appimage, flatpak, snap]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ needs.draft.outputs.id }}
+        run: gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$ID" -F draft=false -F make_latest=true --jq .html_url
