@@ -271,8 +271,8 @@ msgstr "Priečinok timeshiftu"
 msgid "Timeshift buffer (MB)"
 msgstr "Vyrovnávacia pamäť timeshiftu (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tuner a LNB"
+msgid "Tuner and Channels"
+msgstr "Tuner a kanály"
 
 msgid "DVB hardware"
 msgstr "Hardvér DVB"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Zoznamy kanálov z internetu: zoznam DVB-I vášho regiónu a zoznamy skladieb IPTV. Tieto nastavenia platia okamžite."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Nahrávanie"
 
 msgid "Recording folder"
 msgstr "Priečinok nahrávok"

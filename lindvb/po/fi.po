@@ -271,8 +271,8 @@ msgstr "Ajansiirron kansio"
 msgid "Timeshift buffer (MB)"
 msgstr "Ajansiirron puskuri (Mt)"
 
-msgid "Tuner and LNB"
-msgstr "Viritin ja LNB"
+msgid "Tuner and Channels"
+msgstr "Viritin ja kanavat"
 
 msgid "DVB hardware"
 msgstr "DVB-laitteisto"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Kanavaluettelot internetistä: alueesi DVB-I-luettelo ja IPTV-soittolistat. Nämä asetukset tulevat voimaan heti."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Tallennus"
 
 msgid "Recording folder"
 msgstr "Tallennuskansio"

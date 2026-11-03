@@ -271,8 +271,8 @@ msgstr "Složka timeshiftu"
 msgid "Timeshift buffer (MB)"
 msgstr "Vyrovnávací paměť timeshiftu (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tuner a LNB"
+msgid "Tuner and Channels"
+msgstr "Tuner a kanály"
 
 msgid "DVB hardware"
 msgstr "Hardware DVB"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Seznamy kanálů z internetu: seznam DVB-I vašeho regionu a seznamy skladeb IPTV. Tato nastavení platí okamžitě."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Nahrávání"
 
 msgid "Recording folder"
 msgstr "Složka nahrávek"

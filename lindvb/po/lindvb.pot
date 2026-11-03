@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LinDVB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 13:54+0000\n"
+"POT-Creation-Date: 2026-11-03 15:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Tuned"
 msgstr ""
 
-#: lindvb/recorder.py:459 lindvb/ui/dialogs.py:192
+#: lindvb/recorder.py:459
 msgid "Recording"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgid "Timeshift buffer (MB)"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:155
-msgid "Tuner and LNB"
+msgid "Tuner and Channels"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:156
@@ -460,6 +460,11 @@ msgstr ""
 
 #: lindvb/ui/dialogs.py:180
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:192
+msgctxt "preferences page"
+msgid "Recording"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:194 lindvb/ui/timers.py:287

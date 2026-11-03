@@ -271,7 +271,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append(_("Teletext"), "win.teletext")
         tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
         # channel search, channel editor and DVB-I live in the preferences
-        # (Tuner and LNB, Internet); their shortcuts still work
+        # (Tuner and Channels, Internet); their shortcuts still work
         tv.append(_("Update Internet EPG (XMLTV)"), "win.xmltv")
         m.append_section(None, tv)
 

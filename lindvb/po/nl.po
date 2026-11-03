@@ -271,8 +271,8 @@ msgstr "Timeshift-map"
 msgid "Timeshift buffer (MB)"
 msgstr "Timeshift-buffer (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tuner en LNB"
+msgid "Tuner and Channels"
+msgstr "Tuner en zenders"
 
 msgid "DVB hardware"
 msgstr "DVB-hardware"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Zenderlijsten van internet: de DVB-I-lijst van uw regio en IPTV-afspeellijsten. Deze instellingen gelden direct."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Opnemen"
 
 msgid "Recording folder"
 msgstr "Opnamemap"

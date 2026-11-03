@@ -271,8 +271,8 @@ msgstr "Fillteán timeshift"
 msgid "Timeshift buffer (MB)"
 msgstr "Maolán timeshift (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tiúnóir agus LNB"
+msgid "Tuner and Channels"
+msgstr "Tiúnóir agus stáisiúin"
 
 msgid "DVB hardware"
 msgstr "Crua-earraí DVB"
@@ -330,6 +330,10 @@ msgstr "Idirlíon"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Liostaí stáisiún ón idirlíon: liosta DVB-I do réigiúin agus seinmliostaí IPTV. Bíonn feidhm leis na socruithe seo láithreach."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Taifeadadh"
 
 msgid "Recording folder"
 msgstr "Fillteán taifeadtaí"

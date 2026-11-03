@@ -13,7 +13,7 @@ from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LA
 from ..tuner import SegmentReader
 from .common import dropdown, fill, make_column_view, scrolled, selected
 from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
-from ..i18n import LANGUAGES as LANGUAGES_UI, _
+from ..i18n import LANGUAGES as LANGUAGES_UI, C_, _
 
 DELSYS = ["dvb-s", "dvb-s2", "dvb-c-a", "dvb-c-b", "dvb-t", "dvb-t2", "atsc", "isdb-t", "dtmb", "iptv"]
 MODS = ["auto", "qpsk", "8psk", "16apsk", "32apsk", "qam-16", "qam-32", "qam-64", "qam-128",
@@ -152,7 +152,7 @@ class PrefsWindow(Gtk.Window):
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
 
         # -- Tuner
-        pg = page("tuner", _("Tuner and LNB"))
+        pg = page("tuner", _("Tuner and Channels"))
         g = group(pg, _("DVB hardware"))
         entry(g, "adapters", _("DVB adapters"), _("Adapter numbers LinDVB may use, comma separated."))
         self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
@@ -189,7 +189,7 @@ class PrefsWindow(Gtk.Window):
         self.stack.connect("notify::visible-child-name", lambda *_: self._page_shown())
 
         # -- Recording
-        pg = page("recording", _("Recording"))
+        pg = page("recording", C_("preferences page", "Recording"))
         g = group(pg)
         entry(g, "recording_dir", _("Recording folder"))
         entry(g, "name_scheme", _("File naming scheme"),

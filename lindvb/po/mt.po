@@ -271,8 +271,8 @@ msgstr "Folder tat-timeshift"
 msgid "Timeshift buffer (MB)"
 msgstr "Buffer tat-timeshift (MB)"
 
-msgid "Tuner and LNB"
-msgstr "Tuner u LNB"
+msgid "Tuner and Channels"
+msgstr "Tuner u stazzjonijiet"
 
 msgid "DVB hardware"
 msgstr "Hardware DVB"
@@ -330,6 +330,10 @@ msgstr "Internet"
 
 msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
 msgstr "Listi tal-istazzjonijiet mill-internet: il-lista DVB-I tar-reġjun tiegħek u playlists IPTV. Dawn is-settings japplikaw minnufih."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Reġistrazzjoni"
 
 msgid "Recording folder"
 msgstr "Folder tar-reġistrazzjonijiet"
