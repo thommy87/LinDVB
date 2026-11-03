@@ -97,7 +97,15 @@ most 2560x1440, or `visualizer_resolution` (`"1920x1080"`, default `"auto"`),
 and the original GOOM, which runs on the CPU and gets slow at high resolutions,
 for `goom_resolution` (default `"640x360"`). For a sharp GOOM in full screen
 use the built-in *Goom HD*. Without gst-projectm the entry is simply not offered
-and the plugin list says why. Like any plugin, the add-on can be switched off
+and the plugin list says why.
+
+The **AppImage includes projectM**: `packaging/build-projectm.sh` builds
+libprojectM 4 and gst-projectm (both LGPL) and adds the *Cream of the Crop*
+collection (about 9,800 presets) and the MilkDrop texture pack, so
+*projectM (MilkDrop)* appears in the visualisation picker without installing
+anything. Your own presets can still be used with `projectm_preset_dir`. With a
+distribution package, install gst-projectm from your distribution (or build it
+with that script) and a preset collection. Like any plugin, the add-on can be switched off
 under **☰ → Plugins…**.
 
 ## Conditional access (descrambling your own channels)

@@ -4,6 +4,9 @@ set -euo pipefail
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD="$SRC/build"
 mkdir -p "$BUILD"
+if [ -z "${NO_PROJECTM:-}" ]; then
+    "$SRC/packaging/build-projectm.sh" "$BUILD/projectm"
+fi
 "$SRC/packaging/build-appdir.sh" "$BUILD/LinDVB.AppDir"
 TOOL="$BUILD/appimagetool"
 if [ ! -x "$TOOL" ]; then

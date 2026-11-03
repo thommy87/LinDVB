@@ -266,7 +266,7 @@ class GoomLine:
         pts = []
         amp = self.amplitude / 1000.0
         for p, d in zip(self.points, data):
-            pts.append((int(p[0] + math.cos(p[2]) * amp * d), int(p[1] + math.sin(p[2]) * amp * d)))
+            pts.append((p[0] + math.cos(p[2]) * amp * d, p[1] + math.sin(p[2]) * amp * d))
         self._move()
         return pts, colour
 
@@ -475,9 +475,10 @@ class Stars:
             if s[6] >= NCOL:
                 continue
             col = STAR_COLOURS[min(int(s[6]), len(STAR_COLOURS) - 1)]
-            x, y = int(s[0]), int(s[1])
-            out.append((x, y, int(s[0] - s[2] * 6), int(s[1] - s[3] * 6), col))
-            out.append((x, y, int(s[0] - s[2] * 2), int(s[1] - s[3] * 2), col))
+            # GOOM rounds to its pixels; kept as floats, the streaks stay smooth
+            x, y = s[0], s[1]
+            out.append((x, y, s[0] - s[2] * 6, s[1] - s[3] * 6, col))
+            out.append((x, y, s[0] - s[2] * 2, s[1] - s[3] * 2, col))
         for s in self.stars:
             if (s[0] > w + 64 or (s[3] >= 0 and s[1] - 16 * s[3] > h)
                     or s[0] < -64 or s[6] >= NCOL):

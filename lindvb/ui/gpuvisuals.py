@@ -255,9 +255,10 @@ uniform vec2 u_middle;       // 0..1
 uniform float u_speed, u_seed;
 uniform int u_mode, u_hypercos, u_noisify;
 uniform vec2 u_plane;        // hPlaneEffect, vPlaneEffect
+uniform float u_scale;       // GOOM's unit (half its width) in screen heights
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7)) + u_seed * 91.7) * 43758.5453); }
 void main() {
-    float ratio = 2.0 / u_vres.x;
+    float ratio = 2.0 / (u_scale * u_vres.y);
     vec2 vpx = v_uv * u_vres;
     float X = (vpx.x - u_middle.x * u_vres.x) * ratio;
     float Y = (vpx.y - u_middle.y * u_vres.y) * ratio;
@@ -292,10 +293,11 @@ void main() { fragColor = mix(tap(u_src, v_uv), tap(u_dst, v_uv), u_blend); }
 # fields as parameters, for GL implementations without float render targets
 GOOM_FIELD_FN = """
 uniform vec2 u_vres;
+uniform float u_scale;
 float hash(vec2 p, float seed) { return fract(sin(dot(p, vec2(127.1, 311.7)) + seed * 91.7) * 43758.5453); }
 vec2 field(vec2 uv, vec4 a, vec4 b, vec2 plane) {
     // a: middle x, middle y, speed, seed   b: mode, hypercos, noisify, -
-    float ratio = 2.0 / u_vres.x;
+    float ratio = 2.0 / (u_scale * u_vres.y);
     vec2 vpx = uv * u_vres;
     float X = (vpx.x - a.x * u_vres.x) * ratio;
     float Y = (vpx.y - a.y * u_vres.y) * ratio;
@@ -426,8 +428,9 @@ vec2 project(int g, int x, int z, out bool ok) {
     float sy = vy + c.y;
     ok = sz > 2.0;
     if (!ok) return vec2(0.0);
-    vec2 v = vec2(float(int(u_dist * sx / sz)), float(int(u_dist * sy / sz)));
-    vec2 p = vec2(v.x + float(int(u_res.x) / 2), -v.y + float(int(u_res.y) / 2));
+    // GOOM rounds the projection to its 320x200 pixels; unrounded the tentacles are smooth
+    vec2 v = u_dist * vec2(sx, sy) / sz;
+    vec2 p = vec2(v.x + u_res.x * 0.5, -v.y + u_res.y * 0.5);
     ok = p.x >= 0.0 && p.y >= 0.0 && p.x < u_res.x && p.y < u_res.y;
     return p;
 }
@@ -1011,6 +1014,10 @@ class GoomRenderer(Renderer):
 
     FIELD_MAX = (1280, 720)          # the fields are smooth, they need no more
     KEEP = 252.0 / 256.0             # light kept by GOOM's bilinear coefficients
+    # GOOM measures its effects in half widths, so on a wide screen the "ball" of
+    # the amulette and crystal modes is cut off at the top and bottom. Measured in
+    # screen heights instead (1.1 = 220 of GOOM's 200 lines, instead of its width) it fits with a margin.
+    SCALE = 1.1
 
     def __init__(self, ctx, style):
         super().__init__(ctx, style)
@@ -1093,6 +1100,7 @@ class GoomRenderer(Renderer):
         prog = ctx.program("goom-field", GOOM_FIELD).use()
         prog.set("u_res", *self.fsize)
         prog.set("u_vres", *self.vres)
+        prog.set("u_scale", self.SCALE)
         prog.set("u_middle", *fd.middle)
         prog.set("u_speed", fd.speed)
         prog.set("u_seed", fd.seed)
@@ -1160,16 +1168,9 @@ class GoomRenderer(Renderer):
         gl.glBindVertexArray(ctx.quad_vao)
         ctx.blend("max")
         gl.glDrawArraysInstanced(G.TRIANGLE_STRIP, 0, 4, (total + incr - 1) // max(1, incr))
-        self._bind(self.pic_fbo[0])
-        ctx.blend("add")
-        prog = ctx.program("goom-copy", GOOM_COPY).use()
-        prog.set("u_res", *self.size)
-        gl.bind_texture(0, self.ifs_tex)
-        prog.set_int("u_tex", 0)
-        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
-        ctx.blend(None)
+        self._layer_onto(self.pic_fbo[0])
 
-    def _tentacles(self, tent, unit, low):
+    def _tentacles(self, tent, unit, low, target):
         grids, rot, dist, colour, colour_low = tent
         ctx, gl = self.ctx, self.gl
         ys, grid_u, cam_u = [], [], []
@@ -1193,9 +1194,26 @@ class GoomRenderer(Renderer):
         prog.set("u_dist", dist)
         prog.set("u_width", max(1.0, 1.3 / unit) if low else max(0.9, 1.2 / unit))
         prog.set("u_col", *(c / 255 for c in (colour_low if low else colour)), 1.0)
+        # segments overlap at their joints: take the brightest in a layer and add
+        # that once, or every joint would show as a brighter bead
+        self._bind(self.ifs_fbo)
+        gl.glClearColor(0, 0, 0, 1)
+        gl.glClear(G.COLOR_BUFFER_BIT)
         gl.glBindVertexArray(ctx.quad_vao)
-        ctx.blend("add")
+        ctx.blend("max")
         gl.glDrawArraysInstanced(G.TRIANGLE_STRIP, 0, 4, first)
+        self._layer_onto(target)
+
+    def _layer_onto(self, target):
+        ctx, gl = self.ctx, self.gl
+        self._bind(target)
+        ctx.blend("add")
+        prog = ctx.program("goom-copy", GOOM_COPY).use()
+        prog.set("u_res", *self.size)
+        gl.bind_texture(0, self.ifs_tex)
+        prog.set_int("u_tex", 0)
+        gl.glBindVertexArray(ctx.quad_vao)
+        gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
         ctx.blend(None)
 
     def _step(self, fr, unit):
@@ -1223,6 +1241,7 @@ class GoomRenderer(Renderer):
         prog = ctx.program("goom-warp", GOOM_WARP).use()
         prog.set("u_res", *self.size)
         prog.set("u_vres", vw, vh)
+        prog.set("u_scale", self.SCALE)
         gl.bind_texture(0, a_tex)
         prog.set_int("u_prev", 0)
         prog.set("u_blend", fr.blend)
@@ -1250,7 +1269,7 @@ class GoomRenderer(Renderer):
         prog.set_int("u_tex", 0)
         gl.glDrawArrays(G.TRIANGLE_STRIP, 0, 4)
         if fr.tentacles is not None:
-            self._tentacles(fr.tentacles, unit, low=False)
+            self._tentacles(fr.tentacles, unit, low=False, target=self.shown_fbo)
         if fr.stars:
             sh = Shapes()
             for x0, y0, x1, y1, col in fr.stars:
@@ -1261,15 +1280,21 @@ class GoomRenderer(Renderer):
         # 4. dim tentacles and scope lines into B
         self._bind(b_fbo)
         if fr.tentacles is not None:
-            self._tentacles(fr.tentacles, unit, low=True)
-        if fr.lines:
+            self._tentacles(fr.tentacles, unit, low=True, target=b_fbo)
+        # one layer per line, so its joints don't add up into beads (two lines still do)
+        for pts, col in fr.lines:
             sh = Shapes()
-            for pts, col in fr.lines:
-                rgba = (col[0] / 255, col[1] / 255, col[2] / 255, 1.0)
-                for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
-                    if 0 <= x0 < vw and 0 <= x1 < vw and 0 <= y0 < vh and 0 <= y1 < vh:
-                        sh.line(x0 + 0.5, y0 + 0.5, x1 + 0.5, y1 + 0.5, line_w, rgba)
-            ctx.draw_shapes(sh.data, "add", (vw, vh), unit)
+            rgba = (col[0] / 255, col[1] / 255, col[2] / 255, 1.0)
+            for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+                if 0 <= x0 < vw and 0 <= x1 < vw and 0 <= y0 < vh and 0 <= y1 < vh:
+                    sh.line(x0 + 0.5, y0 + 0.5, x1 + 0.5, y1 + 0.5, line_w, rgba)
+            if not sh.data:
+                continue
+            self._bind(self.ifs_fbo)
+            gl.glClearColor(0, 0, 0, 1)
+            gl.glClear(G.COLOR_BUFFER_BIT)
+            ctx.draw_shapes(sh.data, "max", (vw, vh), unit)
+            self._layer_onto(b_fbo)
         self.pic.reverse()
         self.pic_fbo.reverse()
 
