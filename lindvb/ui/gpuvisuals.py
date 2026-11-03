@@ -693,15 +693,27 @@ vec3 tonemap(vec3 c) { return 1.0 - exp(-c); }
 SUPERNOVA = PRELUDE + SCENE_FN + """
 float specm(float turns) { return spec(1.0 - abs(2.0 * fract(turns) - 1.0)); }
 mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, s, -s, c); }
-// a few big stars with four light spikes
-vec3 flare(vec2 px, float cell) {
+const int VEILS = 9;
+const vec3 PAL[6] = vec3[6](vec3(1.0, 0.48, 0.10),     // orange
+                            vec3(1.0, 0.82, 0.28),     // yellow
+                            vec3(0.62, 0.30, 1.0),     // violet
+                            vec3(1.0, 0.32, 0.68),     // pink
+                            vec3(0.22, 0.45, 1.0),     // blue
+                            vec3(0.18, 0.92, 0.88));   // turquoise
+// stars that slowly light up and go out again, each at its own pace
+vec3 blinking(vec2 px, float cell, float density, float size) {
     vec2 c = floor(px / cell);
-    if (hash12(c + 2.2) > 0.22) return vec3(0.0);
-    vec2 pos = (c + 0.2 + 0.6 * vec2(hash12(c + 4.1), hash12(c + 8.3))) * cell;
-    vec2 d = abs(px - pos) / u_unit;
-    float tw = 0.8 + 0.2 * sin(u_t * 0.7 + hash12(c) * 30.0);
-    float k = exp(-dot(d, d) / 6.0) + 0.5 * exp(-d.x / 1.2) * exp(-d.y / 40.0) + 0.5 * exp(-d.y / 1.2) * exp(-d.x / 40.0);
-    return mix(vec3(0.75, 0.85, 1.0), vec3(1.0, 0.85, 0.6), hash12(c + 6.6)) * k * tw * (0.5 + 0.8 * u_energy.z);
+    float h = hash12(c);
+    if (h > density) return vec3(0.0);
+    vec2 pos = (c + 0.15 + 0.7 * vec2(hash12(c + 3.1), hash12(c + 7.7))) * cell;
+    vec2 d = (px - pos) / (u_unit * size);
+    float rate = 0.15 + 0.6 * hash12(c + 1.3);
+    float on = pow(max(0.0, sin(u_t * rate + h * 97.0)), 5.0);
+    float k = exp(-dot(d, d));
+    float big = step(0.85, hash12(c + 2.9));                  // a few with light spikes
+    k += big * (0.5 * exp(-abs(d.x) / 0.6) * exp(-abs(d.y) / 14.0) + 0.5 * exp(-abs(d.y) / 0.6) * exp(-abs(d.x) / 14.0));
+    vec3 col = mix(vec3(0.70, 0.80, 1.0), vec3(1.0, 0.85, 0.60), hash12(c + 9.4));
+    return col * k * on * (0.6 + 0.8 * hash12(c + 5.5));
 }
 void main() {
     vec2 px = v_uv * u_res;
@@ -709,12 +721,13 @@ void main() {
     vec2 q = (px - 0.5 * u_res) / S;
     float r = length(q);
     vec2 dir = q / max(r, 1e-4);
-    float ang = fract(atan(q.x, -q.y) / TAU);       // turns, 0 at the top
+    float ang = fract(atan(q.x, -q.y) / TAU);
     float c = u_clock;
     float bass = u_energy.x, mid = u_energy.y, treble = u_energy.z, level = u_energy.w;
     vec3 col = vec3(0.0, 0.0, 0.012);
-    col += starfield(px, 7.0 * u_unit, 0.10, u_t, 0.9) * 0.9;
-    col += starfield(px + 13.0, 23.0 * u_unit, 0.30, u_t, 1.3);
+    col += starfield(px, 6.0 * u_unit, 0.10, u_t, 0.8) * 0.6;            // faint, steady
+    col += blinking(px, 21.0 * u_unit, 0.45, 1.3) * (1.0 + 0.8 * treble);
+    col += blinking(px + 57.0, 70.0 * u_unit, 0.30, 1.8) * 1.3;
     // the spiral galaxy behind, seen at an angle and turning slowly
     vec2 g = rot(0.45) * q;
     g.y *= 1.9;
@@ -725,54 +738,55 @@ void main() {
     float gn = fbm(g * 7.0 + 3.0, 4);
     float galaxy = arms * smoothstep(1.25, 0.25, gr) * smoothstep(0.08, 0.35, gr) * (0.35 + gn);
     float dust = smoothstep(0.45, 0.75, fbm(g * 11.0 - 7.0, 3)) * arms;
-    vec3 gcol = mix(vec3(0.48, 0.52, 0.66), vec3(0.75, 0.55, 0.70), smoothstep(0.5, 0.8, gn));
-    col += gcol * galaxy * 0.42 * (1.0 - 0.7 * dust);
-    col += starfield(px + 5.0, 9.0 * u_unit, 0.25, u_t, 1.6) * vec3(1.0, 0.45, 0.75) * galaxy * 3.0;
-    col += starfield(px + 71.0, 4.0 * u_unit, 0.35, u_t, 0.7) * galaxy * 2.5;
-    // the shell: its rim follows the spectrum around the star
-    float sp = specm(ang + 0.02 * sin(c));
-    float R0 = 0.30 * (1.0 + 0.05 * bass + 0.04 * u_pulse);
-    float edge = R0 * (1.0 + 0.30 * (fbm(dir * 2.3 + vec2(c * 0.2, -c * 0.13), 4) - 0.5)
-                       + 0.10 * (fbm(dir * 7.0 - c * 0.3, 3) - 0.5) + 0.16 * sp);
-    if (r < edge * 1.45) {
-        float t = r / edge;
-        // filaments: creased noise in a slowly flowing, swirled space
-        vec2 w = rot(c * 0.05) * q * 5.0;
-        w += 0.9 * vec2(fbm(w * 0.7 + vec2(c * 0.25, 1.7), 4), fbm(w * 0.7 + vec2(5.2, -c * 0.2), 4));
-        float fil = pow(ridged(w * 1.4 + dir * c * 0.3, 5), 2.4) * 2.2;
-        float fine = pow(ridged(w * 3.1 - 4.0 - dir * c * 0.2, 4), 3.0) * 1.6;
-        float dens = fbm(w * 0.5 - 3.3, 3);
-        float hue = fbm(w * 0.35 + 11.0, 3);
-        float inside = smoothstep(1.05, 0.88, t);
-        // colours: gold and orange inside, blue and cyan towards the rim, magenta patches
-        vec3 gold = vec3(1.0, 0.72, 0.30), orange = vec3(1.0, 0.42, 0.12);
-        vec3 blue = vec3(0.22, 0.48, 1.0), cyan = vec3(0.35, 0.90, 1.0);
-        vec3 magenta = vec3(0.95, 0.30, 0.85), red = vec3(1.0, 0.22, 0.18);
-        vec3 fc = mix(gold, orange, smoothstep(0.35, 0.65, hue));
-        fc = mix(fc, mix(blue, cyan, hue), smoothstep(0.55, 0.92, t + 0.25 * (hue - 0.5)));
-        fc = mix(fc, mix(magenta, red, dens), smoothstep(0.60, 0.76, fbm(w * 0.25 + 40.0, 3)) * 0.65);
-        float lum = (0.45 + 0.9 * t) * (0.7 + 0.6 * mid + 0.4 * u_pulse);
-        col += fc * (fil + fine * (0.4 + 0.6 * dens)) * inside * lum;
-        // glowing gas inside the shell, brighter towards the middle
-        col += mix(vec3(1.0, 0.85, 0.65), vec3(0.85, 0.45, 0.35), t) * inside * dens * 0.35 * (1.0 - 0.5 * t);
-        // the rim: a ragged blue-cyan front
-        float rim = exp(-pow((t - 0.95) / 0.07, 2.0));
-        col += mix(blue, cyan, dens) * rim * (0.25 + 0.9 * fil + 0.6 * fine) * (0.7 + 0.6 * sp);
-        // orange streaks blown outwards past the rim
-        float out_ = max(t - 0.92, 0.0);
-        float streak = pow(vnoise(dir * 38.0 + vec2(0.0, c * 0.4)), 4.0)
-                       * smoothstep(0.45, 0.8, vnoise(dir * 6.0 - c * 0.2))
-                       * (0.5 + fbm(q * 9.0 - dir * c * 0.5, 3));
-        col += mix(orange, red, dens) * streak * exp(-out_ * 9.0) * smoothstep(0.88, 1.0, t)
-               * (1.0 + 2.5 * treble);
+    vec3 gcol = mix(vec3(0.50, 0.54, 0.68), vec3(0.78, 0.58, 0.72), smoothstep(0.5, 0.8, gn));
+    col += gcol * galaxy * 0.45 * (1.0 - 0.7 * dust);
+    col += starfield(px + 5.0, 9.0 * u_unit, 0.25, u_t, 1.6) * vec3(1.0, 0.45, 0.75) * galaxy * 1.6;
+    col += starfield(px + 71.0, 4.0 * u_unit, 0.35, u_t, 0.7) * galaxy * 1.6;
+    // veils: born somewhere in the white core, they drift outwards, grow and fade,
+    // and a new one is born as an old one vanishes, so the picture keeps its size
+    float flow = c * 1.1 * (1.0 + 0.4 * level);
+    vec3 neb = vec3(0.0);
+    for (int k = 0; k < VEILS; k++) {
+        float fk = float(k);
+        float life = flow + fk / float(VEILS);
+        float s = fract(life);                                   // 0: born, 1: gone
+        float seed = floor(life) * 7.31 + fk * 3.17;
+        float R = 0.03 * pow(14.0, s);                          // its radius grows exponentially
+        float alpha = smoothstep(0.0, 0.10, s) * pow(1.0 - s, 1.15);
+        vec2 u = rot(seed) * q / R;
+        float ur = length(u);
+        if (ur > 2.6) continue;
+        // where on the ring this veil lies (it is born at a random place, not all around)
+        vec2 ud = u / max(ur, 1e-4);
+        float place = smoothstep(0.30, 0.65, fbm(ud * 1.6 + seed * 1.37, 3));
+        float rag = 0.45 * (fbm(ud * 2.5 + seed * 2.1, 3) - 0.5);
+        float ring = exp(-pow((ur - 1.0 - rag) / 0.38, 2.0)) + 0.3 * exp(-ur * 1.6);
+        float m = ring * mix(0.35, 1.0, place) * alpha;
+        if (m < 0.004) continue;
+        // the veil itself: creased, swirled noise with fine fibres along the radius
+        vec2 w = u * 1.8 + seed;
+        w += 0.9 * vec2(fbm(w * 0.7 + 1.7, 3), fbm(w * 0.7 + 5.2, 3));
+        float fil = pow(ridged(w, 5), 3.0) * 4.0 + pow(ridged(w * 2.7 + 9.0, 3), 4.0) * 2.0;
+        float fib = 0.7 + 0.6 * vnoise(ud * 30.0 + seed * 11.0 + ur * 1.5);
+        float wisp = fbm(w * 0.6 - 3.0, 3);
+        // colours: two of orange, yellow, violet, pink, blue, turquoise per veil,
+        // white while it is still near the core
+        int i0 = int(hash12(vec2(seed, 1.0)) * 6.0);
+        int i1 = int(hash12(vec2(seed, 2.0)) * 6.0);
+        vec3 vc = mix(PAL[i0], PAL[i1], smoothstep(0.3, 0.7, wisp));
+        vc = mix(vec3(1.0, 0.95, 0.88), vc, smoothstep(0.0, 0.18, s));
+        float gain = 0.7 + 0.9 * specm(ang + seed * 0.1) + 0.4 * u_pulse;
+        neb += vc * m * (fil * fib + 0.22 * wisp * wisp) * gain;
     }
+    col += neb * (2.4 + 0.8 * mid);
     // the white-hot core
-    float core = 0.035 + 0.025 * u_pulse + 0.01 * bass;
-    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.4 + 1.2 * u_pulse);
-    col += vec3(1.0, 0.75, 0.45) * exp(-r / (core * 4.5)) * (0.55 + 0.35 * level);
-    col += vec3(1.0, 0.6, 0.35) * exp(-r / 0.25) * 0.12;
-    col += flare(px, 170.0 * u_unit);
-    fragColor = vec4(tonemap(col * 1.15) + dither(), 1.0);
+    float core = 0.03 + 0.02 * u_pulse + 0.01 * bass;
+    col += vec3(1.0, 0.97, 0.92) * exp(-r / core) * (1.6 + 1.2 * u_pulse);
+    col += vec3(1.0, 0.80, 0.55) * exp(-r / (core * 4.0)) * (0.6 + 0.4 * level);
+    col += vec3(1.0, 0.70, 0.45) * exp(-r / 0.22) * 0.25;
+    float lum = dot(col, vec3(0.3, 0.55, 0.15));
+    col = max(mix(vec3(lum), col, 1.3), 0.0);                 // a little more colour
+    fragColor = vec4(tonemap(col * 1.1) + dither(), 1.0);
 }
 """
 

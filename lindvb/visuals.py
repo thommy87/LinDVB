@@ -816,11 +816,13 @@ def _glow(cr, x, y, r, stops):
 
 
 class Supernova(_Scene):
-    """An exploding star: a white-hot core inside a ragged shell of glowing
-    filaments, gold and orange inside, blue and cyan at the rim, magenta
-    and red in patches, in front of a slowly turning spiral galaxy. The
-    spectrum shapes the rim around the star (bass at the top, treble at the
-    bottom), the beat makes the core flare."""
+    """An exploding star: veils of glowing gas in orange, yellow, violet,
+    pink, blue and turquoise are born at random places in the white-hot core
+    and drift outwards, growing more transparent until they vanish while new
+    ones follow, so the star keeps spreading without ever getting bigger.
+    Behind it a spiral galaxy turns slowly and stars light up and go out.
+    The spectrum sets the veils' brightness around the star (bass at the
+    top, treble at the bottom), the beat makes the core flare."""
     id, label = "supernova", "Supernova (modern)"
 
     PACE = (0.05, 0.08)
