@@ -768,6 +768,283 @@ class Pulsar(Style):
         footer(cr, w, h, f.caption)
 
 
+class _Scene(Style):
+    """Base of the slow painted scenes (supernova, sunset, aurora).
+
+    The picture is drawn entirely by a fragment shader
+    (:mod:`lindvb.ui.gpuvisuals`); the CPU only smooths the music into a few
+    numbers per frame. Every movement comes from the music: ``speed``
+    follows the loudness and jumps on each beat, and both clocks only run
+    with it, so the scenes stand still in silence, drift with quiet music
+    and surge forward on the beat. ``clock`` drives the large, slow
+    movements, ``motion`` (in seconds of music) the small ones such as
+    twinkling stars."""
+
+    PACE = 0.1                    # clock units per second at a speed of 1
+    EASE = 2.5                    # how quickly the energies follow (1/s)
+
+    def __init__(self):
+        self.spectrum = _Spectrum(rise=6.0, fall=1.2, blur=3)
+        self.energy = [0.0, 0.0, 0.0]
+        self.pulse = 0.0
+        self.speed = 0.0
+        self.clock = 0.0
+        self.motion = 0.0
+        self.presence = 0.0       # 1 while music plays, sinks to 0 when it stops
+
+    FADE_IN, FADE_OUT = 2.0, 8.0  # seconds for ``presence`` to come and go
+
+    def params(self, f):
+        """Advance the state; returns (clock, bass, mid, treble, pulse, level)."""
+        self.spectrum.update(f)
+        for g, v in enumerate((f.bass, f.mid, f.treble)):
+            self.energy[g] += (v - self.energy[g]) * min(1.0, f.dt * self.EASE)
+        bass, mid, treble = self.energy
+        level = (bass + mid + treble) / 3
+        self.pulse += (f.beat - self.pulse) * min(1.0, f.dt * 4)
+        target = min(1.8, 1.8 * level + 0.9 * f.beat)
+        self.speed += (target - self.speed) * min(1.0, f.dt * 3.0)
+        self.clock += f.dt * self.PACE * self.speed
+        self.motion += f.dt * self.speed
+        if not f.silent and level > 0.01:
+            self.presence = min(1.0, self.presence + f.dt / self.FADE_IN)
+        else:
+            self.presence = max(0.0, self.presence - f.dt / self.FADE_OUT)
+        return self.clock, bass, mid, treble, self.pulse, level
+
+    # -- without OpenGL: a simple painted sketch of the scene -------------------------
+    def draw(self, cr, w, h, f):
+        p = self.params(f)
+        self.sketch(cr, w, h, *p)
+        footer(cr, w, h, f.caption)
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        raise NotImplementedError
+
+
+def _glow(cr, x, y, r, stops):
+    g = cairo.RadialGradient(x, y, 0, x, y, max(1.0, r))
+    for pos, col, alpha in stops:
+        g.add_color_stop_rgba(pos, *col, alpha)
+    cr.set_source(g)
+    cr.arc(x, y, max(1.0, r), 0, TAU)
+    cr.fill()
+
+
+class Supernova(_Scene):
+    """An exploding star: veils of glowing gas in orange, yellow, violet,
+    pink, blue and turquoise are born at random places in the white-hot core
+    and drift outwards, growing more transparent until they vanish while new
+    ones follow, so the star keeps spreading without ever getting bigger.
+    Behind it a spiral galaxy turns slowly and stars light up and go out.
+    When the music stops the veils thin out, a last flash fills the screen,
+    then all goes dark and a single star twinkles where the supernova was.
+    Veils are born only while music plays; their strength and colours come
+    from the music of their birth, the spectrum sets their brightness around
+    the star (bass at the top, treble at the bottom), the beat makes the
+    core flare."""
+    id, label = "supernova", "Supernova (modern)"
+
+    PACE = 0.10
+    FADE_OUT = 10.0
+    VEILS = 9             # veils alive at once, as in the shader
+    FLOW = 1.1            # veil lives per clock unit
+
+    def __init__(self):
+        super().__init__()
+        self.flow = 0.0
+        self.drive = 0.0
+        self.veils = [0.5] * self.VEILS
+        self.hues = [0.5] * self.VEILS
+        self.tone = 0.5
+        self.born = [None] * self.VEILS
+
+    def params(self, f):
+        """Also decides, when a veil is born, how strong it gets and its
+        colours: the music of that moment, smoothed, so a loud passage sends
+        out bright, thick veils, a bass-heavy one warm orange and yellow
+        veils, a bright one pink, blue and turquoise ones; they then drift
+        outwards unchanged. Veils are only born while music plays."""
+        p = super().params(f)
+        bass, mid, treble, pulse, level = p[1], p[2], p[3], p[4], p[5]
+        target = min(1.6, 0.1 + 1.3 * level + 0.6 * pulse)
+        self.drive += (target - self.drive) * min(1.0, f.dt * 1.5)
+        tone = 0.5 + 1.5 * (treble - bass) / max(0.05, bass + mid + treble)
+        self.tone += (min(1.0, max(0.0, tone)) - self.tone) * min(1.0, f.dt * 1.5)
+        self.flow = p[0] * self.FLOW
+        for k in range(self.VEILS):
+            gen = math.floor(self.flow + k / self.VEILS)
+            if gen != self.born[k]:
+                self.born[k] = gen
+                self.veils[k] = self.drive
+                self.hues[k] = self.tone
+        return p
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        cr.set_source_rgb(0.0, 0.0, 0.01)
+        cr.paint()
+        cx, cy, s = w / 2, h / 2, min(w, h)
+        r0 = s * 0.33 * (1 + 0.06 * bass)
+        cr.set_operator(cairo.OPERATOR_ADD)
+        _glow(cr, cx, cy, r0 * 1.25, ((0, (0.2, 0.5, 1.0), 0.0), (0.75, (0.15, 0.45, 1.0), 0.35),
+                                      (1, (0.1, 0.2, 0.8), 0.0)))
+        _glow(cr, cx, cy, r0, ((0, (1.0, 0.95, 0.85), 0.9), (0.4, (1.0, 0.6, 0.2), 0.45),
+                               (1, (0.9, 0.2, 0.3), 0.0)))
+        _glow(cr, cx, cy, r0 * (0.25 + 0.1 * pulse), ((0, (1, 1, 1), 1.0), (1, (1, 0.9, 0.7), 0.0)))
+        cr.set_operator(cairo.OPERATOR_OVER)
+
+
+class OccasusSolis(_Scene):
+    """A sunset (lat. *occasus solis*): a small sun low over the horizon in
+    an orange and red sky, a fan of rays turning slowly around it and clouds
+    lit gold from below drifting from left to right. The spectrum shapes the
+    rays from left (bass) to right (treble) and thickens the clouds above
+    it, the mids stir the clouds, the bass sets the glow of the sun. New
+    clouds coming in from the left are grown from the music: the louder,
+    the cloudier. Clouds and rays only move while music plays, faster when
+    it is loud and with a push on every beat; when the music stops no new
+    clouds form, the ones there dissolve, the rays fade away and the sun
+    slowly sets."""
+    id, label = "sunset", "Occasus solis (modern)"
+
+    PACE = 0.40
+    COLUMNS = 32          # cloud columns across the screen, as in the shader
+    DRIFT = 0.032         # screen widths per second at a speed of 1
+
+    def __init__(self, seed=None):
+        super().__init__()
+        self.rng = random.Random(seed)
+        self.drift = 0.0          # screen widths the clouds have moved to the right
+        self.cfrac = 0.0          # fraction of a column
+        self.drive = 0.35
+        self.clouds = [self._next(0.5) for _ in range(self.COLUMNS + 8)]
+
+    def _next(self, prev):
+        """How cloudy (0..1) the next stretch of sky coming in from the left is:
+        the music of the moment, smoothed, with some chance in it."""
+        target = min(1.0, self.drive * (0.6 + 0.8 * self.rng.random()))
+        return prev + (target - prev) * 0.45
+
+    def params(self, f):
+        p = super().params(f)
+        level, pulse = p[5], p[4]
+        self.drive += (min(1.0, 0.15 + 1.1 * level + 0.3 * pulse) - self.drive) * min(1.0, f.dt * 1.0)
+        step = f.dt * self.DRIFT * self.speed
+        self.drift += step
+        self.cfrac += step * self.COLUMNS
+        while self.cfrac >= 1.0:
+            self.cfrac -= 1.0
+            self.clouds.pop()
+            self.clouds.insert(0, self._next(self.clouds[0]))
+        return p
+    SUN = (0.5, 0.86)             # position, 0..1 of the width and the height
+    SET = 0.24                    # how far the sun sinks when the music stops
+
+    @property
+    def sun(self):
+        """Where the sun stands: low over the horizon while music plays; when
+        it stops the sun slowly sets below the bottom edge, and rises again
+        when the music comes back."""
+        pr = self.presence
+        return self.SUN[0], self.SUN[1] + self.SET * (1.0 - pr * pr * (3 - 2 * pr))
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        g = cairo.LinearGradient(0, 0, 0, h)
+        g.add_color_stop_rgb(0, 0.42, 0.33, 0.45)
+        g.add_color_stop_rgb(0.45, 0.93, 0.55, 0.32)
+        g.add_color_stop_rgb(0.8, 1.0, 0.45, 0.12)
+        g.add_color_stop_rgb(1, 0.85, 0.2, 0.08)
+        cr.set_source(g)
+        cr.paint()
+        sx, sy = w * self.SUN[0], h * self.SUN[1]
+        cr.set_operator(cairo.OPERATOR_ADD)
+        _glow(cr, sx, sy, h * (0.55 + 0.1 * bass), ((0, (1.0, 0.8, 0.4), 0.55), (1, (1.0, 0.4, 0.1), 0.0)))
+        cr.set_operator(cairo.OPERATOR_OVER)
+        _glow(cr, sx, sy, h * 0.03, ((0, (1, 1, 0.95), 1.0), (0.8, (1, 0.95, 0.75), 1.0),
+                                     (1, (1, 0.85, 0.5), 0.0)))
+
+
+class AuroraBorealis(_Scene):
+    """Northern lights over snowy mountains: a band of light whose lower edge
+    is a free curve that slowly changes its shape and wanders across the sky.
+    It glows most at one end, yellow-green, then turns turquoise and finally
+    pink or violet, with rays reaching upwards. Behind the mountains there is
+    a yellow-green glow; the mountains move slowly from right to left, the
+    new hills and peaks coming in grown from the music (higher and steeper
+    with the bass, a peak on a strong beat); snow drifts and glitters on the
+    slopes, and stars light up at random places and fade away. Each part of
+    the band brightens with its part of the spectrum, the bass lengthens its
+    rays and the beat makes it flare. Nothing moves in silence; when the
+    music stops the aurora fades away, the stars dim and the mountains sink
+    until only the deep blue night sky with a few stars is left."""
+    id, label = "aurora", "Aurora borealis (modern)"
+
+    PACE = 0.40
+    RIDGE = 48            # height points of the mountains, as in the shader
+    VISIBLE = 40          # of them across the width of the screen
+    SCROLL = 0.85         # points per second at a speed of 1
+
+    def __init__(self, seed=None):
+        super().__init__()
+        self.rng = random.Random(seed)
+        self.scroll = 0.0         # fraction of a point scrolled to the left
+        self.world = 0.0          # points scrolled in total
+        self.trend = 0.0
+        h = 0.10
+        self.ridge = []
+        for _ in range(self.RIDGE):
+            h = self._next(h, 0.0, 0.0)
+            self.ridge.append(h)
+
+    def _next(self, h, bass, beat):
+        """The height (0..1 of the screen above the bottom edge) of the next
+        point coming in from the right: a calm random walk for the hills,
+        steeper and higher with the bass, a peak on a strong beat."""
+        rng = self.rng
+        self.trend += rng.gauss(0.0, 0.012 + 0.03 * bass) - 0.25 * self.trend
+        h += self.trend + 0.12 * (0.08 + 0.08 * bass - h)
+        if beat > 0.8 and rng.random() < 0.5:
+            h += 0.04 + 0.06 * beat * rng.random()
+        return max(0.02, min(0.26, h))
+
+    def params(self, f):
+        p = super().params(f)
+        bass, pulse = p[1], p[4]
+        step = f.dt * self.SCROLL * self.speed
+        self.scroll += step
+        self.world += step
+        while self.scroll >= 1.0:
+            self.scroll -= 1.0
+            self.ridge.pop(0)
+            self.ridge.append(self._next(self.ridge[-1], bass, max(pulse, f.beat)))
+        return p
+
+    def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        g = cairo.LinearGradient(0, 0, 0, h)
+        g.add_color_stop_rgb(0, 0.02, 0.12, 0.32)
+        g.add_color_stop_rgb(1, 0.05, 0.25, 0.55)
+        cr.set_source(g)
+        cr.paint()
+        cr.set_operator(cairo.OPERATOR_ADD)
+        for k in range(3):
+            x = w * (0.3 + 0.25 * k + 0.05 * math.sin(clock * 3 + k))
+            g = cairo.LinearGradient(0, h * 0.1, 0, h * 0.85)
+            g.add_color_stop_rgba(0, 0.6, 0.2, 0.8, 0.0)
+            g.add_color_stop_rgba(0.5, 0.6, 0.2, 0.8, 0.25 + 0.2 * level)
+            g.add_color_stop_rgba(1, 0.5, 1.0, 0.4, 0.55 + 0.3 * level)
+            cr.set_source(g)
+            cr.rectangle(x - w * 0.06, h * 0.1, w * 0.12, h * 0.75)
+            cr.fill()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        cr.set_source_rgb(0.75, 0.82, 0.9)
+        cr.move_to(w * 0.5, h)
+        cr.line_to(w * 0.75, h * 0.82)
+        cr.line_to(w, h * 0.77)
+        cr.line_to(w, h)
+        cr.close_path()
+        cr.fill()
+
+
 class GoomHD(Style):
     """GOOM 2k4 at the screen's own resolution.
 
@@ -857,7 +1134,8 @@ class GoomHD(Style):
         footer(cr, w, h, f.caption)
 
 
-STYLES = [GlowWaves, Nebula, LightRibbons, Pulsar, GoomHD, SpectrumBars, VUMeters, Oscilloscope, Blank]
+STYLES = [GlowWaves, Nebula, LightRibbons, Pulsar, Supernova, OccasusSolis, AuroraBorealis, GoomHD,
+          SpectrumBars, VUMeters, Oscilloscope, Blank]
 DEFAULT_STYLE = GlowWaves.id
 
 
