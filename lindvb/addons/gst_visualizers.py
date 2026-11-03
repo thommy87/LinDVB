@@ -8,9 +8,11 @@ GOOM (from gst-plugins-good) and LinDVB's own visualisations stay available.
 The preset folder can be set as "projectm_preset_dir" in settings.json.
 
 GStreamer visualisers render at 320x240 unless told otherwise, which looks
-blocky in full screen. projectM draws with OpenGL, so it is asked for the
-screen's resolution (at most 2560x1440, or "visualizer_resolution" in
-settings.json). The original GOOM runs on the CPU and slows down a lot at
+blocky in full screen. projectM draws with OpenGL in a context of its own and
+every picture is copied from the GPU to memory and back, which costs CPU time
+in proportion to its size: it renders at the screen's resolution but at most
+1280x720 (scaled up smoothly), or at "visualizer_resolution" from
+settings.json, e.g. "1920x1080". The original GOOM runs on the CPU and slows down a lot at
 high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
 LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
@@ -21,7 +23,7 @@ import sys
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.3"
+VERSION = "1.4"
 
 # the AppImage brings its own collection under its prefix (sys.prefix/share)
 PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
@@ -31,6 +33,7 @@ TEXTURE_DIRS = [str(Path(sys.prefix) / "share/projectM/textures"), "/usr/share/p
                 "~/.local/share/projectM/textures"]
 MAX_SIZE = (2560, 1440)
 DEFAULT_SIZE = (1920, 1080)
+PROJECTM_SIZE = (1280, 720)     # "auto": the copy to memory and back stays cheap
 GOOM_SIZE = (640, 360)
 FRAMERATE = 30
 
@@ -233,7 +236,8 @@ def register(api):
             _set(el, "enable-playlist", True)
             _set(el, "shuffle-presets", True)
             res = s.get("visualizer_resolution", "auto")
-            size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
+            size = (screen_size(PROJECTM_SIZE, PROJECTM_SIZE) if res in (None, "", "auto")
+                    else parse_size(res, PROJECTM_SIZE))
             return sized(Gst, el, size, any_memory=True, isolate_gl=True)
         api.add_visualizer("projectM (MilkDrop)", element=make_projectm,
                            choices=lambda: preset_folders(preset_root()))

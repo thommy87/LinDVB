@@ -107,7 +107,8 @@ from gst-plugins-good. Presets are taken from `projectm_preset_dir` in
 `/usr/share/projectM/presets`; `projectm_preset_seconds` sets how long each
 preset runs (default 20). GStreamer visualisers render at 320x200 unless told
 otherwise, so the add-on asks projectM (OpenGL) for the screen's resolution, at
-most 2560x1440, or `visualizer_resolution` (`"1920x1080"`, default `"auto"`),
+most 1280x720 because each picture is copied from the GPU to memory and back,
+or for `visualizer_resolution` (e.g. `"1920x1080"`, default `"auto"`),
 and the original GOOM, which runs on the CPU and gets slow at high resolutions,
 for `goom_resolution` (default `"640x360"`). For a sharp GOOM in full screen
 use the built-in *Goom HD*. Without gst-projectm the entry is simply not offered
