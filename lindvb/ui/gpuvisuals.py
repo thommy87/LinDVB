@@ -796,19 +796,25 @@ void main() {
 
 SUNSET = PRELUDE + SCENE_FN + """
 uniform vec2 u_sun;          // 0..1 of the width and the height
-vec3 sky(float y) {
-    vec3 a = vec3(0.34, 0.26, 0.40), b = vec3(0.78, 0.42, 0.36), c = vec3(1.0, 0.48, 0.14), d = vec3(0.92, 0.22, 0.06);
-    if (y < 0.40) return mix(a, b, y / 0.40);
-    if (y < 0.72) return mix(b, c, (y - 0.40) / 0.32);
-    return mix(c, d, (y - 0.72) / 0.28);
+vec3 aces(vec3 x) {          // filmic tone curve: soft highlights, rich mid tones
+    return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
 }
-vec2 cloud_warp(vec2 p, float c) {
-    // the music reshapes the clouds: the mids stir them, the bass swells them
-    float a = 0.30 + 0.25 * u_energy.y + 0.15 * u_pulse;
-    return p + a * vec2(fbm(p * 0.9 + vec2(c * 0.10, 0.0), 3), fbm(p * 0.9 + vec2(4.0, c * 0.08), 3));
+vec3 sky(float y, float dist) {
+    // greyish violet high up, warm peach, glowing orange, deep red-orange at the horizon
+    vec3 top = vec3(0.16, 0.12, 0.24), high = vec3(0.55, 0.28, 0.30);
+    vec3 low = vec3(1.00, 0.40, 0.10), hor = vec3(0.90, 0.20, 0.05);
+    vec3 c = mix(top, high, smoothstep(0.0, 0.45, y));
+    c = mix(c, low, smoothstep(0.35, 0.80, y));
+    c = mix(c, hor, smoothstep(0.80, 1.0, y));
+    return c;
 }
-float clouds(vec2 w, float cover, float soft, int octaves) {
-    return smoothstep(cover, cover + soft, fbm(w, octaves));
+float density(vec2 p, float c) {
+    // soft, wispy cloud density: warped fbm, thinned towards the sun's horizon
+    float amp = 0.45 + 0.25 * u_energy.y + 0.12 * u_pulse;     // the music stirs the shapes
+    vec2 w = p + amp * vec2(fbm(p * 0.6 + vec2(c * 0.10, 1.3), 4), fbm(p * 0.6 + vec2(5.1, c * 0.08), 4));
+    float n = fbm(w, 6);
+    n += 0.10 * (vnoise(w * 7.0) - 0.5) + 0.05 * (vnoise(w * 17.0) - 0.5);   // frayed edges
+    return n;
 }
 void main() {
     vec2 px = v_uv * u_res;
@@ -818,59 +824,71 @@ void main() {
     float bass = u_energy.x, mid = u_energy.y, treble = u_energy.z, level = u_energy.w;
     vec2 d = (p - u_sun) * vec2(aspect, 1.0);          // in screen heights
     float dist = length(d);
-    vec3 col = sky(p.y);
-    // the glow of the sun, breathing with the bass
-    col += vec3(1.0, 0.62, 0.30) * exp(-dist / (0.32 + 0.08 * bass)) * (0.55 + 0.35 * bass);
-    col += vec3(1.0, 0.85, 0.60) * exp(-dist / 0.07) * (0.8 + 0.5 * u_pulse);
-    // rays fanning out from the sun; the spectrum from left (bass) to right (treble)
-    // the fan of rays turns slowly around the sun (sampled on a circle, so it has no seam)
-    float th = atan(d.x, -d.y);                        // 0 straight up
+    vec3 col = sky(p.y, dist);
+    // light scattered around the sun at several scales (a camera's bloom)
+    float glow = 0.55 + 0.30 * bass;
+    col += vec3(1.00, 0.55, 0.22) * exp(-dist / 0.45) * 0.45 * glow;
+    col += vec3(1.00, 0.70, 0.35) * exp(-dist / 0.16) * 0.55 * glow;
+    col += vec3(1.00, 0.88, 0.62) * exp(-dist / 0.05) * 0.9;
+    // a bright band of haze along the horizon
+    col += vec3(1.0, 0.62, 0.25) * exp(-abs(p.y - u_sun.y) / 0.05) * 0.25 * exp(-abs(d.x) / 0.9);
+    // soft rays, turning slowly around the sun; the spectrum from left (bass) to right
+    float th = atan(d.x, -d.y);
     float m = clamp(th / 3.1 + 0.5, 0.0, 1.0);
     float spin = c * 0.12;
     vec2 rd = d / max(dist, 1e-4);
     vec2 r1 = vec2(cos(spin) * rd.x - sin(spin) * rd.y, sin(spin) * rd.x + cos(spin) * rd.y);
     vec2 r2 = vec2(cos(-spin * 0.6) * rd.x - sin(-spin * 0.6) * rd.y, sin(-spin * 0.6) * rd.x + cos(-spin * 0.6) * rd.y);
-    float rays = vnoise(r1 * 5.0 + 11.0) * 0.6 + vnoise(r2 * 13.0 + 31.0) * 0.4;
-    // the spectrum shapes them, bass on the left, treble on the right: louder bands
-    // give wider, brighter and longer rays
+    float rays = vnoise(r1 * 4.0 + 11.0) * 0.6 + vnoise(r2 * 9.0 + 31.0) * 0.4;
     float sp = spec(m);
-    rays = smoothstep(0.55 - 0.25 * sp, 0.9, rays) * (0.3 + 1.2 * sp) * (0.6 + 0.6 * mid);
-    float raymask = smoothstep(0.03, 0.15, dist) * exp(-dist / (0.55 + 0.45 * sp + 0.2 * bass))
-                    * smoothstep(1.0, 0.92, p.y);
-    // two cloud layers drifting at their own speed; lit gold from below and from the sun
+    rays = pow(rays, 1.6) * (0.35 + 0.9 * sp) * (0.7 + 0.5 * mid);
+    float raymask = smoothstep(0.02, 0.2, dist) * exp(-dist / (0.5 + 0.35 * sp + 0.15 * bass))
+                    * smoothstep(1.0, 0.9, p.y);
+    vec3 rayc = vec3(1.0, 0.70, 0.40) * rays * raymask * 0.6;
+    // two layers of clouds drifting from left to right; each lit through its own
+    // thickness towards the sun, dark underneath, glowing at thin, sunward edges
     vec2 toSun = normalize(-d + vec2(0.0, 0.001));
-    col += vec3(1.0, 0.82, 0.55) * rays * raymask;
+    float shade_all = 0.0;
     for (int j = 0; j < 2; j++) {
-        int k = 1 - j;                                   // the far, lower layer first
+        int k = 1 - j;                                  // the far, lower layer first
         float fk = float(k);
-        float scale = k == 0 ? 1.0 : 1.9;
-        // drifting from left to right, the near layer a little faster
-        vec2 cp = vec2(p.x * aspect * 1.1 * scale - c * (0.20 - 0.06 * fk) + fk * 7.0, p.y * (5.0 + 2.0 * fk) * scale);
-        float band = k == 0 ? smoothstep(0.80, 0.30, p.y) : smoothstep(0.95, 0.55, p.y) * smoothstep(0.35, 0.6, p.y);
-        float cover = mix(0.80, 0.47, band) - 0.06 * spec(clamp(p.x, 0.0, 1.0)) - 0.03 * u_pulse;
-        vec2 w = cloud_warp(cp, c);
-        float dn = clouds(w, cover, 0.20, 6);
-        // light from the sun through the cloud: thin parts and edges facing it glow
-        float occ = 0.0;
-        vec2 stepv = toSun * vec2(1.1, 5.0) * 0.03 * scale;
-        for (int i = 1; i <= 3; i++) occ += clouds(w + stepv * float(i), cover, 0.25, 4);
-        float lit = exp(-occ * 1.1) * (1.0 - 0.5 * dn);
-        float near = exp(-dist / 0.55);
-        vec3 shade = mix(vec3(0.40, 0.31, 0.43), vec3(0.78, 0.40, 0.30), smoothstep(0.05, 0.85, p.y));
-        shade *= 0.85 + 0.3 * fbm(cp * 2.5, 3);
-        vec3 light = mix(vec3(1.0, 0.66, 0.38), vec3(1.0, 0.88, 0.66), near);
-        vec3 cc = mix(shade, light, clamp(lit * (0.8 + 0.8 * near) + 0.1 * near, 0.0, 1.0));
-        cc += vec3(1.0, 0.8, 0.5) * lit * near * (0.4 + 0.8 * treble);
-        float a = smoothstep(0.0, 0.6, dn) * (k == 0 ? 0.92 : 0.85);
-        col = mix(col, cc, a);
+        float scale = k == 0 ? 1.0 : 1.8;
+        vec2 cp = vec2(p.x * aspect * 1.0 * scale - c * (0.20 - 0.06 * fk) + fk * 7.0, p.y * (4.0 + 2.0 * fk) * scale);
+        float band = k == 0 ? smoothstep(0.80, 0.25, p.y) : smoothstep(0.95, 0.60, p.y) * smoothstep(0.40, 0.62, p.y);
+        float cover = mix(0.82, 0.46, band) - 0.05 * spec(clamp(p.x, 0.0, 1.0));
+        float n = density(cp, c);
+        float dens = clamp((n - cover) * 3.2, 0.0, 1.0);
+        if (dens <= 0.0) continue;
+        // optical depth towards the sun
+        float od = 0.0;
+        vec2 stepv = toSun * vec2(scale * aspect * 0.0 + 1.0, (4.0 + 2.0 * fk) * scale) * 0.025;
+        for (int i = 1; i <= 4; i++) od += clamp((fbm(cp + stepv * float(i), 4) - cover) * 3.2, 0.0, 1.0);
+        float T = exp(-od * 0.9);
+        float forward = exp(-dist / 0.35);              // light shines through near the sun
+        vec3 ambient = mix(sky(p.y, dist) * 0.5, vec3(0.32, 0.16, 0.24), 0.5) * (1.0 - 0.35 * dens);
+        vec3 sunlit = vec3(1.0, 0.55, 0.25) * (0.45 + 1.5 * forward) * (0.9 + 0.4 * treble);
+        vec3 cc = ambient + sunlit * T * (0.35 + 0.65 * (1.0 - dens));
+        // silver lining: thin edges right around the sun
+        cc += vec3(1.0, 0.82, 0.55) * pow(1.0 - dens, 3.0) * forward * 0.9;
+        // far clouds sink into the haze
+        cc = mix(cc, sky(p.y, dist) + vec3(0.20, 0.08, 0.02), 0.35 * smoothstep(0.55, 0.95, p.y));
+        float alpha = 1.0 - exp(-dens * 3.0);
+        col = mix(col, cc, alpha);
+        shade_all = max(shade_all, alpha);
     }
-    // the sun itself
-    float sr = 0.024;
-    col = mix(col, vec3(1.0, 0.98, 0.92), smoothstep(sr, sr - 2.0 / u_res.y, dist));
-    col += vec3(1.0, 0.9, 0.7) * exp(-max(dist - sr, 0.0) / 0.012) * 0.8;
-    // haze at the horizon
-    col += vec3(1.0, 0.35, 0.10) * smoothstep(0.80, 1.0, p.y) * 0.22;
-    fragColor = vec4(tonemap(col * 1.35) + dither(), 1.0);
+    col += rayc * (1.0 - 0.7 * shade_all);
+    // the sun: a small disc, a little darker at its rim, behind thin cloud
+    float sr = 0.022;
+    float disc = smoothstep(sr, sr - 2.0 / u_res.y, dist);
+    vec3 sunc = mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.98, 0.93), smoothstep(sr, 0.0, dist));
+    col = mix(col, sunc * 1.6, disc * (1.0 - 0.6 * shade_all));
+    col += vec3(1.0, 0.85, 0.6) * exp(-max(dist - sr, 0.0) / 0.015) * 0.5;
+    // a slight vignette, as through a lens
+    vec2 vq = v_uv - 0.5;
+    col *= 1.0 - 0.25 * dot(vq, vq);
+    float lum = dot(col, vec3(0.3, 0.55, 0.15));
+    col = max(mix(vec3(lum), col, 1.2), 0.0);
+    fragColor = vec4(aces(col * 0.95) + dither(), 1.0);
 }
 """
 
