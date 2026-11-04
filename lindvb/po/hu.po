@@ -1800,6 +1800,20 @@ msgstr "Utána: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Jel {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Jelminőség {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Streamminőség {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Nincs jel"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

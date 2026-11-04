@@ -1800,6 +1800,20 @@ msgstr "Dopo: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Segnale {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Qualità del segnale {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Qualità dello stream {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Nessun segnale"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

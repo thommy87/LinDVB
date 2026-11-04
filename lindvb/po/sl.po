@@ -1800,6 +1800,20 @@ msgstr "Nato: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Signal {v0} %"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Kakovost signala {v0} %"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Kakovost toka {v0} %"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Ni signala"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

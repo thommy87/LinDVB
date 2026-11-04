@@ -1800,6 +1800,20 @@ msgstr "Urmează: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Semnal {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Calitatea semnalului {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Calitatea streamului {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Fără semnal"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

@@ -1800,6 +1800,20 @@ msgstr "Zatim: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Signal {v0} %"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Kvaliteta signala {v0} %"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Kvaliteta streama {v0} %"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Nema signala"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

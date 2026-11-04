@@ -2521,6 +2521,20 @@ msgstr ""
 msgid "Signal {v0}%"
 msgstr ""
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr ""
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr ""
+
 #: lindvb/ui/window.py:2058
 #, python-brace-format
 msgid "● REC {n}"

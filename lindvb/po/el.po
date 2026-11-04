@@ -1800,6 +1800,20 @@ msgstr "Μετά: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Σήμα {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Ποιότητα σήματος {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Ποιότητα ροής {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Χωρίς σήμα"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

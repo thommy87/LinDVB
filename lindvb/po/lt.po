@@ -1800,6 +1800,20 @@ msgstr "Toliau: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Signalas {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Signalo kokybė {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Srauto kokybė {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Nėra signalo"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 
