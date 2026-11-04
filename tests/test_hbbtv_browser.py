@@ -193,6 +193,19 @@ window.onload = function () {
 </body></html>
 """
 
+XML_AIT = b"""<?xml version="1.0" encoding="UTF-8"?>
+<mhp:ServiceDiscovery xmlns:mhp="urn:dvb:mhp:2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <mhp:ApplicationDiscovery DomainName="example.org"><mhp:ApplicationList><mhp:Application>
+  <mhp:applicationIdentifier><mhp:orgId>19</mhp:orgId><mhp:appId>1</mhp:appId></mhp:applicationIdentifier>
+  <mhp:applicationDescriptor>
+   <mhp:type><mhp:OtherApp>application/vnd.hbbtv.xhtml+xml</mhp:OtherApp></mhp:type>
+   <mhp:controlCode>AUTOSTART</mhp:controlCode>
+  </mhp:applicationDescriptor>
+  <mhp:applicationTransport xsi:type="mhp:HTTPTransportType"><mhp:URLBase>BASE</mhp:URLBase></mhp:applicationTransport>
+  <mhp:applicationLocation>index.html</mhp:applicationLocation>
+ </mhp:Application></mhp:ApplicationList></mhp:ApplicationDiscovery>
+</mhp:ServiceDiscovery>"""
+
 DATA = os.path.join(os.path.dirname(__file__), "data")
 
 
@@ -210,6 +223,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             ctype = "application/dash+xml" if name.endswith(".mpd") else \
                 "application/ttml+xml" if name.endswith(".ttml") else \
                 ("video/mp4" if "stream0" in name else "audio/mp4")
+        elif path == "/ait.xml":
+            base = f"http://127.0.0.1:{self.server.server_address[1]}/"
+            body = XML_AIT.replace(b"BASE", base.encode())
+            ctype = "application/vnd.dvb.ait+xml"
         else:
             body = DASH_APP if path.startswith("/dashapp") else \
                 SUB_APP if path.startswith("/subapp") else \
@@ -542,6 +559,36 @@ def test_parental_control_holds_a_rated_video():
         assert _wait(lambda: "playing" in title(), timeout=40), title()
         assert title() == "threshold=13 rated=16:true wrong=1 rated=-:false right=0 playing"
         assert hbb._pin_dialog is None and not hbb._media_blocked
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_dvbi_internet_channel_application():
+    """A DVB-I internet channel: the service list links an XML AIT, the app
+    starts without any broadcast signalling."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        url = f"http://127.0.0.1:{server.server_address[1]}/"
+        ch = Channel("Das Erste", delsys="iptv", url="https://example.org/ard.mpd",
+                     dvbi_id="tag:ard",
+                     dvbi_apps=[{"url": url + "ait.xml", "type": "application/vnd.dvb.ait+xml",
+                                 "role": "parallel", "level": "service"}])
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        win.overlay.connect("get-child-position",
+                            lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+        hbb.channel_changed(ch, None)
+        assert _wait(lambda: hbb.life.active, timeout=20)
+        assert hbb.life.running.key == (19, 1)
+        assert _wait(lambda: (hbb.view.get_title() or "").startswith("ready")), hbb.view.get_title()
+        # an internet channel without applications ends it
+        hbb.channel_changed(Channel("Web", delsys="iptv", url="https://example.org/x.m3u8"), None)
+        assert not hbb.life.active
         win.window.destroy()
     finally:
         server.shutdown()

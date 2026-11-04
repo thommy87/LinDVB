@@ -51,7 +51,7 @@ from .channels import Channel
 REGISTRIES = ("https://deu.csr.dvbservices.org/query", "https://csr.dvb-i-slr.de/query")
 TARGET_COUNTRY = "DEU"
 # Delivery types LinDVB can receive (registry query parameter values).
-DELIVERY = ("dvb-dash", "dvb-t", "dvb-c", "dvb-s")
+DELIVERY = ("dvb-dash", "dvb-t", "dvb-c", "dvb-s", "application")
 
 USER_AGENT = "LinDVB DVB-I"
 UPDATE_INTERVAL = 24 * 3600          # IT-18: check at least every 24 hours
@@ -59,6 +59,13 @@ UPDATE_INTERVAL = 24 * 3600          # IT-18: check at least every 24 hours
 HOW_SERVICE_LOGO = ":1001.2"         # urn:dvb:metadata:cs:HowRelatedCS:20xx:1001.2
 HOW_LIST_LOGO = ":1001.1"
 HOW_OUT_OF_SERVICE = ":1000.1"
+# Linked applications (TS 103 770 clause 5.5.13): an HbbTV application that runs
+# beside the video (1.1), or one that presents the service itself (1.2)
+LINKED_APP_CS = "urn:dvb:metadata:cs:LinkedApplicationCS:2019"
+APP_PARALLEL = LINKED_APP_CS + ":1.1"
+APP_MEDIA = LINKED_APP_CS + ":1.2"
+APP_TYPES = ("application/vnd.dvb.ait+xml", "application/vnd.hbbtv.xhtml+xml",
+             "application/xhtml+xml", "text/html")
 
 PRIVACY_NOTICE = (
     "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the "
@@ -214,6 +221,23 @@ def _media_uris(related, how_suffix):
     return out
 
 
+def _linked_apps(related):
+    """The HbbTV applications of RelatedMaterial elements as
+    [{"url", "type", "role"}]; role is "parallel" (1.1) or "media" (1.2)."""
+    out = []
+    for rm in related:
+        how = _kid(rm, "HowRelated")
+        href = (how.get("href") or "").strip() if how is not None else ""
+        role = {APP_PARALLEL: "parallel", APP_MEDIA: "media"}.get(href)
+        if role is None:
+            continue
+        for uri in _all(rm, "MediaUri"):
+            url, ctype = _text(uri), (uri.get("contentType") or "").strip().lower()
+            if url.startswith(("http://", "https://")) and (not ctype or ctype in APP_TYPES):
+                out.append({"url": url, "type": ctype, "role": role})
+    return out
+
+
 def parse_registry(data):
     """List offerings from a ServiceListEntryPoints document, the regulator's
     default list(s) first, the others in the order of the document (IT-8)."""
@@ -276,6 +300,7 @@ class Instance:
     availability: bool = False                   # has an availability window
     periods: list = field(default_factory=list)  # availability periods, see available()
     display_name: str = ""
+    apps: list = field(default_factory=list)     # linked HbbTV applications, see _linked_apps
 
 
 @dataclass
@@ -293,6 +318,7 @@ class Service:
     guide: dict = field(default_factory=dict)     # the service's own ContentGuideSource
     minimum_age: int = 0
     oos_logos: list = field(default_factory=list)  # out-of-service banner (IT-4)
+    apps: list = field(default_factory=list)       # linked HbbTV applications
 
 
 @dataclass
@@ -352,6 +378,9 @@ def _instance(el):
     for cp in _kids(el, "ContentProtection"):
         inst.drm += [_text(x) for x in _all(cp, "DRMSystemId") if _text(x)]
         inst.ca += [_text(x) for x in _all(cp, "CASystemId") if _text(x)]
+    inst.apps = _linked_apps(_kids(el, "RelatedMaterial"))
+    if _text(_kid(el, "SourceType")).endswith(":application"):
+        inst.kind = "application"            # the service is an application (no stream)
     av = _kid(el, "Availability")
     inst.availability = av is not None
     if av is not None:
@@ -543,6 +572,7 @@ def parse_service_list(data):
         svc.target_regions = [_text(r) for r in _kids(s, "TargetRegion") if _text(r)]
         svc.logos = _media_uris(_kids(s, "RelatedMaterial"), HOW_SERVICE_LOGO)
         svc.oos_logos = _media_uris(_kids(s, "RelatedMaterial"), HOW_OUT_OF_SERVICE)
+        svc.apps = _linked_apps(_kids(s, "RelatedMaterial"))
         for inst in _kids(s, "ServiceInstance"):
             svc.alt_names += [_text(a) for a in _kids(inst, "AltServiceName") if _text(a)]
         svc.cg_service_ref = _text(_kid(s, "ContentGuideServiceRef"))
@@ -779,7 +809,7 @@ def direct_channel(inst, scanned):
                    encrypted=bool(inst.ca))
 
 
-def instance_channel(inst, scanned, name="", radio=False, sat_direct=True):
+def instance_channel(inst, scanned, name="", radio=False, sat_direct=True, service_apps=()):
     """(Channel, None) for a service instance, or (None, reason)."""
     if inst.kind in ("dvb-t", "dvb-c", "dvb-s"):
         ch = find_broadcast(inst, scanned)
@@ -800,15 +830,22 @@ def instance_channel(inst, scanned, name="", radio=False, sat_direct=True):
             return None, "internet stream with DRM"
         return Channel(name=name, delsys="iptv", url=inst.url,
                        radio=radio or inst.kind == "icecast"), None
+    if inst.kind == "application":
+        # an HbbTV application presents the service and plays the media itself
+        if not any(a["role"] == "media" for a in list(inst.apps) + list(service_apps)):
+            return None, "application without a linked HbbTV application"
+        if inst.drm:
+            return None, "application with DRM"
+        return Channel(name=name, delsys="iptv", url="", radio=radio), None
     return None, ""
 
 
-def candidates(instances, scanned, name="", radio=False, sat_direct=True):
+def candidates(instances, scanned, name="", radio=False, sat_direct=True, service_apps=()):
     """All playable instances in priority order as [(Instance, Channel)],
     and the reasons the others were left out."""
     out, reasons = [], []
     for inst in instances:
-        ch, why = instance_channel(inst, scanned, name, radio, sat_direct)
+        ch, why = instance_channel(inst, scanned, name, radio, sat_direct, service_apps)
         if ch is not None:
             out.append((inst, ch))
         elif why:
@@ -822,7 +859,7 @@ def resolve(service, scanned, sat_direct=True):
     channel search, or for satellite the delivery parameters; DRM-protected
     internet instances cannot be played."""
     found, reasons = candidates(service.instances, scanned, service.name, service.radio,
-                                sat_direct)
+                                sat_direct, service.apps)
     if found:
         inst, ch = found[0]
         return ch, inst
@@ -841,22 +878,30 @@ def alternatives(channel, scanned, sat_direct=True):
         except TypeError:
             continue
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
-    found, _ = candidates(insts, scanned, channel.name, channel.radio, sat_direct)
+    service_apps = [a for a in channel.dvbi_apps if a.get("level") == "service"]
+    found, _ = candidates(insts, scanned, channel.name, channel.radio, sat_direct, service_apps)
     out = []
     tuning = ("delsys", "root", "frequency", "polarity", "symbol_rate", "modulation", "fec",
               "bandwidth_hz", "stream_id", "diseqc", "sid", "tsid", "onid", "pmt_pid",
               "pcr_pid", "video_pid", "audio_pids", "teletext_pid", "subtitle_pids",
               "encrypted", "url")
-    for _inst, ch in found:
+    for inst, ch in found:
         alt = Channel.from_dict(asdict(channel))
         for k in tuning:
             setattr(alt, k, getattr(ch, k))
+        alt.dvbi_apps = linked_apps(service_apps, inst)
         if alt.delsys == channel.delsys and alt.url == channel.url and \
                 alt.frequency == channel.frequency and alt.sid == channel.sid and \
                 alt.polarity == channel.polarity:
             continue                        # the instance in use
         out.append(alt)
     return out
+
+
+def linked_apps(service_apps, inst):
+    """The HbbTV applications of a channel: the service's and the instance's."""
+    return [dict(a, level="service") for a in service_apps] + \
+        [dict(a, level="instance") for a in inst.apps]
 
 
 def pick_logo(urls, dark=True):
@@ -909,6 +954,7 @@ def build_channels(sl, region_id, scanned, list_name="", sat_direct=True):
         ch.dvbi_instances = [instance_info(i) for i in svc.instances]
         ch.dvbi_periods = list(inst.periods)
         ch.dvbi_oos_logo = pick_logo(svc.oos_logos)
+        ch.dvbi_apps = linked_apps(svc.apps, inst)
         ch.dvbi_alt_names = list(svc.alt_names)
         ch.dvbi_cg = svc.cg_service_ref
         ch.dvbi_guide = dict(svc.guide or sl.content_guides.get(svc.cg_source_ref) or

@@ -192,3 +192,35 @@ def test_drm_name():
     assert drm_name("com.microsoft.playready.recommendation") == "PlayReady"
     assert drm_name("urn:dvb:casystemid:19188") == "Marlin"
     assert drm_name("") == "" and drm_name("urn:uuid:1234") == ""
+
+
+def test_dvbi_linked_applications():
+    from tests.test_ait import XML_AIT
+    fetched = []
+
+    def fetch(url):
+        fetched.append(url)
+        if url == "https://x/broken.xml":
+            raise OSError("down")
+        return XML_AIT
+    apps = [{"url": "https://x/ait.xml", "type": "application/vnd.dvb.ait+xml", "role": "parallel"},
+            {"url": "https://x/broken.xml", "type": "application/vnd.dvb.ait+xml", "role": "parallel"},
+            {"url": "https://x/web.html", "type": "text/html", "role": "parallel"}]
+    a = hbbtv.dvbi_ait(apps, fetch)
+    assert fetched == ["https://x/ait.xml", "https://x/broken.xml"]
+    assert len(a.apps) == 3 and a.autostart().key == (19, 10)
+    # an application that is the service wins, and starts even when its AIT says PRESENT
+    media = [{"url": "https://x/app/", "type": "application/vnd.hbbtv.xhtml+xml", "role": "media"}]
+    m = hbbtv.dvbi_ait(apps[:1] + media, fetch)
+    assert m.url(m.autostart()) == "https://x/app/"
+    assert hbbtv.dvbi_ait([], fetch) is None
+    assert hbbtv.dvbi_ait(apps[1:2], fetch) is None
+
+
+def test_service_app_starts_without_autostart():
+    started = []
+    life = hbbtv.Lifecycle(lambda url, app: started.append(url), lambda: None, autostart=False)
+    life.on_ait(ait.ait_for_url("https://x/app/"))
+    assert started == []
+    assert life.start_service_app() and started == ["https://x/app/"]
+    assert not life.start_service_app()                 # already running

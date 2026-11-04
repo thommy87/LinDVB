@@ -37,6 +37,10 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 | Allow third-party cookies | off | Advertising networks use them to follow viewers across channels |
 | Delete HbbTV Data | – | Removes cookies, local storage and cache of all applications |
 
+**DVB-I internet channels** have no broadcast AIT. Their service list links the
+applications instead (an XML AIT or an application page), and LinDVB starts
+them the same way; details in [DVB-I.md](DVB-I.md#hbbtv-on-dvb-i-channels).
+
 Application data lives in `~/.local/share/lindvb/hbbtv` (cookies, storage)
 and `~/.cache/lindvb/hbbtv`.
 

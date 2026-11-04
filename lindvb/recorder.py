@@ -371,6 +371,10 @@ class TimerManager(GObject.Object):
         end = timer.rec_end if timer is not None else None
         name = expand_scheme(opts.name_scheme or s["name_scheme"], channel.name, title, start, end)
         path = Path(opts.folder or s["recording_dir"]).expanduser() / name
+        if channel.is_iptv and not channel.url:
+            self.emit("message", "Recording failed: this channel is an HbbTV application "
+                                 "without a stream of its own")
+            return None
         try:
             if channel.is_iptv:
                 rec, cap = Recording(path, url=channel.url, fmt=fmt, channel=channel,
