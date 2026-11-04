@@ -76,6 +76,10 @@ jobs:
           APPIMAGE=$(ls build/*.AppImage)
           "$APPIMAGE" --appimage-extract >/dev/null
           squashfs-root/AppRun --help
+          # HbbTV: the AppImage's own WebKitGTK starts its sandboxed web process
+          sed 's|-m lindvb "\$@"|"\$@"|' squashfs-root/AppRun > squashfs-root/AppRunPython
+          chmod +x squashfs-root/AppRunPython
+          xvfb-run -a squashfs-root/AppRunPython "$PWD/tools/appimage-webkit-check.py"
 
       # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
       # Release builds upload straight to the release instead.

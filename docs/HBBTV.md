@@ -41,7 +41,10 @@ Application data lives in `~/.local/share/lindvb/hbbtv` (cookies, storage)
 and `~/.cache/lindvb/hbbtv`.
 
 Needs `gir1.2-webkit-6.0` (Debian/Ubuntu) or `webkitgtk6.0` (Fedora). The
-Flatpak's GNOME runtime contains it.
+Flatpak's GNOME runtime contains it, the Snap takes it from the GNOME content
+snap, and the AppImage brings its own (with the web, network and GPU processes;
+`packaging/build-appdir.sh` points libwebkitgtk at them relative to the
+AppImage, and CI checks that the AppImage's web process starts).
 
 WebKit runs every application in a bubblewrap sandbox, which needs
 unprivileged user namespaces. Ubuntu 24.04 and later forbid them for programs
@@ -167,4 +170,4 @@ with stream events, and a rated DASH video behind the PIN.
 | Object carousel | Carousels of other services (remote `dvb://` URLs with another service id) |
 | Companion screens | `discoverCSLaunchers()` finds no launchers (no CS launcher application registers with LinDVB), so `launchCSApp()` reports an unknown launcher. Starting applications from a companion (DIAL) works |
 | Media synchroniser | The broadcast PTS is taken where LinDVB demultiplexes, corrected by the pipeline latency, so it is accurate to about a frame or two, not to the millisecond. One application video per synchroniser; LinDVB cannot be a slave terminal (`initSlaveMediaSynchroniser`); TEMI timelines are not read |
-| Packaging | WebKitGTK in the AppImage and Snap |
+| Packaging | The Snap's HbbTV relies on WebKitGTK 6 in the GNOME 46 content snap; it is only built for releases and not tested in CI |

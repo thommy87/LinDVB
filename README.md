@@ -97,7 +97,9 @@ picture and hides itself when the mouse is still.
   update; each channel uses your antenna/cable/satellite channel where the
   channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
 * HbbTV 2.0.4 (red button, F5): the channels' interactive services in a transparent
-  WebKitGTK view over the picture, started from the AIT; work in progress
+  WebKitGTK view over the picture: media libraries (MPEG-DASH with subtitles),
+  applications from the broadcast (object carousel), stream events, digital teletext,
+  youth protection with PIN, companion screens and media synchronisation
   ([docs/HBBTV.md](docs/HBBTV.md))
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and

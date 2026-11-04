@@ -37,7 +37,8 @@ mkdir -p "$APPDIR/usr/lib/girepository-1.0"
 for t in GLib-2.0 GObject-2.0 Gio-2.0 GModule-2.0 Gtk-4.0 Gdk-4.0 Gsk-4.0 Graphene-1.0 \
          Pango-1.0 PangoCairo-1.0 cairo-1.0 HarfBuzz-0.0 freetype2-2.0 GdkPixbuf-2.0 \
          Gst-1.0 GstBase-1.0 GstVideo-1.0 GstGL-1.0 GstAudio-1.0 GstTag-1.0 GstMpegts-1.0 GstPbutils-1.0 \
-         PangoFT2-1.0 Fontconfig-2.0 GioUnix-2.0 GLibUnix-2.0; do
+         PangoFT2-1.0 Fontconfig-2.0 GioUnix-2.0 GLibUnix-2.0 \
+         WebKit-6.0 JavaScriptCore-6.0 Soup-3.0; do
     if [ -f "$ARCH_LIB/girepository-1.0/$t.typelib" ]; then
         cp "$ARCH_LIB/girepository-1.0/$t.typelib" "$APPDIR/usr/lib/girepository-1.0/"
     fi
@@ -48,7 +49,7 @@ mkdir -p "$APPDIR/usr/lib/gstreamer-$GSTVER"
 # Only the plugins LinDVB uses: tuning, demuxing, decoding, network sources, output.
 PLUGINS="coreelements playback typefindfunctions app autodetect audioconvert audioresample
   volume audiorate videoconvertscale videoconvert videoscale videorate videofilter deinterlace
-  equalizer spectrum goom pbtypes gio subparse pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
+  equalizer spectrum goom pbtypes gio subparse subenc audiofx audiomixer interleave pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
   dvbsuboverlay dvdspu libav audioparsers videoparsersbad mpegpsdemux mpeg2dec mpg123 a52dec
   dtsdec faad opus vorbis ogg flac isomp4 matroska id3demux icydemux soup hls dash
   adaptivedemux2 udp rtp rtpmanager rtpmanagerbad rtsp tcp multifile png alsa pulseaudio
@@ -72,6 +73,23 @@ else
 fi
 SCANNER="$(ls "$ARCH_LIB"/gstreamer$GSTVER/gstreamer-$GSTVER/gst-plugin-scanner 2>/dev/null || true)"
 [ -n "$SCANNER" ] && cp "$SCANNER" "$APPDIR/usr/lib/gst-plugin-scanner"
+
+echo "== WebKitGTK (HbbTV)"
+# The web, network and GPU processes and the injected bundle. libwebkitgtk
+# finds them at a path compiled in; it is rewritten below to one relative to
+# AppRun's working directory (usr/lib), which WebKit's sandbox also sees
+# because it is on LD_LIBRARY_PATH.
+WEBKIT_DIR="$ARCH_LIB/webkitgtk-6.0"
+if [ -d "$WEBKIT_DIR" ] && [ -f "$ARCH_LIB/girepository-1.0/WebKit-6.0.typelib" ]; then
+    mkdir -p "$APPDIR/usr/lib/$(basename "$ARCH_LIB")"
+    cp -a "$WEBKIT_DIR" "$APPDIR/usr/lib/$(basename "$ARCH_LIB")/"
+    rm -f "$APPDIR/usr/lib/$(basename "$ARCH_LIB")/webkitgtk-6.0/MiniBrowser"
+    cp -L "$ARCH_LIB"/libwebkitgtk-6.0.so.4 "$ARCH_LIB"/libjavascriptcoregtk-6.0.so.1 "$APPDIR/usr/lib/"
+    HAVE_WEBKIT=1
+else
+    echo "== WebKitGTK 6 not installed (gir1.2-webkit-6.0): the AppImage will have no HbbTV"
+    HAVE_WEBKIT=0
+fi
 
 echo "== GTK runtime data"
 mkdir -p "$APPDIR/usr/share/glib-2.0/schemas"
@@ -101,7 +119,8 @@ echo "== shared libraries"
 # Libraries that must come from the host system (C library, graphics drivers, audio servers).
 EXCLUDE='^(libc|libm|libdl|libpthread|librt|libresolv|libutil|libnsl|ld-linux|libGL|libGLX|libGLdispatch|libEGL|libOpenGL|libgbm|libdrm|libvulkan|libstdc\+\+|libgcc_s|libasound|libpulse|libjack|libpipewire|libudev|libsystemd|libdbus-1|libX11-xcb|libxcb|libX11|libwayland-client|libwayland-egl|libwayland-cursor|libexpat|libfontconfig|libfreetype|libz)\.so'
 collect() {
-    find "$APPDIR" -type f \( -name '*.so*' -o -path '*/usr/bin/*' -o -name gst-plugin-scanner \) |
+    find "$APPDIR" -type f \( -name '*.so*' -o -path '*/usr/bin/*' -o -name gst-plugin-scanner \
+                           -o -path '*/webkitgtk-6.0/WebKit*' \) |
         while read -r f; do ldd "$f" 2>/dev/null || true; done |
         awk '/=> \//{print $3}' | sort -u
 }
@@ -117,6 +136,24 @@ for t in "$ARCH_LIB"/libgtk-4.so.1 "$ARCH_LIB"/libgstmpegts-1.0.so.0 "$ARCH_LIB"
          "$ARCH_LIB"/libgstpbutils-1.0.so.0 "$ARCH_LIB"/libgraphene-1.0.so.0 "$ARCH_LIB"/libgirepository-1.0.so.1; do
     if [ -e "$t" ] && [ ! -e "$APPDIR/usr/lib/$(basename "$t")" ]; then cp -L "$t" "$APPDIR/usr/lib/"; fi
 done
+
+if [ "$HAVE_WEBKIT" = 1 ]; then
+    # "/usr/lib/<triplet>/webkitgtk-6.0" -> "././././/<triplet>/webkitgtk-6.0": the same
+    # length, so every other string in the library stays where it is
+    "$PY" - "$APPDIR/usr/lib/libwebkitgtk-6.0.so.4" "$ARCH_LIB/webkitgtk-6.0" <<'PYEOF'
+import sys
+path, old = sys.argv[1], sys.argv[2].encode()
+assert old.startswith(b"/usr/lib/")
+new = b"././././/" + old[len(b"/usr/lib/"):]
+assert len(new) == len(old)
+data = open(path, "rb").read()
+n = data.count(old)
+if not n:
+    sys.exit("WebKit's process path not found in " + path)
+open(path, "wb").write(data.replace(old, new))
+print(f"patched {n} occurrence(s) of {old.decode()}")
+PYEOF
+fi
 
 echo "== desktop integration"
 cp "$SRC/data/io.github.thommy87.LinDVB.desktop" "$APPDIR/"
@@ -134,6 +171,10 @@ cp "$SRC/LICENSE" "$APPDIR/usr/share/LICENSE.LinDVB"
 cat > "$APPDIR/AppRun" <<EOF
 #!/bin/bash
 HERE="\$(dirname "\$(readlink -f "\$0")")"
+# WebKit finds its helper processes relative to the working directory (see
+# build-appdir.sh); LinDVB resolves relative file arguments against the old one.
+export LINDVB_ORIG_CWD="\$PWD"
+cd "\$HERE/usr/lib"
 export PYTHONHOME="\$HERE/usr"
 export PYTHONPATH="\$HERE/usr/lib/python$PYVER/site-packages"
 export PYTHONDONTWRITEBYTECODE=1

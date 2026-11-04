@@ -26,10 +26,13 @@ apps:
     plugs:
       - dvb              # /dev/dvb tuners
       - network          # internet TV, XMLTV
+      - network-bind     # HbbTV: app to app (127.0.0.1), DIAL and sync for companion screens
       - audio-playback
       - home             # recordings in ~/Videos
       - removable-media  # recordings on external drives
       - shutdown         # standby / power off after recording
+    # HbbTV uses WebKitGTK 6 from the GNOME content snap (gnome extension); WebKit
+    # runs without its bubblewrap sandbox inside the snap's confinement.
     environment:
       PYTHONPATH: $SNAP/lib/lindvb:$SNAP/usr/lib/python3/dist-packages
       GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:${GI_TYPELIB_PATH}
