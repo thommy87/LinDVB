@@ -181,6 +181,10 @@ class PrefsWindow(Gtk.Window):
         switch(g, "hbbtv_autostart", _("Start automatically"),
                _("Off: an application starts only with the red button. Channels' "
                  "applications send usage data to the broadcaster."))
+        switch(g, "hbbtv_subtitles", _("Subtitles in media libraries"),
+               _("Applications show subtitles in their videos from the start."))
+        switch(g, "hbbtv_audio_description", _("Audio description in media libraries"),
+               _("Applications prefer the soundtrack that describes the picture."))
         switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
                _("Advertising networks use them to follow you across channels."))
         clear = Gtk.Button(label=_("Delete HbbTV Data"))

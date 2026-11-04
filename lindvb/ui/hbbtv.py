@@ -69,6 +69,7 @@ class HbbTV:
         self._ccids = {}
         self._channel_key = None
         self._picture_hidden = False
+        self._tracks_handler = None
 
     # -- channel -------------------------------------------------------------
 
@@ -207,19 +208,23 @@ class HbbTV:
         ccids = {c.key: f"ccid:{i + 1}" for i, c in enumerate(chans)}
         self._ccids = {ccids[c.key]: c for c in chans}
         cur = win.current
-        lang = self.settings.get("rec_audio_language", "") or "deu"
+        from .. import i18n
+        lang = hb.viewer_language(self.settings, getattr(i18n, "current", "") or
+                                  os.environ.get("LANG", ""))
         init = {
             "version": hb.terminal_version(),
             "channels": [hb.channel_dict(c, ccids[c.key]) for c in chans],
             "current": self._channel_json(cur),
             "programmes": self._programmes(cur),
             "capabilities": hb.capabilities_xml(),
+            "components": self._components(),
             "config": {"audioLanguage": lang, "subtitleLanguage": lang, "uiLanguage": lang,
                        "country": self.settings.get("hbbtv_country", "DEU"),
-                       "subtitles": False, "audioDescription": False},
+                       "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
+                       "audioDescription": bool(self.settings.get("hbbtv_audio_description", False))},
             "app": {"org": app.org_id, "id": app.app_id} if app else None,
         }
-        return "window.__lindvbInit = " + json.dumps(init) + ";\n" + hb.JS_FILE.read_text("utf-8")
+        return hb.page_script(json.dumps(init))
 
     def _channel_json(self, c):
         if c is None:
@@ -233,7 +238,29 @@ class HbbTV:
         now, nxt = self.win.app.epg.now_next(c.epg_key)
         return [hb.event_dict(e) for e in (now, nxt) if e is not None]
 
+    def _components(self):
+        """The live picture's audio and subtitle tracks, for video/broadcast."""
+        pl = self.win.player
+        if not hasattr(pl, "audio_track_info"):
+            return []
+        try:
+            audio, acur = pl.audio_track_info()
+            labels, scur = pl.subtitle_tracks()
+            pages = pl.teletext_pages()
+        except Exception:
+            return []
+        n = len(labels) - len(pages)
+        subs = [(label, pages[i - n].language if 0 <= i - n < len(pages) else "")
+                for i, label in enumerate(labels)]
+        return hb.broadcast_components(audio, acur, subs, scur)
+
+    def _on_tracks(self, *_):
+        if self.view is not None and self.life.active:
+            self._js("components", self._components())
+
     def _launch(self, url, app):
+        if not self._tracks_handler and hasattr(self.win.player, "connect"):
+            self._tracks_handler = self.win.player.connect("tracks", self._on_tracks)
         view = self._ensure_view()
         ucm = view.get_user_content_manager()
         ucm.remove_all_scripts()
@@ -368,6 +395,13 @@ class HbbTV:
             self.win.player.stop()                          # the app plays its own video
         elif cmd == "av-stop":
             pass
+        elif cmd == "select-component":
+            i = int(msg.get("index", -1))
+            if msg.get("type") == 1:
+                self.win.player.select_audio(i)
+            elif msg.get("type") == 2:
+                self.win.player.select_subtitle(i)
+            GLib.timeout_add(300, lambda: (self._on_tracks(), False)[1])
 
     def _set_channel(self, msg):
         c = self._ccids.get(msg.get("ccid"))

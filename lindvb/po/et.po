@@ -1904,3 +1904,15 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Subtiitrid meediaraamatukogudes"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Rakendused näitavad oma videotes subtiitreid algusest peale."
+
+msgid "Audio description in media libraries"
+msgstr "Kirjeldustõlge meediaraamatukogudes"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Rakendused eelistavad helirada, mis kirjeldab pilti."

@@ -107,3 +107,20 @@ def test_capabilities_document():
     xml = hbbtv.capabilities_xml()
     assert xml.startswith("<profilelist>") and "OITF_HD_UIPROF+DVB_S" in xml
     assert 'type="application/dash+xml"' in xml
+
+
+def test_viewer_language():
+    assert hbbtv.viewer_language({"hbbtv_language": "fra"}) == "fra"
+    assert hbbtv.viewer_language({"rec_audio_language": "eng"}) == "eng"
+    assert hbbtv.viewer_language({"language": "de"}) == "deu"
+    assert hbbtv.viewer_language({}, "nl") == "nld"
+    assert hbbtv.viewer_language({}) == "deu"
+
+
+def test_broadcast_components():
+    from lindvb.media_info import AudioTrack
+    comps = hbbtv.broadcast_components([AudioTrack("deu"), AudioTrack("eng", "Audiodescription")], 1,
+                                       [("Teletext 150 (deu)", "deu")], -1)
+    assert [(c["type"], c["language"], c["active"]) for c in comps] == \
+        [(0, "", True), (1, "deu", False), (1, "eng", True), (2, "deu", False)]
+    assert comps[2]["audioDescription"]

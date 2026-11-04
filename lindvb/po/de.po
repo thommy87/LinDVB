@@ -1982,3 +1982,15 @@ msgstr "Interaktiver Dienst des Senders (roter Knopf, F5)"
 
 msgid "Close the interactive service (Esc)"
 msgstr "Interaktiven Dienst schließen (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "Untertitel in Mediatheken"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Anwendungen zeigen in ihren Videos von Anfang an Untertitel."
+
+msgid "Audio description in media libraries"
+msgstr "Audiodeskription in Mediatheken"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Anwendungen bevorzugen die Tonspur, die das Bild beschreibt."

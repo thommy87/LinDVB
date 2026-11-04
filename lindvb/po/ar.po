@@ -1904,3 +1904,15 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "الترجمة في مكتبات الوسائط"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "تعرض التطبيقات الترجمة في مقاطعها من البداية."
+
+msgid "Audio description in media libraries"
+msgstr "الوصف الصوتي في مكتبات الوسائط"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "تفضّل التطبيقات المسار الصوتي الذي يصف الصورة."

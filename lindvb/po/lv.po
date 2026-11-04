@@ -1904,3 +1904,15 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Subtitri mediatēkās"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Lietotnes savos video rāda subtitrus jau no sākuma."
+
+msgid "Audio description in media libraries"
+msgstr "Audioapraksts mediatēkās"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Lietotnes dod priekšroku skaņu celiņam, kas apraksta attēlu."
