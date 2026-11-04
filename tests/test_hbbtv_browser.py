@@ -7,6 +7,7 @@ Needs a display (run under xvfb-run) and WebKitGTK 6; skipped otherwise.
 
 import http.server
 import os
+import socket
 import sys
 import threading
 import time
@@ -523,3 +524,86 @@ def test_parental_control_holds_a_rated_video():
         win.window.destroy()
     finally:
         server.shutdown()
+
+
+CS_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  var csm = document.getElementById('cs');
+  var local = csm.getApp2AppLocalBaseURL();
+  L('local=' + (local.indexOf('ws://127.0.0.1:') === 0) + ' remote=' + (csm.getApp2AppRemoteBaseURL() !== ''));
+  var vb = document.getElementById('vb');
+  vb.bindToCurrentChannel();
+  var ms = oipfObjectFactory.createMediaSynchroniser();
+  ms.initMediaSynchroniser(vb, 'urn:dvb:css:timeline:pts');
+  var waited = 0;
+  var t = setInterval(function () {
+    if (!isNaN(ms.currentTime) || ++waited > 100) {
+      clearInterval(t);
+      L('timeline=' + (!isNaN(ms.currentTime) && ms.currentTime > 9 && ms.currentTime < 12));
+      var ws = new WebSocket(local + 'org.example.quiz');
+      ws.onmessage = function (e) {
+        if (e.data === 'pairingcompleted') { L('paired'); ws.send('hallo handy'); }
+        else { L('got=' + e.data); }
+      };
+    }
+  }, 100);
+};
+</script></head><body>
+<object id="cs" type="application/hbbtvCSManager"></object>
+<object id="vb" type="video/broadcast" style="position:absolute;left:0;top:0;width:1280px;height:720px"></object>
+</body></html>
+"""
+
+
+def test_companion_app_to_app_and_broadcast_timeline():
+    """hbbtvCSManager's app-to-app URL pairs the app with a 'phone' (a test
+    client on the remote side); a MediaSynchroniser on video/broadcast sees
+    the PTS of the live video."""
+    import asyncio
+    from lindvb.ui import hbbtv as ui
+
+    tool = _test_ts_tool()
+    ts = tool.build("index.html", 28106, files={"index.html": CS_APP}, repeat=20)
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    win = FakeWindow(ch)
+    win.window.present()
+    hbb = ui.HbbTV(win)
+    win.overlay.connect("get-child-position",
+                        lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+    cap = CarouselCapture(ts)
+    hbb.channel_changed(ch, cap)
+    title = lambda: (hbb.view.get_title() if hbb.view else "") or ""  # noqa: E731
+    # the broadcast timeline: feed PTS = 10 s as the demux would
+    assert _wait(lambda: hbb._sync_broadcast, timeout=40), title()
+    cap.ait_monitor.on_pts(900000, time.monotonic_ns())
+    assert _wait(lambda: "timeline=" in title(), timeout=20), title()
+    assert "timeline=true" in title() and "local=true" in title()
+    svc = hbb.cs
+
+    # bring a remote connection into the service's loop
+    fut = asyncio.run_coroutine_threadsafe(_remote_client(svc, "org.example.quiz"), svc.loop)
+    assert _wait(lambda: "paired" in title(), timeout=20), title()
+    assert _wait(lambda: fut.done(), timeout=20)
+    assert fut.result() == "hallo handy"
+    assert _wait(lambda: "got=hallo tv" in title(), timeout=20), title()
+    win.window.destroy()
+
+
+async def _remote_client(svc, endpoint):
+    """A companion's connection to the remote base, made inside the service
+    (the network listener is off in this test)."""
+    import asyncio
+    from lindvb import hbbtvcs
+    a, b = socket.socketpair()
+    reader, writer = await asyncio.open_connection(sock=a)
+    creader, cwriter = await asyncio.open_connection(sock=b)
+    ws_server = hbbtvcs.WebSocket(reader, writer, "/hbbtv/" + endpoint)
+    client = hbbtvcs.ClientWebSocket(creader, cwriter, "/hbbtv/" + endpoint)
+    asyncio.ensure_future(svc.app2app.serve(ws_server, "remote", endpoint))
+    assert await client.recv() == "pairingcompleted"
+    msg = await client.recv()
+    await client.send("hallo tv")
+    return msg

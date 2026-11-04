@@ -64,6 +64,7 @@ def clear_data(app):
 
 
 CAROUSEL_TIMEOUT = 30          # seconds to wait for a file of the object carousel
+_companion = None               # lindvb.hbbtvcs.CompanionService of this process
 _views = weakref.WeakKeyDictionary()     # WebView -> HbbTV
 _schemes = set()
 
@@ -129,6 +130,33 @@ def _request_error(request, message):
                                                 int(Gio.IOErrorEnum.NOT_FOUND)))
 
 
+def companion(settings):
+    """The companion screen services, started on first use; restarted when
+    the network setting changed."""
+    global _companion
+    network = bool(settings.get("hbbtv_companion", False))
+    if _companion is not None and _companion.network != network:
+        _companion.stop()
+        _companion = None
+    if _companion is None:
+        from .. import hbbtvcs
+        uid = settings.get("hbbtv_device_uuid") or ""
+        if not uid:
+            import uuid
+            uid = str(uuid.uuid4())
+            try:
+                settings["hbbtv_device_uuid"] = uid
+                settings.save()
+            except (AttributeError, OSError):
+                pass
+        import socket
+        _companion = hbbtvcs.CompanionService(
+            user_agent=hb.user_agent(hb.terminal_version()),
+            friendly_name=f"LinDVB ({socket.gethostname()})", call_soon=_idle, device_uuid=uid)
+        _companion.start(network=network)
+    return _companion
+
+
 class HbbTV:
     """HbbTV terminal for one main window (window.overlay, window.picture)."""
 
@@ -157,6 +185,9 @@ class HbbTV:
         self._pin_dialog = None
         self.life.allowed = self._allowed
         self.life.on_blocked = self._ask_pin_for_app
+        self.cs = None                  # lindvb.hbbtvcs.CompanionService (process-wide)
+        self._sync_broadcast = False    # an app's MediaSynchroniser follows the broadcast
+        self._sync_selector = None      # inter-device sync on this timeline
         self.dsmcc = None               # lindvb.dsmcc.DsmccService of the capture
         self._carousel_tag = None       # component tag of the running app's carousel
         self._ste = {}                  # JS listener id -> DsmccService handle
@@ -179,6 +210,10 @@ class HbbTV:
         if capture is not self.capture:
             self._new_dsmcc(capture)
         self.capture, self._cap_handler = capture, None
+        if self._sync_broadcast:
+            self._follow_broadcast_timeline(True)
+        if self._sync_selector and self.cs is not None:
+            self.cs.set_content(self._content_id() or None)
         self.life.autostart = self.settings.get("hbbtv_autostart", False)
         if capture is None or not self.enabled:
             self.life.no_signalling()
@@ -539,8 +574,107 @@ class HbbTV:
                        "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
                        "ageLimit": self.age_limit, "hasPin": self.pin.has_pin},
             "app": {"org": app.org_id, "id": app.app_id} if app else None,
+            "cs": self._cs_init(app),
         }
         return hb.page_script(json.dumps(init))
+
+    def _cs_init(self, app):
+        try:
+            svc = self._companion()
+        except OSError:
+            return {}
+        return {"localBase": svc.app2app_local_base, "remoteBase": svc.app2app_remote_base,
+                "syncUrl": svc.inter_dev_sync_url, "launchUrl": svc.app_launch_url,
+                "contentId": self._content_id()}
+
+    def _companion(self):
+        if self.cs is None or self.cs is not _companion or self.cs.loop is None:
+            self.cs = companion(self.settings)
+            self.cs.on_launch = self._on_cs_launch
+            self.cs.on_slaves = lambda n: self._js("syncSlaves", n)
+        return self.cs
+
+    def _content_id(self):
+        c = self.win.current
+        if c is None or not getattr(c, "sid", 0):
+            return ""
+        return f"dvb://{c.onid:x}.{c.tsid:x}.{c.sid:x}"
+
+    def _on_cs_launch(self, info, reply):
+        """A companion asks to start an application (DIAL, XML AIT): the user decides."""
+        from gi.repository import Gtk
+        parent = getattr(self.win, "window", None) or self.win
+        dlg = Gtk.AlertDialog(
+            message=_("Start an application from another device?"),
+            detail=_("A device on your network wants to start “{name}” ({url}).").format(
+                name=info.get("name") or _("an HbbTV application"), url=info["url"]),
+            buttons=[_("Refuse"), _("Start")], cancel_button=0, default_button=1)
+
+        def done(d, res):
+            try:
+                ok = d.choose_finish(res) == 1
+            except GLib.Error:
+                ok = False
+            reply(ok)
+            if ok and self.enabled:
+                self.life.create_application(info["url"])
+                self._notify()
+        dlg.choose(parent if isinstance(parent, Gtk.Window) else None, None, done)
+
+    # -- media synchronisation --------------------------------------------------------
+
+    def _display_delay_ns(self):
+        """How long a frame takes from the demux to the screen, roughly."""
+        pb = getattr(self.win.player, "playbin", None)
+        try:
+            gi.require_version("Gst", "1.0")
+            from gi.repository import Gst
+            q = Gst.Query.new_latency()
+            if pb is not None and hasattr(pb, "query") and pb.query(q):
+                _live, lo, _hi = q.parse_latency()
+                return int(lo)
+        except (ImportError, ValueError, TypeError):
+            pass
+        return 0
+
+    def _follow_broadcast_timeline(self, on):
+        self._sync_broadcast = on
+        mon = getattr(self.capture, "ait_monitor", None)
+        if mon is None:
+            return
+        if not on:
+            mon.on_pts = None
+            return
+        delay = self._display_delay_ns()
+
+        def got(pts, at):
+            def deliver():
+                if self._sync_broadcast and self.view is not None:
+                    self._js("timeline", pts, at + delay, time.monotonic_ns())
+            _idle(deliver)
+        mon.on_pts = got
+
+    def _sync_message(self, cmd, msg):
+        svc = self._companion()
+        if cmd == "sync-broadcast":
+            self._follow_broadcast_timeline(bool(msg.get("on")))
+        elif cmd == "sync-enable":
+            self._sync_selector = msg.get("selector") or ""
+            ups = 90000 if self._sync_selector.endswith(":pts") else 1000
+            svc.set_content(self._content_id() or None, timelines=[{
+                "timelineSelector": self._sync_selector,
+                "timelineProperties": {"unitsPerTick": 1, "unitsPerSecond": ups}}])
+        elif cmd == "sync-ct" and self._sync_selector:
+            wall = msg.get("wallNs")
+            svc.set_timeline(msg.get("selector") or self._sync_selector,
+                             msg.get("contentTime") if wall is not None else None,
+                             wall if wall is not None else time.monotonic_ns(),
+                             float(msg.get("speed") or 0) if msg.get("speed") is not None else 1.0)
+        elif cmd == "sync-disable":
+            if self._sync_selector:
+                svc.set_timeline(self._sync_selector, None, time.monotonic_ns())
+            svc.set_content(None, presentation="fault", timelines=[])
+            self._sync_selector = None
 
     def _channel_json(self, c):
         if c is None:
@@ -604,6 +738,10 @@ class HbbTV:
 
     def _kill(self):
         self._ste_clear()
+        if self._sync_broadcast:
+            self._follow_broadcast_timeline(False)
+        if self._sync_selector and self.cs is not None:
+            self._sync_message("sync-disable", {})
         self._media_blocked = {}
         self._pending_red = False
         self.keyset, self.other_keys = 0, ()
@@ -697,6 +835,11 @@ class HbbTV:
         elif cmd == "destroy":
             self.life.stop()
             self._notify()
+        elif cmd == "cs-discover-terminals":
+            cid = msg.get("id")
+            self._companion().discover_terminals(lambda found: self._js("csResult", cid, found))
+        elif cmd in ("sync-broadcast", "sync-enable", "sync-ct", "sync-disable"):
+            self._sync_message(cmd, msg)
         elif cmd == "pc-blocked":
             self._media_rated(msg.get("id"), int(msg.get("age") or 0))
         elif cmd == "pc-unlocked":                 # the app checked the PIN itself

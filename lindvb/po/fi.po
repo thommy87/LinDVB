@@ -1982,3 +1982,21 @@ msgstr "Lapsilukko tarvitsee PIN-koodin"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Aseta PIN-koodi ottaaksesi lapsilukon käyttöön."
+
+msgid "Companion screens on the network"
+msgstr "Rinnakkaisnäytöt verkossa"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Verkkosi puhelimet ja tabletit voivat löytää LinDVB:n, keskustella sovellusten kanssa, seurata kuvaa tahdistetusti ja pyytää sovellusten käynnistämistä. Pois: mikään ei kuuntele verkossa."
+
+msgid "Start an application from another device?"
+msgstr "Käynnistetäänkö sovellus toiselta laitteelta?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Verkkosi laite haluaa käynnistää kohteen ”{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "HbbTV-sovellus"
+
+msgid "Refuse"
+msgstr "Kieltäydy"

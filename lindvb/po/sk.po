@@ -1982,3 +1982,21 @@ msgstr "Rodičovská kontrola potrebuje PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Nastavte PIN, aby ste zapli rodičovskú kontrolu."
+
+msgid "Companion screens on the network"
+msgstr "Sprievodné obrazovky v sieti"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefóny a tablety vo vašej sieti môžu nájsť LinDVB, komunikovať s aplikáciami, synchrónne sledovať obraz a žiadať o spustenie aplikácií. Vypnuté: v sieti nič nepočúva."
+
+msgid "Start an application from another device?"
+msgstr "Spustiť aplikáciu z iného zariadenia?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Zariadenie vo vašej sieti chce spustiť „{name}“ ({url})."
+
+msgid "an HbbTV application"
+msgstr "aplikáciu HbbTV"
+
+msgid "Refuse"
+msgstr "Odmietnuť"

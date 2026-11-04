@@ -200,6 +200,10 @@ class PrefsWindow(Gtk.Window):
                                  _("Needed to change the youth protection or the PIN."))
         self._pin_entry = _row(g, _("New PIN"), Gtk.PasswordEntry(show_peek_icon=True),
                                _("Leave empty to keep the current PIN."))
+        switch(g, "hbbtv_companion", _("Companion screens on the network"),
+               _("Phones and tablets in your network can find LinDVB, talk to applications and "
+                 "follow the picture in sync, and ask to start applications. Off: nothing listens "
+                 "on the network."))
         switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
                _("Advertising networks use them to follow you across channels."))
         clear = Gtk.Button(label=_("Delete HbbTV Data"))

@@ -1982,3 +1982,21 @@ msgstr "O controlo parental precisa de um PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Defina um PIN para ativar o controlo parental."
+
+msgid "Companion screens on the network"
+msgstr "Ecrãs secundários na rede"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telemóveis e tablets da sua rede podem encontrar o LinDVB, falar com as aplicações, seguir a imagem em sincronia e pedir para iniciar aplicações. Desligado: nada escuta na rede."
+
+msgid "Start an application from another device?"
+msgstr "Iniciar uma aplicação a partir de outro dispositivo?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Um dispositivo da sua rede quer iniciar «{name}» ({url})."
+
+msgid "an HbbTV application"
+msgstr "uma aplicação HbbTV"
+
+msgid "Refuse"
+msgstr "Recusar"

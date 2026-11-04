@@ -1982,3 +1982,21 @@ msgstr "A szülői felügyelethez PIN-kód kell"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Állítson be PIN-kódot a szülői felügyelet bekapcsolásához."
+
+msgid "Companion screens on the network"
+msgstr "Kísérőképernyők a hálózaton"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "A hálózatán lévő telefonok és táblagépek megtalálhatják a LinDVB-t, beszélhetnek az alkalmazásokkal, szinkronban követhetik a képet, és kérhetik alkalmazások indítását. Ki: semmi sem figyel a hálózaton."
+
+msgid "Start an application from another device?"
+msgstr "Elindít egy alkalmazást egy másik eszközről?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Egy eszköz a hálózatán el akarja indítani ezt: „{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "egy HbbTV-alkalmazás"
+
+msgid "Refuse"
+msgstr "Elutasítás"

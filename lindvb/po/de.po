@@ -2060,3 +2060,21 @@ msgstr "Jugendschutz braucht eine PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Lege eine PIN fest, um den Jugendschutz einzuschalten."
+
+msgid "Companion screens on the network"
+msgstr "Companion Screens im Netzwerk"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Handys und Tablets in deinem Netzwerk können LinDVB finden, mit Anwendungen sprechen, dem Bild synchron folgen und Anwendungen starten lassen. Aus: nichts lauscht im Netzwerk."
+
+msgid "Start an application from another device?"
+msgstr "Eine Anwendung von einem anderen Gerät starten?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Ein Gerät in deinem Netzwerk möchte „{name}“ starten ({url})."
+
+msgid "an HbbTV application"
+msgstr "eine HbbTV-Anwendung"
+
+msgid "Refuse"
+msgstr "Ablehnen"

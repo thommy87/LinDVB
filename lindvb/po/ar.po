@@ -1982,3 +1982,21 @@ msgstr "يحتاج التحكم الأبوي إلى رمز PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "عيّن رمز PIN لتشغيل التحكم الأبوي."
+
+msgid "Companion screens on the network"
+msgstr "الشاشات المرافقة على الشبكة"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "يمكن للهواتف والأجهزة اللوحية في شبكتك العثور على LinDVB والتحدث مع التطبيقات ومتابعة الصورة بشكل متزامن وطلب تشغيل التطبيقات. معطّل: لا شيء يستمع على الشبكة."
+
+msgid "Start an application from another device?"
+msgstr "تشغيل تطبيق من جهاز آخر؟"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "يريد جهاز على شبكتك تشغيل «{name}» ({url})."
+
+msgid "an HbbTV application"
+msgstr "تطبيق HbbTV"
+
+msgid "Refuse"
+msgstr "رفض"

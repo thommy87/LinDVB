@@ -2814,3 +2814,21 @@ msgstr ""
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr ""
+
+msgid "Companion screens on the network"
+msgstr ""
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr ""
+
+msgid "Start an application from another device?"
+msgstr ""
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr ""
+
+msgid "an HbbTV application"
+msgstr ""
+
+msgid "Refuse"
+msgstr ""

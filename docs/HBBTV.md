@@ -33,6 +33,7 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 | Teletext from the interactive service | on | TXT opens the HbbTV teletext of the channel where there is one |
 | Youth protection | off | The age of the youngest viewer (6, 12, 16). Applications and DASH videos rated above it need the PIN |
 | Current PIN / New PIN | – | The youth protection PIN. Once set, changing the age or the PIN needs the current PIN |
+| Companion screens on the network | off | DIAL discovery, app to app with phones and tablets, inter-device sync, starting applications from a companion. Off: only the local app-to-app endpoint on 127.0.0.1 runs |
 | Allow third-party cookies | off | Advertising networks use them to follow viewers across channels |
 | Delete HbbTV Data | – | Removes cookies, local storage and cache of all applications |
 
@@ -99,7 +100,27 @@ settings file can switch it off.
    calls the listener once for each new version of the stream event
    descriptor, with the private data as `data` (hex) and `text`. A channel
    change ends all listeners with status `error`.
-7. **Videos of the application**: MP4 and HLS play in WebKit itself. MPEG-DASH
+7. **Companion screens** (`lindvb/hbbtvcs.py`, TS 102 796 clause 14):
+   `application/hbbtvCSManager` gives applications the app-to-app base URLs,
+   the inter-device sync URL and the DIAL launch URL, and finds other HbbTV
+   terminals on the network (`discoverTerminals`). The app-to-app server pairs
+   an application's connection to `ws://127.0.0.1:<port>/hbbtv/<name>` with a
+   companion's connection to `ws://<LAN address>:<port>/hbbtv/<name>` and
+   relays their messages. With the network setting on, LinDVB answers SSDP
+   searches for DIAL, describes itself (`dd.xml`, `apps/HbbTV` with
+   `X_HbbTV_App2AppURL`, `X_HbbTV_InterDevSyncURL`, `X_HbbTV_UserAgent`)
+   and lets a companion start a broadcast-independent application with an XML
+   AIT, after asking the user.
+8. **Media synchroniser** (clause 13, TS 103 286-2): `createMediaSynchroniser()`
+   / `application/hbbtvMediaSynchroniser` with `video/broadcast` (timeline
+   `urn:dvb:css:timeline:pts`, measured from the PTS of the live video in the
+   transport stream) or an application video (`urn:dvb:css:timeline:ct`,
+   `urn:dvb:css:timeline:mpd:period:rel:<ticks>`) as master. `addMediaObject()`
+   keeps one application video in step with the master by seeking and small
+   playback rate changes. `enableInterDeviceSync()` starts CSS-CII (content
+   id `dvb://onid.tsid.sid`), CSS-WC (UDP wall clock) and CSS-TS (control
+   timestamps) for companion screens.
+9. **Videos of the application**: MP4 and HLS play in WebKit itself. MPEG-DASH
    (the media libraries) plays through [dash.js](https://github.com/Dash-Industry-Forum/dash.js)
    4.7.4 (`lindvb/vendor`, BSD licence) on Media Source Extensions, in HTML5
    `<video>` elements (`src`, `setAttribute`, `<source type="application/dash+xml">`)
@@ -144,5 +165,6 @@ with stream events, and a rated DASH video behind the PIN.
 | Media | Subtitles inside DASH segments (fMP4 `stpp`) are untested; trick play for the broadcast |
 | Stream events | Scheduled events (by NPT time) fire on arrival like do-it-now events |
 | Object carousel | Carousels of other services (remote `dvb://` URLs with another service id) |
-| HbbTV 2.0 extras | Companion screen and app-to-app launch (`hbbtvCSManager`), media synchroniser |
+| Companion screens | `discoverCSLaunchers()` finds no launchers (no CS launcher application registers with LinDVB), so `launchCSApp()` reports an unknown launcher. Starting applications from a companion (DIAL) works |
+| Media synchroniser | The broadcast PTS is taken where LinDVB demultiplexes, corrected by the pipeline latency, so it is accurate to about a frame or two, not to the millisecond. One application video per synchroniser; LinDVB cannot be a slave terminal (`initSlaveMediaSynchroniser`); TEMI timelines are not read |
 | Packaging | WebKitGTK in the AppImage and Snap |

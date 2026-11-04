@@ -1982,3 +1982,21 @@ msgstr "Ouderlijk toezicht heeft een pincode nodig"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Stel een pincode in om het ouderlijk toezicht in te schakelen."
+
+msgid "Companion screens on the network"
+msgstr "Tweede schermen in het netwerk"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefoons en tablets in je netwerk kunnen LinDVB vinden, met toepassingen praten, het beeld synchroon volgen en vragen om toepassingen te starten. Uit: niets luistert op het netwerk."
+
+msgid "Start an application from another device?"
+msgstr "Een toepassing van een ander apparaat starten?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Een apparaat in je netwerk wil ‘{name}’ starten ({url})."
+
+msgid "an HbbTV application"
+msgstr "een HbbTV-toepassing"
+
+msgid "Refuse"
+msgstr "Weigeren"

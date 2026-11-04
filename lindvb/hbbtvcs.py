@@ -276,8 +276,13 @@ class App2App:
                         if ws.peer is not None:
                             await ws.peer.close()
                         return
+                    if ws.peer is not None:               # paired in the same moment
+                        waiter.cancel()
+                        await ws.peer.send(msg)
+                        break
                     # a message before pairing has nobody to go to: dropped
-                else:
+                waiter.cancel()
+                if ws.paired.is_set():
                     break
         while True:
             if pending is not None:
@@ -342,6 +347,7 @@ class CompanionService:
         self.user_agent = user_agent
         self.friendly_name = friendly_name
         self.on_launch = on_launch
+        self.on_slaves = None           # callable(number of CSS-TS clients), main loop
         self.call_soon = call_soon or (lambda fn: fn())
         self.uuid = device_uuid or str(uuid.uuid4())
         self.ssdp_port = ssdp_port
@@ -533,6 +539,7 @@ class CompanionService:
                 await ws.close(1003)
                 return
             self._ts_clients[ws] = setup
+            self._slaves_changed()
             stem = setup.get("contentIdStem", "")
             cid = self.cii.get("contentId") or ""
             ct = self.timelines.get(setup["timelineSelector"])
@@ -544,6 +551,12 @@ class CompanionService:
                 pass
         finally:
             self._ts_clients.pop(ws, None)
+            self._slaves_changed()
+
+    def _slaves_changed(self):
+        n = len(self._ts_clients)
+        if self.on_slaves is not None:
+            self.call_soon(lambda: self.on_slaves(n))
 
     # -- DIAL (14.7) --
 

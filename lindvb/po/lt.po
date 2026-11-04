@@ -1982,3 +1982,21 @@ msgstr "Tėvų kontrolei reikia PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Nustatykite PIN, kad įjungtumėte tėvų kontrolę."
+
+msgid "Companion screens on the network"
+msgstr "Papildomi ekranai tinkle"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefonai ir planšetės jūsų tinkle gali rasti LinDVB, bendrauti su programomis, sinchroniškai sekti vaizdą ir prašyti paleisti programas. Išjungta: tinkle niekas neklauso."
+
+msgid "Start an application from another device?"
+msgstr "Paleisti programą iš kito įrenginio?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Įrenginys jūsų tinkle nori paleisti „{name}“ ({url})."
+
+msgid "an HbbTV application"
+msgstr "HbbTV programą"
+
+msgid "Refuse"
+msgstr "Atsisakyti"

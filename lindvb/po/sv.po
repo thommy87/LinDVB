@@ -1982,3 +1982,21 @@ msgstr "Barnspärren behöver en PIN-kod"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Ange en PIN-kod för att slå på barnspärren."
+
+msgid "Companion screens on the network"
+msgstr "Följeskärmar i nätverket"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefoner och surfplattor i ditt nätverk kan hitta LinDVB, prata med program, följa bilden synkront och be om att starta program. Av: inget lyssnar i nätverket."
+
+msgid "Start an application from another device?"
+msgstr "Starta ett program från en annan enhet?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "En enhet i ditt nätverk vill starta ”{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "ett HbbTV-program"
+
+msgid "Refuse"
+msgstr "Neka"

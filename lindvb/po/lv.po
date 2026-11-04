@@ -1982,3 +1982,21 @@ msgstr "Vecāku kontrolei vajag PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Iestatiet PIN, lai ieslēgtu vecāku kontroli."
+
+msgid "Companion screens on the network"
+msgstr "Pavadošie ekrāni tīklā"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Tālruņi un planšetes jūsu tīklā var atrast LinDVB, sazināties ar lietotnēm, sinhroni sekot attēlam un lūgt palaist lietotnes. Izslēgts: tīklā nekas neklausās."
+
+msgid "Start an application from another device?"
+msgstr "Vai palaist lietotni no citas ierīces?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Ierīce jūsu tīklā vēlas palaist “{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "HbbTV lietotni"
+
+msgid "Refuse"
+msgstr "Atteikt"

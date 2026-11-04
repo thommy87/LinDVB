@@ -1982,3 +1982,21 @@ msgstr "Teastaíonn PIN ó rialú tuismitheoirí"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Socraigh PIN chun rialú tuismitheoirí a chur ar siúl."
+
+msgid "Companion screens on the network"
+msgstr "Scáileáin chompánacha ar an líonra"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Is féidir le fóin agus táibléid ar do líonra LinDVB a aimsiú, labhairt le feidhmchláir, an pictiúr a leanúint i sioncrónú agus iarraidh feidhmchláir a thosú. As: níl aon rud ag éisteacht ar an líonra."
+
+msgid "Start an application from another device?"
+msgstr "Feidhmchlár a thosú ó ghléas eile?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Ba mhaith le gléas ar do líonra “{name}” a thosú ({url})."
+
+msgid "an HbbTV application"
+msgstr "feidhmchlár HbbTV"
+
+msgid "Refuse"
+msgstr "Diúltaigh"

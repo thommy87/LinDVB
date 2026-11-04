@@ -1982,3 +1982,21 @@ msgstr "Ο γονικός έλεγχος χρειάζεται PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Ορίστε ένα PIN για να ενεργοποιήσετε τον γονικό έλεγχο."
+
+msgid "Companion screens on the network"
+msgstr "Συνοδευτικές οθόνες στο δίκτυο"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Τηλέφωνα και tablet στο δίκτυό σας μπορούν να βρουν το LinDVB, να μιλούν με εφαρμογές, να ακολουθούν την εικόνα συγχρονισμένα και να ζητούν την εκκίνηση εφαρμογών. Ανενεργό: τίποτα δεν ακούει στο δίκτυο."
+
+msgid "Start an application from another device?"
+msgstr "Εκκίνηση εφαρμογής από άλλη συσκευή;"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Μια συσκευή στο δίκτυό σας θέλει να ξεκινήσει το «{name}» ({url})."
+
+msgid "an HbbTV application"
+msgstr "μια εφαρμογή HbbTV"
+
+msgid "Refuse"
+msgstr "Άρνηση"

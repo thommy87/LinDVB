@@ -448,6 +448,203 @@
     if (v && v.__pcBlocked) { v.pause(); }
   }, true);
 
+  /* ---------------------------------------------------------------- companion screens
+   * TS 102 796 clause 14: the app-to-app and DIAL services run in the
+   * terminal (lindvb/hbbtvcs.py); this is the application's side. */
+  var csInit = init.cs || {};
+  var csCallbacks = {}, csNext = 1;
+
+  function csCall(cmd, cb, extra) {
+    var id = csNext++;
+    csCallbacks[id] = cb;
+    var msg = { cmd: cmd, id: id };
+    Object.keys(extra || {}).forEach(function (k) { msg[k] = extra[k]; });
+    post(msg);
+    return true;
+  }
+
+  function augmentCSManager(el) {
+    el.discoverCSLaunchers = function (cb) {
+      if (typeof cb !== "function") { return false; }
+      // no CS launcher application has registered with this terminal
+      setTimeout(function () { cb.call(el, []); }, 0);
+      return true;
+    };
+    el.discoverTerminals = function (cb) {
+      if (typeof cb !== "function") { return false; }
+      return csCall("cs-discover-terminals", function (list) { cb.call(el, list); });
+    };
+    el.launchCSApp = function (enumId, payload, cb) {
+      if (typeof cb === "function") {
+        setTimeout(function () { cb.call(el, enumId, 3); }, 0);       // 3: launcher unknown
+      }
+      return true;
+    };
+    el.getInterDevSyncURL = function () { return csInit.syncUrl || ""; };
+    el.getAppLaunchURL = function () { return csInit.launchUrl || ""; };
+    el.getApp2AppLocalBaseURL = function () { return csInit.localBase || ""; };
+    el.getApp2AppRemoteBaseURL = function () { return csInit.remoteBase || ""; };
+  }
+
+  /* ---------------------------------------------------------------- media synchroniser
+   * TS 102 796 clause 13 / 8.2.3: multi-stream sync of the app's videos to
+   * the broadcast (or to another video) and inter-device sync for companion
+   * screens. The broadcast timeline is the PTS of the live video, which the
+   * terminal measures in the transport stream (__lindvb.timeline). */
+  var wallOffsetNs = null;             // terminal wall clock - performance.now() (ns)
+  var bcTimeline = null;               // { pts, wallNs } latest broadcast PTS
+  var synchronisers = [];
+  var SYNC_ERR = { NOT_SUPPORTED: 1, TIMELINE_UNAVAILABLE: 2, BAD_STATE: 3, ALREADY_ADDED: 4,
+                   NOT_ADDED: 5, INTER_DEVICE_UNAVAILABLE: 6, TOO_MANY: 7 };
+
+  function wallNow() {
+    return wallOffsetNs === null ? null : performance.now() * 1e6 + wallOffsetNs;
+  }
+
+  function unitsPerSecond(selector) {
+    if (/^urn:dvb:css:timeline:pts$/.test(selector)) { return 90000; }
+    var m = /^urn:dvb:css:timeline:mpd:period:rel:(\d+)/.exec(selector || "");
+    if (m) { return +m[1]; }
+    if (/^urn:dvb:css:timeline:ct$/.test(selector)) { return 1000; }
+    if (/^urn:dvb:css:timeline:temi:/.test(selector)) { return 0; }
+    return 0;
+  }
+
+  function isBroadcast(o) { return o && o.__state !== undefined && typeof o.bindToCurrentChannel === "function"; }
+  function mediaOf(o) {
+    if (!o) { return null; }
+    if (o instanceof HTMLMediaElement) { return o; }
+    return o.__video || (o.querySelector && o.querySelector("video")) || null;
+  }
+
+  // the value of a timeline now, in ticks; null when it has none yet
+  function timelineNow(obj, selector) {
+    var ups = unitsPerSecond(selector);
+    if (!ups) { return null; }
+    if (isBroadcast(obj)) {
+      var w = wallNow();
+      if (!bcTimeline || w === null || ups !== 90000) { return null; }
+      return bcTimeline.pts + (w - bcTimeline.wallNs) * 90000 / 1e9;
+    }
+    var v = mediaOf(obj);
+    if (!v || v.readyState < 1) { return null; }
+    return v.currentTime * ups;
+  }
+
+  function MediaSynchroniser(target) {
+    var self = target || this;
+    var master = null, masterSel = "", slaves = [], interDevice = false, ctTimer = null, loop = null;
+    var errs = { code: -1, source: null };
+    self.__slaves = 0;
+    Object.defineProperty(self, "lastError", { get: function () { return errs.code; } });
+    Object.defineProperty(self, "lastErrorSource", { get: function () { return errs.source; } });
+    Object.defineProperty(self, "nrOfSlaves", { get: function () { return interDevice ? self.__slaves : null; } });
+    Object.defineProperty(self, "interDeviceSyncEnabled", { get: function () { return interDevice; } });
+    Object.defineProperty(self, "interDeviceSyncDispersion", { get: function () { return 0; } });
+    Object.defineProperty(self, "minSyncBufferSize", { get: function () { return 0; } });
+    Object.defineProperty(self, "maxBroadbandStreamsWithBroadcast", { get: function () { return 1; } });
+    Object.defineProperty(self, "maxBroadbandStreamsNoBroadcast", { get: function () { return 1; } });
+    Object.defineProperty(self, "currentTime", { get: function () {
+      var t = master ? timelineNow(master, masterSel) : null;
+      return t === null ? NaN : t / unitsPerSecond(masterSel);
+    } });
+    Object.defineProperty(self, "contentId", { get: function () { return csInit.contentId || ""; } });
+
+    function fail(code, source) {
+      errs.code = code; errs.source = source || null;
+      if (typeof self.onError === "function") {
+        try { self.onError(code, source || null); } catch (e) { console.error(e); }
+      }
+      var ev = { type: "Error", errorCode: code, mediaObject: source || null };
+      (self.__listeners.Error || []).forEach(function (fn) { try { fn(ev); } catch (e) { console.error(e); } });
+    }
+    self.__listeners = {};
+    self.addEventListener = function (n, fn) { (self.__listeners[n] = self.__listeners[n] || []).push(fn); };
+    self.removeEventListener = function (n, fn) {
+      self.__listeners[n] = (self.__listeners[n] || []).filter(function (f) { return f !== fn; });
+    };
+
+    self.initMediaSynchroniser = function (obj, selector) {
+      if (master) { fail(SYNC_ERR.BAD_STATE, obj); return; }
+      if (!unitsPerSecond(selector) || (isBroadcast(obj) && unitsPerSecond(selector) !== 90000)) {
+        fail(SYNC_ERR.TIMELINE_UNAVAILABLE, obj); return;
+      }
+      if (!isBroadcast(obj) && !mediaOf(obj)) { fail(SYNC_ERR.NOT_SUPPORTED, obj); return; }
+      master = obj; masterSel = selector;
+      if (isBroadcast(obj)) { post({ cmd: "sync-broadcast", on: true }); }
+      loop = setInterval(tick, 200);
+      synchronisers.push(self);
+    };
+    self.initSlaveMediaSynchroniser = function () { fail(SYNC_ERR.NOT_SUPPORTED, null); };
+    self.addMediaObject = function (obj, selector, corr, tolerance, multiDecoderMode) {
+      if (!master) { fail(SYNC_ERR.BAD_STATE, obj); return; }
+      if (slaves.some(function (s) { return s.obj === obj; }) || obj === master) { fail(SYNC_ERR.ALREADY_ADDED, obj); return; }
+      if (slaves.length >= 1) { fail(SYNC_ERR.TOO_MANY, obj); return; }
+      if (!mediaOf(obj) || !unitsPerSecond(selector)) { fail(SYNC_ERR.NOT_SUPPORTED, obj); return; }
+      slaves.push({ obj: obj, sel: selector, corr: corr || { tlvMaster: 0, tlvOther: 0 },
+                    tol: +tolerance || 0, synced: false });
+    };
+    self.removeMediaObject = function (obj) {
+      var n = slaves.length;
+      slaves = slaves.filter(function (s) { return s.obj !== obj; });
+      if (n === slaves.length) { fail(SYNC_ERR.NOT_ADDED, obj); return; }
+      var v = mediaOf(obj);
+      if (v) { v.playbackRate = 1; }
+    };
+    self.updateCorrelationTimestamp = function (obj, corr) {
+      var s = slaves.filter(function (x) { return x.obj === obj; })[0];
+      if (!s) { fail(SYNC_ERR.NOT_ADDED, obj); return; }
+      s.corr = corr || s.corr;
+    };
+    self.enableInterDeviceSync = function (cb) {
+      if (!master || !csInit.syncUrl) { fail(SYNC_ERR.INTER_DEVICE_UNAVAILABLE, null); return; }
+      interDevice = true;
+      post({ cmd: "sync-enable", selector: masterSel });
+      sendCT();
+      ctTimer = setInterval(sendCT, 1000);
+      if (typeof cb === "function") { setTimeout(cb, 0); }
+    };
+    self.disableInterDeviceSync = function (cb) {
+      interDevice = false;
+      if (ctTimer) { clearInterval(ctTimer); ctTimer = null; }
+      post({ cmd: "sync-disable" });
+      if (typeof cb === "function") { setTimeout(cb, 0); }
+    };
+
+    function sendCT() {
+      var t = timelineNow(master, masterSel), w = wallNow();
+      var v = isBroadcast(master) ? null : mediaOf(master);
+      post({ cmd: "sync-ct", selector: masterSel, contentTime: t === null ? null : Math.round(t),
+             wallNs: w === null ? null : Math.round(w), speed: v ? (v.paused ? 0 : v.playbackRate) : 1 });
+    }
+
+    function tick() {
+      var m = timelineNow(master, masterSel);
+      if (m === null) { return; }
+      var mups = unitsPerSecond(masterSel);
+      slaves.forEach(function (s) {
+        var v = mediaOf(s.obj), ups = unitsPerSecond(s.sel);
+        if (!v || v.readyState < 2) { return; }
+        var target = (s.corr.tlvOther + (m - s.corr.tlvMaster) * ups / mups) / ups;
+        var diff = target - v.currentTime;
+        var tol = Math.max(s.tol / 1000, 0.04);
+        if (Math.abs(diff) > 1.0) {
+          v.currentTime = Math.max(0, target);
+        } else if (Math.abs(diff) > tol) {
+          v.playbackRate = 1 + Math.max(-0.1, Math.min(0.1, diff * 0.5));
+        } else {
+          v.playbackRate = 1;
+          if (!s.synced) {
+            s.synced = true;
+            if (typeof self.onSyncNowAchievable === "function") {
+              try { self.onSyncNowAchievable(s.obj); } catch (e) { console.error(e); }
+            }
+          }
+        }
+      });
+    }
+  }
+
   var channelConfig = {};
   Object.defineProperty(channelConfig, "channelList", { get: channelList });
   Object.defineProperty(channelConfig, "favouriteLists", { get: function () { return []; } });
@@ -642,6 +839,7 @@
     video.style.cssText = "width:100%;height:100%;display:block;background:transparent";
     video.setAttribute("playsinline", "");
     video.__lindvbAV = el;
+    el.__video = video;
     el.appendChild(video);
     var data = el.getAttribute("data") || "";
     el.removeAttribute("data");
@@ -765,6 +963,8 @@
       el.createSearch = function () { return null; };
       el.getChannelConfig = function () { return channelConfig; };
     },
+    "application/hbbtvcsmanager": augmentCSManager,
+    "application/hbbtvmediasynchroniser": function (el) { MediaSynchroniser.call({}, el); },
     "video/broadcast": augmentBroadcast
   };
   AV_TYPES.forEach(function (t) { SIMPLE[t] = augmentAV; });
@@ -816,6 +1016,11 @@
       var el = document.createElement("object");
       el.setAttribute("type", "application/oipfParentalControlManager"); augment(el); return el;
     },
+    createCSManager: function () {
+      var el = document.createElement("object");
+      el.setAttribute("type", "application/hbbtvCSManager"); augment(el); return el;
+    },
+    createMediaSynchroniser: function () { return new MediaSynchroniser(); },
     createSearchManagerObject: function () {
       var el = document.createElement("object");
       el.setAttribute("type", "application/oipfSearchManager"); augment(el); return el;
@@ -859,6 +1064,16 @@
       broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
     },
     streamEvent: function (lid, ev) { steFire(lid, ev); },
+    csResult: function (id, value) {
+      var cb = csCallbacks[id];
+      delete csCallbacks[id];
+      if (cb) { try { cb(value); } catch (e) { console.error(e); } }
+    },
+    timeline: function (pts, ptsWallNs, nowWallNs) {
+      wallOffsetNs = nowWallNs - performance.now() * 1e6;
+      bcTimeline = { pts: pts, wallNs: ptsWallNs };
+    },
+    syncSlaves: function (n) { synchronisers.forEach(function (m) { m.__slaves = n; }); },
     parentalUnlock: function (id) {
       var v = pcHeld[id];
       delete pcHeld[id];

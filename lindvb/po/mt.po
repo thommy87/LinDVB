@@ -1982,3 +1982,21 @@ msgstr "Il-kontroll tal-ġenituri jeħtieġ PIN"
 
 msgid "Set a PIN to switch on the youth protection."
 msgstr "Issettja PIN biex tixgħel il-kontroll tal-ġenituri."
+
+msgid "Companion screens on the network"
+msgstr "Skrins ta' akkumpanjament fuq in-netwerk"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "It-telefowns u t-tablets fin-netwerk tiegħek jistgħu jsibu lil LinDVB, ikellmu l-applikazzjonijiet, isegwu l-istampa b'mod sinkronizzat u jitolbu li jibdew applikazzjonijiet. Mitfi: xejn ma jisma' fuq in-netwerk."
+
+msgid "Start an application from another device?"
+msgstr "Tibda applikazzjoni minn apparat ieħor?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Apparat fin-netwerk tiegħek irid jibda “{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "applikazzjoni HbbTV"
+
+msgid "Refuse"
+msgstr "Irrifjuta"
