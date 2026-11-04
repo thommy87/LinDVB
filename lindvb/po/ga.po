@@ -1916,3 +1916,6 @@ msgstr "Closchur síos i leabharlanna meán"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Is fearr le feidhmchláir an fuaimrian a dhéanann cur síos ar an bpictiúr."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Ní féidir le bosca gainimh WebKit spásanna ainmneacha úsáideora a chruthú anseo (srian AppArmor Ubuntu), mar sin ní féidir le feidhmchláir tosú go sábháilte. Féach docs/HBBTV.md."

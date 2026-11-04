@@ -36,6 +36,14 @@ and `~/.cache/lindvb/hbbtv`.
 Needs `gir1.2-webkit-6.0` (Debian/Ubuntu) or `webkitgtk6.0` (Fedora). The
 Flatpak's GNOME runtime contains it.
 
+WebKit runs every application in a bubblewrap sandbox, which needs
+unprivileged user namespaces. Ubuntu 24.04 and later forbid them for programs
+without an AppArmor profile, and WebKit would then end LinDVB as soon as an
+application starts. LinDVB checks this at start and switches HbbTV off with a
+hint in the preferences. To allow it, either install the Flatpak, or allow user
+namespaces (`sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0`, or an
+AppArmor profile for LinDVB with `userns,`).
+
 ## How it works
 
 1. **Signalling** (`lindvb/ait.py`): the PMT announces the AIT on a PID with

@@ -1916,3 +1916,6 @@ msgstr "Synstolkning i mediearkiver"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Programmer foretrækker lydsporet, der beskriver billedet."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKits sandkasse må ikke oprette brugernavnerum her (Ubuntus AppArmor-begrænsning), så programmer kan ikke starte sikkert. Se docs/HBBTV.md."

@@ -1916,3 +1916,6 @@ msgstr "Kirjeldustõlge meediaraamatukogudes"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Rakendused eelistavad helirada, mis kirjeldab pilti."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKiti liivakast ei tohi siin kasutaja nimeruume luua (Ubuntu AppArmori piirang), seega rakendused ei saa turvaliselt käivituda. Vt docs/HBBTV.md."

@@ -1916,3 +1916,6 @@ msgstr "Garsinis vaizdavimas mediatekose"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Programos teikia pirmenybę garso takeliui, kuris apibūdina vaizdą."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKit smėlio dėžė čia negali kurti naudotojo vardų sričių (Ubuntu AppArmor apribojimas), todėl programos negali saugiai pasileisti. Žr. docs/HBBTV.md."

@@ -28,8 +28,19 @@ except (ValueError, ImportError):
 
 
 def available():
-    """HbbTV needs WebKitGTK 6 (GTK 4)."""
-    return WebKit is not None
+    """HbbTV needs WebKitGTK 6 (GTK 4) and a working WebKit sandbox."""
+    return unavailable_reason() is None
+
+
+def unavailable_reason():
+    """Why HbbTV cannot run here (a sentence for the user), or None."""
+    if WebKit is None:
+        return _("Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed.")
+    if not hb.sandbox_ok():
+        return _("WebKit's sandbox may not create user namespaces here (Ubuntu's "
+                 "AppArmor restriction), so applications cannot start safely. See "
+                 "docs/HBBTV.md.")
+    return None
 
 
 def clear_data(app):

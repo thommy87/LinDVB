@@ -1916,3 +1916,6 @@ msgstr "Audiodescripción en las videotecas"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Las aplicaciones prefieren la pista de audio que describe la imagen."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "El entorno aislado de WebKit no puede crear espacios de nombres de usuario aquí (restricción de AppArmor de Ubuntu), así que las aplicaciones no pueden iniciarse de forma segura. Véase docs/HBBTV.md."

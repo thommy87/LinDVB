@@ -2748,3 +2748,6 @@ msgstr ""
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr ""
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr ""

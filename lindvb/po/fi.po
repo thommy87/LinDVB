@@ -1916,3 +1916,6 @@ msgstr "Kuvailutulkkaus mediakirjastoissa"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Sovellukset suosivat ääniraitaa, joka kuvailee kuvaa."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKitin hiekkalaatikko ei voi luoda käyttäjänimiavaruuksia täällä (Ubuntun AppArmor-rajoitus), joten sovellukset eivät voi käynnistyä turvallisesti. Katso docs/HBBTV.md."

@@ -124,3 +124,18 @@ def test_broadcast_components():
     assert [(c["type"], c["language"], c["active"]) for c in comps] == \
         [(0, "", True), (1, "deu", False), (1, "eng", True), (2, "deu", False)]
     assert comps[2]["audioDescription"]
+
+
+def test_sandbox_probe(monkeypatch):
+    class R:
+        def __init__(self, code):
+            self.returncode = code
+    for code, ok in ((0, True), (1, False)):
+        monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+        assert hbbtv.sandbox_ok(run=lambda *a, **k: R(code), which=lambda n: "/usr/bin/bwrap",
+                                env={}) is ok
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+    assert hbbtv.sandbox_ok(run=None, which=lambda n: None, env={})
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+    assert hbbtv.sandbox_ok(run=None, which=None, env={"FLATPAK_ID": "x"})
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)

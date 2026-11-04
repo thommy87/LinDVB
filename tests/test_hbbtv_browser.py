@@ -27,6 +27,10 @@ if not (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
     pytest.skip("no display (use xvfb-run)", allow_module_level=True)
 
 from lindvb import ait  # noqa: E402
+from lindvb import hbbtv as _hb  # noqa: E402
+
+if not _hb.sandbox_ok():
+    pytest.skip("WebKit's sandbox cannot create user namespaces here", allow_module_level=True)
 from lindvb.ait import Ait, AitApp, Transport  # noqa: E402
 from lindvb.channels import Channel  # noqa: E402
 

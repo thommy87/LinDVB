@@ -1916,3 +1916,6 @@ msgstr "Deskrizzjoni awdjo fil-libreriji tal-midja"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "L-applikazzjonijiet jippreferu l-binarju tal-ħoss li jiddeskrivi l-istampa."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Is-sandbox ta' WebKit ma tistax toħloq namespaces tal-utent hawn (restrizzjoni AppArmor ta' Ubuntu), għalhekk l-applikazzjonijiet ma jistgħux jibdew b'mod sigur. Ara docs/HBBTV.md."

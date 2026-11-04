@@ -1916,3 +1916,6 @@ msgstr "Аудіоопис у медіатеках"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Застосунки віддають перевагу звуковій доріжці, що описує зображення."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Пісочниці WebKit тут заборонено створювати простори імен користувача (обмеження AppArmor в Ubuntu), тому застосунки не можуть безпечно запуститися. Див. docs/HBBTV.md."

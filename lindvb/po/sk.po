@@ -1916,3 +1916,6 @@ msgstr "Audioopis v archívoch relácií"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Aplikácie uprednostňujú zvukovú stopu, ktorá opisuje obraz."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Sandbox WebKitu tu nesmie vytvárať používateľské menné priestory (obmedzenie AppArmor v Ubuntu), preto sa aplikácie nemôžu bezpečne spustiť. Pozri docs/HBBTV.md."

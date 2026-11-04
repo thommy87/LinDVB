@@ -1916,3 +1916,6 @@ msgstr "Ακουστική περιγραφή στις βιβλιοθήκες π
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Οι εφαρμογές προτιμούν το ηχητικό κανάλι που περιγράφει την εικόνα."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Το sandbox του WebKit δεν μπορεί να δημιουργήσει χώρους ονομάτων χρήστη εδώ (περιορισμός AppArmor του Ubuntu), οπότε οι εφαρμογές δεν μπορούν να ξεκινήσουν με ασφάλεια. Δείτε docs/HBBTV.md."

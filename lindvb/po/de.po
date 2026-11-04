@@ -1994,3 +1994,6 @@ msgstr "Audiodeskription in Mediatheken"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Anwendungen bevorzugen die Tonspur, die das Bild beschreibt."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Die Sandbox von WebKit darf hier keine User-Namespaces anlegen (AppArmor-Sperre von Ubuntu), daher können Anwendungen nicht sicher starten. Siehe docs/HBBTV.md."

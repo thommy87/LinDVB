@@ -7,6 +7,9 @@ The browser itself (WebKitGTK) and the JavaScript side live in
 lindvb.ui.hbbtv and lindvb/hbbtv.js.
 """
 
+import os
+import shutil
+import subprocess
 from pathlib import Path
 
 from . import ait as aitmod
@@ -16,6 +19,39 @@ APP_WIDTH, APP_HEIGHT = 1280, 720  # the coordinate system of every HbbTV app
 
 JS_FILE = Path(__file__).with_name("hbbtv.js")
 DASH_JS = Path(__file__).with_name("vendor") / "dash.mediaplayer.min.js"
+
+
+_SANDBOX = None
+
+
+def sandbox_ok(run=subprocess.run, which=shutil.which, env=os.environ):
+    """Can WebKit start its sandboxed web process here?
+
+    WebKitGTK runs every page inside bubblewrap, which needs unprivileged user
+    namespaces. Ubuntu 24.04 forbids those for programs without an AppArmor
+    profile (kernel.apparmor_restrict_unprivileged_userns), and WebKit then
+    aborts the whole program instead of failing the page. Flatpak and Snap
+    bring their own sandbox; WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS means
+    the user has decided. Probed once per run.
+    """
+    global _SANDBOX
+    if _SANDBOX is not None:
+        return _SANDBOX
+    if (env.get("WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS") or env.get("FLATPAK_ID")
+            or env.get("SNAP") or Path("/.flatpak-info").exists()):
+        _SANDBOX = True
+        return True
+    bwrap = which("bwrap")
+    if not bwrap:
+        _SANDBOX = True      # WebKit built without bubblewrap, or it brings its own
+        return True
+    try:
+        r = run([bwrap, "--ro-bind", "/", "/", "--unshare-user", "--unshare-net", "true"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
+        _SANDBOX = r.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        _SANDBOX = False
+    return _SANDBOX
 
 
 def page_script(init_json):

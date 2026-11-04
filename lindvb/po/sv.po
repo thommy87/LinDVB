@@ -1916,3 +1916,6 @@ msgstr "Syntolkning i playtjänster"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Program föredrar ljudspåret som beskriver bilden."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKits sandlåda får inte skapa användarnamnrymder här (Ubuntus AppArmor-begränsning), så program kan inte starta säkert. Se docs/HBBTV.md."

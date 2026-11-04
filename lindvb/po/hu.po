@@ -1916,3 +1916,6 @@ msgstr "Hangalámondás a médiatárakban"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Az alkalmazások a képet leíró hangsávot részesítik előnyben."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "A WebKit homokozója itt nem hozhat létre felhasználói névtereket (az Ubuntu AppArmor-korlátozása), ezért az alkalmazások nem indulhatnak biztonságosan. Lásd docs/HBBTV.md."

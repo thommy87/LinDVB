@@ -176,8 +176,7 @@ class PrefsWindow(Gtk.Window):
         from . import hbbtv as hbbtv_ui
         switch(g, "hbbtv_enabled", _("Interactive services (HbbTV)"),
                _("Media libraries, teletext successors and more behind the red button (F5).")
-               if hbbtv_ui.available() else
-               _("Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."))
+               if hbbtv_ui.available() else hbbtv_ui.unavailable_reason())
         switch(g, "hbbtv_autostart", _("Start automatically"),
                _("Off: an application starts only with the red button. Channels' "
                  "applications send usage data to the broadcaster."))

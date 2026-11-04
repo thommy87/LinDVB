@@ -1916,3 +1916,6 @@ msgstr "Тифлокомментарий в медиатеках"
 
 msgid "Applications prefer the soundtrack that describes the picture."
 msgstr "Приложения предпочитают звуковую дорожку с описанием изображения."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Песочнице WebKit здесь запрещено создавать пользовательские пространства имён (ограничение AppArmor в Ubuntu), поэтому приложения не могут безопасно запуститься. См. docs/HBBTV.md."
