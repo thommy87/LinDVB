@@ -297,13 +297,81 @@
       var type = (c && typeof c === "object") ? c.type : c;
       if (type === 2) { post({ cmd: "select-component", type: 2, index: -1 }); }
     };
-    el.addStreamEventListener = function () {}; el.removeStreamEventListener = function () {};
+    el.addStreamEventListener = function (url, name, fn) { steAdd(el, url, name, fn); };
+    el.removeStreamEventListener = function (url, name, fn) { steRemove(el, url, name, fn); };
     el.recordNow = function () { return null; }; el.stopRecording = function () {};
     el.pause = function () { return false; }; el.resume = function () { return false; };
     el.setSpeed = function () { return false; }; el.seek = function () { return false; };
     if (window.ResizeObserver) {
       new ResizeObserver(function () { if (el.__state === PLAY.PRESENTING) { reportRect(el); } }).observe(el);
     }
+  }
+
+  /* ---------------------------------------------------------------- stream events
+   * DSM-CC stream events (TS 102 796 8.2.1, 9.3.1): the target is a stream
+   * event object in the carousel (dvb: URL) or an XML event description
+   * that names the component and the event id. The terminal watches the
+   * stream and calls __lindvb.streamEvent() for each new event. */
+  var steListeners = {};
+  var steNext = 1;
+
+  function steFind(el, url, name, fn) {
+    return Object.keys(steListeners).filter(function (k) {
+      var l = steListeners[k];
+      return l.el === el && l.url === url && l.name === name && l.fn === fn;
+    });
+  }
+
+  function steAdd(el, url, name, fn) {
+    if (typeof fn !== "function" || steFind(el, url, name, fn).length) { return; }
+    var lid = steNext++;
+    steListeners[lid] = { el: el, url: url, name: name, fn: fn };
+    var abs = url;
+    try { abs = new URL(url, location.href).href; } catch (e) { /* keep it */ }
+    if (/^dvb:/i.test(abs)) {        // an object of the carousel: stream event object or XML
+      post({ cmd: "ste-add", lid: lid, url: abs, name: name });
+      return;
+    }
+    var fail = function () { steFire(lid, { name: name, data: "", text: "", status: "error" }); };
+    var xhr = new XMLHttpRequest();
+    try { xhr.open("GET", abs); } catch (e) { setTimeout(fail, 0); return; }
+    xhr.onerror = fail;
+    xhr.onload = function () {
+      var doc = xhr.responseXML;
+      if (!doc || !doc.documentElement) {
+        try { doc = new DOMParser().parseFromString(xhr.responseText, "application/xml"); } catch (e) { doc = null; }
+      }
+      var list = doc ? doc.getElementsByTagNameNS("*", "stream_event") : [];
+      for (var i = 0; i < list.length; i++) {
+        var ev = list[i], obj = ev.parentNode;
+        if (ev.getAttribute("stream_event_name") !== name || !obj || !obj.getAttribute) { continue; }
+        var tag = parseInt(obj.getAttribute("component_tag"), 10);
+        var id = parseInt(ev.getAttribute("stream_event_id"), 10);
+        if (!isNaN(tag) && !isNaN(id)) {
+          post({ cmd: "ste-add", lid: lid, tag: tag, eventId: id, name: name });
+          return;
+        }
+      }
+      fail();
+    };
+    xhr.send();
+  }
+
+  function steRemove(el, url, name, fn) {
+    steFind(el, url, name, fn).forEach(function (lid) {
+      delete steListeners[lid];
+      post({ cmd: "ste-remove", lid: +lid });
+    });
+  }
+
+  function steFire(lid, ev) {
+    var l = steListeners[lid];
+    if (!l) { return; }
+    if (ev.status === "error") {        // the listener is gone after an error
+      delete steListeners[lid];
+      post({ cmd: "ste-remove", lid: +lid });
+    }
+    try { l.fn.call(l.el, ev); } catch (e) { console.error(e); }
   }
 
   var channelConfig = {};
@@ -700,6 +768,12 @@
     components: function (list) {
       bcComponents = list || [];
       broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
+    },
+    streamEvent: function (lid, ev) { steFire(lid, ev); },
+    streamEventsLost: function () {
+      Object.keys(steListeners).forEach(function (lid) {
+        steFire(lid, { name: steListeners[lid].name, data: "", text: "", status: "error" });
+      });
     },
     broadcastState: function (state, error) {
       broadcasts.forEach(function (b) { b.__setState(state, error); });

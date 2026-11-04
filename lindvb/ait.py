@@ -369,8 +369,13 @@ class AitCollector:
 class AitMonitor:
     """Watches a transport stream for the AIT of one service.
 
-    feed_packet() takes TS packets; on_pmt(pids) is called when the AIT PIDs
-    are known and on_ait(ait) for every new AIT version."""
+    feed_packet() takes TS packets; on_pids(pids) is called when the AIT PIDs
+    are known and on_ait(ait) for every new AIT version.
+
+    It also serves DSM-CC (lindvb.dsmcc): ``components`` maps the PMT's
+    component tags to (pid, stream_type, carousel_id), on_pmt() announces
+    changes of it, and watch(pid, fn) hands every section of *pid* to fn.
+    All callbacks run in the thread that feeds packets."""
 
     def __init__(self, sid, pmt_pid=0, on_ait=None, on_pids=None):
         from .ca import SectionAssembler
@@ -385,6 +390,27 @@ class AitMonitor:
         self._pmt_version = None
         self._ait_asm = {}
         self.collector = AitCollector()
+        self.components = {}
+        self.on_pmt = None
+        self._watched = {}            # pid -> (SectionReader, [fn]); replaced, never mutated
+
+    def watch(self, pid, fn):
+        from .dsmcc import SectionReader
+        w = dict(self._watched)
+        reader, fns = w.get(pid, (SectionReader(), []))
+        w[pid] = (reader, fns + [fn])
+        self._watched = w
+
+    def unwatch(self, pid, fn=None):
+        w = dict(self._watched)
+        if pid in w:
+            reader, fns = w[pid]
+            fns = [f for f in fns if fn is not None and f is not fn]
+            if fns:
+                w[pid] = (reader, fns)
+            else:
+                del w[pid]
+        self._watched = w
 
     def feed_buffer(self, data):
         n = len(data)
@@ -398,6 +424,12 @@ class AitMonitor:
 
     def feed_packet(self, packet):
         pid = ((packet[1] & 0x1F) << 8) | packet[2]
+        watched = self._watched.get(pid)
+        if watched is not None:
+            reader, fns = watched
+            for section in reader.feed(packet):
+                for fn in fns:
+                    fn(pid, section)
         if pid in self._ait_asm:
             for section in self._ait_asm[pid].feed(packet):
                 if section and section[0] == AIT_TABLE_ID:
@@ -426,6 +458,10 @@ class AitMonitor:
                 if self.sid and program != self.sid:
                     continue
                 self._pmt_version = version
+                from .dsmcc import components_from_pmt
+                self.components = components_from_pmt(parse_pmt(section))
+                if self.on_pmt:
+                    self.on_pmt(self.components)
                 pids = set(pids)
                 if pids != self.ait_pids:
                     self.ait_pids = pids

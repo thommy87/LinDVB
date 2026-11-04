@@ -360,3 +360,110 @@ def test_dash_ttml_subtitles():
         win.window.destroy()
     finally:
         server.shutdown()
+
+
+CAROUSEL_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var got = {};
+function show() {
+  document.title = 'xhr=' + got.xhr + ' ste=' + got.ste + ' xml=' + got.xml + ' origin=' + location.protocol;
+}
+window.onload = function () {
+  var vb = document.getElementById('vb');
+  vb.bindToCurrentChannel();
+  var x = new XMLHttpRequest();
+  x.open('GET', 'data/text.txt');
+  x.onload = function () { got.xhr = x.responseText; show(); };
+  x.send();
+  vb.addStreamEventListener('events/quiz', 'question', function (e) {
+    got.ste = e.status + ':' + e.text + ':' + e.data; show();
+  });
+  vb.addStreamEventListener('events.xml', 'question', function (e) {
+    got.xml = e.status + ':' + e.text; show();
+  });
+  vb.addStreamEventListener('events/quiz', 'nosuchevent', function (e) {
+    got.missing = e.status;
+  });
+};
+</script></head><body>
+<object id="vb" type="video/broadcast" style="position:absolute;left:0;top:0;width:1280px;height:720px"></object>
+</body></html>
+"""
+
+EVENTS_XML = b"""<?xml version="1.0" encoding="utf-8"?>
+<dsmcc xmlns="urn:dvb:mis:dsmcc:2009">
+  <dsmcc_object component_tag="13">
+    <stream_event stream_event_id="1" stream_event_name="question"/>
+  </dsmcc_object>
+</dsmcc>
+"""
+
+
+def _test_ts_tool():
+    from importlib import util
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tools", "hbbtv-test-ts.py")
+    spec = util.spec_from_file_location("hbbtv_test_ts", path)
+    mod = util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+class CarouselCapture(GObject.Object):
+    """A capture that replays a transport stream into a real AitMonitor."""
+    __gsignals__ = {"ait": (GObject.SignalFlags.RUN_LAST, None, (object,))}
+
+    def __init__(self, ts):
+        super().__init__()
+        self.ait = None
+        self.pids = []
+        self.ts, self.pos = ts, 0
+        self.ait_monitor = ait.AitMonitor(28106, on_ait=self._on_ait)
+        GLib.timeout_add(20, self._feed)
+
+    def _on_ait(self, a):
+        def deliver():
+            self.ait = a
+            self.emit("ait", a)
+        GLib.idle_add(lambda: (deliver(), False)[1])
+
+    def add_pid(self, pid):
+        self.pids.append(pid)
+
+    def _feed(self):
+        chunk = 188 * 200
+        if self.pos >= len(self.ts):
+            self.pos = 0
+        self.ait_monitor.feed_buffer(self.ts[self.pos:self.pos + chunk])
+        self.pos += chunk
+        return True
+
+
+def test_object_carousel_application_and_stream_events():
+    """An application from the DSM-CC object carousel: its page, an XHR for a
+    file next to it, and stream events through a stream event object and
+    through an XML event description."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    tool = _test_ts_tool()
+    files = {"index.html": CAROUSEL_APP, "data/text.txt": b"aus dem Karussell",
+             "events.xml": EVENTS_XML}
+    ts = tool.build("index.html", 28106, files=files,
+                    events={"events/quiz": ({"question": 1}, 0x0D)},
+                    stream_events=[(1, b"Frage 1", 1)], repeat=20)
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    win = FakeWindow(ch)
+    win.window.present()
+    hbb = HbbTV(win)
+    win.overlay.connect("get-child-position",
+                        lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+    cap = CarouselCapture(ts)
+    hbb.channel_changed(ch, cap)
+    title = lambda: (hbb.view.get_title() if hbb.view else "") or ""  # noqa: E731
+    assert _wait(lambda: "xml=trigger" in title() and "ste=trigger" in title(), timeout=40), title()
+    assert title() == ("xhr=aus dem Karussell ste=trigger:Frage 1:%s xml=trigger:Frage 1 "
+                       "origin=dvb:" % b"Frage 1".hex())
+    assert hbb.view.get_uri() == "dvb://current.c/index.html"
+    assert set(cap.pids) == {0x102, 0x103}
+    # a new channel: the listeners hear of it
+    hbb.channel_changed(Channel("ZDF", delsys="dvb-s2", sid=28006, onid=1, tsid=1079), None)
+    win.window.destroy()

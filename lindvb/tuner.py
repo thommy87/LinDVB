@@ -302,15 +302,20 @@ class Capture(GObject.Object):
             return False
         GLib.idle_add(deliver)
 
+    def add_pid(self, pid):
+        """Add *pid* to the demux filter while running (main loop): the AIT,
+        and object carousels and stream events for HbbTV."""
+        if not pid or self._src is None:
+            return
+        have = {int(x) for x in self._pids.split(":") if x.isdigit()}
+        if have and 8192 not in have and pid not in have:
+            self._pids = ":".join(map(str, sorted(have | {pid})))
+            self._src.set_property("pids", self._pids)
+
     def _on_ait_pids(self, pids):
         def deliver():
             pid = pids[0] if pids else 0
-            if pid and self._src is not None:
-                have = {int(x) for x in self._pids.split(":") if x.isdigit()}
-                if have and 8192 not in have and pid not in have:
-                    # add the AIT PID to the demux filter while running
-                    self._pids = ":".join(map(str, sorted(have | {pid})))
-                    self._src.set_property("pids", self._pids)
+            self.add_pid(pid)
             if pid and pid != self.channel.ait_pid:
                 self.emit("ait-pid", pid)
             return False

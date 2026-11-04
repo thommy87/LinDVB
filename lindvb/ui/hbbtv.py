@@ -13,12 +13,16 @@ import tempfile
 
 import gi
 
+import time
+import weakref
+
 from ..config import CACHE_DIR, DATA_DIR
+from .. import dsmcc
 from .. import hbbtv as hb
 from ..i18n import _
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gdk, GLib  # noqa: E402
+from gi.repository import Gdk, Gio, GLib  # noqa: E402
 
 try:
     gi.require_version("WebKit", "6.0")
@@ -59,6 +63,39 @@ def clear_data(app):
         win.set_status(_("HbbTV data deleted"))
 
 
+CAROUSEL_TIMEOUT = 30          # seconds to wait for a file of the object carousel
+_views = weakref.WeakKeyDictionary()     # WebView -> HbbTV
+_schemes = set()
+
+
+def _idle(fn):
+    GLib.idle_add(lambda: (fn(), False)[1])
+
+
+def _register_schemes(view):
+    """dvb: (object carousel) for every view, once per web context."""
+    ctx = view.get_context()
+    if ctx in _schemes:
+        return
+    _schemes.add(ctx)
+    ctx.register_uri_scheme("dvb", _on_dvb_request)
+    sec = ctx.get_security_manager()
+    sec.register_uri_scheme_as_cors_enabled("dvb")
+
+
+def _on_dvb_request(request):
+    hb_ui = _views.get(request.get_web_view())
+    if hb_ui is None:
+        _request_error(request, "no HbbTV view")
+        return
+    hb_ui.serve_dvb(request)
+
+
+def _request_error(request, message):
+    request.finish_error(GLib.Error.new_literal(Gio.io_error_quark(), message,
+                                                int(Gio.IOErrorEnum.NOT_FOUND)))
+
+
 class HbbTV:
     """HbbTV terminal for one main window (window.overlay, window.picture)."""
 
@@ -81,6 +118,9 @@ class HbbTV:
         self._channel_key = None
         self._picture_hidden = False
         self._tracks_handler = None
+        self.dsmcc = None               # lindvb.dsmcc.DsmccService of the capture
+        self._carousel_tag = None       # component tag of the running app's carousel
+        self._ste = {}                  # JS listener id -> DsmccService handle
 
     # -- channel -------------------------------------------------------------
 
@@ -97,6 +137,8 @@ class HbbTV:
                 pass
         same = channel is not None and channel.key == self._channel_key
         self._channel_key = channel.key if channel is not None else None
+        if capture is not self.capture:
+            self._new_dsmcc(capture)
         self.capture, self._cap_handler = capture, None
         self.life.autostart = self.settings.get("hbbtv_autostart", False)
         if capture is None or not self.enabled:
@@ -114,8 +156,116 @@ class HbbTV:
 
     def stopped(self):
         """Live TV stopped (no channel)."""
+        self._new_dsmcc(None)
+        self.capture = None
         self.life.no_signalling()
         self._notify()
+
+    def _new_dsmcc(self, capture):
+        """The broadcast changed: carousels and stream events start over."""
+        if self.dsmcc is not None:
+            self.dsmcc.close()
+            self.dsmcc = None
+        if self._ste:
+            self._ste = {}
+            self._js("streamEventsLost")
+        monitor = getattr(capture, "ait_monitor", None)
+        if monitor is not None:
+            self.dsmcc = dsmcc.DsmccService(monitor, capture.add_pid, _idle)
+
+    # -- object carousel (dvb: URLs) ---------------------------------------------
+
+    def serve_dvb(self, request):
+        """Answer a dvb: request from the carousel, waiting for it to arrive."""
+        uri = request.get_uri()
+        deadline = time.monotonic() + CAROUSEL_TIMEOUT
+        svc = self.dsmcc
+        done = [False]
+
+        def attempt(final=False):
+            if done[0]:
+                return True
+            if svc is None or svc.closed:
+                done[0] = True
+                _request_error(request, "no object carousel on this channel")
+                return True
+            _oc, obj = svc.resolve(uri, self._carousel_tag)
+            if obj is None and not final and time.monotonic() < deadline:
+                return False                                   # not broadcast yet
+            done[0] = True
+            if not obj or obj.kind != "fil":
+                _request_error(request, "not in the object carousel: " + uri)
+                return True
+            path = dsmcc.parse_dvb_url(uri)[2]
+            stream = Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(obj.content))
+            request.finish(stream, len(obj.content), dsmcc.mime_type(path))
+            return True
+
+        if svc is None:
+            attempt(final=True)
+            return
+        svc.when_ready(attempt)
+        if not done[0]:
+            GLib.timeout_add_seconds(CAROUSEL_TIMEOUT, lambda: (attempt(final=True), False)[1])
+
+    # -- stream events ---------------------------------------------------------------
+
+    def _stream_event_add(self, msg):
+        lid, name = msg.get("lid"), msg.get("name") or ""
+        svc = self.dsmcc
+
+        def error():
+            self._js("streamEvent", lid, {"name": name, "data": "", "text": "", "status": "error"})
+
+        def deliver(ev):
+            if lid in self._ste:
+                self._js("streamEvent", lid, {"name": name, "data": ev.data.hex(),
+                                              "text": ev.data.decode("utf-8", "replace"),
+                                              "status": "trigger"})
+
+        def listen(tag, event_id):
+            if self.dsmcc is svc and svc is not None:
+                self._ste[lid] = svc.add_listener(tag, event_id, deliver)
+            else:
+                error()
+
+        if svc is None:
+            error()
+            return
+        if msg.get("url"):
+            deadline = time.monotonic() + 10
+            done = [False]
+
+            def attempt(final=False):
+                if done[0]:
+                    return True
+                _oc, obj = svc.resolve(msg["url"], self._carousel_tag)
+                if obj is None and not final and time.monotonic() < deadline:
+                    return False
+                done[0] = True
+                if obj and obj.kind == "fil":                   # an XML event description
+                    found = dsmcc.event_description(obj.content, name)
+                    if found:
+                        listen(*found)
+                        return True
+                if obj and obj.kind == "ste" and name in obj.event_names \
+                        and obj.event_tag() is not None:
+                    i = obj.event_names.index(name)
+                    if i < len(obj.event_ids):
+                        listen(obj.event_tag(), obj.event_ids[i])
+                        return True
+                error()
+                return True
+            svc.when_ready(attempt)
+            if not done[0]:
+                GLib.timeout_add_seconds(10, lambda: (attempt(final=True), False)[1])
+        else:
+            listen(int(msg.get("tag", -1)), int(msg.get("eventId", -1)))
+
+    def _stream_event_remove(self, lid):
+        h = self._ste.pop(lid, None)
+        if h is not None and self.dsmcc is not None:
+            self.dsmcc.remove_listener(h)
 
     def _on_ait(self, ait):
         self.life.on_ait(ait)
@@ -208,6 +358,8 @@ class HbbTV:
         view.connect("context-menu", lambda *_: True)        # no browser menu on the TV
         view.set_visible(False)
         self.view = view
+        _views[view] = self
+        _register_schemes(view)
         self.win.overlay.add_overlay(view)
         view.add_tick_callback(self._tick)
         return view
@@ -280,12 +432,25 @@ class HbbTV:
             WebKit.UserScriptInjectionTime.START, None, None))
         self.keyset, self.other_keys = 0, ()
         self.set_video_rect(None)
+        self._carousel_tag = None
+        ait = self.life.ait
+        t = ait.transport_for(app) if ait is not None and app is not None else None
+        if t is not None and t.protocol == hb.aitmod.PROTOCOL_OBJECT_CAROUSEL:
+            self._carousel_tag = t.component_tag
+        self._ste_clear()
         view.set_visible(True)
         view.load_uri(url)
         name = app.name(("deu", "ger", "eng")) if app else ""
         self.win.set_status(_("HbbTV: {name}").format(name=name or url))
 
+    def _ste_clear(self):
+        if self.dsmcc is not None:
+            for h in self._ste.values():
+                self.dsmcc.remove_listener(h)
+        self._ste = {}
+
     def _kill(self):
+        self._ste_clear()
         self._pending_red = False
         self.keyset, self.other_keys = 0, ()
         self.set_video_rect(None)
@@ -378,9 +543,13 @@ class HbbTV:
         elif cmd == "destroy":
             self.life.stop()
             self._notify()
+        elif cmd == "ste-add":
+            self._stream_event_add(msg)
+        elif cmd == "ste-remove":
+            self._stream_event_remove(msg.get("lid"))
         elif cmd == "create":
             url = msg.get("url") or ""
-            if url.startswith(("http://", "https://")):
+            if url.startswith(("http://", "https://", "dvb://")):
                 self.life.create_application(url)
         elif cmd == "video-rect":
             if msg.get("full"):
