@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """EN 50221 common interface: talk to a CI module (CAM) in the tuner.
 
 This implements the host side of the protocol a CI module speaks over the

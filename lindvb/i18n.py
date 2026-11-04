@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Translations of the user interface.
 
 The catalogues are plain gettext ``.po`` files in ``lindvb/po`` (``de.po`` ...).

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """HbbTV in the main window: a transparent WebKitGTK view over the video.
 
 The terminal side of lindvb/hbbtv.js. One HbbTV controller per main window:

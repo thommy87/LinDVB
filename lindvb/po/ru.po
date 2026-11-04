@@ -2006,3 +2006,15 @@ msgstr "Это видео зашифровано с помощью {drm}. LinDVB
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Это видео зашифровано. LinDVB не поддерживает DRM, поэтому его нельзя воспроизвести."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Содержит код из"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Создано с помощью"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Визуализации"

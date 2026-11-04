@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Electronic programme guide: DVB EIT parsing (via GstMpegts) and XMLTV import."""
 
 import gzip

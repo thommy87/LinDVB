@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Recording library: programme details beside each recording and resume positions.
 
 When LinDVB records, it writes ``<name>.lindvb.json`` next to the file with the

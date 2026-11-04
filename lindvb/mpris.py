@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """MPRIS: media keys, the GNOME media controls and other players' remotes.
 
 LinDVB appears on the session bus as ``org.mpris.MediaPlayer2.lindvb``. Play,

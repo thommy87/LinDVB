@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Playback with GStreamer playbin.
 
 DVB channels are played from the capture segments through an appsrc, which

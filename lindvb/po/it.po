@@ -2006,3 +2006,15 @@ msgstr "Questo video è cifrato con {drm}. LinDVB non supporta i DRM, quindi non
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Questo video è cifrato. LinDVB non supporta i DRM, quindi non può essere riprodotto."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Contiene codice da"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Realizzato con"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Visualizzazioni"

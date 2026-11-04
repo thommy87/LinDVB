@@ -155,6 +155,38 @@ print(f"patched {n} occurrence(s) of {old.decode()}")
 PYEOF
 fi
 
+echo "== licences of the bundled packages"
+# The licence and copyright files of every Ubuntu package the AppImage takes
+# files from, and a list of those packages with their source versions, so the
+# corresponding sources can be found (see THIRD-PARTY-NOTICES.md).
+DOC="$APPDIR/usr/share/doc"
+mkdir -p "$DOC/LinDVB"
+cp "$SRC/LICENSE" "$SRC/THIRD-PARTY-NOTICES.md" "$DOC/LinDVB/"
+if command -v dpkg-query >/dev/null; then
+    PKGS="$( { find "$APPDIR/usr" -type f \( -name '*.so*' -o -path '*/usr/bin/*' \
+                    -o -path '*/webkitgtk-6.0/*' -o -name gst-plugin-scanner \) -printf '*/%f\n' |
+                 sort -u | xargs -r dpkg -S 2>/dev/null | grep -v '^diversion' |
+                 cut -d: -f1 | tr ',' '\n'
+               echo "python$PYVER python3-gi python3-gi-cairo python3-cairo dtv-scan-tables"
+               echo "adwaita-icon-theme hicolor-icon-theme"; } | tr ' ' '\n' | sed '/^$/d' | sort -u || true)"
+    : > "$DOC/LinDVB/PACKAGES.txt"
+    for pkg in $PKGS; do
+        dpkg-query -W "$pkg" >/dev/null 2>&1 || continue
+        dpkg-query -W -f='${Package} ${Version} (source: ${source:Package} ${source:Version})\n' "$pkg" \
+            >> "$DOC/LinDVB/PACKAGES.txt"
+        if [ -e "/usr/share/doc/$pkg/copyright" ]; then
+            mkdir -p "$DOC/$pkg"
+            cp -L "/usr/share/doc/$pkg/copyright" "$DOC/$pkg/copyright"
+        fi
+    done
+    echo "licences of $(wc -l < "$DOC/LinDVB/PACKAGES.txt") packages"
+fi
+if [ -d "$APPDIR/usr/share/projectM" ]; then
+    mkdir -p "$DOC/projectM"
+    find "$APPDIR/usr/share/projectM" -maxdepth 1 -type f \( -name 'COPYING*' -o -name 'LICENSE*' \) \
+        -exec cp {} "$DOC/projectM/" \;
+fi
+
 echo "== desktop integration"
 cp "$SRC/data/io.github.thommy87.LinDVB.desktop" "$APPDIR/"
 sed -i 's/^Icon=.*/Icon=lindvb/' "$APPDIR/io.github.thommy87.LinDVB.desktop"

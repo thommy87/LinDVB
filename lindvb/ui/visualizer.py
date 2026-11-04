@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """The visualisation area shown over the video for radio and audio files.
 
 Built-in styles are drawn on the graphics card (a ``Gtk.GLArea`` with the

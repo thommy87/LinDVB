@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Preferences, channel editor, recording statistics and teletext windows."""
 
 import time

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Dialog to match IPTV channels to XMLTV guide channels."""
 
 from gi.repository import Gtk

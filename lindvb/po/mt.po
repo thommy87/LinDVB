@@ -2006,3 +2006,15 @@ msgstr "Dan il-vidjo huwa kriptat b'{drm}. LinDVB ma jappoġġjax id-DRM, għalh
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Dan il-vidjo huwa kriptat. LinDVB ma jappoġġjax id-DRM, għalhekk ma jistax jintwera."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Fih kodiċi minn"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Mibni b'"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Viżwalizzazzjonijiet"

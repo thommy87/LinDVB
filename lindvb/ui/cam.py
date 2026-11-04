@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """CAM menu: the interactive menus of a CI module (EN 50221 MMI)."""
 
 from gi.repository import GLib, Gtk

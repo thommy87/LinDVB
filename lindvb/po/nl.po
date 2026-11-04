@@ -2006,3 +2006,15 @@ msgstr "Deze video is versleuteld met {drm}. LinDVB ondersteunt geen DRM, dus hi
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Deze video is versleuteld. LinDVB ondersteunt geen DRM, dus hij kan niet worden afgespeeld."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Bevat code uit"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Gemaakt met"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Visualisaties"

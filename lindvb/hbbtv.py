@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """HbbTV 2.0.4 terminal logic (ETSI TS 102 796 v1.7.1) without the UI.
 
 What the browser needs to know about the terminal: the user agent, the key

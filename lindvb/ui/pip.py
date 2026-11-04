@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Picture in picture and the channel mosaic (internet channels).
 
 Both play extra channels without sound next to the main picture. Each tile is

@@ -2838,3 +2838,15 @@ msgstr ""
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr ""
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr ""
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr ""
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr ""

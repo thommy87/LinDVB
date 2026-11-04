@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """What is playing on a radio channel: RDS RadioText, song parsing, covers, logos.
 
 * DVB radio (ARD and many others on satellite and cable) carries RDS in the

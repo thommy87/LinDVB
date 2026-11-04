@@ -2006,3 +2006,15 @@ msgstr "Tämä video on salattu {drm}-järjestelmällä. LinDVB ei tue DRM:ää,
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Tämä video on salattu. LinDVB ei tue DRM:ää, joten sitä ei voi toistaa."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Sisältää koodia projekteista"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Tehty käyttäen"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Visualisoinnit"

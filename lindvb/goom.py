@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """The logic of GOOM 2k4, ported to Python for the "Goom HD" visualisation.
 
 This follows the C sources of GOOM as shipped in gst-plugins-good

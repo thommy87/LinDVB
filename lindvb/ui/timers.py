@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Timer recordings window (one-off, repeating and series timers).
 
 Laid out like a classic recorder programming dialog: channel list with search on

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Check that an AppImage's own WebKitGTK works (HbbTV): run with the
 AppImage's Python and environment (see .github/workflows/appimage.yml).
 

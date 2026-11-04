@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """The "Programme guide" page of the preferences: saving, language, info on
 channel change, time zone, XMLTV and the MediaHighway / Freesat transponders
 (modelled on DVBViewer's EPG options)."""

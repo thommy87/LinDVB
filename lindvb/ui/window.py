@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Main window: channel list, video area with OSD, transport controls, menus."""
 
 import functools
@@ -2274,10 +2275,16 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # ------------------------------------------------------------------ misc
     def on_about(self):
-        Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version="0.1",
-                        comments=_("Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
-                                 "internet TV with the Linux DVB API and GStreamer."),
-                        license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb").present()
+        from .. import COPYRIGHT, WEBSITE, __version__
+        from ..credits import CREDITS
+        dlg = Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version=__version__,
+                              comments=_("Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
+                                         "internet TV with the Linux DVB API and GStreamer."),
+                              copyright=COPYRIGHT, website=WEBSITE, authors=["thommy87"],
+                              license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb")
+        for title, people in CREDITS:
+            dlg.add_credit_section(_(title), list(people))
+        dlg.present()
 
     def _on_close(self, *_):
         self.pip.close()

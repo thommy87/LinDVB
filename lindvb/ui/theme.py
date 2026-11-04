@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """LinDVB player theme: a minimal dark look with a blue accent.
 
 Design notes (from the ui-ux-pro-max guidance for media/streaming apps):

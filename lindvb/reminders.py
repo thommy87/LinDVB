@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Reminders for programmes: "tell me when it starts" from the programme guide.
 
 A reminder fires a desktop notification a few minutes before the programme

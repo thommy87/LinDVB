@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """DVB-I settings: privacy notice, service list from the registry, postcode and
 region (German DTVP profile, see lindvb.dvbi)."""
 

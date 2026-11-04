@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """HbbTV application signalling: the Application Information Table (AIT).
 
 ETSI TS 102 809 (signalling) and ETSI TS 102 796 (HbbTV 2.0.4 = v1.7.1):

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Transponder lists and channel search via dvbv5-scan (libdvbv5 / v4l-utils)."""
 
 import configparser

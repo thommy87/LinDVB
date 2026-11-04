@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Built-in radio visualisations, drawn with cairo.
 
 Each style is a small class with an ``id``, a ``label`` and a

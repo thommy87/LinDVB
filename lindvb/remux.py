@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Remux a recording into MPG, MP4, MKV, TS or a native audio file with GStreamer.
 
 The source is either a URL (internet TV) or MPEG-TS bytes pushed by the caller

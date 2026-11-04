@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """GPU (OpenGL) renderers for the built-in radio visualisations.
 
 Every built-in style in :mod:`lindvb.visuals` has a renderer here that draws

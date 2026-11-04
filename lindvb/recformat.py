@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Recording containers, extra streams and file naming (pure logic, no GTK/GStreamer).
 
 A timer records TV channels into one of TV_FORMATS and radio channels into one

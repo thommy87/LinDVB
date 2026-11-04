@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """ATSC programme guide (PSIP): VCT, EIT, ETT and STT.
 
 ATSC (USA, Canada, Mexico, South Korea) carries its guide differently from

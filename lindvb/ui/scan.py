@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Reception settings and channel search (runs dvbv5-scan)."""
 
 import tempfile
