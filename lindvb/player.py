@@ -199,6 +199,8 @@ class Player(GObject.Object):
         # what is playing (dict: title, artist, album, year, track, image,
         # organization, radiotext); sent again whenever it changes
         "metadata": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        # how full the network buffer of an internet stream is (0..100)
+        "buffering": (GObject.SignalFlags.RUN_LAST, None, (int,)),
     }
 
     def __init__(self, picture, settings):
@@ -1086,5 +1088,7 @@ class Player(GObject.Object):
             self._on_tags(msg)
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()
+            if not self.capture and self.uri:
+                self.emit("buffering", pct)
             if not self.capture and self.uri and not self.paused:
                 self.playbin.set_state(Gst.State.PAUSED if pct < 100 else Gst.State.PLAYING)

@@ -1800,6 +1800,20 @@ msgstr "Wara: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Sinjal {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Kwalità tas-sinjal {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Kwalità tal-istream {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "L-ebda sinjal"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

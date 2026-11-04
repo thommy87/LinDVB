@@ -1800,6 +1800,20 @@ msgstr "Pēc tam: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Signāls {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Signāla kvalitāte {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Straumes kvalitāte {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Nav signāla"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

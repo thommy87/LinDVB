@@ -1800,6 +1800,20 @@ msgstr "التالي: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "الإشارة {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "جودة الإشارة {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "جودة البث {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "لا توجد إشارة"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 

@@ -17,6 +17,7 @@ from ..nowplaying import content_box
 from ..player import EQ_BANDS, Player
 from ..library import Positions, delete_info
 from ..recordings import find_recordings, sort_recordings
+from ..signalq import Meter as QualityMeter, NONE as Q_NONE
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .theme import CSS, apply_accent, resolve_accent
@@ -92,6 +93,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._tuned = None           # the channel or DVB-I instance actually playing
         self._tried = set()          # DVB-I instances tried since the last channel change
         self._nolock_since = None
+        self.quality = QualityMeter()  # the OSD's signal quality bar
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
         self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
@@ -141,6 +143,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self._update_teletext()
         self.player.connect("eos", self._on_eos)
         self.player.connect("state", lambda _p, s: self._update_transport())
+        # quality bar in the OSD for internet channels: the stream's health
+        self.player.connect("buffering", self._on_stream_buffering)
+        self.player.connect("state", self._on_stream_state)
+        self.player.connect("error", lambda _p, _m: self._on_stream_failed())
         self.app.tuners.connect("preempt-live", self._on_preempt)
         self.app.timers.connect("message", lambda _t, m: self.set_status(m))
         self.app.timers.connect("changed", lambda _t: self._update_transport())
@@ -529,7 +535,9 @@ class MainWindow(Gtk.ApplicationWindow):
         meta.append(self.osd_tags)
         self.osd_prog = Gtk.ProgressBar()
         self.osd_next = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-osd-next"])
-        for w in (top, self.osd_now, meta, self.osd_prog, self.osd_next):
+        # quality of service: empty without signal, red / orange / yellow / green
+        self.osd_quality = Gtk.ProgressBar(css_classes=["lv-osd-quality"])
+        for w in (self.osd_quality, top, self.osd_now, meta, self.osd_prog, self.osd_next):
             self.osd.append(w)
         self.osd.set_visible(False)
         overlay.add_overlay(self.osd)
@@ -1306,6 +1314,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def _start_stream(self, c):
         """Play channel *c* (a list channel, or another instance of it)."""
         self._nolock_since = None
+        # DVB-I services without a stream (an HbbTV application) have nothing to measure
+        self.quality.reset("dvb" if not c.is_iptv else "iptv" if c.url else None)
+        self._update_quality_bar()
         if c.is_iptv:
             if c.url:
                 self.player.play_uri(c.url)
@@ -1466,6 +1477,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._hide_osd()
         self.sublabel.set_visible(False)
         self.signal_label.set_text("")
+        self.quality.reset(None)
+        self._update_quality_bar()
         self.set_status(_("Stopped"))
         self._update_transport()
         self._update_visualizer()
@@ -2063,6 +2076,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.osd_meta.set_text(meta)
         self.osd_meta.set_visible(bool(meta))
         self._update_osd_tags()
+        self.quality.tick()
+        self._update_quality_bar()
         if now:
             sub = now.subtitle if now.subtitle and not programme_details(now)[3] else ""
             self.osd_now.set_text(now.title + (f" – {sub}" if sub else ""))
@@ -2091,7 +2106,46 @@ class MainWindow(Gtk.ApplicationWindow):
     def set_status(self, text):
         self.status.set_text(text)
 
+    def _update_quality_bar(self):
+        """Fill and colour the OSD's quality strip from the meter."""
+        bar = self.osd_quality
+        kind = self.quality.kind
+        bar.set_visible(kind is not None)
+        if kind is None:
+            return
+        q, level = self.quality.quality, self.quality.level
+        bar.set_fraction(q)
+        for lv in ("bad", "poor", "fair", "good"):
+            bar.remove_css_class("lv-q-" + lv)
+        if level != Q_NONE:
+            bar.add_css_class("lv-q-" + level)
+        pct = int(round(q * 100))
+        if level == Q_NONE:
+            bar.set_tooltip_text(_("No signal"))
+        elif kind == "dvb":
+            bar.set_tooltip_text(_("Signal quality {v0}%").format(v0=pct))
+        else:
+            bar.set_tooltip_text(_("Stream quality {v0}%").format(v0=pct))
+
+    def _on_stream_buffering(self, _p, pct):
+        if self.quality.kind == "iptv":
+            self.quality.feed_buffering(pct)
+            self._update_quality_bar()
+
+    def _on_stream_state(self, _p, state):
+        if self.quality.kind == "iptv" and state == "playing":
+            self.quality.stream_playing()
+            self._update_quality_bar()
+
+    def _on_stream_failed(self):
+        if self.quality.kind == "iptv":
+            self.quality.stream_failed()
+            self._update_quality_bar()
+
     def _on_stats(self, cap, st):
+        if cap is self.capture and self.quality.kind == "dvb":
+            self.quality.feed_stats(st)
+            self._update_quality_bar()
         parts = []
         if "lock" in st and cap is self.capture:
             # no lock for a while: the antenna/cable/satellite instance fails

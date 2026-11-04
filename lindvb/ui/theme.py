@@ -106,6 +106,13 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .osd .lv-osd-tag.lv-current { color: @lv_text; border-color: @lv_accent; }
 .osd progressbar trough { min-height: 4px; border-radius: 2px; background: alpha(white, 0.12); }
 .osd progressbar progress { min-height: 4px; border-radius: 2px; background: @lv_accent; }
+/* signal quality strip: empty = no signal, then red, orange, yellow, green */
+.osd progressbar.lv-osd-quality trough { min-height: 3px; border-radius: 2px; background: alpha(white, 0.10); }
+.osd progressbar.lv-osd-quality progress { min-height: 3px; border-radius: 2px; border: none; background: transparent; }
+.osd progressbar.lv-osd-quality.lv-q-bad progress { background: #e5484d; }
+.osd progressbar.lv-osd-quality.lv-q-poor progress { background: #f5891f; }
+.osd progressbar.lv-osd-quality.lv-q-fair progress { background: #f2cc0c; }
+.osd progressbar.lv-osd-quality.lv-q-good progress { background: #3fbf5f; }
 .osd-num {
   background: alpha(@lv_surface, 0.86); color: @lv_text; font-size: 2.2em; font-weight: 800;
   border-radius: 12px; padding: 6px 18px; border: 1px solid alpha(white, 0.08);

@@ -1800,6 +1800,20 @@ msgstr "Ar ball: {v0}  {title}"
 msgid "Signal {v0}%"
 msgstr "Comhartha {v0}%"
 
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Signal quality {v0}%"
+msgstr "Cáilíocht an chomhartha {v0}%"
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "Stream quality {v0}%"
+msgstr "Cáilíocht an tsrutha {v0}%"
+
+#: lindvb/ui/window.py
+msgid "No signal"
+msgstr "Gan chomhartha"
+
 msgid "● REC {n}"
 msgstr "● REC {n}"
 
