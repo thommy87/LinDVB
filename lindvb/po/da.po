@@ -2018,3 +2018,67 @@ msgstr "Bygget med"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Visualiseringer"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Udsendelse (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "Udbyder-EPG (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "DVB-I-programguide"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Avanceret"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Prioritet for EPG-kilderne"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automatisk (anbefalet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Egen rækkefølge"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automatisk: nu og næste kommer fra udsendelsen, længere frem vinder den mest komplette kilde, og huller fyldes fra de andre kilder. Intet program vises to gange."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Rækkefølge af EPG-kilderne"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Kilden øverst vinder, når to kilder er uenige; de andre fylder hullerne. En kanal med sin egen rækkefølge bruger altid den, for eksempel når dens udsendte EPG er dårlig."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Gælder for"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Fjern kanal"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Flyt op"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Flyt ned"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Egen rækkefølge for kanal"

@@ -2018,3 +2018,67 @@ msgstr "Realizat cu"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Vizualizări"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Difuzare (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG furnizor (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Ghid DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Avansat"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Prioritatea surselor EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automat (recomandat)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Ordine proprie"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automat: emisiunea curentă și următoarea vin din difuzare, mai departe câștigă sursa cea mai completă, iar golurile sunt umplute din celelalte surse. Nicio emisiune nu apare de două ori."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Ordinea surselor EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Sursa de sus câștigă când două surse nu coincid; celelalte umplu golurile. Un canal cu ordine proprie o folosește mereu, de exemplu când EPG-ul său difuzat este slab."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Se aplică la"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Elimină canalul"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Mută în sus"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Mută în jos"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Ordine proprie pentru canal"

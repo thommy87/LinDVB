@@ -768,6 +768,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def reload_channels(self):
         chans = self.app.db.channels
+        self.app.epg.relink()
         self.store.remove_all()
         self.store.splice(0, 0, [Row(c) for c in chans])
         self._groups = [_("All groups")] + self.app.db.roots()
@@ -1318,6 +1319,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("stats", self._on_stats)
             self.capture.connect("error", lambda _c, m: self._on_play_error(m))
             self.capture.connect("eit", self.app.on_eit)
+            self.capture.connect("provider-epg", self.app.on_provider_epg)
             self.capture.connect("tsid", self.app.on_tsid)
             self.capture.connect("ait-pid", self.app.on_ait_pid)
             self.hbbtv.channel_changed(c, self.capture)

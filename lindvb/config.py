@@ -125,6 +125,11 @@ DEFAULTS = {
     # Transponders that carry a provider EPG: [frequency MHz, "h"/"v", type]
     # with type "mhw1", "mhw2" or "freesat" (see lindvb.epgsources).
     "epg_provider_freqs": [[10847, "v", "mhw2"], [11428, "h", "freesat"]],
+    # which EPG source wins (lindvb.epgmerge): "auto" or "custom" with the order
+    # below; per channel (Channel.key -> order) always a custom order
+    "epg_priority_mode": "auto",
+    "epg_priority_order": ["eit", "provider", "dvbi", "xmltv"],
+    "epg_priority_channels": {},
     "deinterlace": True,
     # CEA-608/708 closed captions (ATSC, US cable)
     "closed_captions": False,

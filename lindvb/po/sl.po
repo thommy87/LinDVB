@@ -2018,3 +2018,67 @@ msgstr "Izdelano z"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Vizualizacije"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Oddajanje (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG ponudnika (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Vodnik DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Napredno"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Prednost virov EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Samodejno (priporočeno)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Lasten vrstni red"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Samodejno: trenutna in naslednja oddaja prideta iz oddajanja, naprej zmaga najpopolnejši vir, vrzeli pa se zapolnijo iz drugih virov. Nobena oddaja se ne prikaže dvakrat."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Vrstni red virov EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Vir na vrhu zmaga, ko se dva vira ne ujemata; drugi zapolnijo vrzeli. Program z lastnim vrstnim redom ga vedno uporabi, na primer ko je njegov oddajani EPG slab."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Velja za"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Odstrani program"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Premakni gor"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Premakni dol"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Lasten vrstni red za program"

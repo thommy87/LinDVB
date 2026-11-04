@@ -247,7 +247,7 @@ def badges(ev):
 @dataclass
 class GuideSource:
     """Where to ask for one channel's guide."""
-    key: str                     # EPG store key of the channel
+    key: str                     # EPG store key: "dvbi:<id>" (merged by epg_links)
     sid: str                     # ContentGuideServiceRef or UniqueIdentifier
     schedule: str
     program: str = ""
@@ -259,7 +259,7 @@ def sources_for(channels):
     for c in channels:
         g = getattr(c, "dvbi_guide", None) or {}
         if c.dvbi_id and g.get("schedule"):
-            out.append(GuideSource(c.epg_key, c.dvbi_cg or c.dvbi_id, g["schedule"],
+            out.append(GuideSource("dvbi:" + c.dvbi_id, c.dvbi_cg or c.dvbi_id, g["schedule"],
                                    g.get("program", ""), not c.is_iptv))
     return out
 

@@ -2018,3 +2018,67 @@ msgstr "Creado con"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Visualizaciones"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Emisión (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG del proveedor (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Guía DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Prioridad de las fuentes EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automática (recomendada)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Orden personalizado"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automática: el programa actual y el siguiente vienen de la emisión, más adelante gana la fuente más completa y los huecos se rellenan con las demás fuentes. Ningún programa aparece dos veces."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Orden de las fuentes EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "La fuente de arriba gana cuando dos fuentes no coinciden; las demás rellenan los huecos. Un canal con orden propio siempre lo usa, por ejemplo cuando su EPG emitida es mala."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Se aplica a"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Quitar canal"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Subir"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Bajar"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Orden propio para el canal"
