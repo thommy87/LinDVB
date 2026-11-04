@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Minimal OpenGL access for the GPU-rendered radio visualisations.
 
 The functions come from libepoxy, the GL loader GTK itself uses, so there is no

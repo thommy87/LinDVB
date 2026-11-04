@@ -2006,3 +2006,15 @@ msgstr "Šis vaizdo įrašas užšifruotas naudojant {drm}. LinDVB nepalaiko DRM
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Šis vaizdo įrašas užšifruotas. LinDVB nepalaiko DRM, todėl jo negalima paleisti."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Yra kodo iš"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Sukurta naudojant"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizacijos"

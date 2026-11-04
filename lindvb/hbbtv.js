@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 /* LinDVB HbbTV 2.0.4 terminal: the OIPF DAE objects (ETSI TS 102 796 v1.7.1,
  * OIPF DAE vol. 5) that broadcaster applications expect, on top of WebKitGTK.
  *

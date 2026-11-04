@@ -2006,3 +2006,15 @@ msgstr "Ez a videó {drm} titkosítással védett. A LinDVB nem támogatja a DRM
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Ez a videó titkosított. A LinDVB nem támogatja a DRM-et, ezért nem játszható le."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Kódot tartalmaz innen"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Felhasznált összetevők"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizációk"

@@ -2006,3 +2006,15 @@ msgstr "Toto video je šifrováno pomocí {drm}. LinDVB nepodporuje DRM, proto j
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Toto video je šifrované. LinDVB nepodporuje DRM, proto jej nelze přehrát."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Obsahuje kód z"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Vytvořeno pomocí"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizace"

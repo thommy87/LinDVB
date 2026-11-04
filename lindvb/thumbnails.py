@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Preview pictures of recordings for the Recordings tab.
 
 A background thread decodes one frame (10 % into the file, at most 5 minutes)

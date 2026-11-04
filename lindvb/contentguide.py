@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """DVB-I content guide (ETSI TS 103 770 clause 6, TV-Anytime metadata).
 
 The service list names content guide sources with a ScheduleInfoEndpoint

@@ -2006,3 +2006,15 @@ msgstr "Šis video ir šifrēts ar {drm}. LinDVB neatbalsta DRM, tāpēc to neva
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Šis video ir šifrēts. LinDVB neatbalsta DRM, tāpēc to nevar atskaņot."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Satur kodu no"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Izveidots ar"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizācijas"

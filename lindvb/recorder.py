@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Recordings, timer recordings and series recording rules."""
 
 import json

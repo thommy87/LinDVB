@@ -2006,3 +2006,15 @@ msgstr "Acest videoclip este criptat cu {drm}. LinDVB nu acceptă DRM, așa că 
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Acest videoclip este criptat. LinDVB nu acceptă DRM, așa că nu poate fi redat."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Conține cod din"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Realizat cu"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizări"

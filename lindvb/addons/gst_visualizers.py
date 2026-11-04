@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """GStreamer visualisations for radio: projectM (MilkDrop presets) and GOOM.
 
 projectM needs the gst-projectm GStreamer plugin (element "projectm", built

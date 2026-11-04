@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Freesat EPG Huffman tables.
 
 Taken from the VDR EEPG plugin (eepg.h, GPL-2.0-or-later), which carries

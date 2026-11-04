@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Now-playing overlay over the radio visualisation.
 
 Separately switchable in Preferences › Visualisation: a station logo tile,

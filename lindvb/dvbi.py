@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """DVB-I service discovery (ETSI TS 103 770) following the German DTVP profile.
 
 DVB-I describes TV and radio services in an XML *service list* that is found

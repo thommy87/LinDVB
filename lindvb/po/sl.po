@@ -2006,3 +2006,15 @@ msgstr "Ta videoposnetek je šifriran s sistemom {drm}. LinDVB ne podpira DRM, z
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Ta videoposnetek je šifriran. LinDVB ne podpira DRM, zato ga ni mogoče predvajati."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Vsebuje kodo iz"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Izdelano z"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Vizualizacije"

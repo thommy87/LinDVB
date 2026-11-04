@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Match IPTV (M3U) channels to the channels of an XMLTV guide.
 
 Playlists and guides rarely spell channel names the same way ("DE: Das Erste

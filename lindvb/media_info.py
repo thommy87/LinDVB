@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Readable descriptions of audio tracks and stream properties.
 
 Kept free of GTK and GStreamer imports so the logic can be tested on its own;

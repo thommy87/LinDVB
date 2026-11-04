@@ -2006,3 +2006,15 @@ msgstr "Tá an físeán seo criptithe le {drm}. Ní thacaíonn LinDVB le DRM, ma
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Tá an físeán seo criptithe. Ní thacaíonn LinDVB le DRM, mar sin ní féidir é a sheinm."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Tá cód ó na tionscadail seo ann"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Tógtha le"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Amharcléirithe"

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """DVB capture with GStreamer's dvbsrc (Linux DVB API v5).
 
 A Capture tunes one service and writes the transport stream into a rolling

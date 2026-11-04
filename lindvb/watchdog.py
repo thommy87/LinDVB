@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Writes where the program hangs when its main loop stops answering.
 
 A timer on the GTK main loop notes the time every second; a thread checks it.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Channel model, channel database, and import/export of common list formats.
 
 Supported formats:

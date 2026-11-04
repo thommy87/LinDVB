@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """HbbTV 2.0 companion screens (ETSI TS 102 796 v1.7.1 clause 14) and
 inter-device media synchronisation (clause 13, ETSI TS 103 286-2).
 

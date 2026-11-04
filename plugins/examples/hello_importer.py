@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Example LinDVB plugin: a trivial channel-list importer.
 
 Copy this file (or the whole ``examples`` folder's files) into your plugin

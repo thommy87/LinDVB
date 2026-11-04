@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Write a small transport stream that signals one HbbTV application.
 
 For testing HbbTV without DVB hardware: the stream has a PAT, a PMT with an

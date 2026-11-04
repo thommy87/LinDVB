@@ -277,8 +277,21 @@ attach that file when you report a freeze.
 
 ## License
 
+Copyright (C) 2026 thommy87.
+
 LinDVB is free software under the GNU General Public License version 2 or (at your
 option) any later version. See [LICENSE](LICENSE).
 
-`lindvb/goom.py` is a port of GOOM 2k4 (Copyright (C) 2000-2004 Jean-Christophe
-Hoelt and the GOOM authors, from gst-plugins-good, GNU LGPL 2.1 or later).
+LinDVB contains code from other free software projects, each under a licence
+compatible with this one:
+
+* the MediaHighway and Freesat EPG (`lindvb/epgsources.py`, `lindvb/freesat_tables.py`)
+  follows the VDR EEPG plugin by Dingo35 and Dimitar Petrovski, based on mhwepg by
+  Jean-Claude Repetto and the Freesat patch by dom (GNU GPL 2 or later)
+* `lindvb/goom.py` is a port of GOOM 2k4 (Copyright (C) 2000-2004 Jean-Christophe
+  Hoelt and the GOOM authors, from gst-plugins-good, GNU LGPL 2.1 or later)
+* `lindvb/vendor` holds dash.js by the DASH Industry Forum (BSD 3-Clause)
+
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) lists these and the libraries,
+presets and icons LinDVB uses or ships, with their licences. The About dialog
+(☰ → About LinDVB) shows the credits too.

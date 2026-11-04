@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """A small plugin system for LinDVB.
 
 The design follows DVBViewer's idea of optional add-ons that extend the

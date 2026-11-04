@@ -2006,3 +2006,15 @@ msgstr "هذا الفيديو مشفّر باستخدام {drm}. لا يدعم L
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "هذا الفيديو مشفّر. لا يدعم LinDVB إدارة الحقوق الرقمية (DRM)، لذا لا يمكن تشغيله."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "يحتوي على شيفرة من"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "بُني باستخدام"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "المؤثرات المرئية"

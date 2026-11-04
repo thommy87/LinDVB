@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Script hooks: run your own programs when something happens in LinDVB.
 
 Put an executable file named after the event into ``~/.config/lindvb/hooks/``

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Programme guide window: what's on now, per channel, timeline and search."""
 
 import hashlib

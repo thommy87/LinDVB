@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Conditional access for the user's own encrypted channels.
 
 LinDVB does not contain any decryption keys and does not break any encryption.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Audio analysis for the radio visualisations (no GTK, no GStreamer).
 
 The player taps the decoded audio (see :meth:`lindvb.player.Player`) and feeds

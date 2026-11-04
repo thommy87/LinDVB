@@ -2006,3 +2006,15 @@ msgstr "Denne video er krypteret med {drm}. LinDVB understøtter ikke DRM, så d
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Denne video er krypteret. LinDVB understøtter ikke DRM, så den kan ikke afspilles."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Indeholder kode fra"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Bygget med"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Visualiseringer"

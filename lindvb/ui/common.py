@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Small GTK 4 helpers shared by the windows."""
 
 import time

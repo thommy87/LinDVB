@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Finding the recordings on disk for the "Recordings" tab (pure logic, no GTK).
 
 Recordings live in the recording folder from the preferences and in any folder

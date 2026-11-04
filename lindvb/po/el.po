@@ -2006,3 +2006,15 @@ msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο μ�
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο. Το LinDVB δεν υποστηρίζει DRM, οπότε δεν μπορεί να αναπαραχθεί."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Περιέχει κώδικα από"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Δημιουργήθηκε με"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Οπτικοποιήσεις"

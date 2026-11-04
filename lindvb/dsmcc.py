@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """DSM-CC for HbbTV: object carousels and stream events.
 
 ETSI TR 101 202 / ISO/IEC 13818-6 as profiled by ETSI TS 102 809 and

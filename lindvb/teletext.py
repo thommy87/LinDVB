@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Teletext subtitle pages announced in the PMT (teletext descriptor, EN 300 468)."""
 
 from dataclasses import dataclass

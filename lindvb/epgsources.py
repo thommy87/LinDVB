@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """EPG from other providers' data streams (like DVBViewer's "MediaHighway/Freesat
 frequencies"), plus the raw DVB helpers they need.
 

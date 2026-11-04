@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """The IPTV section of Preferences › Internet: import M3U playlists and other
 channel lists with internet streams, from files or from a web address."""
 

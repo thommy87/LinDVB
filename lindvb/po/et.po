@@ -2006,3 +2006,15 @@ msgstr "See video on krüpteeritud {drm}-iga. LinDVB ei toeta DRM-i, seega ei sa
 
 msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
 msgstr "See video on krüpteeritud. LinDVB ei toeta DRM-i, seega ei saa seda esitada."
+
+#: lindvb/credits.py
+msgid "Contains code from"
+msgstr "Sisaldab koodi projektidest"
+
+#: lindvb/credits.py
+msgid "Built with"
+msgstr "Loodud kasutades"
+
+#: lindvb/credits.py
+msgid "Visualisations"
+msgstr "Visualiseeringud"
