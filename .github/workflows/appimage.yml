@@ -38,7 +38,8 @@ jobs:
             gstreamer1.0-alsa gstreamer1.0-pipewire dvb-tools dtv-scan-tables \
             adwaita-icon-theme libgdk-pixbuf2.0-bin librsvg2-common file desktop-file-utils \
             cmake ninja-build g++ libgl-dev libegl-dev libglm-dev \
-            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+            gir1.2-webkit-6.0 xvfb xauth
 
       # libprojectM + gst-projectm + presets take a few minutes to build: keep them
       - name: Cache projectM
@@ -48,7 +49,8 @@ jobs:
           key: projectm-${{ runner.os }}-${{ hashFiles('packaging/build-projectm.sh') }}
 
       - name: Run tests
-        run: python3 -m pytest -q tests
+        # under a virtual display, so the HbbTV browser test runs in WebKitGTK
+        run: xvfb-run -a python3 -m pytest -q tests
 
       - name: Build AppImage
         shell: bash

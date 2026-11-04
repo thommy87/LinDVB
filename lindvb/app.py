@@ -157,6 +157,16 @@ class LinDVBApp(Gtk.Application):
             self.db.save()
             self._epg_dirty = True
 
+    def on_ait_pid(self, cap, pid):
+        """HbbTV: remember the AIT PID from the PMT, so the next tuning to the
+        channel filters it from the start."""
+        key = cap.channel.key
+        for c in self.db.channels:
+            if c.key == key and c.ait_pid != pid:
+                c.ait_pid = pid
+                self.db.save()
+                break
+
     def _flush_epg(self):
         if self._epg_dirty:
             self._epg_dirty = False

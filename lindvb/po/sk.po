@@ -1853,3 +1853,54 @@ msgstr "Kanál sprievodcu má {done} z {v1} kanálov"
 
 msgid "No suggestion for {name}"
 msgstr "Žiadny návrh pre {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Interaktívne služby (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Archívy relácií, nástupcovia teletextu a ďalšie za červeným tlačidlom (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Vyžaduje WebKitGTK 6 (gir1.2-webkit-6.0), ktorý nie je nainštalovaný."
+
+msgid "Start automatically"
+msgstr "Spúšťať automaticky"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Vypnuté: aplikácia sa spustí len červeným tlačidlom. Aplikácie staníc posielajú vysielateľovi údaje o používaní."
+
+msgid "Allow third-party cookies"
+msgstr "Povoliť cookies tretích strán"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Reklamné siete vás nimi sledujú naprieč stanicami."
+
+msgid "Delete HbbTV Data"
+msgstr "Vymazať údaje HbbTV"
+
+msgid "Cookies and storage"
+msgstr "Cookies a úložisko"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Odstráni, čo aplikácie HbbTV uložili, napríklad cookies a nastavenia."
+
+msgid "HbbTV data deleted"
+msgstr "Údaje HbbTV vymazané"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Aplikáciu HbbTV nemožno načítať: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (červené tlačidlo)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Interaktívna služba stanice (červené tlačidlo, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Zavrieť interaktívnu službu (Esc)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"

@@ -50,6 +50,7 @@ class Channel:
     audio_pids: list = field(default_factory=list)
     teletext_pid: int = 0
     subtitle_pids: list = field(default_factory=list)
+    ait_pid: int = 0                 # HbbTV application signalling (learnt from the PMT)
     encrypted: bool = False
     radio: bool = False
     url: str = ""                    # for IPTV
@@ -111,7 +112,7 @@ class Channel:
 
     def pids(self):
         p = [0, 1, 16, 17, 18, 20, self.pmt_pid, self.pcr_pid, self.video_pid,
-             self.teletext_pid, *self.audio_pids, *self.subtitle_pids]
+             self.teletext_pid, self.ait_pid, *self.audio_pids, *self.subtitle_pids]
         return sorted({x for x in p if 0 <= x < 8191} | {0})
 
     @classmethod

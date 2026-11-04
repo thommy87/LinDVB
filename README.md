@@ -96,6 +96,9 @@ picture and hides itself when the mouse is still.
   service list registry, with postcode, channel numbers (LCN), logos and a daily
   update; each channel uses your antenna/cable/satellite channel where the
   channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
+* HbbTV 2.0.4 (red button, F5): the channels' interactive services in a transparent
+  WebKitGTK view over the picture, started from the AIT; work in progress
+  ([docs/HBBTV.md](docs/HBBTV.md))
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
   DVBViewer channel lists (`*.ini`); IPTV playlists also from a web address
@@ -180,6 +183,8 @@ sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-gstreamer-1.0
   gstreamer1.0-libav dvb-tools dtv-scan-tables
 # optional, faster video output:
 sudo apt install gstreamer1.0-gtk4
+# optional, HbbTV (red button):
+sudo apt install gir1.2-webkit-6.0
 ```
 
 Fedora:

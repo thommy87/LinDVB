@@ -1853,3 +1853,54 @@ msgstr "Kanal vodnika ima {done} od {v1} kanalov"
 
 msgid "No suggestion for {name}"
 msgstr "Ni predloga za {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Interaktivne storitve (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Videoteke, nasledniki teleteksta in drugo za rdečim gumbom (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Potrebuje WebKitGTK 6 (gir1.2-webkit-6.0), ki ni nameščen."
+
+msgid "Start automatically"
+msgstr "Zaženi samodejno"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Izklopljeno: aplikacija se zažene le z rdečim gumbom. Aplikacije programov pošiljajo podatke o uporabi izdajatelju."
+
+msgid "Allow third-party cookies"
+msgstr "Dovoli piškotke tretjih oseb"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Oglaševalska omrežja vas z njimi sledijo med programi."
+
+msgid "Delete HbbTV Data"
+msgstr "Izbriši podatke HbbTV"
+
+msgid "Cookies and storage"
+msgstr "Piškotki in shramba"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Odstrani, kar so shranile aplikacije HbbTV, na primer piškotke in nastavitve."
+
+msgid "HbbTV data deleted"
+msgstr "Podatki HbbTV izbrisani"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Aplikacije HbbTV ni bilo mogoče naložiti: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (rdeči gumb)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Interaktivna storitev programa (rdeči gumb, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Zapri interaktivno storitev (Esc)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"

@@ -1853,3 +1853,54 @@ msgstr "{done} av {v1} kanaler har en guidekanal"
 
 msgid "No suggestion for {name}"
 msgstr "Inget förslag för {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Interaktiva tjänster (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Playtjänster, text-tv:s efterföljare och mer bakom den röda knappen (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Kräver WebKitGTK 6 (gir1.2-webkit-6.0), som inte är installerat."
+
+msgid "Start automatically"
+msgstr "Starta automatiskt"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Av: ett program startar bara med den röda knappen. Kanalernas program skickar användningsdata till tv-bolaget."
+
+msgid "Allow third-party cookies"
+msgstr "Tillåt tredjepartscookies"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Annonsnätverk använder dem för att följa dig mellan kanaler."
+
+msgid "Delete HbbTV Data"
+msgstr "Radera HbbTV-data"
+
+msgid "Cookies and storage"
+msgstr "Cookies och lagring"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Tar bort det HbbTV-program har sparat, till exempel cookies och inställningar."
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV-data raderade"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "HbbTV-programmet kunde inte läsas in: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (röd knapp)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Kanalens interaktiva tjänst (röd knapp, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Stäng den interaktiva tjänsten (Esc)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
