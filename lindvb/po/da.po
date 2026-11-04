@@ -2000,3 +2000,9 @@ msgstr "et HbbTV-program"
 
 msgid "Refuse"
 msgstr "Afvis"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Denne video er krypteret med {drm}. LinDVB understøtter ikke DRM, så den kan ikke afspilles."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Denne video er krypteret. LinDVB understøtter ikke DRM, så den kan ikke afspilles."

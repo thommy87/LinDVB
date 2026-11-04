@@ -22,7 +22,7 @@ from .. import hbbtv as hb
 from ..i18n import _
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gdk, Gio, GLib  # noqa: E402
+from gi.repository import Gdk, Gio, GLib, Gtk  # noqa: E402
 
 try:
     gi.require_version("WebKit", "6.0")
@@ -191,6 +191,8 @@ class HbbTV:
         self.dsmcc = None               # lindvb.dsmcc.DsmccService of the capture
         self._carousel_tag = None       # component tag of the running app's carousel
         self._ste = {}                  # JS listener id -> DsmccService handle
+        self._drm_label = None          # the "content is encrypted" notice over the video
+        self._drm_timeout = None
 
     # -- channel -------------------------------------------------------------
 
@@ -335,6 +337,36 @@ class HbbTV:
     def _media_rated(self, vid, age):
         self._media_blocked[vid] = age
         self.ask_pin(_("This video is rated {age}+.").format(age=age), self.unlock_media)
+
+    # -- DRM -------------------------------------------------------------------
+
+    def drm_unsupported(self, system):
+        """The app wants to play a protected video: say why it stays dark."""
+        name = hb.drm_name(system)
+        if name:
+            text = _("This video is encrypted with {drm}. LinDVB does not support DRM, "
+                     "so it cannot be played.").format(drm=name)
+        else:
+            text = _("This video is encrypted. LinDVB does not support DRM, "
+                     "so it cannot be played.")
+        self.win.set_status(text)
+        if self._drm_label is None:
+            self._drm_label = Gtk.Label(css_classes=["osd"], wrap=True, max_width_chars=60,
+                                        justify=Gtk.Justification.CENTER,
+                                        halign=Gtk.Align.CENTER, valign=Gtk.Align.END,
+                                        margin_bottom=48, can_target=False)
+            self.win.overlay.add_overlay(self._drm_label)
+        self._drm_label.set_text(text)
+        self._drm_label.set_visible(True)
+        if self._drm_timeout:
+            GLib.source_remove(self._drm_timeout)
+        self._drm_timeout = GLib.timeout_add_seconds(8, self._hide_drm_notice)
+
+    def _hide_drm_notice(self):
+        self._drm_timeout = None
+        if self._drm_label is not None:
+            self._drm_label.set_visible(False)
+        return False
 
     # -- object carousel (dvb: URLs) ---------------------------------------------
 
@@ -743,6 +775,9 @@ class HbbTV:
         if self._sync_selector and self.cs is not None:
             self._sync_message("sync-disable", {})
         self._media_blocked = {}
+        if self._drm_timeout:
+            GLib.source_remove(self._drm_timeout)
+        self._hide_drm_notice()
         self._pending_red = False
         self.keyset, self.other_keys = 0, ()
         self.set_video_rect(None)
@@ -840,6 +875,8 @@ class HbbTV:
             self._companion().discover_terminals(lambda found: self._js("csResult", cid, found))
         elif cmd in ("sync-broadcast", "sync-enable", "sync-ct", "sync-disable"):
             self._sync_message(cmd, msg)
+        elif cmd == "drm-unsupported":
+            self.drm_unsupported(msg.get("system") or "")
         elif cmd == "pc-blocked":
             self._media_rated(msg.get("id"), int(msg.get("age") or 0))
         elif cmd == "pc-unlocked":                 # the app checked the PIN itself

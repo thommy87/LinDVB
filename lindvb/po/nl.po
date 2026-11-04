@@ -2000,3 +2000,9 @@ msgstr "een HbbTV-toepassing"
 
 msgid "Refuse"
 msgstr "Weigeren"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Deze video is versleuteld met {drm}. LinDVB ondersteunt geen DRM, dus hij kan niet worden afgespeeld."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Deze video is versleuteld. LinDVB ondersteunt geen DRM, dus hij kan niet worden afgespeeld."

@@ -448,6 +448,80 @@
     if (v && v.__pcBlocked) { v.pause(); }
   }, true);
 
+  /* ---------------------------------------------------------------- DRM
+   * LinDVB has no licensed DRM system (Widevine, PlayReady, Marlin), so
+   * protected content cannot play. The terminal tells the user so instead of
+   * leaving the app hanging. ClearKey, which WebKit handles itself, works. */
+  var CLEAR_KEY = /^(org\.w3\.clearkey|urn:uuid:e2719d58-a985-b3c9-781a-b030af78d30e|urn:uuid:1077efec-c0b2-4d02-ace3-3c1e52e2fb4b)$/i;
+  var MP4_PROTECTION = /^urn:mpeg:dash:mp4protection:2011$/i;
+  var drmTold = false, drmGranted = false, drmPending = null;
+  function drmUnsupported(system) {
+    if (drmPending) { clearTimeout(drmPending); drmPending = null; }
+    if (drmTold) { return; }
+    drmTold = true;
+    post({ cmd: "drm-unsupported", system: String(system || "") });
+  }
+
+  // an app (or dash.js) asks for Widevine or PlayReady: WebKit refuses it. A
+  // player may try several key systems in turn, so wait whether one works.
+  if (navigator.requestMediaKeySystemAccess) {
+    var rmksa = navigator.requestMediaKeySystemAccess.bind(navigator);
+    navigator.requestMediaKeySystemAccess = function (keySystem, configs) {
+      var p = rmksa(keySystem, configs);
+      p.then(function () {
+        drmGranted = true;
+        if (drmPending) { clearTimeout(drmPending); drmPending = null; }
+      }, function () {
+        if (CLEAR_KEY.test(String(keySystem)) || drmGranted || drmPending) { return; }
+        drmPending = setTimeout(function () {
+          drmPending = null;
+          if (!drmGranted) { drmUnsupported(keySystem); }
+        }, 1500);
+      });
+      return p;
+    };
+  }
+
+  // the key systems in a DASH manifest (ContentProtection schemeIdUri)
+  function mpdProtection(node, depth, out) {
+    out = out || [];
+    if (!node || typeof node !== "object" || depth > 6) { return out; }
+    Object.keys(node).forEach(function (k) {
+      var v = node[k];
+      if (/^ContentProtection(_asArray)?$/.test(k)) {
+        (Array.isArray(v) ? v : [v]).forEach(function (c) {
+          var id = c && String(c.schemeIdUri || "");
+          if (id && out.indexOf(id) < 0) { out.push(id); }
+        });
+      } else if (k.slice(-8) === "_asArray" && Array.isArray(v)) {
+        v.forEach(function (c) { mpdProtection(c, depth + 1, out); });
+      } else if (/^(Period|AdaptationSet|Representation)$/.test(k) && v && typeof v === "object") {
+        (Array.isArray(v) ? v : [v]).forEach(function (c) { mpdProtection(c, depth + 1, out); });
+      }
+    });
+    return out;
+  }
+
+  // without EME in WebKit, dash.js cannot even ask: a protected manifest fails
+  function drmCheck(manifest) {
+    var systems = mpdProtection(manifest, 0).filter(function (s) { return !MP4_PROTECTION.test(s); });
+    if (!systems.length || systems.some(function (s) { return CLEAR_KEY.test(s); })) { return; }
+    if (!navigator.requestMediaKeySystemAccess) { drmUnsupported(systems[0]); }
+  }
+
+  // OIPF DAE 7.6: the DRM agent knows no DRM system
+  function augmentDrmAgent(el) {
+    eventTarget(el);
+    el.sendDRMMessage = function (msgID, msgType, msgContent, DRMSystemID) {
+      drmUnsupported(DRMSystemID);
+      setTimeout(function () {
+        el.__fire("DRMMessageResult", { msgID: msgID, resultMsg: "", resultCode: 5 }, [msgID, "", 5]);
+      }, 0);
+      return "";
+    };
+    el.getDRMSystemStatus = function () { return 1; };       // DRM_STATE_UNKNOWN
+  }
+
   /* ---------------------------------------------------------------- companion screens
    * TS 102 796 clause 14: the app-to-app and DIAL services run in the
    * terminal (lindvb/hbbtvcs.py); this is the application's side. */
@@ -724,6 +798,7 @@
     });
     p.on(dashLib.MediaPlayer.events.MANIFEST_LOADED, function (e) {
       try { pcCheck(video, e && e.data); } catch (err) { console.error(err); }
+      try { drmCheck(e && e.data); } catch (err) { console.error(err); }
     });
     p.on(dashLib.MediaPlayer.events.STREAM_INITIALIZED, function () {
       if (!cfg.subtitles && !video.__textChosen) { p.enableText(false); }
@@ -965,6 +1040,7 @@
     },
     "application/hbbtvcsmanager": augmentCSManager,
     "application/hbbtvmediasynchroniser": function (el) { MediaSynchroniser.call({}, el); },
+    "application/oipfdrmagent": augmentDrmAgent,
     "video/broadcast": augmentBroadcast
   };
   AV_TYPES.forEach(function (t) { SIMPLE[t] = augmentAV; });
@@ -1021,6 +1097,10 @@
       el.setAttribute("type", "application/hbbtvCSManager"); augment(el); return el;
     },
     createMediaSynchroniser: function () { return new MediaSynchroniser(); },
+    createDrmAgentObject: function () {
+      var el = document.createElement("object");
+      el.setAttribute("type", "application/oipfDrmAgent"); augment(el); return el;
+    },
     createSearchManagerObject: function () {
       var el = document.createElement("object");
       el.setAttribute("type", "application/oipfSearchManager"); augment(el); return el;

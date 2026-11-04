@@ -2000,3 +2000,9 @@ msgstr "ett HbbTV-program"
 
 msgid "Refuse"
 msgstr "Neka"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Den här videon är krypterad med {drm}. LinDVB stöder inte DRM, så den kan inte spelas upp."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Den här videon är krypterad. LinDVB stöder inte DRM, så den kan inte spelas upp."

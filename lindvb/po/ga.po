@@ -2000,3 +2000,9 @@ msgstr "feidhmchlár HbbTV"
 
 msgid "Refuse"
 msgstr "Diúltaigh"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Tá an físeán seo criptithe le {drm}. Ní thacaíonn LinDVB le DRM, mar sin ní féidir é a sheinm."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Tá an físeán seo criptithe. Ní thacaíonn LinDVB le DRM, mar sin ní féidir é a sheinm."

@@ -173,6 +173,26 @@ window.onload = function () {
 </body></html>
 """
 
+DRM_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  if (location.search.indexOf('nodrmagent') < 0) {
+    var drm = oipfObjectFactory.createDrmAgentObject();
+    L('status=' + drm.getDRMSystemStatus('urn:dvb:casystemid:19188'));
+    drm.onDRMMessageResult = function (id, msg, code) { L('result=' + id + ':' + code); };
+    drm.sendDRMMessage('m1', 'application/vnd.marlin.drm.actiontoken+xml', '<x/>', 'urn:dvb:casystemid:19188');
+  }
+  var av = document.getElementById('av');
+  av.data = 'dash/manifest-drm.mpd';
+  av.play(1);
+};
+</script></head><body>
+<object id="av" type="application/dash+xml" style="position:absolute;left:0;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
 DATA = os.path.join(os.path.dirname(__file__), "data")
 
 
@@ -193,7 +213,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             body = DASH_APP if path.startswith("/dashapp") else \
                 SUB_APP if path.startswith("/subapp") else \
-                PC_APP if path.startswith("/pcapp") else APP
+                PC_APP if path.startswith("/pcapp") else \
+                DRM_APP if path.startswith("/drmapp") else APP
             ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
         self.send_header("Content-Type", ctype)
@@ -521,6 +542,54 @@ def test_parental_control_holds_a_rated_video():
         assert _wait(lambda: "playing" in title(), timeout=40), title()
         assert title() == "threshold=13 rated=16:true wrong=1 rated=-:false right=0 playing"
         assert hbb._pin_dialog is None and not hbb._media_blocked
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_protected_video_tells_the_user():
+    """A DRM agent request and a Widevine DASH manifest: the app hears that
+    the DRM system is unknown and the user sees why the video stays dark."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("RTL", delsys="dvb-s2", sid=12003, onid=1, tsid=1089)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "drmapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        drm = lambda: [s for s in win.status if "DRM" in s]  # noqa: E731
+        assert _wait(lambda: "result=" in title() and drm(), timeout=40), (title(), win.status)
+        assert title() == "status=1 result=m1:5"
+        # the DRM agent came first and named Marlin: the notice is shown once
+        _wait(lambda: False, timeout=3)               # the manifest loads meanwhile
+        assert len(drm()) == 1 and "Marlin" in drm()[0], win.status
+        assert hbb._drm_label.get_visible()
+        hbb.close()
+        assert not hbb._drm_label.get_visible()
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_manifest_drm_is_detected():
+    """Without a DRM agent call the Widevine manifest itself triggers the notice."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("RTL", delsys="dvb-s2", sid=12003, onid=1, tsid=1089)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "drmapp?nodrmagent")
+        drm = lambda: [s for s in win.status if "DRM" in s]  # noqa: E731
+        assert _wait(drm, timeout=40), (hbb.view.get_title(), win.status)
+        assert "Widevine" in drm()[0], win.status
         win.window.destroy()
     finally:
         server.shutdown()

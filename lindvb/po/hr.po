@@ -2000,3 +2000,9 @@ msgstr "HbbTV aplikaciju"
 
 msgid "Refuse"
 msgstr "Odbij"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ovaj je videozapis šifriran sustavom {drm}. LinDVB ne podržava DRM pa se ne može reproducirati."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ovaj je videozapis šifriran. LinDVB ne podržava DRM pa se ne može reproducirati."

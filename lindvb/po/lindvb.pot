@@ -2832,3 +2832,9 @@ msgstr ""
 
 msgid "Refuse"
 msgstr ""
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr ""
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr ""

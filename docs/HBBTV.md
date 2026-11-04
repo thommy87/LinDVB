@@ -158,13 +158,14 @@ keeps the AIT.
 (under `xvfb-run`): the red button, the key set, the video window, live
 components, a DASH `<video>`, a DASH A/V object with two audio languages and
 EBU-TT-D subtitles (`tests/data/dash`), an application from an object carousel
-with stream events, and a rated DASH video behind the PIN.
+with stream events, a rated DASH video behind the PIN, and the notice for a
+Widevine-protected DASH video.
 
 ## Still to do for HbbTV 2.0.4
 
 | Area | What is missing |
 |---|---|
-| DRM | Encrypted streams (EME, Widevine/PlayReady): WebKitGTK has no such module, so pay content stays dark |
+| DRM | Encrypted streams (Widevine, PlayReady, Marlin) do not play: WebKitGTK loads no CDM modules, and a licensed one is not available for Linux desktop apps. LinDVB says so instead of leaving the app hanging: the `application/oipfDrmAgent` object answers every request with "unknown DRM system" (result code 5), and a protected DASH manifest or a refused EME key system shows a notice over the video naming the DRM system. ClearKey works |
 | Media | Subtitles inside DASH segments (fMP4 `stpp`) are untested; trick play for the broadcast |
 | Stream events | Scheduled events (by NPT time) fire on arrival like do-it-now events |
 | Object carousel | Carousels of other services (remote `dvb://` URLs with another service id) |

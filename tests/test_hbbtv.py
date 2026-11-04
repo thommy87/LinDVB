@@ -183,3 +183,12 @@ def test_teletext_key_starts_the_teletext_app():
     life.on_ait(_ait(_app(1), tt))
     assert life.teletext_button()
     assert b.calls == [("launch", "http://tv.example/ttx.html", 7)]
+
+
+def test_drm_name():
+    from lindvb.hbbtv import drm_name
+    assert drm_name("urn:uuid:EDEF8BA9-79D6-4ACE-A3C8-27DCD51D21ED") == "Widevine"
+    assert drm_name("com.widevine.alpha") == "Widevine"
+    assert drm_name("com.microsoft.playready.recommendation") == "PlayReady"
+    assert drm_name("urn:dvb:casystemid:19188") == "Marlin"
+    assert drm_name("") == "" and drm_name("urn:uuid:1234") == ""

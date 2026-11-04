@@ -2000,3 +2000,9 @@ msgstr "egy HbbTV-alkalmazás"
 
 msgid "Refuse"
 msgstr "Elutasítás"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ez a videó {drm} titkosítással védett. A LinDVB nem támogatja a DRM-et, ezért nem játszható le."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ez a videó titkosított. A LinDVB nem támogatja a DRM-et, ezért nem játszható le."

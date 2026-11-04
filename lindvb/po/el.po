@@ -2000,3 +2000,9 @@ msgstr "μια εφαρμογή HbbTV"
 
 msgid "Refuse"
 msgstr "Άρνηση"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο με {drm}. Το LinDVB δεν υποστηρίζει DRM, οπότε δεν μπορεί να αναπαραχθεί."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο. Το LinDVB δεν υποστηρίζει DRM, οπότε δεν μπορεί να αναπαραχθεί."

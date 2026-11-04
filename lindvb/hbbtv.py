@@ -228,6 +228,33 @@ def broadcast_components(audio, audio_cur, subtitles, sub_cur):
     return out
 
 
+# -- DRM ------------------------------------------------------------------------------
+
+# LinDVB has no licensed DRM system; these names only tell the user which one
+# a protected video wanted (DASH-IF system ids, EME key systems, DVB CA ids).
+DRM_SYSTEMS = {
+    "edef8ba9-79d6-4ace-a3c8-27dcd51d21ed": "Widevine",
+    "com.widevine.alpha": "Widevine",
+    "9a04f079-9840-4286-ab92-e65be0885f95": "PlayReady",
+    "com.microsoft.playready": "PlayReady",
+    "com.microsoft.playready.recommendation": "PlayReady",
+    "5e629af5-38da-4063-8977-97ffbd9902d4": "Marlin",
+    "urn:dvb:casystemid:19188": "Marlin",
+    "94ce86fb-07ff-4f43-adb8-93d2fa968ca2": "FairPlay",
+    "com.apple.fps": "FairPlay",
+}
+
+
+def drm_name(system):
+    """'Widevine' for 'urn:uuid:EDEF8BA9-...' or 'com.widevine.alpha'; '' if unknown."""
+    key = (system or "").strip().lower()
+    if key.startswith("urn:uuid:"):
+        key = key[9:]
+    if key.startswith("com.widevine."):
+        key = "com.widevine.alpha"
+    return DRM_SYSTEMS.get(key, "")
+
+
 # -- parental control ---------------------------------------------------------------
 
 AGE_LIMITS = (0, 6, 12, 16)      # 0: off; else the age of the youngest viewer
