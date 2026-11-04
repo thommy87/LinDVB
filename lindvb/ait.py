@@ -8,6 +8,8 @@ KILL ...), where to load them from (HTTP URL or DSM-CC object carousel) and
 the HbbTV version they need.
 """
 
+import xml.etree.ElementTree as ET
+import zlib
 from dataclasses import dataclass, field
 
 from .ca import parse_pmt
@@ -162,6 +164,117 @@ def join_url(base, location):
     if not base.endswith("/") and not location.startswith(("/", "?", "#")):
         return base + "/" + location
     return base + location
+
+
+# -- XML AIT (TS 102 809 clause 5.4) ---------------------------------------------------
+
+XML_AIT_TYPE = "application/vnd.dvb.ait+xml"
+_CONTROL_CODES = {"AUTOSTART": AUTOSTART, "PRESENT": PRESENT, "DESTROY": DESTROY, "KILL": KILL,
+                  "PREFETCH": PREFETCH, "REMOTE": REMOTE, "DISABLED": DISABLED,
+                  "PLAYBACK_AUTOSTART": PLAYBACK_AUTOSTART}
+_VISIBILITY = {"NOT_VISIBLE_ALL": VISIBILITY_NOT_VISIBLE,
+               "NOT_VISIBLE_USERS": VISIBILITY_NOT_VISIBLE_TO_USERS,
+               "VISIBLE_ALL": VISIBILITY_VISIBLE}
+_USAGES = {"urn:dvb:mhp:2009:digitalText": USAGE_TELETEXT}
+
+
+def _xl(e):
+    return e.tag.rsplit("}", 1)[-1]
+
+
+def _xkid(el, name):
+    return next((c for c in el if _xl(c) == name), None)
+
+
+def _xtext(el):
+    return (el.text or "").strip() if el is not None else ""
+
+
+def _xint(text, default=0):
+    try:
+        return int(text, 0) if text.lower().startswith("0x") else int(text)
+    except (ValueError, AttributeError):
+        return default
+
+
+def parse_xml_ait(data, version=0):
+    """An XML AIT (ServiceDiscovery/ApplicationDiscovery, as a DVB-I service
+    list links it or a companion POSTs it) as an Ait, or None. Only HbbTV
+    applications with an HTTP transport are kept."""
+    try:
+        root = ET.fromstring(data)
+    except (ET.ParseError, TypeError, ValueError):
+        return None
+    ait = Ait(app_type=HBBTV_APP_TYPE, version=version)
+    label = 1
+    for el in root.iter():
+        if _xl(el) != "Application":
+            continue
+        ident = _xkid(el, "applicationIdentifier")
+        desc = _xkid(el, "applicationDescriptor")
+        if desc is None:
+            continue
+        typ = _xkid(desc, "type")
+        kind = _xtext(_xkid(typ, "OtherApp")) if typ is not None else ""
+        if kind and "hbbtv" not in kind.lower():
+            continue                                 # not an HbbTV application
+        app = AitApp(org_id=_xint(_xtext(_xkid(ident, "orgId")) if ident is not None else ""),
+                     app_id=_xint(_xtext(_xkid(ident, "appId")) if ident is not None else ""),
+                     control_code=_CONTROL_CODES.get(_xtext(_xkid(desc, "controlCode")).upper(),
+                                                     PRESENT))
+        for n in el:
+            if _xl(n) == "appName" and _xtext(n):
+                app.names[(n.get("Language") or "und").lower()] = _xtext(n)
+        vis = _xtext(_xkid(desc, "visibility")).upper()
+        app.visibility = _VISIBILITY.get(vis, VISIBILITY_VISIBLE)
+        app.service_bound = _xtext(_xkid(desc, "serviceBound")).lower() not in ("false", "0")
+        app.priority = _xint(_xtext(_xkid(desc, "priority")))
+        for v in desc:
+            if _xl(v) == "mhpVersion":
+                app.profiles.append((_xint(_xtext(_xkid(v, "profile"))),
+                                     (_xint(_xtext(_xkid(v, "versionMajor"))),
+                                      _xint(_xtext(_xkid(v, "versionMinor"))),
+                                      _xint(_xtext(_xkid(v, "versionMicro"))))))
+            elif _xl(v) == "ParentalRating":
+                rating = _xint(_xtext(v), -1)
+                if rating >= 0:
+                    app.parental.append(((v.get("Region") or "").upper()[:3], rating))
+        usage = _xkid(el, "applicationUsageDescriptor")
+        if usage is not None:
+            app.usage = _USAGES.get(_xtext(_xkid(usage, "ApplicationUsage")), -1)
+        boundary = _xkid(el, "applicationBoundary")
+        if boundary is not None:
+            app.boundaries = [_xtext(b) for b in boundary if _xtext(b)]
+        for tr in el:
+            if _xl(tr) != "applicationTransport":
+                continue
+            bases = [_xtext(b) for b in tr if _xl(b) == "URLBase" and _xtext(b)]
+            if bases and bases[0].startswith(("http://", "https://")):
+                app.transports.append(Transport(
+                    PROTOCOL_HTTP, label, url_bases=bases,
+                    url_extensions=[_xtext(b) for b in tr if _xl(b) == "URLExtension"]))
+                app.labels.append(label)
+                label += 1
+        app.location = _xtext(_xkid(el, "applicationLocation"))
+        if not app.transports and app.location.startswith(("http://", "https://")):
+            app.transports.append(Transport(PROTOCOL_HTTP, label, url_bases=[app.location]))
+            app.labels.append(label)
+            app.location = ""
+            label += 1
+        if app.transports:
+            ait.apps.append(app)
+    return ait if ait.apps else None
+
+
+def ait_for_url(url, control_code=AUTOSTART, service_bound=True):
+    """A one-application AIT for an application given by its URL alone (a
+    DVB-I linked application of type HTML). The ids come from the URL, so the
+    same URL is the same application again."""
+    crc = zlib.crc32(url.encode())
+    app = AitApp(org_id=0, app_id=(crc & 0x3FFF) | 0x4000, control_code=control_code,
+                 service_bound=service_bound, labels=[1],
+                 transports=[Transport(PROTOCOL_HTTP, 1, url_bases=[url])])
+    return Ait(app_type=HBBTV_APP_TYPE, version=0, apps=[app])
 
 
 # -- PMT ------------------------------------------------------------------------

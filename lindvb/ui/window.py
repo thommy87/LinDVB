@@ -1305,7 +1305,10 @@ class MainWindow(Gtk.ApplicationWindow):
         """Play channel *c* (a list channel, or another instance of it)."""
         self._nolock_since = None
         if c.is_iptv:
-            self.player.play_uri(c.url)
+            if c.url:
+                self.player.play_uri(c.url)
+            else:
+                self.player.stop()          # DVB-I: an HbbTV application is the service
             self.hbbtv.channel_changed(c, None)
             from .. import hooks
             hooks.run("channel-tuned", (c,))          # the user's scripts (DVB: via emit)

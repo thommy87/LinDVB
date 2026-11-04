@@ -505,3 +505,61 @@ def test_availability_windows():
                           _ts("2026-03-01T00:00:00Z"))
     ch = dvbi.build_channels(sl, "", []).channels[0]
     assert ch.dvbi_periods == per and ch.dvbi_oos_logo == "https://x/off.png"
+
+
+APPS = b"""<ServiceList xmlns="urn:dvb:metadata:servicediscovery:2024" xmlns:tva="urn:tva:metadata:2024">
+ <Service><UniqueIdentifier>tag:red</UniqueIdentifier><ServiceName>Das Erste</ServiceName>
+  <RelatedMaterial><tva:HowRelated href="urn:dvb:metadata:cs:LinkedApplicationCS:2019:1.1"/>
+   <tva:MediaLocator><tva:MediaUri contentType="application/vnd.dvb.ait+xml">https://x/ait.xml</tva:MediaUri></tva:MediaLocator>
+  </RelatedMaterial>
+  <RelatedMaterial><tva:HowRelated href="urn:dvb:metadata:cs:LinkedApplicationCS:2019:1.1"/>
+   <tva:MediaLocator><tva:MediaUri contentType="image/png">https://x/not-an-app.png</tva:MediaUri></tva:MediaLocator>
+  </RelatedMaterial>
+  <ServiceInstance priority="1">
+   <RelatedMaterial><tva:HowRelated href="urn:dvb:metadata:cs:LinkedApplicationCS:2019:1.1"/>
+    <tva:MediaLocator><tva:MediaUri contentType="text/html">https://x/web.html</tva:MediaUri></tva:MediaLocator>
+   </RelatedMaterial>
+   <DASHDeliveryParameters><UriBasedLocation contentType="application/dash+xml">
+    <URI>https://x/ard.mpd</URI></UriBasedLocation></DASHDeliveryParameters>
+  </ServiceInstance>
+  <ServiceInstance priority="2">
+   <DASHDeliveryParameters><UriBasedLocation contentType="application/dash+xml">
+    <URI>https://y/ard.mpd</URI></UriBasedLocation></DASHDeliveryParameters>
+  </ServiceInstance>
+ </Service>
+ <Service><UniqueIdentifier>tag:app</UniqueIdentifier><ServiceName>Mediathek</ServiceName>
+  <ServiceInstance priority="1">
+   <RelatedMaterial><tva:HowRelated href="urn:dvb:metadata:cs:LinkedApplicationCS:2019:1.2"/>
+    <tva:MediaLocator><tva:MediaUri contentType="application/vnd.hbbtv.xhtml+xml">https://x/app/</tva:MediaUri></tva:MediaLocator>
+   </RelatedMaterial>
+   <SourceType>urn:dvb:metadata:source:application</SourceType>
+  </ServiceInstance>
+ </Service>
+ <Service><UniqueIdentifier>tag:empty</UniqueIdentifier><ServiceName>Nichts</ServiceName>
+  <ServiceInstance priority="1"><SourceType>urn:dvb:metadata:source:application</SourceType></ServiceInstance>
+ </Service>
+</ServiceList>"""
+
+
+def test_linked_hbbtv_applications():
+    sl = dvbi.parse_service_list(APPS)
+    red, app, empty = sl.services
+    assert red.apps == [{"url": "https://x/ait.xml", "type": "application/vnd.dvb.ait+xml",
+                         "role": "parallel"}]
+    assert red.instances[0].apps[0]["url"] == "https://x/web.html"
+    assert app.instances[0].kind == "application"
+    res = dvbi.build_channels(sl, "", [])
+    assert [c.name for c in res.channels] == ["Das Erste", "Mediathek"]
+    assert [m[0] for m in res.missing] == ["Nichts"]
+    ard, media = res.channels
+    assert [(a["url"], a["level"]) for a in ard.dvbi_apps] == \
+        [("https://x/ait.xml", "service"), ("https://x/web.html", "instance")]
+    # an application is the service: an internet channel without a stream
+    assert media.is_iptv and media.url == "" and media.dvbi_apps[0]["role"] == "media"
+    # the channel list keeps the applications
+    again = Channel.from_dict(__import__("dataclasses").asdict(ard))
+    assert again.dvbi_apps == ard.dvbi_apps
+    # failover: the other instance has only the service's application
+    alt = dvbi.alternatives(ard, [])
+    assert [c.url for c in alt] == ["https://y/ard.mpd"]
+    assert [a["url"] for a in alt[0].dvbi_apps] == ["https://x/ait.xml"]

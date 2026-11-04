@@ -228,6 +228,38 @@ def broadcast_components(audio, audio_cur, subtitles, sub_cur):
     return out
 
 
+# -- DVB-I linked applications ----------------------------------------------------------
+
+def dvbi_ait(apps, fetch):
+    """One AIT for the linked HbbTV applications of a DVB-I channel
+    (lindvb.dvbi._linked_apps): an XML AIT is fetched with *fetch(url) ->
+    bytes* and read, an HTML application becomes an AUTOSTART application of
+    its own. Applications that present the service (role "media") come first.
+    None when no application is left."""
+    merged = aitmod.Ait(app_type=aitmod.HBBTV_APP_TYPE, version=0)
+    seen = set()
+    for entry in sorted(apps, key=lambda a: a.get("role") != "media"):
+        url, ctype = entry.get("url") or "", (entry.get("type") or "").lower()
+        if ctype == aitmod.XML_AIT_TYPE or (not ctype and url.lower().endswith((".aitx", ".ait.xml"))):
+            try:
+                ait = aitmod.parse_xml_ait(fetch(url))
+            except Exception:  # noqa: BLE001 - a network or server failure: skip this one
+                ait = None
+        else:
+            ait = aitmod.ait_for_url(url)
+        if ait and entry.get("role") == "media" and \
+                not any(a.control_code == aitmod.AUTOSTART for a in ait.apps):
+            ait.apps[0].control_code = aitmod.AUTOSTART
+        for app in (ait.apps if ait else ()):
+            if app.key in seen:
+                continue
+            seen.add(app.key)
+            if entry.get("role") == "media":
+                app.priority += 0x100            # the service's own application wins
+            merged.apps.append(app)
+    return merged if merged.apps else None
+
+
 # -- DRM ------------------------------------------------------------------------------
 
 # LinDVB has no licensed DRM system; these names only tell the user which one
@@ -391,6 +423,16 @@ class Lifecycle:
         self.running = app
         self.running_url = url or (self.ait.url(app) if self.ait else "")
         self.launch_cb(self.running_url, app)
+
+    def start_service_app(self):
+        """A DVB-I service that is an application: start it even with
+        autostart off, since there is no picture without it."""
+        if self.ait is None or self.active:
+            return False
+        app = self.ait.autostart()
+        if app is None or app.key in self.suppressed:
+            return False
+        return self._gate(app, by_user=False)
 
     def red_button(self):
         """The user pressed red while no app takes keys: start the service's app."""

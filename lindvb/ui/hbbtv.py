@@ -10,6 +10,8 @@ window of its own.
 import json
 import os
 import tempfile
+import threading
+import urllib.request
 
 import gi
 
@@ -217,6 +219,9 @@ class HbbTV:
         if self._sync_selector and self.cs is not None:
             self.cs.set_content(self._content_id() or None)
         self.life.autostart = self.settings.get("hbbtv_autostart", False)
+        if capture is None and self.enabled and channel is not None and channel.dvbi_apps:
+            self._dvbi_signalling(channel, same)
+            return
         if capture is None or not self.enabled:
             self.life.no_signalling()
             self._notify()
@@ -459,6 +464,39 @@ class HbbTV:
         h = self._ste.pop(lid, None)
         if h is not None and self.dsmcc is not None:
             self.dsmcc.remove_listener(h)
+
+    def _dvbi_signalling(self, channel, same):
+        """A DVB-I internet channel: its service list names the applications
+        (an XML AIT or a page) instead of an AIT in the broadcast."""
+        if not same:
+            self._unlocked = set()
+            self.life.channel_changed()
+        if self.view is not None and self.life.active:
+            self._js("channelChanged", self._channel_json(channel))
+        key, apps, app_only = channel.key, list(channel.dvbi_apps), not channel.url
+        ua = hb.user_agent(hb.terminal_version())
+
+        def fetch(url):
+            req = urllib.request.Request(url, headers={"User-Agent": ua})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                return r.read(1 << 20)
+
+        def done(ait):
+            if self._channel_key != key or self.capture is not None:
+                return False                     # zapped away meanwhile
+            if ait is None:
+                self.life.no_signalling()
+                self._notify()
+            else:
+                self._on_ait(ait)
+                if app_only:
+                    self.life.start_service_app()
+                    self._notify()
+            return False
+
+        threading.Thread(target=lambda: GLib.idle_add(done, hb.dvbi_ait(apps, fetch)),
+                         daemon=True).start()
+        self._notify()
 
     def _on_ait(self, ait):
         self.life.on_ait(ait)

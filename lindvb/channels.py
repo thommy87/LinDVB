@@ -76,6 +76,7 @@ class Channel:
     dvbi_guide: dict = field(default_factory=dict)   # content guide endpoints
     dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
+    dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
 
     @property
     def is_iptv(self):
@@ -454,7 +455,7 @@ def parse_m3u(text, root="IPTV"):
 def write_m3u(channels):
     lines = ["#EXTM3U"]
     for c in channels:
-        if c.is_iptv:
+        if c.is_iptv and c.url:
             tvg = c.xmltv_id or c.tvg_id
             attrs = f'tvg-id="{tvg}" ' if tvg else ""
             if c.tvg_name:

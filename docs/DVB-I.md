@@ -27,7 +27,9 @@ without the Save button.
      DVB-DASH, Icecast radio), tried in priority order. A broadcast instance is
      used when your own channel search found the service (DVB triplet; a missing
      tsId or origNetId is a wildcard). Otherwise the internet instance is used.
-     DASH instances with DRM are skipped
+     DASH instances with DRM are skipped. A service whose instance is an
+     HbbTV application (source type `application`) becomes an internet
+     channel without a stream: the application presents it
    * satellite instances that your channel search did not find are tuned
      straight from the list (frequency, polarisation, symbol rate; the whole
      transponder is received and the service picked by its ID). This needs
@@ -93,8 +95,26 @@ only. The ARD entries (`itv.ard.de/dvbi/...`) forward to the broadcaster's
 stream for the viewer's country, and from abroad that server answers
 "403 Forbidden". LinDVB then shows *The server refused the stream (HTTP 403)*.
 This is the broadcaster's decision and cannot be fixed in the player. Channels
-that only list satellite or cable, or a link to an HbbTV app with DRM (most
+that only list satellite or cable, or an HbbTV application with DRM (most
 private channels), are left out of the channel list.
+
+## HbbTV on DVB-I channels
+
+Over antenna, cable or satellite the application comes from the AIT in the
+broadcast, as on any channel. For internet instances the service list names
+the applications itself (`RelatedMaterial` with
+`urn:dvb:metadata:cs:LinkedApplicationCS:2019`, at the service or the
+instance):
+
+* `:1.1`, an application beside the video: the red button and autostart work
+  as with a broadcast AIT
+* `:1.2`, an application that presents the service: it comes first, and it
+  starts by itself when the service has no stream of its own
+
+The link is an XML AIT (`application/vnd.dvb.ait+xml`, TS 102 809 5.4),
+which LinDVB downloads when you tune in, or the page of the application
+(HTML/XHTML). Carousel files and stream events need the broadcast, so they do
+not exist on internet channels. See [HBBTV.md](HBBTV.md).
 
 ## Not yet
 
@@ -103,5 +123,4 @@ These parts of the profile are planned for later stages:
 * past days of the content guide, "more episodes" and box sets
 * direct tuning for antenna and cable (their delivery parameters carry no
   frequency, so these need a channel search)
-* HbbTV, linked applications, MSE/EME and DRM (most private channels and
-  restart/catch-up)
+* MSE/EME and DRM (most private channels and restart/catch-up)

@@ -169,3 +169,68 @@ def test_monitor_reports_video_pts():
     pes = bytes([0, 0, 1, 0xE0, 0, 0, 0x80, 0x80, 5]) + bytes(b)
     mon.feed_packet(bytes([0x47, 0x42, 0x00, 0x10]) + pes + b"\xff" * (184 - len(pes)))
     assert got == [pts]
+
+
+XML_AIT = b"""<?xml version="1.0" encoding="UTF-8"?>
+<mhp:ServiceDiscovery xmlns:mhp="urn:dvb:mhp:2009"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <mhp:ApplicationDiscovery DomainName="ard.de"><mhp:ApplicationList>
+  <mhp:Application>
+   <mhp:appName Language="deu">ARD Startleiste</mhp:appName>
+   <mhp:applicationIdentifier><mhp:orgId>19</mhp:orgId><mhp:appId>10</mhp:appId></mhp:applicationIdentifier>
+   <mhp:applicationDescriptor>
+    <mhp:type><mhp:OtherApp>application/vnd.hbbtv.xhtml+xml</mhp:OtherApp></mhp:type>
+    <mhp:controlCode>AUTOSTART</mhp:controlCode>
+    <mhp:visibility>VISIBLE_ALL</mhp:visibility>
+    <mhp:serviceBound>false</mhp:serviceBound>
+    <mhp:priority>1</mhp:priority>
+    <mhp:version>01</mhp:version>
+    <mhp:mhpVersion><mhp:profile>0</mhp:profile><mhp:versionMajor>1</mhp:versionMajor>
+     <mhp:versionMinor>3</mhp:versionMinor><mhp:versionMicro>1</mhp:versionMicro></mhp:mhpVersion>
+   </mhp:applicationDescriptor>
+   <mhp:applicationTransport xsi:type="mhp:HTTPTransportType">
+    <mhp:URLBase>https://hbbtv.ard.de/</mhp:URLBase></mhp:applicationTransport>
+   <mhp:applicationLocation>start/index.html?ch=1</mhp:applicationLocation>
+  </mhp:Application>
+  <mhp:Application>
+   <mhp:applicationIdentifier><mhp:orgId>19</mhp:orgId><mhp:appId>11</mhp:appId></mhp:applicationIdentifier>
+   <mhp:applicationDescriptor>
+    <mhp:type><mhp:OtherApp>application/vnd.hbbtv.xhtml+xml</mhp:OtherApp></mhp:type>
+    <mhp:controlCode>PRESENT</mhp:controlCode>
+   </mhp:applicationDescriptor>
+   <mhp:applicationUsageDescriptor><mhp:ApplicationUsage>urn:dvb:mhp:2009:digitalText</mhp:ApplicationUsage></mhp:applicationUsageDescriptor>
+   <mhp:applicationTransport xsi:type="mhp:HTTPTransportType">
+    <mhp:URLBase>https://text.ard.de</mhp:URLBase></mhp:applicationTransport>
+   <mhp:applicationLocation>index.html</mhp:applicationLocation>
+  </mhp:Application>
+  <mhp:Application>
+   <mhp:applicationIdentifier><mhp:orgId>19</mhp:orgId><mhp:appId>12</mhp:appId></mhp:applicationIdentifier>
+   <mhp:applicationDescriptor>
+    <mhp:type><mhp:OtherApp>application/x-something-else</mhp:OtherApp></mhp:type>
+    <mhp:controlCode>AUTOSTART</mhp:controlCode>
+   </mhp:applicationDescriptor>
+   <mhp:applicationTransport xsi:type="mhp:HTTPTransportType">
+    <mhp:URLBase>https://other/</mhp:URLBase></mhp:applicationTransport>
+  </mhp:Application>
+ </mhp:ApplicationList></mhp:ApplicationDiscovery>
+</mhp:ServiceDiscovery>"""
+
+
+def test_xml_ait():
+    a = ait.parse_xml_ait(XML_AIT)
+    assert [x.key for x in a.apps] == [(19, 10), (19, 11)]
+    start = a.autostart()
+    assert start.key == (19, 10) and not start.service_bound and start.name() == "ARD Startleiste"
+    assert a.url(start) == "https://hbbtv.ard.de/start/index.html?ch=1"
+    assert start.profiles == [(0, (1, 3, 1))]
+    tt = a.teletext()
+    assert tt.key == (19, 11) and a.url(tt) == "https://text.ard.de/index.html"
+    assert ait.parse_xml_ait(b"<nonsense") is None
+    assert ait.parse_xml_ait(b"<x/>") is None
+
+
+def test_ait_for_url():
+    one, two = ait.ait_for_url("https://x/a.html"), ait.ait_for_url("https://x/b.html")
+    assert one.url(one.autostart()) == "https://x/a.html"
+    assert one.apps[0].key != two.apps[0].key
+    assert ait.ait_for_url("https://x/a.html").apps[0].key == one.apps[0].key
