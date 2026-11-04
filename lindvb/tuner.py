@@ -177,6 +177,8 @@ class Capture(GObject.Object):
         "stats": (GObject.SignalFlags.RUN_LAST, None, (object,)),
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "eit": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
+        # the private guide of a platform (MediaHighway 1/2, Freesat), keyed like "eit"
+        "provider-epg": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
         # the transport stream id from the PAT, when the channel list lacks it
         "tsid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
         # HbbTV: a new version of the service's AIT (lindvb.ait.Ait)
@@ -324,7 +326,7 @@ class Capture(GObject.Object):
 
     def _on_provider_events(self, key, events):
         # called from the streaming thread; hand over to the main loop
-        GLib.idle_add(lambda: (self.emit("eit", key, events), False)[1])
+        GLib.idle_add(lambda: (self.emit("provider-epg", key, events), False)[1])
 
     def start(self):
         if self.pipeline.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:

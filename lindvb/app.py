@@ -68,6 +68,8 @@ class LinDVBApp(Gtk.Application):
         Gtk.Application.do_startup(self)
         apply_timezone(self.settings)
         self.epg = EPGStore(persist=self.settings.get("epg_save", True))
+        self.epg.linker = self._epg_links
+        self.apply_epg_priority()
         self.tuners = TunerManager(self.settings, ca_factory=self.plugins.make_ca_provider)
         self.timers = TimerManager(self)
         self.plugins.bind_app(self)
@@ -145,8 +147,35 @@ class LinDVBApp(Gtk.Application):
     # -- EPG -------------------------------------------------------------------
     def on_eit(self, _cap, key, events):
         for ev in events:
-            self.epg.add(key, ev)
+            self.epg.add(key, ev, "eit")
         self._epg_dirty = True
+
+    def on_provider_epg(self, _cap, key, events):
+        for ev in events:
+            self.epg.add(key, ev, "provider")
+        self._epg_dirty = True
+
+    def _epg_links(self):
+        """Store key -> all guide keys of the channel (see Channel.epg_links);
+        also maps the per-channel source orders onto the store keys."""
+        from .epgmerge import normalize_order
+        by_channel = self.settings.get("epg_priority_channels") or {}
+        links, orders = {}, {}
+        for c in self.db.channels:
+            keys = c.epg_links
+            if len(keys) > 1:
+                have = links.setdefault(keys[0], [])
+                have += [k for k in keys[1:] if k not in have]
+            if c.key in by_channel:
+                orders[keys[0]] = normalize_order(by_channel[c.key])
+        self.epg.channel_orders = orders
+        return links
+
+    def apply_epg_priority(self):
+        """Hand the source priority of the settings to the EPG store."""
+        s = self.settings
+        self.epg.set_priority(s.get("epg_priority_mode", "auto"), s.get("epg_priority_order"))
+        self.epg.relink()
 
     def on_tsid(self, cap, tsid):
         """Channel lists without transport stream ids (older scans) learn it from
@@ -198,7 +227,7 @@ class LinDVBApp(Gtk.Application):
     def _apply_xmltv(self, channels, items):
         from . import xmltvmatch
         for cid, ev in items:
-            self.epg.add("xmltv:" + cid, ev)
+            self.epg.add("xmltv:" + cid, ev, "xmltv")
         xmltvmatch.save_channels(channels)
         matched, unmatched = xmltvmatch.auto_match(self.db.channels, channels)
         self.db.save()
@@ -254,7 +283,7 @@ class LinDVBApp(Gtk.Application):
             count, with_guide, failed = 0, 0, 0
             for src, (events, errors) in zip(srcs, results):
                 for ev in events:
-                    self.epg.add(src.key, ev)
+                    self.epg.add(src.key, ev, "dvbi")
                 count += len(events)
                 with_guide += bool(events)
                 failed += bool(errors and not events)

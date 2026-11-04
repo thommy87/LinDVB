@@ -11,6 +11,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 
 from .config import CACHE_DIR
+from .epgmerge import DEFAULT_ORDER, merge, normalize_order, source_for_key
 
 GENRES = {
     0x1: "Movie/Drama", 0x2: "News/Current affairs", 0x3: "Show/Game show",
@@ -48,15 +49,31 @@ class Event:
 
 
 class EPGStore:
-    """Events keyed by "tsid:sid" (DVB) or "url:<url>" / XMLTV id (IPTV)."""
+    """Events keyed by "tsid:sid" (DVB), "xmltv:<id>", "dvbi:<id>" ... and by
+    source (see :mod:`lindvb.epgmerge`).
+
+    Every source keeps its own programmes; asking for a key returns the
+    merged guide of all keys *linked* to it (the channel's broadcast EIT,
+    its XMLTV and DVB-I guides), in the priority set by :meth:`set_priority`.
+    """
 
     path = CACHE_DIR / "epg.json"
 
     def __init__(self, persist=True):
-        self.events: dict[str, dict[int, Event]] = {}
+        # key -> source -> start -> Event
+        self.events: dict[str, dict[str, dict[int, Event]]] = {}
         self.listeners = []
         # "Save EPG data": keep the guide on disk beyond the end of the program.
         self.persist = persist
+        # linker() -> {key: [linked keys]}, rebuilt after each notify()
+        self.linker = None
+        self._links = None
+        self.mode = "auto"
+        self.order = list(DEFAULT_ORDER)
+        self.channel_orders = {}         # key -> source order
+        self._version = 0
+        self._key_versions = {}
+        self._cache = {}
         if persist:
             self.load()
 
@@ -64,11 +81,19 @@ class EPGStore:
         try:
             data = json.loads(self.path.read_text())
             now = time.time()
-            for key, evs in data.items():
-                self.events[key] = {e["start"]: Event(**e) for e in evs
-                                    if e["start"] + e["duration"] > now}
-        except (OSError, ValueError, TypeError):
+            if isinstance(data, dict) and data.get("version") == 2:
+                items = [(k, src, evs) for k, by_src in data["events"].items()
+                         for src, evs in by_src.items()]
+            else:                       # LinDVB 0.6 and older: no sources
+                items = [(k, source_for_key(k), evs) for k, evs in data.items()]
+            for key, src, evs in items:
+                bucket = {e["start"]: Event(**e) for e in evs
+                          if e["start"] + e["duration"] > now}
+                if bucket:
+                    self.events.setdefault(key, {})[src] = bucket
+        except (OSError, ValueError, TypeError, KeyError, AttributeError):
             pass
+        self._changed()
 
     def save(self):
         if not self.persist:
@@ -79,26 +104,93 @@ class EPGStore:
             return
         self.path.parent.mkdir(parents=True, exist_ok=True)
         now = time.time()
-        data = {k: [asdict(e) for e in v.values() if e.end > now]
+        data = {k: {src: [asdict(e) for e in b.values() if e.end > now]
+                    for src, b in v.items()}
                 for k, v in self.events.items()}
-        self.path.write_text(json.dumps(data))
+        self.path.write_text(json.dumps({"version": 2, "events": data}))
 
-    def add(self, key, ev):
-        bucket = self.events.setdefault(key, {})
-        # drop overlapping older entries (rescheduled programmes)
+    def add(self, key, ev, source=None):
+        """Add a programme of *source* (default: guessed from the key)."""
+        bucket = self.events.setdefault(key, {}).setdefault(source or source_for_key(key), {})
+        # drop overlapping older entries of the same source (rescheduled programmes)
         for s in [s for s, e in bucket.items()
                   if s != ev.start and s < ev.end and e.end > ev.start]:
             del bucket[s]
         bucket[ev.start] = ev
+        self._changed(key)
+
+    def _changed(self, key=None):
+        """Drop cached merges: of all keys, or of those *key* is part of."""
+        if key is None:
+            self._version += 1
+        else:
+            self._key_versions[key] = self._key_versions.get(key, 0) + 1
 
     def notify(self):
+        self._links = None              # the channel list may have changed too
         for cb in self.listeners:
             cb()
 
+    # -- priority --------------------------------------------------------------------
+    def set_priority(self, mode="auto", order=None, channel_orders=None):
+        """*mode* "auto" or "custom" (then *order* is used for all channels);
+        *channel_orders* maps a store key to the order for that channel."""
+        self.mode = mode if mode in ("auto", "custom") else "auto"
+        self.order = normalize_order(order)
+        self.channel_orders = {k: normalize_order(v) for k, v in (channel_orders or {}).items()}
+        self._changed()
+
+    def links(self):
+        if self._links is None:
+            try:
+                self._links = dict(self.linker()) if self.linker else {}
+            except Exception:           # a broken channel list must not break the guide
+                self._links = {}
+        return self._links
+
+    def relink(self):
+        self._links = None
+        self._changed()
+
+    def buckets(self, key):
+        """source -> [Event] of *key* and the keys linked to it."""
+        out = {}
+        for k in dict.fromkeys([key] + list(self.links().get(key, ()))):
+            for src, b in self.events.get(k, {}).items():
+                out.setdefault(src, []).extend(b.values())
+        return out
+
+    def order_for(self, key):
+        """The custom source order of *key*, or None for the automatic one."""
+        self.links()                    # the linker also sets channel_orders
+        if key in self.channel_orders:
+            return self.channel_orders[key]
+        return self.order if self.mode == "custom" else None
+
+    def merged(self, key):
+        order = self.order_for(key)
+        keys = [key] + list(self.links().get(key, ()))
+        stamp = (self._version, int(time.time()) // 60, tuple(keys), tuple(order or ()),
+                 tuple(self._key_versions.get(k, 0) for k in keys))
+        hit = self._cache.get(key)
+        if hit and hit[0] == stamp:
+            return hit[1]
+        if len(self._cache) > 5000:
+            self._cache.clear()
+        evs = merge(self.buckets(key), order)
+        self._cache[key] = (stamp, evs)
+        return evs
+
+    def keys(self):
+        """The keys a guide is shown for: linked keys stand for their own."""
+        links = self.links()
+        hidden = {k for main, ks in links.items() for k in ks if k != main}
+        return [k for k in dict.fromkeys(list(links) + list(self.events)) if k not in hidden]
+
+    # -- queries ---------------------------------------------------------------------
     def for_key(self, key, since=None):
         since = since if since is not None else time.time()
-        return sorted((e for e in self.events.get(key, {}).values() if e.end > since),
-                      key=lambda e: e.start)
+        return [e for e in self.merged(key) if e.end > since]
 
     def now_next(self, key):
         evs = self.for_key(key)
@@ -111,14 +203,14 @@ class EPGStore:
 
     def search(self, text, include_description=True, case=False):
         needle = text if case else text.lower()
-        for key, evs in self.events.items():
-            for e in evs.values():
+        for key in self.keys():
+            for e in self.for_key(key):
                 hay = e.title + " " + e.subtitle
                 if include_description:
                     hay += " " + e.description
                 if not case:
                     hay = hay.lower()
-                if needle in hay and e.end > time.time():
+                if needle in hay:
                     yield key, e
 
 

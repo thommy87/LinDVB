@@ -2018,3 +2018,67 @@ msgstr "Vytvořeno pomocí"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Vizualizace"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Vysílání (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG poskytovatele (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Průvodce DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Priorita zdrojů EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automaticky (doporučeno)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Vlastní pořadí"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automaticky: aktuální a následující pořad pocházejí z vysílání, dále dopředu vyhrává nejúplnější zdroj a mezery se doplňují z ostatních zdrojů. Žádný pořad se nezobrazí dvakrát."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Pořadí zdrojů EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Zdroj nahoře vyhrává, když se dva zdroje neshodují; ostatní doplňují mezery. Kanál s vlastním pořadím ho vždy použije, například když je jeho vysílané EPG špatné."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Platí pro"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Odebrat kanál"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Posunout nahoru"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Posunout dolů"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Vlastní pořadí pro kanál"

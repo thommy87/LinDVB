@@ -2018,3 +2018,67 @@ msgstr "Loodud kasutades"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Visualiseeringud"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Saade (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "Teenusepakkuja EPG (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "DVB-I saatekava"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Täpsemalt"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "EPG-allikate prioriteet"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automaatne (soovitatav)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Oma järjekord"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automaatne: praegune ja järgmine saade tulevad edastusest, kaugemale ette võidab kõige täielikum allikas ja lüngad täidetakse teistest allikatest. Ükski saade ei ilmu kaks korda."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "EPG-allikate järjekord"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Ülemine allikas võidab, kui kaks allikat on vastuolus; teised täidavad lüngad. Oma järjekorraga kanal kasutab alati seda, näiteks kui tema edastatav EPG on kehv."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Kehtib"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Eemalda kanal"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Liiguta üles"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Liiguta alla"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Oma järjekord kanalile"

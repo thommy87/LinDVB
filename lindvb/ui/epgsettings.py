@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """The "Programme guide" page of the preferences: saving, language, info on
-channel change, time zone, XMLTV and the MediaHighway / Freesat transponders
-(modelled on DVBViewer's EPG options)."""
+channel change, time zone, XMLTV, the MediaHighway / Freesat transponders
+(modelled on DVBViewer's EPG options) and, under "Advanced", the priority of
+the EPG sources (lindvb.epgmerge)."""
 
 import copy
 
 from gi.repository import Gtk
 
 from ..epg import apply_timezone
+from ..epgmerge import DEFAULT_ORDER, SOURCE_LABELS, normalize_order
 from ..epgsources import DEFAULT_PROVIDER_FREQS, LANGUAGES, PROVIDER_TYPES
 from .common import dropdown, fill, make_column_view, message, selected
 from ..i18n import _
@@ -110,6 +112,8 @@ class EPGPrefs:
         self.entries = copy.deepcopy(s.get("epg_provider_freqs", DEFAULT_PROVIDER_FREQS))
         fill(self.store, self.entries)
 
+        self.priority = SourcePriority(app, page, group, row)
+
     # -- helpers -----------------------------------------------------------------------
     def _tz_output(self, spin):
         spin.set_text(_fmt_offset(spin.get_value()))
@@ -154,9 +158,174 @@ class EPGPrefs:
         s["epg_tz_auto"] = self.tz_auto.get_active()
         s["epg_tz_offset"] = int(self.tz_spin.get_value())
         s["epg_provider_freqs"] = self.entries
+        self.priority.save(s)
 
     def apply(self, s):
         apply_timezone(s)
+        self.app.apply_epg_priority()
         self.app.epg.persist = s["epg_save"]
         self.app.epg.save()
         self.app.epg.notify()
+
+
+def _search_dropdown(strings):
+    """A drop-down with a search entry, for long lists such as all channels."""
+    model = Gtk.StringList.new(strings)
+    dd = Gtk.DropDown(model=model)
+    dd.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+    dd.set_enable_search(True)
+    if hasattr(dd, "set_search_match_mode"):            # GTK 4.12
+        dd.set_search_match_mode(Gtk.StringFilterMatchMode.SUBSTRING)
+    return dd, model
+
+
+class SourcePriority:
+    """"Advanced": which EPG source wins, for all channels and per channel."""
+
+    def __init__(self, app, page, group, row):
+        s = app.settings
+        self.order = normalize_order(s.get("epg_priority_order"))
+        self.channels = {k: normalize_order(v)
+                         for k, v in (s.get("epg_priority_channels") or {}).items()}
+        self.all = [c for c in app.db.channels if not c.radio] + \
+            [c for c in app.db.channels if c.radio]
+        self.by_key = {}
+        for c in self.all:
+            self.by_key.setdefault(c.key, c)
+
+        g = group(page, _("Advanced"))
+        self.mode_dd = row(g, _("Priority of the EPG sources"),
+                           dropdown([_("Automatic (recommended)"), _("Custom order")],
+                                    1 if s.get("epg_priority_mode") == "custom" else 0),
+                           _("Automatic: now and next come from the broadcast, further ahead "
+                             "the most complete source wins, and gaps are filled from the "
+                             "other sources. A programme is never shown twice."))
+        self.mode_dd.connect("notify::selected", lambda *_: self._refresh())
+
+        page.append(Gtk.Label(label=_("Order of the EPG sources"), xalign=0,
+                              css_classes=["lv-section-title"], margin_top=4))
+        page.append(Gtk.Label(
+            label=_("The source at the top wins when two sources disagree; the others fill "
+                    "the gaps. A channel with an order of its own always uses it, for "
+                    "example when its broadcast EPG is poor."),
+            xalign=0, wrap=True, css_classes=["lv-hint"]))
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-group"])
+
+        top = Gtk.Box(spacing=6, margin_top=8)
+        top.append(Gtk.Label(label=_("Applies to"), xalign=0))
+        self.scope_dd, self.scope_model = _search_dropdown([])
+        self.scope_dd.set_hexpand(True)
+        self.scope_dd.connect("notify::selected", lambda *_: self._show_order())
+        top.append(self.scope_dd)
+        self.remove_btn = Gtk.Button(label=_("Remove Channel"))
+        self.remove_btn.connect("clicked", lambda *_: self._remove())
+        top.append(self.remove_btn)
+        box.append(top)
+
+        mid = Gtk.Box(spacing=6)
+        self.list = Gtk.ListBox(selection_mode=Gtk.SelectionMode.SINGLE, hexpand=True,
+                                css_classes=["boxed-list"])
+        mid.append(self.list)
+        side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, valign=Gtk.Align.START)
+        self.up_btn = Gtk.Button(icon_name="go-up-symbolic", tooltip_text=_("Move Up"))
+        self.up_btn.connect("clicked", lambda *_: self._move(-1))
+        self.down_btn = Gtk.Button(icon_name="go-down-symbolic", tooltip_text=_("Move Down"))
+        self.down_btn.connect("clicked", lambda *_: self._move(1))
+        self.reset_btn = Gtk.Button(label=_("Defaults"))
+        self.reset_btn.connect("clicked", lambda *_: self._reset())
+        for b in (self.up_btn, self.down_btn, self.reset_btn):
+            side.append(b)
+        mid.append(side)
+        box.append(mid)
+
+        add = Gtk.Box(spacing=6, margin_bottom=8)
+        self.chan_dd, _m = _search_dropdown([self._name(c) for c in self.all])
+        self.chan_dd.set_hexpand(True)
+        self.chan_dd.set_tooltip_text(_("Channel"))
+        add_btn = Gtk.Button(label=_("Own Order for Channel"))
+        add_btn.connect("clicked", lambda *_: self._add())
+        add_btn.set_sensitive(bool(self.all))
+        add.append(self.chan_dd)
+        add.append(add_btn)
+        box.append(add)
+        page.append(box)
+
+        self._scopes = []
+        self._fill_scopes()
+        self._refresh()
+
+    # -- helpers -----------------------------------------------------------------------
+    @staticmethod
+    def _name(c):
+        return f"{c.number}  {c.name}" if getattr(c, "number", 0) else c.name
+
+    def _fill_scopes(self, select=None):
+        keys = sorted((k for k in self.channels if k in self.by_key),
+                      key=lambda k: self._name(self.by_key[k]).lower())
+        # overrides of channels no longer in the list stay, but are not shown
+        self._scopes = [None] + keys
+        names = [_("All channels")] + [self._name(self.by_key[k]) for k in keys]
+        self.scope_model.splice(0, self.scope_model.get_n_items(), names)
+        self.scope_dd.set_selected(self._scopes.index(select) if select in self._scopes else 0)
+        self._show_order()
+
+    def _scope(self):
+        i = self.scope_dd.get_selected()
+        return self._scopes[i] if 0 <= i < len(self._scopes) else None
+
+    def _current(self):
+        key = self._scope()
+        return self.order if key is None else self.channels[key]
+
+    def _show_order(self, select=0):
+        while (child := self.list.get_first_child()) is not None:
+            self.list.remove(child)
+        for i, src in enumerate(self._current()):
+            self.list.append(Gtk.Label(label=f"{i + 1}.  {_(SOURCE_LABELS[src])}", xalign=0,
+                                       margin_start=8, margin_end=8, margin_top=6,
+                                       margin_bottom=6))
+        self.list.select_row(self.list.get_row_at_index(select))
+        self._refresh()
+
+    def _refresh(self):
+        custom = self.mode_dd.get_selected() == 1 or self._scope() is not None
+        for w in (self.list, self.up_btn, self.down_btn, self.reset_btn):
+            w.set_sensitive(custom)
+        self.remove_btn.set_sensitive(self._scope() is not None)
+
+    def _move(self, step):
+        row = self.list.get_selected_row()
+        if row is None:
+            return
+        order = self._current()
+        i, j = row.get_index(), row.get_index() + step
+        if 0 <= j < len(order):
+            order[i], order[j] = order[j], order[i]
+            self._show_order(j)
+
+    def _reset(self):
+        key = self._scope()
+        if key is None:
+            self.order = list(DEFAULT_ORDER)
+        else:
+            self.channels[key] = list(DEFAULT_ORDER)
+        self._show_order()
+
+    def _add(self):
+        i = self.chan_dd.get_selected()
+        if not 0 <= i < len(self.all):
+            return
+        key = self.all[i].key
+        self.channels.setdefault(key, list(self.order))
+        self._fill_scopes(key)
+
+    def _remove(self):
+        key = self._scope()
+        if key is not None:
+            self.channels.pop(key, None)
+            self._fill_scopes()
+
+    def save(self, s):
+        s["epg_priority_mode"] = "custom" if self.mode_dd.get_selected() == 1 else "auto"
+        s["epg_priority_order"] = list(self.order)
+        s["epg_priority_channels"] = {k: list(v) for k, v in self.channels.items()}

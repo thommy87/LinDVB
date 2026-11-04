@@ -2018,3 +2018,67 @@ msgstr "Δημιουργήθηκε με"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Οπτικοποιήσεις"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Εκπομπή (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG παρόχου (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Οδηγός DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (διαδίκτυο)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Για προχωρημένους"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Προτεραιότητα των πηγών EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Αυτόματα (συνιστάται)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Δική σας σειρά"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Αυτόματα: το τρέχον και το επόμενο πρόγραμμα έρχονται από την εκπομπή, πιο μπροστά κερδίζει η πληρέστερη πηγή και τα κενά συμπληρώνονται από τις άλλες πηγές. Κανένα πρόγραμμα δεν εμφανίζεται δύο φορές."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Σειρά των πηγών EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Η πηγή στην κορυφή κερδίζει όταν δύο πηγές διαφωνούν· οι άλλες συμπληρώνουν τα κενά. Ένα κανάλι με δική του σειρά τη χρησιμοποιεί πάντα, για παράδειγμα όταν το EPG της εκπομπής του είναι κακό."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Ισχύει για"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Αφαίρεση καναλιού"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Μετακίνηση πάνω"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Μετακίνηση κάτω"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Δική του σειρά για το κανάλι"

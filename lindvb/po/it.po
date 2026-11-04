@@ -2018,3 +2018,67 @@ msgstr "Realizzato con"
 #: lindvb/credits.py
 msgid "Visualisations"
 msgstr "Visualizzazioni"
+
+#: lindvb/epgmerge.py
+msgid "Broadcast (EIT)"
+msgstr "Trasmissione (EIT)"
+
+#: lindvb/epgmerge.py
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG del provider (MediaHighway / Freesat)"
+
+#: lindvb/epgmerge.py
+msgid "DVB-I content guide"
+msgstr "Guida DVB-I"
+
+#: lindvb/epgmerge.py
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Advanced"
+msgstr "Avanzate"
+
+#: lindvb/ui/epgsettings.py
+msgid "Priority of the EPG sources"
+msgstr "Priorità delle fonti EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic (recommended)"
+msgstr "Automatica (consigliata)"
+
+#: lindvb/ui/epgsettings.py
+msgid "Custom order"
+msgstr "Ordine personalizzato"
+
+#: lindvb/ui/epgsettings.py
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automatica: il programma in onda e il successivo vengono dalla trasmissione, più avanti vince la fonte più completa e i vuoti vengono riempiti dalle altre fonti. Nessun programma appare due volte."
+
+#: lindvb/ui/epgsettings.py
+msgid "Order of the EPG sources"
+msgstr "Ordine delle fonti EPG"
+
+#: lindvb/ui/epgsettings.py
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "La fonte in alto vince quando due fonti non concordano; le altre riempiono i vuoti. Un canale con un ordine proprio lo usa sempre, per esempio quando la sua EPG trasmessa è scarsa."
+
+#: lindvb/ui/epgsettings.py
+msgid "Applies to"
+msgstr "Si applica a"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove Channel"
+msgstr "Rimuovi canale"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Up"
+msgstr "Sposta su"
+
+#: lindvb/ui/epgsettings.py
+msgid "Move Down"
+msgstr "Sposta giù"
+
+#: lindvb/ui/epgsettings.py
+msgid "Own Order for Channel"
+msgstr "Ordine proprio per il canale"

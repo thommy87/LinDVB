@@ -112,6 +112,18 @@ class Channel:
             return "iptv:" + self.name.lower()
         return f"{self.tsid}:{self.sid}"
 
+    @property
+    def epg_links(self):
+        """All guide keys of the channel, ``epg_key`` first: the broadcast EIT,
+        the DVB-I content guide (when it is loaded) and XMLTV. The EPG store
+        merges them by the source priority (lindvb.epgmerge)."""
+        keys = [self.epg_key]
+        if self.dvbi_id and DVBI_GUIDE_FIRST and self.dvbi_guide.get("schedule"):
+            keys.append("dvbi:" + self.dvbi_id)
+        if self.xmltv_id:
+            keys.append("xmltv:" + self.xmltv_id)
+        return list(dict.fromkeys(keys))
+
     def pids(self):
         p = [0, 1, 16, 17, 18, 20, self.pmt_pid, self.pcr_pid, self.video_pid,
              self.teletext_pid, self.ait_pid, *self.audio_pids, *self.subtitle_pids]
