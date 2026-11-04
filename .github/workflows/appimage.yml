@@ -49,8 +49,14 @@ jobs:
           key: projectm-${{ runner.os }}-${{ hashFiles('packaging/build-projectm.sh') }}
 
       - name: Run tests
-        # under a virtual display, so the HbbTV browser test runs in WebKitGTK
-        run: xvfb-run -a python3 -m pytest -q tests
+        # Under a virtual display, so the HbbTV browser tests run in WebKitGTK.
+        # Ubuntu 24.04 restricts unprivileged user namespaces, which WebKit's
+        # bubblewrap sandbox needs; allow them so the tests run sandboxed.
+        run: |
+          cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns || true
+          bwrap --ro-bind / / --unshare-user true && echo "bwrap ok" || echo "bwrap refused"
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          xvfb-run -a python3 -m pytest -q -p no:cacheprovider tests
 
       - name: Build AppImage
         shell: bash
