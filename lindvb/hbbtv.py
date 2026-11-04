@@ -228,6 +228,74 @@ def broadcast_components(audio, audio_cur, subtitles, sub_cur):
     return out
 
 
+# -- parental control ---------------------------------------------------------------
+
+AGE_LIMITS = (0, 6, 12, 16)      # 0: off; else the age of the youngest viewer
+PIN_TRIES = 3
+PIN_LOCK_SECONDS = 300
+
+
+def rating_age(rating):
+    """Minimum age of a DVB parental rating (EN 300 468 6.2.28): 0x01..0x0F
+    = rating + 3 years; 0 (undefined) and broadcaster codes count as none."""
+    return rating + 3 if 0x01 <= rating <= 0x0F else 0
+
+
+def min_age(ratings, country="DEU"):
+    """Minimum age of [(country, rating)], the viewer's country first."""
+    mine = [r for c, r in ratings if c.upper() == country.upper()]
+    pool = mine or [r for _c, r in ratings]
+    return max((rating_age(r) for r in pool), default=0)
+
+
+def needs_pin(ratings, limit, country="DEU"):
+    return bool(limit) and min_age(ratings, country) > limit
+
+
+def hash_pin(pin, salt):
+    import hashlib
+    return hashlib.pbkdf2_hmac("sha256", str(pin).encode(), bytes.fromhex(salt), 100_000).hex()
+
+
+def new_salt():
+    return os.urandom(16).hex()
+
+
+class PinGuard:
+    """Checks the youth protection PIN; locks for a while after wrong tries.
+
+    verify() answers as OIPF verifyParentalControlPIN: 0 correct, 1 wrong,
+    2 locked."""
+
+    def __init__(self, settings, clock=None):
+        import time
+        self.settings = settings
+        self.clock = clock or time.monotonic
+        self.wrong = 0
+        self.locked_until = 0.0
+
+    @property
+    def locked(self):
+        return self.clock() < self.locked_until
+
+    @property
+    def has_pin(self):
+        return bool(self.settings.get("hbbtv_pin") and self.settings.get("hbbtv_pin_salt"))
+
+    def verify(self, pin):
+        if self.locked:
+            return 2
+        if self.has_pin and hash_pin(pin, self.settings["hbbtv_pin_salt"]) == self.settings["hbbtv_pin"]:
+            self.wrong = 0
+            return 0
+        self.wrong += 1
+        if self.wrong >= PIN_TRIES:
+            self.wrong = 0
+            self.locked_until = self.clock() + PIN_LOCK_SECONDS
+            return 2
+        return 1
+
+
 # -- application lifecycle ------------------------------------------------------
 
 class Lifecycle:
@@ -247,6 +315,8 @@ class Lifecycle:
         self.running = None              # AitApp, or None for a broadcast-independent app
         self.running_url = ""
         self.suppressed = set()          # app keys the user (or the app) closed on this service
+        self.allowed = None              # callable(app) -> bool: parental control
+        self.on_blocked = None           # callable(app, start): ask for the PIN, then start()
 
     def channel_changed(self):
         """Before the new channel's AIT arrives."""
@@ -276,7 +346,19 @@ class Lifecycle:
         if self.autostart:
             app = ait.autostart()
             if app is not None and app.key not in self.suppressed:
-                self.start(app)
+                self._gate(app, by_user=False)
+
+    def _gate(self, app, by_user):
+        """Start *app* unless parental control holds it back. Apps rated
+        above the limit never start by themselves; the user is asked for the
+        PIN when they start one."""
+        if self.allowed is None or self.allowed(app):
+            self.start(app)
+            return True
+        if by_user and self.on_blocked is not None:
+            self.on_blocked(app, lambda: self.start(app))
+            return True
+        return False
 
     def start(self, app, url=None):
         self.running = app
@@ -291,16 +373,14 @@ class Lifecycle:
         if app is None:
             return False
         self.suppressed.discard(app.key)
-        self.start(app)
-        return True
+        return self._gate(app, by_user=True)
 
     def teletext_button(self):
         """The TEXT key: the digital teletext application, if the AIT has one."""
         app = self.ait.teletext() if self.ait else None
         if app is None:
             return False
-        self.start(app)
-        return True
+        return self._gate(app, by_user=True)
 
     def create_application(self, url):
         """Application.createApplication(): an app the AIT may not list."""

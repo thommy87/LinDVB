@@ -1919,3 +1919,66 @@ msgstr "Le applicazioni preferiscono la traccia audio che descrive l'immagine."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "La sandbox di WebKit non può creare namespace utente qui (restrizione AppArmor di Ubuntu), quindi le applicazioni non possono avviarsi in sicurezza. Vedi docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Questo servizio interattivo è vietato ai minori di {age} anni."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Bloccato dal controllo parentale. Imposta un PIN nelle preferenze."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Troppi PIN errati. Riprova tra qualche minuto."
+
+msgid "Youth protection"
+msgstr "Controllo parentale"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Sblocca"
+
+msgid "Wrong PIN."
+msgstr "PIN errato."
+
+msgid "This video is rated {age}+."
+msgstr "Questo video è vietato ai minori di {age} anni."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Televideo del servizio interattivo del canale (Ctrl+Maiusc+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Televideo dal servizio interattivo"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Il tasto TXT apre il televideo HbbTV del canale, dove c'è."
+
+msgid "Viewers from {age} years"
+msgstr "Spettatori da {age} anni"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Le applicazioni e i loro video classificati oltre questa età richiedono il PIN."
+
+msgid "Current PIN"
+msgstr "PIN attuale"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Serve per cambiare il controllo parentale o il PIN."
+
+msgid "New PIN"
+msgstr "Nuovo PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Lascia vuoto per mantenere il PIN attuale."
+
+msgid "Youth protection not changed"
+msgstr "Controllo parentale non modificato"
+
+msgid "The current PIN is wrong."
+msgstr "Il PIN attuale è errato."
+
+msgid "Youth protection needs a PIN"
+msgstr "Il controllo parentale richiede un PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Imposta un PIN per attivare il controllo parentale."

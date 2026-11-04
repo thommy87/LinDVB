@@ -143,6 +143,35 @@ window.onload = function () {
 </body></html>
 """
 
+PC_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  var pc = document.getElementById('pc');
+  L('threshold=' + pc.parentalRatingSchemes.getParentalRatingScheme('dvb-si').threshold.name);
+  var av = document.getElementById('av');
+  av.onParentalRatingChange = function (cid, ratings, drm, blocked) {
+    L('rated=' + (ratings.length ? ratings[0].name : '-') + ':' + blocked);
+    if (blocked) {
+      L('wrong=' + pc.verifyParentalControlPIN('0000'));
+      L('right=' + pc.verifyParentalControlPIN('1234'));
+    }
+  };
+  av.onPlayStateChange = function () {
+    if (av.playState === 1 && log.indexOf('playing') < 0) {
+      L('playing');
+    }
+  };
+  av.data = 'dash/manifest-rated.mpd';
+  av.play(1);
+};
+</script></head><body>
+<object id="pc" type="application/oipfParentalControlManager"></object>
+<object id="av" type="application/dash+xml" style="position:absolute;left:0;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
 DATA = os.path.join(os.path.dirname(__file__), "data")
 
 
@@ -162,7 +191,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 ("video/mp4" if "stream0" in name else "audio/mp4")
         else:
             body = DASH_APP if path.startswith("/dashapp") else \
-                SUB_APP if path.startswith("/subapp") else APP
+                SUB_APP if path.startswith("/subapp") else \
+                PC_APP if path.startswith("/pcapp") else APP
             ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
         self.send_header("Content-Type", ctype)
@@ -467,3 +497,29 @@ def test_object_carousel_application_and_stream_events():
     # a new channel: the listeners hear of it
     hbb.channel_changed(Channel("ZDF", delsys="dvb-s2", sid=28006, onid=1, tsid=1079), None)
     win.window.destroy()
+
+
+def test_parental_control_holds_a_rated_video():
+    """A DASH video rated 16+ with the age limit at 12: held back until the
+    app checks the PIN with verifyParentalControlPIN()."""
+    from lindvb import hbbtv as hbc
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        salt = hbc.new_salt()
+        win.settings.update({"hbbtv_age_limit": 12, "hbbtv_pin_salt": salt,
+                             "hbbtv_pin": hbc.hash_pin("1234", salt)})
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "pcapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: "playing" in title(), timeout=40), title()
+        assert title() == "threshold=13 rated=16:true wrong=1 rated=-:false right=0 playing"
+        assert hbb._pin_dialog is None and not hbb._media_blocked
+        win.window.destroy()
+    finally:
+        server.shutdown()

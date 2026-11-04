@@ -1919,3 +1919,66 @@ msgstr "Az alkalmazások a képet leíró hangsávot részesítik előnyben."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "A WebKit homokozója itt nem hozhat létre felhasználói névtereket (az Ubuntu AppArmor-korlátozása), ezért az alkalmazások nem indulhatnak biztonságosan. Lásd docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Ez az interaktív szolgáltatás {age} éven felülieknek szól."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "A szülői felügyelet letiltotta. Állítson be PIN-kódot a beállításokban."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Túl sok hibás PIN-kód. Próbálja újra néhány perc múlva."
+
+msgid "Youth protection"
+msgstr "Szülői felügyelet"
+
+msgid "PIN"
+msgstr "PIN-kód"
+
+msgid "Unlock"
+msgstr "Feloldás"
+
+msgid "Wrong PIN."
+msgstr "Hibás PIN-kód."
+
+msgid "This video is rated {age}+."
+msgstr "Ez a videó {age} éven felülieknek szól."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "A csatorna interaktív szolgáltatásának teletextje (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletext az interaktív szolgáltatásból"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "A TXT gomb megnyitja a csatorna HbbTV-teletextjét, ahol van ilyen."
+
+msgid "Viewers from {age} years"
+msgstr "Nézők {age} éves kortól"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Az ennél magasabb korhatárú alkalmazások és videóik PIN-kódot kérnek."
+
+msgid "Current PIN"
+msgstr "Jelenlegi PIN-kód"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "A szülői felügyelet vagy a PIN-kód módosításához kell."
+
+msgid "New PIN"
+msgstr "Új PIN-kód"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Hagyja üresen a jelenlegi PIN-kód megtartásához."
+
+msgid "Youth protection not changed"
+msgstr "A szülői felügyelet nem változott"
+
+msgid "The current PIN is wrong."
+msgstr "A jelenlegi PIN-kód hibás."
+
+msgid "Youth protection needs a PIN"
+msgstr "A szülői felügyelethez PIN-kód kell"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Állítson be PIN-kódot a szülői felügyelet bekapcsolásához."

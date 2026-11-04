@@ -374,6 +374,80 @@
     try { l.fn.call(l.el, ev); } catch (e) { console.error(e); }
   }
 
+  /* ---------------------------------------------------------------- parental control
+   * The viewer's age limit (Preferences): DVB parental ratings above it need
+   * the PIN. The PIN dialog is the terminal's; verifyParentalControlPIN()
+   * asks the terminal synchronously, which counts wrong tries and locks. */
+  var pcLocked = false, pcLastAnswer = 1;
+  var pcScheme = [];
+  for (var age = 4; age <= 18; age++) {
+    pcScheme.push({ name: String(age), scheme: "dvb-si", value: age - 3, labels: 0, region: cfg.country || "DEU" });
+  }
+  pcScheme.name = "dvb-si";
+  pcScheme.description = "DVB-SI minimum age";
+  pcScheme.indexOf = function (r) { return r ? Math.max(-1, (+r.value || +r.name - 3) - 1) : -1; };
+  pcScheme.iconUri = function () { return ""; };
+  pcScheme.threshold = cfg.ageLimit ?
+    { name: String(cfg.ageLimit + 1), scheme: "dvb-si", value: cfg.ageLimit - 2, labels: 0, region: cfg.country || "DEU" } :
+    { name: "", scheme: "dvb-si", value: 0xFF, labels: 0, region: cfg.country || "DEU" };
+
+  function verifyPin(pin) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open("GET", "lindvb:pin?value=" + encodeURIComponent(String(pin)), false);
+      x.send();
+      pcLastAnswer = parseInt(x.responseText, 10);
+      if (isNaN(pcLastAnswer)) { pcLastAnswer = 1; }
+    } catch (e) { pcLastAnswer = 1; }
+    pcLocked = pcLastAnswer === 2;
+    if (pcLastAnswer === 0) {
+      Object.keys(pcHeld).forEach(function (id) { window.__lindvb.parentalUnlock(+id); });
+      post({ cmd: "pc-unlocked" });
+    }
+    return pcLastAnswer;
+  }
+
+  // minimum age of an MPD: <Rating schemeIdUri="urn:dvb:iptv:rating:2014" value="EN 300 468 rating"/>
+  function mpdAge(node, depth) {
+    var best = 0;
+    if (!node || typeof node !== "object" || depth > 6) { return 0; }
+    Object.keys(node).forEach(function (k) {
+      var v = node[k];
+      if (/^Rating(_asArray)?$/.test(k)) {
+        (Array.isArray(v) ? v : [v]).forEach(function (r) {
+          if (r && /urn:dvb:iptv:rating:2014/i.test(r.schemeIdUri || "")) {
+            var n = parseInt(r.value, 10);
+            if (n >= 1 && n <= 15) { best = Math.max(best, n + 3); }
+          }
+        });
+      } else if (k.slice(-8) === "_asArray" && Array.isArray(v)) {
+        v.forEach(function (c) { best = Math.max(best, mpdAge(c, depth + 1)); });
+      }
+    });
+    return best;
+  }
+
+  var pcHeld = {}, pcNext = 1;
+  function pcCheck(video, manifest) {
+    var age = mpdAge(manifest, 0);
+    if (!cfg.ageLimit || age <= cfg.ageLimit) { return; }
+    var id = pcNext++;
+    pcHeld[id] = video;
+    video.__pcBlocked = id;
+    try { video.pause(); } catch (e) { /* not started */ }
+    var rating = { name: String(age), scheme: "dvb-si", value: age - 3, labels: 0, region: cfg.country || "DEU" };
+    var owner = video.__lindvbAV || video;
+    post({ cmd: "pc-blocked", id: id, age: age });
+    if (owner.__fire) {
+      owner.__fire("ParentalRatingChange", { contentID: null, ratings: [rating], DRMSystemID: null, blocked: true },
+                   [null, [rating], null, true]);
+    }
+  }
+  document.addEventListener("play", function (e) {
+    var v = e.target;
+    if (v && v.__pcBlocked) { v.pause(); }
+  }, true);
+
   var channelConfig = {};
   Object.defineProperty(channelConfig, "channelList", { get: channelList });
   Object.defineProperty(channelConfig, "favouriteLists", { get: function () { return []; } });
@@ -450,6 +524,9 @@
     video.__dashUrl = url;
     p.on(dashLib.MediaPlayer.events.ERROR, function (e) {
       console.error("LinDVB DASH:", e && e.error && (e.error.message || e.error.code));
+    });
+    p.on(dashLib.MediaPlayer.events.MANIFEST_LOADED, function (e) {
+      try { pcCheck(video, e && e.data); } catch (err) { console.error(err); }
     });
     p.on(dashLib.MediaPlayer.events.STREAM_INITIALIZED, function () {
       if (!cfg.subtitles && !video.__textChosen) { p.enableText(false); }
@@ -564,6 +641,7 @@
     var video = document.createElement("video");
     video.style.cssText = "width:100%;height:100%;display:block;background:transparent";
     video.setAttribute("playsinline", "");
+    video.__lindvbAV = el;
     el.appendChild(video);
     var data = el.getAttribute("data") || "";
     el.removeAttribute("data");
@@ -666,10 +744,21 @@
       Object.defineProperty(el, "xmlCapabilities", { get: function () { return capabilities.xmlCapabilities; } });
     },
     "application/oipfparentalcontrolmanager": function (el) {
-      el.parentalRatingSchemes = [];
-      el.isPINEntryLocked = false;
+      var schemes = [pcScheme];
+      schemes.getParentalRatingScheme = function (name) { return name === "dvb-si" ? pcScheme : null; };
+      schemes.item = function (i) { return schemes[i]; };
+      el.parentalRatingSchemes = schemes;
+      Object.defineProperty(el, "isPINEntryLocked", { get: function () { return pcLocked; } });
       el.getBlockUnrated = function () { return false; };
-      el.verifyParentalControlPIN = function () { return 1; };
+      el.setBlockUnrated = function () { return 1; };
+      el.getParentalControlStatus = function () { return !!cfg.ageLimit; };
+      // apps may check the PIN (it unlocks held videos), never switch protection off
+      el.verifyParentalControlPIN = verifyPin;
+      el.setParentalControlStatus = function (pin) { return verifyPin(pin) === 0 ? 1 : pcLastAnswer; };
+      el.setParentalControlPIN = function () { return 1; };
+      el.setParentalControlPINEnable = function () { return 1; };
+      el.getParentalControlPINEnable = function () { return !!cfg.hasPin; };
+      el.unlockWithParentalControlPIN = function (pin) { return verifyPin(pin); };
     },
     "application/oipfsearchmanager": function (el) {
       el.guideDaysAvailable = 0;
@@ -770,6 +859,18 @@
       broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
     },
     streamEvent: function (lid, ev) { steFire(lid, ev); },
+    parentalUnlock: function (id) {
+      var v = pcHeld[id];
+      delete pcHeld[id];
+      if (!v) { return; }
+      v.__pcBlocked = 0;
+      var owner = v.__lindvbAV || v;
+      if (owner.__fire) {
+        owner.__fire("ParentalRatingChange", { contentID: null, ratings: [], DRMSystemID: null, blocked: false },
+                     [null, [], null, false]);
+      }
+      try { v.play(); } catch (e) { /* the app plays it */ }
+    },
     streamEventsLost: function () {
       Object.keys(steListeners).forEach(function (lid) {
         steFire(lid, { name: steListeners[lid].name, data: "", text: "", status: "error" });

@@ -1919,3 +1919,66 @@ msgstr "Is fearr le feidhmchláir an fuaimrian a dhéanann cur síos ar an bpict
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Ní féidir le bosca gainimh WebKit spásanna ainmneacha úsáideora a chruthú anseo (srian AppArmor Ubuntu), mar sin ní féidir le feidhmchláir tosú go sábháilte. Féach docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Tá an tseirbhís idirghníomhach seo oiriúnach ó {age} bliain d'aois."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Bactha ag rialú tuismitheoirí. Socraigh PIN sna sainroghanna."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "An iomarca PIN mícheart. Bain triail eile as i gceann cúpla nóiméad."
+
+msgid "Youth protection"
+msgstr "Rialú tuismitheoirí"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Díghlasáil"
+
+msgid "Wrong PIN."
+msgstr "PIN mícheart."
+
+msgid "This video is rated {age}+."
+msgstr "Tá an físeán seo oiriúnach ó {age} bliain d'aois."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teilitéacs sheirbhís idirghníomhach an chainéil (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teilitéacs ón tseirbhís idirghníomhach"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Osclaíonn an cnaipe TXT teilitéacs HbbTV an chainéil, más ann dó."
+
+msgid "Viewers from {age} years"
+msgstr "Lucht féachana ó {age} bliain"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Teastaíonn an PIN ó fheidhmchláir agus a bhfíseáin atá rátáilte os cionn na haoise seo."
+
+msgid "Current PIN"
+msgstr "PIN reatha"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Ag teastáil chun rialú tuismitheoirí nó an PIN a athrú."
+
+msgid "New PIN"
+msgstr "PIN nua"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Fág folamh chun an PIN reatha a choinneáil."
+
+msgid "Youth protection not changed"
+msgstr "Níor athraíodh rialú tuismitheoirí"
+
+msgid "The current PIN is wrong."
+msgstr "Tá an PIN reatha mícheart."
+
+msgid "Youth protection needs a PIN"
+msgstr "Teastaíonn PIN ó rialú tuismitheoirí"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Socraigh PIN chun rialú tuismitheoirí a chur ar siúl."

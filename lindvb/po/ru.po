@@ -1919,3 +1919,66 @@ msgstr "Приложения предпочитают звуковую доро�
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Песочнице WebKit здесь запрещено создавать пользовательские пространства имён (ограничение AppArmor в Ubuntu), поэтому приложения не могут безопасно запуститься. См. docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Эта интерактивная услуга предназначена для зрителей старше {age} лет."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Заблокировано родительским контролем. Задайте PIN-код в настройках."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Слишком много неверных PIN-кодов. Попробуйте снова через несколько минут."
+
+msgid "Youth protection"
+msgstr "Родительский контроль"
+
+msgid "PIN"
+msgstr "PIN-код"
+
+msgid "Unlock"
+msgstr "Разблокировать"
+
+msgid "Wrong PIN."
+msgstr "Неверный PIN-код."
+
+msgid "This video is rated {age}+."
+msgstr "Это видео предназначено для зрителей старше {age} лет."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Телетекст интерактивной услуги канала (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Телетекст из интерактивной услуги"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Кнопка TXT открывает телетекст HbbTV канала, если он есть."
+
+msgid "Viewers from {age} years"
+msgstr "Зрители от {age} лет"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Приложения и их видео с более высоким возрастным ограничением требуют PIN-код."
+
+msgid "Current PIN"
+msgstr "Текущий PIN-код"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Нужен для изменения родительского контроля или PIN-кода."
+
+msgid "New PIN"
+msgstr "Новый PIN-код"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Оставьте пустым, чтобы сохранить текущий PIN-код."
+
+msgid "Youth protection not changed"
+msgstr "Родительский контроль не изменён"
+
+msgid "The current PIN is wrong."
+msgstr "Текущий PIN-код неверен."
+
+msgid "Youth protection needs a PIN"
+msgstr "Родительскому контролю нужен PIN-код"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Задайте PIN-код, чтобы включить родительский контроль."

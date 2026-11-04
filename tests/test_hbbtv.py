@@ -139,3 +139,47 @@ def test_sandbox_probe(monkeypatch):
     monkeypatch.setattr(hbbtv, "_SANDBOX", None)
     assert hbbtv.sandbox_ok(run=None, which=None, env={"FLATPAK_ID": "x"})
     monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+
+
+def test_parental_ratings():
+    assert hbbtv.rating_age(0x09) == 12 and hbbtv.rating_age(0) == 0 and hbbtv.rating_age(0x20) == 0
+    assert hbbtv.min_age([("FRA", 0x0F), ("DEU", 0x0D)]) == 16
+    assert hbbtv.min_age([("FRA", 0x09)]) == 12
+    assert hbbtv.needs_pin([("DEU", 0x0D)], 12) and not hbbtv.needs_pin([("DEU", 0x0D)], 16)
+    assert not hbbtv.needs_pin([("DEU", 0x0F)], 0)
+
+
+def test_pin_guard_locks_after_wrong_tries():
+    salt = hbbtv.new_salt()
+    now = [0.0]
+    g = hbbtv.PinGuard({"hbbtv_pin_salt": salt, "hbbtv_pin": hbbtv.hash_pin("1234", salt)},
+                       clock=lambda: now[0])
+    assert g.verify("1234") == 0
+    assert g.verify("0000") == 1 and g.verify("1111") == 1
+    assert g.verify("2222") == 2 and g.verify("1234") == 2      # locked, even the right one
+    now[0] += hbbtv.PIN_LOCK_SECONDS + 1
+    assert g.verify("1234") == 0
+    assert hbbtv.PinGuard({}).verify("") == 1                    # no PIN set
+
+
+def test_rated_app_needs_the_pin():
+    life, b = _life()
+    asked = []
+    life.allowed = lambda app: not hbbtv.needs_pin(app.parental, 12)
+    life.on_blocked = lambda app, start: asked.append((app.app_id, start))
+    rated = _app(1)
+    rated.parental = [("DEU", 0x0D)]
+    life.on_ait(_ait(rated))
+    assert b.calls == [] and asked == []                  # never by itself
+    assert life.red_button() and asked[0][0] == 1 and b.calls == []
+    asked[0][1]()                                         # the right PIN
+    assert b.calls == [("launch", "http://tv.example/index.html", 1)]
+
+
+def test_teletext_key_starts_the_teletext_app():
+    life, b = _life(autostart=False)
+    tt = _app(7, ait.PRESENT, loc="ttx.html")
+    tt.usage = ait.USAGE_TELETEXT
+    life.on_ait(_ait(_app(1), tt))
+    assert life.teletext_button()
+    assert b.calls == [("launch", "http://tv.example/ttx.html", 7)]

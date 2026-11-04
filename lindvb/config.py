@@ -42,6 +42,10 @@ DEFAULTS = {
     "hbbtv_subtitles": False,
     "hbbtv_audio_description": False,
     "hbbtv_language": "",               # ISO 639-2; "" = the interface language
+    "hbbtv_teletext": True,             # TXT starts the channel's digital teletext app
+    "hbbtv_age_limit": 0,               # youth protection: age of the youngest viewer, 0 = off
+    "hbbtv_pin": "",                    # PBKDF2 of the youth protection PIN
+    "hbbtv_pin_salt": "",
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
     "recording_dir": str(Path.home() / "Videos" / "LinDVB"),

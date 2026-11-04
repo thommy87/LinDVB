@@ -79,8 +79,41 @@ def _register_schemes(view):
         return
     _schemes.add(ctx)
     ctx.register_uri_scheme("dvb", _on_dvb_request)
+    ctx.register_uri_scheme("lindvb", _on_terminal_request)
     sec = ctx.get_security_manager()
     sec.register_uri_scheme_as_cors_enabled("dvb")
+    sec.register_uri_scheme_as_cors_enabled("lindvb")
+
+
+def _on_terminal_request(request):
+    """lindvb:pin?value=1234: verifyParentalControlPIN(), synchronous for the page."""
+    hb_ui = _views.get(request.get_web_view())
+    if hb_ui is None:
+        _request_error(request, "no HbbTV view")
+        return
+    from urllib.parse import parse_qs, urlsplit
+    parts = urlsplit(request.get_uri())
+    answer = ""
+    if parts.path.strip("/") == "pin":
+        answer = str(hb_ui.pin.verify(parse_qs(parts.query).get("value", [""])[0]))
+    _respond(request, answer.encode(), "text/plain")
+
+
+def _respond(request, data, mime):
+    """Finish a custom-scheme request; pages of any origin may read it (CORS)."""
+    resp = WebKit.URISchemeResponse.new(Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(data)),
+                                        len(data))
+    resp.set_content_type(mime)
+    try:
+        gi.require_version("Soup", "3.0")
+        from gi.repository import Soup
+        headers = Soup.MessageHeaders.new(Soup.MessageHeadersType.RESPONSE)
+        headers.append("Access-Control-Allow-Origin", "*")
+        headers.append("Cache-Control", "no-store")
+        resp.set_http_headers(headers)
+    except (ImportError, ValueError):
+        pass
+    request.finish_with_response(resp)
 
 
 def _on_dvb_request(request):
@@ -118,6 +151,12 @@ class HbbTV:
         self._channel_key = None
         self._picture_hidden = False
         self._tracks_handler = None
+        self.pin = hb.PinGuard(self.settings)
+        self._unlocked = set()          # apps the PIN opened on this service
+        self._media_blocked = {}        # JS id -> minimum age of a video held back
+        self._pin_dialog = None
+        self.life.allowed = self._allowed
+        self.life.on_blocked = self._ask_pin_for_app
         self.dsmcc = None               # lindvb.dsmcc.DsmccService of the capture
         self._carousel_tag = None       # component tag of the running app's carousel
         self._ste = {}                  # JS listener id -> DsmccService handle
@@ -146,6 +185,7 @@ class HbbTV:
             self._notify()
             return
         if not same:
+            self._unlocked = set()
             self.life.channel_changed()
         if self.view is not None and self.life.active:
             self._js("channelChanged", self._channel_json(channel))
@@ -173,6 +213,94 @@ class HbbTV:
         if monitor is not None:
             self.dsmcc = dsmcc.DsmccService(monitor, capture.add_pid, _idle)
 
+    # -- parental control ---------------------------------------------------------
+
+    @property
+    def age_limit(self):
+        try:
+            return int(self.settings.get("hbbtv_age_limit", 0) or 0)
+        except (TypeError, ValueError):
+            return 0
+
+    def _allowed(self, app):
+        return app.key in self._unlocked or not hb.needs_pin(
+            app.parental, self.age_limit, self.settings.get("hbbtv_country", "DEU"))
+
+    def _ask_pin_for_app(self, app, start):
+        age = hb.min_age(app.parental, self.settings.get("hbbtv_country", "DEU"))
+
+        def ok():
+            self._unlocked.add(app.key)
+            start()
+            self._notify()
+        self.ask_pin(_("This interactive service is rated {age}+.").format(age=age), ok)
+
+    def ask_pin(self, text, on_ok):
+        """The youth protection PIN dialog; on_ok() after the right PIN."""
+        if not self.pin.has_pin:
+            self.win.set_status(_("Blocked by youth protection. Set a PIN in the preferences."))
+            return
+        if self.pin.locked:
+            self.win.set_status(_("Too many wrong PINs. Try again in a few minutes."))
+            return
+        if self._pin_dialog is not None:
+            return
+        from gi.repository import Gtk
+        parent = getattr(self.win, "window", None) or self.win
+        dlg = Gtk.Window(title=_("Youth protection"), modal=True, resizable=False,
+                         transient_for=parent if isinstance(parent, Gtk.Window) else None)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin_top=18,
+                      margin_bottom=18, margin_start=18, margin_end=18)
+        box.append(Gtk.Label(label=text, xalign=0, wrap=True))
+        entry = Gtk.PasswordEntry(placeholder_text=_("PIN"), activates_default=True)
+        box.append(entry)
+        msg = Gtk.Label(xalign=0, css_classes=["lv-hint"])
+        box.append(msg)
+        buttons = Gtk.Box(spacing=8, halign=Gtk.Align.END)
+        cancel = Gtk.Button(label=_("Cancel"))
+        okb = Gtk.Button(label=_("Unlock"), css_classes=["suggested-action"])
+        buttons.append(cancel)
+        buttons.append(okb)
+        box.append(buttons)
+        dlg.set_child(box)
+        dlg.set_default_widget(okb)
+        self._pin_dialog = dlg
+
+        def close(*_):
+            self._pin_dialog = None
+            dlg.destroy()
+
+        def check(*_):
+            r = self.pin.verify(entry.get_text())
+            if r == 0:
+                close()
+                on_ok()
+            elif r == 2:
+                close()
+                self.win.set_status(_("Too many wrong PINs. Try again in a few minutes."))
+            else:
+                entry.set_text("")
+                msg.set_text(_("Wrong PIN."))
+        okb.connect("clicked", check)
+        entry.connect("activate", check)
+        cancel.connect("clicked", close)
+        dlg.connect("close-request", lambda *_: (close(), True)[1])
+        dlg.present()
+        entry.grab_focus()
+
+    def unlock_media(self):
+        """The right PIN (dialog or the app's verifyParentalControlPIN): play held videos."""
+        if self._pin_dialog is not None:
+            self._pin_dialog.destroy()
+            self._pin_dialog = None
+        for vid in list(self._media_blocked):
+            self._js("parentalUnlock", vid)
+        self._media_blocked = {}
+
+    def _media_rated(self, vid, age):
+        self._media_blocked[vid] = age
+        self.ask_pin(_("This video is rated {age}+.").format(age=age), self.unlock_media)
+
     # -- object carousel (dvb: URLs) ---------------------------------------------
 
     def serve_dvb(self, request):
@@ -196,9 +324,7 @@ class HbbTV:
             if not obj or obj.kind != "fil":
                 _request_error(request, "not in the object carousel: " + uri)
                 return True
-            path = dsmcc.parse_dvb_url(uri)[2]
-            stream = Gio.MemoryInputStream.new_from_bytes(GLib.Bytes.new(obj.content))
-            request.finish(stream, len(obj.content), dsmcc.mime_type(path))
+            _respond(request, obj.content, dsmcc.mime_type(dsmcc.parse_dvb_url(uri)[2]))
             return True
 
         if svc is None:
@@ -275,6 +401,32 @@ class HbbTV:
         if self.on_state:
             ait = self.life.ait
             self.on_state(bool(ait and ait.autostart()), self.life.active)
+
+    @property
+    def has_teletext_app(self):
+        return bool(self.enabled and self.settings.get("hbbtv_teletext", True)
+                    and self.life.ait and self.life.ait.teletext())
+
+    def teletext_button(self):
+        """The TXT key: start the digital teletext application, hand the key
+        to an application that asked for it, or close the teletext app.
+        False: the classic teletext should open."""
+        if not self.enabled:
+            return False
+        if self.life.active:
+            if hb.wanted(hb.VK["TELETEXT"], self.keyset, self.other_keys):
+                self._js("key", hb.VK["TELETEXT"])
+                return True
+            tt = self.life.ait.teletext() if self.life.ait else None
+            if tt is not None and self.life.running is not None and self.life.running.key == tt.key:
+                self.life.stop(by_user=True)              # TXT again: back to TV
+                self._notify()
+                return True
+        if not self.has_teletext_app:
+            return False
+        started = self.life.teletext_button()
+        self._notify()
+        return started
 
     @property
     def has_app(self):
@@ -384,7 +536,8 @@ class HbbTV:
             "config": {"audioLanguage": lang, "subtitleLanguage": lang, "uiLanguage": lang,
                        "country": self.settings.get("hbbtv_country", "DEU"),
                        "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
-                       "audioDescription": bool(self.settings.get("hbbtv_audio_description", False))},
+                       "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
+                       "ageLimit": self.age_limit, "hasPin": self.pin.has_pin},
             "app": {"org": app.org_id, "id": app.app_id} if app else None,
         }
         return hb.page_script(json.dumps(init))
@@ -451,6 +604,7 @@ class HbbTV:
 
     def _kill(self):
         self._ste_clear()
+        self._media_blocked = {}
         self._pending_red = False
         self.keyset, self.other_keys = 0, ()
         self.set_video_rect(None)
@@ -543,6 +697,10 @@ class HbbTV:
         elif cmd == "destroy":
             self.life.stop()
             self._notify()
+        elif cmd == "pc-blocked":
+            self._media_rated(msg.get("id"), int(msg.get("age") or 0))
+        elif cmd == "pc-unlocked":                 # the app checked the PIN itself
+            self.unlock_media()
         elif cmd == "ste-add":
             self._stream_event_add(msg)
         elif cmd == "ste-remove":

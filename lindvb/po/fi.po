@@ -1919,3 +1919,66 @@ msgstr "Sovellukset suosivat ääniraitaa, joka kuvailee kuvaa."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "WebKitin hiekkalaatikko ei voi luoda käyttäjänimiavaruuksia täällä (Ubuntun AppArmor-rajoitus), joten sovellukset eivät voi käynnistyä turvallisesti. Katso docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Tämä vuorovaikutteinen palvelu on sallittu {age} vuodesta alkaen."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Lapsilukko esti tämän. Aseta PIN-koodi asetuksissa."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Liian monta väärää PIN-koodia. Yritä uudelleen muutaman minuutin päästä."
+
+msgid "Youth protection"
+msgstr "Lapsilukko"
+
+msgid "PIN"
+msgstr "PIN-koodi"
+
+msgid "Unlock"
+msgstr "Avaa lukitus"
+
+msgid "Wrong PIN."
+msgstr "Väärä PIN-koodi."
+
+msgid "This video is rated {age}+."
+msgstr "Tämä video on sallittu {age} vuodesta alkaen."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Kanavan vuorovaikutteisen palvelun teksti-tv (Ctrl+Vaihto+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teksti-tv vuorovaikutteisesta palvelusta"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT-painike avaa kanavan HbbTV-teksti-tv:n, jos sellainen on."
+
+msgid "Viewers from {age} years"
+msgstr "Katsojat {age} vuodesta alkaen"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Tätä ikää korkeammalla ikärajalla merkityt sovellukset ja niiden videot vaativat PIN-koodin."
+
+msgid "Current PIN"
+msgstr "Nykyinen PIN-koodi"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Tarvitaan lapsilukon tai PIN-koodin muuttamiseen."
+
+msgid "New PIN"
+msgstr "Uusi PIN-koodi"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Jätä tyhjäksi, niin nykyinen PIN-koodi säilyy."
+
+msgid "Youth protection not changed"
+msgstr "Lapsilukkoa ei muutettu"
+
+msgid "The current PIN is wrong."
+msgstr "Nykyinen PIN-koodi on väärä."
+
+msgid "Youth protection needs a PIN"
+msgstr "Lapsilukko tarvitsee PIN-koodin"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Aseta PIN-koodi ottaaksesi lapsilukon käyttöön."

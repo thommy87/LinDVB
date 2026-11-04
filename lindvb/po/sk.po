@@ -1919,3 +1919,66 @@ msgstr "Aplikácie uprednostňujú zvukovú stopu, ktorá opisuje obraz."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Sandbox WebKitu tu nesmie vytvárať používateľské menné priestory (obmedzenie AppArmor v Ubuntu), preto sa aplikácie nemôžu bezpečne spustiť. Pozri docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Táto interaktívna služba je prístupná od {age} rokov."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Blokované rodičovskou kontrolou. Nastavte PIN v predvoľbách."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Príliš veľa chybných PIN-ov. Skúste to znova o niekoľko minút."
+
+msgid "Youth protection"
+msgstr "Rodičovská kontrola"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Odomknúť"
+
+msgid "Wrong PIN."
+msgstr "Chybný PIN."
+
+msgid "This video is rated {age}+."
+msgstr "Toto video je prístupné od {age} rokov."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teletext interaktívnej služby kanála (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletext z interaktívnej služby"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Tlačidlo TXT otvorí teletext HbbTV kanála, ak existuje."
+
+msgid "Viewers from {age} years"
+msgstr "Diváci od {age} rokov"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Aplikácie a ich videá s vyšším vekovým obmedzením vyžadujú PIN."
+
+msgid "Current PIN"
+msgstr "Súčasný PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Potrebný na zmenu rodičovskej kontroly alebo PIN-u."
+
+msgid "New PIN"
+msgstr "Nový PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Nechajte prázdne, ak chcete zachovať súčasný PIN."
+
+msgid "Youth protection not changed"
+msgstr "Rodičovská kontrola nezmenená"
+
+msgid "The current PIN is wrong."
+msgstr "Súčasný PIN je chybný."
+
+msgid "Youth protection needs a PIN"
+msgstr "Rodičovská kontrola potrebuje PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Nastavte PIN, aby ste zapli rodičovskú kontrolu."
