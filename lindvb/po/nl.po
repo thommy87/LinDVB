@@ -1919,3 +1919,90 @@ msgstr "Toepassingen kiezen bij voorkeur het geluidsspoor dat het beeld beschrij
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "De sandbox van WebKit mag hier geen user namespaces aanmaken (AppArmor-beperking van Ubuntu), dus toepassingen kunnen niet veilig starten. Zie docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Deze interactieve dienst is geschikt vanaf {age} jaar."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Geblokkeerd door ouderlijk toezicht. Stel een pincode in bij de voorkeuren."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Te veel verkeerde pincodes. Probeer het over een paar minuten opnieuw."
+
+msgid "Youth protection"
+msgstr "Ouderlijk toezicht"
+
+msgid "PIN"
+msgstr "Pincode"
+
+msgid "Unlock"
+msgstr "Ontgrendelen"
+
+msgid "Wrong PIN."
+msgstr "Verkeerde pincode."
+
+msgid "This video is rated {age}+."
+msgstr "Deze video is geschikt vanaf {age} jaar."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teletekst van de interactieve dienst van de zender (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletekst van de interactieve dienst"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "De TXT-knop opent de HbbTV-teletekst van de zender als die er is."
+
+msgid "Viewers from {age} years"
+msgstr "Kijkers vanaf {age} jaar"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Toepassingen en hun video's met een hogere leeftijdsgrens vragen om de pincode."
+
+msgid "Current PIN"
+msgstr "Huidige pincode"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Nodig om het ouderlijk toezicht of de pincode te wijzigen."
+
+msgid "New PIN"
+msgstr "Nieuwe pincode"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Leeg laten om de huidige pincode te houden."
+
+msgid "Youth protection not changed"
+msgstr "Ouderlijk toezicht niet gewijzigd"
+
+msgid "The current PIN is wrong."
+msgstr "De huidige pincode is verkeerd."
+
+msgid "Youth protection needs a PIN"
+msgstr "Ouderlijk toezicht heeft een pincode nodig"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Stel een pincode in om het ouderlijk toezicht in te schakelen."
+
+msgid "Companion screens on the network"
+msgstr "Tweede schermen in het netwerk"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefoons en tablets in je netwerk kunnen LinDVB vinden, met toepassingen praten, het beeld synchroon volgen en vragen om toepassingen te starten. Uit: niets luistert op het netwerk."
+
+msgid "Start an application from another device?"
+msgstr "Een toepassing van een ander apparaat starten?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Een apparaat in je netwerk wil ‘{name}’ starten ({url})."
+
+msgid "an HbbTV application"
+msgstr "een HbbTV-toepassing"
+
+msgid "Refuse"
+msgstr "Weigeren"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Deze video is versleuteld met {drm}. LinDVB ondersteunt geen DRM, dus hij kan niet worden afgespeeld."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Deze video is versleuteld. LinDVB ondersteunt geen DRM, dus hij kan niet worden afgespeeld."

@@ -2751,3 +2751,90 @@ msgstr ""
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr ""
+
+msgid "This interactive service is rated {age}+."
+msgstr ""
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr ""
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr ""
+
+msgid "Youth protection"
+msgstr ""
+
+msgid "PIN"
+msgstr ""
+
+msgid "Unlock"
+msgstr ""
+
+msgid "Wrong PIN."
+msgstr ""
+
+msgid "This video is rated {age}+."
+msgstr ""
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr ""
+
+msgid "Teletext from the interactive service"
+msgstr ""
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr ""
+
+msgid "Viewers from {age} years"
+msgstr ""
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr ""
+
+msgid "Current PIN"
+msgstr ""
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr ""
+
+msgid "New PIN"
+msgstr ""
+
+msgid "Leave empty to keep the current PIN."
+msgstr ""
+
+msgid "Youth protection not changed"
+msgstr ""
+
+msgid "The current PIN is wrong."
+msgstr ""
+
+msgid "Youth protection needs a PIN"
+msgstr ""
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr ""
+
+msgid "Companion screens on the network"
+msgstr ""
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr ""
+
+msgid "Start an application from another device?"
+msgstr ""
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr ""
+
+msgid "an HbbTV application"
+msgstr ""
+
+msgid "Refuse"
+msgstr ""
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr ""
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr ""

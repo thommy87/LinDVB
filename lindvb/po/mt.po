@@ -1919,3 +1919,90 @@ msgstr "L-applikazzjonijiet jippreferu l-binarju tal-ħoss li jiddeskrivi l-ista
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Is-sandbox ta' WebKit ma tistax toħloq namespaces tal-utent hawn (restrizzjoni AppArmor ta' Ubuntu), għalhekk l-applikazzjonijiet ma jistgħux jibdew b'mod sigur. Ara docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Dan is-servizz interattiv huwa adattat minn {age} sena 'l fuq."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Imblukkat mill-kontroll tal-ġenituri. Issettja PIN fil-preferenzi."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Wisq PINs ħżiena. Erġa' pprova fi ftit minuti."
+
+msgid "Youth protection"
+msgstr "Kontroll tal-ġenituri"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Iftaħ"
+
+msgid "Wrong PIN."
+msgstr "PIN ħażin."
+
+msgid "This video is rated {age}+."
+msgstr "Dan il-vidjo huwa adattat minn {age} sena 'l fuq."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teletext tas-servizz interattiv tal-kanal (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletext mis-servizz interattiv"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Il-buttuna TXT tiftaħ it-teletext HbbTV tal-kanal fejn ikun hemm."
+
+msgid "Viewers from {age} years"
+msgstr "Telespettaturi minn {age} sena"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "L-applikazzjonijiet u l-vidjows tagħhom klassifikati 'l fuq minn din l-età jitolbu l-PIN."
+
+msgid "Current PIN"
+msgstr "PIN attwali"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Meħtieġ biex tbiddel il-kontroll tal-ġenituri jew il-PIN."
+
+msgid "New PIN"
+msgstr "PIN ġdid"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Ħallih vojt biex iżżomm il-PIN attwali."
+
+msgid "Youth protection not changed"
+msgstr "Il-kontroll tal-ġenituri ma nbidilx"
+
+msgid "The current PIN is wrong."
+msgstr "Il-PIN attwali huwa ħażin."
+
+msgid "Youth protection needs a PIN"
+msgstr "Il-kontroll tal-ġenituri jeħtieġ PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Issettja PIN biex tixgħel il-kontroll tal-ġenituri."
+
+msgid "Companion screens on the network"
+msgstr "Skrins ta' akkumpanjament fuq in-netwerk"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "It-telefowns u t-tablets fin-netwerk tiegħek jistgħu jsibu lil LinDVB, ikellmu l-applikazzjonijiet, isegwu l-istampa b'mod sinkronizzat u jitolbu li jibdew applikazzjonijiet. Mitfi: xejn ma jisma' fuq in-netwerk."
+
+msgid "Start an application from another device?"
+msgstr "Tibda applikazzjoni minn apparat ieħor?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Apparat fin-netwerk tiegħek irid jibda “{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "applikazzjoni HbbTV"
+
+msgid "Refuse"
+msgstr "Irrifjuta"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Dan il-vidjo huwa kriptat b'{drm}. LinDVB ma jappoġġjax id-DRM, għalhekk ma jistax jintwera."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Dan il-vidjo huwa kriptat. LinDVB ma jappoġġjax id-DRM, għalhekk ma jistax jintwera."

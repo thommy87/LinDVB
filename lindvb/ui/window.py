@@ -863,6 +863,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.hbbtv_btn.set_tooltip_text(
             _("Close the interactive service (Esc)") if running else
             _("Interactive service of the channel (red button, F5)"))
+        self._update_teletext()
 
     def _place_overlay_child(self, overlay, widget, rect):
         """Picture in picture: a quarter of the video width in the bottom right corner.
@@ -1687,6 +1688,12 @@ class MainWindow(Gtk.ApplicationWindow):
         c = self.current
         has = bool(self.capture and c and (c.teletext_pid or self.player.has_teletext()))
         decoder = Gst.ElementFactory.find("teletextdec") is not None
+        hbb = getattr(self, "hbbtv", None)
+        if hbb is not None and hbb.has_teletext_app:
+            # HbbTV's digital teletext takes the TXT key (TS 102 796 7.2.3.2)
+            self.lookup_action("teletext").set_enabled(True)
+            self.ttx_btn.set_tooltip_text(_("Teletext of the channel's interactive service (Ctrl+Shift+T)"))
+            return
         self.lookup_action("teletext").set_enabled(has and decoder)
         self.ttx_btn.set_tooltip_text(
             _("Teletext (Ctrl+Shift+T)") if has and decoder else
@@ -1694,6 +1701,8 @@ class MainWindow(Gtk.ApplicationWindow):
             _("Teletext: not available on this channel"))
 
     def on_teletext(self):
+        if self.hbbtv.teletext_button():
+            return
         if not self.capture:
             self.set_status(_("Teletext needs a DVB channel"))
             return

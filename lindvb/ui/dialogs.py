@@ -33,7 +33,7 @@ def _row(group, label, widget, hint=None):
         text.append(Gtk.Label(label=hint, xalign=0, wrap=True, css_classes=["lv-hint"]))
     row.append(text)
     widget.set_valign(Gtk.Align.CENTER)
-    if isinstance(widget, Gtk.Entry):
+    if isinstance(widget, (Gtk.Entry, Gtk.PasswordEntry)):
         widget.set_size_request(280, -1)
     elif isinstance(widget, (Gtk.SpinButton, Gtk.DropDown)):
         widget.set_size_request(200, -1)
@@ -184,6 +184,26 @@ class PrefsWindow(Gtk.Window):
                _("Applications show subtitles in their videos from the start."))
         switch(g, "hbbtv_audio_description", _("Audio description in media libraries"),
                _("Applications prefer the soundtrack that describes the picture."))
+        switch(g, "hbbtv_teletext", _("Teletext from the interactive service"),
+               _("The TXT button opens the channel's HbbTV teletext where there is one."))
+        from .. import hbbtv as hb_core
+        ages = list(hb_core.AGE_LIMITS)
+        cur = int(s.get("hbbtv_age_limit", 0) or 0)
+        self._age_drop = _row(g, _("Youth protection"), dropdown(
+            [_("Off")] + [_("Viewers from {age} years").format(age=a) for a in ages[1:]],
+            ages.index(cur) if cur in ages else 0),
+            _("Applications and their videos rated above this age need the PIN."))
+        self._ages = ages
+        self._pin_old = None
+        if s.get("hbbtv_pin"):
+            self._pin_old = _row(g, _("Current PIN"), Gtk.PasswordEntry(show_peek_icon=True),
+                                 _("Needed to change the youth protection or the PIN."))
+        self._pin_entry = _row(g, _("New PIN"), Gtk.PasswordEntry(show_peek_icon=True),
+                               _("Leave empty to keep the current PIN."))
+        switch(g, "hbbtv_companion", _("Companion screens on the network"),
+               _("Phones and tablets in your network can find LinDVB, talk to applications and "
+                 "follow the picture in sync, and ask to start applications. Off: nothing listens "
+                 "on the network."))
         switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
                _("Advertising networks use them to follow you across channels."))
         clear = Gtk.Button(label=_("Delete HbbTV Data"))
@@ -368,10 +388,35 @@ class PrefsWindow(Gtk.Window):
             apply_accent(self.app.settings)    # drop the unsaved preview
         return False
 
+    def _save_youth_protection(self, s):
+        """Age limit and PIN; with a PIN set, only after the current PIN."""
+        from .. import hbbtv as hb_core
+        age = self._ages[self._age_drop.get_selected()]
+        pin = self._pin_entry.get_text().strip()
+        if age == int(s.get("hbbtv_age_limit", 0) or 0) and not pin:
+            return
+        if self._pin_old is not None:
+            old = self._pin_old.get_text().strip()
+            if hb_core.hash_pin(old, s.get("hbbtv_pin_salt", "")) != s.get("hbbtv_pin"):
+                from .common import message
+                message(self.get_transient_for() or self, _("Youth protection not changed"),
+                        _("The current PIN is wrong."))
+                return
+        if age and not pin and not s.get("hbbtv_pin"):
+            from .common import message
+            message(self.get_transient_for() or self, _("Youth protection needs a PIN"),
+                    _("Set a PIN to switch on the youth protection."))
+            return
+        s["hbbtv_age_limit"] = age
+        if pin:
+            s["hbbtv_pin_salt"] = hb_core.new_salt()
+            s["hbbtv_pin"] = hb_core.hash_pin(pin, s["hbbtv_pin_salt"])
+
     def on_save(self):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
+        self._save_youth_protection(s)
         s.update(self._accent_settings())
         s.update(self._rec_values())
         for k, (w, typ) in self.w.items():

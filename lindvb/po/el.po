@@ -1919,3 +1919,90 @@ msgstr "Οι εφαρμογές προτιμούν το ηχητικό κανά�
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Το sandbox του WebKit δεν μπορεί να δημιουργήσει χώρους ονομάτων χρήστη εδώ (περιορισμός AppArmor του Ubuntu), οπότε οι εφαρμογές δεν μπορούν να ξεκινήσουν με ασφάλεια. Δείτε docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Αυτή η διαδραστική υπηρεσία είναι κατάλληλη από {age} ετών."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Αποκλείστηκε από τον γονικό έλεγχο. Ορίστε ένα PIN στις προτιμήσεις."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Πάρα πολλά λάθος PIN. Δοκιμάστε ξανά σε λίγα λεπτά."
+
+msgid "Youth protection"
+msgstr "Γονικός έλεγχος"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Ξεκλείδωμα"
+
+msgid "Wrong PIN."
+msgstr "Λάθος PIN."
+
+msgid "This video is rated {age}+."
+msgstr "Αυτό το βίντεο είναι κατάλληλο από {age} ετών."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teletext της διαδραστικής υπηρεσίας του καναλιού (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletext από τη διαδραστική υπηρεσία"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Το κουμπί TXT ανοίγει το teletext HbbTV του καναλιού, όπου υπάρχει."
+
+msgid "Viewers from {age} years"
+msgstr "Θεατές από {age} ετών"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Εφαρμογές και τα βίντεό τους με υψηλότερο όριο ηλικίας ζητούν το PIN."
+
+msgid "Current PIN"
+msgstr "Τρέχον PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Χρειάζεται για να αλλάξετε τον γονικό έλεγχο ή το PIN."
+
+msgid "New PIN"
+msgstr "Νέο PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Αφήστε το κενό για να κρατήσετε το τρέχον PIN."
+
+msgid "Youth protection not changed"
+msgstr "Ο γονικός έλεγχος δεν άλλαξε"
+
+msgid "The current PIN is wrong."
+msgstr "Το τρέχον PIN είναι λάθος."
+
+msgid "Youth protection needs a PIN"
+msgstr "Ο γονικός έλεγχος χρειάζεται PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Ορίστε ένα PIN για να ενεργοποιήσετε τον γονικό έλεγχο."
+
+msgid "Companion screens on the network"
+msgstr "Συνοδευτικές οθόνες στο δίκτυο"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Τηλέφωνα και tablet στο δίκτυό σας μπορούν να βρουν το LinDVB, να μιλούν με εφαρμογές, να ακολουθούν την εικόνα συγχρονισμένα και να ζητούν την εκκίνηση εφαρμογών. Ανενεργό: τίποτα δεν ακούει στο δίκτυο."
+
+msgid "Start an application from another device?"
+msgstr "Εκκίνηση εφαρμογής από άλλη συσκευή;"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Μια συσκευή στο δίκτυό σας θέλει να ξεκινήσει το «{name}» ({url})."
+
+msgid "an HbbTV application"
+msgstr "μια εφαρμογή HbbTV"
+
+msgid "Refuse"
+msgstr "Άρνηση"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο με {drm}. Το LinDVB δεν υποστηρίζει DRM, οπότε δεν μπορεί να αναπαραχθεί."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Αυτό το βίντεο είναι κρυπτογραφημένο. Το LinDVB δεν υποστηρίζει DRM, οπότε δεν μπορεί να αναπαραχθεί."

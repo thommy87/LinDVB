@@ -1919,3 +1919,90 @@ msgstr "Lietotnes dod priekšroku skaņu celiņam, kas apraksta attēlu."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "WebKit smilškaste šeit nedrīkst veidot lietotāja nosaukumtelpas (Ubuntu AppArmor ierobežojums), tāpēc lietotnes nevar droši palaisties. Skatīt docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Šis interaktīvais pakalpojums ir atļauts no {age} gadu vecuma."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Bloķēja vecāku kontrole. Iestatiet PIN preferencēs."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Pārāk daudz nepareizu PIN. Mēģiniet vēlreiz pēc dažām minūtēm."
+
+msgid "Youth protection"
+msgstr "Vecāku kontrole"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Atbloķēt"
+
+msgid "Wrong PIN."
+msgstr "Nepareizs PIN."
+
+msgid "This video is rated {age}+."
+msgstr "Šis video ir atļauts no {age} gadu vecuma."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Kanāla interaktīvā pakalpojuma teleteksts (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teleteksts no interaktīvā pakalpojuma"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Poga TXT atver kanāla HbbTV teletekstu, ja tāds ir."
+
+msgid "Viewers from {age} years"
+msgstr "Skatītāji no {age} gadu vecuma"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Lietotnēm un to video ar augstāku vecuma ierobežojumu vajag PIN."
+
+msgid "Current PIN"
+msgstr "Pašreizējais PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Vajadzīgs, lai mainītu vecāku kontroli vai PIN."
+
+msgid "New PIN"
+msgstr "Jauns PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Atstājiet tukšu, lai paturētu pašreizējo PIN."
+
+msgid "Youth protection not changed"
+msgstr "Vecāku kontrole nav mainīta"
+
+msgid "The current PIN is wrong."
+msgstr "Pašreizējais PIN ir nepareizs."
+
+msgid "Youth protection needs a PIN"
+msgstr "Vecāku kontrolei vajag PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Iestatiet PIN, lai ieslēgtu vecāku kontroli."
+
+msgid "Companion screens on the network"
+msgstr "Pavadošie ekrāni tīklā"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Tālruņi un planšetes jūsu tīklā var atrast LinDVB, sazināties ar lietotnēm, sinhroni sekot attēlam un lūgt palaist lietotnes. Izslēgts: tīklā nekas neklausās."
+
+msgid "Start an application from another device?"
+msgstr "Vai palaist lietotni no citas ierīces?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Ierīce jūsu tīklā vēlas palaist “{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "HbbTV lietotni"
+
+msgid "Refuse"
+msgstr "Atteikt"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Šis video ir šifrēts ar {drm}. LinDVB neatbalsta DRM, tāpēc to nevar atskaņot."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Šis video ir šifrēts. LinDVB neatbalsta DRM, tāpēc to nevar atskaņot."

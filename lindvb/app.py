@@ -1,5 +1,6 @@
 """LinDVB application object: owns settings, channels, EPG, tuners and timers."""
 
+import os
 import sys
 import threading
 import time
@@ -52,6 +53,8 @@ class LinDVBApp(Gtk.Application):
         self.db = ChannelDB()
         for path in opts.get("import", []):
             path = path.decode() if isinstance(path, bytes) else path
+            if not os.path.isabs(path) and os.environ.get("LINDVB_ORIG_CWD"):
+                path = os.path.join(os.environ["LINDVB_ORIG_CWD"], path)   # AppImage
             loader = self.plugins.importer_for(path)
             channels = loader(path) if loader else import_file(path)
             added, updated = self.db.merge(channels)

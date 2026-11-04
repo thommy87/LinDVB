@@ -1919,3 +1919,90 @@ msgstr "Aplikacje wybierają ścieżkę dźwiękową opisującą obraz."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Piaskownica WebKit nie może tu tworzyć przestrzeni nazw użytkownika (ograniczenie AppArmor w Ubuntu), więc aplikacje nie mogą się bezpiecznie uruchomić. Zobacz docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Ta usługa interaktywna jest od {age} lat."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Zablokowane przez kontrolę rodzicielską. Ustaw PIN w preferencjach."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Zbyt wiele błędnych PIN-ów. Spróbuj ponownie za kilka minut."
+
+msgid "Youth protection"
+msgstr "Kontrola rodzicielska"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Odblokuj"
+
+msgid "Wrong PIN."
+msgstr "Błędny PIN."
+
+msgid "This video is rated {age}+."
+msgstr "To wideo jest od {age} lat."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Telegazeta usługi interaktywnej kanału (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Telegazeta z usługi interaktywnej"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Przycisk TXT otwiera telegazetę HbbTV kanału, jeśli jest dostępna."
+
+msgid "Viewers from {age} years"
+msgstr "Widzowie od {age} lat"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Aplikacje i ich filmy z wyższą kategorią wiekową wymagają PIN-u."
+
+msgid "Current PIN"
+msgstr "Obecny PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Potrzebny do zmiany kontroli rodzicielskiej lub PIN-u."
+
+msgid "New PIN"
+msgstr "Nowy PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Pozostaw puste, aby zachować obecny PIN."
+
+msgid "Youth protection not changed"
+msgstr "Kontrola rodzicielska bez zmian"
+
+msgid "The current PIN is wrong."
+msgstr "Obecny PIN jest błędny."
+
+msgid "Youth protection needs a PIN"
+msgstr "Kontrola rodzicielska wymaga PIN-u"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Ustaw PIN, aby włączyć kontrolę rodzicielską."
+
+msgid "Companion screens on the network"
+msgstr "Drugie ekrany w sieci"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefony i tablety w Twojej sieci mogą znaleźć LinDVB, rozmawiać z aplikacjami, śledzić obraz synchronicznie i prosić o uruchomienie aplikacji. Wyłączone: nic nie nasłuchuje w sieci."
+
+msgid "Start an application from another device?"
+msgstr "Uruchomić aplikację z innego urządzenia?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Urządzenie w Twojej sieci chce uruchomić „{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "aplikację HbbTV"
+
+msgid "Refuse"
+msgstr "Odmów"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ten film jest zaszyfrowany przy użyciu {drm}. LinDVB nie obsługuje DRM, więc nie można go odtworzyć."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ten film jest zaszyfrowany. LinDVB nie obsługuje DRM, więc nie można go odtworzyć."

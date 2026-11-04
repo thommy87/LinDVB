@@ -366,11 +366,19 @@ class AitCollector:
         return whole
 
 
+VIDEO_STREAM_TYPES = (0x01, 0x02, 0x10, 0x1B, 0x24, 0x42)
+
+
 class AitMonitor:
     """Watches a transport stream for the AIT of one service.
 
-    feed_packet() takes TS packets; on_pmt(pids) is called when the AIT PIDs
-    are known and on_ait(ait) for every new AIT version."""
+    feed_packet() takes TS packets; on_pids(pids) is called when the AIT PIDs
+    are known and on_ait(ait) for every new AIT version.
+
+    It also serves DSM-CC (lindvb.dsmcc): ``components`` maps the PMT's
+    component tags to (pid, stream_type, carousel_id), on_pmt() announces
+    changes of it, and watch(pid, fn) hands every section of *pid* to fn.
+    All callbacks run in the thread that feeds packets."""
 
     def __init__(self, sid, pmt_pid=0, on_ait=None, on_pids=None):
         from .ca import SectionAssembler
@@ -385,6 +393,46 @@ class AitMonitor:
         self._pmt_version = None
         self._ait_asm = {}
         self.collector = AitCollector()
+        self.components = {}
+        self.on_pmt = None
+        self.video_pid = 0
+        self.on_pts = None            # callable(pts in 90 kHz, monotonic ns): broadcast timeline
+        self._pts_at = 0
+        self._watched = {}            # pid -> (SectionReader, [fn]); replaced, never mutated
+
+    def _pes_pts(self, packet):
+        """The PTS of a video PES that starts in *packet*, twice a second at most."""
+        import time
+        now = time.monotonic_ns()
+        if now - self._pts_at < 500_000_000:
+            return
+        afc = (packet[3] >> 4) & 0x03
+        off = 4 + (1 + packet[4] if afc == 3 else 0)
+        p = packet[off:]
+        if len(p) < 14 or p[0] != 0 or p[1] != 0 or p[2] != 1 or not p[7] & 0x80:
+            return
+        pts = (((p[9] >> 1) & 0x07) << 30) | (p[10] << 22) | ((p[11] >> 1) << 15) \
+            | (p[12] << 7) | (p[13] >> 1)
+        self._pts_at = now
+        self.on_pts(pts, now)
+
+    def watch(self, pid, fn):
+        from .dsmcc import SectionReader
+        w = dict(self._watched)
+        reader, fns = w.get(pid, (SectionReader(), []))
+        w[pid] = (reader, fns + [fn])
+        self._watched = w
+
+    def unwatch(self, pid, fn=None):
+        w = dict(self._watched)
+        if pid in w:
+            reader, fns = w[pid]
+            fns = [f for f in fns if fn is not None and f is not fn]
+            if fns:
+                w[pid] = (reader, fns)
+            else:
+                del w[pid]
+        self._watched = w
 
     def feed_buffer(self, data):
         n = len(data)
@@ -398,6 +446,14 @@ class AitMonitor:
 
     def feed_packet(self, packet):
         pid = ((packet[1] & 0x1F) << 8) | packet[2]
+        if pid == self.video_pid and self.on_pts is not None and packet[1] & 0x40:
+            self._pes_pts(packet)
+        watched = self._watched.get(pid)
+        if watched is not None:
+            reader, fns = watched
+            for section in reader.feed(packet):
+                for fn in fns:
+                    fn(pid, section)
         if pid in self._ait_asm:
             for section in self._ait_asm[pid].feed(packet):
                 if section and section[0] == AIT_TABLE_ID:
@@ -426,6 +482,12 @@ class AitMonitor:
                 if self.sid and program != self.sid:
                     continue
                 self._pmt_version = version
+                from .dsmcc import components_from_pmt
+                pmt = parse_pmt(section)
+                self.components = components_from_pmt(pmt)
+                self.video_pid = next((p for t, p, _c, _i in pmt.streams if t in VIDEO_STREAM_TYPES), 0)
+                if self.on_pmt:
+                    self.on_pmt(self.components)
                 pids = set(pids)
                 if pids != self.ait_pids:
                     self.ait_pids = pids

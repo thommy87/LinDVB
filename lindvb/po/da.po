@@ -1919,3 +1919,90 @@ msgstr "Programmer foretrækker lydsporet, der beskriver billedet."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "WebKits sandkasse må ikke oprette brugernavnerum her (Ubuntus AppArmor-begrænsning), så programmer kan ikke starte sikkert. Se docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Denne interaktive tjeneste er tilladt fra {age} år."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Blokeret af børnesikringen. Angiv en pinkode i indstillingerne."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "For mange forkerte pinkoder. Prøv igen om et par minutter."
+
+msgid "Youth protection"
+msgstr "Børnesikring"
+
+msgid "PIN"
+msgstr "Pinkode"
+
+msgid "Unlock"
+msgstr "Lås op"
+
+msgid "Wrong PIN."
+msgstr "Forkert pinkode."
+
+msgid "This video is rated {age}+."
+msgstr "Denne video er tilladt fra {age} år."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Tekst-tv fra kanalens interaktive tjeneste (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Tekst-tv fra den interaktive tjeneste"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT-knappen åbner kanalens HbbTV-tekst-tv, hvor der er en."
+
+msgid "Viewers from {age} years"
+msgstr "Seere fra {age} år"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Programmer og deres videoer med en højere aldersgrænse kræver pinkoden."
+
+msgid "Current PIN"
+msgstr "Nuværende pinkode"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Kræves for at ændre børnesikringen eller pinkoden."
+
+msgid "New PIN"
+msgstr "Ny pinkode"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Lad være tom for at beholde den nuværende pinkode."
+
+msgid "Youth protection not changed"
+msgstr "Børnesikring ikke ændret"
+
+msgid "The current PIN is wrong."
+msgstr "Den nuværende pinkode er forkert."
+
+msgid "Youth protection needs a PIN"
+msgstr "Børnesikringen kræver en pinkode"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Angiv en pinkode for at slå børnesikringen til."
+
+msgid "Companion screens on the network"
+msgstr "Ledsagerskærme på netværket"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefoner og tablets på dit netværk kan finde LinDVB, tale med programmer, følge billedet synkront og bede om at starte programmer. Fra: intet lytter på netværket."
+
+msgid "Start an application from another device?"
+msgstr "Start et program fra en anden enhed?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "En enhed på dit netværk vil starte »{name}« ({url})."
+
+msgid "an HbbTV application"
+msgstr "et HbbTV-program"
+
+msgid "Refuse"
+msgstr "Afvis"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Denne video er krypteret med {drm}. LinDVB understøtter ikke DRM, så den kan ikke afspilles."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Denne video er krypteret. LinDVB understøtter ikke DRM, så den kan ikke afspilles."

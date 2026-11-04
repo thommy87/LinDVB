@@ -145,3 +145,27 @@ def test_monitor_finds_ait_through_pat_and_pmt():
 def test_dvb_text():
     assert ait.dvb_text(b"\x15Gr\xc3\xbc\xc3\x9fe") == "Grüße"
     assert ait.dvb_text(b"ZDF") == "ZDF"
+
+
+def test_monitor_reports_video_pts():
+    from lindvb.ait import AitMonitor
+    from lindvb.ca import SectionAssembler  # noqa: F401
+    mon = AitMonitor(0x6DCA, pmt_pid=0x100)
+    got = []
+    mon.on_pts = lambda pts, at: got.append(pts)
+    # PMT with one H.264 stream on PID 0x200
+    import importlib.util
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tools", "hbbtv-test-ts.py")
+    spec = importlib.util.spec_from_file_location("t", path)
+    t = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(t)
+    pmt = t.section(0x02, 0x6DCA, bytes([0xE2, 0x00, 0xF0, 0x00]) + t.es(0x1B, 0x200, b""))
+    data, _ = t.packets(0x100, pmt, 0)
+    mon.feed_buffer(data)
+    assert mon.video_pid == 0x200
+    pts = 0x1_2345_6789
+    b = [0x21 | ((pts >> 29) & 0x0E), (pts >> 22) & 0xFF, ((pts >> 14) & 0xFE) | 1, (pts >> 7) & 0xFF,
+         ((pts << 1) & 0xFE) | 1]
+    pes = bytes([0, 0, 1, 0xE0, 0, 0, 0x80, 0x80, 5]) + bytes(b)
+    mon.feed_packet(bytes([0x47, 0x42, 0x00, 0x10]) + pes + b"\xff" * (184 - len(pes)))
+    assert got == [pts]

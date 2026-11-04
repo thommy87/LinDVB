@@ -7,6 +7,7 @@ Needs a display (run under xvfb-run) and WebKitGTK 6; skipped otherwise.
 
 import http.server
 import os
+import socket
 import sys
 import threading
 import time
@@ -143,6 +144,55 @@ window.onload = function () {
 </body></html>
 """
 
+PC_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  var pc = document.getElementById('pc');
+  L('threshold=' + pc.parentalRatingSchemes.getParentalRatingScheme('dvb-si').threshold.name);
+  var av = document.getElementById('av');
+  av.onParentalRatingChange = function (cid, ratings, drm, blocked) {
+    L('rated=' + (ratings.length ? ratings[0].name : '-') + ':' + blocked);
+    if (blocked) {
+      L('wrong=' + pc.verifyParentalControlPIN('0000'));
+      L('right=' + pc.verifyParentalControlPIN('1234'));
+    }
+  };
+  av.onPlayStateChange = function () {
+    if (av.playState === 1 && log.indexOf('playing') < 0) {
+      L('playing');
+    }
+  };
+  av.data = 'dash/manifest-rated.mpd';
+  av.play(1);
+};
+</script></head><body>
+<object id="pc" type="application/oipfParentalControlManager"></object>
+<object id="av" type="application/dash+xml" style="position:absolute;left:0;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
+DRM_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  if (location.search.indexOf('nodrmagent') < 0) {
+    var drm = oipfObjectFactory.createDrmAgentObject();
+    L('status=' + drm.getDRMSystemStatus('urn:dvb:casystemid:19188'));
+    drm.onDRMMessageResult = function (id, msg, code) { L('result=' + id + ':' + code); };
+    drm.sendDRMMessage('m1', 'application/vnd.marlin.drm.actiontoken+xml', '<x/>', 'urn:dvb:casystemid:19188');
+  }
+  var av = document.getElementById('av');
+  av.data = 'dash/manifest-drm.mpd';
+  av.play(1);
+};
+</script></head><body>
+<object id="av" type="application/dash+xml" style="position:absolute;left:0;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
 DATA = os.path.join(os.path.dirname(__file__), "data")
 
 
@@ -162,7 +212,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 ("video/mp4" if "stream0" in name else "audio/mp4")
         else:
             body = DASH_APP if path.startswith("/dashapp") else \
-                SUB_APP if path.startswith("/subapp") else APP
+                SUB_APP if path.startswith("/subapp") else \
+                PC_APP if path.startswith("/pcapp") else \
+                DRM_APP if path.startswith("/drmapp") else APP
             ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
         self.send_header("Content-Type", ctype)
@@ -360,3 +412,267 @@ def test_dash_ttml_subtitles():
         win.window.destroy()
     finally:
         server.shutdown()
+
+
+CAROUSEL_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var got = {};
+function show() {
+  document.title = 'xhr=' + got.xhr + ' ste=' + got.ste + ' xml=' + got.xml + ' origin=' + location.protocol;
+}
+window.onload = function () {
+  var vb = document.getElementById('vb');
+  vb.bindToCurrentChannel();
+  var x = new XMLHttpRequest();
+  x.open('GET', 'data/text.txt');
+  x.onload = function () { got.xhr = x.responseText; show(); };
+  x.send();
+  vb.addStreamEventListener('events/quiz', 'question', function (e) {
+    got.ste = e.status + ':' + e.text + ':' + e.data; show();
+  });
+  vb.addStreamEventListener('events.xml', 'question', function (e) {
+    got.xml = e.status + ':' + e.text; show();
+  });
+  vb.addStreamEventListener('events/quiz', 'nosuchevent', function (e) {
+    got.missing = e.status;
+  });
+};
+</script></head><body>
+<object id="vb" type="video/broadcast" style="position:absolute;left:0;top:0;width:1280px;height:720px"></object>
+</body></html>
+"""
+
+EVENTS_XML = b"""<?xml version="1.0" encoding="utf-8"?>
+<dsmcc xmlns="urn:dvb:mis:dsmcc:2009">
+  <dsmcc_object component_tag="13">
+    <stream_event stream_event_id="1" stream_event_name="question"/>
+  </dsmcc_object>
+</dsmcc>
+"""
+
+
+def _test_ts_tool():
+    from importlib import util
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tools", "hbbtv-test-ts.py")
+    spec = util.spec_from_file_location("hbbtv_test_ts", path)
+    mod = util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+class CarouselCapture(GObject.Object):
+    """A capture that replays a transport stream into a real AitMonitor."""
+    __gsignals__ = {"ait": (GObject.SignalFlags.RUN_LAST, None, (object,))}
+
+    def __init__(self, ts):
+        super().__init__()
+        self.ait = None
+        self.pids = []
+        self.ts, self.pos = ts, 0
+        self.ait_monitor = ait.AitMonitor(28106, on_ait=self._on_ait)
+        GLib.timeout_add(20, self._feed)
+
+    def _on_ait(self, a):
+        def deliver():
+            self.ait = a
+            self.emit("ait", a)
+        GLib.idle_add(lambda: (deliver(), False)[1])
+
+    def add_pid(self, pid):
+        self.pids.append(pid)
+
+    def _feed(self):
+        chunk = 188 * 200
+        if self.pos >= len(self.ts):
+            self.pos = 0
+        self.ait_monitor.feed_buffer(self.ts[self.pos:self.pos + chunk])
+        self.pos += chunk
+        return True
+
+
+def test_object_carousel_application_and_stream_events():
+    """An application from the DSM-CC object carousel: its page, an XHR for a
+    file next to it, and stream events through a stream event object and
+    through an XML event description."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    tool = _test_ts_tool()
+    files = {"index.html": CAROUSEL_APP, "data/text.txt": b"aus dem Karussell",
+             "events.xml": EVENTS_XML}
+    ts = tool.build("index.html", 28106, files=files,
+                    events={"events/quiz": ({"question": 1}, 0x0D)},
+                    stream_events=[(1, b"Frage 1", 1)], repeat=20)
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    win = FakeWindow(ch)
+    win.window.present()
+    hbb = HbbTV(win)
+    win.overlay.connect("get-child-position",
+                        lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+    cap = CarouselCapture(ts)
+    hbb.channel_changed(ch, cap)
+    title = lambda: (hbb.view.get_title() if hbb.view else "") or ""  # noqa: E731
+    assert _wait(lambda: "xml=trigger" in title() and "ste=trigger" in title(), timeout=40), title()
+    assert title() == ("xhr=aus dem Karussell ste=trigger:Frage 1:%s xml=trigger:Frage 1 "
+                       "origin=dvb:" % b"Frage 1".hex())
+    assert hbb.view.get_uri() == "dvb://current.c/index.html"
+    assert set(cap.pids) == {0x102, 0x103}
+    # a new channel: the listeners hear of it
+    hbb.channel_changed(Channel("ZDF", delsys="dvb-s2", sid=28006, onid=1, tsid=1079), None)
+    win.window.destroy()
+
+
+def test_parental_control_holds_a_rated_video():
+    """A DASH video rated 16+ with the age limit at 12: held back until the
+    app checks the PIN with verifyParentalControlPIN()."""
+    from lindvb import hbbtv as hbc
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        salt = hbc.new_salt()
+        win.settings.update({"hbbtv_age_limit": 12, "hbbtv_pin_salt": salt,
+                             "hbbtv_pin": hbc.hash_pin("1234", salt)})
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "pcapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: "playing" in title(), timeout=40), title()
+        assert title() == "threshold=13 rated=16:true wrong=1 rated=-:false right=0 playing"
+        assert hbb._pin_dialog is None and not hbb._media_blocked
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_protected_video_tells_the_user():
+    """A DRM agent request and a Widevine DASH manifest: the app hears that
+    the DRM system is unknown and the user sees why the video stays dark."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("RTL", delsys="dvb-s2", sid=12003, onid=1, tsid=1089)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "drmapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        drm = lambda: [s for s in win.status if "DRM" in s]  # noqa: E731
+        assert _wait(lambda: "result=" in title() and drm(), timeout=40), (title(), win.status)
+        assert title() == "status=1 result=m1:5"
+        # the DRM agent came first and named Marlin: the notice is shown once
+        _wait(lambda: False, timeout=3)               # the manifest loads meanwhile
+        assert len(drm()) == 1 and "Marlin" in drm()[0], win.status
+        assert hbb._drm_label.get_visible()
+        hbb.close()
+        assert not hbb._drm_label.get_visible()
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_manifest_drm_is_detected():
+    """Without a DRM agent call the Widevine manifest itself triggers the notice."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("RTL", delsys="dvb-s2", sid=12003, onid=1, tsid=1089)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "drmapp?nodrmagent")
+        drm = lambda: [s for s in win.status if "DRM" in s]  # noqa: E731
+        assert _wait(drm, timeout=40), (hbb.view.get_title(), win.status)
+        assert "Widevine" in drm()[0], win.status
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+CS_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function L(x) { log.push(x); document.title = log.join(' '); }
+window.onload = function () {
+  var csm = document.getElementById('cs');
+  var local = csm.getApp2AppLocalBaseURL();
+  L('local=' + (local.indexOf('ws://127.0.0.1:') === 0) + ' remote=' + (csm.getApp2AppRemoteBaseURL() !== ''));
+  var vb = document.getElementById('vb');
+  vb.bindToCurrentChannel();
+  var ms = oipfObjectFactory.createMediaSynchroniser();
+  ms.initMediaSynchroniser(vb, 'urn:dvb:css:timeline:pts');
+  var waited = 0;
+  var t = setInterval(function () {
+    if (!isNaN(ms.currentTime) || ++waited > 100) {
+      clearInterval(t);
+      L('timeline=' + (!isNaN(ms.currentTime) && ms.currentTime > 9 && ms.currentTime < 12));
+      var ws = new WebSocket(local + 'org.example.quiz');
+      ws.onmessage = function (e) {
+        if (e.data === 'pairingcompleted') { L('paired'); ws.send('hallo handy'); }
+        else { L('got=' + e.data); }
+      };
+    }
+  }, 100);
+};
+</script></head><body>
+<object id="cs" type="application/hbbtvCSManager"></object>
+<object id="vb" type="video/broadcast" style="position:absolute;left:0;top:0;width:1280px;height:720px"></object>
+</body></html>
+"""
+
+
+def test_companion_app_to_app_and_broadcast_timeline():
+    """hbbtvCSManager's app-to-app URL pairs the app with a 'phone' (a test
+    client on the remote side); a MediaSynchroniser on video/broadcast sees
+    the PTS of the live video."""
+    import asyncio
+    from lindvb.ui import hbbtv as ui
+
+    tool = _test_ts_tool()
+    ts = tool.build("index.html", 28106, files={"index.html": CS_APP}, repeat=20)
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    win = FakeWindow(ch)
+    win.window.present()
+    hbb = ui.HbbTV(win)
+    win.overlay.connect("get-child-position",
+                        lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+    cap = CarouselCapture(ts)
+    hbb.channel_changed(ch, cap)
+    title = lambda: (hbb.view.get_title() if hbb.view else "") or ""  # noqa: E731
+    # the broadcast timeline: feed PTS = 10 s as the demux would
+    assert _wait(lambda: hbb._sync_broadcast, timeout=40), title()
+    cap.ait_monitor.on_pts(900000, time.monotonic_ns())
+    assert _wait(lambda: "timeline=" in title(), timeout=20), title()
+    assert "timeline=true" in title() and "local=true" in title()
+    svc = hbb.cs
+
+    # bring a remote connection into the service's loop
+    fut = asyncio.run_coroutine_threadsafe(_remote_client(svc, "org.example.quiz"), svc.loop)
+    assert _wait(lambda: "paired" in title(), timeout=20), title()
+    assert _wait(lambda: fut.done(), timeout=20)
+    assert fut.result() == "hallo handy"
+    assert _wait(lambda: "got=hallo tv" in title(), timeout=20), title()
+    win.window.destroy()
+
+
+async def _remote_client(svc, endpoint):
+    """A companion's connection to the remote base, made inside the service
+    (the network listener is off in this test)."""
+    import asyncio
+    from lindvb import hbbtvcs
+    a, b = socket.socketpair()
+    reader, writer = await asyncio.open_connection(sock=a)
+    creader, cwriter = await asyncio.open_connection(sock=b)
+    ws_server = hbbtvcs.WebSocket(reader, writer, "/hbbtv/" + endpoint)
+    client = hbbtvcs.ClientWebSocket(creader, cwriter, "/hbbtv/" + endpoint)
+    asyncio.ensure_future(svc.app2app.serve(ws_server, "remote", endpoint))
+    assert await client.recv() == "pairingcompleted"
+    msg = await client.recv()
+    await client.send("hallo tv")
+    return msg

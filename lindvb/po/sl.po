@@ -1919,3 +1919,90 @@ msgstr "Aplikacije imajo raje zvočni posnetek, ki opisuje sliko."
 
 msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
 msgstr "Peskovnik WebKit tu ne sme ustvarjati uporabniških imenskih prostorov (omejitev AppArmor v Ubuntu), zato se aplikacije ne morejo varno zagnati. Glej docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Ta interaktivna storitev je primerna od {age}. leta."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Blokiral starševski nadzor. Nastavite PIN v nastavitvah."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Preveč napačnih PIN-ov. Poskusite znova čez nekaj minut."
+
+msgid "Youth protection"
+msgstr "Starševski nadzor"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Odkleni"
+
+msgid "Wrong PIN."
+msgstr "Napačen PIN."
+
+msgid "This video is rated {age}+."
+msgstr "Ta video je primeren od {age}. leta."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teletekst interaktivne storitve kanala (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teletekst iz interaktivne storitve"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Tipka TXT odpre teletekst HbbTV kanala, kjer obstaja."
+
+msgid "Viewers from {age} years"
+msgstr "Gledalci od {age}. leta"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Aplikacije in njihovi videi z višjo starostno omejitvijo zahtevajo PIN."
+
+msgid "Current PIN"
+msgstr "Trenutni PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Potreben za spremembo starševskega nadzora ali PIN-a."
+
+msgid "New PIN"
+msgstr "Nov PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Pustite prazno, da obdržite trenutni PIN."
+
+msgid "Youth protection not changed"
+msgstr "Starševski nadzor ni spremenjen"
+
+msgid "The current PIN is wrong."
+msgstr "Trenutni PIN je napačen."
+
+msgid "Youth protection needs a PIN"
+msgstr "Starševski nadzor potrebuje PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Nastavite PIN, da vklopite starševski nadzor."
+
+msgid "Companion screens on the network"
+msgstr "Spremljevalni zasloni v omrežju"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefoni in tablice v vašem omrežju lahko najdejo LinDVB, se pogovarjajo z aplikacijami, sinhrono sledijo sliki in prosijo za zagon aplikacij. Izklopljeno: v omrežju nič ne posluša."
+
+msgid "Start an application from another device?"
+msgstr "Zaženem aplikacijo z druge naprave?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Naprava v vašem omrežju želi zagnati »{name}« ({url})."
+
+msgid "an HbbTV application"
+msgstr "aplikacijo HbbTV"
+
+msgid "Refuse"
+msgstr "Zavrni"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ta videoposnetek je šifriran s sistemom {drm}. LinDVB ne podpira DRM, zato ga ni mogoče predvajati."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Ta videoposnetek je šifriran. LinDVB ne podpira DRM, zato ga ni mogoče predvajati."

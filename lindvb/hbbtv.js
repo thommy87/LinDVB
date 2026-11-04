@@ -297,12 +297,425 @@
       var type = (c && typeof c === "object") ? c.type : c;
       if (type === 2) { post({ cmd: "select-component", type: 2, index: -1 }); }
     };
-    el.addStreamEventListener = function () {}; el.removeStreamEventListener = function () {};
+    el.addStreamEventListener = function (url, name, fn) { steAdd(el, url, name, fn); };
+    el.removeStreamEventListener = function (url, name, fn) { steRemove(el, url, name, fn); };
     el.recordNow = function () { return null; }; el.stopRecording = function () {};
     el.pause = function () { return false; }; el.resume = function () { return false; };
     el.setSpeed = function () { return false; }; el.seek = function () { return false; };
     if (window.ResizeObserver) {
       new ResizeObserver(function () { if (el.__state === PLAY.PRESENTING) { reportRect(el); } }).observe(el);
+    }
+  }
+
+  /* ---------------------------------------------------------------- stream events
+   * DSM-CC stream events (TS 102 796 8.2.1, 9.3.1): the target is a stream
+   * event object in the carousel (dvb: URL) or an XML event description
+   * that names the component and the event id. The terminal watches the
+   * stream and calls __lindvb.streamEvent() for each new event. */
+  var steListeners = {};
+  var steNext = 1;
+
+  function steFind(el, url, name, fn) {
+    return Object.keys(steListeners).filter(function (k) {
+      var l = steListeners[k];
+      return l.el === el && l.url === url && l.name === name && l.fn === fn;
+    });
+  }
+
+  function steAdd(el, url, name, fn) {
+    if (typeof fn !== "function" || steFind(el, url, name, fn).length) { return; }
+    var lid = steNext++;
+    steListeners[lid] = { el: el, url: url, name: name, fn: fn };
+    var abs = url;
+    try { abs = new URL(url, location.href).href; } catch (e) { /* keep it */ }
+    if (/^dvb:/i.test(abs)) {        // an object of the carousel: stream event object or XML
+      post({ cmd: "ste-add", lid: lid, url: abs, name: name });
+      return;
+    }
+    var fail = function () { steFire(lid, { name: name, data: "", text: "", status: "error" }); };
+    var xhr = new XMLHttpRequest();
+    try { xhr.open("GET", abs); } catch (e) { setTimeout(fail, 0); return; }
+    xhr.onerror = fail;
+    xhr.onload = function () {
+      var doc = xhr.responseXML;
+      if (!doc || !doc.documentElement) {
+        try { doc = new DOMParser().parseFromString(xhr.responseText, "application/xml"); } catch (e) { doc = null; }
+      }
+      var list = doc ? doc.getElementsByTagNameNS("*", "stream_event") : [];
+      for (var i = 0; i < list.length; i++) {
+        var ev = list[i], obj = ev.parentNode;
+        if (ev.getAttribute("stream_event_name") !== name || !obj || !obj.getAttribute) { continue; }
+        var tag = parseInt(obj.getAttribute("component_tag"), 10);
+        var id = parseInt(ev.getAttribute("stream_event_id"), 10);
+        if (!isNaN(tag) && !isNaN(id)) {
+          post({ cmd: "ste-add", lid: lid, tag: tag, eventId: id, name: name });
+          return;
+        }
+      }
+      fail();
+    };
+    xhr.send();
+  }
+
+  function steRemove(el, url, name, fn) {
+    steFind(el, url, name, fn).forEach(function (lid) {
+      delete steListeners[lid];
+      post({ cmd: "ste-remove", lid: +lid });
+    });
+  }
+
+  function steFire(lid, ev) {
+    var l = steListeners[lid];
+    if (!l) { return; }
+    if (ev.status === "error") {        // the listener is gone after an error
+      delete steListeners[lid];
+      post({ cmd: "ste-remove", lid: +lid });
+    }
+    try { l.fn.call(l.el, ev); } catch (e) { console.error(e); }
+  }
+
+  /* ---------------------------------------------------------------- parental control
+   * The viewer's age limit (Preferences): DVB parental ratings above it need
+   * the PIN. The PIN dialog is the terminal's; verifyParentalControlPIN()
+   * asks the terminal synchronously, which counts wrong tries and locks. */
+  var pcLocked = false, pcLastAnswer = 1;
+  var pcScheme = [];
+  for (var age = 4; age <= 18; age++) {
+    pcScheme.push({ name: String(age), scheme: "dvb-si", value: age - 3, labels: 0, region: cfg.country || "DEU" });
+  }
+  pcScheme.name = "dvb-si";
+  pcScheme.description = "DVB-SI minimum age";
+  pcScheme.indexOf = function (r) { return r ? Math.max(-1, (+r.value || +r.name - 3) - 1) : -1; };
+  pcScheme.iconUri = function () { return ""; };
+  pcScheme.threshold = cfg.ageLimit ?
+    { name: String(cfg.ageLimit + 1), scheme: "dvb-si", value: cfg.ageLimit - 2, labels: 0, region: cfg.country || "DEU" } :
+    { name: "", scheme: "dvb-si", value: 0xFF, labels: 0, region: cfg.country || "DEU" };
+
+  function verifyPin(pin) {
+    try {
+      var x = new XMLHttpRequest();
+      x.open("GET", "lindvb:pin?value=" + encodeURIComponent(String(pin)), false);
+      x.send();
+      pcLastAnswer = parseInt(x.responseText, 10);
+      if (isNaN(pcLastAnswer)) { pcLastAnswer = 1; }
+    } catch (e) { pcLastAnswer = 1; }
+    pcLocked = pcLastAnswer === 2;
+    if (pcLastAnswer === 0) {
+      Object.keys(pcHeld).forEach(function (id) { window.__lindvb.parentalUnlock(+id); });
+      post({ cmd: "pc-unlocked" });
+    }
+    return pcLastAnswer;
+  }
+
+  // minimum age of an MPD: <Rating schemeIdUri="urn:dvb:iptv:rating:2014" value="EN 300 468 rating"/>
+  function mpdAge(node, depth) {
+    var best = 0;
+    if (!node || typeof node !== "object" || depth > 6) { return 0; }
+    Object.keys(node).forEach(function (k) {
+      var v = node[k];
+      if (/^Rating(_asArray)?$/.test(k)) {
+        (Array.isArray(v) ? v : [v]).forEach(function (r) {
+          if (r && /urn:dvb:iptv:rating:2014/i.test(r.schemeIdUri || "")) {
+            var n = parseInt(r.value, 10);
+            if (n >= 1 && n <= 15) { best = Math.max(best, n + 3); }
+          }
+        });
+      } else if (k.slice(-8) === "_asArray" && Array.isArray(v)) {
+        v.forEach(function (c) { best = Math.max(best, mpdAge(c, depth + 1)); });
+      }
+    });
+    return best;
+  }
+
+  var pcHeld = {}, pcNext = 1;
+  function pcCheck(video, manifest) {
+    var age = mpdAge(manifest, 0);
+    if (!cfg.ageLimit || age <= cfg.ageLimit) { return; }
+    var id = pcNext++;
+    pcHeld[id] = video;
+    video.__pcBlocked = id;
+    try { video.pause(); } catch (e) { /* not started */ }
+    var rating = { name: String(age), scheme: "dvb-si", value: age - 3, labels: 0, region: cfg.country || "DEU" };
+    var owner = video.__lindvbAV || video;
+    post({ cmd: "pc-blocked", id: id, age: age });
+    if (owner.__fire) {
+      owner.__fire("ParentalRatingChange", { contentID: null, ratings: [rating], DRMSystemID: null, blocked: true },
+                   [null, [rating], null, true]);
+    }
+  }
+  document.addEventListener("play", function (e) {
+    var v = e.target;
+    if (v && v.__pcBlocked) { v.pause(); }
+  }, true);
+
+  /* ---------------------------------------------------------------- DRM
+   * LinDVB has no licensed DRM system (Widevine, PlayReady, Marlin), so
+   * protected content cannot play. The terminal tells the user so instead of
+   * leaving the app hanging. ClearKey, which WebKit handles itself, works. */
+  var CLEAR_KEY = /^(org\.w3\.clearkey|urn:uuid:e2719d58-a985-b3c9-781a-b030af78d30e|urn:uuid:1077efec-c0b2-4d02-ace3-3c1e52e2fb4b)$/i;
+  var MP4_PROTECTION = /^urn:mpeg:dash:mp4protection:2011$/i;
+  var drmTold = false, drmGranted = false, drmPending = null;
+  function drmUnsupported(system) {
+    if (drmPending) { clearTimeout(drmPending); drmPending = null; }
+    if (drmTold) { return; }
+    drmTold = true;
+    post({ cmd: "drm-unsupported", system: String(system || "") });
+  }
+
+  // an app (or dash.js) asks for Widevine or PlayReady: WebKit refuses it. A
+  // player may try several key systems in turn, so wait whether one works.
+  if (navigator.requestMediaKeySystemAccess) {
+    var rmksa = navigator.requestMediaKeySystemAccess.bind(navigator);
+    navigator.requestMediaKeySystemAccess = function (keySystem, configs) {
+      var p = rmksa(keySystem, configs);
+      p.then(function () {
+        drmGranted = true;
+        if (drmPending) { clearTimeout(drmPending); drmPending = null; }
+      }, function () {
+        if (CLEAR_KEY.test(String(keySystem)) || drmGranted || drmPending) { return; }
+        drmPending = setTimeout(function () {
+          drmPending = null;
+          if (!drmGranted) { drmUnsupported(keySystem); }
+        }, 1500);
+      });
+      return p;
+    };
+  }
+
+  // the key systems in a DASH manifest (ContentProtection schemeIdUri)
+  function mpdProtection(node, depth, out) {
+    out = out || [];
+    if (!node || typeof node !== "object" || depth > 6) { return out; }
+    Object.keys(node).forEach(function (k) {
+      var v = node[k];
+      if (/^ContentProtection(_asArray)?$/.test(k)) {
+        (Array.isArray(v) ? v : [v]).forEach(function (c) {
+          var id = c && String(c.schemeIdUri || "");
+          if (id && out.indexOf(id) < 0) { out.push(id); }
+        });
+      } else if (k.slice(-8) === "_asArray" && Array.isArray(v)) {
+        v.forEach(function (c) { mpdProtection(c, depth + 1, out); });
+      } else if (/^(Period|AdaptationSet|Representation)$/.test(k) && v && typeof v === "object") {
+        (Array.isArray(v) ? v : [v]).forEach(function (c) { mpdProtection(c, depth + 1, out); });
+      }
+    });
+    return out;
+  }
+
+  // without EME in WebKit, dash.js cannot even ask: a protected manifest fails
+  function drmCheck(manifest) {
+    var systems = mpdProtection(manifest, 0).filter(function (s) { return !MP4_PROTECTION.test(s); });
+    if (!systems.length || systems.some(function (s) { return CLEAR_KEY.test(s); })) { return; }
+    if (!navigator.requestMediaKeySystemAccess) { drmUnsupported(systems[0]); }
+  }
+
+  // OIPF DAE 7.6: the DRM agent knows no DRM system
+  function augmentDrmAgent(el) {
+    eventTarget(el);
+    el.sendDRMMessage = function (msgID, msgType, msgContent, DRMSystemID) {
+      drmUnsupported(DRMSystemID);
+      setTimeout(function () {
+        el.__fire("DRMMessageResult", { msgID: msgID, resultMsg: "", resultCode: 5 }, [msgID, "", 5]);
+      }, 0);
+      return "";
+    };
+    el.getDRMSystemStatus = function () { return 1; };       // DRM_STATE_UNKNOWN
+  }
+
+  /* ---------------------------------------------------------------- companion screens
+   * TS 102 796 clause 14: the app-to-app and DIAL services run in the
+   * terminal (lindvb/hbbtvcs.py); this is the application's side. */
+  var csInit = init.cs || {};
+  var csCallbacks = {}, csNext = 1;
+
+  function csCall(cmd, cb, extra) {
+    var id = csNext++;
+    csCallbacks[id] = cb;
+    var msg = { cmd: cmd, id: id };
+    Object.keys(extra || {}).forEach(function (k) { msg[k] = extra[k]; });
+    post(msg);
+    return true;
+  }
+
+  function augmentCSManager(el) {
+    el.discoverCSLaunchers = function (cb) {
+      if (typeof cb !== "function") { return false; }
+      // no CS launcher application has registered with this terminal
+      setTimeout(function () { cb.call(el, []); }, 0);
+      return true;
+    };
+    el.discoverTerminals = function (cb) {
+      if (typeof cb !== "function") { return false; }
+      return csCall("cs-discover-terminals", function (list) { cb.call(el, list); });
+    };
+    el.launchCSApp = function (enumId, payload, cb) {
+      if (typeof cb === "function") {
+        setTimeout(function () { cb.call(el, enumId, 3); }, 0);       // 3: launcher unknown
+      }
+      return true;
+    };
+    el.getInterDevSyncURL = function () { return csInit.syncUrl || ""; };
+    el.getAppLaunchURL = function () { return csInit.launchUrl || ""; };
+    el.getApp2AppLocalBaseURL = function () { return csInit.localBase || ""; };
+    el.getApp2AppRemoteBaseURL = function () { return csInit.remoteBase || ""; };
+  }
+
+  /* ---------------------------------------------------------------- media synchroniser
+   * TS 102 796 clause 13 / 8.2.3: multi-stream sync of the app's videos to
+   * the broadcast (or to another video) and inter-device sync for companion
+   * screens. The broadcast timeline is the PTS of the live video, which the
+   * terminal measures in the transport stream (__lindvb.timeline). */
+  var wallOffsetNs = null;             // terminal wall clock - performance.now() (ns)
+  var bcTimeline = null;               // { pts, wallNs } latest broadcast PTS
+  var synchronisers = [];
+  var SYNC_ERR = { NOT_SUPPORTED: 1, TIMELINE_UNAVAILABLE: 2, BAD_STATE: 3, ALREADY_ADDED: 4,
+                   NOT_ADDED: 5, INTER_DEVICE_UNAVAILABLE: 6, TOO_MANY: 7 };
+
+  function wallNow() {
+    return wallOffsetNs === null ? null : performance.now() * 1e6 + wallOffsetNs;
+  }
+
+  function unitsPerSecond(selector) {
+    if (/^urn:dvb:css:timeline:pts$/.test(selector)) { return 90000; }
+    var m = /^urn:dvb:css:timeline:mpd:period:rel:(\d+)/.exec(selector || "");
+    if (m) { return +m[1]; }
+    if (/^urn:dvb:css:timeline:ct$/.test(selector)) { return 1000; }
+    if (/^urn:dvb:css:timeline:temi:/.test(selector)) { return 0; }
+    return 0;
+  }
+
+  function isBroadcast(o) { return o && o.__state !== undefined && typeof o.bindToCurrentChannel === "function"; }
+  function mediaOf(o) {
+    if (!o) { return null; }
+    if (o instanceof HTMLMediaElement) { return o; }
+    return o.__video || (o.querySelector && o.querySelector("video")) || null;
+  }
+
+  // the value of a timeline now, in ticks; null when it has none yet
+  function timelineNow(obj, selector) {
+    var ups = unitsPerSecond(selector);
+    if (!ups) { return null; }
+    if (isBroadcast(obj)) {
+      var w = wallNow();
+      if (!bcTimeline || w === null || ups !== 90000) { return null; }
+      return bcTimeline.pts + (w - bcTimeline.wallNs) * 90000 / 1e9;
+    }
+    var v = mediaOf(obj);
+    if (!v || v.readyState < 1) { return null; }
+    return v.currentTime * ups;
+  }
+
+  function MediaSynchroniser(target) {
+    var self = target || this;
+    var master = null, masterSel = "", slaves = [], interDevice = false, ctTimer = null, loop = null;
+    var errs = { code: -1, source: null };
+    self.__slaves = 0;
+    Object.defineProperty(self, "lastError", { get: function () { return errs.code; } });
+    Object.defineProperty(self, "lastErrorSource", { get: function () { return errs.source; } });
+    Object.defineProperty(self, "nrOfSlaves", { get: function () { return interDevice ? self.__slaves : null; } });
+    Object.defineProperty(self, "interDeviceSyncEnabled", { get: function () { return interDevice; } });
+    Object.defineProperty(self, "interDeviceSyncDispersion", { get: function () { return 0; } });
+    Object.defineProperty(self, "minSyncBufferSize", { get: function () { return 0; } });
+    Object.defineProperty(self, "maxBroadbandStreamsWithBroadcast", { get: function () { return 1; } });
+    Object.defineProperty(self, "maxBroadbandStreamsNoBroadcast", { get: function () { return 1; } });
+    Object.defineProperty(self, "currentTime", { get: function () {
+      var t = master ? timelineNow(master, masterSel) : null;
+      return t === null ? NaN : t / unitsPerSecond(masterSel);
+    } });
+    Object.defineProperty(self, "contentId", { get: function () { return csInit.contentId || ""; } });
+
+    function fail(code, source) {
+      errs.code = code; errs.source = source || null;
+      if (typeof self.onError === "function") {
+        try { self.onError(code, source || null); } catch (e) { console.error(e); }
+      }
+      var ev = { type: "Error", errorCode: code, mediaObject: source || null };
+      (self.__listeners.Error || []).forEach(function (fn) { try { fn(ev); } catch (e) { console.error(e); } });
+    }
+    self.__listeners = {};
+    self.addEventListener = function (n, fn) { (self.__listeners[n] = self.__listeners[n] || []).push(fn); };
+    self.removeEventListener = function (n, fn) {
+      self.__listeners[n] = (self.__listeners[n] || []).filter(function (f) { return f !== fn; });
+    };
+
+    self.initMediaSynchroniser = function (obj, selector) {
+      if (master) { fail(SYNC_ERR.BAD_STATE, obj); return; }
+      if (!unitsPerSecond(selector) || (isBroadcast(obj) && unitsPerSecond(selector) !== 90000)) {
+        fail(SYNC_ERR.TIMELINE_UNAVAILABLE, obj); return;
+      }
+      if (!isBroadcast(obj) && !mediaOf(obj)) { fail(SYNC_ERR.NOT_SUPPORTED, obj); return; }
+      master = obj; masterSel = selector;
+      if (isBroadcast(obj)) { post({ cmd: "sync-broadcast", on: true }); }
+      loop = setInterval(tick, 200);
+      synchronisers.push(self);
+    };
+    self.initSlaveMediaSynchroniser = function () { fail(SYNC_ERR.NOT_SUPPORTED, null); };
+    self.addMediaObject = function (obj, selector, corr, tolerance, multiDecoderMode) {
+      if (!master) { fail(SYNC_ERR.BAD_STATE, obj); return; }
+      if (slaves.some(function (s) { return s.obj === obj; }) || obj === master) { fail(SYNC_ERR.ALREADY_ADDED, obj); return; }
+      if (slaves.length >= 1) { fail(SYNC_ERR.TOO_MANY, obj); return; }
+      if (!mediaOf(obj) || !unitsPerSecond(selector)) { fail(SYNC_ERR.NOT_SUPPORTED, obj); return; }
+      slaves.push({ obj: obj, sel: selector, corr: corr || { tlvMaster: 0, tlvOther: 0 },
+                    tol: +tolerance || 0, synced: false });
+    };
+    self.removeMediaObject = function (obj) {
+      var n = slaves.length;
+      slaves = slaves.filter(function (s) { return s.obj !== obj; });
+      if (n === slaves.length) { fail(SYNC_ERR.NOT_ADDED, obj); return; }
+      var v = mediaOf(obj);
+      if (v) { v.playbackRate = 1; }
+    };
+    self.updateCorrelationTimestamp = function (obj, corr) {
+      var s = slaves.filter(function (x) { return x.obj === obj; })[0];
+      if (!s) { fail(SYNC_ERR.NOT_ADDED, obj); return; }
+      s.corr = corr || s.corr;
+    };
+    self.enableInterDeviceSync = function (cb) {
+      if (!master || !csInit.syncUrl) { fail(SYNC_ERR.INTER_DEVICE_UNAVAILABLE, null); return; }
+      interDevice = true;
+      post({ cmd: "sync-enable", selector: masterSel });
+      sendCT();
+      ctTimer = setInterval(sendCT, 1000);
+      if (typeof cb === "function") { setTimeout(cb, 0); }
+    };
+    self.disableInterDeviceSync = function (cb) {
+      interDevice = false;
+      if (ctTimer) { clearInterval(ctTimer); ctTimer = null; }
+      post({ cmd: "sync-disable" });
+      if (typeof cb === "function") { setTimeout(cb, 0); }
+    };
+
+    function sendCT() {
+      var t = timelineNow(master, masterSel), w = wallNow();
+      var v = isBroadcast(master) ? null : mediaOf(master);
+      post({ cmd: "sync-ct", selector: masterSel, contentTime: t === null ? null : Math.round(t),
+             wallNs: w === null ? null : Math.round(w), speed: v ? (v.paused ? 0 : v.playbackRate) : 1 });
+    }
+
+    function tick() {
+      var m = timelineNow(master, masterSel);
+      if (m === null) { return; }
+      var mups = unitsPerSecond(masterSel);
+      slaves.forEach(function (s) {
+        var v = mediaOf(s.obj), ups = unitsPerSecond(s.sel);
+        if (!v || v.readyState < 2) { return; }
+        var target = (s.corr.tlvOther + (m - s.corr.tlvMaster) * ups / mups) / ups;
+        var diff = target - v.currentTime;
+        var tol = Math.max(s.tol / 1000, 0.04);
+        if (Math.abs(diff) > 1.0) {
+          v.currentTime = Math.max(0, target);
+        } else if (Math.abs(diff) > tol) {
+          v.playbackRate = 1 + Math.max(-0.1, Math.min(0.1, diff * 0.5));
+        } else {
+          v.playbackRate = 1;
+          if (!s.synced) {
+            s.synced = true;
+            if (typeof self.onSyncNowAchievable === "function") {
+              try { self.onSyncNowAchievable(s.obj); } catch (e) { console.error(e); }
+            }
+          }
+        }
+      });
     }
   }
 
@@ -382,6 +795,10 @@
     video.__dashUrl = url;
     p.on(dashLib.MediaPlayer.events.ERROR, function (e) {
       console.error("LinDVB DASH:", e && e.error && (e.error.message || e.error.code));
+    });
+    p.on(dashLib.MediaPlayer.events.MANIFEST_LOADED, function (e) {
+      try { pcCheck(video, e && e.data); } catch (err) { console.error(err); }
+      try { drmCheck(e && e.data); } catch (err) { console.error(err); }
     });
     p.on(dashLib.MediaPlayer.events.STREAM_INITIALIZED, function () {
       if (!cfg.subtitles && !video.__textChosen) { p.enableText(false); }
@@ -496,6 +913,8 @@
     var video = document.createElement("video");
     video.style.cssText = "width:100%;height:100%;display:block;background:transparent";
     video.setAttribute("playsinline", "");
+    video.__lindvbAV = el;
+    el.__video = video;
     el.appendChild(video);
     var data = el.getAttribute("data") || "";
     el.removeAttribute("data");
@@ -598,16 +1017,30 @@
       Object.defineProperty(el, "xmlCapabilities", { get: function () { return capabilities.xmlCapabilities; } });
     },
     "application/oipfparentalcontrolmanager": function (el) {
-      el.parentalRatingSchemes = [];
-      el.isPINEntryLocked = false;
+      var schemes = [pcScheme];
+      schemes.getParentalRatingScheme = function (name) { return name === "dvb-si" ? pcScheme : null; };
+      schemes.item = function (i) { return schemes[i]; };
+      el.parentalRatingSchemes = schemes;
+      Object.defineProperty(el, "isPINEntryLocked", { get: function () { return pcLocked; } });
       el.getBlockUnrated = function () { return false; };
-      el.verifyParentalControlPIN = function () { return 1; };
+      el.setBlockUnrated = function () { return 1; };
+      el.getParentalControlStatus = function () { return !!cfg.ageLimit; };
+      // apps may check the PIN (it unlocks held videos), never switch protection off
+      el.verifyParentalControlPIN = verifyPin;
+      el.setParentalControlStatus = function (pin) { return verifyPin(pin) === 0 ? 1 : pcLastAnswer; };
+      el.setParentalControlPIN = function () { return 1; };
+      el.setParentalControlPINEnable = function () { return 1; };
+      el.getParentalControlPINEnable = function () { return !!cfg.hasPin; };
+      el.unlockWithParentalControlPIN = function (pin) { return verifyPin(pin); };
     },
     "application/oipfsearchmanager": function (el) {
       el.guideDaysAvailable = 0;
       el.createSearch = function () { return null; };
       el.getChannelConfig = function () { return channelConfig; };
     },
+    "application/hbbtvcsmanager": augmentCSManager,
+    "application/hbbtvmediasynchroniser": function (el) { MediaSynchroniser.call({}, el); },
+    "application/oipfdrmagent": augmentDrmAgent,
     "video/broadcast": augmentBroadcast
   };
   AV_TYPES.forEach(function (t) { SIMPLE[t] = augmentAV; });
@@ -659,6 +1092,15 @@
       var el = document.createElement("object");
       el.setAttribute("type", "application/oipfParentalControlManager"); augment(el); return el;
     },
+    createCSManager: function () {
+      var el = document.createElement("object");
+      el.setAttribute("type", "application/hbbtvCSManager"); augment(el); return el;
+    },
+    createMediaSynchroniser: function () { return new MediaSynchroniser(); },
+    createDrmAgentObject: function () {
+      var el = document.createElement("object");
+      el.setAttribute("type", "application/oipfDrmAgent"); augment(el); return el;
+    },
     createSearchManagerObject: function () {
       var el = document.createElement("object");
       el.setAttribute("type", "application/oipfSearchManager"); augment(el); return el;
@@ -700,6 +1142,34 @@
     components: function (list) {
       bcComponents = list || [];
       broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
+    },
+    streamEvent: function (lid, ev) { steFire(lid, ev); },
+    csResult: function (id, value) {
+      var cb = csCallbacks[id];
+      delete csCallbacks[id];
+      if (cb) { try { cb(value); } catch (e) { console.error(e); } }
+    },
+    timeline: function (pts, ptsWallNs, nowWallNs) {
+      wallOffsetNs = nowWallNs - performance.now() * 1e6;
+      bcTimeline = { pts: pts, wallNs: ptsWallNs };
+    },
+    syncSlaves: function (n) { synchronisers.forEach(function (m) { m.__slaves = n; }); },
+    parentalUnlock: function (id) {
+      var v = pcHeld[id];
+      delete pcHeld[id];
+      if (!v) { return; }
+      v.__pcBlocked = 0;
+      var owner = v.__lindvbAV || v;
+      if (owner.__fire) {
+        owner.__fire("ParentalRatingChange", { contentID: null, ratings: [], DRMSystemID: null, blocked: false },
+                     [null, [], null, false]);
+      }
+      try { v.play(); } catch (e) { /* the app plays it */ }
+    },
+    streamEventsLost: function () {
+      Object.keys(steListeners).forEach(function (lid) {
+        steFire(lid, { name: steListeners[lid].name, data: "", text: "", status: "error" });
+      });
     },
     broadcastState: function (state, error) {
       broadcasts.forEach(function (b) { b.__setState(state, error); });
