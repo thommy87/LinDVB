@@ -172,6 +172,21 @@ class PrefsWindow(Gtk.Window):
         edit.connect("clicked", lambda *_: app.show_editor())
         _row(g, _("Channel editor"), edit,
              _("Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."))
+        g = group(pg, _("HbbTV"))
+        from . import hbbtv as hbbtv_ui
+        switch(g, "hbbtv_enabled", _("Interactive services (HbbTV)"),
+               _("Media libraries, teletext successors and more behind the red button (F5).")
+               if hbbtv_ui.available() else
+               _("Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."))
+        switch(g, "hbbtv_autostart", _("Start automatically"),
+               _("Off: an application starts only with the red button. Channels' "
+                 "applications send usage data to the broadcaster."))
+        switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
+               _("Advertising networks use them to follow you across channels."))
+        clear = Gtk.Button(label=_("Delete HbbTV Data"))
+        clear.connect("clicked", lambda *_: hbbtv_ui.clear_data(app))
+        _row(g, _("Cookies and storage"), clear,
+             _("Removes what HbbTV applications stored, such as cookies and settings."))
 
         # -- Internet: DVB-I and IPTV lists
         from .dvbi import DVBIPanel

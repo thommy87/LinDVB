@@ -156,6 +156,8 @@ def keep_pids(channel, extras, fmt, audio_mode="all"):
         keep.add(channel.teletext_pid)        # teletext also carries subtitle pages
     if "subtitles" in extras:
         keep.update(channel.subtitle_pids)
+    if fmt == "TS" and getattr(channel, "ait_pid", 0):
+        keep.add(channel.ait_pid)             # HbbTV signalling, for playback and tests
     return keep
 
 

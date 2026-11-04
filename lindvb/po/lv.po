@@ -1853,3 +1853,54 @@ msgstr "Ceļveža kanāls ir {done} no {v1} kanāliem"
 
 msgid "No suggestion for {name}"
 msgstr "Nav ieteikuma kanālam {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Interaktīvie pakalpojumi (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Mediatēkas, teleteksta pēcteči un vairāk aiz sarkanās pogas (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Nepieciešams WebKitGTK 6 (gir1.2-webkit-6.0), kas nav instalēts."
+
+msgid "Start automatically"
+msgstr "Startēt automātiski"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Izslēgts: lietotne startē tikai ar sarkano pogu. Kanālu lietotnes sūta lietojuma datus raidorganizācijai."
+
+msgid "Allow third-party cookies"
+msgstr "Atļaut trešo pušu sīkdatnes"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Reklāmas tīkli ar tām izseko jūs dažādos kanālos."
+
+msgid "Delete HbbTV Data"
+msgstr "Dzēst HbbTV datus"
+
+msgid "Cookies and storage"
+msgstr "Sīkdatnes un krātuve"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Noņem to, ko saglabājušas HbbTV lietotnes, piemēram, sīkdatnes un iestatījumus."
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV dati izdzēsti"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Neizdevās ielādēt HbbTV lietotni: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (sarkanā poga)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Kanāla interaktīvais pakalpojums (sarkanā poga, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Aizvērt interaktīvo pakalpojumu (Esc)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"

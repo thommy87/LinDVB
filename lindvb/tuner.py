@@ -178,6 +178,10 @@ class Capture(GObject.Object):
         "eit": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
         # the transport stream id from the PAT, when the channel list lacks it
         "tsid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        # HbbTV: a new version of the service's AIT (lindvb.ait.Ait)
+        "ait": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        # HbbTV: the AIT PID from the PMT, when it is not yet in the channel list
+        "ait-pid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
     }
 
     def __init__(self, channel, adapter, frontend, settings, ca_provider=None):
@@ -206,6 +210,9 @@ class Capture(GObject.Object):
         self.stats = {}
 
         self.pipeline = Gst.Pipeline.new(f"capture{adapter}")
+        self._src = None                 # dvbsrc, whose PID filter may grow (AIT)
+        self._pids = ""                  # the PIDs set on it ("8192" = all)
+        self.ait = None                  # the latest AIT of the service (HbbTV)
         test_ts = os.environ.get("LINDVB_TEST_TS")
         if test_ts:
             # Development aid: replay a recorded transport stream instead of a tuner.
@@ -216,8 +223,11 @@ class Capture(GObject.Object):
             src = Gst.ElementFactory.make("dvbsrc", "src")
             if src is None:
                 raise RuntimeError("GStreamer element 'dvbsrc' is missing (gst-plugins-bad).")
-            for k, v in dvbsrc_properties(channel, settings, adapter, frontend).items():
+            props = dvbsrc_properties(channel, settings, adapter, frontend)
+            for k, v in props.items():
                 Gst.util_set_object_arg(src, k, str(v))
+            self._src = src
+            self._pids = str(props.get("pids", ""))
         parse = Gst.ElementFactory.make("tsparse", "parse")
         Gst.util_set_object_arg(parse, "set-timestamps", "true")
         sink = Gst.ElementFactory.make("multifilesink", "sink")
@@ -251,6 +261,13 @@ class Capture(GObject.Object):
             self.provider_epg = ProviderEPG(kinds, self._on_provider_events, self.epg_language)
             parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._epg_probe)
 
+        # HbbTV: watch the PMT for the AIT and the AIT for applications
+        self.ait_monitor = None
+        if settings.get("hbbtv_enabled", True) and channel.sid and channel.delsys not in ATSC_SYSTEMS:
+            from .ait import AitMonitor
+            self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait, self._on_ait_pids)
+            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._ait_probe)
+
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
@@ -265,6 +282,39 @@ class Capture(GObject.Object):
                 finally:
                     buf.unmap(mapinfo)
         return Gst.PadProbeReturn.OK
+
+    def _ait_probe(self, pad, info):
+        buf = info.get_buffer()
+        if buf is not None and self.ait_monitor is not None:
+            ok, mapinfo = buf.map(Gst.MapFlags.READ)
+            if ok:
+                try:
+                    self.ait_monitor.feed_buffer(bytes(mapinfo.data))
+                finally:
+                    buf.unmap(mapinfo)
+        return Gst.PadProbeReturn.OK
+
+    def _on_ait(self, ait):
+        # streaming thread -> main loop
+        def deliver():
+            self.ait = ait
+            self.emit("ait", ait)
+            return False
+        GLib.idle_add(deliver)
+
+    def _on_ait_pids(self, pids):
+        def deliver():
+            pid = pids[0] if pids else 0
+            if pid and self._src is not None:
+                have = {int(x) for x in self._pids.split(":") if x.isdigit()}
+                if have and 8192 not in have and pid not in have:
+                    # add the AIT PID to the demux filter while running
+                    self._pids = ":".join(map(str, sorted(have | {pid})))
+                    self._src.set_property("pids", self._pids)
+            if pid and pid != self.channel.ait_pid:
+                self.emit("ait-pid", pid)
+            return False
+        GLib.idle_add(deliver)
 
     def _on_provider_events(self, key, events):
         # called from the streaming thread; hand over to the main loop

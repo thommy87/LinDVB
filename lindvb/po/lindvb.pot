@@ -2685,3 +2685,54 @@ msgstr ""
 #. projectM preset folder (Cream of the Crop collection)
 msgid "! Transition"
 msgstr ""
+
+msgid "HbbTV"
+msgstr ""
+
+msgid "Interactive services (HbbTV)"
+msgstr ""
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr ""
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr ""
+
+msgid "Start automatically"
+msgstr ""
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr ""
+
+msgid "Allow third-party cookies"
+msgstr ""
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr ""
+
+msgid "Delete HbbTV Data"
+msgstr ""
+
+msgid "Cookies and storage"
+msgstr ""
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr ""
+
+msgid "HbbTV data deleted"
+msgstr ""
+
+msgid "HbbTV: {name}"
+msgstr ""
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr ""
+
+msgid "HbbTV (red button)"
+msgstr ""
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr ""
+
+msgid "Close the interactive service (Esc)"
+msgstr ""

@@ -159,6 +159,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "scan": lambda: self.app.show_scan(), "prefs": lambda: self.app.show_prefs(),
             "editor": lambda: self.app.show_editor(), "stats": lambda: self.app.show_stats(),
             "teletext": self.on_teletext, "record": self.on_record,
+            "hbbtv": lambda: self.hbbtv.red_button(),
             "record-options": self.on_record_options,
             "fullscreen": self.toggle_fullscreen, "toggle-list": self.toggle_list,
             "pause": self.player_pause, "live": lambda: self.player.go_live(),
@@ -296,6 +297,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append(_("Record with Options…"), "win.record-options")
         tv.append(_("Recording and Device Statistics"), "win.stats")
         tv.append(_("Teletext"), "win.teletext")
+        tv.append(_("HbbTV (red button)"), "win.hbbtv")
         tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
         # channel search, channel editor and DVB-I live in the preferences
         # (Tuner and Channels, Internet); their shortcuts still work
@@ -412,6 +414,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.ttx_btn = Gtk.Button(label=_("TXT"), action_name="win.teletext",
                                   tooltip_text=_("Teletext (Ctrl+Shift+T)"))
         hb.pack_end(self.ttx_btn)
+        # HbbTV: like the red button of a remote control
+        self.hbbtv_btn = Gtk.Button(label=_("HbbTV"), action_name="win.hbbtv", visible=False,
+                                    css_classes=["lv-hbbtv"],
+                                    tooltip_text=_("Interactive service of the channel (red button, F5)"))
+        hb.pack_end(self.hbbtv_btn)
 
         # sidebar
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
@@ -548,6 +555,9 @@ class MainWindow(Gtk.ApplicationWindow):
         from .pip import PipOverlay
         self.pip = PipOverlay(self)
         overlay.add_overlay(self.pip)
+        from .hbbtv import HbbTV
+        self.hbbtv = HbbTV(self)
+        self.hbbtv.on_state = self._on_hbbtv_state
         overlay.connect("get-child-position", self._place_overlay_child)
         dbl = Gtk.GestureClick()
         dbl.connect("pressed", lambda g, n, *_: self.toggle_fullscreen() if n == 2 else self.show_osd())
@@ -848,8 +858,17 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         self.pip.close()
 
+    def _on_hbbtv_state(self, has_app, running):
+        self.hbbtv_btn.set_visible(has_app or running)
+        self.hbbtv_btn.set_tooltip_text(
+            _("Close the interactive service (Esc)") if running else
+            _("Interactive service of the channel (red button, F5)"))
+
     def _place_overlay_child(self, overlay, widget, rect):
-        """Picture in picture: a quarter of the video width in the bottom right corner."""
+        """Picture in picture: a quarter of the video width in the bottom right corner.
+        HbbTV: the 16:9 area of the video."""
+        if widget is self.hbbtv.view and widget is not None:
+            return self.hbbtv.place(overlay, rect)
         if widget is not self.pip:
             return False
         w, h = overlay.get_width(), overlay.get_height()
@@ -1286,6 +1305,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._nolock_since = None
         if c.is_iptv:
             self.player.play_uri(c.url)
+            self.hbbtv.channel_changed(c, None)
             from .. import hooks
             hooks.run("channel-tuned", (c,))          # the user's scripts (DVB: via emit)
         else:
@@ -1294,6 +1314,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("error", lambda _c, m: self._on_play_error(m))
             self.capture.connect("eit", self.app.on_eit)
             self.capture.connect("tsid", self.app.on_tsid)
+            self.capture.connect("ait-pid", self.app.on_ait_pid)
+            self.hbbtv.channel_changed(c, self.capture)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
 
@@ -1390,6 +1412,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _on_preempt(self, _tm):
         self.player.stop()
         self.capture = None
+        self.hbbtv.stopped()
         self._update_teletext()
         self.set_status(_("Live TV stopped: tuner needed for a timer recording"))
 
@@ -1428,6 +1451,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.current:
             self.stopped = self.current
         self._release_capture()
+        self.hbbtv.stopped()
         self.current = None
         self.set_title(APP_NAME)
         self.picture.set_opacity(0)          # no frozen last frame
@@ -2203,6 +2227,8 @@ class MainWindow(Gtk.ApplicationWindow):
                 state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.ALT_MASK):
             return False
         name = Gdk.keyval_name(keyval) or ""
+        if self.hbbtv.handle_key(name):              # keys the HbbTV app asked for
+            return True
         if name.isdigit() or name.startswith("KP_") and name[3:].isdigit():
             self.number_buffer += name[-1]
             self.flash(self.number_buffer)

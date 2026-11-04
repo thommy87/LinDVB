@@ -1931,3 +1931,54 @@ msgstr "Wellenformen"
 
 msgid "! Transition"
 msgstr "Übergänge"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Interaktive Dienste (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Mediatheken, Videotext-Nachfolger und mehr hinter dem roten Knopf (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Benötigt WebKitGTK 6 (gir1.2-webkit-6.0), das nicht installiert ist."
+
+msgid "Start automatically"
+msgstr "Automatisch starten"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Aus: Eine Anwendung startet nur mit dem roten Knopf. Die Anwendungen der Sender schicken Nutzungsdaten an den Sender."
+
+msgid "Allow third-party cookies"
+msgstr "Cookies von Drittanbietern erlauben"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Werbenetzwerke verfolgen Sie damit über Sender hinweg."
+
+msgid "Delete HbbTV Data"
+msgstr "HbbTV-Daten löschen"
+
+msgid "Cookies and storage"
+msgstr "Cookies und Speicher"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Entfernt, was HbbTV-Anwendungen gespeichert haben, etwa Cookies und Einstellungen."
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV-Daten gelöscht"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "HbbTV-Anwendung konnte nicht geladen werden: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (roter Knopf)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Interaktiver Dienst des Senders (roter Knopf, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Interaktiven Dienst schließen (Esc)"

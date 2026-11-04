@@ -1853,3 +1853,54 @@ msgstr "Κανάλι οδηγού έχουν {done} από {v1} κανάλια"
 
 msgid "No suggestion for {name}"
 msgstr "Καμία πρόταση για {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Διαδραστικές υπηρεσίες (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Βιβλιοθήκες περιεχομένου, διάδοχοι του teletext και άλλα πίσω από το κόκκινο κουμπί (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Απαιτεί WebKitGTK 6 (gir1.2-webkit-6.0), που δεν είναι εγκατεστημένο."
+
+msgid "Start automatically"
+msgstr "Αυτόματη εκκίνηση"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Ανενεργό: μια εφαρμογή ξεκινά μόνο με το κόκκινο κουμπί. Οι εφαρμογές των καναλιών στέλνουν δεδομένα χρήσης στον πάροχο."
+
+msgid "Allow third-party cookies"
+msgstr "Να επιτρέπονται cookies τρίτων"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Τα διαφημιστικά δίκτυα τα χρησιμοποιούν για να σας παρακολουθούν από κανάλι σε κανάλι."
+
+msgid "Delete HbbTV Data"
+msgstr "Διαγραφή δεδομένων HbbTV"
+
+msgid "Cookies and storage"
+msgstr "Cookies και αποθήκευση"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Αφαιρεί ό,τι αποθήκευσαν οι εφαρμογές HbbTV, όπως cookies και ρυθμίσεις."
+
+msgid "HbbTV data deleted"
+msgstr "Τα δεδομένα HbbTV διαγράφηκαν"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Η εφαρμογή HbbTV δεν φορτώθηκε: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (κόκκινο κουμπί)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Διαδραστική υπηρεσία του καναλιού (κόκκινο κουμπί, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Κλείσιμο της διαδραστικής υπηρεσίας (Esc)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"

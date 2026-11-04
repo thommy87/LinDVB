@@ -72,7 +72,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | On-screen display: now/next, mini EPG | `OSDSkins/Default/myMiniEPG.xml`, `TVman.xml`; `TweaksPro.ini` `[20] TimeshiftEPGDisplay` | **Yes**: overlay with channel, now/next and progress, genre/country/year of the programme on air, sound format, languages and subtitles on offer |
 | Teletext with page search, copy, save | `English.lng:1390` `[frmTeletext]`, `lblSearchItem`, `tbCopy.Hint`, `tbSave.Hint` | **Yes**: `teletextdec` (libzvbi) text pages, page navigation, find, copy, save; opened from the "TXT" button next to the guide button in the header bar (greyed out when the channel has no teletext) |
 | Teletext character sets | `English.lng:1419` `clbVTCharSet=English,Polish,…` | **Yes**: handled by libzvbi |
-| HbbTV | `English.lng:1421` `gbHbbTV.Caption=HbbTV (requires add-on)` | **No** |
+| HbbTV | `English.lng:1421` `gbHbbTV.Caption=HbbTV (requires add-on)` | **In progress** (HbbTV 2.0.4): AIT signalling, red button, OIPF objects, application lifecycle and scaled broadcast video in WebKitGTK; see [HBBTV.md](HBBTV.md) for what is still missing |
 
 ## Recording
 

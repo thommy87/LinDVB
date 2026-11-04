@@ -31,6 +31,12 @@ DEFAULTS = {
     # Capture whole transponder instead of the service PIDs (needed for all audio
     # tracks when the channel list only knows one audio PID).
     "full_transponder": False,
+    # HbbTV (red button): run the channels' interactive applications
+    "hbbtv_enabled": True,
+    # start a channel's AUTOSTART application by itself (else only with the red button)
+    "hbbtv_autostart": False,
+    "hbbtv_third_party_cookies": False,
+    "hbbtv_country": "DEU",             # configuration.countryId (ISO 3166 alpha-3)
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
     "recording_dir": str(Path.home() / "Videos" / "LinDVB"),

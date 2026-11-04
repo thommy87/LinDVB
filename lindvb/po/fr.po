@@ -1853,3 +1853,54 @@ msgstr "{done} chaînes sur {v1} ont une chaîne du guide"
 
 msgid "No suggestion for {name}"
 msgstr "Aucune suggestion pour {name}"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Services interactifs (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Médiathèques, successeurs du télétexte et plus derrière le bouton rouge (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Nécessite WebKitGTK 6 (gir1.2-webkit-6.0), qui n'est pas installé."
+
+msgid "Start automatically"
+msgstr "Démarrer automatiquement"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Désactivé : une application ne démarre qu'avec le bouton rouge. Les applications des chaînes envoient des données d'utilisation au diffuseur."
+
+msgid "Allow third-party cookies"
+msgstr "Autoriser les cookies tiers"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Les réseaux publicitaires s'en servent pour vous suivre d'une chaîne à l'autre."
+
+msgid "Delete HbbTV Data"
+msgstr "Supprimer les données HbbTV"
+
+msgid "Cookies and storage"
+msgstr "Cookies et stockage"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Supprime ce que les applications HbbTV ont enregistré, comme les cookies et les réglages."
+
+msgid "HbbTV data deleted"
+msgstr "Données HbbTV supprimées"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Impossible de charger l'application HbbTV : {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (bouton rouge)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Service interactif de la chaîne (bouton rouge, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Fermer le service interactif (Échap)"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
