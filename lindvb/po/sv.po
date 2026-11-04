@@ -1904,3 +1904,18 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Undertexter i playtjänster"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Program visar undertexter i sina videor från början."
+
+msgid "Audio description in media libraries"
+msgstr "Syntolkning i playtjänster"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Program föredrar ljudspåret som beskriver bilden."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKits sandlåda får inte skapa användarnamnrymder här (Ubuntus AppArmor-begränsning), så program kan inte starta säkert. Se docs/HBBTV.md."

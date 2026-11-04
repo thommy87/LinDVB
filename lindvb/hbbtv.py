@@ -7,6 +7,9 @@ The browser itself (WebKitGTK) and the JavaScript side live in
 lindvb.ui.hbbtv and lindvb/hbbtv.js.
 """
 
+import os
+import shutil
+import subprocess
 from pathlib import Path
 
 from . import ait as aitmod
@@ -15,6 +18,59 @@ SPEC_VERSION = "1.7.1"            # HbbTV 2.0.4
 APP_WIDTH, APP_HEIGHT = 1280, 720  # the coordinate system of every HbbTV app
 
 JS_FILE = Path(__file__).with_name("hbbtv.js")
+DASH_JS = Path(__file__).with_name("vendor") / "dash.mediaplayer.min.js"
+
+
+_SANDBOX = None
+
+
+def sandbox_ok(run=subprocess.run, which=shutil.which, env=os.environ):
+    """Can WebKit start its sandboxed web process here?
+
+    WebKitGTK runs every page inside bubblewrap, which needs unprivileged user
+    namespaces. Ubuntu 24.04 forbids those for programs without an AppArmor
+    profile (kernel.apparmor_restrict_unprivileged_userns), and WebKit then
+    aborts the whole program instead of failing the page. Flatpak and Snap
+    bring their own sandbox; WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS means
+    the user has decided. Probed once per run.
+    """
+    global _SANDBOX
+    if _SANDBOX is not None:
+        return _SANDBOX
+    if (env.get("WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS") or env.get("FLATPAK_ID")
+            or env.get("SNAP") or Path("/.flatpak-info").exists()):
+        _SANDBOX = True
+        return True
+    bwrap = which("bwrap")
+    if not bwrap:
+        _SANDBOX = True      # WebKit built without bubblewrap, or it brings its own
+        return True
+    try:
+        r = run([bwrap, "--ro-bind", "/", "/", "--unshare-user", "--unshare-net", "true"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
+        _SANDBOX = r.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        _SANDBOX = False
+    return _SANDBOX
+
+
+def page_script(init_json):
+    """Everything injected before an application page: the terminal's state,
+    dash.js (as window.__lindvbDash, no global `dashjs` that could clash with
+    an app's own copy) and the OIPF objects."""
+    parts = ["window.__lindvbInit = " + init_json + ";"]
+    if DASH_JS.exists():
+        # dash.js sets window.dashjs and refers to `dashjs` later: give it a
+        # variable of its own in the wrapper and put back what window had
+        parts.append("try { window.__lindvbDash = (function () { var module = { exports: {} }, "
+                     "exports = module.exports, dashjs, had = 'dashjs' in window, "
+                     "prev = window.dashjs;\n" + DASH_JS.read_text("utf-8") +
+                     "\n; dashjs = window.dashjs || module.exports; if (had) { window.dashjs = prev; } "
+                     "else { try { delete window.dashjs; } catch (e) { window.dashjs = undefined; } } "
+                     "return dashjs; })(); } catch (e) { console.error('dash.js', e); }")
+    parts.append(JS_FILE.read_text("utf-8"))
+    return "\n".join(parts)
+
 
 # MIME types of HbbTV documents (WebKit does not render them itself)
 DOCUMENT_TYPES = ("application/vnd.hbbtv.xhtml+xml", "application/ce-html+xml")
@@ -90,6 +146,23 @@ def wanted(code, keyset, other_keys=()):
     return bool(keyset & group)
 
 
+# ISO 639-1 -> ISO 639-2/T for the interface languages
+LANG3 = {"de": "deu", "en": "eng", "fr": "fra", "it": "ita", "es": "spa", "nl": "nld",
+         "pl": "pol", "pt": "por", "da": "dan", "sv": "swe", "fi": "fin", "et": "est",
+         "lt": "lit", "lv": "lav", "cs": "ces", "sk": "slk", "sl": "slv", "hr": "hrv",
+         "hu": "hun", "ro": "ron", "bg": "bul", "el": "ell", "ga": "gle", "mt": "mlt",
+         "ar": "ara", "ru": "rus", "uk": "ukr"}
+
+
+def viewer_language(settings, ui_language=""):
+    """ISO 639-2 language the applications are told (preferred*Language)."""
+    lang = settings.get("hbbtv_language") or settings.get("rec_audio_language") or ""
+    if lang:
+        return lang
+    code = (settings.get("language") or ui_language or "").split("_")[0].lower()
+    return LANG3.get(code, "deu")
+
+
 # -- capabilities ----------------------------------------------------------------
 
 def capabilities_xml(delivery=("DVB_S", "DVB_C", "DVB_T")):
@@ -135,6 +208,24 @@ def event_dict(ev):
             "programmeIDType": 1 if ev.event_id else 0,
             "parentalRatings": [{"name": str(ev.min_age), "scheme": "dvb-si",
                                  "value": ev.min_age}] if ev.min_age else []}
+
+
+def broadcast_components(audio, audio_cur, subtitles, sub_cur):
+    """AVComponent objects of the live picture for video/broadcast.getComponents().
+
+    audio: [AudioTrack]; subtitles: [(label, language)]; *_cur: active index (-1 none)."""
+    out = [{"type": 0, "index": 0, "language": "", "active": True, "encoding": "", "label": ""}]
+    for i, t in enumerate(audio):
+        lang = (t.language or "")[:3].lower()
+        out.append({"type": 1, "index": i, "language": lang, "active": i == audio_cur,
+                    "encoding": t.codec or "", "label": t.title or "",
+                    "audioDescription": "description" in (t.title or "").lower(),
+                    "audioChannels": t.channels or 0})
+    for i, (label, lang) in enumerate(subtitles):
+        out.append({"type": 2, "index": i, "language": (lang or "")[:3].lower(),
+                    "active": i == sub_cur, "encoding": "", "label": label,
+                    "hearingImpaired": "hearing" in label.lower()})
+    return out
 
 
 # -- application lifecycle ------------------------------------------------------

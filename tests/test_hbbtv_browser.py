@@ -27,6 +27,10 @@ if not (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
     pytest.skip("no display (use xvfb-run)", allow_module_level=True)
 
 from lindvb import ait  # noqa: E402
+from lindvb import hbbtv as _hb  # noqa: E402
+
+if not _hb.sandbox_ok():
+    pytest.skip("WebKit's sandbox cannot create user namespaces here", allow_module_level=True)
 from lindvb.ait import Ait, AitApp, Transport  # noqa: E402
 from lindvb.channels import Channel  # noqa: E402
 
@@ -45,7 +49,10 @@ window.onload = function () {
     document.title = 'key:' + e.keyCode + ':' + vb.playState + ':' + vb.currentChannel.name + ':' +
       caps.hasCapability('DVB_S') + ':' + (e.keyCode === KeyEvent.VK_RED) + ':' +
       navigator.userAgent.indexOf('HbbTV/1.7.1') + ':' +
-      vb.getChannelConfig().channelList.length;
+      vb.getChannelConfig().channelList.length + ':' +
+      vb.getComponents(1).map(function (c) { return c.language; }).join('/') + ':' +
+      vb.getCurrentActiveComponents(2).length;
+    vb.selectComponent(vb.getComponents(1)[1]);
   });
   document.title = 'ready:' + document.getElementById('cfg').configuration.countryId;
 };
@@ -59,16 +66,113 @@ window.onload = function () {
 """
 
 
+DASH_APP = b"""<html xmlns="http://www.w3.org/1999/xhtml"><head><title>loading</title>
+<script type="text/javascript">
+var log = [];
+function show() { document.title = log.join(' '); }
+window.onload = function () {
+  // HbbTV 2.0: an HTML5 video with an MPEG-DASH manifest
+  var v = document.getElementById('v');
+  v.muted = true;
+  v.src = 'dash/manifest.mpd';
+  log.push('src=' + (v.src.indexOf('manifest.mpd') > 0));
+  v.addEventListener('timeupdate', function () {
+    if (v.currentTime > 1 && log.indexOf('html5') < 0) { log.push('html5'); show(); v.pause(); avObject(); }
+  });
+  v.play();
+};
+function avObject() {
+  // HbbTV 1.x: an A/V control object with application/dash+xml
+  var av = document.getElementById('av');
+  av.data = 'dash/manifest.mpd';
+  av.onPlayStateChange = function () {
+    if (av.playState === 1 && log.indexOf('av-playing') < 0) {
+      log.push('av-playing');
+      setTimeout(function () {
+        var audio = av.getComponents(1);
+        log.push('audio=' + audio.map(function (c) { return c.language; }).join(','));
+        av.selectComponent(audio[1]);
+        setTimeout(function () {
+          var cur = av.getCurrentActiveComponents(1);
+          log.push('active=' + (cur.length ? cur[0].language : '-'));
+          log.push('dashjs=' + (typeof window.dashjs));
+          show();
+        }, 500);
+      }, 300);
+    }
+    show();
+  };
+  av.play(1);
+}
+</script></head><body style="margin:0">
+<video id="v" style="position:absolute;left:0;top:0;width:320px;height:180px"></video>
+<object id="av" type="application/dash+xml"
+        style="position:absolute;left:400px;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
+SUB_APP = b"""<html xmlns="http://www.w3.org/1999/xhtml"><head><title>loading</title>
+<script type="text/javascript">
+window.onload = function () {
+  var av = document.getElementById('av');
+  av.data = 'dash/manifest-subtitles.mpd';
+  av.onPlayStateChange = function () {
+    if (av.playState !== 1 || av.__done) { return; }
+    av.__done = true;
+    setTimeout(function () {
+      var subs = av.getComponents(2);
+      var first = document.querySelector('[data-lindvb=subtitles]');
+      var before = first ? first.textContent : 'no layer';
+      av.selectComponent(subs[0]);
+      var tries = 0;
+      var poll = setInterval(function () {
+        var layer = document.querySelector('[data-lindvb=subtitles]');
+        var text = layer ? layer.textContent : '';
+        if (text || ++tries > 40) {
+          clearInterval(poll);
+          document.title = 'subs=' + subs.map(function (c) { return c.language; }).join(',') +
+            ' before=' + (before || '-') + ' shown=' + (layer ? text : 'no layer');
+        }
+      }, 200);
+    }, 300);
+  };
+  av.play(1);
+};
+</script></head><body style="margin:0">
+<object id="av" type="video/mp4" style="position:absolute;left:0;top:0;width:640px;height:360px"></object>
+</body></html>
+"""
+
+DATA = os.path.join(os.path.dirname(__file__), "data")
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        path = self.path.split("?")[0]
+        if path.startswith("/dash/"):
+            name = os.path.basename(path)
+            try:
+                with open(os.path.join(DATA, "dash", name), "rb") as f:
+                    body = f.read()
+            except OSError:
+                self.send_error(404)
+                return
+            ctype = "application/dash+xml" if name.endswith(".mpd") else \
+                "application/ttml+xml" if name.endswith(".ttml") else \
+                ("video/mp4" if "stream0" in name else "audio/mp4")
+        else:
+            body = DASH_APP if path.startswith("/dashapp") else \
+                SUB_APP if path.startswith("/subapp") else APP
+            ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
-        self.send_header("Content-Type", "application/vnd.hbbtv.xhtml+xml")
-        self.send_header("Content-Length", str(len(APP)))
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(APP)
+        self.wfile.write(body)
 
     def log_message(self, *a):
-        pass
+        if os.environ.get("LINDVB_TEST_HTTP_LOG"):
+            sys.stderr.write((a[0] % a[1:]) + "\n")
 
 
 class FakeCapture(GObject.Object):
@@ -90,11 +194,34 @@ class FakeApp:
         self.epg = FakeEPG()
 
 
-class FakePlayer:
+class FakePlayer(GObject.Object):
+    __gsignals__ = {"tracks": (GObject.SignalFlags.RUN_LAST, None, ())}
     playbin = object()
 
+    def __init__(self):
+        super().__init__()
+        self.stops = 0
+        self.selected = []
+
     def stop(self):
-        pass
+        self.stops += 1
+
+    def audio_track_info(self):
+        from lindvb.media_info import AudioTrack
+        return [AudioTrack("deu", codec="MPEG-1 Layer 2"), AudioTrack("eng")], 0
+
+    def subtitle_tracks(self):
+        return ["Teletext 150 (deu)"], -1
+
+    def teletext_pages(self):
+        from lindvb.teletext import TeletextPage
+        return [TeletextPage(150, "deu")]
+
+    def select_audio(self, i):
+        self.selected.append(("audio", i))
+
+    def select_subtitle(self, i):
+        self.selected.append(("subtitle", i))
 
 
 class FakeWindow:
@@ -166,12 +293,70 @@ def test_red_button_application():
         assert hbb.handle_key("F6") is False
         assert hbb.handle_key("F5") is True
         assert _wait(lambda: (hbb.view.get_title() or "").startswith("key:"))
-        assert hbb.view.get_title() == "key:403:2:Das Erste:true:true:%d:2" % \
+        assert hbb.view.get_title() == "key:403:2:Das Erste:true:true:%d:2:deu/eng:0" % \
             hbb.view.get_settings().get_user_agent().index("HbbTV/1.7.1")
+        # the app picked the English sound of the live picture
+        assert _wait(lambda: win.player.selected == [("audio", 1)])
         # EXIT ends the application and gives the whole picture back to the video
         assert hbb.handle_key("Escape") is True
         assert not hbb.life.active and not hbb.view.get_visible()
         assert win.picture.get_margin_start() == 0
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def _start(win, hbb, url, location="dashapp"):
+    win.overlay.connect("get-child-position",
+                        lambda o, w, r: hbb.place(o, r) if w is hbb.view else False)
+    cap = FakeCapture()
+    hbb.channel_changed(win.current, cap)
+    a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
+    a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location=location)]
+    cap.ait = a
+    cap.emit("ait", a)
+
+
+def test_dash_video_and_av_object():
+    """MPEG-DASH through dash.js: an HTML5 video and an A/V control object play,
+    the A/V object lists both audio languages and switches to the second, and
+    the page has no global dashjs of ours."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: "dashjs=" in title(), timeout=40), title()
+        assert title() == "src=true html5 av-playing audio=deu,eng active=eng dashjs=undefined"
+        assert win.player.stops >= 1                  # the broadcast made way for the app's video
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_dash_ttml_subtitles():
+    """EBU-TT-D subtitles of a DASH stream (an A/V object typed video/mp4 with a
+    manifest URL): hidden at first, shown once the app selects the subtitle component."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "subapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: title().startswith("subs="), timeout=40), title()
+        # off until selected (Preferences: subtitles off), then on
+        assert title() == "subs=deu before=- shown=Untertitel aus der Mediathek"
         win.window.destroy()
     finally:
         server.shutdown()

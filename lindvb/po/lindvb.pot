@@ -2736,3 +2736,18 @@ msgstr ""
 
 msgid "Close the interactive service (Esc)"
 msgstr ""
+
+msgid "Subtitles in media libraries"
+msgstr ""
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr ""
+
+msgid "Audio description in media libraries"
+msgstr ""
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr ""
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr ""

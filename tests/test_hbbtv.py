@@ -107,3 +107,35 @@ def test_capabilities_document():
     xml = hbbtv.capabilities_xml()
     assert xml.startswith("<profilelist>") and "OITF_HD_UIPROF+DVB_S" in xml
     assert 'type="application/dash+xml"' in xml
+
+
+def test_viewer_language():
+    assert hbbtv.viewer_language({"hbbtv_language": "fra"}) == "fra"
+    assert hbbtv.viewer_language({"rec_audio_language": "eng"}) == "eng"
+    assert hbbtv.viewer_language({"language": "de"}) == "deu"
+    assert hbbtv.viewer_language({}, "nl") == "nld"
+    assert hbbtv.viewer_language({}) == "deu"
+
+
+def test_broadcast_components():
+    from lindvb.media_info import AudioTrack
+    comps = hbbtv.broadcast_components([AudioTrack("deu"), AudioTrack("eng", "Audiodescription")], 1,
+                                       [("Teletext 150 (deu)", "deu")], -1)
+    assert [(c["type"], c["language"], c["active"]) for c in comps] == \
+        [(0, "", True), (1, "deu", False), (1, "eng", True), (2, "deu", False)]
+    assert comps[2]["audioDescription"]
+
+
+def test_sandbox_probe(monkeypatch):
+    class R:
+        def __init__(self, code):
+            self.returncode = code
+    for code, ok in ((0, True), (1, False)):
+        monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+        assert hbbtv.sandbox_ok(run=lambda *a, **k: R(code), which=lambda n: "/usr/bin/bwrap",
+                                env={}) is ok
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+    assert hbbtv.sandbox_ok(run=None, which=lambda n: None, env={})
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)
+    assert hbbtv.sandbox_ok(run=None, which=None, env={"FLATPAK_ID": "x"})
+    monkeypatch.setattr(hbbtv, "_SANDBOX", None)

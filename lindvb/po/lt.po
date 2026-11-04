@@ -1904,3 +1904,18 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Subtitrai mediatekose"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Programos savo vaizdo įrašuose rodo subtitrus nuo pradžios."
+
+msgid "Audio description in media libraries"
+msgstr "Garsinis vaizdavimas mediatekose"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Programos teikia pirmenybę garso takeliui, kuris apibūdina vaizdą."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKit smėlio dėžė čia negali kurti naudotojo vardų sričių (Ubuntu AppArmor apribojimas), todėl programos negali saugiai pasileisti. Žr. docs/HBBTV.md."

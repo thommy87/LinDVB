@@ -1904,3 +1904,18 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Субтитри в медийните библиотеки"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Приложенията показват субтитри във видеоклиповете си от самото начало."
+
+msgid "Audio description in media libraries"
+msgstr "Аудиоописание в медийните библиотеки"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Приложенията предпочитат звуковата пътека, която описва картината."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Пясъчникът на WebKit не може да създава потребителски пространства от имена тук (ограничение на AppArmor в Ubuntu), затова приложенията не могат да стартират безопасно. Вижте docs/HBBTV.md."

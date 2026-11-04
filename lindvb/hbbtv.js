@@ -204,6 +204,7 @@
 
   /* ---------------------------------------------------------------- video/broadcast */
   var broadcasts = [];
+  var bcComponents = init.components || [];
   var PLAY = { UNREALIZED: 0, CONNECTING: 1, PRESENTING: 2, STOPPED: 3 };
 
   function reportRect(el) {
@@ -274,9 +275,28 @@
     };
     el.getVolume = function () { return localSystem.volume; };
     el.setVolume = function (v) { localSystem.volume = v; post({ cmd: "volume", value: v }); return true; };
-    el.getComponents = function () { return []; };
-    el.getCurrentActiveComponents = function () { return []; };
-    el.selectComponent = function () {}; el.unselectComponent = function () {};
+    function comps(type, activeOnly) {
+      return bcComponents.filter(function (c) {
+        return (type === undefined || type === null || c.type === type) && (!activeOnly || c.active);
+      }).map(function (c) {
+        var o = {};
+        Object.keys(c).forEach(function (k) { o[k] = c[k]; });
+        o.componentTag = c.index; o.pid = 0; o.encrypted = false;
+        o.COMPONENT_TYPE_VIDEO = 0; o.COMPONENT_TYPE_AUDIO = 1; o.COMPONENT_TYPE_SUBTITLE = 2;
+        return o;
+      });
+    }
+    el.getComponents = function (type) { return comps(type, false); };
+    el.getCurrentActiveComponents = function (type) { return comps(type, true); };
+    el.selectComponent = function (c) {
+      if (c && typeof c === "object" && (c.type === 1 || c.type === 2)) {
+        post({ cmd: "select-component", type: c.type, index: c.index });
+      }
+    };
+    el.unselectComponent = function (c) {
+      var type = (c && typeof c === "object") ? c.type : c;
+      if (type === 2) { post({ cmd: "select-component", type: 2, index: -1 }); }
+    };
     el.addStreamEventListener = function () {}; el.removeStreamEventListener = function () {};
     el.recordNow = function () { return null; }; el.stopRecording = function () {};
     el.pause = function () { return false; }; el.resume = function () { return false; };
@@ -292,6 +312,179 @@
   Object.defineProperty(channelConfig, "currentFavouriteList", { get: function () { return null; } });
   channelConfig.createFilteredList = function () { return channelList(); };
   channelConfig.startScan = function () {}; channelConfig.stopScan = function () {};
+
+  /* ---------------------------------------------------------------- MPEG-DASH
+   * WebKitGTK has no DASH of its own: dash.js (lindvb/vendor, loaded before
+   * this file without a global name) plays it through Media Source
+   * Extensions, in <video> elements (HbbTV 2.0) and A/V control objects. */
+  var dashLib = window.__lindvbDash || null;
+  try { delete window.__lindvbDash; } catch (e) { window.__lindvbDash = undefined; }
+  var DASH_TYPE = "application/dash+xml";
+  function isDash(url, type) {
+    if ((type || "").toLowerCase().indexOf(DASH_TYPE) === 0) { return true; }
+    return /\.mpd($|[?#])/i.test(url || "");
+  }
+  var srcDesc = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "src");
+  var setAttr = Element.prototype.setAttribute;
+  var removeAttr = Element.prototype.removeAttribute;
+
+  function dashDetach(video) {
+    var p = video.__dash;
+    if (!p) { return; }
+    video.__dash = null;
+    video.__dashUrl = null;
+    if (video.__subs) {
+      clearInterval(video.__subs.timer);
+      if (video.__subs.div.parentNode) { video.__subs.div.parentNode.removeChild(video.__subs.div); }
+      video.__subs = null;
+    }
+    try { p.reset(); } catch (e) { /* already gone */ }
+  }
+
+  // TTML / EBU-TT-D subtitles: dash.js draws them into a layer that follows the video
+  function subtitleLayer(video) {
+    var div = document.createElement("div");
+    div.setAttribute("data-lindvb", "subtitles");
+    div.style.cssText = "position:absolute;pointer-events:none;z-index:2147483646;overflow:hidden";
+    var last = "";
+    function follow() {
+      var r = video.getBoundingClientRect();
+      var key = [r.left, r.top, r.width, r.height].join(",");
+      if (key === last) { return; }
+      last = key;
+      div.style.left = (r.left + window.scrollX) + "px";
+      div.style.top = (r.top + window.scrollY) + "px";
+      div.style.width = r.width + "px";
+      div.style.height = r.height + "px";
+    }
+    (document.body || document.documentElement).appendChild(div);
+    follow();
+    video.__subs = { div: div, timer: setInterval(follow, 250) };
+    return div;
+  }
+
+  function dashAttach(video, url, autoplay) {
+    dashDetach(video);
+    if (!dashLib) { return false; }
+    var p = dashLib.MediaPlayer().create();
+    p.updateSettings({
+      debug: { logLevel: dashLib.Debug.LOG_LEVEL_WARNING },
+      streaming: {
+        // the text pipeline starts only for streams with text on at the start: switch it on and
+        // hide it again (below) unless the user wants subtitles
+        text: { defaultEnabled: true },
+        // the terminal stores nothing in the application's local storage
+        lastBitrateCachingInfo: { enabled: false },
+        lastMediaSettingsCachingInfo: { enabled: false }
+      }
+    });
+    video.__dash = p;
+    video.__dashUrl = url;
+    p.on(dashLib.MediaPlayer.events.ERROR, function (e) {
+      console.error("LinDVB DASH:", e && e.error && (e.error.message || e.error.code));
+    });
+    p.on(dashLib.MediaPlayer.events.STREAM_INITIALIZED, function () {
+      if (!cfg.subtitles && !video.__textChosen) { p.enableText(false); }
+    });
+    p.initialize(video, url, !!autoplay);
+    try { p.attachTTMLRenderingDiv(subtitleLayer(video)); } catch (e) { console.error(e); }
+    var lang2 = lang2of(cfg.audioLanguage);
+    var audio = lang2 ? { lang: lang2 } : {};
+    if (cfg.audioDescription) {
+      audio.accessibility = { schemeIdUri: "urn:tva:metadata:cs:AudioPurposeCS:2007", value: "1" };
+    }
+    p.setInitialMediaSettingsFor("audio", audio);
+    if (lang2of(cfg.subtitleLanguage)) {
+      p.setInitialMediaSettingsFor("text", { lang: lang2of(cfg.subtitleLanguage) });
+    }
+    return true;
+  }
+
+  // the app sets video.src = "....mpd": hand it to dash.js; dash.js itself sets blob: URLs
+  Object.defineProperty(HTMLMediaElement.prototype, "src", {
+    configurable: true, enumerable: true,
+    get: function () { return this.__dashUrl || srcDesc.get.call(this); },
+    set: function (v) {
+      var url = v ? String(v) : "";
+      if (url && url.indexOf("blob:") !== 0) {
+        var abs = new URL(url, location.href).href;
+        if (isDash(abs, this.__lindvbType)) { dashAttach(this, abs, this.autoplay); return; }
+      }
+      if (url.indexOf("blob:") !== 0) { dashDetach(this); }
+      srcDesc.set.call(this, v);
+    }
+  });
+  Element.prototype.setAttribute = function (name, value) {
+    if (this instanceof HTMLMediaElement && String(name).toLowerCase() === "src") {
+      this.src = value;
+      return;
+    }
+    return setAttr.call(this, name, value);
+  };
+  Element.prototype.removeAttribute = function (name) {
+    if (this instanceof HTMLMediaElement && String(name).toLowerCase() === "src" && this.__dash) {
+      dashDetach(this);
+    }
+    return removeAttr.call(this, name);
+  };
+
+  // <video src="x.mpd"> or <video><source src="x.mpd" type="application/dash+xml"> in markup
+  function scanMedia(video) {
+    if (video.__dash || video.__lindvbScanned) { return; }
+    var url = video.getAttribute("src"), type = video.getAttribute("type");
+    if (!url) {
+      var srcs = video.getElementsByTagName("source");
+      for (var i = 0; i < srcs.length; i++) {
+        if (isDash(srcs[i].getAttribute("src"), srcs[i].getAttribute("type"))) {
+          url = srcs[i].getAttribute("src"); type = DASH_TYPE; break;
+        }
+      }
+    }
+    if (url && isDash(url, type)) {
+      video.__lindvbScanned = true;
+      dashAttach(video, new URL(url, location.href).href, video.autoplay);
+    }
+  }
+
+  // the app plays a video of its own: LinDVB stops the broadcast sound and picture
+  document.addEventListener("playing", function (e) {
+    if (e.target instanceof HTMLMediaElement) { post({ cmd: "av-play", url: e.target.src }); }
+  }, true);
+
+  // dash.js reports BCP 47 ("de"); OIPF components carry ISO 639-2 ("deu")
+  var ISO639_2 = { de: "deu", en: "eng", fr: "fra", it: "ita", es: "spa", nl: "nld", pl: "pol",
+                   pt: "por", tr: "tur", ru: "rus", uk: "ukr", da: "dan", sv: "swe", fi: "fin",
+                   no: "nor", nb: "nob", cs: "ces", sk: "slk", hu: "hun", el: "ell", ro: "ron",
+                   bg: "bul", hr: "hrv", sl: "slv", sr: "srp", ar: "ara", ja: "jpn", zh: "zho" };
+  function lang2of(l3) {
+    l3 = (l3 || "").toLowerCase();
+    for (var k in ISO639_2) { if (ISO639_2[k] === l3) { return k; } }
+    return l3.length === 2 ? l3 : (l3 === "ger" ? "de" : "");
+  }
+  function lang3(l) {
+    l = (l || "").toLowerCase();
+    var base = l.split("-")[0];
+    return base.length === 2 ? (ISO639_2[base] || base) : base;
+  }
+
+  function dashComponents(p, type) {
+    var COMP = { 0: "video", 1: "audio", 2: "text" };
+    var out = [];
+    [0, 1, 2].forEach(function (t) {
+      if (type !== undefined && type !== null && type !== t) { return; }
+      var tracks = [];
+      try { tracks = p.getTracksFor(COMP[t]) || []; } catch (e) { tracks = []; }
+      tracks.forEach(function (tr) {
+        out.push({ type: t, componentTag: tr.index, pid: 0, encoding: tr.codec || tr.mimeType || "",
+                   encrypted: false, language: lang3(tr.lang), audioDescription:
+                   (tr.roles || []).indexOf("description") >= 0 || (tr.accessibility || []).length > 0,
+                   hearingImpaired: (tr.roles || []).indexOf("caption") >= 0, label: tr.labels || "",
+                   __track: tr, COMPONENT_TYPE_VIDEO: 0, COMPONENT_TYPE_AUDIO: 1,
+                   COMPONENT_TYPE_SUBTITLE: 2 });
+      });
+    });
+    return out;
+  }
 
   /* ---------------------------------------------------------------- A/V control object */
   var AV_TYPES = ["video/mp4", "video/mpeg", "video/mpeg4", "audio/mp4", "audio/mpeg",
@@ -332,10 +525,10 @@
       s = (s === undefined) ? 1 : s;
       if (!data) { return false; }
       if (s === 0) { video.pause(); speed = 0; setState(AV.PAUSED); return true; }
-      if (video.getAttribute("src") !== data) {
+      if (video.src !== data) {
         setState(AV.CONNECTING);
         post({ cmd: "av-play", url: data, type: mediaType });
-        video.src = data;
+        if (isDash(data, mediaType)) { dashAttach(video, data, true); } else { video.src = data; }
       }
       speed = s;
       video.playbackRate = Math.abs(s) >= 1 ? Math.min(Math.abs(s), 16) : 1;
@@ -344,7 +537,8 @@
       return true;
     };
     el.stop = function () {
-      video.pause(); video.removeAttribute("src"); video.load(); speed = 0; setState(AV.STOPPED);
+      video.pause(); dashDetach(video); removeAttr.call(video, "src"); video.load();
+      speed = 0; setState(AV.STOPPED);
       post({ cmd: "av-stop" });
       return true;
     };
@@ -352,8 +546,32 @@
     el.setVolume = function (v) { video.volume = Math.max(0, Math.min(1, v / 100)); return true; };
     el.setFullScreen = function () {};
     el.queue = function () { return false; };
-    el.getComponents = function () { return []; };
-    el.selectComponent = function () {}; el.unselectComponent = function () {};
+    el.getComponents = function (type) { return video.__dash ? dashComponents(video.__dash, type) : []; };
+    el.getCurrentActiveComponents = function (type) {
+      var p = video.__dash;
+      if (!p) { return []; }
+      return dashComponents(p, type).filter(function (c) {
+        var cur = p.getCurrentTrackFor(["video", "audio", "text"][c.type]);
+        return cur && cur.index === c.__track.index && (c.type !== 2 || p.isTextEnabled());
+      });
+    };
+    el.selectComponent = function (c) {
+      var p = video.__dash;
+      if (!p || !c || !c.__track) { return; }
+      if (c.type === 2) {
+        video.__textChosen = true;
+        p.setCurrentTrack(c.__track);
+        p.enableText(true);
+        var texts = p.getTracksFor("text");
+        p.setTextTrack(texts.indexOf(c.__track));
+      } else {
+        p.setCurrentTrack(c.__track);
+      }
+    };
+    el.unselectComponent = function (c) {
+      var p = video.__dash;
+      if (p && (c === 2 || (c && c.type === 2))) { p.enableText(false); }
+    };
     video.addEventListener("playing", function () { setState(AV.PLAYING); });
     video.addEventListener("waiting", function () { setState(AV.BUFFERING); });
     video.addEventListener("pause", function () { if (state === AV.PLAYING) { setState(AV.PAUSED); } });
@@ -405,9 +623,12 @@
 
   function scan(root) {
     if (root.tagName === "OBJECT") { augment(root); }
+    if (root.tagName === "VIDEO" || root.tagName === "AUDIO") { scanMedia(root); }
     if (root.querySelectorAll) {
       var list = root.querySelectorAll("object");
       for (var i = 0; i < list.length; i++) { augment(list[i]); }
+      var media = root.querySelectorAll("video, audio");
+      for (var j = 0; j < media.length; j++) { scanMedia(media[j]); }
     }
   }
 
@@ -476,6 +697,10 @@
       broadcasts.forEach(function (b) { b.__fire("ProgrammesChanged", {}, []); });
     },
     channels: function (list) { channels = (list || []).map(makeChannel); },
+    components: function (list) {
+      bcComponents = list || [];
+      broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
+    },
     broadcastState: function (state, error) {
       broadcasts.forEach(function (b) { b.__setState(state, error); });
     },

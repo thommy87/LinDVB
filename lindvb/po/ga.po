@@ -1904,3 +1904,18 @@ msgstr "HbbTV"
 
 msgid "HbbTV: {name}"
 msgstr "HbbTV: {name}"
+
+msgid "Subtitles in media libraries"
+msgstr "Fotheidil i leabharlanna meán"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Taispeánann feidhmchláir fotheidil ina bhfíseáin ón tús."
+
+msgid "Audio description in media libraries"
+msgstr "Closchur síos i leabharlanna meán"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Is fearr le feidhmchláir an fuaimrian a dhéanann cur síos ar an bpictiúr."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Ní féidir le bosca gainimh WebKit spásanna ainmneacha úsáideora a chruthú anseo (srian AppArmor Ubuntu), mar sin ní féidir le feidhmchláir tosú go sábháilte. Féach docs/HBBTV.md."

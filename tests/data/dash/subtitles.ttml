@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling"
+    xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:ebuttm="urn:ebu:tt:metadata"
+    ttp:timeBase="media" ttp:cellResolution="50 30" xml:lang="de">
+  <head>
+    <styling><style xml:id="s1" tts:color="#ffffff" tts:backgroundColor="#000000" tts:fontSize="100%"/></styling>
+    <layout><region xml:id="bottom" tts:origin="10% 80%" tts:extent="80% 15%" tts:textAlign="center"/></layout>
+  </head>
+  <body><div>
+    <p xml:id="c1" begin="00:00:00.000" end="00:00:06.000" region="bottom" style="s1">Untertitel aus der Mediathek</p>
+  </div></body>
+</tt>

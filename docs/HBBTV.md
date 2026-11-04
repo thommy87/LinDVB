@@ -25,6 +25,8 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 |---|---|---|
 | Interactive services (HbbTV) | on | Watch the AIT and offer the red button |
 | Start automatically | off | Start the AUTOSTART application by itself, as a TV does. Off: only with the red button |
+| Subtitles in media libraries | off | `configuration.subtitlesEnabled`; DASH videos start with subtitles on |
+| Audio description in media libraries | off | `configuration.audioDescriptionEnabled`; DASH videos prefer the describing soundtrack |
 | Allow third-party cookies | off | Advertising networks use them to follow viewers across channels |
 | Delete HbbTV Data | – | Removes cookies, local storage and cache of all applications |
 
@@ -33,6 +35,14 @@ and `~/.cache/lindvb/hbbtv`.
 
 Needs `gir1.2-webkit-6.0` (Debian/Ubuntu) or `webkitgtk6.0` (Fedora). The
 Flatpak's GNOME runtime contains it.
+
+WebKit runs every application in a bubblewrap sandbox, which needs
+unprivileged user namespaces. Ubuntu 24.04 and later forbid them for programs
+without an AppArmor profile, and WebKit would then end LinDVB as soon as an
+application starts. LinDVB checks this at start and switches HbbTV off with a
+hint in the preferences. To allow it, either install the Flatpak, or allow user
+namespaces (`sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0`, or an
+AppArmor profile for LinDVB with `userns,`).
 
 ## How it works
 
@@ -55,8 +65,20 @@ Flatpak's GNOME runtime contains it.
    destroy, createApplication), `application/oipfConfiguration`,
    `application/oipfCapabilities`, `video/broadcast` (bind, set channel, channel
    list, programmes now/next, full screen or a window of its own; LinDVB scales
-   the picture into that window), the A/V control object for MP4 and MPEG
-   files (played by the browser), `oipfObjectFactory`, `KeyEvent.VK_*`.
+   the picture into that window; the live audio and subtitle tracks as
+   components the app can switch), the A/V control object, `oipfObjectFactory`,
+   `KeyEvent.VK_*`.
+5. **Videos of the application**: MP4 and HLS play in WebKit itself. MPEG-DASH
+   (the media libraries) plays through [dash.js](https://github.com/Dash-Industry-Forum/dash.js)
+   4.7.4 (`lindvb/vendor`, BSD licence) on Media Source Extensions, in HTML5
+   `<video>` elements (`src`, `setAttribute`, `<source type="application/dash+xml">`)
+   and in A/V control objects. dash.js is loaded into the page without a global
+   name, so an application's own copy is not disturbed, and stores nothing in
+   the application's storage. Audio languages and TTML / EBU-TT-D subtitles are
+   components (`getComponents`, `selectComponent`); subtitles are drawn in a
+   layer over the video. While an application plays its own video, LinDVB
+   stops the live picture and sound, and brings them back on
+   `bindToCurrentChannel()` or when the application ends.
 
 ## Testing without DVB hardware
 
@@ -74,15 +96,17 @@ application's console messages to the terminal and enables the WebKit
 inspector. A recording of a real channel in TS format also works, since it
 keeps the AIT.
 
-`tests/test_hbbtv_browser.py` runs an application end to end in WebKitGTK
-(under `xvfb-run`).
+`tests/test_hbbtv_browser.py` runs applications end to end in WebKitGTK
+(under `xvfb-run`): the red button, the key set, the video window, live
+components, a DASH `<video>`, a DASH A/V object with two audio languages and
+EBU-TT-D subtitles (`tests/data/dash`).
 
 ## Still to do for HbbTV 2.0.4
 
 | Area | What is missing |
 |---|---|
-| MPEG-DASH | `<video>` and A/V objects with DASH (most media libraries): play through LinDVB's GStreamer player or an MSE player |
-| Media | TTML / EBU-TT-D subtitles, audio and subtitle components (`getComponents`), trick play for broadcast |
+| DRM | Encrypted streams (EME, Widevine/PlayReady): WebKitGTK has no such module, so pay content stays dark |
+| Media | Subtitles inside DASH segments (fMP4 `stpp`) are untested; trick play for the broadcast |
 | Stream events | DSM-CC stream events (`addStreamEventListener`) |
 | Object carousel | Applications and files from the DSM-CC carousel (`dvb://` URLs) |
 | Parental control | Rating checks and PIN |

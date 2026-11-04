@@ -37,6 +37,11 @@ DEFAULTS = {
     "hbbtv_autostart": False,
     "hbbtv_third_party_cookies": False,
     "hbbtv_country": "DEU",             # configuration.countryId (ISO 3166 alpha-3)
+    # what applications are told about the viewer (configuration object, and
+    # the first audio / subtitle choice in their DASH videos)
+    "hbbtv_subtitles": False,
+    "hbbtv_audio_description": False,
+    "hbbtv_language": "",               # ISO 639-2; "" = the interface language
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
     "recording_dir": str(Path.home() / "Videos" / "LinDVB"),
