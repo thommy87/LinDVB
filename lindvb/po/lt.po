@@ -2096,3 +2096,43 @@ msgstr "Perkelti žemyn"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Sava tvarka kanalui"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automatiškai (vaizdo plokštė, kai įmanoma)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM plokštės)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Programinis (procesorius)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Rasti vaizdo plokštės dekoderiai: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "nėra"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Išjungta po klaidos: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Dabar dekoduoja: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Vaizdo dekodavimas"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Persipynę TV vaizdai (dauguma SD ir 1080i kanalų). Vaizdo plokštėje, kai dekoduoja VA-API, kitaip procesoriumi."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name} vaizdo dekodavimas nepavyko, grojama kitu dekoderiu"

@@ -2096,3 +2096,43 @@ msgstr "نقل لأسفل"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "ترتيب خاص للقناة"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "تلقائي (بطاقة الرسومات عند الإمكان)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (لوحات ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "برمجي (المعالج)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "أجهزة فك ترميز بطاقة الرسومات الموجودة: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "لا شيء"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "أُوقف بعد خطأ: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "يفك الترميز الآن: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "فك ترميز الفيديو"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "صور تلفزيونية متشابكة (معظم قنوات SD و1080i). على بطاقة الرسومات عندما يفك VA-API الترميز، وإلا بواسطة المعالج."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "فشل فك ترميز الفيديو {name}، يستمر التشغيل بفك الترميز التالي"

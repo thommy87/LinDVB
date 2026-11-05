@@ -2096,3 +2096,43 @@ msgstr "Lejjebb"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Saját sorrend a csatornához"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automatikus (videokártya, ha lehetséges)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM lapok)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Szoftveres (processzor)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Talált videokártya-dekóderek: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "nincs"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Hiba után kikapcsolva: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Jelenlegi dekóder: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Videodekódolás"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Váltottsoros TV-képek (a legtöbb SD és 1080i csatorna). A videokártyán, ha a VA-API dekódol, egyébként a processzoron."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "A(z) {name} videodekódolás sikertelen, lejátszás a következő dekóderrel"

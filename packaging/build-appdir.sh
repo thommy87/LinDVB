@@ -53,7 +53,11 @@ PLUGINS="coreelements playback typefindfunctions app autodetect audioconvert aud
   dvbsuboverlay dvdspu libav audioparsers videoparsersbad mpegpsdemux mpeg2dec mpg123 a52dec
   dtsdec faad opus vorbis ogg flac isomp4 matroska id3demux icydemux soup hls dash
   adaptivedemux2 udp rtp rtpmanager rtpmanagerbad rtsp tcp multifile png alsa pulseaudio
-  pipewire gtk4 opengl ximagesink"
+  pipewire gtk4 opengl ximagesink
+  va nvcodec vulkan v4l2codecs video4linux2"
+# va, nvcodec, vulkan, v4l2codecs, video4linux2: hardware video decoding
+# (lindvb/hwaccel.py). They load the host's libva, CUDA/NVDEC, Vulkan and V4L2
+# drivers, so those libraries are left out below.
 for p in $PLUGINS; do
     f="$ARCH_LIB/gstreamer-$GSTVER/libgst$p.so"
     if [ -f "$f" ]; then cp "$f" "$APPDIR/usr/lib/gstreamer-$GSTVER/"; fi
@@ -117,7 +121,7 @@ done
 
 echo "== shared libraries"
 # Libraries that must come from the host system (C library, graphics drivers, audio servers).
-EXCLUDE='^(libc|libm|libdl|libpthread|librt|libresolv|libutil|libnsl|ld-linux|libGL|libGLX|libGLdispatch|libEGL|libOpenGL|libgbm|libdrm|libvulkan|libstdc\+\+|libgcc_s|libasound|libpulse|libjack|libpipewire|libudev|libsystemd|libdbus-1|libX11-xcb|libxcb|libX11|libwayland-client|libwayland-egl|libwayland-cursor|libexpat|libfontconfig|libfreetype|libz)\.so'
+EXCLUDE='^(libc|libm|libdl|libpthread|librt|libresolv|libutil|libnsl|ld-linux|libGL|libGLX|libGLdispatch|libEGL|libOpenGL|libgbm|libdrm|libva|libva-drm|libva-x11|libva-wayland|libvulkan|libcuda|libnvcuvid|libstdc\+\+|libgcc_s|libasound|libpulse|libjack|libpipewire|libudev|libsystemd|libdbus-1|libX11-xcb|libxcb|libX11|libwayland-client|libwayland-egl|libwayland-cursor|libexpat|libfontconfig|libfreetype|libz)\.so'
 collect() {
     find "$APPDIR" -type f \( -name '*.so*' -o -path '*/usr/bin/*' -o -name gst-plugin-scanner \
                            -o -path '*/webkitgtk-6.0/WebKit*' \) |

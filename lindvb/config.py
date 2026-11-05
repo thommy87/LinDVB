@@ -131,6 +131,10 @@ DEFAULTS = {
     "epg_priority_order": ["eit", "provider", "dvbi", "xmltv"],
     "epg_priority_channels": {},
     "deinterlace": True,
+    # Video decoder (lindvb.hwaccel): "auto" (VA-API, NVDEC, V4L2, then
+    # software), one interface ("vaapi", "nvdec", "vulkan", "v4l2") or
+    # "software". A GPU decoder that fails falls back to the next one.
+    "video_decoder": "auto",
     # CEA-608/708 closed captions (ATSC, US cable)
     "closed_captions": False,
     # Internet streams: "auto" plays HLS with separate audio renditions on

@@ -2096,3 +2096,43 @@ msgstr "Sposta giù"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Ordine proprio per il canale"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automatico (scheda grafica se possibile)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (schede ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Software (processore)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Decoder della scheda grafica trovati: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "nessuno"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Disattivato dopo un errore: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Decodifica attuale: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Decodifica video"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Immagini TV interlacciate (la maggior parte dei canali SD e 1080i). Sulla scheda grafica quando decodifica VA-API, altrimenti sul processore."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Decodifica video {name} non riuscita, riproduzione con il decoder successivo"

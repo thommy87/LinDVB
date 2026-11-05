@@ -2096,3 +2096,43 @@ msgstr "Bog síos"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Ord féin don chainéal"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Uathoibríoch (cárta grafaice nuair is féidir)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (cláir ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Bogearraí (próiseálaí)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Díchódóirí cárta grafaice aimsithe: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "dada"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Múchta tar éis earráide: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Ag díchódú anois: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Díchódú físe"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Pictiúir teilifíse idirfhite (formhór na gcainéal SD agus 1080i). Ar an gcárta grafaice nuair a dhíchódaíonn VA-API, nó ar an bpróiseálaí."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Theip ar dhíchódú físe {name}, ag seinm leis an gcéad díchódóir eile"

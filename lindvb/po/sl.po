@@ -2096,3 +2096,43 @@ msgstr "Premakni dol"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Lasten vrstni red za program"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Samodejno (grafična kartica, če je mogoče)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (plošče ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Programsko (procesor)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Najdeni dekodirniki grafične kartice: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "nobenega"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Izklopljeno po napaki: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Trenutni dekodirnik: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Dekodiranje videa"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Prepleteni TV-posnetki (večina kanalov SD in 1080i). Na grafični kartici, ko dekodira VA-API, sicer s procesorjem."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Dekodiranje videa {name} ni uspelo, predvajanje z naslednjim dekodirnikom"

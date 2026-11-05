@@ -22,6 +22,7 @@ from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
+from . import hwaccel  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
@@ -194,6 +195,9 @@ class Player(GObject.Object):
         "vis-error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "tracks": (GObject.SignalFlags.RUN_LAST, None, ()),
         "eos": (GObject.SignalFlags.RUN_LAST, None, ()),
+        # a GPU video decoder failed and was switched off (interface name, e.g.
+        # "VA-API"); playback goes on with the next one or in software
+        "hw-fallback": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # teletext subtitle text to show over the video ("" clears it)
         "subtitle-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # what is playing (dict: title, artist, album, year, track, image,
@@ -207,6 +211,8 @@ class Player(GObject.Object):
         super().__init__()
         self.settings = settings
         enable_ttml()
+        self.apply_decoder_setting()
+        self.video_decoder = None       # (factory, backend) decoding the video now
         self.video = VideoBin(picture)
         self.playbin = None
         self.feeder = None
@@ -238,6 +244,7 @@ class Player(GObject.Object):
         self._hls_alt_audio = {}        # url -> master playlist has audio renditions
         self._fallback_done = False
         self._error_token = -1          # playback that already reported an error
+        self._hw_error_token = -1       # playback whose GPU decoder failed
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
         # radio visualisations: audio analysis tap, or a GStreamer visualiser
@@ -254,6 +261,7 @@ class Player(GObject.Object):
 
     def _build(self, pb3=False):
         self._teardown()
+        self.video_decoder = None
         self._pb3 = bool(pb3)
         self._collection, self._selected = None, set()
         pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
@@ -267,8 +275,15 @@ class Player(GObject.Object):
             self.cc = Gst.ElementFactory.make("cc708overlay")
             self.cc.set_property("silent", not self.settings.get("closed_captions", False))
             chain.insert(0, self.cc)
-        if self.settings["deinterlace"] and Gst.ElementFactory.find("deinterlace"):
-            chain.append(Gst.ElementFactory.make("deinterlace"))
+        if self.settings["deinterlace"]:
+            gpu = hwaccel.preferred(self._decoder_mode(), hwaccel.available())
+            deint = hwaccel.make_deinterlacer(gpu)
+            if deint is not None and deint.get_factory().get_name() == "vadeinterlace":
+                # first in the chain: it takes the VA-API decoder's frames
+                # straight from the graphics card and deinterlaces them there
+                chain.insert(0, deint)
+            elif deint is not None:
+                chain.append(deint)
         self.vbal = Gst.ElementFactory.make("videobalance")
         chain += [self.vbal, Gst.ElementFactory.make("videoconvert")]
         for e in chain:
@@ -301,6 +316,15 @@ class Player(GObject.Object):
         self.playbin = pb
         self._apply_settings()
         return pb
+
+    def _decoder_mode(self):
+        mode = self.settings.get("video_decoder", "auto")
+        return mode if mode in hwaccel.BACKENDS else "auto"
+
+    def apply_decoder_setting(self):
+        """Rank the video decoders after the "video_decoder" setting; pipelines
+        built from now on use it (restart() for the one playing)."""
+        return hwaccel.apply(self._decoder_mode())
 
     def _audio_filter(self):
         """audioconvert ! equalizer ! spectrum, with a probe for the meters."""
@@ -463,6 +487,9 @@ class Player(GObject.Object):
 
     def _on_element_setup(self, _pb, element):
         f = element.get_factory()
+        dec = hwaccel.factory_backend(element)
+        if dec is not None:
+            self.video_decoder = dec
         if f and f.get_name() == "tsdemux":
             if self.sid:
                 element.set_property("program-number", self.sid)
@@ -705,6 +732,12 @@ class Player(GObject.Object):
         if token == self._token and self.uri and not self.capture:
             self._hls_alt_audio[self.uri] = False
             self._start_uri(False)
+        return False
+
+    def _hw_fallback(self, token, gpu):
+        if token == self._token and (self.capture or self.uri):
+            self.restart()
+            self.emit("hw-fallback", hwaccel.NAMES.get(gpu, gpu))
         return False
 
     def set_audio_delay(self, ms):
@@ -1042,6 +1075,18 @@ class Player(GObject.Object):
                     self._vis_error_token = self._token
                     print(f"Visualisation failed: {err.message} ({_dbg})")
                     GLib.idle_add(self._drop_visualizer, err.message)
+                return
+            gpu = hwaccel.failed_backend(msg.src)
+            if gpu is not None and self._hw_error_token == self._token:
+                return              # more errors of the pipeline being replaced
+            if gpu is not None and gpu not in hwaccel.disabled():
+                self._hw_error_token = self._token
+                # a GPU decoder (driver bug, unsupported profile): switch that
+                # interface off for this session and play again without it
+                print(f"{hwaccel.NAMES.get(gpu, gpu)} video decoding failed: "
+                      f"{err.message} ({_dbg}); trying the next decoder")
+                hwaccel.disable(gpu, self._decoder_mode())
+                GLib.idle_add(self._hw_fallback, self._token, gpu)
                 return
             if self._pb3 and self.uri and not self.capture and not self._fallback_done:
                 # e.g. hlsdemux2 refusing a stream: try the classic pipeline once

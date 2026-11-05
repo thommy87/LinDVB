@@ -131,6 +131,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player = Player(self.picture, self.settings)
         self.player.connect("error", lambda _p, m: self._on_play_error(_("Playback error: {m}").format(m=m)))
         self.player.connect("vis-error", self._on_vis_error)
+        self.player.connect("hw-fallback", lambda _p, name: self.set_status(
+            _("{name} video decoding failed, playing with the next decoder").format(name=name)))
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
