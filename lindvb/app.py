@@ -72,6 +72,10 @@ class LinDVBApp(Gtk.Application):
         self.apply_epg_priority()
         self.tuners = TunerManager(self.settings, ca_factory=self.plugins.make_ca_provider)
         self.timers = TimerManager(self)
+        # channel analysis: open measurements, reception log and weak signal warnings
+        from .analysis import ReceptionMonitor
+        self.analysis_sessions = []
+        self.reception = ReceptionMonitor(self)
         self.plugins.bind_app(self)
         self.plugins.emit("startup")
         self._cam_window = None
@@ -140,6 +144,9 @@ class LinDVBApp(Gtk.Application):
         if self.window:
             self.window.settings.save()
         self.timers.stop_all()
+        for session in list(self.analysis_sessions):
+            session.stop()
+        self.reception.shutdown()
         self.tuners.shutdown()
         self.epg.save()
         Gtk.Application.do_shutdown(self)
@@ -387,6 +394,13 @@ class LinDVBApp(Gtk.Application):
     def show_editor(self, channel=None):
         from .ui.dialogs import EditorWindow
         EditorWindow(self, self.window, channel).present()
+
+    def show_analysis(self, channel=None):
+        """The channel analysis window (right click on a channel)."""
+        from .ui.analysis import open_analysis
+        channel = channel or (self.window.current if self.window else None)
+        if channel is not None:
+            open_analysis(self, channel)
 
     def show_stats(self):
         from .ui.dialogs import StatsWindow

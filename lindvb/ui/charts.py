@@ -35,7 +35,11 @@ def level_colour(fraction):
 
 def _text(cr, widget, x, y, text, size=8.5, colour=TEXT_DIM, align="left", bold=False):
     layout = PangoCairo.create_layout(cr)
-    fd = Pango.FontDescription.from_string(f"{'Bold ' if bold else ''}{size}")
+    base = widget.get_pango_context().get_font_description() if widget is not None else None
+    fd = base.copy() if base is not None else Pango.FontDescription.from_string("Sans")
+    fd.set_size(int(size * Pango.SCALE))
+    if bold:
+        fd.set_weight(Pango.Weight.BOLD)
     layout.set_font_description(fd)
     layout.set_text(text, -1)
     w, h = layout.get_pixel_size()
@@ -67,7 +71,8 @@ class Chart(Gtk.DrawingArea):
         super().__init__(hexpand=True, content_height=height)
         self.stacked = stacked
         self.unit = unit
-        self.fmt = fmt or (lambda v: f"{v:.0f}")
+        self.fmt = fmt or (lambda v: f"{v:.0f}" if abs(v) >= 10 or abs(v - round(v)) < 0.05
+                           else f"{v:.1f}")
         self.y_min, self.y_max = y_min, y_max
         self.seconds = seconds
         self.series = []            # [(label, [(t, v)], colour)]
@@ -107,8 +112,9 @@ class Chart(Gtk.DrawingArea):
         return lo, hi
 
     def _draw(self, _area, cr, width, height):
-        right, bottom, top = 54, 16, 6
+        right, bottom, top = 66, 16, 6
         w, h = max(10, width - right), max(10, height - bottom - top)
+        steps = 4 if h >= 90 else (2 if h >= 30 else 1)
         lo, hi = self._range()
 
         def ty(v):
@@ -117,13 +123,13 @@ class Chart(Gtk.DrawingArea):
         def tx(t):
             return w - (self.now - t) / self.seconds * w
         cr.set_line_width(1)
-        for i in range(5):
-            y = top + h * i / 4
+        for i in range(steps + 1):
+            y = top + h * i / steps
             cr.set_source_rgba(*GRID)
             cr.move_to(0, y + 0.5)
             cr.line_to(w, y + 0.5)
             cr.stroke()
-            v = hi - (hi - lo) * i / 4
+            v = hi - (hi - lo) * i / steps
             _text(cr, self, w + 6, y, self.fmt(v) + (f" {self.unit}" if i == 0 and self.unit else ""))
         mins = self.seconds // 60
         _text(cr, self, 0, top + h + 9, f"−{mins} min" if mins else f"−{self.seconds} s")

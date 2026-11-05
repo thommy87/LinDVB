@@ -529,7 +529,9 @@ ANALYSIS = "analysis"           # TunerManager user of a channel analysis
 def free_tuners(manager):
     """Adapters a channel analysis could tune without taking one from anybody."""
     adapters = manager.settings["adapters"] or [0]
-    return [a for a in adapters if a not in manager.captures]
+    test = bool(os.environ.get("LINDVB_TEST_TS"))
+    return [a for a in adapters if a not in manager.captures and
+            (test or os.path.exists(f"/dev/dvb/adapter{a}"))]
 
 
 class TunerManager(GObject.Object):
