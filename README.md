@@ -183,6 +183,19 @@ The snap is not signed by the Snap Store, so double-clicking it in the software 
 with "cannot find signatures with metadata for snap"; install it with `--dangerous` as above.
 To build it yourself: `snapcraft` in the source tree.
 
+### Debian package (Ubuntu 24.04 LTS and newer, Debian 13)
+
+Download `lindvb_…_all.deb` from the [releases](https://github.com/thommy87/LinDVB/releases), then:
+
+```sh
+sudo apt install ./lindvb_*_all.deb
+```
+
+apt pulls in GTK 4, GStreamer and PyGObject from your distribution. Optional extras
+(HbbTV via `gir1.2-webkit-6.0`, faster video output via `gstreamer1.0-gtk4`) are
+recommended packages, so apt installs them when they are available. To build it
+yourself: `packaging/build-deb.sh`.
+
 ### From source
 
 Debian / Ubuntu:
@@ -208,7 +221,9 @@ sudo dnf install python3-gobject gtk4 gstreamer1-plugins-base gstreamer1-plugins
 
 Arch: `gtk4 python-gobject gst-plugins-good gst-plugins-bad gst-libav gst-plugin-gtk4 v4l-utils dtv-scan-tables`
 
-Then run from the source tree, or install it:
+Then run from the source tree, or install it. The source package `lindvb-…tar.gz` on the
+[releases](https://github.com/thommy87/LinDVB/releases) page is a Python sdist with the
+icons, translations and desktop files, for `pip install` or distribution packaging:
 
 ```sh
 python3 -m lindvb
@@ -255,9 +270,9 @@ with these keys; use `ir-keytable` to remap buttons.
 ## Releasing
 
 Run the **Release** workflow from the Actions tab and enter a tag such as `v0.3.0`. It
-builds the AppImage, Flatpak and Snap and publishes all three in one GitHub release.
-Pushes and pull requests build only the AppImage; the Flatpak and Snap are built only for
-releases (or by starting their workflows by hand).
+builds the AppImage, Flatpak, Snap, Ubuntu `.deb` and Python source package (sdist) and
+publishes them in one GitHub release. Pushes and pull requests build only the AppImage; the
+other packages are built only for releases (or by starting their workflows by hand).
 
 ## Development
 

@@ -1,0 +1,100 @@
+name: Build source package and .deb
+
+# The Python source package (sdist, lindvb-X.Y.Z.tar.gz) and the Ubuntu .deb.
+# Only built for releases (the Release workflow, or a pushed v* tag) and on
+# demand; normal pushes and pull requests build only the AppImage.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      release_id:
+        description: "Draft release to upload the packages to (set by the Release workflow)"
+        type: string
+        default: ""
+      release_tag:
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  sdist:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the source package
+        run: |
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install --quiet build
+          /tmp/venv/bin/python -m build --sdist --outdir dist .
+
+      - name: Check the source package
+        run: |
+          f="$(ls dist/lindvb-*.tar.gz)"
+          tar tzf "$f" > contents.txt
+          for p in lindvb/app.py lindvb/po/de.po lindvb/icons/hicolor/scalable/apps/lindvb.svg \
+                   data/io.github.thommy87.LinDVB.desktop data/icons/hicolor/256x256/apps/lindvb.png \
+                   LICENSE THIRD-PARTY-NOTICES.md tests/; do
+            grep -q "^lindvb-[^/]*/$p" contents.txt || { echo "::error::$p missing from $f"; exit 1; }
+          done
+          # it must also build (and install) from the sdist alone
+          /tmp/venv/bin/pip install --quiet --no-deps "$f"
+          /tmp/venv/bin/python -c "import lindvb.i18n as i; assert 'de' in i.LANGUAGES, i.LANGUAGES"
+
+      - name: Upload to the draft release
+        if: inputs.release_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ inputs.release_id }}
+        run: |
+          f="$(ls dist/lindvb-*.tar.gz | head -1)"
+          name="$(basename "$f")"
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/gzip" --data-binary "@$f" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$ID/assets?name=$name" >/dev/null
+          echo "Uploaded $f as $name"
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" dist/lindvb-*.tar.gz --clobber
+
+  deb:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the .deb
+        run: packaging/build-deb.sh
+
+      - name: Install and start it
+        # apt pulls the Depends from the Ubuntu archive, as on a user's system
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends "$PWD"/build/lindvb_*_all.deb
+          dpkg -L lindvb | grep -E 'bin/lindvb|dist-packages/lindvb/app.py|applications/io.github.thommy87.LinDVB.desktop'
+          cd / && lindvb --help
+
+      - name: Upload to the draft release
+        if: inputs.release_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ inputs.release_id }}
+        run: |
+          f="$(ls build/lindvb_*_all.deb | head -1)"
+          name="$(basename "$f")"
+          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/vnd.debian.binary-package" --data-binary "@$f" \
+            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$ID/assets?name=$name" >/dev/null
+          echo "Uploaded $f as $name"
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" build/lindvb_*_all.deb --clobber

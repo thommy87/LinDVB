@@ -1,11 +1,11 @@
 name: Release
 
-# Builds the AppImage, Flatpak and Snap and publishes them together as a
+# Builds the AppImage, Flatpak, Snap, .deb and source package and publishes them together as a
 # GitHub release. Start it from the Actions tab ("Run workflow").
 #
 # The packages go straight into a draft release rather than through workflow
 # artifacts, so a full Actions storage quota can't block a release. The draft
-# is published once all three packages are attached.
+# is published once all packages are attached.
 on:
   workflow_dispatch:
     inputs:
@@ -60,8 +60,15 @@ jobs:
       release_id: ${{ needs.draft.outputs.id }}
       release_tag: ${{ inputs.version }}
 
+  packages:
+    needs: draft
+    uses: ./.github/workflows/packages.yml
+    with:
+      release_id: ${{ needs.draft.outputs.id }}
+      release_tag: ${{ inputs.version }}
+
   publish:
-    needs: [draft, appimage, flatpak, snap]
+    needs: [draft, appimage, flatpak, snap, packages]
     runs-on: ubuntu-24.04
     steps:
       - name: Publish the release
