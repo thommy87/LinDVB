@@ -18,9 +18,9 @@ Everything else is LinDVB's own code, written from the public standards
 (ETSI EN 300 468, TS 102 796 HbbTV, OIPF DAE, TS 102 809, TS 103 770 DVB-I,
 EN 50221, ATSC A/65 and others). The DVBAPI opcodes in `lindvb/ca.py` are the
 protocol of OSCam's `module-dvbapi`; no OSCam code is included. The readers for
-dvbv5, VDR, Enigma2 and DVBViewer channel lists are written from the file
-formats; no code or data of those programs is included. "DVBViewer", "VDR",
-"Enigma2" and "OSCam" name the programs whose files LinDVB can read and
+dvbv5, VDR, Enigma2 and `.ini` channel lists are written from the file
+formats; no code or data of other programs is included. "VDR", "Enigma2" and
+"OSCam" name the programs whose files LinDVB can read and
 belong to their owners.
 
 ## Libraries LinDVB uses

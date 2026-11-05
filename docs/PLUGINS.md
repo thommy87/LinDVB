@@ -1,6 +1,6 @@
 # Plugins and conditional access
 
-LinDVB can be extended with plugins, in the spirit of DVBViewer's add-ons, and
+LinDVB can be extended with plugins and
 can descramble the encrypted channels **you are entitled to** with your own
 subscription card.
 
