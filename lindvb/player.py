@@ -22,6 +22,7 @@ from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
+from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import hwaccel  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
@@ -76,6 +77,54 @@ def enable_ttml():
         from . import contentguide
         contentguide.INTERNET_SUBTITLES = True
     return ok
+
+
+def _sink_candidates(sink):
+    """The video sink and the sinks inside it (glsinkbin's "sink", appsink in a bin)."""
+    out = [sink]
+    if sink.find_property("sink"):
+        inner = sink.get_property("sink")
+        if inner is not None:
+            out.append(inner)
+    if isinstance(sink, Gst.Bin):
+        it = sink.iterate_sinks()
+        while True:
+            res, el = it.next()
+            if res != Gst.IteratorResult.OK:
+                break
+            out.append(el)
+    return out
+
+
+def black_borders(data, w, h, stride, threshold=24):
+    """(top, bottom, left, right) fractions of rows/columns darker than *threshold*
+    (luma 0..255) at the edges of a grey picture: letterbox and pillarbox bars."""
+    if w <= 0 or h <= 0 or len(data) < stride * h:
+        return None
+
+    def row_dark(y):
+        row = data[y * stride:y * stride + w]
+        return max(row) < threshold + 16 and sum(row) / w < threshold
+
+    def col_dark(x):
+        col = data[x:stride * h:stride]
+        return max(col) < threshold + 16 and sum(col) / h < threshold
+
+    if all(row_dark(y) for y in range(0, h, max(1, h // 8))):
+        return None                     # a black picture says nothing about bars
+    top = 0
+    while top < h // 2 and row_dark(top):
+        top += 1
+    bottom = 0
+    while bottom < h // 2 and row_dark(h - 1 - bottom):
+        bottom += 1
+    left = 0
+    while left < w // 2 and col_dark(left):
+        left += 1
+    right = 0
+    while right < w // 2 and col_dark(w - 1 - right):
+        right += 1
+    return top / h, bottom / h, left / w, right / w
 
 
 def describe_error(err, debug=""):
@@ -256,6 +305,16 @@ class Player(GObject.Object):
         self._vis_error_token = None
         self._pending_seek = None
         self.metadata = {}
+        # channel analysis (lindvb.analysis): the transport stream of internet
+        # channels as it reaches tsdemux, the loudness of the sound and the
+        # statistics of adaptive streams
+        self._ts_taps = ()
+        self.loudness = LoudnessMeter()
+        self._measure_loudness = False
+        self._level_elements = []
+        self.fragments = []              # recent (uri, bytes, seconds) of HLS/DASH
+        self.rebuffers = 0
+        self._played = False             # this stream reached PLAYING once
 
     # -- pipeline -----------------------------------------------------------
 
@@ -264,6 +323,9 @@ class Player(GObject.Object):
         self.video_decoder = None
         self._pb3 = bool(pb3)
         self._collection, self._selected = None, set()
+        self.fragments = []
+        self.rebuffers = 0
+        self._played = False
         pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
         pb.set_property("video-sink", self.video.sink)
         vf = Gst.Bin.new("vfilter")
@@ -335,7 +397,8 @@ class Player(GObject.Object):
             self.spectrum.set_property("threshold", -80)
             self.spectrum.set_property("interval", SPECTRUM_INTERVAL)
             self.spectrum.set_property("post-messages", self._analyze)
-        chain = [e for e in (Gst.ElementFactory.make("audioconvert"), self.eq, self.spectrum)
+        tee = Gst.ElementFactory.make("tee")
+        chain = [e for e in (Gst.ElementFactory.make("audioconvert"), tee, self.eq, self.spectrum)
                  if e is not None]
         if self.eq is None and self.spectrum is None:
             return None
@@ -344,11 +407,86 @@ class Player(GObject.Object):
             bin_.add(e)
         for a, b in zip(chain, chain[1:]):
             a.link(b)
+        if tee is not None:
+            self._add_loudness_branch(bin_, tee)
         bin_.add_pad(Gst.GhostPad.new("sink", chain[0].get_static_pad("sink")))
         src = chain[-1].get_static_pad("src")
         bin_.add_pad(Gst.GhostPad.new("src", src))
         src.add_probe(Gst.PadProbeType.BUFFER, self._on_audio_buffer)
         return bin_
+
+    def _add_loudness_branch(self, bin_, tee):
+        """tee ! queue ! audioconvert ! level (peak) ! K-weighting ! level ! fakesink:
+        the loudness of the sound before the equaliser (lindvb.loudness)."""
+        self._level_elements = []
+        names = ("queue", "audioconvert", "capsfilter", "level", "audioiirfilter", "level",
+                 "fakesink")
+        els = [Gst.ElementFactory.make(n) for n in names]
+        if any(e is None for e in els):
+            return
+        q, conv, caps, peak, iir, level, sink = els
+        q.set_property("leaky", 2)
+        q.set_property("max-size-buffers", 20)
+        q.set_property("max-size-time", 0)
+        q.set_property("max-size-bytes", 0)
+        caps.set_property("caps", Gst.Caps.from_string("audio/x-raw,format=F64LE"))
+        for lv, name in ((peak, "lv-peak"), (level, "lv-loudness")):
+            lv.set_property("interval", 100 * Gst.MSECOND)
+            lv.set_property("post-messages", self._measure_loudness)
+            lv.set_name(name)
+            self._level_elements.append(lv)
+        sink.set_property("sync", False)
+        sink.set_property("async", False)
+        for e in els:
+            bin_.add(e)
+        for a, b in zip(els, els[1:]):
+            a.link(b)
+        tee.request_pad_simple("src_%u").link(q.get_static_pad("sink"))
+
+        def on_caps(pad, info):
+            ev = info.get_event()
+            if ev.type == Gst.EventType.CAPS:
+                ok, rate = ev.parse_caps().get_structure(0).get_int("rate")
+                if ok and rate:
+                    b, a = k_weighting(rate)
+                    iir.set_property("b", b)
+                    iir.set_property("a", a)
+            return Gst.PadProbeReturn.OK
+        iir.get_static_pad("sink").add_probe(Gst.PadProbeType.EVENT_DOWNSTREAM, on_caps)
+
+    @property
+    def measure_loudness(self):
+        return self._measure_loudness
+
+    @measure_loudness.setter
+    def measure_loudness(self, on):
+        """Post the level messages the loudness meter needs (channel analysis)."""
+        on = bool(on)
+        if on != self._measure_loudness:
+            self._measure_loudness = on
+            self.loudness.reset()
+        for lv in self._level_elements:
+            lv.set_property("post-messages", on)
+
+    def add_ts_tap(self, fn):
+        """Hand the transport stream of internet channels to fn (streaming thread)."""
+        self._ts_taps = tuple(self._ts_taps) + (fn,)
+
+    def remove_ts_tap(self, fn):
+        self._ts_taps = tuple(t for t in self._ts_taps if t is not fn)
+
+    def _ts_probe(self, _pad, info):
+        taps = self._ts_taps
+        if taps and not self.capture:
+            buf = info.get_buffer()
+            if buf is not None:
+                data = buf.extract_dup(0, buf.get_size())
+                for fn in taps:
+                    try:
+                        fn(data)
+                    except Exception as e:      # noqa: BLE001 - never stop playback
+                        print(f"Stream analysis: {e}")
+        return Gst.PadProbeReturn.OK
 
     def _on_audio_buffer(self, pad, info):
         """Streaming thread: hand the decoded audio to the analysis."""
@@ -491,6 +629,7 @@ class Player(GObject.Object):
         if dec is not None:
             self.video_decoder = dec
         if f and f.get_name() == "tsdemux":
+            element.get_static_pad("sink").add_probe(Gst.PadProbeType.BUFFER, self._ts_probe)
             if self.sid:
                 element.set_property("program-number", self.sid)
             element.connect("pad-added", self._on_demux_audio_pad)
@@ -1062,6 +1201,137 @@ class Player(GObject.Object):
             return s.get_int("width")[1], s.get_int("height")[1]
         return None
 
+    # -- channel analysis ---------------------------------------------------
+
+    def _level_message(self, src, st):
+        if not self._measure_loudness or src is None:
+            return
+        name = src.get_name()
+        try:
+            if name == "lv-loudness":
+                rms = list(st.get_value("rms"))
+                self.loudness.feed([10 ** (r / 10) if r > -200 else 0.0 for r in rms])
+            elif name == "lv-peak":
+                peaks = list(st.get_value("peak"))
+                if peaks:
+                    self.loudness.feed_peak(max(peaks))
+        except (TypeError, ValueError):
+            pass
+
+    def _fragment_message(self, st):
+        def get(k, conv):
+            return conv(st.get_value(k)) if st.has_field(k) else None
+        try:
+            frag = {"uri": get("uri", str) or "", "bytes": get("fragment-size", int) or 0,
+                    "seconds": (get("fragment-download-time", int) or 0) / Gst.SECOND,
+                    "time": time.monotonic()}
+        except (TypeError, ValueError):
+            return
+        self.fragments = (self.fragments + [frag])[-30:]
+
+    def video_info(self):
+        """What the picture on screen is: codec, size, rate, scan, colour, decoder."""
+        if not self.playbin:
+            return {}
+        out = {}
+        caps = None
+        tags = None
+        if self._pb3:
+            for stv in self._streams(Gst.StreamType.VIDEO):
+                if stv.get_stream_id() in self._selected or caps is None:
+                    caps, tags = stv.get_caps(), stv.get_tags()
+        else:
+            if self.playbin.get_property("n-video") > 0:
+                tags = self.playbin.emit("get-video-tags", 0)
+                pad = self.playbin.emit("get-video-pad", 0)
+                caps = pad.get_current_caps() if pad else None
+        sample = self.playbin.get_property("sample")
+        raw = sample.get_caps() if sample else None
+        if tags:
+            for key, tag in (("codec", Gst.TAG_VIDEO_CODEC), ("container", Gst.TAG_CONTAINER_FORMAT)):
+                ok, v = tags.get_string(tag)
+                if ok and v:
+                    out[key] = v
+            ok, br = tags.get_uint(Gst.TAG_BITRATE)
+            if ok and br:
+                out["bitrate"] = br
+            ok, br = tags.get_uint(Gst.TAG_NOMINAL_BITRATE)
+            if ok and br:
+                out["nominal_bitrate"] = br
+        for c in (caps, raw):
+            if c is None or not c.get_size():
+                continue
+            s = c.get_structure(0)
+            if not s.get_name().startswith("video/x-raw"):
+                out.setdefault("codec_caps", s.get_name())
+                for k in ("profile", "level", "tier"):
+                    if s.has_field(k):
+                        out.setdefault(k, s.get_string(k))
+                continue
+            ok, w = s.get_int("width")
+            ok2, h = s.get_int("height")
+            if ok and ok2:
+                out["width"], out["height"] = w, h
+            ok, n, d = s.get_fraction("framerate")
+            if ok and d:
+                out["fps"] = n / d
+            ok, n, d = s.get_fraction("pixel-aspect-ratio")
+            if ok and d:
+                out["par"] = (n, d)
+            for k in ("interlace-mode", "field-order", "colorimetry", "format", "chroma-site",
+                      "mastering-display-info", "content-light-level", "multiview-mode"):
+                if s.has_field(k):
+                    v = s.get_value(k)
+                    out[k] = v if isinstance(v, str) else str(v)
+        if self.video_decoder:
+            out["decoder"] = hwaccel.describe(self.video_decoder)
+            out["hardware"] = self.video_decoder[1] not in (None, "", "software")
+        stats = None
+        for el in _sink_candidates(self.video.sink):
+            if el.find_property("stats"):
+                stats = el.get_property("stats")
+                break
+        if stats is not None:
+            for k in ("rendered", "dropped"):
+                ok, v = stats.get_uint64(k)
+                if ok:
+                    out[k] = v
+        return out
+
+    def picture_bars(self):
+        """(top, bottom, left, right) black borders of the picture as fractions,
+        from a small grey copy of the frame on screen; None when there is none."""
+        if not self.playbin or not self.has_video():
+            return None
+        w, h = 160, 90
+        caps = Gst.Caps.from_string(
+            f"video/x-raw,format=GRAY8,width={w},height={h},pixel-aspect-ratio=1/1")
+        sample = self.playbin.emit("convert-sample", caps)
+        if sample is None:
+            return None
+        buf = sample.get_buffer()
+        ok, m = buf.map(Gst.MapFlags.READ)
+        if not ok:
+            return None
+        try:
+            info = GstVideo.VideoInfo.new_from_caps(sample.get_caps())
+            stride = info.stride[0]
+            data = bytes(m.data)
+        finally:
+            buf.unmap(m)
+        return black_borders(data, info.width, info.height, stride)
+
+    def buffer_info(self):
+        """Buffering of an internet stream: dict percent, in/out rates (bytes/s), left (ms)."""
+        if not self.playbin or self.capture:
+            return {}
+        q = Gst.Query.new_buffering(Gst.Format.TIME)
+        if not self.playbin.query(q):
+            return {}
+        _busy, pct = q.parse_buffering_percent()
+        _mode, avg_in, avg_out, left = q.parse_buffering_stats()
+        return {"percent": pct, "in": avg_in, "out": avg_out, "left_ms": left}
+
     # -- bus ----------------------------------------------------------------
 
     def _on_message(self, bus, msg):
@@ -1105,6 +1375,7 @@ class Player(GObject.Object):
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:
             _old, new, _p = msg.parse_state_changed()
             if new == Gst.State.PLAYING:
+                self._played = True
                 if self._pending_seek is not None:
                     target, self._pending_seek = self._pending_seek, None
                     self.seek_to(target)
@@ -1128,11 +1399,21 @@ class Player(GObject.Object):
                 if self._analyze:
                     self.analysis.feed_spectrum(parse_spectrum(st.to_string()))
                 return
+            if st is not None and st.get_name() == "level":
+                self._level_message(msg.src, st)
+                return
+            if st is not None and st.get_name() == "adaptive-streaming-statistics":
+                self._fragment_message(st)
+                return
             self._on_section(msg)
         elif t == Gst.MessageType.TAG:
             self._on_tags(msg)
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()
+            if pct < 100 and self._played and not self.capture and self.uri and \
+                    getattr(self, "_last_buffering", 100) >= 100:
+                self.rebuffers += 1
+            self._last_buffering = pct
             if not self.capture and self.uri:
                 self.emit("buffering", pct)
             if not self.capture and self.uri and not self.paused:
