@@ -566,6 +566,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.oos.append(self.oos_label)
         self.oos.set_visible(False)
         overlay.add_overlay(self.oos)
+        # LinDVB logo, faint in the middle of the empty picture while nothing plays
+        self.idle_logo = Gtk.Image(icon_name="lindvb", pixel_size=160, opacity=0.18,
+                                   halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                                   can_target=False, css_classes=["lv-idle-logo"])
+        overlay.add_overlay(self.idle_logo)
         from .pip import PipOverlay
         self.pip = PipOverlay(self)
         overlay.add_overlay(self.pip)
@@ -1209,7 +1214,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stopped = None
         self.playlist = []
         self.set_title(f"{c.name} – {APP_NAME}")
-        self.picture.set_opacity(1)
+        self._show_picture(True)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
         self._tuned = c
         self._tried = {_tuning_sig(c)}
@@ -1477,7 +1482,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.hbbtv.stopped()
         self.current = None
         self.set_title(APP_NAME)
-        self.picture.set_opacity(0)          # no frozen last frame
+        self._show_picture(False)            # no frozen last frame
         self.oos.set_visible(False)
         self._hide_osd()
         self.sublabel.set_visible(False)
@@ -1487,6 +1492,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_status(_("Stopped"))
         self._update_transport()
         self._update_visualizer()
+
+    def _show_picture(self, on):
+        """Show the video picture, or hide it and show the faint logo instead."""
+        self.picture.set_opacity(1 if on else 0)
+        self.idle_logo.set_visible(not on)
 
     def shift_audio(self, step):
         """Move the sound against the picture; remembered per channel."""
@@ -1514,7 +1524,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def play_files(self, paths):
         self.stop_playback()
         self.stopped = None
-        self.picture.set_opacity(1)
+        self._show_picture(True)
         self.player.audio_delay_ms = 0
         self.playlist, self.playlist_pos = list(paths), -1
         self.playlist_step(1)
@@ -1570,7 +1580,7 @@ class MainWindow(Gtk.ApplicationWindow):
             if url:
                 self.stop_playback()
                 self.stopped = None
-                self.picture.set_opacity(1)
+                self._show_picture(True)
                 self.player.audio_delay_ms = 0
                 self.playlist = [url]
                 self.playlist_pos = 0
@@ -1587,6 +1597,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def open_any(self, arg):
         if "://" in arg:
+            self._show_picture(True)
             self.player.play_uri(arg)
         else:
             self.play_files([arg])
