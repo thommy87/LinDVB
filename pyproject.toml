@@ -17,7 +17,7 @@ lindvb = "lindvb.app:main"
 packages = ["lindvb", "lindvb.ui", "lindvb.addons"]
 
 [tool.setuptools.package-data]
-lindvb = ["icons/hicolor/scalable/actions/*.svg", "icons/hicolor/scalable/apps/*.svg", "scantables/*", "hbbtv.js", "vendor/*"]
+lindvb = ["icons/hicolor/scalable/actions/*.svg", "icons/hicolor/scalable/apps/*.svg", "scantables/*", "hbbtv.js", "vendor/*", "po/*.po", "po/*.pot"]
 
 [tool.setuptools.data-files]
 "share/applications" = ["data/io.github.thommy87.LinDVB.desktop"]

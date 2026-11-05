@@ -1,0 +1,13 @@
+# Source package (sdist): besides the Python package and its data, the files
+# distribution packagers need: licences, desktop data, icons, tests, packaging.
+include LICENSE THIRD-PARTY-NOTICES.md README.md
+graft data
+graft tests
+graft docs
+graft plugins
+graft packaging
+graft flatpak
+graft snap
+graft tools
+graft lindvb/po
+global-exclude __pycache__ *.py[cod]
