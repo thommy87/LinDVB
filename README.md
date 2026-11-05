@@ -1,4 +1,8 @@
-# LinDVB
+<p align="center">
+  <img src="docs/logo.png" alt="LinDVB logo" width="160" height="160">
+</p>
+
+<h1 align="center">LinDVB</h1>
 
 DVB Stream Viewer App for Gnome Desktop.
 
@@ -268,6 +272,13 @@ time, which lets you test timeshift, recording, EPG and teletext without hardwar
 The kernel's virtual DVB tuner **vidtv** (`sudo modprobe vidtv`) tests channel
 search, tuning and the EPG like a real tuner; LinDVB ships scan files for it.
 See [docs/TESTING.md](docs/TESTING.md).
+
+## Logo
+
+The app icon is `data/lindvb.svg`, with PNG sizes from 16 to 512 pixels in
+`data/icons/hicolor`. The original artwork is in `data/logo`: `lindvb-logo.png` in
+colour and `lindvb-logo-mono.png` / `lindvb-logo-mono.svg` in black and white for
+print or single-colour uses.
 
 ## Not yet implemented
 

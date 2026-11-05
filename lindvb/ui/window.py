@@ -124,6 +124,9 @@ class MainWindow(Gtk.ApplicationWindow):
         # LinDVB's own symbolic icons (e.g. the visualisation sine wave)
         Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_search_path(
             str(Path(__file__).resolve().parent.parent / "icons"))
+        # the LinDVB logo as window icon (it also ships in icons/…/apps)
+        Gtk.Window.set_default_icon_name("lindvb")
+        self.set_icon_name("lindvb")
         apply_accent(self.settings)
 
         self._build_actions()
