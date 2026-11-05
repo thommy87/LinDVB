@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lindvb"
-version = "0.8.0"
+version = "0.8.1"
 description = "DVB and internet TV viewer and recorder for GNOME (GTK 4, GStreamer, Linux DVB API)"
 readme = "README.md"
 license = {text = "GPL-2.0-or-later"}
