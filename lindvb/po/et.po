@@ -2136,3 +2136,1086 @@ msgstr "Ülerealaotusega telepildid (enamik SD- ja 1080i-kanaleid). Graafikakaar
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name} video dekodeerimine ebaõnnestus, esitatakse järgmise dekoodriga"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Pildivead: {n} plokki ei õnnestunud parandada"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Nõrk vastuvõtt: ainult {db} dB varu"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} parandamatut plokki"
+
+msgid "Lock lost"
+msgstr "Lukustus kadus"
+
+msgid "{n} continuity errors"
+msgstr "{n} järjepidevuse viga"
+
+msgid "PCR jump"
+msgstr "PCR-i hüpe"
+
+msgid "New table version (0x{tid})"
+msgstr "Uus tabeli versioon (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Valjushüpe {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Uuesti puhverdamine"
+
+msgid "Measured since {time}"
+msgstr "Mõõdetud alates {time}"
+
+msgid "Delivery"
+msgstr "Edastus"
+
+msgid "Frame rate"
+msgstr "Kaadrisagedus"
+
+msgid "Average bit rate"
+msgstr "Keskmine bitikiirus"
+
+msgid "Peak bit rate"
+msgstr "Tipp-bitikiirus"
+
+msgid "Margin"
+msgstr "Varu"
+
+msgid "Loudness"
+msgstr "Valjus"
+
+msgid "Bit rate"
+msgstr "Bitikiirus"
+
+msgid "Events"
+msgstr "Sündmused"
+
+msgid "1 minute"
+msgstr "1 minut"
+
+msgid "15 minutes"
+msgstr "15 minutit"
+
+msgid "5 minutes"
+msgstr "5 minutit"
+
+msgid "hard of hearing"
+msgstr "vaegkuuljatele"
+
+msgid "Data"
+msgstr "Andmed"
+
+msgid "Level"
+msgstr "Tase"
+
+msgid "Carrier"
+msgstr "Kandesagedus"
+
+msgid "Uncorrectable blocks"
+msgstr "Parandamatud plokid"
+
+msgid "Lock losses"
+msgstr "Lukustuse kaod"
+
+msgid "C/N history"
+msgstr "C/N ajalugu"
+
+msgid "Errors"
+msgstr "Vead"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilootsignaalid"
+
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgid "Response time"
+msgstr "Vastuseaeg"
+
+msgid "Bad"
+msgstr "Halb"
+
+msgid "Fair"
+msgstr "Keskmine"
+
+msgid "Good"
+msgstr "Hea"
+
+msgid "Poor"
+msgstr "Nõrk"
+
+msgid "NO LOCK"
+msgstr "LUKUSTUS PUUDUB"
+
+msgid "Buffer"
+msgstr "Puhver"
+
+msgid "Download"
+msgstr "Allalaadimine"
+
+msgid "Buffer history"
+msgstr "Puhvri ajalugu"
+
+msgid "(driver value)"
+msgstr "(draiveri väärtus)"
+
+msgid "since start"
+msgstr "käivitusest"
+
+msgid "required"
+msgstr "nõutud"
+
+msgid "Quality history"
+msgstr "Kvaliteedi ajalugu"
+
+msgid "horizontal"
+msgstr "horisontaalne"
+
+msgid "left"
+msgstr "vasak"
+
+msgid "vertical"
+msgstr "vertikaalne"
+
+msgid "right"
+msgstr "parem"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(teoreetiline)"
+
+msgid "Overview"
+msgstr "Ülevaade"
+
+msgid "Bit rate of the channel"
+msgstr "Kanali bitikiirus"
+
+msgid "Average"
+msgstr "Keskmine"
+
+msgid "Peak"
+msgstr "Tipp"
+
+msgid "Codec"
+msgstr "Koodek"
+
+msgid "Decoder"
+msgstr "Dekooder"
+
+msgid "Dropped frames"
+msgstr "Vahelejäetud kaadrid"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automaatkäivitus"
+
+msgid "PCR arrival jitter"
+msgstr "PCR-i saabumise värin"
+
+msgid "PCR interval"
+msgstr "PCR-i vahe"
+
+msgid "PAT / PMT interval"
+msgstr "PAT-/PMT-vahe"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletekst / subtiitrid / andmed"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressiivne"
+
+msgid "only for the channel on screen"
+msgstr "ainult ekraanil oleva kanali jaoks"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Valjus (praegune rada): {lufs} · tipp {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Valjus: ainult ekraanil oleva kanali jaoks"
+
+msgid "scrambled packets"
+msgstr "krüpteeritud paketid"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT-s pole CA-kirjeldajaid"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} lehte"
+
+msgid "Quality"
+msgstr "Kvaliteet"
+
+msgid "Carrier to noise ratio"
+msgstr "Kandja-müra suhe"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitivigade määr (log₁₀)"
+
+msgid "Address"
+msgstr "Aadress"
+
+msgid "HTTP status"
+msgstr "HTTP olek"
+
+msgid "Content type"
+msgstr "Sisu tüüp"
+
+msgid "Download speed"
+msgstr "Allalaadimiskiirus"
+
+msgid "Segments"
+msgstr "Segmendid"
+
+msgid "Error"
+msgstr "Viga"
+
+msgid "Variants"
+msgstr "Variandid"
+
+msgid "Codecs"
+msgstr "Koodekid"
+
+msgid "Error timeline"
+msgstr "Vigade ajatelg"
+
+msgid "uncorrectable blocks"
+msgstr "parandamatud plokid"
+
+msgid "lock lost"
+msgstr "lukustus kadus"
+
+msgid "rebuffering"
+msgstr "uuesti puhverdamine"
+
+msgid "loudness jump"
+msgstr "valjushüpe"
+
+msgid "table version"
+msgstr "tabeli versioon"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Häälestatud parameetrid (frontendist)"
+
+msgid "Delivery system"
+msgstr "Edastussüsteem"
+
+msgid "Code rate"
+msgstr "Koodisuhe"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Kaitseintervall"
+
+msgid "Pilots"
+msgstr "Pilootsignaalid"
+
+msgid "Carriers"
+msgstr "Kandesagedused"
+
+msgid "C/N needed"
+msgstr "Vajalik C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Antenni suunamise abi…"
+
+msgid "Logging and warnings"
+msgstr "Logi ja hoiatused"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Logi vastuvõttu (üks rida minutis, säilitatakse 31 päeva)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Hoiata alla selle varu (dB)"
+
+msgid "Reception over the last days"
+msgstr "Viimaste päevade vastuvõtt"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · tipp {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× voo kiirus"
+
+msgid "Download and stream rate"
+msgstr "Allalaadimise ja voo kiirus"
+
+msgid "HLS with {n} variants"
+msgstr "HLS {n} variandiga"
+
+msgid "HLS media playlist"
+msgstr "HLS meediaesitusloend"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "otse"
+
+msgid "on demand"
+msgstr "tellitav"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmenti, Ø {s} (siht {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Variantide loend puudub: aadress on üks voog."
+
+msgid "No events so far."
+msgstr "Sündmusi veel pole."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Selle kanali kohta on logitud {n} minutit."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Selle kanali kohta pole veel midagi logitud."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · max {max}"
+
+msgid "needs {db}"
+msgstr "vajab {db}"
+
+msgid "relative (driver)"
+msgstr "suhteline (draiver)"
+
+msgid "post FEC {v}"
+msgstr "pärast FEC-i {v}"
+
+msgid "needed for a clean picture"
+msgstr "vajalik puhta pildi jaoks"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 statistika"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (draiveri skaala)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementaarvood ja PID-id"
+
+msgid "Whole stream"
+msgstr "Kogu voog"
+
+msgid "Sort by PID"
+msgstr "Sordi PID-i järgi"
+
+msgid "Sort by bit rate"
+msgstr "Sordi bitikiiruse järgi"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "kümnend"
+
+msgid "CC errors"
+msgstr "CC vead"
+
+msgid "Scrambled"
+msgstr "Krüpteeritud"
+
+msgid "Last 60 s"
+msgstr "Viimased 60 s"
+
+msgid "Packets"
+msgstr "Paketid"
+
+msgid "Sync losses"
+msgstr "Sünkroniseerimise kaod"
+
+msgid "Null packets"
+msgstr "Tühjad paketid"
+
+msgid "PCR jumps"
+msgstr "PCR-i hüpped"
+
+msgid "PID filter"
+msgstr "PID-filter"
+
+msgid "unknown"
+msgstr "tundmatu"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Tühi"
+
+msgid "Other"
+msgstr "Muu"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Kokku ({n} PID-i): {rate} · {cc} järjepidevuse viga"
+
+msgid "Measuring…"
+msgstr "Mõõtmine…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "vaba / tühi"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} kasutusel {cap}-st · mõõdetud {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Vastu võetakse ainult selle kanali PID-e. Mõõtke kogu transponder, et näha teisi kanaleid sellel."
+
+msgid "{n} PIDs"
+msgstr "{n} PID-i"
+
+msgid "Profile / level"
+msgstr "Profiil / tase"
+
+msgid "Scan"
+msgstr "Laotus"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Näidatud / vahelejäetud kaadrid"
+
+msgid "Measured bit rate"
+msgstr "Mõõdetud bitikiirus"
+
+msgid "Nominal bit rate"
+msgstr "Nominaalne bitikiirus"
+
+msgid "VBV buffer"
+msgstr "VBV puhver"
+
+msgid "Frame sizes"
+msgstr "Kaadrisuurused"
+
+msgid "B frame"
+msgstr "B-kaader"
+
+msgid "I frame"
+msgstr "I-kaader"
+
+msgid "P frame"
+msgstr "P-kaader"
+
+msgid "GOP length"
+msgstr "GOP pikkus"
+
+msgid "I frame average"
+msgstr "I-kaadri keskmine"
+
+msgid "P/B frame average"
+msgstr "P/B-kaadri keskmine"
+
+msgid "Nominal"
+msgstr "Nominaalne"
+
+msgid "Sample rate"
+msgstr "Diskreetimissagedus"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Mõõdetud"
+
+msgid "Notes"
+msgstr "Märkused"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Valjus (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Hetkeline"
+
+msgid "Short term"
+msgstr "Lühiajaline"
+
+msgid "Loudness range"
+msgstr "Valjusvahemik"
+
+msgid "Sample peak"
+msgstr "Näidise tipp"
+
+msgid "level {l}"
+msgstr "tase {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "väljad"
+
+msgid "mixed"
+msgstr "segatud"
+
+msgid "not sent"
+msgstr "ei saadeta"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % üleval ja all"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % külgedel"
+
+msgid "picture {ratio}:1"
+msgstr "pilt {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "jah, korduvad väljad"
+
+msgid "mastering display data"
+msgstr "masteringekraani andmed"
+
+msgid "(maximum)"
+msgstr "(maksimum)"
+
+msgid "not signalled (variable)"
+msgstr "pole märgitud (muutuv)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "praegu {now} · Ø {avg} · tipp {max}"
+
+msgid "clean audio"
+msgstr "selge kõne"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU siht −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Mõõdetud ekraanil oleva kanali dekodeeritud helist, enne ekvalaiserit."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} valjushüpet 6 LU või rohkem (saade ↔ reklaam)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Valjust mõõdetakse ainult ekraanil oleva kanali jaoks."
+
+msgid "index"
+msgstr "register"
+
+msgid "info"
+msgstr "info"
+
+msgid "subtitles (hard of hearing)"
+msgstr "subtiitrid (vaegkuuljatele)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB subtiitrid PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabelid ja EPG"
+
+msgid "SI tables"
+msgstr "SI-tabelid"
+
+msgid "Version"
+msgstr "Versioon"
+
+msgid "Events in the guide"
+msgstr "Saated kavas"
+
+msgid "EIT now/next"
+msgstr "EIT praegu/järgmine"
+
+msgid "Difference to this computer"
+msgstr "Erinevus selle arvutiga"
+
+msgid "Local time offset"
+msgstr "Kohalik ajanihe"
+
+msgid "Network"
+msgstr "Võrk"
+
+msgid "Raw view"
+msgstr "Toorvaade"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "aeglane"
+
+msgid "(all services)"
+msgstr "(kõik teenused)"
+
+msgid "not seen"
+msgstr "pole nähtud"
+
+msgid "seen {s} s ago"
+msgstr "nähtud {s} s tagasi"
+
+msgid "timers may start early or late"
+msgstr "taimerid võivad käivituda liiga vara või hilja"
+
+msgid "no TDT/TOT"
+msgstr "TDT/TOT puudub"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Krüpteeritud paketid"
+
+msgid "CA system ID"
+msgstr "CA-süsteemi ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM kiirus"
+
+msgid "Scrambling per stream"
+msgstr "Krüpteerimine voo kaupa"
+
+msgid "Crypto period"
+msgstr "Krüptoperiood"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Võtmevahetus on üleminek paaris- ja paaritu juhtsõna vahel; krüptoperiood on kahe vahetuse vaheline aeg."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT-s pole tingimuslikku juurdepääsu ega krüpteeritud pakette."
+
+msgid "free"
+msgstr "vaba"
+
+msgid "all streams"
+msgstr "kõik vood"
+
+msgid "not received"
+msgstr "pole vastu võetud"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "EMM-voogudega CAT-i ei saadud."
+
+msgid "Applications (AIT)"
+msgstr "Rakendused (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organisatsioon / rakendus"
+
+msgid "Control"
+msgstr "Juhtimine"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Andmekarussellid (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT versioon {v} PID-il {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanal teatab AIT-ist PID-il {pid}; see pole veel saabunud."
+
+msgid "Channel Analysis – {name}"
+msgstr "Kanali analüüs – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Külmuta mõõtmine"
+
+msgid "Copy report as text"
+msgstr "Kopeeri aruanne tekstina"
+
+msgid "Save report as text…"
+msgstr "Salvesta aruanne tekstina…"
+
+msgid "Save report as JSON…"
+msgstr "Salvesta aruanne JSON-ina…"
+
+msgid "Save history as CSV…"
+msgstr "Salvesta ajalugu CSV-na…"
+
+msgid "Save window as picture…"
+msgstr "Salvesta aken pildina…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Salvesta 30 s voogu…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Kanali analüüs · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Otse · mõõdab {t}"
+
+msgid "Paused"
+msgstr "Peatatud"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Selle kanali jaoks pole vaba tuunerit. Vaadake seda või proovige uuesti, kui tuuner vabaneb."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Selle kanali tuuner lülitati teisele kanalile."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Mõõdetud taustal eraldi tuuneril; pilti, heli ja valjust mõõdetakse ainult ekraanil oleva kanali jaoks."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Seda internetikanalit laaditakse taustal dekodeerimata; vaadake seda pildi-, heli- ja puhvriväärtuste jaoks."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Allikas: DVB-adapter {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc statistika"
+
+msgid "Source: background download"
+msgstr "Allikas: allalaadimine taustal"
+
+msgid "Source: the player's stream"
+msgstr "Allikas: mängija voog"
+
+msgid "updated every second"
+msgstr "uuendatakse iga sekund"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Pole midagi salvestada: kanalit ei võeta vastu."
+
+msgid "Compare {name} with"
+msgstr "Võrdle kanalit {name} kanaliga"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Väärtused iga analüüsi ajaaknas; pilt ja valjus ainult ekraanil oleva kanali jaoks."
+
+msgid "Dish alignment aid"
+msgstr "Antenni suunamise abi"
+
+msgid "Tone"
+msgstr "Toon"
+
+msgid "Reset best value"
+msgstr "Lähtesta parim väärtus"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Pöörake antenni aeglaselt; parema signaaliga läheb toon kõrgemaks."
+
+msgid "% quality"
+msgstr "% kvaliteet"
+
+msgid "Best so far: {v}"
+msgstr "Seni parim: {v}"
+
+msgid "Signal lost"
+msgstr "Signaal kadus"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Tuunerit oli vaja vaatamiseks või salvestamiseks."
+
+msgid "Channel analysis: {name}"
+msgstr "Kanali analüüs: {name}"
+
+msgid "Resolution"
+msgstr "Eraldusvõime"
+
+msgid "Audio"
+msgstr "Heli"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Signaali kvaliteet"
+
+msgid "Continuity errors"
+msgstr "Järjepidevuse vead"
+
+msgid "Content"
+msgstr "Sisu"
+
+msgid "audio description"
+msgstr "kirjeldustõlge"
+
+msgid "DVB subtitles"
+msgstr "DVB subtiitrid"
+
+msgid "Signal"
+msgstr "Signaal"
+
+msgid "Reception"
+msgstr "Vastuvõtt"
+
+msgid "Symbol rate"
+msgstr "Sümbolikiirus"
+
+msgid "Transponder capacity"
+msgstr "Transponderi mahutavus"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Voog"
+
+msgid "Share of transponder"
+msgstr "Osa transponderist"
+
+msgid "Aspect ratio"
+msgstr "Kuvasuhe"
+
+msgid "Colour"
+msgstr "Värv"
+
+msgid "Track"
+msgstr "Rada"
+
+msgid "Now & next"
+msgstr "Praegu ja järgmisena"
+
+msgid "Encryption"
+msgstr "Krüpteerimine"
+
+msgid "Interactive"
+msgstr "Interaktiivne"
+
+msgid "Stream health"
+msgstr "Voo seisund"
+
+msgid "Transport errors"
+msgstr "Edastusvead"
+
+msgid "Timeshift buffer"
+msgstr "Ajanihke puhver"
+
+msgid "interlaced"
+msgstr "põimitud"
+
+msgid "Hardware"
+msgstr "Riistvara"
+
+msgid "Software"
+msgstr "Tarkvara"
+
+msgid "{n} tracks"
+msgstr "{n} rada"
+
+msgid "Free-to-air"
+msgstr "Krüpteerimata"
+
+msgid "Signal level"
+msgstr "Signaali tase"
+
+msgid "Internet stream"
+msgstr "Internetivoog"
+
+msgid "continuity errors"
+msgstr "järjepidevuse vead"
+
+msgid "Stream / PLP"
+msgstr "Voog / PLP"
+
+msgid "Source of the figures"
+msgstr "Väärtuste allikas"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Hoiata ekraanil, kui vastuvõtt nõrgeneb"
+
+msgid "Open log folder"
+msgstr "Ava logikaust"
+
+msgid "stream"
+msgstr "voog"
+
+msgid "none (a plain stream)"
+msgstr "puudub (lihtne voog)"
+
+msgid "internet stream"
+msgstr "internetivoog"
+
+msgid "Transport Stream"
+msgstr "Transpordivoog"
+
+msgid "This channel only"
+msgstr "Ainult see kanal"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Mõõda kogu transponder (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetikanalitel pole transponderit."
+
+msgid "whole transponder"
+msgstr "kogu transponder"
+
+msgid "Video & Audio"
+msgstr "Video ja heli"
+
+msgid "Black bars"
+msgstr "Mustad ribad"
+
+msgid "Click a track to listen to it."
+msgstr "Klõpsake rajal, et seda kuulata."
+
+msgid "Integrated"
+msgstr "Integreeritud"
+
+msgid "Teletext and subtitles"
+msgstr "Teletekst ja subtiitrid"
+
+msgid "interlaced capable"
+msgstr "toetab põimimist"
+
+msgid "no"
+msgstr "ei"
+
+msgid "{n} frames"
+msgstr "{n} kaadrit"
+
+msgid "schedule"
+msgstr "kava"
+
+msgid "subtitles"
+msgstr "subtiitrid"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletekst PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Sellel kanalil pole teleteksti ega subtiitreid."
+
+msgid "Table"
+msgstr "Tabel"
+
+msgid "Changes"
+msgstr "Muudatused"
+
+msgid "Repetition"
+msgstr "Kordus"
+
+msgid "Sections"
+msgstr "Sektsioonid"
+
+msgid "Programme guide and clock"
+msgstr "Telekava ja kell"
+
+msgid "Guide reaches"
+msgstr "Kava ulatub kuni"
+
+msgid "Clock of the channel"
+msgstr "Kanali kell"
+
+msgid "EIT schedule"
+msgstr "EIT kava"
+
+msgid "missing"
+msgstr "puudub"
+
+msgid "(other services)"
+msgstr "(muud teenused)"
+
+msgid "{n} sections"
+msgstr "{n} sektsiooni"
+
+msgid "Descrambling"
+msgstr "Dekrüpteerimine"
+
+msgid "Descrambler state"
+msgstr "Dekrüpteerija olek"
+
+msgid "Conditional access systems"
+msgstr "Tingimusliku juurdepääsu süsteemid"
+
+msgid "For"
+msgstr "Jaoks"
+
+msgid "Key changes"
+msgstr "Võtmevahetused"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "See kanal on krüpteeritud. LinDVB dekrüpteerib selle ainult teie oma tellimuskaardiga (softcam või CI-moodul)."
+
+msgid "scrambled"
+msgstr "krüpteeritud"
+
+msgid "Profile"
+msgstr "Profiil"
+
+msgid "test application"
+msgstr "testrakendus"
+
+msgid "This channel has no HbbTV application."
+msgstr "Sellel kanalil pole HbbTV rakendust."
+
+msgid "No object carousel in this channel."
+msgstr "Sellel kanalil pole objektikarusselli."
+
+msgid "Export"
+msgstr "Ekspordi"
+
+msgid "Compare with another channel…"
+msgstr "Võrdle teise kanaliga…"
+
+msgid "Analyse another channel…"
+msgstr "Analüüsi teist kanalit…"
+
+msgid "Window: {w}"
+msgstr "Aken: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Järgi ekraanil olevat kanalit"
+
+msgid "Watch this channel"
+msgstr "Vaata seda kanalit"
+
+msgid "Try again"
+msgstr "Proovi uuesti"
+
+msgid "Copy as text"
+msgstr "Kopeeri tekstina"
+
+msgid "Export report…"
+msgstr "Ekspordi aruanne…"
+
+msgid "Source: none"
+msgstr "Allikas: puudub"
+
+msgid "Saved {path}"
+msgstr "Salvestatud: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Salvestatakse järgmised 30 sekundit…"
+
+msgid "Choose a channel"
+msgstr "Valige kanal"
+
+msgid "Channel name"
+msgstr "Kanali nimi"
+
+msgid "Compare channels"
+msgstr "Võrdle kanaleid"
+
+msgid "Comparison"
+msgstr "Võrdlus"
+
+msgid "Close (Esc)"
+msgstr "Sulge (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Kanali analüüs…"

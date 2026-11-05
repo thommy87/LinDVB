@@ -2136,3 +2136,1086 @@ msgstr "Prepleteni TV-posnetki (večina kanalov SD in 1080i). Na grafični karti
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Dekodiranje videa {name} ni uspelo, predvajanje z naslednjim dekodirnikom"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Napake slike: {n} blokov ni bilo mogoče popraviti"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Šibek sprejem: le {db} dB rezerve"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} nepopravljivih blokov"
+
+msgid "Lock lost"
+msgstr "Zaklep izgubljen"
+
+msgid "{n} continuity errors"
+msgstr "{n} napak kontinuitete"
+
+msgid "PCR jump"
+msgstr "Skok PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Nova različica tabele (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Skok glasnosti {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Ponovno medpomnjenje"
+
+msgid "Measured since {time}"
+msgstr "Merjeno od {time}"
+
+msgid "Delivery"
+msgstr "Prenos"
+
+msgid "Frame rate"
+msgstr "Hitrost sličic"
+
+msgid "Average bit rate"
+msgstr "Povprečna bitna hitrost"
+
+msgid "Peak bit rate"
+msgstr "Največja bitna hitrost"
+
+msgid "Margin"
+msgstr "Rezerva"
+
+msgid "Loudness"
+msgstr "Glasnost"
+
+msgid "Bit rate"
+msgstr "Bitna hitrost"
+
+msgid "Events"
+msgstr "Dogodki"
+
+msgid "1 minute"
+msgstr "1 minuta"
+
+msgid "15 minutes"
+msgstr "15 minut"
+
+msgid "5 minutes"
+msgstr "5 minut"
+
+msgid "hard of hearing"
+msgstr "za naglušne"
+
+msgid "Data"
+msgstr "Podatki"
+
+msgid "Level"
+msgstr "Raven"
+
+msgid "Carrier"
+msgstr "Nosilec"
+
+msgid "Uncorrectable blocks"
+msgstr "Nepopravljivi bloki"
+
+msgid "Lock losses"
+msgstr "Izgube zaklepa"
+
+msgid "C/N history"
+msgstr "Zgodovina C/N"
+
+msgid "Errors"
+msgstr "Napake"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / piloti"
+
+msgid "Protocol"
+msgstr "Protokol"
+
+msgid "Response time"
+msgstr "Odzivni čas"
+
+msgid "Bad"
+msgstr "Slabo"
+
+msgid "Fair"
+msgstr "Srednje"
+
+msgid "Good"
+msgstr "Dobro"
+
+msgid "Poor"
+msgstr "Šibko"
+
+msgid "NO LOCK"
+msgstr "BREZ ZAKLEPA"
+
+msgid "Buffer"
+msgstr "Medpomnilnik"
+
+msgid "Download"
+msgstr "Prenos"
+
+msgid "Buffer history"
+msgstr "Zgodovina medpomnilnika"
+
+msgid "(driver value)"
+msgstr "(vrednost gonilnika)"
+
+msgid "since start"
+msgstr "od zagona"
+
+msgid "required"
+msgstr "potrebno"
+
+msgid "Quality history"
+msgstr "Zgodovina kakovosti"
+
+msgid "horizontal"
+msgstr "vodoravna"
+
+msgid "left"
+msgstr "leva"
+
+msgid "vertical"
+msgstr "navpična"
+
+msgid "right"
+msgstr "desna"
+
+msgid "Port {n}"
+msgstr "Vrata {n}"
+
+msgid "(theoretical)"
+msgstr "(teoretična)"
+
+msgid "Overview"
+msgstr "Pregled"
+
+msgid "Bit rate of the channel"
+msgstr "Bitna hitrost kanala"
+
+msgid "Average"
+msgstr "Povprečje"
+
+msgid "Peak"
+msgstr "Vrh"
+
+msgid "Codec"
+msgstr "Kodek"
+
+msgid "Decoder"
+msgstr "Dekodirnik"
+
+msgid "Dropped frames"
+msgstr "Izpuščene sličice"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Samodejni zagon"
+
+msgid "PCR arrival jitter"
+msgstr "Trepetanje prihoda PCR"
+
+msgid "PCR interval"
+msgstr "Razmik PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Razmik PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletekst / podnapisi / podatki"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresivno"
+
+msgid "only for the channel on screen"
+msgstr "samo za kanal na zaslonu"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Glasnost (trenutni posnetek): {lufs} · vrh {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Glasnost: samo za kanal na zaslonu"
+
+msgid "scrambled packets"
+msgstr "kodirani paketi"
+
+msgid "no CA descriptors in the PMT"
+msgstr "ni deskriptorjev CA v PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} strani"
+
+msgid "Quality"
+msgstr "Kakovost"
+
+msgid "Carrier to noise ratio"
+msgstr "Razmerje nosilec/šum"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitna stopnja napak (log₁₀)"
+
+msgid "Address"
+msgstr "Naslov"
+
+msgid "HTTP status"
+msgstr "Stanje HTTP"
+
+msgid "Content type"
+msgstr "Vrsta vsebine"
+
+msgid "Download speed"
+msgstr "Hitrost prenosa"
+
+msgid "Segments"
+msgstr "Segmenti"
+
+msgid "Error"
+msgstr "Napaka"
+
+msgid "Variants"
+msgstr "Različice"
+
+msgid "Codecs"
+msgstr "Kodeki"
+
+msgid "Error timeline"
+msgstr "Časovnica napak"
+
+msgid "uncorrectable blocks"
+msgstr "nepopravljivi bloki"
+
+msgid "lock lost"
+msgstr "zaklep izgubljen"
+
+msgid "rebuffering"
+msgstr "ponovno medpomnjenje"
+
+msgid "loudness jump"
+msgstr "skok glasnosti"
+
+msgid "table version"
+msgstr "različica tabele"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Nastavljeni parametri (iz frontenda)"
+
+msgid "Delivery system"
+msgstr "Sistem prenosa"
+
+msgid "Code rate"
+msgstr "Kodno razmerje"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Zaščitni interval"
+
+msgid "Pilots"
+msgstr "Piloti"
+
+msgid "Carriers"
+msgstr "Nosilci"
+
+msgid "C/N needed"
+msgstr "Potrebni C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Pomoč pri usmerjanju antene…"
+
+msgid "Logging and warnings"
+msgstr "Dnevnik in opozorila"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Beleži sprejem (ena vrstica na minuto, hrani se 31 dni)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Opozori pod to rezervo (dB)"
+
+msgid "Reception over the last days"
+msgstr "Sprejem zadnjih dni"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · vrh {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× hitrost toka"
+
+msgid "Download and stream rate"
+msgstr "Hitrost prenosa in toka"
+
+msgid "HLS with {n} variants"
+msgstr "HLS z {n} različicami"
+
+msgid "HLS media playlist"
+msgstr "Predstavnostni seznam HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "v živo"
+
+msgid "on demand"
+msgstr "na zahtevo"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmentov po Ø {s} (cilj {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Ni seznama različic: naslov je en sam tok."
+
+msgid "No events so far."
+msgstr "Dogodkov še ni."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Za ta kanal je zabeleženih {n} minut."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Za ta kanal še ni nič zabeleženo."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · maks. {max}"
+
+msgid "needs {db}"
+msgstr "potrebuje {db}"
+
+msgid "relative (driver)"
+msgstr "relativno (gonilnik)"
+
+msgid "post FEC {v}"
+msgstr "po FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "potrebno za čisto sliko"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistika DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (lestvica gonilnika)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Osnovni tokovi in PID-i"
+
+msgid "Whole stream"
+msgstr "Celoten tok"
+
+msgid "Sort by PID"
+msgstr "Razvrsti po PID"
+
+msgid "Sort by bit rate"
+msgstr "Razvrsti po bitni hitrosti"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "des."
+
+msgid "CC errors"
+msgstr "Napake CC"
+
+msgid "Scrambled"
+msgstr "Kodirano"
+
+msgid "Last 60 s"
+msgstr "Zadnjih 60 s"
+
+msgid "Packets"
+msgstr "Paketi"
+
+msgid "Sync losses"
+msgstr "Izgube sinhronizacije"
+
+msgid "Null packets"
+msgstr "Prazni paketi"
+
+msgid "PCR jumps"
+msgstr "Skoki PCR"
+
+msgid "PID filter"
+msgstr "Filter PID"
+
+msgid "unknown"
+msgstr "neznano"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Prazno"
+
+msgid "Other"
+msgstr "Drugo"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Vsota ({n} PID-ov): {rate} · {cc} napak kontinuitete"
+
+msgid "Measuring…"
+msgstr "Merjenje…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "prosto / prazno"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} zasedeno od {cap} · izmerjeno {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Sprejemajo se le PID-i tega kanala. Izmerite celoten transponder, da vidite druge kanale na njem."
+
+msgid "{n} PIDs"
+msgstr "{n} PID-ov"
+
+msgid "Profile / level"
+msgstr "Profil / raven"
+
+msgid "Scan"
+msgstr "Skeniranje"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Prikazane / izpuščene sličice"
+
+msgid "Measured bit rate"
+msgstr "Izmerjena bitna hitrost"
+
+msgid "Nominal bit rate"
+msgstr "Nazivna bitna hitrost"
+
+msgid "VBV buffer"
+msgstr "Medpomnilnik VBV"
+
+msgid "Frame sizes"
+msgstr "Velikosti sličic"
+
+msgid "B frame"
+msgstr "Sličica B"
+
+msgid "I frame"
+msgstr "Sličica I"
+
+msgid "P frame"
+msgstr "Sličica P"
+
+msgid "GOP length"
+msgstr "Dolžina GOP"
+
+msgid "I frame average"
+msgstr "Povprečje sličice I"
+
+msgid "P/B frame average"
+msgstr "Povprečje sličice P/B"
+
+msgid "Nominal"
+msgstr "Nazivno"
+
+msgid "Sample rate"
+msgstr "Frekvenca vzorčenja"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Izmerjeno"
+
+msgid "Notes"
+msgstr "Opombe"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Glasnost (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Trenutna"
+
+msgid "Short term"
+msgstr "Kratkoročna"
+
+msgid "Loudness range"
+msgstr "Razpon glasnosti"
+
+msgid "Sample peak"
+msgstr "Vrh vzorca"
+
+msgid "level {l}"
+msgstr "raven {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "polslike"
+
+msgid "mixed"
+msgstr "mešano"
+
+msgid "not sent"
+msgstr "se ne pošilja"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % zgoraj in spodaj"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % ob straneh"
+
+msgid "picture {ratio}:1"
+msgstr "slika {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "da, ponovljene polslike"
+
+msgid "mastering display data"
+msgstr "podatki zaslona za mastering"
+
+msgid "(maximum)"
+msgstr "(največ)"
+
+msgid "not signalled (variable)"
+msgstr "ni navedeno (spremenljivo)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "zdaj {now} · Ø {avg} · vrh {max}"
+
+msgid "clean audio"
+msgstr "jasen govor"
+
+msgid "EBU target −23 LUFS"
+msgstr "Cilj EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Merjeno na dekodiranem zvoku kanala na zaslonu, pred izenačevalnikom."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} skokov glasnosti za 6 LU ali več (program ↔ oglasi)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Glasnost se meri samo za kanal na zaslonu."
+
+msgid "index"
+msgstr "kazalo"
+
+msgid "info"
+msgstr "informacije"
+
+msgid "subtitles (hard of hearing)"
+msgstr "podnapisi (za naglušne)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Podnapisi DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabele in EPG"
+
+msgid "SI tables"
+msgstr "Tabele SI"
+
+msgid "Version"
+msgstr "Različica"
+
+msgid "Events in the guide"
+msgstr "Oddaje v vodniku"
+
+msgid "EIT now/next"
+msgstr "EIT zdaj/naslednje"
+
+msgid "Difference to this computer"
+msgstr "Razlika glede na ta računalnik"
+
+msgid "Local time offset"
+msgstr "Lokalni časovni zamik"
+
+msgid "Network"
+msgstr "Omrežje"
+
+msgid "Raw view"
+msgstr "Surovi pogled"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "počasi"
+
+msgid "(all services)"
+msgstr "(vse storitve)"
+
+msgid "not seen"
+msgstr "ni videno"
+
+msgid "seen {s} s ago"
+msgstr "videno pred {s} s"
+
+msgid "timers may start early or late"
+msgstr "časovniki se lahko zaženejo prezgodaj ali prepozno"
+
+msgid "no TDT/TOT"
+msgstr "ni TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Kodirani paketi"
+
+msgid "CA system ID"
+msgstr "ID sistema CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Hitrost ECM"
+
+msgid "Scrambling per stream"
+msgstr "Kodiranje po tokovih"
+
+msgid "Crypto period"
+msgstr "Kripto obdobje"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Menjava ključa je prehod med sodo in liho kontrolno besedo; kripto obdobje je čas med dvema menjavama."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "V PMT ni pogojnega dostopa in ni kodiranih paketov."
+
+msgid "free"
+msgstr "prosto"
+
+msgid "all streams"
+msgstr "vsi tokovi"
+
+msgid "not received"
+msgstr "ni prejeto"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Ni prejete CAT s tokovi EMM."
+
+msgid "Applications (AIT)"
+msgstr "Aplikacije (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizacija / aplikacija"
+
+msgid "Control"
+msgstr "Upravljanje"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Podatkovni vrtiljaki (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Različica AIT {v} na PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanal napoveduje AIT na PID {pid}; še ni prispela."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analiza kanala – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Zamrzni meritev"
+
+msgid "Copy report as text"
+msgstr "Kopiraj poročilo kot besedilo"
+
+msgid "Save report as text…"
+msgstr "Shrani poročilo kot besedilo…"
+
+msgid "Save report as JSON…"
+msgstr "Shrani poročilo kot JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Shrani zgodovino kot CSV…"
+
+msgid "Save window as picture…"
+msgstr "Shrani okno kot sliko…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Shrani 30 s toka…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analiza kanala · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "V živo · meri {t}"
+
+msgid "Paused"
+msgstr "Ustavljeno"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Za ta kanal ni prostega sprejemnika. Glejte ga ali poskusite znova, ko se sprejemnik sprosti."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Sprejemnik tega kanala je bil preklopljen na drug kanal."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Merjeno v ozadju na lastnem sprejemniku; slika, zvok in glasnost se merijo samo za kanal na zaslonu."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Ta internetni kanal se prenaša v ozadju brez dekodiranja; glejte ga za vrednosti slike, zvoka in medpomnilnika."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Vir: vmesnik DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "statistika dvbsrc"
+
+msgid "Source: background download"
+msgstr "Vir: prenos v ozadju"
+
+msgid "Source: the player's stream"
+msgstr "Vir: tok predvajalnika"
+
+msgid "updated every second"
+msgstr "posodobljeno vsako sekundo"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Ničesar ni za shraniti: kanal se ne sprejema."
+
+msgid "Compare {name} with"
+msgstr "Primerjaj {name} z"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Vrednosti za časovno okno vsake analize; slika in glasnost samo za kanal na zaslonu."
+
+msgid "Dish alignment aid"
+msgstr "Pomoč pri usmerjanju antene"
+
+msgid "Tone"
+msgstr "Ton"
+
+msgid "Reset best value"
+msgstr "Ponastavi najboljšo vrednost"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Anteno obračajte počasi; ton je višji pri boljšem signalu."
+
+msgid "% quality"
+msgstr "% kakovosti"
+
+msgid "Best so far: {v}"
+msgstr "Najboljše doslej: {v}"
+
+msgid "Signal lost"
+msgstr "Signal izgubljen"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Sprejemnik je bil potreben za gledanje ali snemanje."
+
+msgid "Channel analysis: {name}"
+msgstr "Analiza kanala: {name}"
+
+msgid "Resolution"
+msgstr "Ločljivost"
+
+msgid "Audio"
+msgstr "Zvok"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Kakovost signala"
+
+msgid "Continuity errors"
+msgstr "Napake kontinuitete"
+
+msgid "Content"
+msgstr "Vsebina"
+
+msgid "audio description"
+msgstr "zvočni opis"
+
+msgid "DVB subtitles"
+msgstr "Podnapisi DVB"
+
+msgid "Signal"
+msgstr "Signal"
+
+msgid "Reception"
+msgstr "Sprejem"
+
+msgid "Symbol rate"
+msgstr "Simbolna hitrost"
+
+msgid "Transponder capacity"
+msgstr "Zmogljivost transponderja"
+
+msgid "Server"
+msgstr "Strežnik"
+
+msgid "Stream"
+msgstr "Tok"
+
+msgid "Share of transponder"
+msgstr "Delež transponderja"
+
+msgid "Aspect ratio"
+msgstr "Razmerje stranic"
+
+msgid "Colour"
+msgstr "Barva"
+
+msgid "Track"
+msgstr "Posnetek"
+
+msgid "Now & next"
+msgstr "Zdaj in nato"
+
+msgid "Encryption"
+msgstr "Šifriranje"
+
+msgid "Interactive"
+msgstr "Interaktivno"
+
+msgid "Stream health"
+msgstr "Stanje toka"
+
+msgid "Transport errors"
+msgstr "Napake prenosa"
+
+msgid "Timeshift buffer"
+msgstr "Medpomnilnik timeshift"
+
+msgid "interlaced"
+msgstr "prepleteno"
+
+msgid "Hardware"
+msgstr "Strojno"
+
+msgid "Software"
+msgstr "Programsko"
+
+msgid "{n} tracks"
+msgstr "{n} posnetkov"
+
+msgid "Free-to-air"
+msgstr "Nekodirano"
+
+msgid "Signal level"
+msgstr "Raven signala"
+
+msgid "Internet stream"
+msgstr "Internetni tok"
+
+msgid "continuity errors"
+msgstr "napake kontinuitete"
+
+msgid "Stream / PLP"
+msgstr "Tok / PLP"
+
+msgid "Source of the figures"
+msgstr "Vir vrednosti"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Opozori na zaslonu, ko sprejem oslabi"
+
+msgid "Open log folder"
+msgstr "Odpri mapo dnevnika"
+
+msgid "stream"
+msgstr "tok"
+
+msgid "none (a plain stream)"
+msgstr "brez (navaden tok)"
+
+msgid "internet stream"
+msgstr "internetni tok"
+
+msgid "Transport Stream"
+msgstr "Transportni tok"
+
+msgid "This channel only"
+msgstr "Samo ta kanal"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Izmeri celoten transponder (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetni kanali nimajo transponderja."
+
+msgid "whole transponder"
+msgstr "celoten transponder"
+
+msgid "Video & Audio"
+msgstr "Video in zvok"
+
+msgid "Black bars"
+msgstr "Črni pasovi"
+
+msgid "Click a track to listen to it."
+msgstr "Kliknite posnetek, da ga poslušate."
+
+msgid "Integrated"
+msgstr "Integrirana"
+
+msgid "Teletext and subtitles"
+msgstr "Teletekst in podnapisi"
+
+msgid "interlaced capable"
+msgstr "podpira prepletanje"
+
+msgid "no"
+msgstr "ne"
+
+msgid "{n} frames"
+msgstr "{n} sličic"
+
+msgid "schedule"
+msgstr "spored"
+
+msgid "subtitles"
+msgstr "podnapisi"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletekst PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Ta kanal nima teleteksta ne podnapisov."
+
+msgid "Table"
+msgstr "Tabela"
+
+msgid "Changes"
+msgstr "Spremembe"
+
+msgid "Repetition"
+msgstr "Ponavljanje"
+
+msgid "Sections"
+msgstr "Odseki"
+
+msgid "Programme guide and clock"
+msgstr "Programski vodnik in ura"
+
+msgid "Guide reaches"
+msgstr "Vodnik sega do"
+
+msgid "Clock of the channel"
+msgstr "Ura kanala"
+
+msgid "EIT schedule"
+msgstr "EIT spored"
+
+msgid "missing"
+msgstr "manjka"
+
+msgid "(other services)"
+msgstr "(druge storitve)"
+
+msgid "{n} sections"
+msgstr "{n} odsekov"
+
+msgid "Descrambling"
+msgstr "Dekodiranje"
+
+msgid "Descrambler state"
+msgstr "Stanje dekodirnika"
+
+msgid "Conditional access systems"
+msgstr "Sistemi pogojnega dostopa"
+
+msgid "For"
+msgstr "Za"
+
+msgid "Key changes"
+msgstr "Menjave ključa"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Ta kanal je šifriran. LinDVB ga dekodira samo z vašo lastno naročniško kartico (softcam ali modul CI)."
+
+msgid "scrambled"
+msgstr "kodirano"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "preizkusna aplikacija"
+
+msgid "This channel has no HbbTV application."
+msgstr "Ta kanal nima aplikacije HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Ta kanal nima vrtiljaka predmetov."
+
+msgid "Export"
+msgstr "Izvozi"
+
+msgid "Compare with another channel…"
+msgstr "Primerjaj z drugim kanalom…"
+
+msgid "Analyse another channel…"
+msgstr "Analiziraj drug kanal…"
+
+msgid "Window: {w}"
+msgstr "Okno: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Sledi kanalu na zaslonu"
+
+msgid "Watch this channel"
+msgstr "Glej ta kanal"
+
+msgid "Try again"
+msgstr "Poskusi znova"
+
+msgid "Copy as text"
+msgstr "Kopiraj kot besedilo"
+
+msgid "Export report…"
+msgstr "Izvozi poročilo…"
+
+msgid "Source: none"
+msgstr "Vir: brez"
+
+msgid "Saved {path}"
+msgstr "Shranjeno: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Snemanje naslednjih 30 sekund…"
+
+msgid "Choose a channel"
+msgstr "Izberite kanal"
+
+msgid "Channel name"
+msgstr "Ime kanala"
+
+msgid "Compare channels"
+msgstr "Primerjaj kanale"
+
+msgid "Comparison"
+msgstr "Primerjava"
+
+msgid "Close (Esc)"
+msgstr "Zapri (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Analiza kanala…"

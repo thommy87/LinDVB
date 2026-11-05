@@ -2136,3 +2136,1086 @@ msgstr "Prokládaný televizní obraz (většina SD a 1080i kanálů). Na grafic
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Dekódování videa {name} selhalo, přehrává se dalším dekodérem"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Chyby obrazu: {n} bloků nešlo opravit"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Slabý příjem: jen {db} dB rezervy"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} neopravitelných bloků"
+
+msgid "Lock lost"
+msgstr "Ztráta zámku"
+
+msgid "{n} continuity errors"
+msgstr "{n} chyb kontinuity"
+
+msgid "PCR jump"
+msgstr "Skok PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Nová verze tabulky (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Skok hlasitosti {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Opětovné načítání do vyrovnávací paměti"
+
+msgid "Measured since {time}"
+msgstr "Měřeno od {time}"
+
+msgid "Delivery"
+msgstr "Přenos"
+
+msgid "Frame rate"
+msgstr "Snímková frekvence"
+
+msgid "Average bit rate"
+msgstr "Průměrný datový tok"
+
+msgid "Peak bit rate"
+msgstr "Špičkový datový tok"
+
+msgid "Margin"
+msgstr "Rezerva"
+
+msgid "Loudness"
+msgstr "Hlasitost"
+
+msgid "Bit rate"
+msgstr "Datový tok"
+
+msgid "Events"
+msgstr "Události"
+
+msgid "1 minute"
+msgstr "1 minuta"
+
+msgid "15 minutes"
+msgstr "15 minut"
+
+msgid "5 minutes"
+msgstr "5 minut"
+
+msgid "hard of hearing"
+msgstr "pro neslyšící"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Level"
+msgstr "Úroveň"
+
+msgid "Carrier"
+msgstr "Nosná"
+
+msgid "Uncorrectable blocks"
+msgstr "Neopravitelné bloky"
+
+msgid "Lock losses"
+msgstr "Ztráty zámku"
+
+msgid "C/N history"
+msgstr "Průběh C/N"
+
+msgid "Errors"
+msgstr "Chyby"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / piloty"
+
+msgid "Protocol"
+msgstr "Protokol"
+
+msgid "Response time"
+msgstr "Doba odezvy"
+
+msgid "Bad"
+msgstr "Špatná"
+
+msgid "Fair"
+msgstr "Průměrná"
+
+msgid "Good"
+msgstr "Dobrá"
+
+msgid "Poor"
+msgstr "Slabá"
+
+msgid "NO LOCK"
+msgstr "BEZ ZÁMKU"
+
+msgid "Buffer"
+msgstr "Vyrovnávací paměť"
+
+msgid "Download"
+msgstr "Stahování"
+
+msgid "Buffer history"
+msgstr "Průběh vyrovnávací paměti"
+
+msgid "(driver value)"
+msgstr "(hodnota ovladače)"
+
+msgid "since start"
+msgstr "od spuštění"
+
+msgid "required"
+msgstr "potřeba"
+
+msgid "Quality history"
+msgstr "Průběh kvality"
+
+msgid "horizontal"
+msgstr "horizontální"
+
+msgid "left"
+msgstr "levá"
+
+msgid "vertical"
+msgstr "vertikální"
+
+msgid "right"
+msgstr "pravá"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(teoretická)"
+
+msgid "Overview"
+msgstr "Přehled"
+
+msgid "Bit rate of the channel"
+msgstr "Datový tok kanálu"
+
+msgid "Average"
+msgstr "Průměr"
+
+msgid "Peak"
+msgstr "Špička"
+
+msgid "Codec"
+msgstr "Kodek"
+
+msgid "Decoder"
+msgstr "Dekodér"
+
+msgid "Dropped frames"
+msgstr "Zahozené snímky"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automatický start"
+
+msgid "PCR arrival jitter"
+msgstr "Jitter příchodu PCR"
+
+msgid "PCR interval"
+msgstr "Interval PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Interval PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletext / titulky / data"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresivní"
+
+msgid "only for the channel on screen"
+msgstr "jen pro kanál na obrazovce"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Hlasitost (aktuální stopa): {lufs} · špička {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Hlasitost: jen pro kanál na obrazovce"
+
+msgid "scrambled packets"
+msgstr "zakódované pakety"
+
+msgid "no CA descriptors in the PMT"
+msgstr "žádné deskriptory CA v PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} stran"
+
+msgid "Quality"
+msgstr "Kvalita"
+
+msgid "Carrier to noise ratio"
+msgstr "Poměr nosné k šumu"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Chybovost bitů (log₁₀)"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "HTTP status"
+msgstr "Stav HTTP"
+
+msgid "Content type"
+msgstr "Typ obsahu"
+
+msgid "Download speed"
+msgstr "Rychlost stahování"
+
+msgid "Segments"
+msgstr "Segmenty"
+
+msgid "Error"
+msgstr "Chyba"
+
+msgid "Variants"
+msgstr "Varianty"
+
+msgid "Codecs"
+msgstr "Kodeky"
+
+msgid "Error timeline"
+msgstr "Časová osa chyb"
+
+msgid "uncorrectable blocks"
+msgstr "neopravitelné bloky"
+
+msgid "lock lost"
+msgstr "ztráta zámku"
+
+msgid "rebuffering"
+msgstr "opětovné načítání"
+
+msgid "loudness jump"
+msgstr "skok hlasitosti"
+
+msgid "table version"
+msgstr "verze tabulky"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Naladěné parametry (z frontendu)"
+
+msgid "Delivery system"
+msgstr "Přenosový systém"
+
+msgid "Code rate"
+msgstr "Kódový poměr"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Ochranný interval"
+
+msgid "Pilots"
+msgstr "Piloty"
+
+msgid "Carriers"
+msgstr "Nosné"
+
+msgid "C/N needed"
+msgstr "Potřebné C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Pomoc s nasměrováním antény…"
+
+msgid "Logging and warnings"
+msgstr "Záznam a varování"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Zaznamenávat příjem (jeden řádek za minutu, uchováno 31 dní)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Varovat pod touto rezervou (dB)"
+
+msgid "Reception over the last days"
+msgstr "Příjem za poslední dny"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · špička {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× datový tok streamu"
+
+msgid "Download and stream rate"
+msgstr "Rychlost stahování a streamu"
+
+msgid "HLS with {n} variants"
+msgstr "HLS s {n} variantami"
+
+msgid "HLS media playlist"
+msgstr "Mediální playlist HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "živě"
+
+msgid "on demand"
+msgstr "na vyžádání"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmentů po Ø {s} (cíl {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Žádný seznam variant: adresa je jediný stream."
+
+msgid "No events so far."
+msgstr "Zatím žádné události."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Pro tento kanál zaznamenáno {n} minut."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Pro tento kanál zatím nic není zaznamenáno."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · max. {max}"
+
+msgid "needs {db}"
+msgstr "potřebuje {db}"
+
+msgid "relative (driver)"
+msgstr "relativní (ovladač)"
+
+msgid "post FEC {v}"
+msgstr "po FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "potřeba pro čistý obraz"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistiky DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (stupnice ovladače)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementární proudy a PID"
+
+msgid "Whole stream"
+msgstr "Celý stream"
+
+msgid "Sort by PID"
+msgstr "Řadit podle PID"
+
+msgid "Sort by bit rate"
+msgstr "Řadit podle datového toku"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dek"
+
+msgid "CC errors"
+msgstr "Chyby CC"
+
+msgid "Scrambled"
+msgstr "Zakódováno"
+
+msgid "Last 60 s"
+msgstr "Posledních 60 s"
+
+msgid "Packets"
+msgstr "Pakety"
+
+msgid "Sync losses"
+msgstr "Ztráty synchronizace"
+
+msgid "Null packets"
+msgstr "Prázdné pakety"
+
+msgid "PCR jumps"
+msgstr "Skoky PCR"
+
+msgid "PID filter"
+msgstr "Filtr PID"
+
+msgid "unknown"
+msgstr "neznámé"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Prázdné"
+
+msgid "Other"
+msgstr "Jiné"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Součet ({n} PID): {rate} · {cc} chyb kontinuity"
+
+msgid "Measuring…"
+msgstr "Měření…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "volné / prázdné"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} využito z {cap} · měřeno {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Přijímají se jen PID tohoto kanálu. Změřte celý transpondér, abyste viděli ostatní kanály na něm."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profil / úroveň"
+
+msgid "Scan"
+msgstr "Řádkování"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Snímky zobrazené / zahozené"
+
+msgid "Measured bit rate"
+msgstr "Naměřený datový tok"
+
+msgid "Nominal bit rate"
+msgstr "Nominální datový tok"
+
+msgid "VBV buffer"
+msgstr "Vyrovnávací paměť VBV"
+
+msgid "Frame sizes"
+msgstr "Velikosti snímků"
+
+msgid "B frame"
+msgstr "Snímek B"
+
+msgid "I frame"
+msgstr "Snímek I"
+
+msgid "P frame"
+msgstr "Snímek P"
+
+msgid "GOP length"
+msgstr "Délka GOP"
+
+msgid "I frame average"
+msgstr "Průměr snímku I"
+
+msgid "P/B frame average"
+msgstr "Průměr snímku P/B"
+
+msgid "Nominal"
+msgstr "Nominální"
+
+msgid "Sample rate"
+msgstr "Vzorkovací frekvence"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Naměřeno"
+
+msgid "Notes"
+msgstr "Poznámky"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Hlasitost (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Okamžitá"
+
+msgid "Short term"
+msgstr "Krátkodobá"
+
+msgid "Loudness range"
+msgstr "Rozsah hlasitosti"
+
+msgid "Sample peak"
+msgstr "Špička vzorku"
+
+msgid "level {l}"
+msgstr "úroveň {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "půlsnímky"
+
+msgid "mixed"
+msgstr "smíšené"
+
+msgid "not sent"
+msgstr "neodesíláno"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % nahoře a dole"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % po stranách"
+
+msgid "picture {ratio}:1"
+msgstr "obraz {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "ano, opakované půlsnímky"
+
+msgid "mastering display data"
+msgstr "data masteringového displeje"
+
+msgid "(maximum)"
+msgstr "(maximum)"
+
+msgid "not signalled (variable)"
+msgstr "neuvedeno (proměnný)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "nyní {now} · Ø {avg} · špička {max}"
+
+msgid "clean audio"
+msgstr "čistá řeč"
+
+msgid "EBU target −23 LUFS"
+msgstr "Cíl EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Měřeno na dekódovaném zvuku kanálu na obrazovce, před ekvalizérem."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} skoků hlasitosti o 6 LU a více (pořad ↔ reklama)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Hlasitost se měří jen pro kanál na obrazovce."
+
+msgid "index"
+msgstr "rejstřík"
+
+msgid "info"
+msgstr "informace"
+
+msgid "subtitles (hard of hearing)"
+msgstr "titulky (pro neslyšící)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Titulky DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabulky a EPG"
+
+msgid "SI tables"
+msgstr "Tabulky SI"
+
+msgid "Version"
+msgstr "Verze"
+
+msgid "Events in the guide"
+msgstr "Pořady v průvodci"
+
+msgid "EIT now/next"
+msgstr "EIT nyní/další"
+
+msgid "Difference to this computer"
+msgstr "Rozdíl oproti tomuto počítači"
+
+msgid "Local time offset"
+msgstr "Místní časový posun"
+
+msgid "Network"
+msgstr "Síť"
+
+msgid "Raw view"
+msgstr "Surový pohled"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "pomalé"
+
+msgid "(all services)"
+msgstr "(všechny služby)"
+
+msgid "not seen"
+msgstr "neviděno"
+
+msgid "seen {s} s ago"
+msgstr "viděno před {s} s"
+
+msgid "timers may start early or late"
+msgstr "časovače se mohou spustit dříve nebo později"
+
+msgid "no TDT/TOT"
+msgstr "žádná TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Zakódované pakety"
+
+msgid "CA system ID"
+msgstr "ID systému CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Tok ECM"
+
+msgid "Scrambling per stream"
+msgstr "Kódování podle proudu"
+
+msgid "Crypto period"
+msgstr "Kryptoperioda"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Změna klíče je přechod mezi sudým a lichým řídicím slovem; kryptoperioda je doba mezi dvěma změnami."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Žádný podmíněný přístup v PMT a žádné zakódované pakety."
+
+msgid "free"
+msgstr "volné"
+
+msgid "all streams"
+msgstr "všechny proudy"
+
+msgid "not received"
+msgstr "nepřijato"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Nebyla přijata žádná CAT s proudy EMM."
+
+msgid "Applications (AIT)"
+msgstr "Aplikace (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizace / aplikace"
+
+msgid "Control"
+msgstr "Řízení"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Datové karusely (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Verze AIT {v} na PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanál ohlašuje AIT na PID {pid}; zatím nedorazila."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analýza kanálu – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Zmrazit měření"
+
+msgid "Copy report as text"
+msgstr "Kopírovat zprávu jako text"
+
+msgid "Save report as text…"
+msgstr "Uložit zprávu jako text…"
+
+msgid "Save report as JSON…"
+msgstr "Uložit zprávu jako JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Uložit průběh jako CSV…"
+
+msgid "Save window as picture…"
+msgstr "Uložit okno jako obrázek…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Uložit 30 s streamu…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analýza kanálu · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Živě · měří {t}"
+
+msgid "Paused"
+msgstr "Pozastaveno"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Pro tento kanál není volný žádný tuner. Sledujte ho, nebo to zkuste znovu, až bude tuner volný."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Tuner tohoto kanálu byl přepnut na jiný kanál."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Měřeno na pozadí na vlastním tuneru; obraz, zvuk a hlasitost se měří jen pro kanál na obrazovce."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Tento internetový kanál se stahuje na pozadí bez dekódování; sledujte ho kvůli hodnotám obrazu, zvuku a vyrovnávací paměti."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Zdroj: adaptér DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "statistiky dvbsrc"
+
+msgid "Source: background download"
+msgstr "Zdroj: stahování na pozadí"
+
+msgid "Source: the player's stream"
+msgstr "Zdroj: stream přehrávače"
+
+msgid "updated every second"
+msgstr "aktualizováno každou sekundu"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Není co uložit: kanál se nepřijímá."
+
+msgid "Compare {name} with"
+msgstr "Porovnat {name} s"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Hodnoty za časové okno každé analýzy; obraz a hlasitost jen pro kanál na obrazovce."
+
+msgid "Dish alignment aid"
+msgstr "Pomoc s nasměrováním antény"
+
+msgid "Tone"
+msgstr "Tón"
+
+msgid "Reset best value"
+msgstr "Vynulovat nejlepší hodnotu"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Otáčejte anténou pomalu; tón se s lepším signálem zvyšuje."
+
+msgid "% quality"
+msgstr "% kvality"
+
+msgid "Best so far: {v}"
+msgstr "Zatím nejlepší: {v}"
+
+msgid "Signal lost"
+msgstr "Signál ztracen"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Tuner byl potřeba ke sledování nebo nahrávání."
+
+msgid "Channel analysis: {name}"
+msgstr "Analýza kanálu: {name}"
+
+msgid "Resolution"
+msgstr "Rozlišení"
+
+msgid "Audio"
+msgstr "Zvuk"
+
+msgid "Video"
+msgstr "Obraz"
+
+msgid "Signal quality"
+msgstr "Kvalita signálu"
+
+msgid "Continuity errors"
+msgstr "Chyby kontinuity"
+
+msgid "Content"
+msgstr "Obsah"
+
+msgid "audio description"
+msgstr "audiopopis"
+
+msgid "DVB subtitles"
+msgstr "Titulky DVB"
+
+msgid "Signal"
+msgstr "Signál"
+
+msgid "Reception"
+msgstr "Příjem"
+
+msgid "Symbol rate"
+msgstr "Symbolová rychlost"
+
+msgid "Transponder capacity"
+msgstr "Kapacita transpondéru"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Stream"
+
+msgid "Share of transponder"
+msgstr "Podíl na transpondéru"
+
+msgid "Aspect ratio"
+msgstr "Poměr stran"
+
+msgid "Colour"
+msgstr "Barva"
+
+msgid "Track"
+msgstr "Stopa"
+
+msgid "Now & next"
+msgstr "Nyní a potom"
+
+msgid "Encryption"
+msgstr "Šifrování"
+
+msgid "Interactive"
+msgstr "Interaktivní"
+
+msgid "Stream health"
+msgstr "Stav streamu"
+
+msgid "Transport errors"
+msgstr "Chyby přenosu"
+
+msgid "Timeshift buffer"
+msgstr "Vyrovnávací paměť timeshiftu"
+
+msgid "interlaced"
+msgstr "prokládané"
+
+msgid "Hardware"
+msgstr "Hardware"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "{n} tracks"
+msgstr "{n} stop"
+
+msgid "Free-to-air"
+msgstr "Volně šířený"
+
+msgid "Signal level"
+msgstr "Úroveň signálu"
+
+msgid "Internet stream"
+msgstr "Internetový stream"
+
+msgid "continuity errors"
+msgstr "chyby kontinuity"
+
+msgid "Stream / PLP"
+msgstr "Stream / PLP"
+
+msgid "Source of the figures"
+msgstr "Zdroj hodnot"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Varovat na obrazovce, když příjem zeslábne"
+
+msgid "Open log folder"
+msgstr "Otevřít složku záznamu"
+
+msgid "stream"
+msgstr "stream"
+
+msgid "none (a plain stream)"
+msgstr "žádný (prostý stream)"
+
+msgid "internet stream"
+msgstr "internetový stream"
+
+msgid "Transport Stream"
+msgstr "Transportní proud"
+
+msgid "This channel only"
+msgstr "Jen tento kanál"
+
+msgid "Transponder"
+msgstr "Transpondér"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Změřit celý transpondér (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetové kanály nemají transpondér."
+
+msgid "whole transponder"
+msgstr "celý transpondér"
+
+msgid "Video & Audio"
+msgstr "Obraz a zvuk"
+
+msgid "Black bars"
+msgstr "Černé pruhy"
+
+msgid "Click a track to listen to it."
+msgstr "Klepněte na stopu, abyste si ji poslechli."
+
+msgid "Integrated"
+msgstr "Integrovaná"
+
+msgid "Teletext and subtitles"
+msgstr "Teletext a titulky"
+
+msgid "interlaced capable"
+msgstr "umí prokládání"
+
+msgid "no"
+msgstr "ne"
+
+msgid "{n} frames"
+msgstr "{n} snímků"
+
+msgid "schedule"
+msgstr "program"
+
+msgid "subtitles"
+msgstr "titulky"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletext PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Tento kanál nemá teletext ani titulky."
+
+msgid "Table"
+msgstr "Tabulka"
+
+msgid "Changes"
+msgstr "Změny"
+
+msgid "Repetition"
+msgstr "Opakování"
+
+msgid "Sections"
+msgstr "Sekce"
+
+msgid "Programme guide and clock"
+msgstr "Průvodce pořady a hodiny"
+
+msgid "Guide reaches"
+msgstr "Průvodce sahá do"
+
+msgid "Clock of the channel"
+msgstr "Hodiny kanálu"
+
+msgid "EIT schedule"
+msgstr "EIT program"
+
+msgid "missing"
+msgstr "chybí"
+
+msgid "(other services)"
+msgstr "(ostatní služby)"
+
+msgid "{n} sections"
+msgstr "{n} sekcí"
+
+msgid "Descrambling"
+msgstr "Dekódování"
+
+msgid "Descrambler state"
+msgstr "Stav dekódování"
+
+msgid "Conditional access systems"
+msgstr "Systémy podmíněného přístupu"
+
+msgid "For"
+msgstr "Pro"
+
+msgid "Key changes"
+msgstr "Změny klíče"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Tento kanál je šifrovaný. LinDVB ho dekóduje jen s vaší vlastní předplatitelskou kartou (softcam nebo modul CI)."
+
+msgid "scrambled"
+msgstr "zakódováno"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "testovací aplikace"
+
+msgid "This channel has no HbbTV application."
+msgstr "Tento kanál nemá aplikaci HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Tento kanál nemá objektový karusel."
+
+msgid "Export"
+msgstr "Exportovat"
+
+msgid "Compare with another channel…"
+msgstr "Porovnat s jiným kanálem…"
+
+msgid "Analyse another channel…"
+msgstr "Analyzovat jiný kanál…"
+
+msgid "Window: {w}"
+msgstr "Okno: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Sledovat kanál na obrazovce"
+
+msgid "Watch this channel"
+msgstr "Sledovat tento kanál"
+
+msgid "Try again"
+msgstr "Zkusit znovu"
+
+msgid "Copy as text"
+msgstr "Kopírovat jako text"
+
+msgid "Export report…"
+msgstr "Exportovat zprávu…"
+
+msgid "Source: none"
+msgstr "Zdroj: žádný"
+
+msgid "Saved {path}"
+msgstr "Uloženo {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Nahrává se dalších 30 sekund…"
+
+msgid "Choose a channel"
+msgstr "Vyberte kanál"
+
+msgid "Channel name"
+msgstr "Název kanálu"
+
+msgid "Compare channels"
+msgstr "Porovnat kanály"
+
+msgid "Comparison"
+msgstr "Porovnání"
+
+msgid "Close (Esc)"
+msgstr "Zavřít (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Analýza kanálu…"

@@ -29,7 +29,10 @@ import threading
 import time
 from collections import deque
 
-from gi.repository import GLib, GObject, Gst
+import gi
+
+gi.require_version("Gst", "1.0")
+from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from . import linkbudget
 from .festats import Frontend

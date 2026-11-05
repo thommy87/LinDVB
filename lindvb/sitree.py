@@ -7,7 +7,7 @@ service, teletext, subtitles, delivery systems, ...) and shown as hex otherwise.
 ``hexdump`` gives the classic offset / hex / ASCII listing.
 """
 
-from .tsanalysis import (CA_SYSTEMS, DESCRIPTOR_NAMES, SERVICE_TYPES, STREAM_TYPES,  # noqa: F401
+from .tsanalysis import (DESCRIPTOR_NAMES, SERVICE_TYPES, STREAM_TYPES,
                          ca_system_name, descriptors, dvb_text, mjd_utc, table_name)
 
 

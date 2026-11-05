@@ -2136,3 +2136,1086 @@ msgstr "Pictiúir teilifíse idirfhite (formhór na gcainéal SD agus 1080i). Ar
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Theip ar dhíchódú físe {name}, ag seinm leis an gcéad díchódóir eile"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Earráidí pictiúir: níorbh fhéidir {n} bloc a cheartú"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Glacadh lag: gan ach {db} dB d'imeall"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} bloc nach féidir a cheartú"
+
+msgid "Lock lost"
+msgstr "Glas caillte"
+
+msgid "{n} continuity errors"
+msgstr "{n} earráid leanúnachais"
+
+msgid "PCR jump"
+msgstr "Léim PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Leagan nua de thábla (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Léim airde {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Athmhaolánú"
+
+msgid "Measured since {time}"
+msgstr "Tomhaiste ó {time}"
+
+msgid "Delivery"
+msgstr "Craoladh"
+
+msgid "Frame rate"
+msgstr "Ráta frámaí"
+
+msgid "Average bit rate"
+msgstr "Meánráta giotán"
+
+msgid "Peak bit rate"
+msgstr "Buaicráta giotán"
+
+msgid "Margin"
+msgstr "Imeall"
+
+msgid "Loudness"
+msgstr "Airde fuaime"
+
+msgid "Bit rate"
+msgstr "Ráta giotán"
+
+msgid "Events"
+msgstr "Imeachtaí"
+
+msgid "1 minute"
+msgstr "1 nóiméad"
+
+msgid "15 minutes"
+msgstr "15 nóiméad"
+
+msgid "5 minutes"
+msgstr "5 nóiméad"
+
+msgid "hard of hearing"
+msgstr "do dhaoine faoi mhíchumas éisteachta"
+
+msgid "Data"
+msgstr "Sonraí"
+
+msgid "Level"
+msgstr "Leibhéal"
+
+msgid "Carrier"
+msgstr "Iompróir"
+
+msgid "Uncorrectable blocks"
+msgstr "Bloic nach féidir a cheartú"
+
+msgid "Lock losses"
+msgstr "Glais chaillte"
+
+msgid "C/N history"
+msgstr "Stair C/N"
+
+msgid "Errors"
+msgstr "Earráidí"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / píolótaí"
+
+msgid "Protocol"
+msgstr "Prótacal"
+
+msgid "Response time"
+msgstr "Am freagartha"
+
+msgid "Bad"
+msgstr "Olc"
+
+msgid "Fair"
+msgstr "Measartha"
+
+msgid "Good"
+msgstr "Maith"
+
+msgid "Poor"
+msgstr "Lag"
+
+msgid "NO LOCK"
+msgstr "GAN GHLAS"
+
+msgid "Buffer"
+msgstr "Maolán"
+
+msgid "Download"
+msgstr "Íoslódáil"
+
+msgid "Buffer history"
+msgstr "Stair an mhaoláin"
+
+msgid "(driver value)"
+msgstr "(luach an tiománaí)"
+
+msgid "since start"
+msgstr "ón tús"
+
+msgid "required"
+msgstr "riachtanach"
+
+msgid "Quality history"
+msgstr "Stair na cáilíochta"
+
+msgid "horizontal"
+msgstr "cothrománach"
+
+msgid "left"
+msgstr "clé"
+
+msgid "vertical"
+msgstr "ingearach"
+
+msgid "right"
+msgstr "deas"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(teoiriciúil)"
+
+msgid "Overview"
+msgstr "Forbhreathnú"
+
+msgid "Bit rate of the channel"
+msgstr "Ráta giotán an chainéil"
+
+msgid "Average"
+msgstr "Meán"
+
+msgid "Peak"
+msgstr "Buaic"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Díchódóir"
+
+msgid "Dropped frames"
+msgstr "Frámaí caillte"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Tosú uathoibríoch"
+
+msgid "PCR arrival jitter"
+msgstr "Creathán teachta PCR"
+
+msgid "PCR interval"
+msgstr "Eatramh PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Eatramh PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teilithéacs / fotheidil / sonraí"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "forásach"
+
+msgid "only for the channel on screen"
+msgstr "don chainéal ar an scáileán amháin"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Airde (rian reatha): {lufs} · buaic {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Airde: don chainéal ar an scáileán amháin"
+
+msgid "scrambled packets"
+msgstr "paicéid scrofa"
+
+msgid "no CA descriptors in the PMT"
+msgstr "gan tuairisceoirí CA sa PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} leathanach"
+
+msgid "Quality"
+msgstr "Cáilíocht"
+
+msgid "Carrier to noise ratio"
+msgstr "Cóimheas iompróra le torann"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Ráta earráidí giotán (log₁₀)"
+
+msgid "Address"
+msgstr "Seoladh"
+
+msgid "HTTP status"
+msgstr "Stádas HTTP"
+
+msgid "Content type"
+msgstr "Cineál ábhair"
+
+msgid "Download speed"
+msgstr "Luas íoslódála"
+
+msgid "Segments"
+msgstr "Míreanna"
+
+msgid "Error"
+msgstr "Earráid"
+
+msgid "Variants"
+msgstr "Leaganacha"
+
+msgid "Codecs"
+msgstr "Codecanna"
+
+msgid "Error timeline"
+msgstr "Amlíne earráidí"
+
+msgid "uncorrectable blocks"
+msgstr "bloic nach féidir a cheartú"
+
+msgid "lock lost"
+msgstr "glas caillte"
+
+msgid "rebuffering"
+msgstr "athmhaolánú"
+
+msgid "loudness jump"
+msgstr "léim airde"
+
+msgid "table version"
+msgstr "leagan tábla"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Paraiméadair tiúnta (ón frontend)"
+
+msgid "Delivery system"
+msgstr "Córas craolta"
+
+msgid "Code rate"
+msgstr "Ráta códaithe"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Eatramh cosanta"
+
+msgid "Pilots"
+msgstr "Píolótaí"
+
+msgid "Carriers"
+msgstr "Iompróirí"
+
+msgid "C/N needed"
+msgstr "C/N riachtanach"
+
+msgid "Dish alignment aid…"
+msgstr "Cabhair le mias a dhíriú…"
+
+msgid "Logging and warnings"
+msgstr "Logáil agus rabhaidh"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Logáil an glacadh (líne amháin sa nóiméad, coinnithe 31 lá)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Tabhair rabhadh faoin imeall seo (dB)"
+
+msgid "Reception over the last days"
+msgstr "Glacadh le laethanta beaga anuas"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · íos {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · buaic {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× ráta an tsrutha"
+
+msgid "Download and stream rate"
+msgstr "Ráta íoslódála agus srutha"
+
+msgid "HLS with {n} variants"
+msgstr "HLS le {n} leagan"
+
+msgid "HLS media playlist"
+msgstr "Seinmliosta meán HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "beo"
+
+msgid "on demand"
+msgstr "ar éileamh"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} mír de Ø {s} (sprioc {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Gan liosta leaganacha: sruth aonair is ea an seoladh."
+
+msgid "No events so far."
+msgstr "Gan imeachtaí go fóill."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} nóiméad logáilte don chainéal seo."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Níl aon rud logáilte don chainéal seo go fóill."
+
+msgid "min {min} · max {max}"
+msgstr "íos {min} · uas {max}"
+
+msgid "needs {db}"
+msgstr "teastaíonn {db}"
+
+msgid "relative (driver)"
+msgstr "coibhneasta (tiománaí)"
+
+msgid "post FEC {v}"
+msgstr "tar éis FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "riachtanach do phictiúr glan"
+
+msgid "DVB API v5 statistics"
+msgstr "Staitisticí DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (scála an tiománaí)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Sruthanna bunúsacha agus PIDanna"
+
+msgid "Whole stream"
+msgstr "An sruth ar fad"
+
+msgid "Sort by PID"
+msgstr "Sórtáil de réir PID"
+
+msgid "Sort by bit rate"
+msgstr "Sórtáil de réir ráta giotán"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "deich"
+
+msgid "CC errors"
+msgstr "Earráidí CC"
+
+msgid "Scrambled"
+msgstr "Scrofa"
+
+msgid "Last 60 s"
+msgstr "60 s deiridh"
+
+msgid "Packets"
+msgstr "Paicéid"
+
+msgid "Sync losses"
+msgstr "Sioncrónú caillte"
+
+msgid "Null packets"
+msgstr "Paicéid nialasacha"
+
+msgid "PCR jumps"
+msgstr "Léimeanna PCR"
+
+msgid "PID filter"
+msgstr "Scagaire PID"
+
+msgid "unknown"
+msgstr "anaithnid"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Nialas"
+
+msgid "Other"
+msgstr "Eile"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Iomlán ({n} PID): {rate} · {cc} earráid leanúnachais"
+
+msgid "Measuring…"
+msgstr "Á thomhas…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "saor / nialas"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} in úsáid as {cap} · tomhaiste {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Ní ghlactar ach le PIDanna an chainéil seo. Tomhais an trasfhreagróir ar fad chun na cainéil eile air a fheiceáil."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Próifíl / leibhéal"
+
+msgid "Scan"
+msgstr "Scanadh"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Scannán (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Frámaí taispeánta / caillte"
+
+msgid "Measured bit rate"
+msgstr "Ráta giotán tomhaiste"
+
+msgid "Nominal bit rate"
+msgstr "Ráta giotán ainmniúil"
+
+msgid "VBV buffer"
+msgstr "Maolán VBV"
+
+msgid "Frame sizes"
+msgstr "Méideanna frámaí"
+
+msgid "B frame"
+msgstr "Fráma B"
+
+msgid "I frame"
+msgstr "Fráma I"
+
+msgid "P frame"
+msgstr "Fráma P"
+
+msgid "GOP length"
+msgstr "Fad GOP"
+
+msgid "I frame average"
+msgstr "Meán fráma I"
+
+msgid "P/B frame average"
+msgstr "Meán fráma P/B"
+
+msgid "Nominal"
+msgstr "Ainmniúil"
+
+msgid "Sample rate"
+msgstr "Ráta samplála"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Tomhaiste"
+
+msgid "Notes"
+msgstr "Nótaí"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Airde (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Láithreach"
+
+msgid "Short term"
+msgstr "Gearrthéarma"
+
+msgid "Loudness range"
+msgstr "Raon airde"
+
+msgid "Sample peak"
+msgstr "Buaic samplach"
+
+msgid "level {l}"
+msgstr "leibhéal {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "réimsí"
+
+msgid "mixed"
+msgstr "measctha"
+
+msgid "not sent"
+msgstr "gan seoladh"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % thuas agus thíos"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % ar na taobhanna"
+
+msgid "picture {ratio}:1"
+msgstr "pictiúr {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "tá, réimsí athuair"
+
+msgid "mastering display data"
+msgstr "sonraí an scáileáin máistreachta"
+
+msgid "(maximum)"
+msgstr "(uasmhéid)"
+
+msgid "not signalled (variable)"
+msgstr "gan sonrú (athraitheach)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "anois {now} · Ø {avg} · buaic {max}"
+
+msgid "clean audio"
+msgstr "caint shoiléir"
+
+msgid "EBU target −23 LUFS"
+msgstr "Sprioc EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Tomhaiste ar fhuaim dhíchódaithe an chainéil ar an scáileán, roimh an gcothromóir."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} léim airde de 6 LU nó níos mó (clár ↔ fógraíocht)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Ní thomhaistear an airde ach don chainéal ar an scáileán."
+
+msgid "index"
+msgstr "innéacs"
+
+msgid "info"
+msgstr "eolas"
+
+msgid "subtitles (hard of hearing)"
+msgstr "fotheidil (míchumas éisteachta)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Fotheidil DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Táblaí & EPG"
+
+msgid "SI tables"
+msgstr "Táblaí SI"
+
+msgid "Version"
+msgstr "Leagan"
+
+msgid "Events in the guide"
+msgstr "Cláir sa treoir"
+
+msgid "EIT now/next"
+msgstr "EIT anois/ina dhiaidh"
+
+msgid "Difference to this computer"
+msgstr "Difríocht leis an ríomhaire seo"
+
+msgid "Local time offset"
+msgstr "Fritháireamh ama áitiúil"
+
+msgid "Network"
+msgstr "Líonra"
+
+msgid "Raw view"
+msgstr "Amhradharc"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "mall"
+
+msgid "(all services)"
+msgstr "(gach seirbhís)"
+
+msgid "not seen"
+msgstr "gan feiceáil"
+
+msgid "seen {s} s ago"
+msgstr "feicthe {s} s ó shin"
+
+msgid "timers may start early or late"
+msgstr "d'fhéadfadh lasc ama tosú róluath nó ródhéanach"
+
+msgid "no TDT/TOT"
+msgstr "gan TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Paicéid scrofa"
+
+msgid "CA system ID"
+msgstr "Aitheantas an chórais CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Ráta ECM"
+
+msgid "Scrambling per stream"
+msgstr "Scrofadh de réir srutha"
+
+msgid "Crypto period"
+msgstr "Tréimhse chripte"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Is ionann athrú eochrach agus an t-aistriú idir an focal rialaithe corr agus cothrom; is í an tréimhse chripte an t-am idir dhá athrú."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Gan rochtain choinníollach sa PMT agus gan paicéid scrofa."
+
+msgid "free"
+msgstr "saor"
+
+msgid "all streams"
+msgstr "gach sruth"
+
+msgid "not received"
+msgstr "gan glacadh"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Níor glacadh le CAT ar bith le sruthanna EMM."
+
+msgid "Applications (AIT)"
+msgstr "Feidhmchláir (AIT)"
+
+msgid "Organisation / app"
+msgstr "Eagraíocht / aip"
+
+msgid "Control"
+msgstr "Rialú"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Timpealláin sonraí (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Leagan AIT {v} ar PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Fógraíonn an cainéal AIT ar PID {pid}; níor tháinig sé fós."
+
+msgid "Channel Analysis – {name}"
+msgstr "Anailís chainéil – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Reoigh an tomhas"
+
+msgid "Copy report as text"
+msgstr "Cóipeáil an tuairisc mar théacs"
+
+msgid "Save report as text…"
+msgstr "Sábháil an tuairisc mar théacs…"
+
+msgid "Save report as JSON…"
+msgstr "Sábháil an tuairisc mar JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Sábháil an stair mar CSV…"
+
+msgid "Save window as picture…"
+msgstr "Sábháil an fhuinneog mar phictiúr…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Sábháil 30 s den sruth…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Anailís chainéil · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Beo · á thomhas le {t}"
+
+msgid "Paused"
+msgstr "Ar sos"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Níl aon tiúnóir saor don chainéal seo. Féach air, nó bain triail eile as nuair a bheidh tiúnóir saor."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Aistríodh tiúnóir an chainéil seo chuig cainéal eile."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Tomhaiste sa chúlra ar a thiúnóir féin; ní thomhaistear pictiúr, fuaim ná airde ach don chainéal ar an scáileán."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Íoslódáiltear an cainéal idirlín seo sa chúlra gan é a dhíchódú; féach air le haghaidh luachanna pictiúir, fuaime agus maoláin."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Foinse: cuibheoir DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "staitisticí dvbsrc"
+
+msgid "Source: background download"
+msgstr "Foinse: íoslódáil sa chúlra"
+
+msgid "Source: the player's stream"
+msgstr "Foinse: sruth an tseinnteora"
+
+msgid "updated every second"
+msgstr "nuashonraithe gach soicind"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Faic le sábháil: níl an cainéal á ghlacadh."
+
+msgid "Compare {name} with"
+msgstr "Cuir {name} i gcomparáid le"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Luachanna thar fhuinneog ama gach anailíse; pictiúr agus airde don chainéal ar an scáileán amháin."
+
+msgid "Dish alignment aid"
+msgstr "Cabhair le mias a dhíriú"
+
+msgid "Tone"
+msgstr "Ton"
+
+msgid "Reset best value"
+msgstr "Athshocraigh an luach is fearr"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Cas an mhias go mall; éiríonn an ton níos airde le comhartha níos fearr."
+
+msgid "% quality"
+msgstr "% cáilíochta"
+
+msgid "Best so far: {v}"
+msgstr "Is fearr go dtí seo: {v}"
+
+msgid "Signal lost"
+msgstr "Comhartha caillte"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Bhí an tiúnóir ag teastáil chun féachaint nó taifeadadh."
+
+msgid "Channel analysis: {name}"
+msgstr "Anailís chainéil: {name}"
+
+msgid "Resolution"
+msgstr "Taifeach"
+
+msgid "Audio"
+msgstr "Fuaim"
+
+msgid "Video"
+msgstr "Físeán"
+
+msgid "Signal quality"
+msgstr "Cáilíocht an chomhartha"
+
+msgid "Continuity errors"
+msgstr "Earráidí leanúnachais"
+
+msgid "Content"
+msgstr "Ábhar"
+
+msgid "audio description"
+msgstr "closchur síos"
+
+msgid "DVB subtitles"
+msgstr "Fotheidil DVB"
+
+msgid "Signal"
+msgstr "Comhartha"
+
+msgid "Reception"
+msgstr "Glacadh"
+
+msgid "Symbol rate"
+msgstr "Ráta siombailí"
+
+msgid "Transponder capacity"
+msgstr "Toilleadh an trasfhreagróra"
+
+msgid "Server"
+msgstr "Freastalaí"
+
+msgid "Stream"
+msgstr "Sruth"
+
+msgid "Share of transponder"
+msgstr "Sciar den trasfhreagróir"
+
+msgid "Aspect ratio"
+msgstr "Cóimheas treoíochta"
+
+msgid "Colour"
+msgstr "Dath"
+
+msgid "Track"
+msgstr "Rian"
+
+msgid "Now & next"
+msgstr "Anois & ina dhiaidh"
+
+msgid "Encryption"
+msgstr "Criptiúchán"
+
+msgid "Interactive"
+msgstr "Idirghníomhach"
+
+msgid "Stream health"
+msgstr "Sláinte an tsrutha"
+
+msgid "Transport errors"
+msgstr "Earráidí iompair"
+
+msgid "Timeshift buffer"
+msgstr "Maolán timeshift"
+
+msgid "interlaced"
+msgstr "fite"
+
+msgid "Hardware"
+msgstr "Crua-earraí"
+
+msgid "Software"
+msgstr "Bogearraí"
+
+msgid "{n} tracks"
+msgstr "{n} rian"
+
+msgid "Free-to-air"
+msgstr "Saor le féachaint"
+
+msgid "Signal level"
+msgstr "Leibhéal an chomhartha"
+
+msgid "Internet stream"
+msgstr "Sruth idirlín"
+
+msgid "continuity errors"
+msgstr "earráidí leanúnachais"
+
+msgid "Stream / PLP"
+msgstr "Sruth / PLP"
+
+msgid "Source of the figures"
+msgstr "Foinse na luachanna"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Tabhair rabhadh ar an scáileán nuair a éiríonn an glacadh lag"
+
+msgid "Open log folder"
+msgstr "Oscail fillteán an loga"
+
+msgid "stream"
+msgstr "sruth"
+
+msgid "none (a plain stream)"
+msgstr "gan aon cheann (sruth simplí)"
+
+msgid "internet stream"
+msgstr "sruth idirlín"
+
+msgid "Transport Stream"
+msgstr "Sruth iompair"
+
+msgid "This channel only"
+msgstr "An cainéal seo amháin"
+
+msgid "Transponder"
+msgstr "Trasfhreagróir"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Tomhais an trasfhreagróir ar fad (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Níl trasfhreagróir ag cainéil idirlín."
+
+msgid "whole transponder"
+msgstr "an trasfhreagróir ar fad"
+
+msgid "Video & Audio"
+msgstr "Físeán & fuaim"
+
+msgid "Black bars"
+msgstr "Barraí dubha"
+
+msgid "Click a track to listen to it."
+msgstr "Cliceáil ar rian chun éisteacht leis."
+
+msgid "Integrated"
+msgstr "Comhtháite"
+
+msgid "Teletext and subtitles"
+msgstr "Teilithéacs agus fotheidil"
+
+msgid "interlaced capable"
+msgstr "in ann fite"
+
+msgid "no"
+msgstr "níl"
+
+msgid "{n} frames"
+msgstr "{n} fráma"
+
+msgid "schedule"
+msgstr "sceideal"
+
+msgid "subtitles"
+msgstr "fotheidil"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teilithéacs PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Níl teilithéacs ná fotheidil ar an gcainéal seo."
+
+msgid "Table"
+msgstr "Tábla"
+
+msgid "Changes"
+msgstr "Athruithe"
+
+msgid "Repetition"
+msgstr "Athrá"
+
+msgid "Sections"
+msgstr "Ailt"
+
+msgid "Programme guide and clock"
+msgstr "Treoir chlár agus clog"
+
+msgid "Guide reaches"
+msgstr "Síneann an treoir go dtí"
+
+msgid "Clock of the channel"
+msgstr "Clog an chainéil"
+
+msgid "EIT schedule"
+msgstr "Sceideal EIT"
+
+msgid "missing"
+msgstr "ar iarraidh"
+
+msgid "(other services)"
+msgstr "(seirbhísí eile)"
+
+msgid "{n} sections"
+msgstr "{n} alt"
+
+msgid "Descrambling"
+msgstr "Díscrobadh"
+
+msgid "Descrambler state"
+msgstr "Staid an díscrobóra"
+
+msgid "Conditional access systems"
+msgstr "Córais rochtana coinníollaí"
+
+msgid "For"
+msgstr "Do"
+
+msgid "Key changes"
+msgstr "Athruithe eochrach"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Tá an cainéal seo criptithe. Ní dhíscrobann LinDVB é ach le do chárta síntiúis féin (softcam nó modúl CI)."
+
+msgid "scrambled"
+msgstr "scrofa"
+
+msgid "Profile"
+msgstr "Próifíl"
+
+msgid "test application"
+msgstr "feidhmchlár tástála"
+
+msgid "This channel has no HbbTV application."
+msgstr "Níl feidhmchlár HbbTV ag an gcainéal seo."
+
+msgid "No object carousel in this channel."
+msgstr "Níl timpeallán réad ar an gcainéal seo."
+
+msgid "Export"
+msgstr "Easpórtáil"
+
+msgid "Compare with another channel…"
+msgstr "Cuir i gcomparáid le cainéal eile…"
+
+msgid "Analyse another channel…"
+msgstr "Déan anailís ar chainéal eile…"
+
+msgid "Window: {w}"
+msgstr "Fuinneog: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Lean an cainéal ar an scáileán"
+
+msgid "Watch this channel"
+msgstr "Féach ar an gcainéal seo"
+
+msgid "Try again"
+msgstr "Bain triail eile as"
+
+msgid "Copy as text"
+msgstr "Cóipeáil mar théacs"
+
+msgid "Export report…"
+msgstr "Easpórtáil tuairisc…"
+
+msgid "Source: none"
+msgstr "Foinse: gan foinse"
+
+msgid "Saved {path}"
+msgstr "Sábháilte: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Na 30 soicind eile á dtaifeadadh…"
+
+msgid "Choose a channel"
+msgstr "Roghnaigh cainéal"
+
+msgid "Channel name"
+msgstr "Ainm an chainéil"
+
+msgid "Compare channels"
+msgstr "Cuir cainéil i gcomparáid"
+
+msgid "Comparison"
+msgstr "Comparáid"
+
+msgid "Close (Esc)"
+msgstr "Dún (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Anailís chainéil…"

@@ -2136,3 +2136,1086 @@ msgstr "Geïnterlinieerde tv-beelden (de meeste SD- en 1080i-zenders). Op de vid
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name}-videodecodering mislukt, afspelen met de volgende decoder"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Beeldfouten: {n} blokken konden niet worden gecorrigeerd"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Zwakke ontvangst: slechts {db} dB marge"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} niet-corrigeerbare blokken"
+
+msgid "Lock lost"
+msgstr "Lock verloren"
+
+msgid "{n} continuity errors"
+msgstr "{n} continuïteitsfouten"
+
+msgid "PCR jump"
+msgstr "PCR-sprong"
+
+msgid "New table version (0x{tid})"
+msgstr "Nieuwe tabelversie (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Luidheidssprong {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Herbufferen"
+
+msgid "Measured since {time}"
+msgstr "Gemeten sinds {time}"
+
+msgid "Delivery"
+msgstr "Uitzending"
+
+msgid "Frame rate"
+msgstr "Beeldsnelheid"
+
+msgid "Average bit rate"
+msgstr "Gemiddelde bitrate"
+
+msgid "Peak bit rate"
+msgstr "Piekbitrate"
+
+msgid "Margin"
+msgstr "Marge"
+
+msgid "Loudness"
+msgstr "Luidheid"
+
+msgid "Bit rate"
+msgstr "Bitrate"
+
+msgid "Events"
+msgstr "Gebeurtenissen"
+
+msgid "1 minute"
+msgstr "1 minuut"
+
+msgid "15 minutes"
+msgstr "15 minuten"
+
+msgid "5 minutes"
+msgstr "5 minuten"
+
+msgid "hard of hearing"
+msgstr "voor slechthorenden"
+
+msgid "Data"
+msgstr "Gegevens"
+
+msgid "Level"
+msgstr "Niveau"
+
+msgid "Carrier"
+msgstr "Draaggolf"
+
+msgid "Uncorrectable blocks"
+msgstr "Niet-corrigeerbare blokken"
+
+msgid "Lock losses"
+msgstr "Lock-verliezen"
+
+msgid "C/N history"
+msgstr "C/N-verloop"
+
+msgid "Errors"
+msgstr "Fouten"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilots"
+
+msgid "Protocol"
+msgstr "Protocol"
+
+msgid "Response time"
+msgstr "Reactietijd"
+
+msgid "Bad"
+msgstr "Slecht"
+
+msgid "Fair"
+msgstr "Matig"
+
+msgid "Good"
+msgstr "Goed"
+
+msgid "Poor"
+msgstr "Zwak"
+
+msgid "NO LOCK"
+msgstr "GEEN LOCK"
+
+msgid "Buffer"
+msgstr "Buffer"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Buffer history"
+msgstr "Bufferverloop"
+
+msgid "(driver value)"
+msgstr "(driverwaarde)"
+
+msgid "since start"
+msgstr "sinds start"
+
+msgid "required"
+msgstr "vereist"
+
+msgid "Quality history"
+msgstr "Kwaliteitsverloop"
+
+msgid "horizontal"
+msgstr "horizontaal"
+
+msgid "left"
+msgstr "links"
+
+msgid "vertical"
+msgstr "verticaal"
+
+msgid "right"
+msgstr "rechts"
+
+msgid "Port {n}"
+msgstr "Poort {n}"
+
+msgid "(theoretical)"
+msgstr "(theoretisch)"
+
+msgid "Overview"
+msgstr "Overzicht"
+
+msgid "Bit rate of the channel"
+msgstr "Bitrate van de zender"
+
+msgid "Average"
+msgstr "Gemiddelde"
+
+msgid "Peak"
+msgstr "Piek"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Decoder"
+
+msgid "Dropped frames"
+msgstr "Weggevallen beelden"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Autostart"
+
+msgid "PCR arrival jitter"
+msgstr "PCR-aankomstjitter"
+
+msgid "PCR interval"
+msgstr "PCR-interval"
+
+msgid "PAT / PMT interval"
+msgstr "PAT-/PMT-interval"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletekst / ondertitels / gegevens"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressief"
+
+msgid "only for the channel on screen"
+msgstr "alleen voor de zender op het scherm"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Luidheid (huidig spoor): {lufs} · piek {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Luidheid: alleen voor de zender op het scherm"
+
+msgid "scrambled packets"
+msgstr "versleutelde pakketten"
+
+msgid "no CA descriptors in the PMT"
+msgstr "geen CA-descriptors in de PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} pagina's"
+
+msgid "Quality"
+msgstr "Kwaliteit"
+
+msgid "Carrier to noise ratio"
+msgstr "Draaggolf-ruisverhouding"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitfoutfrequentie (log₁₀)"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "HTTP status"
+msgstr "HTTP-status"
+
+msgid "Content type"
+msgstr "Inhoudstype"
+
+msgid "Download speed"
+msgstr "Downloadsnelheid"
+
+msgid "Segments"
+msgstr "Segmenten"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Variants"
+msgstr "Varianten"
+
+msgid "Codecs"
+msgstr "Codecs"
+
+msgid "Error timeline"
+msgstr "Fouttijdlijn"
+
+msgid "uncorrectable blocks"
+msgstr "niet-corrigeerbare blokken"
+
+msgid "lock lost"
+msgstr "lock verloren"
+
+msgid "rebuffering"
+msgstr "herbufferen"
+
+msgid "loudness jump"
+msgstr "luidheidssprong"
+
+msgid "table version"
+msgstr "tabelversie"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Afgestemde parameters (van de frontend)"
+
+msgid "Delivery system"
+msgstr "Uitzendsysteem"
+
+msgid "Code rate"
+msgstr "Coderate"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Guard-interval"
+
+msgid "Pilots"
+msgstr "Pilots"
+
+msgid "Carriers"
+msgstr "Draaggolven"
+
+msgid "C/N needed"
+msgstr "Benodigde C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Hulp bij het richten van de schotel…"
+
+msgid "Logging and warnings"
+msgstr "Logboek en waarschuwingen"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Ontvangst vastleggen (één regel per minuut, 31 dagen bewaard)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Waarschuwen onder deze marge (dB)"
+
+msgid "Reception over the last days"
+msgstr "Ontvangst van de laatste dagen"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · piek {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× de streamsnelheid"
+
+msgid "Download and stream rate"
+msgstr "Download- en streamsnelheid"
+
+msgid "HLS with {n} variants"
+msgstr "HLS met {n} varianten"
+
+msgid "HLS media playlist"
+msgstr "HLS-mediaplaylist"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "live"
+
+msgid "on demand"
+msgstr "op aanvraag"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmenten van Ø {s} (doel {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Geen variantenlijst: het adres is één enkele stream."
+
+msgid "No events so far."
+msgstr "Nog geen gebeurtenissen."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minuten vastgelegd voor deze zender."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Nog niets vastgelegd voor deze zender."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · max {max}"
+
+msgid "needs {db}"
+msgstr "heeft {db} nodig"
+
+msgid "relative (driver)"
+msgstr "relatief (driver)"
+
+msgid "post FEC {v}"
+msgstr "na FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "nodig voor een schoon beeld"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5-statistieken"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (driverschaal)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementaire streams en PID's"
+
+msgid "Whole stream"
+msgstr "Hele stream"
+
+msgid "Sort by PID"
+msgstr "Sorteren op PID"
+
+msgid "Sort by bit rate"
+msgstr "Sorteren op bitrate"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC-fouten"
+
+msgid "Scrambled"
+msgstr "Versleuteld"
+
+msgid "Last 60 s"
+msgstr "Laatste 60 s"
+
+msgid "Packets"
+msgstr "Pakketten"
+
+msgid "Sync losses"
+msgstr "Syncverliezen"
+
+msgid "Null packets"
+msgstr "Nulpakketten"
+
+msgid "PCR jumps"
+msgstr "PCR-sprongen"
+
+msgid "PID filter"
+msgstr "PID-filter"
+
+msgid "unknown"
+msgstr "onbekend"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Nul"
+
+msgid "Other"
+msgstr "Overig"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Som ({n} PID's): {rate} · {cc} continuïteitsfouten"
+
+msgid "Measuring…"
+msgstr "Meten…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "vrij / nul"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} gebruikt van {cap} · gemeten {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Alleen de PID's van deze zender worden ontvangen. Meet de hele transponder om de andere zenders erop te zien."
+
+msgid "{n} PIDs"
+msgstr "{n} PID's"
+
+msgid "Profile / level"
+msgstr "Profiel / niveau"
+
+msgid "Scan"
+msgstr "Scan"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2-pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Beelden getoond / weggevallen"
+
+msgid "Measured bit rate"
+msgstr "Gemeten bitrate"
+
+msgid "Nominal bit rate"
+msgstr "Nominale bitrate"
+
+msgid "VBV buffer"
+msgstr "VBV-buffer"
+
+msgid "Frame sizes"
+msgstr "Beeldgroottes"
+
+msgid "B frame"
+msgstr "B-beeld"
+
+msgid "I frame"
+msgstr "I-beeld"
+
+msgid "P frame"
+msgstr "P-beeld"
+
+msgid "GOP length"
+msgstr "GOP-lengte"
+
+msgid "I frame average"
+msgstr "Gemiddeld I-beeld"
+
+msgid "P/B frame average"
+msgstr "Gemiddeld P/B-beeld"
+
+msgid "Nominal"
+msgstr "Nominaal"
+
+msgid "Sample rate"
+msgstr "Samplefrequentie"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Gemeten"
+
+msgid "Notes"
+msgstr "Opmerkingen"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Luidheid (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentaan"
+
+msgid "Short term"
+msgstr "Korte termijn"
+
+msgid "Loudness range"
+msgstr "Luidheidsbereik"
+
+msgid "Sample peak"
+msgstr "Samplepiek"
+
+msgid "level {l}"
+msgstr "niveau {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "velden"
+
+msgid "mixed"
+msgstr "gemengd"
+
+msgid "not sent"
+msgstr "niet verzonden"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % boven en onder"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % aan de zijkanten"
+
+msgid "picture {ratio}:1"
+msgstr "beeld {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "ja, herhaalde velden"
+
+msgid "mastering display data"
+msgstr "gegevens van het masteringscherm"
+
+msgid "(maximum)"
+msgstr "(maximum)"
+
+msgid "not signalled (variable)"
+msgstr "niet aangegeven (variabel)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "nu {now} · Ø {avg} · piek {max}"
+
+msgid "clean audio"
+msgstr "heldere spraak"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU-doel −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Gemeten op het gedecodeerde geluid van de zender op het scherm, vóór de equalizer."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} luidheidssprongen van 6 LU of meer (programma ↔ reclame)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "De luidheid wordt alleen gemeten voor de zender op het scherm."
+
+msgid "index"
+msgstr "index"
+
+msgid "info"
+msgstr "info"
+
+msgid "subtitles (hard of hearing)"
+msgstr "ondertitels (slechthorenden)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB-ondertitels PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabellen & EPG"
+
+msgid "SI tables"
+msgstr "SI-tabellen"
+
+msgid "Version"
+msgstr "Versie"
+
+msgid "Events in the guide"
+msgstr "Uitzendingen in de gids"
+
+msgid "EIT now/next"
+msgstr "EIT nu/straks"
+
+msgid "Difference to this computer"
+msgstr "Verschil met deze computer"
+
+msgid "Local time offset"
+msgstr "Lokale tijdafwijking"
+
+msgid "Network"
+msgstr "Netwerk"
+
+msgid "Raw view"
+msgstr "Ruwe weergave"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "traag"
+
+msgid "(all services)"
+msgstr "(alle diensten)"
+
+msgid "not seen"
+msgstr "niet gezien"
+
+msgid "seen {s} s ago"
+msgstr "{s} s geleden gezien"
+
+msgid "timers may start early or late"
+msgstr "timers kunnen te vroeg of te laat starten"
+
+msgid "no TDT/TOT"
+msgstr "geen TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Versleutelde pakketten"
+
+msgid "CA system ID"
+msgstr "CA-systeem-ID"
+
+msgid "ECM PID"
+msgstr "ECM-PID"
+
+msgid "ECM rate"
+msgstr "ECM-snelheid"
+
+msgid "Scrambling per stream"
+msgstr "Versleuteling per stream"
+
+msgid "Crypto period"
+msgstr "Cryptoperiode"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Een sleutelwissel is de overgang tussen het even en het oneven controlewoord; de cryptoperiode is de tijd tussen twee wissels."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Geen conditional access in de PMT en geen versleutelde pakketten."
+
+msgid "free"
+msgstr "vrij"
+
+msgid "all streams"
+msgstr "alle streams"
+
+msgid "not received"
+msgstr "niet ontvangen"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Geen CAT met EMM-streams ontvangen."
+
+msgid "Applications (AIT)"
+msgstr "Toepassingen (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organisatie / app"
+
+msgid "Control"
+msgstr "Besturing"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Gegevenscarrousels (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component-tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT-versie {v} op PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "De zender kondigt een AIT aan op PID {pid}; die is nog niet aangekomen."
+
+msgid "Channel Analysis – {name}"
+msgstr "Zenderanalyse – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Meting bevriezen"
+
+msgid "Copy report as text"
+msgstr "Rapport als tekst kopiëren"
+
+msgid "Save report as text…"
+msgstr "Rapport als tekst opslaan…"
+
+msgid "Save report as JSON…"
+msgstr "Rapport als JSON opslaan…"
+
+msgid "Save history as CSV…"
+msgstr "Verloop als CSV opslaan…"
+
+msgid "Save window as picture…"
+msgstr "Venster als afbeelding opslaan…"
+
+msgid "Save 30 s of the stream…"
+msgstr "30 s van de stream opslaan…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Zenderanalyse · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Live · meet sinds {t}"
+
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Er is geen tuner vrij voor deze zender. Bekijk hem, of probeer het opnieuw wanneer een tuner vrij is."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "De tuner van deze zender is naar een andere zender overgeschakeld."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Op de achtergrond gemeten op een eigen tuner; beeld, geluid en luidheid worden alleen gemeten voor de zender op het scherm."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Deze internetzender wordt op de achtergrond opgehaald zonder te decoderen; bekijk hem voor beeld-, geluid- en bufferwaarden."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Bron: DVB-adapter {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc-statistieken"
+
+msgid "Source: background download"
+msgstr "Bron: download op de achtergrond"
+
+msgid "Source: the player's stream"
+msgstr "Bron: de stream van de speler"
+
+msgid "updated every second"
+msgstr "elke seconde bijgewerkt"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Niets op te slaan: de zender wordt niet ontvangen."
+
+msgid "Compare {name} with"
+msgstr "{name} vergelijken met"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Waarden over het tijdvenster van elke analyse; beeld en luidheid alleen voor de zender op het scherm."
+
+msgid "Dish alignment aid"
+msgstr "Hulp bij het richten van de schotel"
+
+msgid "Tone"
+msgstr "Toon"
+
+msgid "Reset best value"
+msgstr "Beste waarde wissen"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Draai de schotel langzaam; de toon wordt hoger bij een beter signaal."
+
+msgid "% quality"
+msgstr "% kwaliteit"
+
+msgid "Best so far: {v}"
+msgstr "Beste tot nu toe: {v}"
+
+msgid "Signal lost"
+msgstr "Signaal verloren"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "De tuner was nodig om te kijken of op te nemen."
+
+msgid "Channel analysis: {name}"
+msgstr "Zenderanalyse: {name}"
+
+msgid "Resolution"
+msgstr "Resolutie"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Signaalkwaliteit"
+
+msgid "Continuity errors"
+msgstr "Continuïteitsfouten"
+
+msgid "Content"
+msgstr "Inhoud"
+
+msgid "audio description"
+msgstr "audiodescriptie"
+
+msgid "DVB subtitles"
+msgstr "DVB-ondertitels"
+
+msgid "Signal"
+msgstr "Signaal"
+
+msgid "Reception"
+msgstr "Ontvangst"
+
+msgid "Symbol rate"
+msgstr "Symboolsnelheid"
+
+msgid "Transponder capacity"
+msgstr "Transpondercapaciteit"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Stream"
+
+msgid "Share of transponder"
+msgstr "Aandeel van de transponder"
+
+msgid "Aspect ratio"
+msgstr "Beeldverhouding"
+
+msgid "Colour"
+msgstr "Kleur"
+
+msgid "Track"
+msgstr "Spoor"
+
+msgid "Now & next"
+msgstr "Nu & straks"
+
+msgid "Encryption"
+msgstr "Versleuteling"
+
+msgid "Interactive"
+msgstr "Interactief"
+
+msgid "Stream health"
+msgstr "Streamstatus"
+
+msgid "Transport errors"
+msgstr "Transportfouten"
+
+msgid "Timeshift buffer"
+msgstr "Timeshiftbuffer"
+
+msgid "interlaced"
+msgstr "interlaced"
+
+msgid "Hardware"
+msgstr "Hardware"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "{n} tracks"
+msgstr "{n} sporen"
+
+msgid "Free-to-air"
+msgstr "Vrij te ontvangen"
+
+msgid "Signal level"
+msgstr "Signaalniveau"
+
+msgid "Internet stream"
+msgstr "Internetstream"
+
+msgid "continuity errors"
+msgstr "continuïteitsfouten"
+
+msgid "Stream / PLP"
+msgstr "Stream / PLP"
+
+msgid "Source of the figures"
+msgstr "Bron van de waarden"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Op het scherm waarschuwen als de ontvangst zwak wordt"
+
+msgid "Open log folder"
+msgstr "Logboekmap openen"
+
+msgid "stream"
+msgstr "stream"
+
+msgid "none (a plain stream)"
+msgstr "geen (een gewone stream)"
+
+msgid "internet stream"
+msgstr "internetstream"
+
+msgid "Transport Stream"
+msgstr "Transportstream"
+
+msgid "This channel only"
+msgstr "Alleen deze zender"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Hele transponder meten (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetzenders hebben geen transponder."
+
+msgid "whole transponder"
+msgstr "hele transponder"
+
+msgid "Video & Audio"
+msgstr "Video & audio"
+
+msgid "Black bars"
+msgstr "Zwarte balken"
+
+msgid "Click a track to listen to it."
+msgstr "Klik op een spoor om het te beluisteren."
+
+msgid "Integrated"
+msgstr "Geïntegreerd"
+
+msgid "Teletext and subtitles"
+msgstr "Teletekst en ondertitels"
+
+msgid "interlaced capable"
+msgstr "geschikt voor interlaced"
+
+msgid "no"
+msgstr "nee"
+
+msgid "{n} frames"
+msgstr "{n} beelden"
+
+msgid "schedule"
+msgstr "programmaschema"
+
+msgid "subtitles"
+msgstr "ondertitels"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletekst PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Geen teletekst of ondertitels bij deze zender."
+
+msgid "Table"
+msgstr "Tabel"
+
+msgid "Changes"
+msgstr "Wijzigingen"
+
+msgid "Repetition"
+msgstr "Herhaling"
+
+msgid "Sections"
+msgstr "Secties"
+
+msgid "Programme guide and clock"
+msgstr "Programmagids en klok"
+
+msgid "Guide reaches"
+msgstr "Gids reikt tot"
+
+msgid "Clock of the channel"
+msgstr "Klok van de zender"
+
+msgid "EIT schedule"
+msgstr "EIT-programmaschema"
+
+msgid "missing"
+msgstr "ontbreekt"
+
+msgid "(other services)"
+msgstr "(andere diensten)"
+
+msgid "{n} sections"
+msgstr "{n} secties"
+
+msgid "Descrambling"
+msgstr "Ontsleuteling"
+
+msgid "Descrambler state"
+msgstr "Status van de ontsleuteling"
+
+msgid "Conditional access systems"
+msgstr "Conditional-access-systemen"
+
+msgid "For"
+msgstr "Voor"
+
+msgid "Key changes"
+msgstr "Sleutelwissels"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Deze zender is versleuteld. LinDVB ontsleutelt hem alleen met uw eigen abonnementskaart (softcam of CI-module)."
+
+msgid "scrambled"
+msgstr "versleuteld"
+
+msgid "Profile"
+msgstr "Profiel"
+
+msgid "test application"
+msgstr "testtoepassing"
+
+msgid "This channel has no HbbTV application."
+msgstr "Deze zender heeft geen HbbTV-toepassing."
+
+msgid "No object carousel in this channel."
+msgstr "Geen objectcarrousel bij deze zender."
+
+msgid "Export"
+msgstr "Exporteren"
+
+msgid "Compare with another channel…"
+msgstr "Vergelijken met een andere zender…"
+
+msgid "Analyse another channel…"
+msgstr "Een andere zender analyseren…"
+
+msgid "Window: {w}"
+msgstr "Venster: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "De zender op het scherm volgen"
+
+msgid "Watch this channel"
+msgstr "Deze zender bekijken"
+
+msgid "Try again"
+msgstr "Opnieuw proberen"
+
+msgid "Copy as text"
+msgstr "Als tekst kopiëren"
+
+msgid "Export report…"
+msgstr "Rapport exporteren…"
+
+msgid "Source: none"
+msgstr "Bron: geen"
+
+msgid "Saved {path}"
+msgstr "{path} opgeslagen"
+
+msgid "Recording the next 30 seconds…"
+msgstr "De volgende 30 seconden worden opgenomen…"
+
+msgid "Choose a channel"
+msgstr "Kies een zender"
+
+msgid "Channel name"
+msgstr "Zendernaam"
+
+msgid "Compare channels"
+msgstr "Zenders vergelijken"
+
+msgid "Comparison"
+msgstr "Vergelijking"
+
+msgid "Close (Esc)"
+msgstr "Sluiten (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Zenderanalyse…"

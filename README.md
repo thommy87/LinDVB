@@ -118,6 +118,25 @@ picture and hides itself when the mouse is still.
   Vulkan Video or software can be chosen by hand. With VA-API, deinterlacing
   runs on the graphics card too
 * Recording and device statistics (lock, signal, SNR, BER, bitrate)
+* Channel analysis (right click on a channel ▸ Channel Analysis…, or the main menu ▸ Channel
+  Analysis…): a window of its own with seven pages. Overview: signal ring, level,
+  C/N and the margin in dB to what the modulation needs, the bit rate of video,
+  audio and data as a running stacked curve, formats, now/next, encryption and
+  stream health. Signal: C/N, level and BER curves, an error timeline, the tuned
+  parameters from the frontend, a dish alignment aid (full screen figure with a
+  tone that rises with the signal), a reception log and on-screen warnings when the
+  margin gets thin. Transport stream: every PID with content, format, bit rate,
+  continuity errors and a sparkline, PCR interval and jitter, and the occupancy of
+  the whole transponder. Video & audio: codec, profile, scan, AFD, black bars,
+  3:2 pulldown, HDR, I/P/B frame sizes and GOP, audio tracks with nominal and
+  measured rate and dialnorm, EBU R 128 loudness with jumps. Tables & EPG: every SI
+  table with version and repetition, a decoded tree and hex view, the clock offset
+  of the channel. Encryption and HbbTV: CA systems, ECM/EMM, crypto period, AIT
+  applications and carousels. Internet channels show server, HTTP status, response
+  time, HLS/DASH variants, segments, buffer and rebuffering instead. Measures on a
+  free second tuner in the background, can follow the channel on screen, compares
+  two channels side by side and exports text, JSON, CSV, a picture of the window or
+  30 s of the stream
 * Plugins: Python add-ons for channel-list importers, conditional-access
   providers, radio visualisations, life-cycle hooks and menu entries
 * Conditional access for your own encrypted channels: an external softcam
@@ -264,6 +283,8 @@ with these keys; use `ir-keytable` to remap buttons.
 
 * `~/.config/lindvb/settings.json`, `channels.json`, `timers.json`
 * `~/.cache/lindvb/epg.json` and the timeshift buffer (`timeshift/`)
+* `~/.local/share/lindvb/reception/` the reception log of the channel analysis (one
+  CSV file a day, kept 31 days; off unless switched on)
 * Recordings go to `~/Videos/LinDVB` as `.ts` by default (naming scheme with
   `%year %date %time %station %event`)
 
