@@ -7,6 +7,7 @@ from pathlib import Path
 from gi.repository import Gdk, Gio, GLib, Gst, Gtk
 
 from ..channels import Channel
+from .. import hwaccel
 from ..config import DATA_DIR
 from ..epgsources import LANGUAGES
 from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LABELS,
@@ -19,6 +20,27 @@ from ..i18n import LANGUAGES as LANGUAGES_UI, C_, _
 DELSYS = ["dvb-s", "dvb-s2", "dvb-c-a", "dvb-c-b", "dvb-t", "dvb-t2", "atsc", "isdb-t", "dtmb", "iptv"]
 MODS = ["auto", "qpsk", "8psk", "16apsk", "32apsk", "qam-16", "qam-32", "qam-64", "qam-128",
         "qam-256", "8vsb"]
+
+
+DECODER_LABELS = {"auto": _("Automatic (graphics card when possible)"),
+                  "vaapi": "VA-API (Intel, AMD)", "nvdec": "NVDEC (NVIDIA)",
+                  "vulkan": "Vulkan Video", "v4l2": _("V4L2 (ARM boards)"),
+                  "software": _("Software (processor)")}
+
+
+def decoder_hint(player=None):
+    """Which GPU decoders this machine has and which decoder plays now."""
+    have = hwaccel.available()
+    lines = [_("Graphics card decoders found: {list}").format(
+        list=", ".join(hwaccel.NAMES[b] for b in have) if have else _("none"))]
+    off = sorted(hwaccel.disabled())
+    if off:
+        lines.append(_("Switched off after an error: {list}").format(
+            list=", ".join(hwaccel.NAMES.get(b, b) for b in off)))
+    dec = getattr(player, "video_decoder", None)
+    if dec:
+        lines.append(_("Decoding now: {decoder}").format(decoder=hwaccel.describe(dec)))
+    return "\n".join(lines)
 
 
 ACCENT_LABELS = [_("LinDVB blue (default)"), _("System accent colour"), _("Custom colour")]
@@ -146,7 +168,17 @@ class PrefsWindow(Gtk.Window):
         # -- Playback
         pg = page("playback", _("Playback"))
         g = group(pg)
-        switch(g, "deinterlace", _("Deinterlace video"))
+        win = getattr(app, "window", None)
+        player = getattr(win, "player", None)
+        self._dec_codes = list(hwaccel.BACKENDS)
+        mode = s.get("video_decoder", "auto")
+        self._dec_drop = _row(g, _("Video decoding"), dropdown(
+            [DECODER_LABELS[c] for c in self._dec_codes],
+            self._dec_codes.index(mode) if mode in self._dec_codes else 0),
+            decoder_hint(player))
+        switch(g, "deinterlace", _("Deinterlace video"),
+               _("Interlaced TV pictures (most SD and 1080i channels). Done on the graphics "
+                 "card when VA-API decodes, else by the processor."))
         entry(g, "screenshot_dir", _("Screenshot folder"))
         g = group(pg, _("Timeshift"))
         entry(g, "timeshift_dir", _("Timeshift folder"))
@@ -417,6 +449,8 @@ class PrefsWindow(Gtk.Window):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
+        video_before = (s.get("video_decoder", "auto"), bool(s.get("deinterlace")))
+        s["video_decoder"] = self._dec_codes[self._dec_drop.get_selected()]
         self._save_youth_protection(s)
         s.update(self._accent_settings())
         s.update(self._rec_values())
@@ -438,6 +472,10 @@ class PrefsWindow(Gtk.Window):
         if win is not None:
             win.nowplaying.refresh()
             win._update_nowplaying()
+            if (s["video_decoder"], bool(s["deinterlace"])) != video_before:
+                win.player.apply_decoder_setting()
+                if win.player.playbin is not None:
+                    win.player.restart()
         self.close()
 
 

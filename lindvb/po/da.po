@@ -2096,3 +2096,43 @@ msgstr "Flyt ned"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Egen rækkefølge for kanal"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automatisk (grafikkort når muligt)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM-kort)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Software (processor)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Fundne grafikkortdekodere: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "ingen"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Slået fra efter en fejl: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Dekoder nu: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Videoafkodning"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Interlacede tv-billeder (de fleste SD- og 1080i-kanaler). På grafikkortet når VA-API afkoder, ellers af processoren."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name}-videoafkodning mislykkedes, afspiller med næste dekoder"

@@ -2096,3 +2096,43 @@ msgstr "Posunúť nadol"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Vlastné poradie pre kanál"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automaticky (grafická karta, ak je to možné)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (dosky ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Softvér (procesor)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Nájdené dekodéry grafickej karty: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "žiadne"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Vypnuté po chybe: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Teraz dekóduje: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Dekódovanie videa"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Prekladaný televízny obraz (väčšina SD a 1080i kanálov). Na grafickej karte, keď dekóduje VA-API, inak procesorom."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Dekódovanie videa {name} zlyhalo, prehráva sa ďalším dekodérom"

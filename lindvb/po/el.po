@@ -2096,3 +2096,43 @@ msgstr "Μετακίνηση κάτω"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Δική του σειρά για το κανάλι"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Αυτόματα (κάρτα γραφικών όταν είναι δυνατό)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (πλακέτες ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Λογισμικό (επεξεργαστής)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Αποκωδικοποιητές κάρτας γραφικών που βρέθηκαν: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "κανένας"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Απενεργοποιήθηκε μετά από σφάλμα: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Αποκωδικοποίηση τώρα: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Αποκωδικοποίηση βίντεο"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Πεπλεγμένες εικόνες TV (τα περισσότερα κανάλια SD και 1080i). Στην κάρτα γραφικών όταν αποκωδικοποιεί το VA-API, αλλιώς από τον επεξεργαστή."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Η αποκωδικοποίηση βίντεο {name} απέτυχε, αναπαραγωγή με τον επόμενο αποκωδικοποιητή"

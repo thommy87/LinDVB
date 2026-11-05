@@ -2096,3 +2096,43 @@ msgstr "Надолу"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Собствен ред за канала"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Автоматично (видеокарта, когато е възможно)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM платки)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Софтуерно (процесор)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Намерени декодери на видеокартата: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "няма"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Изключено след грешка: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Текущ декодер: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Декодиране на видео"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Презредово ТВ изображение (повечето SD и 1080i канали). На видеокартата, когато декодира VA-API, иначе от процесора."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Декодирането на видео с {name} е неуспешно, възпроизвеждане със следващия декодер"

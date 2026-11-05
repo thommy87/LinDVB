@@ -2096,3 +2096,43 @@ msgstr "Mută în jos"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Ordine proprie pentru canal"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automat (placa grafică când este posibil)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (plăci ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Software (procesor)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Decodoare găsite pe placa grafică: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "niciunul"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Dezactivat după o eroare: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Decodează acum: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Decodare video"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Imagini TV întrețesute (majoritatea canalelor SD și 1080i). Pe placa grafică atunci când decodează VA-API, altfel de procesor."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Decodarea video {name} a eșuat, redare cu următorul decodor"

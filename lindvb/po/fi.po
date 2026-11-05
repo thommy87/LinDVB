@@ -2096,3 +2096,43 @@ msgstr "Siirrä alas"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Oma järjestys kanavalle"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Automaattinen (näytönohjain, jos mahdollista)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM-levyt)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Ohjelmisto (suoritin)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Löydetyt näytönohjaimen dekooderit: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "ei mitään"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Poistettu käytöstä virheen jälkeen: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Dekooderi nyt: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Videon purku"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Lomitetut TV-kuvat (useimmat SD- ja 1080i-kanavat). Näytönohjaimella, kun VA-API purkaa, muuten suorittimella."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name}-videon purku epäonnistui, toistetaan seuraavalla dekooderilla"

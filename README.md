@@ -108,6 +108,11 @@ picture and hides itself when the mouse is still.
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer
+* Hardware video decoding on the graphics card (Preferences ▸ Playback ▸ Video
+  decoding): automatic VA-API (Intel, AMD), NVDEC (NVIDIA) or V4L2 (ARM boards)
+  with a fallback to the next decoder and finally software when a driver fails;
+  Vulkan Video or software can be chosen by hand. With VA-API, deinterlacing
+  runs on the graphics card too
 * Recording and device statistics (lock, signal, SNR, BER, bitrate)
 * Plugins: Python add-ons for channel-list importers, conditional-access
   providers, radio visualisations, life-cycle hooks and menu entries

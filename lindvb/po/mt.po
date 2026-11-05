@@ -2096,3 +2096,43 @@ msgstr "Mexxi 'l isfel"
 #: lindvb/ui/epgsettings.py
 msgid "Own Order for Channel"
 msgstr "Ordni proprju għall-istazzjon"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (graphics card when possible)"
+msgstr "Awtomatiku (karta grafika meta possibbli)"
+
+#: lindvb/ui/dialogs.py
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (bordijiet ARM)"
+
+#: lindvb/ui/dialogs.py
+msgid "Software (processor)"
+msgstr "Software (proċessur)"
+
+#: lindvb/ui/dialogs.py
+msgid "Graphics card decoders found: {list}"
+msgstr "Dekoders tal-karta grafika misjuba: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "none"
+msgstr "xejn"
+
+#: lindvb/ui/dialogs.py
+msgid "Switched off after an error: {list}"
+msgstr "Mitfi wara żball: {list}"
+
+#: lindvb/ui/dialogs.py
+msgid "Decoding now: {decoder}"
+msgstr "Qed jiddekodja issa: {decoder}"
+
+#: lindvb/ui/dialogs.py
+msgid "Video decoding"
+msgstr "Dekodifikazzjoni tal-vidjo"
+
+#: lindvb/ui/dialogs.py
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Stampi tat-TV interlaced (il-biċċa l-kbira tal-kanali SD u 1080i). Fuq il-karta grafika meta jiddekodja VA-API, inkella mill-proċessur."
+
+#: lindvb/ui/window.py
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Id-dekodifikazzjoni tal-vidjo {name} falliet, qed jindaqq bid-dekoder li jmiss"

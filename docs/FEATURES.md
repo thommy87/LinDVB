@@ -46,7 +46,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Brightness, contrast, saturation, hue | `English.lng:550` `actDisplay.Caption=Brightness, Contrast...`; `actions.ini` `Brightness Up=55` … `Hue Down=62` | **Yes**: `videobalance` with reset |
 | Aspect ratio, zoom, window size presets | `English.lng:606` `actZoom`, `mnuZoom.Caption=Window Size`; `actions.ini` `Window Size 50%/75%/100%` | **Yes**: fit/fill/stretch, 50/75/100/200 % |
 | Full screen, always on top, desktop TV | `English.lng:549,558,578` `actDesktop`, `actFullscreen`, `actOnTop` | **Partly**: full screen and hideable channel list; GTK 4 has no always-on-top or desktop-background mode |
-| Deinterlacing, pixel shaders | `Shaders/` holds 45 shader XML files (e.g. `Effect_Deinterlace.xml`, `Resample_Lanczos3.xml`, `Stereo3D_Anaglyph_Dubois.xml`); `mnuShaders` line 656 | **Partly**: deinterlace option; no shader effects |
+| Deinterlacing, pixel shaders | `Shaders/` holds 45 shader XML files (e.g. `Effect_Deinterlace.xml`, `Resample_Lanczos3.xml`, `Stereo3D_Anaglyph_Dubois.xml`); `mnuShaders` line 656 | **Partly**: deinterlace option (on the graphics card with VA-API); no shader effects |
 | Screenshot | `English.lng:592` `actScreenshot.Caption=Screenshot` | **Yes**: PNG to a configurable folder |
 | Picture in picture, mosaic preview | `English.lng:584,574` `actPreview`, `actMosaic`; `[frmPiP]` line 1015 | **Partly**: picture in picture (swap, close; Menu ▸ Playback, or the channel's context menu) and a mosaic of up to nine channels per page, for internet channels; DVB channels would need a second tuner |
 | Audio delay (lip sync) per channel | (LinDVB addition) | **Yes**: J/K or the gear menu shift the sound in 100 ms steps, saved per channel |
