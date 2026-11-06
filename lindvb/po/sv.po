@@ -2136,3 +2136,1086 @@ msgstr "Sammanflätade tv-bilder (de flesta SD- och 1080i-kanaler). På grafikko
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name}-videoavkodning misslyckades, spelar med nästa avkodare"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Bildfel: {n} block kunde inte rättas"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Svag mottagning: bara {db} dB marginal"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} okorrigerbara block"
+
+msgid "Lock lost"
+msgstr "Låsning förlorad"
+
+msgid "{n} continuity errors"
+msgstr "{n} kontinuitetsfel"
+
+msgid "PCR jump"
+msgstr "PCR-hopp"
+
+msgid "New table version (0x{tid})"
+msgstr "Ny tabellversion (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Ljudstyrkehopp {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Ombuffring"
+
+msgid "Measured since {time}"
+msgstr "Mätt sedan {time}"
+
+msgid "Delivery"
+msgstr "Sändning"
+
+msgid "Frame rate"
+msgstr "Bildfrekvens"
+
+msgid "Average bit rate"
+msgstr "Genomsnittlig bithastighet"
+
+msgid "Peak bit rate"
+msgstr "Toppbithastighet"
+
+msgid "Margin"
+msgstr "Marginal"
+
+msgid "Loudness"
+msgstr "Ljudstyrka"
+
+msgid "Bit rate"
+msgstr "Bithastighet"
+
+msgid "Events"
+msgstr "Händelser"
+
+msgid "1 minute"
+msgstr "1 minut"
+
+msgid "15 minutes"
+msgstr "15 minuter"
+
+msgid "5 minutes"
+msgstr "5 minuter"
+
+msgid "hard of hearing"
+msgstr "för hörselskadade"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Level"
+msgstr "Nivå"
+
+msgid "Carrier"
+msgstr "Bärvåg"
+
+msgid "Uncorrectable blocks"
+msgstr "Okorrigerbara block"
+
+msgid "Lock losses"
+msgstr "Låsningsförluster"
+
+msgid "C/N history"
+msgstr "C/N-historik"
+
+msgid "Errors"
+msgstr "Fel"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / piloter"
+
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgid "Response time"
+msgstr "Svarstid"
+
+msgid "Bad"
+msgstr "Dålig"
+
+msgid "Fair"
+msgstr "Godtagbar"
+
+msgid "Good"
+msgstr "Bra"
+
+msgid "Poor"
+msgstr "Svag"
+
+msgid "NO LOCK"
+msgstr "INGEN LÅSNING"
+
+msgid "Buffer"
+msgstr "Buffert"
+
+msgid "Download"
+msgstr "Nedladdning"
+
+msgid "Buffer history"
+msgstr "Bufferthistorik"
+
+msgid "(driver value)"
+msgstr "(drivrutinsvärde)"
+
+msgid "since start"
+msgstr "sedan start"
+
+msgid "required"
+msgstr "krävs"
+
+msgid "Quality history"
+msgstr "Kvalitetshistorik"
+
+msgid "horizontal"
+msgstr "horisontell"
+
+msgid "left"
+msgstr "vänster"
+
+msgid "vertical"
+msgstr "vertikal"
+
+msgid "right"
+msgstr "höger"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(teoretisk)"
+
+msgid "Overview"
+msgstr "Översikt"
+
+msgid "Bit rate of the channel"
+msgstr "Kanalens bithastighet"
+
+msgid "Average"
+msgstr "Genomsnitt"
+
+msgid "Peak"
+msgstr "Topp"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Avkodare"
+
+msgid "Dropped frames"
+msgstr "Tappade bilder"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Autostart"
+
+msgid "PCR arrival jitter"
+msgstr "PCR-ankomstjitter"
+
+msgid "PCR interval"
+msgstr "PCR-intervall"
+
+msgid "PAT / PMT interval"
+msgstr "PAT-/PMT-intervall"
+
+msgid "Teletext / subtitles / data"
+msgstr "Text-TV / undertexter / data"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressiv"
+
+msgid "only for the channel on screen"
+msgstr "bara för kanalen på skärmen"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Ljudstyrka (aktuellt spår): {lufs} · topp {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Ljudstyrka: bara för kanalen på skärmen"
+
+msgid "scrambled packets"
+msgstr "krypterade paket"
+
+msgid "no CA descriptors in the PMT"
+msgstr "inga CA-deskriptorer i PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} sidor"
+
+msgid "Quality"
+msgstr "Kvalitet"
+
+msgid "Carrier to noise ratio"
+msgstr "Bärvåg-brusförhållande"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitfelsfrekvens (log₁₀)"
+
+msgid "Address"
+msgstr "Adress"
+
+msgid "HTTP status"
+msgstr "HTTP-status"
+
+msgid "Content type"
+msgstr "Innehållstyp"
+
+msgid "Download speed"
+msgstr "Nedladdningshastighet"
+
+msgid "Segments"
+msgstr "Segment"
+
+msgid "Error"
+msgstr "Fel"
+
+msgid "Variants"
+msgstr "Varianter"
+
+msgid "Codecs"
+msgstr "Codecs"
+
+msgid "Error timeline"
+msgstr "Feltidslinje"
+
+msgid "uncorrectable blocks"
+msgstr "okorrigerbara block"
+
+msgid "lock lost"
+msgstr "låsning förlorad"
+
+msgid "rebuffering"
+msgstr "ombuffring"
+
+msgid "loudness jump"
+msgstr "ljudstyrkehopp"
+
+msgid "table version"
+msgstr "tabellversion"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Inställda parametrar (från frontend)"
+
+msgid "Delivery system"
+msgstr "Sändningssystem"
+
+msgid "Code rate"
+msgstr "Kodhastighet"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Skyddsintervall"
+
+msgid "Pilots"
+msgstr "Piloter"
+
+msgid "Carriers"
+msgstr "Bärvågor"
+
+msgid "C/N needed"
+msgstr "Nödvändig C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Hjälp att rikta parabolen…"
+
+msgid "Logging and warnings"
+msgstr "Logg och varningar"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Logga mottagningen (en rad per minut, sparas 31 dagar)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Varna under denna marginal (dB)"
+
+msgid "Reception over the last days"
+msgstr "Mottagning de senaste dagarna"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · topp {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× strömmens hastighet"
+
+msgid "Download and stream rate"
+msgstr "Nedladdnings- och strömhastighet"
+
+msgid "HLS with {n} variants"
+msgstr "HLS med {n} varianter"
+
+msgid "HLS media playlist"
+msgstr "HLS-mediespellista"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "direkt"
+
+msgid "on demand"
+msgstr "på begäran"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segment på Ø {s} (mål {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Ingen variantlista: adressen är en enda ström."
+
+msgid "No events so far."
+msgstr "Inga händelser än."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minuter loggade för den här kanalen."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Inget loggat för den här kanalen än."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · max {max}"
+
+msgid "needs {db}"
+msgstr "behöver {db}"
+
+msgid "relative (driver)"
+msgstr "relativ (drivrutin)"
+
+msgid "post FEC {v}"
+msgstr "efter FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "behövs för en ren bild"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5-statistik"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (drivrutinsskala)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementärströmmar och PID"
+
+msgid "Whole stream"
+msgstr "Hela strömmen"
+
+msgid "Sort by PID"
+msgstr "Sortera efter PID"
+
+msgid "Sort by bit rate"
+msgstr "Sortera efter bithastighet"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC-fel"
+
+msgid "Scrambled"
+msgstr "Krypterad"
+
+msgid "Last 60 s"
+msgstr "Senaste 60 s"
+
+msgid "Packets"
+msgstr "Paket"
+
+msgid "Sync losses"
+msgstr "Synkförluster"
+
+msgid "Null packets"
+msgstr "Nollpaket"
+
+msgid "PCR jumps"
+msgstr "PCR-hopp"
+
+msgid "PID filter"
+msgstr "PID-filter"
+
+msgid "unknown"
+msgstr "okänd"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Noll"
+
+msgid "Other"
+msgstr "Annat"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Summa ({n} PID): {rate} · {cc} kontinuitetsfel"
+
+msgid "Measuring…"
+msgstr "Mäter…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "ledigt / noll"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} använt av {cap} · mätt {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Bara den här kanalens PID tas emot. Mät hela transpondern för att se de andra kanalerna på den."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profil / nivå"
+
+msgid "Scan"
+msgstr "Avsökning"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2-pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Bilder visade / tappade"
+
+msgid "Measured bit rate"
+msgstr "Uppmätt bithastighet"
+
+msgid "Nominal bit rate"
+msgstr "Nominell bithastighet"
+
+msgid "VBV buffer"
+msgstr "VBV-buffert"
+
+msgid "Frame sizes"
+msgstr "Bildstorlekar"
+
+msgid "B frame"
+msgstr "B-bild"
+
+msgid "I frame"
+msgstr "I-bild"
+
+msgid "P frame"
+msgstr "P-bild"
+
+msgid "GOP length"
+msgstr "GOP-längd"
+
+msgid "I frame average"
+msgstr "Medel I-bild"
+
+msgid "P/B frame average"
+msgstr "Medel P/B-bild"
+
+msgid "Nominal"
+msgstr "Nominell"
+
+msgid "Sample rate"
+msgstr "Samplingsfrekvens"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Uppmätt"
+
+msgid "Notes"
+msgstr "Anmärkningar"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Ljudstyrka (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentan"
+
+msgid "Short term"
+msgstr "Korttid"
+
+msgid "Loudness range"
+msgstr "Ljudstyrkeomfång"
+
+msgid "Sample peak"
+msgstr "Samplingstopp"
+
+msgid "level {l}"
+msgstr "nivå {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "fält"
+
+msgid "mixed"
+msgstr "blandat"
+
+msgid "not sent"
+msgstr "skickas inte"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % upptill och nedtill"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % på sidorna"
+
+msgid "picture {ratio}:1"
+msgstr "bild {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "ja, upprepade fält"
+
+msgid "mastering display data"
+msgstr "data om masteringskärmen"
+
+msgid "(maximum)"
+msgstr "(maximum)"
+
+msgid "not signalled (variable)"
+msgstr "inte angivet (variabel)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "nu {now} · Ø {avg} · topp {max}"
+
+msgid "clean audio"
+msgstr "tydligt tal"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU-mål −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Mätt på det avkodade ljudet från kanalen på skärmen, före equalizern."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} ljudstyrkehopp på 6 LU eller mer (program ↔ reklam)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Ljudstyrkan mäts bara för kanalen på skärmen."
+
+msgid "index"
+msgstr "index"
+
+msgid "info"
+msgstr "info"
+
+msgid "subtitles (hard of hearing)"
+msgstr "undertexter (hörselskadade)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB-undertexter PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabeller & EPG"
+
+msgid "SI tables"
+msgstr "SI-tabeller"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Events in the guide"
+msgstr "Program i guiden"
+
+msgid "EIT now/next"
+msgstr "EIT nu/nästa"
+
+msgid "Difference to this computer"
+msgstr "Skillnad mot den här datorn"
+
+msgid "Local time offset"
+msgstr "Lokal tidsförskjutning"
+
+msgid "Network"
+msgstr "Nätverk"
+
+msgid "Raw view"
+msgstr "Råvy"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "långsam"
+
+msgid "(all services)"
+msgstr "(alla tjänster)"
+
+msgid "not seen"
+msgstr "inte sedd"
+
+msgid "seen {s} s ago"
+msgstr "sedd för {s} s sedan"
+
+msgid "timers may start early or late"
+msgstr "timer kan starta för tidigt eller för sent"
+
+msgid "no TDT/TOT"
+msgstr "ingen TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Krypterade paket"
+
+msgid "CA system ID"
+msgstr "CA-system-ID"
+
+msgid "ECM PID"
+msgstr "ECM-PID"
+
+msgid "ECM rate"
+msgstr "ECM-hastighet"
+
+msgid "Scrambling per stream"
+msgstr "Kryptering per ström"
+
+msgid "Crypto period"
+msgstr "Kryptoperiod"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Ett nyckelbyte är bytet mellan det jämna och det udda kontrollordet; kryptoperioden är tiden mellan två byten."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Ingen villkorad åtkomst i PMT och inga krypterade paket."
+
+msgid "free"
+msgstr "fri"
+
+msgid "all streams"
+msgstr "alla strömmar"
+
+msgid "not received"
+msgstr "inte mottagen"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Ingen CAT med EMM-strömmar mottagen."
+
+msgid "Applications (AIT)"
+msgstr "Program (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organisation / app"
+
+msgid "Control"
+msgstr "Styrning"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Datakaruseller (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT-version {v} på PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanalen annonserar en AIT på PID {pid}; den har inte kommit än."
+
+msgid "Channel Analysis – {name}"
+msgstr "Kanalanalys – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Frys mätningen"
+
+msgid "Copy report as text"
+msgstr "Kopiera rapporten som text"
+
+msgid "Save report as text…"
+msgstr "Spara rapporten som text…"
+
+msgid "Save report as JSON…"
+msgstr "Spara rapporten som JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Spara historiken som CSV…"
+
+msgid "Save window as picture…"
+msgstr "Spara fönstret som bild…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Spara 30 s av strömmen…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Kanalanalys · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Direkt · mäter sedan {t}"
+
+msgid "Paused"
+msgstr "Pausad"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Ingen mottagare är ledig för den här kanalen. Titta på den, eller försök igen när en mottagare är ledig."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Mottagaren för den här kanalen har bytts till en annan kanal."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Mätt i bakgrunden på en egen mottagare; bild, ljud och ljudstyrka mäts bara för kanalen på skärmen."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Den här internetkanalen hämtas i bakgrunden utan att avkodas; titta på den för bild-, ljud- och buffertvärden."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Källa: DVB-adapter {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc-statistik"
+
+msgid "Source: background download"
+msgstr "Källa: nedladdning i bakgrunden"
+
+msgid "Source: the player's stream"
+msgstr "Källa: spelarens ström"
+
+msgid "updated every second"
+msgstr "uppdateras varje sekund"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Inget att spara: kanalen tas inte emot."
+
+msgid "Compare {name} with"
+msgstr "Jämför {name} med"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Värden över varje analys tidsfönster; bild och ljudstyrka bara för kanalen på skärmen."
+
+msgid "Dish alignment aid"
+msgstr "Hjälp att rikta parabolen"
+
+msgid "Tone"
+msgstr "Ton"
+
+msgid "Reset best value"
+msgstr "Nollställ bästa värdet"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Vrid parabolen långsamt; tonen blir högre med bättre signal."
+
+msgid "% quality"
+msgstr "% kvalitet"
+
+msgid "Best so far: {v}"
+msgstr "Bästa hittills: {v}"
+
+msgid "Signal lost"
+msgstr "Signal förlorad"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Mottagaren behövdes för att titta eller spela in."
+
+msgid "Channel analysis: {name}"
+msgstr "Kanalanalys: {name}"
+
+msgid "Resolution"
+msgstr "Upplösning"
+
+msgid "Audio"
+msgstr "Ljud"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Signalkvalitet"
+
+msgid "Continuity errors"
+msgstr "Kontinuitetsfel"
+
+msgid "Content"
+msgstr "Innehåll"
+
+msgid "audio description"
+msgstr "syntolkning"
+
+msgid "DVB subtitles"
+msgstr "DVB-undertexter"
+
+msgid "Signal"
+msgstr "Signal"
+
+msgid "Reception"
+msgstr "Mottagning"
+
+msgid "Symbol rate"
+msgstr "Symbolhastighet"
+
+msgid "Transponder capacity"
+msgstr "Transponderkapacitet"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Ström"
+
+msgid "Share of transponder"
+msgstr "Andel av transpondern"
+
+msgid "Aspect ratio"
+msgstr "Bildförhållande"
+
+msgid "Colour"
+msgstr "Färg"
+
+msgid "Track"
+msgstr "Spår"
+
+msgid "Now & next"
+msgstr "Nu & sedan"
+
+msgid "Encryption"
+msgstr "Kryptering"
+
+msgid "Interactive"
+msgstr "Interaktivt"
+
+msgid "Stream health"
+msgstr "Strömmens hälsa"
+
+msgid "Transport errors"
+msgstr "Transportfel"
+
+msgid "Timeshift buffer"
+msgstr "Timeshift-buffert"
+
+msgid "interlaced"
+msgstr "radsprång"
+
+msgid "Hardware"
+msgstr "Hårdvara"
+
+msgid "Software"
+msgstr "Mjukvara"
+
+msgid "{n} tracks"
+msgstr "{n} spår"
+
+msgid "Free-to-air"
+msgstr "Okrypterad"
+
+msgid "Signal level"
+msgstr "Signalnivå"
+
+msgid "Internet stream"
+msgstr "Internetström"
+
+msgid "continuity errors"
+msgstr "kontinuitetsfel"
+
+msgid "Stream / PLP"
+msgstr "Ström / PLP"
+
+msgid "Source of the figures"
+msgstr "Värdenas källa"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Varna på skärmen när mottagningen blir svag"
+
+msgid "Open log folder"
+msgstr "Öppna loggmappen"
+
+msgid "stream"
+msgstr "ström"
+
+msgid "none (a plain stream)"
+msgstr "ingen (en vanlig ström)"
+
+msgid "internet stream"
+msgstr "internetström"
+
+msgid "Transport Stream"
+msgstr "Transportström"
+
+msgid "This channel only"
+msgstr "Bara den här kanalen"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Mät hela transpondern (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetkanaler har ingen transponder."
+
+msgid "whole transponder"
+msgstr "hela transpondern"
+
+msgid "Video & Audio"
+msgstr "Video & ljud"
+
+msgid "Black bars"
+msgstr "Svarta kanter"
+
+msgid "Click a track to listen to it."
+msgstr "Klicka på ett spår för att lyssna på det."
+
+msgid "Integrated"
+msgstr "Integrerad"
+
+msgid "Teletext and subtitles"
+msgstr "Text-TV och undertexter"
+
+msgid "interlaced capable"
+msgstr "klarar radsprång"
+
+msgid "no"
+msgstr "nej"
+
+msgid "{n} frames"
+msgstr "{n} bilder"
+
+msgid "schedule"
+msgstr "tablå"
+
+msgid "subtitles"
+msgstr "undertexter"
+
+msgid "Teletext PID {pid}:"
+msgstr "Text-TV PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Ingen text-TV eller undertexter i den här kanalen."
+
+msgid "Table"
+msgstr "Tabell"
+
+msgid "Changes"
+msgstr "Ändringar"
+
+msgid "Repetition"
+msgstr "Upprepning"
+
+msgid "Sections"
+msgstr "Sektioner"
+
+msgid "Programme guide and clock"
+msgstr "Programguide och klocka"
+
+msgid "Guide reaches"
+msgstr "Guiden räcker till"
+
+msgid "Clock of the channel"
+msgstr "Kanalens klocka"
+
+msgid "EIT schedule"
+msgstr "EIT-tablå"
+
+msgid "missing"
+msgstr "saknas"
+
+msgid "(other services)"
+msgstr "(andra tjänster)"
+
+msgid "{n} sections"
+msgstr "{n} sektioner"
+
+msgid "Descrambling"
+msgstr "Avkryptering"
+
+msgid "Descrambler state"
+msgstr "Avkrypteringens status"
+
+msgid "Conditional access systems"
+msgstr "System för villkorad åtkomst"
+
+msgid "For"
+msgstr "För"
+
+msgid "Key changes"
+msgstr "Nyckelbyten"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Den här kanalen är krypterad. LinDVB avkrypterar den bara med ditt eget abonnemangskort (softcam eller CI-modul)."
+
+msgid "scrambled"
+msgstr "krypterad"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "testprogram"
+
+msgid "This channel has no HbbTV application."
+msgstr "Den här kanalen har inget HbbTV-program."
+
+msgid "No object carousel in this channel."
+msgstr "Ingen objektkarusell i den här kanalen."
+
+msgid "Export"
+msgstr "Exportera"
+
+msgid "Compare with another channel…"
+msgstr "Jämför med en annan kanal…"
+
+msgid "Analyse another channel…"
+msgstr "Analysera en annan kanal…"
+
+msgid "Window: {w}"
+msgstr "Fönster: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Följ kanalen på skärmen"
+
+msgid "Watch this channel"
+msgstr "Titta på den här kanalen"
+
+msgid "Try again"
+msgstr "Försök igen"
+
+msgid "Copy as text"
+msgstr "Kopiera som text"
+
+msgid "Export report…"
+msgstr "Exportera rapport…"
+
+msgid "Source: none"
+msgstr "Källa: ingen"
+
+msgid "Saved {path}"
+msgstr "{path} sparad"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Spelar in de nästa 30 sekunderna…"
+
+msgid "Choose a channel"
+msgstr "Välj en kanal"
+
+msgid "Channel name"
+msgstr "Kanalnamn"
+
+msgid "Compare channels"
+msgstr "Jämför kanaler"
+
+msgid "Comparison"
+msgstr "Jämförelse"
+
+msgid "Close (Esc)"
+msgstr "Stäng (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Kanalanalys…"

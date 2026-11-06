@@ -2136,3 +2136,1086 @@ msgstr "Váltottsoros TV-képek (a legtöbb SD és 1080i csatorna). A videokárt
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "A(z) {name} videodekódolás sikertelen, lejátszás a következő dekóderrel"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Képhibák: {n} blokkot nem lehetett javítani"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Gyenge vétel: csak {db} dB tartalék"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} javíthatatlan blokk"
+
+msgid "Lock lost"
+msgstr "Elveszett a szinkron"
+
+msgid "{n} continuity errors"
+msgstr "{n} folytonossági hiba"
+
+msgid "PCR jump"
+msgstr "PCR-ugrás"
+
+msgid "New table version (0x{tid})"
+msgstr "Új táblaverzió (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Hangosságugrás {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Újrapufferelés"
+
+msgid "Measured since {time}"
+msgstr "Mérés kezdete: {time}"
+
+msgid "Delivery"
+msgstr "Sugárzás"
+
+msgid "Frame rate"
+msgstr "Képkockasebesség"
+
+msgid "Average bit rate"
+msgstr "Átlagos bitsebesség"
+
+msgid "Peak bit rate"
+msgstr "Csúcs-bitsebesség"
+
+msgid "Margin"
+msgstr "Tartalék"
+
+msgid "Loudness"
+msgstr "Hangosság"
+
+msgid "Bit rate"
+msgstr "Bitsebesség"
+
+msgid "Events"
+msgstr "Események"
+
+msgid "1 minute"
+msgstr "1 perc"
+
+msgid "15 minutes"
+msgstr "15 perc"
+
+msgid "5 minutes"
+msgstr "5 perc"
+
+msgid "hard of hearing"
+msgstr "hallássérülteknek"
+
+msgid "Data"
+msgstr "Adat"
+
+msgid "Level"
+msgstr "Szint"
+
+msgid "Carrier"
+msgstr "Vivő"
+
+msgid "Uncorrectable blocks"
+msgstr "Javíthatatlan blokkok"
+
+msgid "Lock losses"
+msgstr "Szinkronvesztések"
+
+msgid "C/N history"
+msgstr "C/N előzmények"
+
+msgid "Errors"
+msgstr "Hibák"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilotok"
+
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgid "Response time"
+msgstr "Válaszidő"
+
+msgid "Bad"
+msgstr "Rossz"
+
+msgid "Fair"
+msgstr "Közepes"
+
+msgid "Good"
+msgstr "Jó"
+
+msgid "Poor"
+msgstr "Gyenge"
+
+msgid "NO LOCK"
+msgstr "NINCS SZINKRON"
+
+msgid "Buffer"
+msgstr "Puffer"
+
+msgid "Download"
+msgstr "Letöltés"
+
+msgid "Buffer history"
+msgstr "Puffer előzmények"
+
+msgid "(driver value)"
+msgstr "(illesztőprogram értéke)"
+
+msgid "since start"
+msgstr "indítás óta"
+
+msgid "required"
+msgstr "szükséges"
+
+msgid "Quality history"
+msgstr "Minőség előzmények"
+
+msgid "horizontal"
+msgstr "vízszintes"
+
+msgid "left"
+msgstr "bal"
+
+msgid "vertical"
+msgstr "függőleges"
+
+msgid "right"
+msgstr "jobb"
+
+msgid "Port {n}"
+msgstr "{n}. port"
+
+msgid "(theoretical)"
+msgstr "(elméleti)"
+
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgid "Bit rate of the channel"
+msgstr "A csatorna bitsebessége"
+
+msgid "Average"
+msgstr "Átlag"
+
+msgid "Peak"
+msgstr "Csúcs"
+
+msgid "Codec"
+msgstr "Kodek"
+
+msgid "Decoder"
+msgstr "Dekóder"
+
+msgid "Dropped frames"
+msgstr "Eldobott képkockák"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automatikus indítás"
+
+msgid "PCR arrival jitter"
+msgstr "PCR érkezési jitter"
+
+msgid "PCR interval"
+msgstr "PCR-köz"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT köz"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletext / felirat / adat"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresszív"
+
+msgid "only for the channel on screen"
+msgstr "csak a képernyőn lévő csatornához"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Hangosság (aktuális sáv): {lufs} · csúcs {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Hangosság: csak a képernyőn lévő csatornához"
+
+msgid "scrambled packets"
+msgstr "kódolt csomagok"
+
+msgid "no CA descriptors in the PMT"
+msgstr "nincs CA-leíró a PMT-ben"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} oldal"
+
+msgid "Quality"
+msgstr "Minőség"
+
+msgid "Carrier to noise ratio"
+msgstr "Vivő-zaj viszony"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bithibaarány (log₁₀)"
+
+msgid "Address"
+msgstr "Cím"
+
+msgid "HTTP status"
+msgstr "HTTP-állapot"
+
+msgid "Content type"
+msgstr "Tartalomtípus"
+
+msgid "Download speed"
+msgstr "Letöltési sebesség"
+
+msgid "Segments"
+msgstr "Szegmensek"
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "Variants"
+msgstr "Változatok"
+
+msgid "Codecs"
+msgstr "Kodekek"
+
+msgid "Error timeline"
+msgstr "Hibák idővonala"
+
+msgid "uncorrectable blocks"
+msgstr "javíthatatlan blokkok"
+
+msgid "lock lost"
+msgstr "elveszett szinkron"
+
+msgid "rebuffering"
+msgstr "újrapufferelés"
+
+msgid "loudness jump"
+msgstr "hangosságugrás"
+
+msgid "table version"
+msgstr "táblaverzió"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Hangolt paraméterek (a frontendtől)"
+
+msgid "Delivery system"
+msgstr "Sugárzási rendszer"
+
+msgid "Code rate"
+msgstr "Kódarány"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Védőintervallum"
+
+msgid "Pilots"
+msgstr "Pilotok"
+
+msgid "Carriers"
+msgstr "Vivők"
+
+msgid "C/N needed"
+msgstr "Szükséges C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Segítség az antenna beállításához…"
+
+msgid "Logging and warnings"
+msgstr "Napló és figyelmeztetések"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Vétel naplózása (percenként egy sor, 31 napig megőrizve)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Figyelmeztetés e tartalék alatt (dB)"
+
+msgid "Reception over the last days"
+msgstr "Az elmúlt napok vétele"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · csúcs {max}"
+
+msgid "{x}× the stream rate"
+msgstr "a stream sebességének {x}×-ese"
+
+msgid "Download and stream rate"
+msgstr "Letöltési és stream-sebesség"
+
+msgid "HLS with {n} variants"
+msgstr "HLS {n} változattal"
+
+msgid "HLS media playlist"
+msgstr "HLS média lejátszási lista"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "élő"
+
+msgid "on demand"
+msgstr "igény szerinti"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} szegmens, Ø {s} (cél {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Nincs változatlista: a cím egyetlen stream."
+
+msgid "No events so far."
+msgstr "Még nincsenek események."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} perc naplózva ehhez a csatornához."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Ehhez a csatornához még nincs napló."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · max. {max}"
+
+msgid "needs {db}"
+msgstr "{db} szükséges"
+
+msgid "relative (driver)"
+msgstr "relatív (illesztőprogram)"
+
+msgid "post FEC {v}"
+msgstr "FEC után {v}"
+
+msgid "needed for a clean picture"
+msgstr "tiszta képhez szükséges"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 statisztika"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (illesztőprogram skála)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elemi streamek és PID-ek"
+
+msgid "Whole stream"
+msgstr "Teljes stream"
+
+msgid "Sort by PID"
+msgstr "Rendezés PID szerint"
+
+msgid "Sort by bit rate"
+msgstr "Rendezés bitsebesség szerint"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC-hibák"
+
+msgid "Scrambled"
+msgstr "Kódolt"
+
+msgid "Last 60 s"
+msgstr "Utolsó 60 s"
+
+msgid "Packets"
+msgstr "Csomagok"
+
+msgid "Sync losses"
+msgstr "Szinkronvesztések"
+
+msgid "Null packets"
+msgstr "Üres csomagok"
+
+msgid "PCR jumps"
+msgstr "PCR-ugrások"
+
+msgid "PID filter"
+msgstr "PID-szűrő"
+
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Üres"
+
+msgid "Other"
+msgstr "Egyéb"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Összesen ({n} PID): {rate} · {cc} folytonossági hiba"
+
+msgid "Measuring…"
+msgstr "Mérés…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "szabad / üres"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} foglalt ebből: {cap} · mérve {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Csak ennek a csatornának a PID-jei érkeznek. Mérje meg a teljes transzpondert, hogy lássa a rajta lévő többi csatornát."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profil / szint"
+
+msgid "Scan"
+msgstr "Letapogatás"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Megjelenített / eldobott képkockák"
+
+msgid "Measured bit rate"
+msgstr "Mért bitsebesség"
+
+msgid "Nominal bit rate"
+msgstr "Névleges bitsebesség"
+
+msgid "VBV buffer"
+msgstr "VBV-puffer"
+
+msgid "Frame sizes"
+msgstr "Képkockaméretek"
+
+msgid "B frame"
+msgstr "B-kocka"
+
+msgid "I frame"
+msgstr "I-kocka"
+
+msgid "P frame"
+msgstr "P-kocka"
+
+msgid "GOP length"
+msgstr "GOP hossza"
+
+msgid "I frame average"
+msgstr "I-kocka átlaga"
+
+msgid "P/B frame average"
+msgstr "P/B-kocka átlaga"
+
+msgid "Nominal"
+msgstr "Névleges"
+
+msgid "Sample rate"
+msgstr "Mintavételezési frekvencia"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Mért"
+
+msgid "Notes"
+msgstr "Megjegyzések"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Hangosság (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Pillanatnyi"
+
+msgid "Short term"
+msgstr "Rövid távú"
+
+msgid "Loudness range"
+msgstr "Hangossági tartomány"
+
+msgid "Sample peak"
+msgstr "Mintacsúcs"
+
+msgid "level {l}"
+msgstr "{l} szint"
+
+msgid "tier {t}"
+msgstr "{t} tier"
+
+msgid "fields"
+msgstr "félképek"
+
+msgid "mixed"
+msgstr "vegyes"
+
+msgid "not sent"
+msgstr "nincs küldve"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % fent és lent"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % oldalt"
+
+msgid "picture {ratio}:1"
+msgstr "kép {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "igen, ismételt félképek"
+
+msgid "mastering display data"
+msgstr "mastering kijelző adatai"
+
+msgid "(maximum)"
+msgstr "(maximum)"
+
+msgid "not signalled (variable)"
+msgstr "nincs megadva (változó)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "most {now} · Ø {avg} · csúcs {max}"
+
+msgid "clean audio"
+msgstr "tiszta beszéd"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU-cél −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "A képernyőn lévő csatorna dekódolt hangján mérve, a hangszínszabályzó előtt."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} hangosságugrás 6 LU-val vagy többel (műsor ↔ reklám)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "A hangosságot csak a képernyőn lévő csatornához mérjük."
+
+msgid "index"
+msgstr "tartalomjegyzék"
+
+msgid "info"
+msgstr "információ"
+
+msgid "subtitles (hard of hearing)"
+msgstr "felirat (hallássérülteknek)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB-felirat PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Táblák és EPG"
+
+msgid "SI tables"
+msgstr "SI-táblák"
+
+msgid "Version"
+msgstr "Verzió"
+
+msgid "Events in the guide"
+msgstr "Műsorok az újságban"
+
+msgid "EIT now/next"
+msgstr "EIT most/következő"
+
+msgid "Difference to this computer"
+msgstr "Eltérés ehhez a számítógéphez"
+
+msgid "Local time offset"
+msgstr "Helyi időeltolás"
+
+msgid "Network"
+msgstr "Hálózat"
+
+msgid "Raw view"
+msgstr "Nyers nézet"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "lassú"
+
+msgid "(all services)"
+msgstr "(minden szolgáltatás)"
+
+msgid "not seen"
+msgstr "nem látott"
+
+msgid "seen {s} s ago"
+msgstr "{s} s-mal ezelőtt látott"
+
+msgid "timers may start early or late"
+msgstr "az időzítők túl korán vagy későn indulhatnak"
+
+msgid "no TDT/TOT"
+msgstr "nincs TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Kódolt csomagok"
+
+msgid "CA system ID"
+msgstr "CA-rendszer azonosító"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM-sebesség"
+
+msgid "Scrambling per stream"
+msgstr "Kódolás streamenként"
+
+msgid "Crypto period"
+msgstr "Kriptoperiódus"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "A kulcsváltás a páros és páratlan vezérlőszó közötti váltás; a kriptoperiódus két váltás közötti idő."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Nincs feltételes hozzáférés a PMT-ben és nincs kódolt csomag."
+
+msgid "free"
+msgstr "szabad"
+
+msgid "all streams"
+msgstr "minden stream"
+
+msgid "not received"
+msgstr "nem érkezett"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Nem érkezett EMM-streameket tartalmazó CAT."
+
+msgid "Applications (AIT)"
+msgstr "Alkalmazások (AIT)"
+
+msgid "Organisation / app"
+msgstr "Szervezet / alkalmazás"
+
+msgid "Control"
+msgstr "Vezérlés"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Adatkörhinták (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT-verzió {v} a(z) {pid} PID-en"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "A csatorna AIT-et jelez a(z) {pid} PID-en; még nem érkezett meg."
+
+msgid "Channel Analysis – {name}"
+msgstr "Csatornaelemzés – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Mérés befagyasztása"
+
+msgid "Copy report as text"
+msgstr "Jelentés másolása szövegként"
+
+msgid "Save report as text…"
+msgstr "Jelentés mentése szövegként…"
+
+msgid "Save report as JSON…"
+msgstr "Jelentés mentése JSON-ként…"
+
+msgid "Save history as CSV…"
+msgstr "Előzmények mentése CSV-ként…"
+
+msgid "Save window as picture…"
+msgstr "Ablak mentése képként…"
+
+msgid "Save 30 s of the stream…"
+msgstr "A stream 30 másodpercének mentése…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Csatornaelemzés · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Élő · mérés {t} óta"
+
+msgid "Paused"
+msgstr "Szüneteltetve"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Ehhez a csatornához nincs szabad tuner. Nézze meg, vagy próbálja újra, ha felszabadul egy tuner."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "A csatorna tunere másik csatornára váltott."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "A háttérben, saját tuneren mérve; képet, hangot és hangosságot csak a képernyőn lévő csatornához mérünk."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Ez az internetes csatorna dekódolás nélkül töltődik a háttérben; nézze meg a kép-, hang- és pufferértékekhez."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Forrás: {a}. DVB-adapter, {f}. frontend"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc statisztika"
+
+msgid "Source: background download"
+msgstr "Forrás: háttérletöltés"
+
+msgid "Source: the player's stream"
+msgstr "Forrás: a lejátszó streamje"
+
+msgid "updated every second"
+msgstr "másodpercenként frissül"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Nincs mit menteni: a csatorna nem fogható."
+
+msgid "Compare {name} with"
+msgstr "{name} összehasonlítása ezzel:"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Értékek az egyes elemzések időablakában; kép és hangosság csak a képernyőn lévő csatornához."
+
+msgid "Dish alignment aid"
+msgstr "Segítség az antenna beállításához"
+
+msgid "Tone"
+msgstr "Hang"
+
+msgid "Reset best value"
+msgstr "Legjobb érték törlése"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Forgassa lassan az antennát; jobb jelnél magasabb a hang."
+
+msgid "% quality"
+msgstr "% minőség"
+
+msgid "Best so far: {v}"
+msgstr "Eddigi legjobb: {v}"
+
+msgid "Signal lost"
+msgstr "Jel elveszett"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "A tunerre nézéshez vagy felvételhez volt szükség."
+
+msgid "Channel analysis: {name}"
+msgstr "Csatornaelemzés: {name}"
+
+msgid "Resolution"
+msgstr "Felbontás"
+
+msgid "Audio"
+msgstr "Hang"
+
+msgid "Video"
+msgstr "Videó"
+
+msgid "Signal quality"
+msgstr "Jelminőség"
+
+msgid "Continuity errors"
+msgstr "Folytonossági hibák"
+
+msgid "Content"
+msgstr "Tartalom"
+
+msgid "audio description"
+msgstr "hangalámondás"
+
+msgid "DVB subtitles"
+msgstr "DVB-felirat"
+
+msgid "Signal"
+msgstr "Jel"
+
+msgid "Reception"
+msgstr "Vétel"
+
+msgid "Symbol rate"
+msgstr "Szimbólumsebesség"
+
+msgid "Transponder capacity"
+msgstr "Transzponder kapacitása"
+
+msgid "Server"
+msgstr "Kiszolgáló"
+
+msgid "Stream"
+msgstr "Stream"
+
+msgid "Share of transponder"
+msgstr "Részesedés a transzponderből"
+
+msgid "Aspect ratio"
+msgstr "Képarány"
+
+msgid "Colour"
+msgstr "Szín"
+
+msgid "Track"
+msgstr "Sáv"
+
+msgid "Now & next"
+msgstr "Most és utána"
+
+msgid "Encryption"
+msgstr "Titkosítás"
+
+msgid "Interactive"
+msgstr "Interaktív"
+
+msgid "Stream health"
+msgstr "Stream állapota"
+
+msgid "Transport errors"
+msgstr "Átviteli hibák"
+
+msgid "Timeshift buffer"
+msgstr "Időcsúsztatási puffer"
+
+msgid "interlaced"
+msgstr "váltottsoros"
+
+msgid "Hardware"
+msgstr "Hardveres"
+
+msgid "Software"
+msgstr "Szoftveres"
+
+msgid "{n} tracks"
+msgstr "{n} sáv"
+
+msgid "Free-to-air"
+msgstr "Kódolatlan"
+
+msgid "Signal level"
+msgstr "Jelszint"
+
+msgid "Internet stream"
+msgstr "Internetes stream"
+
+msgid "continuity errors"
+msgstr "folytonossági hibák"
+
+msgid "Stream / PLP"
+msgstr "Stream / PLP"
+
+msgid "Source of the figures"
+msgstr "Az értékek forrása"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Figyelmeztetés a képernyőn, ha gyengül a vétel"
+
+msgid "Open log folder"
+msgstr "Naplómappa megnyitása"
+
+msgid "stream"
+msgstr "stream"
+
+msgid "none (a plain stream)"
+msgstr "nincs (egyszerű stream)"
+
+msgid "internet stream"
+msgstr "internetes stream"
+
+msgid "Transport Stream"
+msgstr "Transport stream"
+
+msgid "This channel only"
+msgstr "Csak ez a csatorna"
+
+msgid "Transponder"
+msgstr "Transzponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Teljes transzponder mérése (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Az internetes csatornáknak nincs transzponderük."
+
+msgid "whole transponder"
+msgstr "teljes transzponder"
+
+msgid "Video & Audio"
+msgstr "Videó és hang"
+
+msgid "Black bars"
+msgstr "Fekete sávok"
+
+msgid "Click a track to listen to it."
+msgstr "Kattintson egy sávra a meghallgatásához."
+
+msgid "Integrated"
+msgstr "Integrált"
+
+msgid "Teletext and subtitles"
+msgstr "Teletext és feliratok"
+
+msgid "interlaced capable"
+msgstr "váltottsorosra képes"
+
+msgid "no"
+msgstr "nem"
+
+msgid "{n} frames"
+msgstr "{n} képkocka"
+
+msgid "schedule"
+msgstr "műsorrend"
+
+msgid "subtitles"
+msgstr "feliratok"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletext PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Ezen a csatornán nincs teletext és felirat."
+
+msgid "Table"
+msgstr "Tábla"
+
+msgid "Changes"
+msgstr "Változások"
+
+msgid "Repetition"
+msgstr "Ismétlés"
+
+msgid "Sections"
+msgstr "Szakaszok"
+
+msgid "Programme guide and clock"
+msgstr "Műsorújság és óra"
+
+msgid "Guide reaches"
+msgstr "Az újság eddig tart"
+
+msgid "Clock of the channel"
+msgstr "A csatorna órája"
+
+msgid "EIT schedule"
+msgstr "EIT műsorrend"
+
+msgid "missing"
+msgstr "hiányzik"
+
+msgid "(other services)"
+msgstr "(más szolgáltatások)"
+
+msgid "{n} sections"
+msgstr "{n} szakasz"
+
+msgid "Descrambling"
+msgstr "Dekódolás"
+
+msgid "Descrambler state"
+msgstr "A dekódoló állapota"
+
+msgid "Conditional access systems"
+msgstr "Feltételes hozzáférési rendszerek"
+
+msgid "For"
+msgstr "Ehhez"
+
+msgid "Key changes"
+msgstr "Kulcsváltások"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Ez a csatorna titkosított. A LinDVB csak az Ön saját előfizetői kártyájával dekódolja (softcam vagy CI-modul)."
+
+msgid "scrambled"
+msgstr "kódolt"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "tesztalkalmazás"
+
+msgid "This channel has no HbbTV application."
+msgstr "Ennek a csatornának nincs HbbTV-alkalmazása."
+
+msgid "No object carousel in this channel."
+msgstr "Ezen a csatornán nincs objektumkörhinta."
+
+msgid "Export"
+msgstr "Exportálás"
+
+msgid "Compare with another channel…"
+msgstr "Összehasonlítás másik csatornával…"
+
+msgid "Analyse another channel…"
+msgstr "Másik csatorna elemzése…"
+
+msgid "Window: {w}"
+msgstr "Ablak: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "A képernyőn lévő csatorna követése"
+
+msgid "Watch this channel"
+msgstr "Csatorna megnézése"
+
+msgid "Try again"
+msgstr "Újra"
+
+msgid "Copy as text"
+msgstr "Másolás szövegként"
+
+msgid "Export report…"
+msgstr "Jelentés exportálása…"
+
+msgid "Source: none"
+msgstr "Forrás: nincs"
+
+msgid "Saved {path}"
+msgstr "Mentve: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "A következő 30 másodperc felvétele…"
+
+msgid "Choose a channel"
+msgstr "Válasszon csatornát"
+
+msgid "Channel name"
+msgstr "Csatornanév"
+
+msgid "Compare channels"
+msgstr "Csatornák összehasonlítása"
+
+msgid "Comparison"
+msgstr "Összehasonlítás"
+
+msgid "Close (Esc)"
+msgstr "Bezárás (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Csatornaelemzés…"

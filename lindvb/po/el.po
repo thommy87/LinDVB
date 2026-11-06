@@ -2136,3 +2136,1086 @@ msgstr "Πεπλεγμένες εικόνες TV (τα περισσότερα κ
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Η αποκωδικοποίηση βίντεο {name} απέτυχε, αναπαραγωγή με τον επόμενο αποκωδικοποιητή"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Σφάλματα εικόνας: {n} μπλοκ δεν διορθώθηκαν"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Ασθενής λήψη: μόνο {db} dB περιθώριο"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} μη διορθώσιμα μπλοκ"
+
+msgid "Lock lost"
+msgstr "Χάθηκε το κλείδωμα"
+
+msgid "{n} continuity errors"
+msgstr "{n} σφάλματα συνέχειας"
+
+msgid "PCR jump"
+msgstr "Άλμα PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Νέα έκδοση πίνακα (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Άλμα έντασης {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Επαναφόρτωση buffer"
+
+msgid "Measured since {time}"
+msgstr "Μετράται από {time}"
+
+msgid "Delivery"
+msgstr "Μετάδοση"
+
+msgid "Frame rate"
+msgstr "Ρυθμός καρέ"
+
+msgid "Average bit rate"
+msgstr "Μέσος ρυθμός bit"
+
+msgid "Peak bit rate"
+msgstr "Μέγιστος ρυθμός bit"
+
+msgid "Margin"
+msgstr "Περιθώριο"
+
+msgid "Loudness"
+msgstr "Ένταση"
+
+msgid "Bit rate"
+msgstr "Ρυθμός bit"
+
+msgid "Events"
+msgstr "Συμβάντα"
+
+msgid "1 minute"
+msgstr "1 λεπτό"
+
+msgid "15 minutes"
+msgstr "15 λεπτά"
+
+msgid "5 minutes"
+msgstr "5 λεπτά"
+
+msgid "hard of hearing"
+msgstr "για άτομα με προβλήματα ακοής"
+
+msgid "Data"
+msgstr "Δεδομένα"
+
+msgid "Level"
+msgstr "Στάθμη"
+
+msgid "Carrier"
+msgstr "Φέρον"
+
+msgid "Uncorrectable blocks"
+msgstr "Μη διορθώσιμα μπλοκ"
+
+msgid "Lock losses"
+msgstr "Απώλειες κλειδώματος"
+
+msgid "C/N history"
+msgstr "Ιστορικό C/N"
+
+msgid "Errors"
+msgstr "Σφάλματα"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / πιλότοι"
+
+msgid "Protocol"
+msgstr "Πρωτόκολλο"
+
+msgid "Response time"
+msgstr "Χρόνος απόκρισης"
+
+msgid "Bad"
+msgstr "Κακή"
+
+msgid "Fair"
+msgstr "Μέτρια"
+
+msgid "Good"
+msgstr "Καλή"
+
+msgid "Poor"
+msgstr "Ασθενής"
+
+msgid "NO LOCK"
+msgstr "ΧΩΡΙΣ ΚΛΕΙΔΩΜΑ"
+
+msgid "Buffer"
+msgstr "Buffer"
+
+msgid "Download"
+msgstr "Λήψη"
+
+msgid "Buffer history"
+msgstr "Ιστορικό buffer"
+
+msgid "(driver value)"
+msgstr "(τιμή οδηγού)"
+
+msgid "since start"
+msgstr "από την έναρξη"
+
+msgid "required"
+msgstr "απαιτείται"
+
+msgid "Quality history"
+msgstr "Ιστορικό ποιότητας"
+
+msgid "horizontal"
+msgstr "οριζόντια"
+
+msgid "left"
+msgstr "αριστερή"
+
+msgid "vertical"
+msgstr "κατακόρυφη"
+
+msgid "right"
+msgstr "δεξιά"
+
+msgid "Port {n}"
+msgstr "Θύρα {n}"
+
+msgid "(theoretical)"
+msgstr "(θεωρητική)"
+
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgid "Bit rate of the channel"
+msgstr "Ρυθμός bit του καναλιού"
+
+msgid "Average"
+msgstr "Μέσος όρος"
+
+msgid "Peak"
+msgstr "Κορυφή"
+
+msgid "Codec"
+msgstr "Κωδικοποιητής"
+
+msgid "Decoder"
+msgstr "Αποκωδικοποιητής"
+
+msgid "Dropped frames"
+msgstr "Χαμένα καρέ"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Αυτόματη εκκίνηση"
+
+msgid "PCR arrival jitter"
+msgstr "Jitter άφιξης PCR"
+
+msgid "PCR interval"
+msgstr "Διάστημα PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Διάστημα PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletext / υπότιτλοι / δεδομένα"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "προοδευτική"
+
+msgid "only for the channel on screen"
+msgstr "μόνο για το κανάλι στην οθόνη"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Ένταση (τρέχον κομμάτι): {lufs} · κορυφή {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Ένταση: μόνο για το κανάλι στην οθόνη"
+
+msgid "scrambled packets"
+msgstr "κρυπτογραφημένα πακέτα"
+
+msgid "no CA descriptors in the PMT"
+msgstr "κανένας περιγραφέας CA στο PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} σελίδες"
+
+msgid "Quality"
+msgstr "Ποιότητα"
+
+msgid "Carrier to noise ratio"
+msgstr "Λόγος φέροντος προς θόρυβο"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Ρυθμός σφαλμάτων bit (log₁₀)"
+
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgid "HTTP status"
+msgstr "Κατάσταση HTTP"
+
+msgid "Content type"
+msgstr "Τύπος περιεχομένου"
+
+msgid "Download speed"
+msgstr "Ταχύτητα λήψης"
+
+msgid "Segments"
+msgstr "Τμήματα"
+
+msgid "Error"
+msgstr "Σφάλμα"
+
+msgid "Variants"
+msgstr "Παραλλαγές"
+
+msgid "Codecs"
+msgstr "Κωδικοποιητές"
+
+msgid "Error timeline"
+msgstr "Χρονολόγιο σφαλμάτων"
+
+msgid "uncorrectable blocks"
+msgstr "μη διορθώσιμα μπλοκ"
+
+msgid "lock lost"
+msgstr "χάθηκε το κλείδωμα"
+
+msgid "rebuffering"
+msgstr "επαναφόρτωση buffer"
+
+msgid "loudness jump"
+msgstr "άλμα έντασης"
+
+msgid "table version"
+msgstr "έκδοση πίνακα"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Ρυθμισμένες παράμετροι (από το frontend)"
+
+msgid "Delivery system"
+msgstr "Σύστημα μετάδοσης"
+
+msgid "Code rate"
+msgstr "Ρυθμός κώδικα"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Διάστημα προστασίας"
+
+msgid "Pilots"
+msgstr "Πιλότοι"
+
+msgid "Carriers"
+msgstr "Φέροντα"
+
+msgid "C/N needed"
+msgstr "Απαιτούμενο C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Βοήθεια στόχευσης κεραίας…"
+
+msgid "Logging and warnings"
+msgstr "Καταγραφή και προειδοποιήσεις"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Καταγραφή λήψης (μία γραμμή το λεπτό, διατηρείται 31 ημέρες)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Προειδοποίηση κάτω από αυτό το περιθώριο (dB)"
+
+msgid "Reception over the last days"
+msgstr "Λήψη των τελευταίων ημερών"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · ελάχ. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · κορυφή {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× ο ρυθμός της ροής"
+
+msgid "Download and stream rate"
+msgstr "Ταχύτητα λήψης και ροής"
+
+msgid "HLS with {n} variants"
+msgstr "HLS με {n} παραλλαγές"
+
+msgid "HLS media playlist"
+msgstr "Λίστα πολυμέσων HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "ζωντανά"
+
+msgid "on demand"
+msgstr "κατ' απαίτηση"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} τμήματα των Ø {s} (στόχος {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Χωρίς λίστα παραλλαγών: η διεύθυνση είναι μία ροή."
+
+msgid "No events so far."
+msgstr "Κανένα συμβάν ακόμη."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Καταγράφηκαν {n} λεπτά για αυτό το κανάλι."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Τίποτα δεν έχει καταγραφεί για αυτό το κανάλι ακόμη."
+
+msgid "min {min} · max {max}"
+msgstr "ελάχ. {min} · μέγ. {max}"
+
+msgid "needs {db}"
+msgstr "χρειάζεται {db}"
+
+msgid "relative (driver)"
+msgstr "σχετική (οδηγός)"
+
+msgid "post FEC {v}"
+msgstr "μετά το FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "απαιτείται για καθαρή εικόνα"
+
+msgid "DVB API v5 statistics"
+msgstr "Στατιστικά DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (κλίμακα οδηγού)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Στοιχειώδεις ροές και PID"
+
+msgid "Whole stream"
+msgstr "Ολόκληρη η ροή"
+
+msgid "Sort by PID"
+msgstr "Ταξινόμηση κατά PID"
+
+msgid "Sort by bit rate"
+msgstr "Ταξινόμηση κατά ρυθμό bit"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "δεκ"
+
+msgid "CC errors"
+msgstr "Σφάλματα CC"
+
+msgid "Scrambled"
+msgstr "Κρυπτογραφημένο"
+
+msgid "Last 60 s"
+msgstr "Τελευταία 60 s"
+
+msgid "Packets"
+msgstr "Πακέτα"
+
+msgid "Sync losses"
+msgstr "Απώλειες συγχρονισμού"
+
+msgid "Null packets"
+msgstr "Κενά πακέτα"
+
+msgid "PCR jumps"
+msgstr "Άλματα PCR"
+
+msgid "PID filter"
+msgstr "Φίλτρο PID"
+
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Κενό"
+
+msgid "Other"
+msgstr "Άλλο"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Σύνολο ({n} PID): {rate} · {cc} σφάλματα συνέχειας"
+
+msgid "Measuring…"
+msgstr "Μέτρηση…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "ελεύθερο / κενό"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} σε χρήση από {cap} · μετρήθηκε {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Λαμβάνονται μόνο τα PID αυτού του καναλιού. Μετρήστε ολόκληρο τον αναμεταδότη για να δείτε τα άλλα κανάλια του."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Προφίλ / επίπεδο"
+
+msgid "Scan"
+msgstr "Σάρωση"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Ταινία (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Καρέ που εμφανίστηκαν / χάθηκαν"
+
+msgid "Measured bit rate"
+msgstr "Μετρημένος ρυθμός bit"
+
+msgid "Nominal bit rate"
+msgstr "Ονομαστικός ρυθμός bit"
+
+msgid "VBV buffer"
+msgstr "Buffer VBV"
+
+msgid "Frame sizes"
+msgstr "Μεγέθη καρέ"
+
+msgid "B frame"
+msgstr "Καρέ B"
+
+msgid "I frame"
+msgstr "Καρέ I"
+
+msgid "P frame"
+msgstr "Καρέ P"
+
+msgid "GOP length"
+msgstr "Μήκος GOP"
+
+msgid "I frame average"
+msgstr "Μέσο καρέ I"
+
+msgid "P/B frame average"
+msgstr "Μέσο καρέ P/B"
+
+msgid "Nominal"
+msgstr "Ονομαστικός"
+
+msgid "Sample rate"
+msgstr "Συχνότητα δειγματοληψίας"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Μετρημένος"
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Ένταση (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Στιγμιαία"
+
+msgid "Short term"
+msgstr "Βραχυπρόθεσμη"
+
+msgid "Loudness range"
+msgstr "Εύρος έντασης"
+
+msgid "Sample peak"
+msgstr "Κορυφή δείγματος"
+
+msgid "level {l}"
+msgstr "επίπεδο {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "πεδία"
+
+msgid "mixed"
+msgstr "μικτή"
+
+msgid "not sent"
+msgstr "δεν αποστέλλεται"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % πάνω και κάτω"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % στα πλάγια"
+
+msgid "picture {ratio}:1"
+msgstr "εικόνα {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "ναι, επαναλαμβανόμενα πεδία"
+
+msgid "mastering display data"
+msgstr "δεδομένα οθόνης mastering"
+
+msgid "(maximum)"
+msgstr "(μέγιστο)"
+
+msgid "not signalled (variable)"
+msgstr "δεν δηλώνεται (μεταβλητός)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "τώρα {now} · Ø {avg} · κορυφή {max}"
+
+msgid "clean audio"
+msgstr "καθαρός λόγος"
+
+msgid "EBU target −23 LUFS"
+msgstr "Στόχος EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Μετράται στον αποκωδικοποιημένο ήχο του καναλιού στην οθόνη, πριν τον ισοσταθμιστή."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} άλματα έντασης 6 LU ή περισσότερο (πρόγραμμα ↔ διαφημίσεις)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Η ένταση μετράται μόνο για το κανάλι στην οθόνη."
+
+msgid "index"
+msgstr "ευρετήριο"
+
+msgid "info"
+msgstr "πληροφορίες"
+
+msgid "subtitles (hard of hearing)"
+msgstr "υπότιτλοι (προβλήματα ακοής)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Υπότιτλοι DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Πίνακες & EPG"
+
+msgid "SI tables"
+msgstr "Πίνακες SI"
+
+msgid "Version"
+msgstr "Έκδοση"
+
+msgid "Events in the guide"
+msgstr "Εκπομπές στον οδηγό"
+
+msgid "EIT now/next"
+msgstr "EIT τώρα/επόμενο"
+
+msgid "Difference to this computer"
+msgstr "Διαφορά από αυτόν τον υπολογιστή"
+
+msgid "Local time offset"
+msgstr "Τοπική απόκλιση ώρας"
+
+msgid "Network"
+msgstr "Δίκτυο"
+
+msgid "Raw view"
+msgstr "Ακατέργαστη προβολή"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "αργό"
+
+msgid "(all services)"
+msgstr "(όλες οι υπηρεσίες)"
+
+msgid "not seen"
+msgstr "δεν εμφανίστηκε"
+
+msgid "seen {s} s ago"
+msgstr "εμφανίστηκε πριν από {s} s"
+
+msgid "timers may start early or late"
+msgstr "οι χρονοδιακόπτες μπορεί να ξεκινήσουν νωρίτερα ή αργότερα"
+
+msgid "no TDT/TOT"
+msgstr "χωρίς TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Κρυπτογραφημένα πακέτα"
+
+msgid "CA system ID"
+msgstr "ID συστήματος CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Ρυθμός ECM"
+
+msgid "Scrambling per stream"
+msgstr "Κρυπτογράφηση ανά ροή"
+
+msgid "Crypto period"
+msgstr "Κρυπτοπερίοδος"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Αλλαγή κλειδιού είναι η εναλλαγή μεταξύ της άρτιας και της περιττής λέξης ελέγχου· η κρυπτοπερίοδος είναι ο χρόνος μεταξύ δύο αλλαγών."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Καμία υπό όρους πρόσβαση στο PMT και κανένα κρυπτογραφημένο πακέτο."
+
+msgid "free"
+msgstr "ελεύθερο"
+
+msgid "all streams"
+msgstr "όλες οι ροές"
+
+msgid "not received"
+msgstr "δεν λήφθηκε"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Δεν λήφθηκε CAT με ροές EMM."
+
+msgid "Applications (AIT)"
+msgstr "Εφαρμογές (AIT)"
+
+msgid "Organisation / app"
+msgstr "Οργανισμός / εφαρμογή"
+
+msgid "Control"
+msgstr "Έλεγχος"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Καρουζέλ δεδομένων (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Έκδοση AIT {v} στο PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Το κανάλι ανακοινώνει AIT στο PID {pid}· δεν έχει φτάσει ακόμη."
+
+msgid "Channel Analysis – {name}"
+msgstr "Ανάλυση καναλιού – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Πάγωμα μέτρησης"
+
+msgid "Copy report as text"
+msgstr "Αντιγραφή αναφοράς ως κείμενο"
+
+msgid "Save report as text…"
+msgstr "Αποθήκευση αναφοράς ως κείμενο…"
+
+msgid "Save report as JSON…"
+msgstr "Αποθήκευση αναφοράς ως JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Αποθήκευση ιστορικού ως CSV…"
+
+msgid "Save window as picture…"
+msgstr "Αποθήκευση παραθύρου ως εικόνα…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Αποθήκευση 30 s της ροής…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Ανάλυση καναλιού · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Ζωντανά · μέτρηση εδώ και {t}"
+
+msgid "Paused"
+msgstr "Σε παύση"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Κανένας δέκτης δεν είναι ελεύθερος για αυτό το κανάλι. Παρακολουθήστε το ή δοκιμάστε ξανά όταν ελευθερωθεί δέκτης."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Ο δέκτης αυτού του καναλιού άλλαξε σε άλλο κανάλι."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Μετράται στο παρασκήνιο σε δικό του δέκτη· εικόνα, ήχος και ένταση μετρώνται μόνο για το κανάλι στην οθόνη."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Αυτό το διαδικτυακό κανάλι λαμβάνεται στο παρασκήνιο χωρίς αποκωδικοποίηση· παρακολουθήστε το για τιμές εικόνας, ήχου και buffer."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Πηγή: προσαρμογέας DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "στατιστικά dvbsrc"
+
+msgid "Source: background download"
+msgstr "Πηγή: λήψη στο παρασκήνιο"
+
+msgid "Source: the player's stream"
+msgstr "Πηγή: η ροή του προγράμματος αναπαραγωγής"
+
+msgid "updated every second"
+msgstr "ενημερώνεται κάθε δευτερόλεπτο"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Τίποτα για αποθήκευση: το κανάλι δεν λαμβάνεται."
+
+msgid "Compare {name} with"
+msgstr "Σύγκριση {name} με"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Τιμές στο χρονικό παράθυρο κάθε ανάλυσης· εικόνα και ένταση μόνο για το κανάλι στην οθόνη."
+
+msgid "Dish alignment aid"
+msgstr "Βοήθεια στόχευσης κεραίας"
+
+msgid "Tone"
+msgstr "Τόνος"
+
+msgid "Reset best value"
+msgstr "Επαναφορά καλύτερης τιμής"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Περιστρέψτε την κεραία αργά· ο τόνος ανεβαίνει με καλύτερο σήμα."
+
+msgid "% quality"
+msgstr "% ποιότητα"
+
+msgid "Best so far: {v}"
+msgstr "Καλύτερη μέχρι τώρα: {v}"
+
+msgid "Signal lost"
+msgstr "Χάθηκε το σήμα"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Ο δέκτης χρειαζόταν για παρακολούθηση ή εγγραφή."
+
+msgid "Channel analysis: {name}"
+msgstr "Ανάλυση καναλιού: {name}"
+
+msgid "Resolution"
+msgstr "Ανάλυση"
+
+msgid "Audio"
+msgstr "Ήχος"
+
+msgid "Video"
+msgstr "Βίντεο"
+
+msgid "Signal quality"
+msgstr "Ποιότητα σήματος"
+
+msgid "Continuity errors"
+msgstr "Σφάλματα συνέχειας"
+
+msgid "Content"
+msgstr "Περιεχόμενο"
+
+msgid "audio description"
+msgstr "ηχητική περιγραφή"
+
+msgid "DVB subtitles"
+msgstr "Υπότιτλοι DVB"
+
+msgid "Signal"
+msgstr "Σήμα"
+
+msgid "Reception"
+msgstr "Λήψη"
+
+msgid "Symbol rate"
+msgstr "Ρυθμός συμβόλων"
+
+msgid "Transponder capacity"
+msgstr "Χωρητικότητα αναμεταδότη"
+
+msgid "Server"
+msgstr "Διακομιστής"
+
+msgid "Stream"
+msgstr "Ροή"
+
+msgid "Share of transponder"
+msgstr "Μερίδιο του αναμεταδότη"
+
+msgid "Aspect ratio"
+msgstr "Αναλογία εικόνας"
+
+msgid "Colour"
+msgstr "Χρώμα"
+
+msgid "Track"
+msgstr "Κομμάτι"
+
+msgid "Now & next"
+msgstr "Τώρα & μετά"
+
+msgid "Encryption"
+msgstr "Κρυπτογράφηση"
+
+msgid "Interactive"
+msgstr "Διαδραστικό"
+
+msgid "Stream health"
+msgstr "Κατάσταση ροής"
+
+msgid "Transport errors"
+msgstr "Σφάλματα μεταφοράς"
+
+msgid "Timeshift buffer"
+msgstr "Buffer timeshift"
+
+msgid "interlaced"
+msgstr "πεπλεγμένη"
+
+msgid "Hardware"
+msgstr "Υλικό"
+
+msgid "Software"
+msgstr "Λογισμικό"
+
+msgid "{n} tracks"
+msgstr "{n} κομμάτια"
+
+msgid "Free-to-air"
+msgstr "Ελεύθερο"
+
+msgid "Signal level"
+msgstr "Στάθμη σήματος"
+
+msgid "Internet stream"
+msgstr "Διαδικτυακή ροή"
+
+msgid "continuity errors"
+msgstr "σφάλματα συνέχειας"
+
+msgid "Stream / PLP"
+msgstr "Ροή / PLP"
+
+msgid "Source of the figures"
+msgstr "Πηγή των τιμών"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Προειδοποίηση στην οθόνη όταν η λήψη εξασθενεί"
+
+msgid "Open log folder"
+msgstr "Άνοιγμα φακέλου καταγραφής"
+
+msgid "stream"
+msgstr "ροή"
+
+msgid "none (a plain stream)"
+msgstr "καμία (απλή ροή)"
+
+msgid "internet stream"
+msgstr "διαδικτυακή ροή"
+
+msgid "Transport Stream"
+msgstr "Ροή μεταφοράς"
+
+msgid "This channel only"
+msgstr "Μόνο αυτό το κανάλι"
+
+msgid "Transponder"
+msgstr "Αναμεταδότης"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Μέτρηση ολόκληρου του αναμεταδότη (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Τα διαδικτυακά κανάλια δεν έχουν αναμεταδότη."
+
+msgid "whole transponder"
+msgstr "ολόκληρος ο αναμεταδότης"
+
+msgid "Video & Audio"
+msgstr "Βίντεο & ήχος"
+
+msgid "Black bars"
+msgstr "Μαύρες λωρίδες"
+
+msgid "Click a track to listen to it."
+msgstr "Κάντε κλικ σε ένα κομμάτι για να το ακούσετε."
+
+msgid "Integrated"
+msgstr "Ολοκληρωμένη"
+
+msgid "Teletext and subtitles"
+msgstr "Teletext και υπότιτλοι"
+
+msgid "interlaced capable"
+msgstr "υποστηρίζει πεπλεγμένη"
+
+msgid "no"
+msgstr "όχι"
+
+msgid "{n} frames"
+msgstr "{n} καρέ"
+
+msgid "schedule"
+msgstr "πρόγραμμα"
+
+msgid "subtitles"
+msgstr "υπότιτλοι"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletext PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Αυτό το κανάλι δεν έχει teletext ούτε υπότιτλους."
+
+msgid "Table"
+msgstr "Πίνακας"
+
+msgid "Changes"
+msgstr "Αλλαγές"
+
+msgid "Repetition"
+msgstr "Επανάληψη"
+
+msgid "Sections"
+msgstr "Ενότητες"
+
+msgid "Programme guide and clock"
+msgstr "Οδηγός προγράμματος και ρολόι"
+
+msgid "Guide reaches"
+msgstr "Ο οδηγός φτάνει έως"
+
+msgid "Clock of the channel"
+msgstr "Ρολόι του καναλιού"
+
+msgid "EIT schedule"
+msgstr "EIT πρόγραμμα"
+
+msgid "missing"
+msgstr "λείπει"
+
+msgid "(other services)"
+msgstr "(άλλες υπηρεσίες)"
+
+msgid "{n} sections"
+msgstr "{n} ενότητες"
+
+msgid "Descrambling"
+msgstr "Αποκρυπτογράφηση"
+
+msgid "Descrambler state"
+msgstr "Κατάσταση αποκρυπτογράφησης"
+
+msgid "Conditional access systems"
+msgstr "Συστήματα υπό όρους πρόσβασης"
+
+msgid "For"
+msgstr "Για"
+
+msgid "Key changes"
+msgstr "Αλλαγές κλειδιού"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Αυτό το κανάλι είναι κρυπτογραφημένο. Το LinDVB το αποκρυπτογραφεί μόνο με τη δική σας κάρτα συνδρομής (softcam ή μονάδα CI)."
+
+msgid "scrambled"
+msgstr "κρυπτογραφημένο"
+
+msgid "Profile"
+msgstr "Προφίλ"
+
+msgid "test application"
+msgstr "δοκιμαστική εφαρμογή"
+
+msgid "This channel has no HbbTV application."
+msgstr "Αυτό το κανάλι δεν έχει εφαρμογή HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Αυτό το κανάλι δεν έχει καρουζέλ αντικειμένων."
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "Compare with another channel…"
+msgstr "Σύγκριση με άλλο κανάλι…"
+
+msgid "Analyse another channel…"
+msgstr "Ανάλυση άλλου καναλιού…"
+
+msgid "Window: {w}"
+msgstr "Παράθυρο: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Παρακολούθηση του καναλιού στην οθόνη"
+
+msgid "Watch this channel"
+msgstr "Παρακολούθηση αυτού του καναλιού"
+
+msgid "Try again"
+msgstr "Δοκιμή ξανά"
+
+msgid "Copy as text"
+msgstr "Αντιγραφή ως κείμενο"
+
+msgid "Export report…"
+msgstr "Εξαγωγή αναφοράς…"
+
+msgid "Source: none"
+msgstr "Πηγή: καμία"
+
+msgid "Saved {path}"
+msgstr "Αποθηκεύτηκε: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Εγγραφή των επόμενων 30 δευτερολέπτων…"
+
+msgid "Choose a channel"
+msgstr "Επιλέξτε κανάλι"
+
+msgid "Channel name"
+msgstr "Όνομα καναλιού"
+
+msgid "Compare channels"
+msgstr "Σύγκριση καναλιών"
+
+msgid "Comparison"
+msgstr "Σύγκριση"
+
+msgid "Close (Esc)"
+msgstr "Κλείσιμο (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Ανάλυση καναλιού…"
