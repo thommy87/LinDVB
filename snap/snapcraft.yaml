@@ -1,6 +1,6 @@
 name: lindvb
 title: LinDVB
-summary: Digital TV and radio: watch and record
+summary: "Digital TV and radio: watch and record"
 description: |
   LinDVB is a digital TV and radio app. It plays and records satellite, cable,
   terrestrial and internet TV and radio using the Linux DVB API and GStreamer.
