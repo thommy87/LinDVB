@@ -19,6 +19,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
+from . import tunerprofiles  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -33,14 +34,17 @@ ATSC_SYSTEMS = ("atsc", "dvb-c-b")
 TS_PACKET = 188
 
 
-def dvbsrc_properties(ch, settings, adapter, frontend):
-    """Map a Channel onto dvbsrc properties (string values, set via util_set_object_arg)."""
+def dvbsrc_properties(ch, settings, adapter, frontend, lnb=None):
+    """Map a Channel onto dvbsrc properties (string values, set via util_set_object_arg).
+
+    *lnb* is the tuner's (LOF low, LOF high, switch frequency), else the global one.
+    """
     p = {"adapter": adapter, "frontend": frontend, "delsys": ch.delsys}
     if ch.is_sat:
+        lof1, lof2, slof = lnb or tunerprofiles.tuner_lnb(None, settings)
         p.update({"frequency": ch.frequency, "polarity": ch.polarity.upper() or "H",
                   "symbol-rate": ch.symbol_rate,
-                  "lnb-lof1": settings["lnb_lof1"], "lnb-lof2": settings["lnb_lof2"],
-                  "lnb-slof": settings["lnb_slof"]})
+                  "lnb-lof1": lof1, "lnb-lof2": lof2, "lnb-slof": slof})
         if ch.diseqc >= 0:
             p["diseqc-source"] = ch.diseqc
     else:
@@ -187,10 +191,15 @@ class Capture(GObject.Object):
         "ait-pid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
     }
 
-    def __init__(self, channel, adapter, frontend, settings, ca_provider=None):
+    def __init__(self, channel, adapter, frontend, settings, ca_provider=None, tuner=None):
         super().__init__()
         self.channel = channel
         self.adapter = adapter
+        self.frontend = frontend
+        # the tuner profile (lindvb.tunerprofiles), and the keys of all channels
+        # this capture carries (more than one when they share the transponder)
+        self.tuner = tuner or tunerprofiles.new_profile(adapter, frontend)
+        self.channels = {channel.key: channel}
         # Conditional access for the user's own encrypted channels: a provider
         # supplies control words (from an external softcam or a CI module) and
         # descrambles the captured transport stream in place.
@@ -226,7 +235,8 @@ class Capture(GObject.Object):
             src = Gst.ElementFactory.make("dvbsrc", "src")
             if src is None:
                 raise RuntimeError("GStreamer element 'dvbsrc' is missing (gst-plugins-bad).")
-            props = dvbsrc_properties(channel, settings, adapter, frontend)
+            props = dvbsrc_properties(channel, settings, adapter, frontend,
+                                      tunerprofiles.tuner_lnb(self.tuner, settings))
             for k, v in props.items():
                 Gst.util_set_object_arg(src, k, str(v))
             self._src = src
@@ -313,6 +323,21 @@ class Capture(GObject.Object):
         have = {int(x) for x in self._pids.split(":") if x.isdigit()}
         if have and 8192 not in have and pid not in have:
             self._pids = ":".join(map(str, sorted(have | {pid})))
+            self._src.set_property("pids", self._pids)
+
+    def add_channel(self, channel):
+        """Carry *channel* too: it is on this transponder (main loop)."""
+        self.channels[channel.key] = channel
+        if self._src is None:
+            return
+        have = {int(x) for x in self._pids.split(":") if x.isdigit()}
+        if not have or 8192 in have:
+            return                       # whole transponder already
+        want = have | set(channel.pids())
+        if not channel.pmt_pid:
+            want = {8192}                # stream layout unknown: take everything
+        if want != have:
+            self._pids = ":".join(map(str, sorted(want)))
             self._src.set_property("pids", self._pids)
 
     def _on_ait_pids(self, pids):
@@ -470,52 +495,77 @@ class IPTVRecorder:
 
 
 class TunerManager(GObject.Object):
-    """Hands out Captures; shares one tuner between live viewing and recording."""
+    """Hands out Captures on the user's tuners (see lindvb.tunerprofiles).
+
+    One tuner serves live viewing and recordings of the same channel, and of
+    other channels on the same transponder.
+    """
 
     __gsignals__ = {
         # emitted when the live view must give up its tuner for a recording
         "preempt-live": (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
-    def __init__(self, settings, ca_factory=None):
+    def __init__(self, settings, ca_factory=None, probe=None):
         super().__init__()
         self.settings = settings
         # Called with no arguments to build a fresh CA provider for an
         # encrypted channel, or None for no descrambling.
         self.ca_factory = ca_factory
         self.captures = {}           # adapter -> Capture
+        self._probe = probe or tunerprofiles.probe_delivery_systems
+        self._systems = {}           # (adapter, frontend) -> delivery systems
+
+    def _systems_for(self, adapter, frontend):
+        key = (adapter, frontend)
+        if key not in self._systems:
+            self._systems[key] = self._probe(adapter, frontend)
+        return self._systems[key]
+
+    def profiles(self):
+        """The enabled tuners, in the order they are used."""
+        return tunerprofiles.active_profiles(self.settings, self._systems_for, self._detect)
+
+    def _detect(self):
+        return [tunerprofiles.new_profile(a, f, name) for a, f, name in self._find()]
+
+    @staticmethod
+    def _find():
+        from .scan import find_adapters
+        return find_adapters()
+
+    def _needs_own_descrambler(self, channel):
+        return (channel.encrypted and self.ca_factory is not None and
+                self.settings.get("ca_provider", "none") not in ("none", ""))
 
     def acquire(self, channel, user):
-        for cap in self.captures.values():
-            if cap.channel.key == channel.key:
-                cap.users.add(user)
-                return cap
-        adapters = self.settings["adapters"] or [0]
-        free = [a for a in adapters if a not in self.captures]
-        if not free:
-            if user == "live":
-                live = [a for a, c in self.captures.items() if c.users == {"live"}]
-                if not live:
-                    raise RuntimeError("All tuners are busy recording.")
-                self.release(self.captures[live[0]], "live")
-                free = live
-            else:
-                live = [a for a, c in self.captures.items() if c.users == {"live"}]
-                if not live:
-                    raise RuntimeError("No free tuner for the recording.")
+        try:
+            how = tunerprofiles.choose(channel, user, self.profiles(), self.captures,
+                                       self.settings,
+                                       can_share=not self._needs_own_descrambler(channel))
+        except tunerprofiles.NoTuner as e:
+            raise RuntimeError(str(e)) from None
+        if how[0] in ("join", "share"):
+            cap = how[1]
+            if how[0] == "share":
+                cap.add_channel(channel)
+            cap.users.add(user)
+            return cap
+        _tune, profile, preempt = how
+        if preempt is not None:
+            if user != "live":
                 self.emit("preempt-live")
-                cap = self.captures.get(live[0])
-                if cap:
-                    self.release(cap, "live")
-                free = live
-        a = free[0]
+            if preempt.adapter in self.captures:
+                self.release(preempt, "live")
         provider = None
         if channel.encrypted and self.ca_factory is not None:
             try:
                 provider = self.ca_factory()
             except Exception:
                 provider = None
-        cap = Capture(channel, a, self.settings["frontend"], self.settings, provider)
+        a = profile["adapter"]
+        cap = Capture(channel, a, int(profile.get("frontend", 0) or 0), self.settings, provider,
+                      tuner=profile)
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()

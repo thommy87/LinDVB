@@ -22,7 +22,11 @@ CACHE_DIR = _xdg("XDG_CACHE_HOME", ".cache") / "lindvb"
 PLUGIN_DIR = DATA_DIR / "plugins"
 
 DEFAULTS = {
-    # Tuners: list of adapter numbers that LinDVB may use, in order of preference.
+    # Tuner profiles (see lindvb/tunerprofiles.py): adapter, frontend, delivery
+    # systems, on/off, priority, shared antenna cable and an LNB of their own.
+    # Empty: the older settings below are used.
+    "tuners": [],
+    # Older settings: adapter numbers LinDVB may use and one frontend for all.
     "adapters": [0],
     "frontend": 0,
     # Satellite LNB (kHz). Universal LNB by default.

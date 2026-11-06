@@ -88,7 +88,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Recording and device statistics | `English.lng:590` `actRecorderControls.Caption=Recording and Device Statistics` | **Yes**: per-tuner lock/signal/SNR/BER/bitrate, active recordings |
 | Sleep timer, stop recording after programme | `English.lng:624-633` `sr10…sr180`, `srCurrent.Caption=Stop after current programme` | **Yes** (playback sleep timer) |
 | Recording database, media libraries (video, music, pictures) | `actions.ini` `Refresh RecDB=8260`; `[frmMovieLibrary]` line 819; `OSDSkins/Default/myrecordings.xml`, `mymusicfiles.xml`, `mypics.xml` | **Partly**: the Recordings tab lists the recordings with preview picture, programme details (title, subheading, channel, description from the EPG at recording time), sorting and search, and remembers where each one was left; no music or picture library |
-| Multiple tuners | `English.lng:462` `[frmHardware]` | **Yes**: list of adapters; a timer can take a tuner from live TV |
+| Multiple tuners | `English.lng:462` `[frmHardware]` | **Yes**: tuner list with reception types, on/off and priority; channels go to a tuner that can receive them, channels of one transponder share a tuner, tuners on one antenna cable (loop-through) keep to one band and polarisation, LNB per tuner; a timer can take a tuner from live TV |
 
 ## Integration and other functions
 

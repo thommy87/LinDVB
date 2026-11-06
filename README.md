@@ -238,8 +238,13 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 1. **Preferences → Tuner and Channels → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
    dtv-scan-tables, or add a folder with DVBViewer-style transponder lists), LNB and
    DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
-2. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.
-3. Set timers in **Programme Guide** (Record / Record Series) or **Timer Recordings**.
+2. Several tuners: **Preferences → Tuner and Channels → Tuners** lists every tuner found,
+   with its reception types. Switch tuners on or off, set a priority, give tuners on one
+   antenna cable (loop-through, splitter) the same cable name, and set an LNB per tuner.
+   LinDVB picks a tuner that can receive the channel, lets channels of one transponder
+   share a tuner, and takes the live tuner only for a recording.
+3. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.
+4. Set timers in **Programme Guide** (Record / Record Series) or **Timer Recordings**.
 
 Command line: `lindvb [-i LIST …] [-c CHANNEL] [FILE|URL …]`
 
