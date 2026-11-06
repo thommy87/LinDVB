@@ -555,7 +555,9 @@ def free_tuners(manager):
     """Adapters a channel analysis could tune without taking one from anybody."""
     test = bool(os.environ.get("LINDVB_TEST_TS"))
     out = []
-    for p in manager.profiles():
+    profiles = manager.profiles() if hasattr(manager, "profiles") else \
+        tunerprofiles.active_profiles(manager.settings)
+    for p in profiles:
         a = p["adapter"]
         if a not in manager.captures and a not in out and \
                 (test or os.path.exists(f"/dev/dvb/adapter{a}")):
