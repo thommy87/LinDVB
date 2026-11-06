@@ -2136,3 +2136,1086 @@ msgstr "Lomitetut TV-kuvat (useimmat SD- ja 1080i-kanavat). Näytönohjaimella, 
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name}-videon purku epäonnistui, toistetaan seuraavalla dekooderilla"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Kuvavirheitä: {n} lohkoa ei voitu korjata"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Heikko vastaanotto: vain {db} dB marginaalia"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} korjaamatonta lohkoa"
+
+msgid "Lock lost"
+msgstr "Lukitus menetetty"
+
+msgid "{n} continuity errors"
+msgstr "{n} jatkuvuusvirhettä"
+
+msgid "PCR jump"
+msgstr "PCR-hyppy"
+
+msgid "New table version (0x{tid})"
+msgstr "Uusi taulukkoversio (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Äänenvoimakkuuden hyppy {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Uudelleenpuskurointi"
+
+msgid "Measured since {time}"
+msgstr "Mitattu alkaen {time}"
+
+msgid "Delivery"
+msgstr "Lähetys"
+
+msgid "Frame rate"
+msgstr "Kuvataajuus"
+
+msgid "Average bit rate"
+msgstr "Keskimääräinen bittinopeus"
+
+msgid "Peak bit rate"
+msgstr "Huippubittinopeus"
+
+msgid "Margin"
+msgstr "Marginaali"
+
+msgid "Loudness"
+msgstr "Äänekkyys"
+
+msgid "Bit rate"
+msgstr "Bittinopeus"
+
+msgid "Events"
+msgstr "Tapahtumat"
+
+msgid "1 minute"
+msgstr "1 minuutti"
+
+msgid "15 minutes"
+msgstr "15 minuuttia"
+
+msgid "5 minutes"
+msgstr "5 minuuttia"
+
+msgid "hard of hearing"
+msgstr "kuulovammaisille"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Level"
+msgstr "Taso"
+
+msgid "Carrier"
+msgstr "Kantoaalto"
+
+msgid "Uncorrectable blocks"
+msgstr "Korjaamattomat lohkot"
+
+msgid "Lock losses"
+msgstr "Lukituksen menetykset"
+
+msgid "C/N history"
+msgstr "C/N-historia"
+
+msgid "Errors"
+msgstr "Virheet"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilotit"
+
+msgid "Protocol"
+msgstr "Protokolla"
+
+msgid "Response time"
+msgstr "Vasteaika"
+
+msgid "Bad"
+msgstr "Huono"
+
+msgid "Fair"
+msgstr "Kohtalainen"
+
+msgid "Good"
+msgstr "Hyvä"
+
+msgid "Poor"
+msgstr "Heikko"
+
+msgid "NO LOCK"
+msgstr "EI LUKITUSTA"
+
+msgid "Buffer"
+msgstr "Puskuri"
+
+msgid "Download"
+msgstr "Lataus"
+
+msgid "Buffer history"
+msgstr "Puskurin historia"
+
+msgid "(driver value)"
+msgstr "(ajurin arvo)"
+
+msgid "since start"
+msgstr "käynnistyksestä"
+
+msgid "required"
+msgstr "vaaditaan"
+
+msgid "Quality history"
+msgstr "Laatuhistoria"
+
+msgid "horizontal"
+msgstr "vaaka"
+
+msgid "left"
+msgstr "vasen"
+
+msgid "vertical"
+msgstr "pysty"
+
+msgid "right"
+msgstr "oikea"
+
+msgid "Port {n}"
+msgstr "Portti {n}"
+
+msgid "(theoretical)"
+msgstr "(teoreettinen)"
+
+msgid "Overview"
+msgstr "Yleiskatsaus"
+
+msgid "Bit rate of the channel"
+msgstr "Kanavan bittinopeus"
+
+msgid "Average"
+msgstr "Keskiarvo"
+
+msgid "Peak"
+msgstr "Huippu"
+
+msgid "Codec"
+msgstr "Koodekki"
+
+msgid "Decoder"
+msgstr "Dekooderi"
+
+msgid "Dropped frames"
+msgstr "Pudotetut kuvat"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automaattinen käynnistys"
+
+msgid "PCR arrival jitter"
+msgstr "PCR:n saapumisjitter"
+
+msgid "PCR interval"
+msgstr "PCR-väli"
+
+msgid "PAT / PMT interval"
+msgstr "PAT-/PMT-väli"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teksti-TV / tekstitys / data"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressiivinen"
+
+msgid "only for the channel on screen"
+msgstr "vain näytöllä olevalle kanavalle"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Äänekkyys (nykyinen raita): {lufs} · huippu {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Äänekkyys: vain näytöllä olevalle kanavalle"
+
+msgid "scrambled packets"
+msgstr "salatut paketit"
+
+msgid "no CA descriptors in the PMT"
+msgstr "ei CA-kuvaajia PMT:ssä"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} sivua"
+
+msgid "Quality"
+msgstr "Laatu"
+
+msgid "Carrier to noise ratio"
+msgstr "Kantoaalto-kohinasuhde"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bittivirhesuhde (log₁₀)"
+
+msgid "Address"
+msgstr "Osoite"
+
+msgid "HTTP status"
+msgstr "HTTP-tila"
+
+msgid "Content type"
+msgstr "Sisältötyyppi"
+
+msgid "Download speed"
+msgstr "Latausnopeus"
+
+msgid "Segments"
+msgstr "Segmentit"
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "Variants"
+msgstr "Variantit"
+
+msgid "Codecs"
+msgstr "Koodekit"
+
+msgid "Error timeline"
+msgstr "Virheiden aikajana"
+
+msgid "uncorrectable blocks"
+msgstr "korjaamattomat lohkot"
+
+msgid "lock lost"
+msgstr "lukitus menetetty"
+
+msgid "rebuffering"
+msgstr "uudelleenpuskurointi"
+
+msgid "loudness jump"
+msgstr "äänekkyyden hyppy"
+
+msgid "table version"
+msgstr "taulukkoversio"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Viritetyt parametrit (frontendista)"
+
+msgid "Delivery system"
+msgstr "Lähetysjärjestelmä"
+
+msgid "Code rate"
+msgstr "Koodisuhde"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Suojaväli"
+
+msgid "Pilots"
+msgstr "Pilotit"
+
+msgid "Carriers"
+msgstr "Kantoaallot"
+
+msgid "C/N needed"
+msgstr "Tarvittava C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Lautasen suuntausapu…"
+
+msgid "Logging and warnings"
+msgstr "Loki ja varoitukset"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Kirjaa vastaanotto (rivi minuutissa, säilytetään 31 päivää)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Varoita tämän marginaalin alittuessa (dB)"
+
+msgid "Reception over the last days"
+msgstr "Vastaanotto viime päivinä"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · huippu {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× virran nopeus"
+
+msgid "Download and stream rate"
+msgstr "Lataus- ja virtanopeus"
+
+msgid "HLS with {n} variants"
+msgstr "HLS, {n} varianttia"
+
+msgid "HLS media playlist"
+msgstr "HLS-mediasoittolista"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "suora"
+
+msgid "on demand"
+msgstr "tilattava"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmenttiä, Ø {s} (tavoite {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Ei varianttiluetteloa: osoite on yksittäinen virta."
+
+msgid "No events so far."
+msgstr "Ei vielä tapahtumia."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Tälle kanavalle kirjattu {n} minuuttia."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Tälle kanavalle ei ole vielä kirjattu mitään."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · maks {max}"
+
+msgid "needs {db}"
+msgstr "tarvitsee {db}"
+
+msgid "relative (driver)"
+msgstr "suhteellinen (ajuri)"
+
+msgid "post FEC {v}"
+msgstr "FEC:n jälkeen {v}"
+
+msgid "needed for a clean picture"
+msgstr "tarvitaan puhtaaseen kuvaan"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 -tilastot"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (ajurin asteikko)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Alkeisvirrat ja PID:t"
+
+msgid "Whole stream"
+msgstr "Koko virta"
+
+msgid "Sort by PID"
+msgstr "Lajittele PID:n mukaan"
+
+msgid "Sort by bit rate"
+msgstr "Lajittele bittinopeuden mukaan"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "des"
+
+msgid "CC errors"
+msgstr "CC-virheet"
+
+msgid "Scrambled"
+msgstr "Salattu"
+
+msgid "Last 60 s"
+msgstr "Viimeiset 60 s"
+
+msgid "Packets"
+msgstr "Paketit"
+
+msgid "Sync losses"
+msgstr "Tahdistuksen menetykset"
+
+msgid "Null packets"
+msgstr "Tyhjät paketit"
+
+msgid "PCR jumps"
+msgstr "PCR-hypyt"
+
+msgid "PID filter"
+msgstr "PID-suodatin"
+
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Tyhjä"
+
+msgid "Other"
+msgstr "Muu"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Summa ({n} PID:tä): {rate} · {cc} jatkuvuusvirhettä"
+
+msgid "Measuring…"
+msgstr "Mitataan…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "vapaa / tyhjä"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} käytössä {cap}:sta · mitattu {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Vain tämän kanavan PID:t vastaanotetaan. Mittaa koko transponderi nähdäksesi sen muut kanavat."
+
+msgid "{n} PIDs"
+msgstr "{n} PID:tä"
+
+msgid "Profile / level"
+msgstr "Profiili / taso"
+
+msgid "Scan"
+msgstr "Pyyhkäisy"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Elokuva (3:2-pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Kuvia näytetty / pudotettu"
+
+msgid "Measured bit rate"
+msgstr "Mitattu bittinopeus"
+
+msgid "Nominal bit rate"
+msgstr "Nimellinen bittinopeus"
+
+msgid "VBV buffer"
+msgstr "VBV-puskuri"
+
+msgid "Frame sizes"
+msgstr "Kuvakoot"
+
+msgid "B frame"
+msgstr "B-kuva"
+
+msgid "I frame"
+msgstr "I-kuva"
+
+msgid "P frame"
+msgstr "P-kuva"
+
+msgid "GOP length"
+msgstr "GOP-pituus"
+
+msgid "I frame average"
+msgstr "I-kuvan keskiarvo"
+
+msgid "P/B frame average"
+msgstr "P/B-kuvan keskiarvo"
+
+msgid "Nominal"
+msgstr "Nimellinen"
+
+msgid "Sample rate"
+msgstr "Näytteenottotaajuus"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Mitattu"
+
+msgid "Notes"
+msgstr "Huomautukset"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Äänekkyys (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Hetkellinen"
+
+msgid "Short term"
+msgstr "Lyhytaikainen"
+
+msgid "Loudness range"
+msgstr "Äänekkyysalue"
+
+msgid "Sample peak"
+msgstr "Näytehuippu"
+
+msgid "level {l}"
+msgstr "taso {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "kentät"
+
+msgid "mixed"
+msgstr "sekoitettu"
+
+msgid "not sent"
+msgstr "ei lähetetä"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % ylhäällä ja alhaalla"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % sivuilla"
+
+msgid "picture {ratio}:1"
+msgstr "kuva {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "kyllä, toistetut kentät"
+
+msgid "mastering display data"
+msgstr "masterointinäytön tiedot"
+
+msgid "(maximum)"
+msgstr "(enimmäis)"
+
+msgid "not signalled (variable)"
+msgstr "ei ilmoitettu (vaihteleva)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "nyt {now} · Ø {avg} · huippu {max}"
+
+msgid "clean audio"
+msgstr "selkeä puhe"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU-tavoite −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Mitattu näytöllä olevan kanavan dekoodatusta äänestä ennen taajuuskorjainta."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} äänekkyyden hyppyä, 6 LU tai enemmän (ohjelma ↔ mainos)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Äänekkyys mitataan vain näytöllä olevalle kanavalle."
+
+msgid "index"
+msgstr "hakemisto"
+
+msgid "info"
+msgstr "tiedot"
+
+msgid "subtitles (hard of hearing)"
+msgstr "tekstitys (kuulovammaiset)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB-tekstitys PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Taulukot ja EPG"
+
+msgid "SI tables"
+msgstr "SI-taulukot"
+
+msgid "Version"
+msgstr "Versio"
+
+msgid "Events in the guide"
+msgstr "Ohjelmia oppaassa"
+
+msgid "EIT now/next"
+msgstr "EIT nyt/seuraava"
+
+msgid "Difference to this computer"
+msgstr "Ero tähän tietokoneeseen"
+
+msgid "Local time offset"
+msgstr "Paikallinen aikasiirtymä"
+
+msgid "Network"
+msgstr "Verkko"
+
+msgid "Raw view"
+msgstr "Raakanäkymä"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "hidas"
+
+msgid "(all services)"
+msgstr "(kaikki palvelut)"
+
+msgid "not seen"
+msgstr "ei nähty"
+
+msgid "seen {s} s ago"
+msgstr "nähty {s} s sitten"
+
+msgid "timers may start early or late"
+msgstr "ajastukset voivat alkaa liian aikaisin tai myöhään"
+
+msgid "no TDT/TOT"
+msgstr "ei TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Salatut paketit"
+
+msgid "CA system ID"
+msgstr "CA-järjestelmän ID"
+
+msgid "ECM PID"
+msgstr "ECM-PID"
+
+msgid "ECM rate"
+msgstr "ECM-nopeus"
+
+msgid "Scrambling per stream"
+msgstr "Salaus virroittain"
+
+msgid "Crypto period"
+msgstr "Salausjakso"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Avaimenvaihto on vaihto parillisen ja parittoman ohjaussanan välillä; salausjakso on kahden vaihdon välinen aika."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Ei ehdollista pääsyä PMT:ssä eikä salattuja paketteja."
+
+msgid "free"
+msgstr "vapaa"
+
+msgid "all streams"
+msgstr "kaikki virrat"
+
+msgid "not received"
+msgstr "ei vastaanotettu"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "CAT:ia EMM-virroilla ei vastaanotettu."
+
+msgid "Applications (AIT)"
+msgstr "Sovellukset (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organisaatio / sovellus"
+
+msgid "Control"
+msgstr "Ohjaus"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Datakarusellit (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT-versio {v} PID:ssä {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanava ilmoittaa AIT:n PID:ssä {pid}; se ei ole vielä saapunut."
+
+msgid "Channel Analysis – {name}"
+msgstr "Kanava-analyysi – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Pysäytä mittaus"
+
+msgid "Copy report as text"
+msgstr "Kopioi raportti tekstinä"
+
+msgid "Save report as text…"
+msgstr "Tallenna raportti tekstinä…"
+
+msgid "Save report as JSON…"
+msgstr "Tallenna raportti JSON-muodossa…"
+
+msgid "Save history as CSV…"
+msgstr "Tallenna historia CSV-muodossa…"
+
+msgid "Save window as picture…"
+msgstr "Tallenna ikkuna kuvana…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Tallenna 30 s virrasta…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Kanava-analyysi · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Suora · mitattu {t}"
+
+msgid "Paused"
+msgstr "Tauotettu"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Tälle kanavalle ei ole vapaata viritintä. Katso sitä tai yritä uudelleen, kun viritin vapautuu."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Tämän kanavan viritin vaihdettiin toiselle kanavalle."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Mitattu taustalla omalla virittimellä; kuva, ääni ja äänekkyys mitataan vain näytöllä olevalle kanavalle."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Tämä internetkanava ladataan taustalla dekoodaamatta; katso sitä saadaksesi kuva-, ääni- ja puskuriarvot."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Lähde: DVB-sovitin {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc-tilastot"
+
+msgid "Source: background download"
+msgstr "Lähde: lataus taustalla"
+
+msgid "Source: the player's stream"
+msgstr "Lähde: soittimen virta"
+
+msgid "updated every second"
+msgstr "päivitetään joka sekunti"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Ei tallennettavaa: kanavaa ei vastaanoteta."
+
+msgid "Compare {name} with"
+msgstr "Vertaa kanavaa {name} kanavaan"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Arvot kunkin analyysin aikaikkunasta; kuva ja äänekkyys vain näytöllä olevalle kanavalle."
+
+msgid "Dish alignment aid"
+msgstr "Lautasen suuntausapu"
+
+msgid "Tone"
+msgstr "Ääni"
+
+msgid "Reset best value"
+msgstr "Nollaa paras arvo"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Käännä lautasta hitaasti; ääni nousee signaalin parantuessa."
+
+msgid "% quality"
+msgstr "% laatu"
+
+msgid "Best so far: {v}"
+msgstr "Paras tähän asti: {v}"
+
+msgid "Signal lost"
+msgstr "Signaali menetetty"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Viritintä tarvittiin katseluun tai tallennukseen."
+
+msgid "Channel analysis: {name}"
+msgstr "Kanava-analyysi: {name}"
+
+msgid "Resolution"
+msgstr "Resoluutio"
+
+msgid "Audio"
+msgstr "Ääni"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Signaalin laatu"
+
+msgid "Continuity errors"
+msgstr "Jatkuvuusvirheet"
+
+msgid "Content"
+msgstr "Sisältö"
+
+msgid "audio description"
+msgstr "kuvailutulkkaus"
+
+msgid "DVB subtitles"
+msgstr "DVB-tekstitys"
+
+msgid "Signal"
+msgstr "Signaali"
+
+msgid "Reception"
+msgstr "Vastaanotto"
+
+msgid "Symbol rate"
+msgstr "Symbolinopeus"
+
+msgid "Transponder capacity"
+msgstr "Transponderin kapasiteetti"
+
+msgid "Server"
+msgstr "Palvelin"
+
+msgid "Stream"
+msgstr "Virta"
+
+msgid "Share of transponder"
+msgstr "Osuus transponderista"
+
+msgid "Aspect ratio"
+msgstr "Kuvasuhde"
+
+msgid "Colour"
+msgstr "Väri"
+
+msgid "Track"
+msgstr "Raita"
+
+msgid "Now & next"
+msgstr "Nyt ja seuraavaksi"
+
+msgid "Encryption"
+msgstr "Salaus"
+
+msgid "Interactive"
+msgstr "Vuorovaikutteinen"
+
+msgid "Stream health"
+msgstr "Virran kunto"
+
+msgid "Transport errors"
+msgstr "Siirtovirheet"
+
+msgid "Timeshift buffer"
+msgstr "Timeshift-puskuri"
+
+msgid "interlaced"
+msgstr "lomitettu"
+
+msgid "Hardware"
+msgstr "Laitteisto"
+
+msgid "Software"
+msgstr "Ohjelmisto"
+
+msgid "{n} tracks"
+msgstr "{n} raitaa"
+
+msgid "Free-to-air"
+msgstr "Salaamaton"
+
+msgid "Signal level"
+msgstr "Signaalin taso"
+
+msgid "Internet stream"
+msgstr "Internetvirta"
+
+msgid "continuity errors"
+msgstr "jatkuvuusvirheet"
+
+msgid "Stream / PLP"
+msgstr "Virta / PLP"
+
+msgid "Source of the figures"
+msgstr "Arvojen lähde"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Varoita näytöllä, kun vastaanotto heikkenee"
+
+msgid "Open log folder"
+msgstr "Avaa lokikansio"
+
+msgid "stream"
+msgstr "virta"
+
+msgid "none (a plain stream)"
+msgstr "ei mitään (tavallinen virta)"
+
+msgid "internet stream"
+msgstr "internetvirta"
+
+msgid "Transport Stream"
+msgstr "Siirtovirta"
+
+msgid "This channel only"
+msgstr "Vain tämä kanava"
+
+msgid "Transponder"
+msgstr "Transponderi"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Mittaa koko transponderi (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Internetkanavilla ei ole transponderia."
+
+msgid "whole transponder"
+msgstr "koko transponderi"
+
+msgid "Video & Audio"
+msgstr "Video ja ääni"
+
+msgid "Black bars"
+msgstr "Mustat palkit"
+
+msgid "Click a track to listen to it."
+msgstr "Napsauta raitaa kuunnellaksesi sitä."
+
+msgid "Integrated"
+msgstr "Integroitu"
+
+msgid "Teletext and subtitles"
+msgstr "Teksti-TV ja tekstitys"
+
+msgid "interlaced capable"
+msgstr "tukee lomitusta"
+
+msgid "no"
+msgstr "ei"
+
+msgid "{n} frames"
+msgstr "{n} kuvaa"
+
+msgid "schedule"
+msgstr "ohjelmisto"
+
+msgid "subtitles"
+msgstr "tekstitys"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teksti-TV PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Tällä kanavalla ei ole teksti-TV:tä eikä tekstitystä."
+
+msgid "Table"
+msgstr "Taulukko"
+
+msgid "Changes"
+msgstr "Muutokset"
+
+msgid "Repetition"
+msgstr "Toisto"
+
+msgid "Sections"
+msgstr "Osiot"
+
+msgid "Programme guide and clock"
+msgstr "Ohjelmaopas ja kello"
+
+msgid "Guide reaches"
+msgstr "Opas ulottuu"
+
+msgid "Clock of the channel"
+msgstr "Kanavan kello"
+
+msgid "EIT schedule"
+msgstr "EIT-ohjelmisto"
+
+msgid "missing"
+msgstr "puuttuu"
+
+msgid "(other services)"
+msgstr "(muut palvelut)"
+
+msgid "{n} sections"
+msgstr "{n} osiota"
+
+msgid "Descrambling"
+msgstr "Salauksen purku"
+
+msgid "Descrambler state"
+msgstr "Salauksen purun tila"
+
+msgid "Conditional access systems"
+msgstr "Ehdollisen pääsyn järjestelmät"
+
+msgid "For"
+msgstr "Kohde"
+
+msgid "Key changes"
+msgstr "Avaimenvaihdot"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Tämä kanava on salattu. LinDVB purkaa sen salauksen vain omalla tilauskortillasi (softcam tai CI-moduuli)."
+
+msgid "scrambled"
+msgstr "salattu"
+
+msgid "Profile"
+msgstr "Profiili"
+
+msgid "test application"
+msgstr "testisovellus"
+
+msgid "This channel has no HbbTV application."
+msgstr "Tällä kanavalla ei ole HbbTV-sovellusta."
+
+msgid "No object carousel in this channel."
+msgstr "Tällä kanavalla ei ole objektikarusellia."
+
+msgid "Export"
+msgstr "Vie"
+
+msgid "Compare with another channel…"
+msgstr "Vertaa toiseen kanavaan…"
+
+msgid "Analyse another channel…"
+msgstr "Analysoi toinen kanava…"
+
+msgid "Window: {w}"
+msgstr "Ikkuna: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Seuraa näytöllä olevaa kanavaa"
+
+msgid "Watch this channel"
+msgstr "Katso tätä kanavaa"
+
+msgid "Try again"
+msgstr "Yritä uudelleen"
+
+msgid "Copy as text"
+msgstr "Kopioi tekstinä"
+
+msgid "Export report…"
+msgstr "Vie raportti…"
+
+msgid "Source: none"
+msgstr "Lähde: ei mitään"
+
+msgid "Saved {path}"
+msgstr "{path} tallennettu"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Tallennetaan seuraavat 30 sekuntia…"
+
+msgid "Choose a channel"
+msgstr "Valitse kanava"
+
+msgid "Channel name"
+msgstr "Kanavan nimi"
+
+msgid "Compare channels"
+msgstr "Vertaa kanavia"
+
+msgid "Comparison"
+msgstr "Vertailu"
+
+msgid "Close (Esc)"
+msgstr "Sulje (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Kanava-analyysi…"

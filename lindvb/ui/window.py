@@ -170,6 +170,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "epg": lambda: self.app.show_epg(), "timers": lambda: self.app.show_timers(),
             "scan": lambda: self.app.show_scan(), "prefs": lambda: self.app.show_prefs(),
             "editor": lambda: self.app.show_editor(), "stats": lambda: self.app.show_stats(),
+            "analysis": lambda: self.app.show_analysis(),
             "teletext": self.on_teletext, "record": self.on_record,
             "hbbtv": lambda: self.hbbtv.red_button(),
             "record-options": self.on_record_options,
@@ -308,6 +309,7 @@ class MainWindow(Gtk.ApplicationWindow):
         tv.append(_("Timer Recordings"), "win.timers")
         tv.append(_("Record with Options…"), "win.record-options")
         tv.append(_("Recording and Device Statistics"), "win.stats")
+        tv.append(_("Channel Analysis…"), "win.analysis")
         tv.append(_("Teletext"), "win.teletext")
         tv.append(_("HbbTV (red button)"), "win.hbbtv")
         tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
@@ -566,6 +568,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.oos.append(self.oos_label)
         self.oos.set_visible(False)
         overlay.add_overlay(self.oos)
+        # LinDVB logo, faint in the middle of the empty picture while nothing plays
+        self.idle_logo = Gtk.Image(icon_name="lindvb", pixel_size=160, opacity=0.18,
+                                   halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                                   can_target=False, css_classes=["lv-idle-logo"])
+        overlay.add_overlay(self.idle_logo)
         from .pip import PipOverlay
         self.pip = PipOverlay(self)
         overlay.add_overlay(self.pip)
@@ -837,7 +844,8 @@ class MainWindow(Gtk.ApplicationWindow):
                          ("ctx-rec", lambda: self.app.timers.record_now(c)),
                          ("ctx-edit", lambda: self.app.show_editor(c)),
                          ("ctx-epg", lambda: self.app.show_epg(c)),
-                         ("ctx-pip", lambda: self.pip.show_channel(c))):
+                         ("ctx-pip", lambda: self.pip.show_channel(c)),
+                         ("ctx-analysis", lambda: self.app.show_analysis(c))):
             a = Gio.SimpleAction.new(name, None)
             a.connect("activate", lambda _a, _p, fn=fn: fn())
             self.add_action(a)
@@ -849,6 +857,7 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append(_("Edit…"), "win.ctx-edit")
         if c.is_iptv:
             m.append(_("Show as Picture in Picture"), "win.ctx-pip")
+        m.append(_("Channel Analysis…"), "win.ctx-analysis")
         return m
 
     # ------------------------------------------------------------------ picture in picture
@@ -1209,7 +1218,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stopped = None
         self.playlist = []
         self.set_title(f"{c.name} – {APP_NAME}")
-        self.picture.set_opacity(1)
+        self._show_picture(True)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
         self._tuned = c
         self._tried = {_tuning_sig(c)}
@@ -1477,7 +1486,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.hbbtv.stopped()
         self.current = None
         self.set_title(APP_NAME)
-        self.picture.set_opacity(0)          # no frozen last frame
+        self._show_picture(False)            # no frozen last frame
         self.oos.set_visible(False)
         self._hide_osd()
         self.sublabel.set_visible(False)
@@ -1487,6 +1496,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_status(_("Stopped"))
         self._update_transport()
         self._update_visualizer()
+
+    def _show_picture(self, on):
+        """Show the video picture, or hide it and show the faint logo instead."""
+        self.picture.set_opacity(1 if on else 0)
+        self.idle_logo.set_visible(not on)
 
     def shift_audio(self, step):
         """Move the sound against the picture; remembered per channel."""
@@ -1514,7 +1528,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def play_files(self, paths):
         self.stop_playback()
         self.stopped = None
-        self.picture.set_opacity(1)
+        self._show_picture(True)
         self.player.audio_delay_ms = 0
         self.playlist, self.playlist_pos = list(paths), -1
         self.playlist_step(1)
@@ -1570,7 +1584,7 @@ class MainWindow(Gtk.ApplicationWindow):
             if url:
                 self.stop_playback()
                 self.stopped = None
-                self.picture.set_opacity(1)
+                self._show_picture(True)
                 self.player.audio_delay_ms = 0
                 self.playlist = [url]
                 self.playlist_pos = 0
@@ -1587,6 +1601,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def open_any(self, arg):
         if "://" in arg:
+            self._show_picture(True)
             self.player.play_uri(arg)
         else:
             self.play_files([arg])
@@ -2151,6 +2166,9 @@ class MainWindow(Gtk.ApplicationWindow):
         if cap is self.capture and self.quality.kind == "dvb":
             self.quality.feed_stats(st)
             self._update_quality_bar()
+            monitor = getattr(self.app, "reception", None)
+            if monitor is not None:
+                monitor.feed(cap, st, self)
         parts = []
         if "lock" in st and cap is self.capture:
             # no lock for a while: the antenna/cable/satellite instance fails

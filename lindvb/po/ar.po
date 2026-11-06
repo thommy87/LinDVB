@@ -2136,3 +2136,1086 @@ msgstr "صور تلفزيونية متشابكة (معظم قنوات SD و1080i
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "فشل فك ترميز الفيديو {name}، يستمر التشغيل بفك الترميز التالي"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "أخطاء في الصورة: تعذّر تصحيح {n} كتلة"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "استقبال ضعيف: هامش {db} dB فقط"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} كتلة غير قابلة للتصحيح"
+
+msgid "Lock lost"
+msgstr "فُقد القفل"
+
+msgid "{n} continuity errors"
+msgstr "{n} أخطاء استمرارية"
+
+msgid "PCR jump"
+msgstr "قفزة PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "إصدار جديد للجدول (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "قفزة في الجهارة {lu} LU"
+
+msgid "Rebuffering"
+msgstr "إعادة التخزين المؤقت"
+
+msgid "Measured since {time}"
+msgstr "يُقاس منذ {time}"
+
+msgid "Delivery"
+msgstr "البث"
+
+msgid "Frame rate"
+msgstr "معدل الإطارات"
+
+msgid "Average bit rate"
+msgstr "متوسط معدل البت"
+
+msgid "Peak bit rate"
+msgstr "ذروة معدل البت"
+
+msgid "Margin"
+msgstr "الهامش"
+
+msgid "Loudness"
+msgstr "الجهارة"
+
+msgid "Bit rate"
+msgstr "معدل البت"
+
+msgid "Events"
+msgstr "الأحداث"
+
+msgid "1 minute"
+msgstr "دقيقة واحدة"
+
+msgid "15 minutes"
+msgstr "15 دقيقة"
+
+msgid "5 minutes"
+msgstr "5 دقائق"
+
+msgid "hard of hearing"
+msgstr "لضعاف السمع"
+
+msgid "Data"
+msgstr "بيانات"
+
+msgid "Level"
+msgstr "المستوى"
+
+msgid "Carrier"
+msgstr "الموجة الحاملة"
+
+msgid "Uncorrectable blocks"
+msgstr "كتل غير قابلة للتصحيح"
+
+msgid "Lock losses"
+msgstr "مرات فقد القفل"
+
+msgid "C/N history"
+msgstr "سجل C/N"
+
+msgid "Errors"
+msgstr "الأخطاء"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / الإشارات الدليلية"
+
+msgid "Protocol"
+msgstr "البروتوكول"
+
+msgid "Response time"
+msgstr "زمن الاستجابة"
+
+msgid "Bad"
+msgstr "سيئة"
+
+msgid "Fair"
+msgstr "متوسطة"
+
+msgid "Good"
+msgstr "جيدة"
+
+msgid "Poor"
+msgstr "ضعيفة"
+
+msgid "NO LOCK"
+msgstr "لا قفل"
+
+msgid "Buffer"
+msgstr "المخزن المؤقت"
+
+msgid "Download"
+msgstr "التنزيل"
+
+msgid "Buffer history"
+msgstr "سجل المخزن المؤقت"
+
+msgid "(driver value)"
+msgstr "(قيمة المشغّل)"
+
+msgid "since start"
+msgstr "منذ البدء"
+
+msgid "required"
+msgstr "مطلوب"
+
+msgid "Quality history"
+msgstr "سجل الجودة"
+
+msgid "horizontal"
+msgstr "أفقي"
+
+msgid "left"
+msgstr "يسار"
+
+msgid "vertical"
+msgstr "عمودي"
+
+msgid "right"
+msgstr "يمين"
+
+msgid "Port {n}"
+msgstr "المنفذ {n}"
+
+msgid "(theoretical)"
+msgstr "(نظرية)"
+
+msgid "Overview"
+msgstr "نظرة عامة"
+
+msgid "Bit rate of the channel"
+msgstr "معدل بت القناة"
+
+msgid "Average"
+msgstr "المتوسط"
+
+msgid "Peak"
+msgstr "الذروة"
+
+msgid "Codec"
+msgstr "الترميز"
+
+msgid "Decoder"
+msgstr "فك الترميز"
+
+msgid "Dropped frames"
+msgstr "إطارات مُسقطة"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "تشغيل تلقائي"
+
+msgid "PCR arrival jitter"
+msgstr "تذبذب وصول PCR"
+
+msgid "PCR interval"
+msgstr "فاصل PCR"
+
+msgid "PAT / PMT interval"
+msgstr "فاصل PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "نص تلفزيوني / ترجمات / بيانات"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "تدريجي"
+
+msgid "only for the channel on screen"
+msgstr "للقناة المعروضة فقط"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "الجهارة (المسار الحالي): {lufs} · الذروة {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "الجهارة: للقناة المعروضة فقط"
+
+msgid "scrambled packets"
+msgstr "حزم مشفّرة"
+
+msgid "no CA descriptors in the PMT"
+msgstr "لا واصفات CA في PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} صفحات"
+
+msgid "Quality"
+msgstr "الجودة"
+
+msgid "Carrier to noise ratio"
+msgstr "نسبة الموجة الحاملة إلى الضوضاء"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "معدل أخطاء البت (log₁₀)"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "HTTP status"
+msgstr "حالة HTTP"
+
+msgid "Content type"
+msgstr "نوع المحتوى"
+
+msgid "Download speed"
+msgstr "سرعة التنزيل"
+
+msgid "Segments"
+msgstr "المقاطع"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Variants"
+msgstr "البدائل"
+
+msgid "Codecs"
+msgstr "الترميزات"
+
+msgid "Error timeline"
+msgstr "الخط الزمني للأخطاء"
+
+msgid "uncorrectable blocks"
+msgstr "كتل غير قابلة للتصحيح"
+
+msgid "lock lost"
+msgstr "فُقد القفل"
+
+msgid "rebuffering"
+msgstr "إعادة التخزين المؤقت"
+
+msgid "loudness jump"
+msgstr "قفزة في الجهارة"
+
+msgid "table version"
+msgstr "إصدار الجدول"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "المعاملات المضبوطة (من frontend)"
+
+msgid "Delivery system"
+msgstr "نظام البث"
+
+msgid "Code rate"
+msgstr "معدل الترميز"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "فاصل الحماية"
+
+msgid "Pilots"
+msgstr "الإشارات الدليلية"
+
+msgid "Carriers"
+msgstr "الموجات الحاملة"
+
+msgid "C/N needed"
+msgstr "C/N المطلوب"
+
+msgid "Dish alignment aid…"
+msgstr "مساعدة توجيه الطبق…"
+
+msgid "Logging and warnings"
+msgstr "السجل والتحذيرات"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "تسجيل الاستقبال (سطر كل دقيقة، يُحفظ 31 يومًا)"
+
+msgid "Warn below this margin (dB)"
+msgstr "التحذير تحت هذا الهامش (dB)"
+
+msgid "Reception over the last days"
+msgstr "الاستقبال في الأيام الأخيرة"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · الأدنى {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · الذروة {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× معدل البث"
+
+msgid "Download and stream rate"
+msgstr "معدل التنزيل والبث"
+
+msgid "HLS with {n} variants"
+msgstr "HLS مع {n} بدائل"
+
+msgid "HLS media playlist"
+msgstr "قائمة وسائط HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "مباشر"
+
+msgid "on demand"
+msgstr "عند الطلب"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} مقاطع بمتوسط {s} (الهدف {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "لا توجد قائمة بدائل: العنوان بث واحد."
+
+msgid "No events so far."
+msgstr "لا أحداث حتى الآن."
+
+msgid "{n} minutes logged for this channel."
+msgstr "سُجّلت {n} دقيقة لهذه القناة."
+
+msgid "Nothing logged for this channel yet."
+msgstr "لم يُسجَّل شيء لهذه القناة بعد."
+
+msgid "min {min} · max {max}"
+msgstr "الأدنى {min} · الأقصى {max}"
+
+msgid "needs {db}"
+msgstr "يحتاج {db}"
+
+msgid "relative (driver)"
+msgstr "نسبي (المشغّل)"
+
+msgid "post FEC {v}"
+msgstr "بعد FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "مطلوب لصورة نظيفة"
+
+msgid "DVB API v5 statistics"
+msgstr "إحصاءات DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (مقياس المشغّل)"
+
+msgid "Elementary streams and PIDs"
+msgstr "التدفقات الأولية وPID"
+
+msgid "Whole stream"
+msgstr "التدفق كله"
+
+msgid "Sort by PID"
+msgstr "الترتيب حسب PID"
+
+msgid "Sort by bit rate"
+msgstr "الترتيب حسب معدل البت"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "عشري"
+
+msgid "CC errors"
+msgstr "أخطاء CC"
+
+msgid "Scrambled"
+msgstr "مشفّر"
+
+msgid "Last 60 s"
+msgstr "آخر 60 ث"
+
+msgid "Packets"
+msgstr "الحزم"
+
+msgid "Sync losses"
+msgstr "فقد التزامن"
+
+msgid "Null packets"
+msgstr "حزم فارغة"
+
+msgid "PCR jumps"
+msgstr "قفزات PCR"
+
+msgid "PID filter"
+msgstr "مرشح PID"
+
+msgid "unknown"
+msgstr "غير معروف"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "فارغ"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "المجموع ({n} PID): {rate} · {cc} أخطاء استمرارية"
+
+msgid "Measuring…"
+msgstr "جارٍ القياس…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "حر / فارغ"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} مستخدم من {cap} · قيس {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "لا تُستقبل إلا PID هذه القناة. قِس المرسل المستجيب كاملًا لرؤية القنوات الأخرى عليه."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "الملف / المستوى"
+
+msgid "Scan"
+msgstr "المسح"
+
+msgid "Film (3:2 pulldown)"
+msgstr "فيلم (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "الإطارات المعروضة / المُسقطة"
+
+msgid "Measured bit rate"
+msgstr "معدل البت المقيس"
+
+msgid "Nominal bit rate"
+msgstr "معدل البت الاسمي"
+
+msgid "VBV buffer"
+msgstr "مخزن VBV"
+
+msgid "Frame sizes"
+msgstr "أحجام الإطارات"
+
+msgid "B frame"
+msgstr "إطار B"
+
+msgid "I frame"
+msgstr "إطار I"
+
+msgid "P frame"
+msgstr "إطار P"
+
+msgid "GOP length"
+msgstr "طول GOP"
+
+msgid "I frame average"
+msgstr "متوسط إطار I"
+
+msgid "P/B frame average"
+msgstr "متوسط إطار P/B"
+
+msgid "Nominal"
+msgstr "اسمي"
+
+msgid "Sample rate"
+msgstr "معدل أخذ العينات"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "مقيس"
+
+msgid "Notes"
+msgstr "ملاحظات"
+
+msgid "Loudness (EBU R 128)"
+msgstr "الجهارة (EBU R 128)"
+
+msgid "Momentary"
+msgstr "لحظية"
+
+msgid "Short term"
+msgstr "قصيرة المدى"
+
+msgid "Loudness range"
+msgstr "نطاق الجهارة"
+
+msgid "Sample peak"
+msgstr "ذروة العينة"
+
+msgid "level {l}"
+msgstr "المستوى {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "حقول"
+
+msgid "mixed"
+msgstr "مختلط"
+
+msgid "not sent"
+msgstr "لا يُرسل"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % أعلى وأسفل"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % على الجانبين"
+
+msgid "picture {ratio}:1"
+msgstr "الصورة {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "نعم، حقول مكررة"
+
+msgid "mastering display data"
+msgstr "بيانات شاشة الإتقان"
+
+msgid "(maximum)"
+msgstr "(الحد الأقصى)"
+
+msgid "not signalled (variable)"
+msgstr "غير مُعلن (متغير)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "الآن {now} · Ø {avg} · الذروة {max}"
+
+msgid "clean audio"
+msgstr "كلام واضح"
+
+msgid "EBU target −23 LUFS"
+msgstr "هدف EBU ‏−23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "يُقاس على الصوت المفكوك للقناة المعروضة، قبل المعادل."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} قفزات في الجهارة بمقدار 6 LU أو أكثر (برنامج ↔ إعلانات)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "تُقاس الجهارة للقناة المعروضة فقط."
+
+msgid "index"
+msgstr "فهرس"
+
+msgid "info"
+msgstr "معلومات"
+
+msgid "subtitles (hard of hearing)"
+msgstr "ترجمات (لضعاف السمع)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "ترجمات DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "الجداول ودليل البرامج"
+
+msgid "SI tables"
+msgstr "جداول SI"
+
+msgid "Version"
+msgstr "الإصدار"
+
+msgid "Events in the guide"
+msgstr "البرامج في الدليل"
+
+msgid "EIT now/next"
+msgstr "EIT الآن/التالي"
+
+msgid "Difference to this computer"
+msgstr "الفرق عن هذا الحاسوب"
+
+msgid "Local time offset"
+msgstr "إزاحة التوقيت المحلي"
+
+msgid "Network"
+msgstr "الشبكة"
+
+msgid "Raw view"
+msgstr "العرض الخام"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "بطيء"
+
+msgid "(all services)"
+msgstr "(كل الخدمات)"
+
+msgid "not seen"
+msgstr "لم يُرَ"
+
+msgid "seen {s} s ago"
+msgstr "شوهد قبل {s} ث"
+
+msgid "timers may start early or late"
+msgstr "قد تبدأ المؤقتات مبكرًا أو متأخرًا"
+
+msgid "no TDT/TOT"
+msgstr "لا TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "حزم مشفّرة"
+
+msgid "CA system ID"
+msgstr "معرّف نظام CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "معدل ECM"
+
+msgid "Scrambling per stream"
+msgstr "التشفير لكل تدفق"
+
+msgid "Crypto period"
+msgstr "فترة التشفير"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "تغيير المفتاح هو الانتقال بين كلمة التحكم الزوجية والفردية؛ فترة التشفير هي الزمن بين تغييرين."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "لا يوجد وصول مشروط في PMT ولا حزم مشفّرة."
+
+msgid "free"
+msgstr "حر"
+
+msgid "all streams"
+msgstr "كل التدفقات"
+
+msgid "not received"
+msgstr "لم يُستقبل"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "لم يُستقبل CAT مع تدفقات EMM."
+
+msgid "Applications (AIT)"
+msgstr "التطبيقات (AIT)"
+
+msgid "Organisation / app"
+msgstr "المؤسسة / التطبيق"
+
+msgid "Control"
+msgstr "التحكم"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "دوّارات البيانات (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "إصدار AIT {v} على PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "تعلن القناة عن AIT على PID {pid}؛ لم يصل بعد."
+
+msgid "Channel Analysis – {name}"
+msgstr "تحليل القناة – {name}"
+
+msgid "Freeze the measurement"
+msgstr "تجميد القياس"
+
+msgid "Copy report as text"
+msgstr "نسخ التقرير كنص"
+
+msgid "Save report as text…"
+msgstr "حفظ التقرير كنص…"
+
+msgid "Save report as JSON…"
+msgstr "حفظ التقرير بصيغة JSON…"
+
+msgid "Save history as CSV…"
+msgstr "حفظ السجل بصيغة CSV…"
+
+msgid "Save window as picture…"
+msgstr "حفظ النافذة كصورة…"
+
+msgid "Save 30 s of the stream…"
+msgstr "حفظ 30 ث من البث…"
+
+msgid "Channel Analysis · {name}"
+msgstr "تحليل القناة · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "مباشر · يقيس منذ {t}"
+
+msgid "Paused"
+msgstr "متوقف مؤقتًا"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "لا يوجد موالف متاح لهذه القناة. شاهدها، أو أعد المحاولة عندما يتوفر موالف."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "حُوّل موالف هذه القناة إلى قناة أخرى."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "يُقاس في الخلفية على موالف خاص؛ الصورة والصوت والجهارة تُقاس للقناة المعروضة فقط."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "تُجلب قناة الإنترنت هذه في الخلفية دون فك ترميزها؛ شاهدها للحصول على قيم الصورة والصوت والمخزن المؤقت."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "المصدر: محوّل DVB {a}، frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "إحصاءات dvbsrc"
+
+msgid "Source: background download"
+msgstr "المصدر: تنزيل في الخلفية"
+
+msgid "Source: the player's stream"
+msgstr "المصدر: بث المشغّل"
+
+msgid "updated every second"
+msgstr "يُحدَّث كل ثانية"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "لا شيء للحفظ: القناة غير مستقبلة."
+
+msgid "Compare {name} with"
+msgstr "مقارنة {name} مع"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "القيم خلال النافذة الزمنية لكل تحليل؛ الصورة والجهارة للقناة المعروضة فقط."
+
+msgid "Dish alignment aid"
+msgstr "مساعدة توجيه الطبق"
+
+msgid "Tone"
+msgstr "النغمة"
+
+msgid "Reset best value"
+msgstr "إعادة تعيين أفضل قيمة"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "أدِر الطبق ببطء؛ ترتفع النغمة مع إشارة أفضل."
+
+msgid "% quality"
+msgstr "% جودة"
+
+msgid "Best so far: {v}"
+msgstr "الأفضل حتى الآن: {v}"
+
+msgid "Signal lost"
+msgstr "فُقدت الإشارة"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "كان الموالف مطلوبًا للمشاهدة أو التسجيل."
+
+msgid "Channel analysis: {name}"
+msgstr "تحليل القناة: {name}"
+
+msgid "Resolution"
+msgstr "الدقة"
+
+msgid "Audio"
+msgstr "الصوت"
+
+msgid "Video"
+msgstr "الفيديو"
+
+msgid "Signal quality"
+msgstr "جودة الإشارة"
+
+msgid "Continuity errors"
+msgstr "أخطاء الاستمرارية"
+
+msgid "Content"
+msgstr "المحتوى"
+
+msgid "audio description"
+msgstr "وصف صوتي"
+
+msgid "DVB subtitles"
+msgstr "ترجمات DVB"
+
+msgid "Signal"
+msgstr "الإشارة"
+
+msgid "Reception"
+msgstr "الاستقبال"
+
+msgid "Symbol rate"
+msgstr "معدل الرموز"
+
+msgid "Transponder capacity"
+msgstr "سعة المرسل المستجيب"
+
+msgid "Server"
+msgstr "الخادم"
+
+msgid "Stream"
+msgstr "البث"
+
+msgid "Share of transponder"
+msgstr "الحصة من المرسل المستجيب"
+
+msgid "Aspect ratio"
+msgstr "نسبة العرض إلى الارتفاع"
+
+msgid "Colour"
+msgstr "اللون"
+
+msgid "Track"
+msgstr "المسار"
+
+msgid "Now & next"
+msgstr "الآن والتالي"
+
+msgid "Encryption"
+msgstr "التشفير"
+
+msgid "Interactive"
+msgstr "تفاعلي"
+
+msgid "Stream health"
+msgstr "سلامة البث"
+
+msgid "Transport errors"
+msgstr "أخطاء النقل"
+
+msgid "Timeshift buffer"
+msgstr "مخزن الإزاحة الزمنية"
+
+msgid "interlaced"
+msgstr "متشابك"
+
+msgid "Hardware"
+msgstr "عتاد"
+
+msgid "Software"
+msgstr "برمجي"
+
+msgid "{n} tracks"
+msgstr "{n} مسارات"
+
+msgid "Free-to-air"
+msgstr "مجاني"
+
+msgid "Signal level"
+msgstr "مستوى الإشارة"
+
+msgid "Internet stream"
+msgstr "بث إنترنت"
+
+msgid "continuity errors"
+msgstr "أخطاء الاستمرارية"
+
+msgid "Stream / PLP"
+msgstr "البث / PLP"
+
+msgid "Source of the figures"
+msgstr "مصدر القيم"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "التحذير على الشاشة عندما يضعف الاستقبال"
+
+msgid "Open log folder"
+msgstr "فتح مجلد السجل"
+
+msgid "stream"
+msgstr "بث"
+
+msgid "none (a plain stream)"
+msgstr "لا شيء (بث بسيط)"
+
+msgid "internet stream"
+msgstr "بث إنترنت"
+
+msgid "Transport Stream"
+msgstr "تدفق النقل"
+
+msgid "This channel only"
+msgstr "هذه القناة فقط"
+
+msgid "Transponder"
+msgstr "المرسل المستجيب"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "قياس المرسل المستجيب كاملًا (10 ث)"
+
+msgid "Internet channels have no transponder."
+msgstr "قنوات الإنترنت ليس لها مرسل مستجيب."
+
+msgid "whole transponder"
+msgstr "المرسل المستجيب كاملًا"
+
+msgid "Video & Audio"
+msgstr "الفيديو والصوت"
+
+msgid "Black bars"
+msgstr "أشرطة سوداء"
+
+msgid "Click a track to listen to it."
+msgstr "انقر على مسار للاستماع إليه."
+
+msgid "Integrated"
+msgstr "متكاملة"
+
+msgid "Teletext and subtitles"
+msgstr "النص التلفزيوني والترجمات"
+
+msgid "interlaced capable"
+msgstr "يدعم التشابك"
+
+msgid "no"
+msgstr "لا"
+
+msgid "{n} frames"
+msgstr "{n} إطارات"
+
+msgid "schedule"
+msgstr "الجدول"
+
+msgid "subtitles"
+msgstr "ترجمات"
+
+msgid "Teletext PID {pid}:"
+msgstr "نص تلفزيوني PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "لا يوجد نص تلفزيوني ولا ترجمات في هذه القناة."
+
+msgid "Table"
+msgstr "الجدول"
+
+msgid "Changes"
+msgstr "التغييرات"
+
+msgid "Repetition"
+msgstr "التكرار"
+
+msgid "Sections"
+msgstr "الأقسام"
+
+msgid "Programme guide and clock"
+msgstr "دليل البرامج والساعة"
+
+msgid "Guide reaches"
+msgstr "يمتد الدليل حتى"
+
+msgid "Clock of the channel"
+msgstr "ساعة القناة"
+
+msgid "EIT schedule"
+msgstr "جدول EIT"
+
+msgid "missing"
+msgstr "مفقود"
+
+msgid "(other services)"
+msgstr "(خدمات أخرى)"
+
+msgid "{n} sections"
+msgstr "{n} أقسام"
+
+msgid "Descrambling"
+msgstr "فك التشفير"
+
+msgid "Descrambler state"
+msgstr "حالة فك التشفير"
+
+msgid "Conditional access systems"
+msgstr "أنظمة الوصول المشروط"
+
+msgid "For"
+msgstr "لـ"
+
+msgid "Key changes"
+msgstr "تغييرات المفتاح"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "هذه القناة مشفّرة. لا يفك LinDVB تشفيرها إلا ببطاقة اشتراكك الخاصة (softcam أو وحدة CI)."
+
+msgid "scrambled"
+msgstr "مشفّر"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "test application"
+msgstr "تطبيق اختباري"
+
+msgid "This channel has no HbbTV application."
+msgstr "لا يوجد تطبيق HbbTV لهذه القناة."
+
+msgid "No object carousel in this channel."
+msgstr "لا يوجد دوّار كائنات في هذه القناة."
+
+msgid "Export"
+msgstr "تصدير"
+
+msgid "Compare with another channel…"
+msgstr "مقارنة بقناة أخرى…"
+
+msgid "Analyse another channel…"
+msgstr "تحليل قناة أخرى…"
+
+msgid "Window: {w}"
+msgstr "النافذة: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "متابعة القناة المعروضة"
+
+msgid "Watch this channel"
+msgstr "مشاهدة هذه القناة"
+
+msgid "Try again"
+msgstr "إعادة المحاولة"
+
+msgid "Copy as text"
+msgstr "نسخ كنص"
+
+msgid "Export report…"
+msgstr "تصدير التقرير…"
+
+msgid "Source: none"
+msgstr "المصدر: لا شيء"
+
+msgid "Saved {path}"
+msgstr "حُفظ {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "جارٍ تسجيل الثواني الثلاثين التالية…"
+
+msgid "Choose a channel"
+msgstr "اختر قناة"
+
+msgid "Channel name"
+msgstr "اسم القناة"
+
+msgid "Compare channels"
+msgstr "مقارنة القنوات"
+
+msgid "Comparison"
+msgstr "مقارنة"
+
+msgid "Close (Esc)"
+msgstr "إغلاق (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "تحليل القناة…"

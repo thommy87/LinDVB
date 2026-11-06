@@ -2136,3 +2136,1086 @@ msgstr "Persipynę TV vaizdai (dauguma SD ir 1080i kanalų). Vaizdo plokštėje,
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name} vaizdo dekodavimas nepavyko, grojama kitu dekoderiu"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Vaizdo klaidos: {n} blokų nepavyko pataisyti"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Silpnas priėmimas: tik {db} dB atsarga"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} nepataisomų blokų"
+
+msgid "Lock lost"
+msgstr "Sinchronizacija prarasta"
+
+msgid "{n} continuity errors"
+msgstr "{n} tęstinumo klaidų"
+
+msgid "PCR jump"
+msgstr "PCR šuolis"
+
+msgid "New table version (0x{tid})"
+msgstr "Nauja lentelės versija (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Garsumo šuolis {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Pakartotinis buferizavimas"
+
+msgid "Measured since {time}"
+msgstr "Matuojama nuo {time}"
+
+msgid "Delivery"
+msgstr "Transliacija"
+
+msgid "Frame rate"
+msgstr "Kadrų dažnis"
+
+msgid "Average bit rate"
+msgstr "Vidutinė sparta"
+
+msgid "Peak bit rate"
+msgstr "Didžiausia sparta"
+
+msgid "Margin"
+msgstr "Atsarga"
+
+msgid "Loudness"
+msgstr "Garsumas"
+
+msgid "Bit rate"
+msgstr "Sparta"
+
+msgid "Events"
+msgstr "Įvykiai"
+
+msgid "1 minute"
+msgstr "1 minutė"
+
+msgid "15 minutes"
+msgstr "15 minučių"
+
+msgid "5 minutes"
+msgstr "5 minutės"
+
+msgid "hard of hearing"
+msgstr "neprigirdintiesiems"
+
+msgid "Data"
+msgstr "Duomenys"
+
+msgid "Level"
+msgstr "Lygis"
+
+msgid "Carrier"
+msgstr "Nešlys"
+
+msgid "Uncorrectable blocks"
+msgstr "Nepataisomi blokai"
+
+msgid "Lock losses"
+msgstr "Sinchronizacijos praradimai"
+
+msgid "C/N history"
+msgstr "C/N istorija"
+
+msgid "Errors"
+msgstr "Klaidos"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilotai"
+
+msgid "Protocol"
+msgstr "Protokolas"
+
+msgid "Response time"
+msgstr "Atsako laikas"
+
+msgid "Bad"
+msgstr "Bloga"
+
+msgid "Fair"
+msgstr "Vidutinė"
+
+msgid "Good"
+msgstr "Gera"
+
+msgid "Poor"
+msgstr "Silpna"
+
+msgid "NO LOCK"
+msgstr "NĖRA SINCHRONIZACIJOS"
+
+msgid "Buffer"
+msgstr "Buferis"
+
+msgid "Download"
+msgstr "Atsisiuntimas"
+
+msgid "Buffer history"
+msgstr "Buferio istorija"
+
+msgid "(driver value)"
+msgstr "(tvarkyklės reikšmė)"
+
+msgid "since start"
+msgstr "nuo pradžios"
+
+msgid "required"
+msgstr "reikia"
+
+msgid "Quality history"
+msgstr "Kokybės istorija"
+
+msgid "horizontal"
+msgstr "horizontali"
+
+msgid "left"
+msgstr "kairė"
+
+msgid "vertical"
+msgstr "vertikali"
+
+msgid "right"
+msgstr "dešinė"
+
+msgid "Port {n}"
+msgstr "Prievadas {n}"
+
+msgid "(theoretical)"
+msgstr "(teorinė)"
+
+msgid "Overview"
+msgstr "Apžvalga"
+
+msgid "Bit rate of the channel"
+msgstr "Kanalo sparta"
+
+msgid "Average"
+msgstr "Vidurkis"
+
+msgid "Peak"
+msgstr "Smailė"
+
+msgid "Codec"
+msgstr "Kodekas"
+
+msgid "Decoder"
+msgstr "Dekoderis"
+
+msgid "Dropped frames"
+msgstr "Praleisti kadrai"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automatinis paleidimas"
+
+msgid "PCR arrival jitter"
+msgstr "PCR atvykimo virpesiai"
+
+msgid "PCR interval"
+msgstr "PCR intervalas"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT intervalas"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletekstas / subtitrai / duomenys"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresyvinis"
+
+msgid "only for the channel on screen"
+msgstr "tik ekrane rodomam kanalui"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Garsumas (dabartinis takelis): {lufs} · smailė {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Garsumas: tik ekrane rodomam kanalui"
+
+msgid "scrambled packets"
+msgstr "užkoduoti paketai"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT nėra CA aprašų"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} puslapiai"
+
+msgid "Quality"
+msgstr "Kokybė"
+
+msgid "Carrier to noise ratio"
+msgstr "Nešlio ir triukšmo santykis"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitų klaidų dažnis (log₁₀)"
+
+msgid "Address"
+msgstr "Adresas"
+
+msgid "HTTP status"
+msgstr "HTTP būsena"
+
+msgid "Content type"
+msgstr "Turinio tipas"
+
+msgid "Download speed"
+msgstr "Atsisiuntimo sparta"
+
+msgid "Segments"
+msgstr "Segmentai"
+
+msgid "Error"
+msgstr "Klaida"
+
+msgid "Variants"
+msgstr "Variantai"
+
+msgid "Codecs"
+msgstr "Kodekai"
+
+msgid "Error timeline"
+msgstr "Klaidų laiko juosta"
+
+msgid "uncorrectable blocks"
+msgstr "nepataisomi blokai"
+
+msgid "lock lost"
+msgstr "sinchronizacija prarasta"
+
+msgid "rebuffering"
+msgstr "pakartotinis buferizavimas"
+
+msgid "loudness jump"
+msgstr "garsumo šuolis"
+
+msgid "table version"
+msgstr "lentelės versija"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Suderinti parametrai (iš frontend)"
+
+msgid "Delivery system"
+msgstr "Transliavimo sistema"
+
+msgid "Code rate"
+msgstr "Kodo sparta"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Apsauginis intervalas"
+
+msgid "Pilots"
+msgstr "Pilotai"
+
+msgid "Carriers"
+msgstr "Nešliai"
+
+msgid "C/N needed"
+msgstr "Reikalingas C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Pagalba nukreipiant anteną…"
+
+msgid "Logging and warnings"
+msgstr "Žurnalas ir įspėjimai"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Registruoti priėmimą (viena eilutė per minutę, saugoma 31 dieną)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Įspėti, kai atsarga mažesnė (dB)"
+
+msgid "Reception over the last days"
+msgstr "Priėmimas per pastarąsias dienas"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · smailė {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× srauto sparta"
+
+msgid "Download and stream rate"
+msgstr "Atsisiuntimo ir srauto sparta"
+
+msgid "HLS with {n} variants"
+msgstr "HLS su {n} variantais"
+
+msgid "HLS media playlist"
+msgstr "HLS medijos sąrašas"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "tiesiogiai"
+
+msgid "on demand"
+msgstr "pagal pareikalavimą"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmentai po Ø {s} (tikslas {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Nėra variantų sąrašo: adresas yra vienas srautas."
+
+msgid "No events so far."
+msgstr "Įvykių kol kas nėra."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Šiam kanalui užregistruota {n} min."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Šiam kanalui dar nieko neužregistruota."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · maks. {max}"
+
+msgid "needs {db}"
+msgstr "reikia {db}"
+
+msgid "relative (driver)"
+msgstr "santykinis (tvarkyklė)"
+
+msgid "post FEC {v}"
+msgstr "po FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "reikia švariam vaizdui"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 statistika"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (tvarkyklės skalė)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementarieji srautai ir PID"
+
+msgid "Whole stream"
+msgstr "Visas srautas"
+
+msgid "Sort by PID"
+msgstr "Rikiuoti pagal PID"
+
+msgid "Sort by bit rate"
+msgstr "Rikiuoti pagal spartą"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dešimt."
+
+msgid "CC errors"
+msgstr "CC klaidos"
+
+msgid "Scrambled"
+msgstr "Užkoduota"
+
+msgid "Last 60 s"
+msgstr "Paskutinės 60 s"
+
+msgid "Packets"
+msgstr "Paketai"
+
+msgid "Sync losses"
+msgstr "Sinchronizacijos praradimai"
+
+msgid "Null packets"
+msgstr "Tušti paketai"
+
+msgid "PCR jumps"
+msgstr "PCR šuoliai"
+
+msgid "PID filter"
+msgstr "PID filtras"
+
+msgid "unknown"
+msgstr "nežinoma"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Tuščias"
+
+msgid "Other"
+msgstr "Kita"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Iš viso ({n} PID): {rate} · {cc} tęstinumo klaidų"
+
+msgid "Measuring…"
+msgstr "Matuojama…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "laisva / tuščia"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} užimta iš {cap} · išmatuota {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Priimami tik šio kanalo PID. Išmatuokite visą transponderį, kad pamatytumėte kitus jo kanalus."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profilis / lygis"
+
+msgid "Scan"
+msgstr "Skleidimas"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Filmas (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Rodyti / praleisti kadrai"
+
+msgid "Measured bit rate"
+msgstr "Išmatuota sparta"
+
+msgid "Nominal bit rate"
+msgstr "Nominali sparta"
+
+msgid "VBV buffer"
+msgstr "VBV buferis"
+
+msgid "Frame sizes"
+msgstr "Kadrų dydžiai"
+
+msgid "B frame"
+msgstr "B kadras"
+
+msgid "I frame"
+msgstr "I kadras"
+
+msgid "P frame"
+msgstr "P kadras"
+
+msgid "GOP length"
+msgstr "GOP ilgis"
+
+msgid "I frame average"
+msgstr "I kadro vidurkis"
+
+msgid "P/B frame average"
+msgstr "P/B kadro vidurkis"
+
+msgid "Nominal"
+msgstr "Nominali"
+
+msgid "Sample rate"
+msgstr "Diskretizavimo dažnis"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Išmatuota"
+
+msgid "Notes"
+msgstr "Pastabos"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Garsumas (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentinis"
+
+msgid "Short term"
+msgstr "Trumpalaikis"
+
+msgid "Loudness range"
+msgstr "Garsumo diapazonas"
+
+msgid "Sample peak"
+msgstr "Mėginio smailė"
+
+msgid "level {l}"
+msgstr "lygis {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "puskadriai"
+
+msgid "mixed"
+msgstr "mišrus"
+
+msgid "not sent"
+msgstr "nesiunčiama"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % viršuje ir apačioje"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % šonuose"
+
+msgid "picture {ratio}:1"
+msgstr "vaizdas {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "taip, kartojami puskadriai"
+
+msgid "mastering display data"
+msgstr "masteringo ekrano duomenys"
+
+msgid "(maximum)"
+msgstr "(maksimumas)"
+
+msgid "not signalled (variable)"
+msgstr "nenurodyta (kintama)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "dabar {now} · Ø {avg} · smailė {max}"
+
+msgid "clean audio"
+msgstr "aiški kalba"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU tikslas −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Matuojama ekrane rodomo kanalo dekoduotame garse, prieš glodintuvą."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} garsumo šuoliai po 6 LU ar daugiau (laida ↔ reklama)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Garsumas matuojamas tik ekrane rodomam kanalui."
+
+msgid "index"
+msgstr "rodyklė"
+
+msgid "info"
+msgstr "informacija"
+
+msgid "subtitles (hard of hearing)"
+msgstr "subtitrai (neprigirdintiesiems)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB subtitrai PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Lentelės ir EPG"
+
+msgid "SI tables"
+msgstr "SI lentelės"
+
+msgid "Version"
+msgstr "Versija"
+
+msgid "Events in the guide"
+msgstr "Laidos gide"
+
+msgid "EIT now/next"
+msgstr "EIT dabar/toliau"
+
+msgid "Difference to this computer"
+msgstr "Skirtumas nuo šio kompiuterio"
+
+msgid "Local time offset"
+msgstr "Vietinio laiko poslinkis"
+
+msgid "Network"
+msgstr "Tinklas"
+
+msgid "Raw view"
+msgstr "Neapdorotas rodinys"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "lėta"
+
+msgid "(all services)"
+msgstr "(visos paslaugos)"
+
+msgid "not seen"
+msgstr "nematyta"
+
+msgid "seen {s} s ago"
+msgstr "matyta prieš {s} s"
+
+msgid "timers may start early or late"
+msgstr "laikmačiai gali pradėti per anksti arba per vėlai"
+
+msgid "no TDT/TOT"
+msgstr "nėra TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Užkoduoti paketai"
+
+msgid "CA system ID"
+msgstr "CA sistemos ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM sparta"
+
+msgid "Scrambling per stream"
+msgstr "Kodavimas pagal srautą"
+
+msgid "Crypto period"
+msgstr "Kriptoperiodas"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Rakto keitimas yra perėjimas tarp lyginio ir nelyginio valdymo žodžio; kriptoperiodas yra laikas tarp dviejų keitimų."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT nėra sąlyginės prieigos ir nėra užkoduotų paketų."
+
+msgid "free"
+msgstr "laisva"
+
+msgid "all streams"
+msgstr "visi srautai"
+
+msgid "not received"
+msgstr "negauta"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Negauta CAT su EMM srautais."
+
+msgid "Applications (AIT)"
+msgstr "Programos (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizacija / programa"
+
+msgid "Control"
+msgstr "Valdymas"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Duomenų karuselės (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT versija {v} PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanalas skelbia AIT PID {pid}; ji dar neatėjo."
+
+msgid "Channel Analysis – {name}"
+msgstr "Kanalo analizė – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Užšaldyti matavimą"
+
+msgid "Copy report as text"
+msgstr "Kopijuoti ataskaitą kaip tekstą"
+
+msgid "Save report as text…"
+msgstr "Įrašyti ataskaitą kaip tekstą…"
+
+msgid "Save report as JSON…"
+msgstr "Įrašyti ataskaitą kaip JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Įrašyti istoriją kaip CSV…"
+
+msgid "Save window as picture…"
+msgstr "Įrašyti langą kaip paveikslėlį…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Įrašyti 30 s srauto…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Kanalo analizė · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Tiesiogiai · matuojama {t}"
+
+msgid "Paused"
+msgstr "Pristabdyta"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Šiam kanalui nėra laisvo imtuvo. Žiūrėkite jį arba bandykite dar kartą, kai imtuvas atsilaisvins."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Šio kanalo imtuvas perjungtas į kitą kanalą."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Matuojama fone atskiru imtuvu; vaizdas, garsas ir garsumas matuojami tik ekrane rodomam kanalui."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Šis interneto kanalas atsisiunčiamas fone jo nedekoduojant; žiūrėkite jį, kad matytumėte vaizdo, garso ir buferio reikšmes."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Šaltinis: DVB adapteris {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc statistika"
+
+msgid "Source: background download"
+msgstr "Šaltinis: atsisiuntimas fone"
+
+msgid "Source: the player's stream"
+msgstr "Šaltinis: grotuvo srautas"
+
+msgid "updated every second"
+msgstr "atnaujinama kas sekundę"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Nėra ką įrašyti: kanalas nepriimamas."
+
+msgid "Compare {name} with"
+msgstr "Palyginti {name} su"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Reikšmės per kiekvienos analizės laiko langą; vaizdas ir garsumas tik ekrane rodomam kanalui."
+
+msgid "Dish alignment aid"
+msgstr "Pagalba nukreipiant anteną"
+
+msgid "Tone"
+msgstr "Tonas"
+
+msgid "Reset best value"
+msgstr "Atstatyti geriausią reikšmę"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Sukite anteną lėtai; esant geresniam signalui tonas aukštėja."
+
+msgid "% quality"
+msgstr "% kokybė"
+
+msgid "Best so far: {v}"
+msgstr "Geriausia iki šiol: {v}"
+
+msgid "Signal lost"
+msgstr "Signalas prarastas"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Imtuvo reikėjo žiūrėjimui ar įrašymui."
+
+msgid "Channel analysis: {name}"
+msgstr "Kanalo analizė: {name}"
+
+msgid "Resolution"
+msgstr "Raiška"
+
+msgid "Audio"
+msgstr "Garsas"
+
+msgid "Video"
+msgstr "Vaizdas"
+
+msgid "Signal quality"
+msgstr "Signalo kokybė"
+
+msgid "Continuity errors"
+msgstr "Tęstinumo klaidos"
+
+msgid "Content"
+msgstr "Turinys"
+
+msgid "audio description"
+msgstr "garsinis vaizdavimas"
+
+msgid "DVB subtitles"
+msgstr "DVB subtitrai"
+
+msgid "Signal"
+msgstr "Signalas"
+
+msgid "Reception"
+msgstr "Priėmimas"
+
+msgid "Symbol rate"
+msgstr "Simbolių sparta"
+
+msgid "Transponder capacity"
+msgstr "Transponderio talpa"
+
+msgid "Server"
+msgstr "Serveris"
+
+msgid "Stream"
+msgstr "Srautas"
+
+msgid "Share of transponder"
+msgstr "Dalis transponderio"
+
+msgid "Aspect ratio"
+msgstr "Kraštinių santykis"
+
+msgid "Colour"
+msgstr "Spalva"
+
+msgid "Track"
+msgstr "Takelis"
+
+msgid "Now & next"
+msgstr "Dabar ir vėliau"
+
+msgid "Encryption"
+msgstr "Šifravimas"
+
+msgid "Interactive"
+msgstr "Interaktyvu"
+
+msgid "Stream health"
+msgstr "Srauto būklė"
+
+msgid "Transport errors"
+msgstr "Perdavimo klaidos"
+
+msgid "Timeshift buffer"
+msgstr "Laiko poslinkio buferis"
+
+msgid "interlaced"
+msgstr "pynimo"
+
+msgid "Hardware"
+msgstr "Aparatinė"
+
+msgid "Software"
+msgstr "Programinė"
+
+msgid "{n} tracks"
+msgstr "{n} takeliai"
+
+msgid "Free-to-air"
+msgstr "Nekoduotas"
+
+msgid "Signal level"
+msgstr "Signalo lygis"
+
+msgid "Internet stream"
+msgstr "Interneto srautas"
+
+msgid "continuity errors"
+msgstr "tęstinumo klaidos"
+
+msgid "Stream / PLP"
+msgstr "Srautas / PLP"
+
+msgid "Source of the figures"
+msgstr "Reikšmių šaltinis"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Įspėti ekrane, kai priėmimas silpnėja"
+
+msgid "Open log folder"
+msgstr "Atverti žurnalo aplanką"
+
+msgid "stream"
+msgstr "srautas"
+
+msgid "none (a plain stream)"
+msgstr "nėra (paprastas srautas)"
+
+msgid "internet stream"
+msgstr "interneto srautas"
+
+msgid "Transport Stream"
+msgstr "Transporto srautas"
+
+msgid "This channel only"
+msgstr "Tik šis kanalas"
+
+msgid "Transponder"
+msgstr "Transponderis"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Išmatuoti visą transponderį (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Interneto kanalai neturi transponderio."
+
+msgid "whole transponder"
+msgstr "visas transponderis"
+
+msgid "Video & Audio"
+msgstr "Vaizdas ir garsas"
+
+msgid "Black bars"
+msgstr "Juodos juostos"
+
+msgid "Click a track to listen to it."
+msgstr "Spustelėkite takelį, kad jį išklausytumėte."
+
+msgid "Integrated"
+msgstr "Integruotas"
+
+msgid "Teletext and subtitles"
+msgstr "Teletekstas ir subtitrai"
+
+msgid "interlaced capable"
+msgstr "palaiko pynimą"
+
+msgid "no"
+msgstr "ne"
+
+msgid "{n} frames"
+msgstr "{n} kadrai"
+
+msgid "schedule"
+msgstr "tvarkaraštis"
+
+msgid "subtitles"
+msgstr "subtitrai"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletekstas PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Šis kanalas neturi teleteksto ir subtitrų."
+
+msgid "Table"
+msgstr "Lentelė"
+
+msgid "Changes"
+msgstr "Pakeitimai"
+
+msgid "Repetition"
+msgstr "Kartojimas"
+
+msgid "Sections"
+msgstr "Sekcijos"
+
+msgid "Programme guide and clock"
+msgstr "Programų gidas ir laikrodis"
+
+msgid "Guide reaches"
+msgstr "Gidas siekia iki"
+
+msgid "Clock of the channel"
+msgstr "Kanalo laikrodis"
+
+msgid "EIT schedule"
+msgstr "EIT tvarkaraštis"
+
+msgid "missing"
+msgstr "trūksta"
+
+msgid "(other services)"
+msgstr "(kitos paslaugos)"
+
+msgid "{n} sections"
+msgstr "{n} sekcijos"
+
+msgid "Descrambling"
+msgstr "Iškodavimas"
+
+msgid "Descrambler state"
+msgstr "Iškoduotuvo būsena"
+
+msgid "Conditional access systems"
+msgstr "Sąlyginės prieigos sistemos"
+
+msgid "For"
+msgstr "Kam"
+
+msgid "Key changes"
+msgstr "Rakto keitimai"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Šis kanalas užšifruotas. LinDVB jį iškoduoja tik su jūsų pačių prenumeratos kortele (softcam arba CI modulis)."
+
+msgid "scrambled"
+msgstr "užkoduota"
+
+msgid "Profile"
+msgstr "Profilis"
+
+msgid "test application"
+msgstr "bandomoji programa"
+
+msgid "This channel has no HbbTV application."
+msgstr "Šis kanalas neturi HbbTV programos."
+
+msgid "No object carousel in this channel."
+msgstr "Šis kanalas neturi objektų karuselės."
+
+msgid "Export"
+msgstr "Eksportuoti"
+
+msgid "Compare with another channel…"
+msgstr "Palyginti su kitu kanalu…"
+
+msgid "Analyse another channel…"
+msgstr "Analizuoti kitą kanalą…"
+
+msgid "Window: {w}"
+msgstr "Langas: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Sekti ekrane rodomą kanalą"
+
+msgid "Watch this channel"
+msgstr "Žiūrėti šį kanalą"
+
+msgid "Try again"
+msgstr "Bandyti dar kartą"
+
+msgid "Copy as text"
+msgstr "Kopijuoti kaip tekstą"
+
+msgid "Export report…"
+msgstr "Eksportuoti ataskaitą…"
+
+msgid "Source: none"
+msgstr "Šaltinis: nėra"
+
+msgid "Saved {path}"
+msgstr "Įrašyta: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Įrašomos kitos 30 sekundžių…"
+
+msgid "Choose a channel"
+msgstr "Pasirinkite kanalą"
+
+msgid "Channel name"
+msgstr "Kanalo pavadinimas"
+
+msgid "Compare channels"
+msgstr "Palyginti kanalus"
+
+msgid "Comparison"
+msgstr "Palyginimas"
+
+msgid "Close (Esc)"
+msgstr "Užverti (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Kanalo analizė…"

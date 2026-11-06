@@ -2136,3 +2136,1086 @@ msgstr "Images TV entrelacées (la plupart des chaînes SD et 1080i). Effectué 
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Échec du décodage vidéo {name}, lecture avec le décodeur suivant"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Erreurs d'image : {n} blocs n'ont pas pu être corrigés"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Réception faible : seulement {db} dB de marge"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} blocs non corrigeables"
+
+msgid "Lock lost"
+msgstr "Verrouillage perdu"
+
+msgid "{n} continuity errors"
+msgstr "{n} erreurs de continuité"
+
+msgid "PCR jump"
+msgstr "Saut de PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Nouvelle version de table (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Saut de sonie {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Remise en mémoire tampon"
+
+msgid "Measured since {time}"
+msgstr "Mesuré depuis {time}"
+
+msgid "Delivery"
+msgstr "Diffusion"
+
+msgid "Frame rate"
+msgstr "Fréquence d'images"
+
+msgid "Average bit rate"
+msgstr "Débit moyen"
+
+msgid "Peak bit rate"
+msgstr "Débit de pointe"
+
+msgid "Margin"
+msgstr "Marge"
+
+msgid "Loudness"
+msgstr "Sonie"
+
+msgid "Bit rate"
+msgstr "Débit"
+
+msgid "Events"
+msgstr "Événements"
+
+msgid "1 minute"
+msgstr "1 minute"
+
+msgid "15 minutes"
+msgstr "15 minutes"
+
+msgid "5 minutes"
+msgstr "5 minutes"
+
+msgid "hard of hearing"
+msgstr "malentendants"
+
+msgid "Data"
+msgstr "Données"
+
+msgid "Level"
+msgstr "Niveau"
+
+msgid "Carrier"
+msgstr "Porteuse"
+
+msgid "Uncorrectable blocks"
+msgstr "Blocs non corrigeables"
+
+msgid "Lock losses"
+msgstr "Pertes de verrouillage"
+
+msgid "C/N history"
+msgstr "Historique C/N"
+
+msgid "Errors"
+msgstr "Erreurs"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilotes"
+
+msgid "Protocol"
+msgstr "Protocole"
+
+msgid "Response time"
+msgstr "Temps de réponse"
+
+msgid "Bad"
+msgstr "Mauvais"
+
+msgid "Fair"
+msgstr "Moyen"
+
+msgid "Good"
+msgstr "Bon"
+
+msgid "Poor"
+msgstr "Faible"
+
+msgid "NO LOCK"
+msgstr "PAS DE LOCK"
+
+msgid "Buffer"
+msgstr "Tampon"
+
+msgid "Download"
+msgstr "Téléchargement"
+
+msgid "Buffer history"
+msgstr "Historique du tampon"
+
+msgid "(driver value)"
+msgstr "(valeur du pilote)"
+
+msgid "since start"
+msgstr "depuis le début"
+
+msgid "required"
+msgstr "requis"
+
+msgid "Quality history"
+msgstr "Historique de qualité"
+
+msgid "horizontal"
+msgstr "horizontale"
+
+msgid "left"
+msgstr "gauche"
+
+msgid "vertical"
+msgstr "verticale"
+
+msgid "right"
+msgstr "droite"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(théorique)"
+
+msgid "Overview"
+msgstr "Vue d'ensemble"
+
+msgid "Bit rate of the channel"
+msgstr "Débit de la chaîne"
+
+msgid "Average"
+msgstr "Moyenne"
+
+msgid "Peak"
+msgstr "Pointe"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Décodeur"
+
+msgid "Dropped frames"
+msgstr "Images perdues"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Démarrage auto"
+
+msgid "PCR arrival jitter"
+msgstr "Gigue d'arrivée PCR"
+
+msgid "PCR interval"
+msgstr "Intervalle PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Intervalle PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Télétexte / sous-titres / données"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressif"
+
+msgid "only for the channel on screen"
+msgstr "uniquement pour la chaîne à l'écran"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Sonie (piste actuelle) : {lufs} · crête {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Sonie : uniquement pour la chaîne à l'écran"
+
+msgid "scrambled packets"
+msgstr "paquets embrouillés"
+
+msgid "no CA descriptors in the PMT"
+msgstr "aucun descripteur CA dans la PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} pages"
+
+msgid "Quality"
+msgstr "Qualité"
+
+msgid "Carrier to noise ratio"
+msgstr "Rapport porteuse/bruit"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Taux d'erreurs binaires (log₁₀)"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "HTTP status"
+msgstr "Statut HTTP"
+
+msgid "Content type"
+msgstr "Type de contenu"
+
+msgid "Download speed"
+msgstr "Vitesse de téléchargement"
+
+msgid "Segments"
+msgstr "Segments"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Variants"
+msgstr "Variantes"
+
+msgid "Codecs"
+msgstr "Codecs"
+
+msgid "Error timeline"
+msgstr "Chronologie des erreurs"
+
+msgid "uncorrectable blocks"
+msgstr "blocs non corrigeables"
+
+msgid "lock lost"
+msgstr "verrouillage perdu"
+
+msgid "rebuffering"
+msgstr "remise en tampon"
+
+msgid "loudness jump"
+msgstr "saut de sonie"
+
+msgid "table version"
+msgstr "version de table"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Paramètres réglés (du frontend)"
+
+msgid "Delivery system"
+msgstr "Système de diffusion"
+
+msgid "Code rate"
+msgstr "Taux de codage"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Intervalle de garde"
+
+msgid "Pilots"
+msgstr "Pilotes"
+
+msgid "Carriers"
+msgstr "Porteuses"
+
+msgid "C/N needed"
+msgstr "C/N nécessaire"
+
+msgid "Dish alignment aid…"
+msgstr "Aide au pointage de l'antenne…"
+
+msgid "Logging and warnings"
+msgstr "Journal et alertes"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Journaliser la réception (une ligne par minute, gardée 31 jours)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Alerter sous cette marge (dB)"
+
+msgid "Reception over the last days"
+msgstr "Réception des derniers jours"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · pointe {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× le débit du flux"
+
+msgid "Download and stream rate"
+msgstr "Débit de téléchargement et du flux"
+
+msgid "HLS with {n} variants"
+msgstr "HLS avec {n} variantes"
+
+msgid "HLS media playlist"
+msgstr "Playlist média HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "en direct"
+
+msgid "on demand"
+msgstr "à la demande"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segments de Ø {s} (cible {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Pas de liste de variantes : l'adresse est un flux unique."
+
+msgid "No events so far."
+msgstr "Aucun événement pour l'instant."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minutes journalisées pour cette chaîne."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Rien n'est encore journalisé pour cette chaîne."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · max {max}"
+
+msgid "needs {db}"
+msgstr "requiert {db}"
+
+msgid "relative (driver)"
+msgstr "relatif (pilote)"
+
+msgid "post FEC {v}"
+msgstr "après FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "nécessaire pour une image nette"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistiques DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (échelle du pilote)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Flux élémentaires et PID"
+
+msgid "Whole stream"
+msgstr "Flux entier"
+
+msgid "Sort by PID"
+msgstr "Trier par PID"
+
+msgid "Sort by bit rate"
+msgstr "Trier par débit"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "déc"
+
+msgid "CC errors"
+msgstr "Erreurs CC"
+
+msgid "Scrambled"
+msgstr "Embrouillé"
+
+msgid "Last 60 s"
+msgstr "60 dernières s"
+
+msgid "Packets"
+msgstr "Paquets"
+
+msgid "Sync losses"
+msgstr "Pertes de synchro"
+
+msgid "Null packets"
+msgstr "Paquets nuls"
+
+msgid "PCR jumps"
+msgstr "Sauts de PCR"
+
+msgid "PID filter"
+msgstr "Filtre PID"
+
+msgid "unknown"
+msgstr "inconnu"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Nul"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Somme ({n} PID) : {rate} · {cc} erreurs de continuité"
+
+msgid "Measuring…"
+msgstr "Mesure…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "libre / nul"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} utilisés sur {cap} · mesuré {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Seuls les PID de cette chaîne sont reçus. Mesurez tout le transpondeur pour voir les autres chaînes qu'il porte."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profil / niveau"
+
+msgid "Scan"
+msgstr "Balayage"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Images affichées / perdues"
+
+msgid "Measured bit rate"
+msgstr "Débit mesuré"
+
+msgid "Nominal bit rate"
+msgstr "Débit nominal"
+
+msgid "VBV buffer"
+msgstr "Tampon VBV"
+
+msgid "Frame sizes"
+msgstr "Tailles d'image"
+
+msgid "B frame"
+msgstr "Image B"
+
+msgid "I frame"
+msgstr "Image I"
+
+msgid "P frame"
+msgstr "Image P"
+
+msgid "GOP length"
+msgstr "Longueur du GOP"
+
+msgid "I frame average"
+msgstr "Moyenne image I"
+
+msgid "P/B frame average"
+msgstr "Moyenne image P/B"
+
+msgid "Nominal"
+msgstr "Nominal"
+
+msgid "Sample rate"
+msgstr "Fréquence d'échantillonnage"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Mesuré"
+
+msgid "Notes"
+msgstr "Remarques"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Sonie (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentanée"
+
+msgid "Short term"
+msgstr "Court terme"
+
+msgid "Loudness range"
+msgstr "Plage de sonie"
+
+msgid "Sample peak"
+msgstr "Crête d'échantillon"
+
+msgid "level {l}"
+msgstr "niveau {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "trames"
+
+msgid "mixed"
+msgstr "mixte"
+
+msgid "not sent"
+msgstr "non envoyé"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % en haut et en bas"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % sur les côtés"
+
+msgid "picture {ratio}:1"
+msgstr "image {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "oui, trames répétées"
+
+msgid "mastering display data"
+msgstr "données de l'écran de mastering"
+
+msgid "(maximum)"
+msgstr "(maximum)"
+
+msgid "not signalled (variable)"
+msgstr "non signalé (variable)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "maintenant {now} · Ø {avg} · pointe {max}"
+
+msgid "clean audio"
+msgstr "voix claire"
+
+msgid "EBU target −23 LUFS"
+msgstr "Cible EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Mesuré sur le son décodé de la chaîne à l'écran, avant l'égaliseur."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} sauts de sonie de 6 LU ou plus (programme ↔ publicité)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "La sonie n'est mesurée que pour la chaîne à l'écran."
+
+msgid "index"
+msgstr "index"
+
+msgid "info"
+msgstr "info"
+
+msgid "subtitles (hard of hearing)"
+msgstr "sous-titres (malentendants)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Sous-titres DVB PID {pid} :"
+
+msgid "Tables & EPG"
+msgstr "Tables & EPG"
+
+msgid "SI tables"
+msgstr "Tables SI"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Events in the guide"
+msgstr "Émissions dans le guide"
+
+msgid "EIT now/next"
+msgstr "EIT actuel/suivant"
+
+msgid "Difference to this computer"
+msgstr "Écart avec cet ordinateur"
+
+msgid "Local time offset"
+msgstr "Décalage horaire local"
+
+msgid "Network"
+msgstr "Réseau"
+
+msgid "Raw view"
+msgstr "Vue brute"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "lent"
+
+msgid "(all services)"
+msgstr "(tous les services)"
+
+msgid "not seen"
+msgstr "non vu"
+
+msgid "seen {s} s ago"
+msgstr "vu il y a {s} s"
+
+msgid "timers may start early or late"
+msgstr "les programmations peuvent démarrer trop tôt ou trop tard"
+
+msgid "no TDT/TOT"
+msgstr "pas de TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Paquets embrouillés"
+
+msgid "CA system ID"
+msgstr "ID du système CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Débit ECM"
+
+msgid "Scrambling per stream"
+msgstr "Embrouillage par flux"
+
+msgid "Crypto period"
+msgstr "Période crypto"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Un changement de clé est le passage entre le mot de contrôle pair et impair ; la période crypto est le temps entre deux changements."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Aucun accès conditionnel dans la PMT et aucun paquet embrouillé."
+
+msgid "free"
+msgstr "libre"
+
+msgid "all streams"
+msgstr "tous les flux"
+
+msgid "not received"
+msgstr "non reçu"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT) : {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Aucune CAT avec flux EMM reçue."
+
+msgid "Applications (AIT)"
+msgstr "Applications (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organisation / app"
+
+msgid "Control"
+msgstr "Contrôle"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Carrousels de données (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Version AIT {v} sur le PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "La chaîne annonce une AIT sur le PID {pid} ; elle n'est pas encore arrivée."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analyse de la chaîne – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Figer la mesure"
+
+msgid "Copy report as text"
+msgstr "Copier le rapport en texte"
+
+msgid "Save report as text…"
+msgstr "Enregistrer le rapport en texte…"
+
+msgid "Save report as JSON…"
+msgstr "Enregistrer le rapport en JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Enregistrer l'historique en CSV…"
+
+msgid "Save window as picture…"
+msgstr "Enregistrer la fenêtre en image…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Enregistrer 30 s du flux…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analyse de la chaîne · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "En direct · mesure depuis {t}"
+
+msgid "Paused"
+msgstr "En pause"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Aucun tuner n'est libre pour cette chaîne. Regardez-la, ou réessayez quand un tuner sera libre."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Le tuner de cette chaîne a été basculé sur une autre chaîne."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Mesuré en arrière-plan sur un tuner dédié ; image, son et sonie ne sont mesurés que pour la chaîne à l'écran."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Cette chaîne internet est téléchargée en arrière-plan sans être décodée ; regardez-la pour les valeurs d'image, de son et de tampon."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Source : adaptateur DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "statistiques dvbsrc"
+
+msgid "Source: background download"
+msgstr "Source : téléchargement en arrière-plan"
+
+msgid "Source: the player's stream"
+msgstr "Source : le flux du lecteur"
+
+msgid "updated every second"
+msgstr "mis à jour chaque seconde"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Rien à enregistrer : la chaîne n'est pas reçue."
+
+msgid "Compare {name} with"
+msgstr "Comparer {name} avec"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Valeurs sur la fenêtre temporelle de chaque analyse ; image et sonie uniquement pour la chaîne à l'écran."
+
+msgid "Dish alignment aid"
+msgstr "Aide au pointage de l'antenne"
+
+msgid "Tone"
+msgstr "Tonalité"
+
+msgid "Reset best value"
+msgstr "Réinitialiser la meilleure valeur"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Tournez l'antenne lentement ; la tonalité monte quand le signal s'améliore."
+
+msgid "% quality"
+msgstr "% de qualité"
+
+msgid "Best so far: {v}"
+msgstr "Meilleure valeur : {v}"
+
+msgid "Signal lost"
+msgstr "Signal perdu"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Le tuner était nécessaire pour regarder ou enregistrer."
+
+msgid "Channel analysis: {name}"
+msgstr "Analyse de la chaîne : {name}"
+
+msgid "Resolution"
+msgstr "Résolution"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Video"
+msgstr "Vidéo"
+
+msgid "Signal quality"
+msgstr "Qualité du signal"
+
+msgid "Continuity errors"
+msgstr "Erreurs de continuité"
+
+msgid "Content"
+msgstr "Contenu"
+
+msgid "audio description"
+msgstr "audiodescription"
+
+msgid "DVB subtitles"
+msgstr "Sous-titres DVB"
+
+msgid "Signal"
+msgstr "Signal"
+
+msgid "Reception"
+msgstr "Réception"
+
+msgid "Symbol rate"
+msgstr "Débit de symboles"
+
+msgid "Transponder capacity"
+msgstr "Capacité du transpondeur"
+
+msgid "Server"
+msgstr "Serveur"
+
+msgid "Stream"
+msgstr "Flux"
+
+msgid "Share of transponder"
+msgstr "Part du transpondeur"
+
+msgid "Aspect ratio"
+msgstr "Format d'image"
+
+msgid "Colour"
+msgstr "Couleur"
+
+msgid "Track"
+msgstr "Piste"
+
+msgid "Now & next"
+msgstr "Maintenant & ensuite"
+
+msgid "Encryption"
+msgstr "Chiffrement"
+
+msgid "Interactive"
+msgstr "Interactif"
+
+msgid "Stream health"
+msgstr "État du flux"
+
+msgid "Transport errors"
+msgstr "Erreurs de transport"
+
+msgid "Timeshift buffer"
+msgstr "Tampon de timeshift"
+
+msgid "interlaced"
+msgstr "entrelacé"
+
+msgid "Hardware"
+msgstr "Matériel"
+
+msgid "Software"
+msgstr "Logiciel"
+
+msgid "{n} tracks"
+msgstr "{n} pistes"
+
+msgid "Free-to-air"
+msgstr "En clair"
+
+msgid "Signal level"
+msgstr "Niveau du signal"
+
+msgid "Internet stream"
+msgstr "Flux internet"
+
+msgid "continuity errors"
+msgstr "erreurs de continuité"
+
+msgid "Stream / PLP"
+msgstr "Flux / PLP"
+
+msgid "Source of the figures"
+msgstr "Source des valeurs"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Alerter à l'écran quand la réception faiblit"
+
+msgid "Open log folder"
+msgstr "Ouvrir le dossier du journal"
+
+msgid "stream"
+msgstr "flux"
+
+msgid "none (a plain stream)"
+msgstr "aucune (flux simple)"
+
+msgid "internet stream"
+msgstr "flux internet"
+
+msgid "Transport Stream"
+msgstr "Flux de transport"
+
+msgid "This channel only"
+msgstr "Cette chaîne seulement"
+
+msgid "Transponder"
+msgstr "Transpondeur"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Mesurer tout le transpondeur (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Les chaînes internet n'ont pas de transpondeur."
+
+msgid "whole transponder"
+msgstr "transpondeur entier"
+
+msgid "Video & Audio"
+msgstr "Vidéo & audio"
+
+msgid "Black bars"
+msgstr "Bandes noires"
+
+msgid "Click a track to listen to it."
+msgstr "Cliquez sur une piste pour l'écouter."
+
+msgid "Integrated"
+msgstr "Intégrée"
+
+msgid "Teletext and subtitles"
+msgstr "Télétexte et sous-titres"
+
+msgid "interlaced capable"
+msgstr "compatible entrelacé"
+
+msgid "no"
+msgstr "non"
+
+msgid "{n} frames"
+msgstr "{n} images"
+
+msgid "schedule"
+msgstr "programme"
+
+msgid "subtitles"
+msgstr "sous-titres"
+
+msgid "Teletext PID {pid}:"
+msgstr "Télétexte PID {pid} :"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Pas de télétexte ni de sous-titres sur cette chaîne."
+
+msgid "Table"
+msgstr "Table"
+
+msgid "Changes"
+msgstr "Changements"
+
+msgid "Repetition"
+msgstr "Répétition"
+
+msgid "Sections"
+msgstr "Sections"
+
+msgid "Programme guide and clock"
+msgstr "Guide des programmes et horloge"
+
+msgid "Guide reaches"
+msgstr "Le guide va jusqu'à"
+
+msgid "Clock of the channel"
+msgstr "Horloge de la chaîne"
+
+msgid "EIT schedule"
+msgstr "EIT programme"
+
+msgid "missing"
+msgstr "manquante"
+
+msgid "(other services)"
+msgstr "(autres services)"
+
+msgid "{n} sections"
+msgstr "{n} sections"
+
+msgid "Descrambling"
+msgstr "Désembrouillage"
+
+msgid "Descrambler state"
+msgstr "État du désembrouilleur"
+
+msgid "Conditional access systems"
+msgstr "Systèmes d'accès conditionnel"
+
+msgid "For"
+msgstr "Pour"
+
+msgid "Key changes"
+msgstr "Changements de clé"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Cette chaîne est chiffrée. LinDVB ne la désembrouille qu'avec votre propre carte d'abonnement (softcam ou module CI)."
+
+msgid "scrambled"
+msgstr "embrouillé"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "application de test"
+
+msgid "This channel has no HbbTV application."
+msgstr "Cette chaîne n'a pas d'application HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Pas de carrousel d'objets sur cette chaîne."
+
+msgid "Export"
+msgstr "Exporter"
+
+msgid "Compare with another channel…"
+msgstr "Comparer avec une autre chaîne…"
+
+msgid "Analyse another channel…"
+msgstr "Analyser une autre chaîne…"
+
+msgid "Window: {w}"
+msgstr "Fenêtre : {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Suivre la chaîne à l'écran"
+
+msgid "Watch this channel"
+msgstr "Regarder cette chaîne"
+
+msgid "Try again"
+msgstr "Réessayer"
+
+msgid "Copy as text"
+msgstr "Copier en texte"
+
+msgid "Export report…"
+msgstr "Exporter le rapport…"
+
+msgid "Source: none"
+msgstr "Source : aucune"
+
+msgid "Saved {path}"
+msgstr "{path} enregistré"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Enregistrement des 30 prochaines secondes…"
+
+msgid "Choose a channel"
+msgstr "Choisir une chaîne"
+
+msgid "Channel name"
+msgstr "Nom de la chaîne"
+
+msgid "Compare channels"
+msgstr "Comparer des chaînes"
+
+msgid "Comparison"
+msgstr "Comparaison"
+
+msgid "Close (Esc)"
+msgstr "Fermer (Échap)"
+
+msgid "Channel Analysis…"
+msgstr "Analyse de la chaîne…"

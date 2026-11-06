@@ -271,9 +271,63 @@ class Capture(GObject.Object):
             self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait, self._on_ait_pids)
             parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._ait_probe)
 
+        # channel analysis (lindvb.analysis): callables that get every buffer of
+        # the transport stream; the list is replaced, never changed in place
+        self._taps = ()
+        self._tap_probe = None
+        self._parse = parse
+        self._saved_pids = None          # PID filter while the whole TS is measured
+
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
+
+    # -- channel analysis ---------------------------------------------------
+    def add_tap(self, fn):
+        """Hand every buffer of the transport stream (bytes) to fn, in the
+        streaming thread, until remove_tap(fn)."""
+        self._taps = tuple(self._taps) + (fn,)
+        if self._tap_probe is None:
+            pad = self._parse.get_static_pad("src")
+            self._tap_probe = pad.add_probe(Gst.PadProbeType.BUFFER, self._run_taps)
+
+    def remove_tap(self, fn):
+        self._taps = tuple(t for t in self._taps if t is not fn)
+        if not self._taps and self._tap_probe is not None:
+            self._parse.get_static_pad("src").remove_probe(self._tap_probe)
+            self._tap_probe = None
+
+    def _run_taps(self, pad, info):
+        taps = self._taps
+        buf = info.get_buffer()
+        if buf is not None and taps:
+            data = buf.extract_dup(0, buf.get_size())
+            for fn in taps:
+                try:
+                    fn(data)
+                except Exception as e:           # noqa: BLE001 - never stop the capture
+                    print(f"Stream analysis: {e}")
+        return Gst.PadProbeReturn.OK
+
+    @property
+    def pid_filter(self):
+        """The PIDs dvbsrc passes ("8192" = the whole transponder), or None (file)."""
+        return self._pids if self._src is not None else None
+
+    def set_full_ts(self, on):
+        """Receive the whole transponder (on) or go back to the service PIDs."""
+        if self._src is None:
+            return False
+        if on and self._saved_pids is None and "8192" not in self._pids.split(":"):
+            self._saved_pids = self._pids
+            self._pids = "8192"
+            self._src.set_property("pids", "8192")
+            return True
+        if not on and self._saved_pids is not None:
+            self._pids, self._saved_pids = self._saved_pids, None
+            self._src.set_property("pids", self._pids)
+            return True
+        return False
 
     def _epg_probe(self, pad, info):
         buf = info.get_buffer()
@@ -409,8 +463,8 @@ class Capture(GObject.Object):
         if t == Gst.MessageType.ELEMENT:
             s = msg.get_structure()
             if s and s.get_name() == "dvb-frontend-stats":
-                st = {k: s.get_value(k) for k in ("signal", "snr", "ber", "unc", "lock")
-                      if s.has_field(k)}
+                st = {k: s.get_value(k) for k in ("signal", "snr", "ber", "unc", "lock",
+                                                  "status") if s.has_field(k)}
                 self.stats = st
                 self.emit("stats", st)
             elif GstMpegts is not None:
@@ -469,12 +523,25 @@ class IPTVRecorder:
         GLib.timeout_add_seconds(2, lambda: self.pipeline.set_state(Gst.State.NULL) and False)
 
 
+ANALYSIS = "analysis"           # TunerManager user of a channel analysis
+
+
+def free_tuners(manager):
+    """Adapters a channel analysis could tune without taking one from anybody."""
+    adapters = manager.settings["adapters"] or [0]
+    test = bool(os.environ.get("LINDVB_TEST_TS"))
+    return [a for a in adapters if a not in manager.captures and
+            (test or os.path.exists(f"/dev/dvb/adapter{a}"))]
+
+
 class TunerManager(GObject.Object):
     """Hands out Captures; shares one tuner between live viewing and recording."""
 
     __gsignals__ = {
         # emitted when the live view must give up its tuner for a recording
         "preempt-live": (GObject.SignalFlags.RUN_LAST, None, ()),
+        # a channel analysis on a tuner of its own gave it up (the Capture)
+        "preempt-analysis": (GObject.SignalFlags.RUN_LAST, None, (object,)),
     }
 
     def __init__(self, settings, ca_factory=None):
@@ -492,6 +559,16 @@ class TunerManager(GObject.Object):
                 return cap
         adapters = self.settings["adapters"] or [0]
         free = [a for a in adapters if a not in self.captures]
+        if not free and user != ANALYSIS:
+            # a channel analysis in the background gives way to watching and recording
+            spare = [a for a, c in self.captures.items() if c.users == {ANALYSIS}]
+            if spare:
+                cap = self.captures[spare[0]]
+                self.emit("preempt-analysis", cap)
+                self.release(cap, ANALYSIS)
+                free = [spare[0]]
+        if not free and user == ANALYSIS:
+            raise RuntimeError("No free tuner for the analysis.")
         if not free:
             if user == "live":
                 live = [a for a, c in self.captures.items() if c.users == {"live"}]

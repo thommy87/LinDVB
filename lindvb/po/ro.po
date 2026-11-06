@@ -2136,3 +2136,1086 @@ msgstr "Imagini TV întrețesute (majoritatea canalelor SD și 1080i). Pe placa 
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Decodarea video {name} a eșuat, redare cu următorul decodor"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Erori de imagine: {n} blocuri nu au putut fi corectate"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Recepție slabă: doar {db} dB rezervă"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} blocuri necorectabile"
+
+msgid "Lock lost"
+msgstr "Sincronizare pierdută"
+
+msgid "{n} continuity errors"
+msgstr "{n} erori de continuitate"
+
+msgid "PCR jump"
+msgstr "Salt PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Versiune nouă de tabel (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Salt de intensitate {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Rebuffering"
+
+msgid "Measured since {time}"
+msgstr "Măsurat din {time}"
+
+msgid "Delivery"
+msgstr "Transmisie"
+
+msgid "Frame rate"
+msgstr "Frecvența cadrelor"
+
+msgid "Average bit rate"
+msgstr "Debit mediu"
+
+msgid "Peak bit rate"
+msgstr "Debit de vârf"
+
+msgid "Margin"
+msgstr "Rezervă"
+
+msgid "Loudness"
+msgstr "Intensitate sonoră"
+
+msgid "Bit rate"
+msgstr "Debit"
+
+msgid "Events"
+msgstr "Evenimente"
+
+msgid "1 minute"
+msgstr "1 minut"
+
+msgid "15 minutes"
+msgstr "15 minute"
+
+msgid "5 minutes"
+msgstr "5 minute"
+
+msgid "hard of hearing"
+msgstr "pentru persoane cu deficiențe de auz"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Level"
+msgstr "Nivel"
+
+msgid "Carrier"
+msgstr "Purtătoare"
+
+msgid "Uncorrectable blocks"
+msgstr "Blocuri necorectabile"
+
+msgid "Lock losses"
+msgstr "Pierderi de sincronizare"
+
+msgid "C/N history"
+msgstr "Istoric C/N"
+
+msgid "Errors"
+msgstr "Erori"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / piloți"
+
+msgid "Protocol"
+msgstr "Protocol"
+
+msgid "Response time"
+msgstr "Timp de răspuns"
+
+msgid "Bad"
+msgstr "Slabă"
+
+msgid "Fair"
+msgstr "Medie"
+
+msgid "Good"
+msgstr "Bună"
+
+msgid "Poor"
+msgstr "Redusă"
+
+msgid "NO LOCK"
+msgstr "FĂRĂ SINCRONIZARE"
+
+msgid "Buffer"
+msgstr "Buffer"
+
+msgid "Download"
+msgstr "Descărcare"
+
+msgid "Buffer history"
+msgstr "Istoric buffer"
+
+msgid "(driver value)"
+msgstr "(valoarea driverului)"
+
+msgid "since start"
+msgstr "de la pornire"
+
+msgid "required"
+msgstr "necesar"
+
+msgid "Quality history"
+msgstr "Istoric calitate"
+
+msgid "horizontal"
+msgstr "orizontală"
+
+msgid "left"
+msgstr "stânga"
+
+msgid "vertical"
+msgstr "verticală"
+
+msgid "right"
+msgstr "dreapta"
+
+msgid "Port {n}"
+msgstr "Portul {n}"
+
+msgid "(theoretical)"
+msgstr "(teoretică)"
+
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgid "Bit rate of the channel"
+msgstr "Debitul canalului"
+
+msgid "Average"
+msgstr "Medie"
+
+msgid "Peak"
+msgstr "Vârf"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Decodor"
+
+msgid "Dropped frames"
+msgstr "Cadre pierdute"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Pornire automată"
+
+msgid "PCR arrival jitter"
+msgstr "Jitter de sosire PCR"
+
+msgid "PCR interval"
+msgstr "Interval PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Interval PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletext / subtitrări / date"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresiv"
+
+msgid "only for the channel on screen"
+msgstr "doar pentru canalul de pe ecran"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Intensitate (pista curentă): {lufs} · vârf {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Intensitate: doar pentru canalul de pe ecran"
+
+msgid "scrambled packets"
+msgstr "pachete codate"
+
+msgid "no CA descriptors in the PMT"
+msgstr "niciun descriptor CA în PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} pagini"
+
+msgid "Quality"
+msgstr "Calitate"
+
+msgid "Carrier to noise ratio"
+msgstr "Raport purtătoare/zgomot"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Rata erorilor de bit (log₁₀)"
+
+msgid "Address"
+msgstr "Adresă"
+
+msgid "HTTP status"
+msgstr "Stare HTTP"
+
+msgid "Content type"
+msgstr "Tip de conținut"
+
+msgid "Download speed"
+msgstr "Viteză de descărcare"
+
+msgid "Segments"
+msgstr "Segmente"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Variants"
+msgstr "Variante"
+
+msgid "Codecs"
+msgstr "Codecuri"
+
+msgid "Error timeline"
+msgstr "Cronologia erorilor"
+
+msgid "uncorrectable blocks"
+msgstr "blocuri necorectabile"
+
+msgid "lock lost"
+msgstr "sincronizare pierdută"
+
+msgid "rebuffering"
+msgstr "rebuffering"
+
+msgid "loudness jump"
+msgstr "salt de intensitate"
+
+msgid "table version"
+msgstr "versiune de tabel"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Parametri acordați (din frontend)"
+
+msgid "Delivery system"
+msgstr "Sistem de transmisie"
+
+msgid "Code rate"
+msgstr "Rată de cod"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Interval de gardă"
+
+msgid "Pilots"
+msgstr "Piloți"
+
+msgid "Carriers"
+msgstr "Purtătoare"
+
+msgid "C/N needed"
+msgstr "C/N necesar"
+
+msgid "Dish alignment aid…"
+msgstr "Ajutor pentru orientarea antenei…"
+
+msgid "Logging and warnings"
+msgstr "Jurnal și avertismente"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Înregistrează recepția (o linie pe minut, păstrată 31 de zile)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Avertizează sub această rezervă (dB)"
+
+msgid "Reception over the last days"
+msgstr "Recepția din ultimele zile"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · vârf {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× debitul fluxului"
+
+msgid "Download and stream rate"
+msgstr "Viteza de descărcare și a fluxului"
+
+msgid "HLS with {n} variants"
+msgstr "HLS cu {n} variante"
+
+msgid "HLS media playlist"
+msgstr "Listă media HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "în direct"
+
+msgid "on demand"
+msgstr "la cerere"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmente de Ø {s} (țintă {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Nicio listă de variante: adresa este un singur flux."
+
+msgid "No events so far."
+msgstr "Încă niciun eveniment."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minute înregistrate pentru acest canal."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Nimic înregistrat încă pentru acest canal."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · max. {max}"
+
+msgid "needs {db}"
+msgstr "necesită {db}"
+
+msgid "relative (driver)"
+msgstr "relativ (driver)"
+
+msgid "post FEC {v}"
+msgstr "după FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "necesar pentru o imagine curată"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistici DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (scara driverului)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Fluxuri elementare și PID-uri"
+
+msgid "Whole stream"
+msgstr "Tot fluxul"
+
+msgid "Sort by PID"
+msgstr "Sortează după PID"
+
+msgid "Sort by bit rate"
+msgstr "Sortează după debit"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "zec"
+
+msgid "CC errors"
+msgstr "Erori CC"
+
+msgid "Scrambled"
+msgstr "Codat"
+
+msgid "Last 60 s"
+msgstr "Ultimele 60 s"
+
+msgid "Packets"
+msgstr "Pachete"
+
+msgid "Sync losses"
+msgstr "Pierderi de sincronizare"
+
+msgid "Null packets"
+msgstr "Pachete nule"
+
+msgid "PCR jumps"
+msgstr "Salturi PCR"
+
+msgid "PID filter"
+msgstr "Filtru PID"
+
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Nul"
+
+msgid "Other"
+msgstr "Altele"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Total ({n} PID-uri): {rate} · {cc} erori de continuitate"
+
+msgid "Measuring…"
+msgstr "Se măsoară…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "liber / nul"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} folosiți din {cap} · măsurat {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Se recepționează doar PID-urile acestui canal. Măsurați tot transponderul pentru a vedea celelalte canale de pe el."
+
+msgid "{n} PIDs"
+msgstr "{n} PID-uri"
+
+msgid "Profile / level"
+msgstr "Profil / nivel"
+
+msgid "Scan"
+msgstr "Scanare"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Cadre afișate / pierdute"
+
+msgid "Measured bit rate"
+msgstr "Debit măsurat"
+
+msgid "Nominal bit rate"
+msgstr "Debit nominal"
+
+msgid "VBV buffer"
+msgstr "Buffer VBV"
+
+msgid "Frame sizes"
+msgstr "Dimensiuni cadre"
+
+msgid "B frame"
+msgstr "Cadru B"
+
+msgid "I frame"
+msgstr "Cadru I"
+
+msgid "P frame"
+msgstr "Cadru P"
+
+msgid "GOP length"
+msgstr "Lungime GOP"
+
+msgid "I frame average"
+msgstr "Medie cadru I"
+
+msgid "P/B frame average"
+msgstr "Medie cadru P/B"
+
+msgid "Nominal"
+msgstr "Nominal"
+
+msgid "Sample rate"
+msgstr "Frecvență de eșantionare"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Măsurat"
+
+msgid "Notes"
+msgstr "Note"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Intensitate sonoră (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentană"
+
+msgid "Short term"
+msgstr "Termen scurt"
+
+msgid "Loudness range"
+msgstr "Interval de intensitate"
+
+msgid "Sample peak"
+msgstr "Vârf de eșantion"
+
+msgid "level {l}"
+msgstr "nivel {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "câmpuri"
+
+msgid "mixed"
+msgstr "mixt"
+
+msgid "not sent"
+msgstr "nu se trimite"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % sus și jos"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % lateral"
+
+msgid "picture {ratio}:1"
+msgstr "imagine {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "da, câmpuri repetate"
+
+msgid "mastering display data"
+msgstr "date ale ecranului de masterizare"
+
+msgid "(maximum)"
+msgstr "(maxim)"
+
+msgid "not signalled (variable)"
+msgstr "nesemnalat (variabil)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "acum {now} · Ø {avg} · vârf {max}"
+
+msgid "clean audio"
+msgstr "vorbire clară"
+
+msgid "EBU target −23 LUFS"
+msgstr "Ținta EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Măsurat pe sunetul decodat al canalului de pe ecran, înainte de egalizator."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} salturi de intensitate de 6 LU sau mai mult (program ↔ reclamă)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Intensitatea sonoră se măsoară doar pentru canalul de pe ecran."
+
+msgid "index"
+msgstr "index"
+
+msgid "info"
+msgstr "informații"
+
+msgid "subtitles (hard of hearing)"
+msgstr "subtitrări (deficiențe de auz)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Subtitrări DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabele și EPG"
+
+msgid "SI tables"
+msgstr "Tabele SI"
+
+msgid "Version"
+msgstr "Versiune"
+
+msgid "Events in the guide"
+msgstr "Emisiuni în ghid"
+
+msgid "EIT now/next"
+msgstr "EIT acum/urmează"
+
+msgid "Difference to this computer"
+msgstr "Diferență față de acest computer"
+
+msgid "Local time offset"
+msgstr "Decalaj orar local"
+
+msgid "Network"
+msgstr "Rețea"
+
+msgid "Raw view"
+msgstr "Vizualizare brută"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "lent"
+
+msgid "(all services)"
+msgstr "(toate serviciile)"
+
+msgid "not seen"
+msgstr "nevăzut"
+
+msgid "seen {s} s ago"
+msgstr "văzut acum {s} s"
+
+msgid "timers may start early or late"
+msgstr "temporizatoarele pot porni prea devreme sau prea târziu"
+
+msgid "no TDT/TOT"
+msgstr "fără TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Pachete codate"
+
+msgid "CA system ID"
+msgstr "ID sistem CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Debit ECM"
+
+msgid "Scrambling per stream"
+msgstr "Codare pe flux"
+
+msgid "Crypto period"
+msgstr "Perioadă cripto"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "O schimbare de cheie este trecerea între cuvântul de control par și impar; perioada cripto este timpul dintre două schimbări."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Niciun acces condiționat în PMT și niciun pachet codat."
+
+msgid "free"
+msgstr "liber"
+
+msgid "all streams"
+msgstr "toate fluxurile"
+
+msgid "not received"
+msgstr "nerecepționat"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Nu s-a primit nicio CAT cu fluxuri EMM."
+
+msgid "Applications (AIT)"
+msgstr "Aplicații (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizație / aplicație"
+
+msgid "Control"
+msgstr "Control"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Caruseluri de date (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Versiune AIT {v} pe PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Canalul anunță o AIT pe PID {pid}; încă nu a sosit."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analiza canalului – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Îngheață măsurarea"
+
+msgid "Copy report as text"
+msgstr "Copiază raportul ca text"
+
+msgid "Save report as text…"
+msgstr "Salvează raportul ca text…"
+
+msgid "Save report as JSON…"
+msgstr "Salvează raportul ca JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Salvează istoricul ca CSV…"
+
+msgid "Save window as picture…"
+msgstr "Salvează fereastra ca imagine…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Salvează 30 s din flux…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analiza canalului · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "În direct · se măsoară de {t}"
+
+msgid "Paused"
+msgstr "În pauză"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Niciun tuner nu este liber pentru acest canal. Urmăriți-l sau încercați din nou când se eliberează un tuner."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Tunerul acestui canal a fost comutat pe alt canal."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Măsurat în fundal pe un tuner propriu; imaginea, sunetul și intensitatea se măsoară doar pentru canalul de pe ecran."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Acest canal de internet este descărcat în fundal fără decodare; urmăriți-l pentru valori de imagine, sunet și buffer."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Sursă: adaptor DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "statistici dvbsrc"
+
+msgid "Source: background download"
+msgstr "Sursă: descărcare în fundal"
+
+msgid "Source: the player's stream"
+msgstr "Sursă: fluxul playerului"
+
+msgid "updated every second"
+msgstr "actualizat în fiecare secundă"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Nimic de salvat: canalul nu este recepționat."
+
+msgid "Compare {name} with"
+msgstr "Compară {name} cu"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Valori pe fereastra de timp a fiecărei analize; imagine și intensitate doar pentru canalul de pe ecran."
+
+msgid "Dish alignment aid"
+msgstr "Ajutor pentru orientarea antenei"
+
+msgid "Tone"
+msgstr "Ton"
+
+msgid "Reset best value"
+msgstr "Resetează cea mai bună valoare"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Rotiți antena încet; tonul crește cu un semnal mai bun."
+
+msgid "% quality"
+msgstr "% calitate"
+
+msgid "Best so far: {v}"
+msgstr "Cea mai bună până acum: {v}"
+
+msgid "Signal lost"
+msgstr "Semnal pierdut"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Tunerul era necesar pentru vizionare sau înregistrare."
+
+msgid "Channel analysis: {name}"
+msgstr "Analiza canalului: {name}"
+
+msgid "Resolution"
+msgstr "Rezoluție"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Calitatea semnalului"
+
+msgid "Continuity errors"
+msgstr "Erori de continuitate"
+
+msgid "Content"
+msgstr "Conținut"
+
+msgid "audio description"
+msgstr "audiodescriere"
+
+msgid "DVB subtitles"
+msgstr "Subtitrări DVB"
+
+msgid "Signal"
+msgstr "Semnal"
+
+msgid "Reception"
+msgstr "Recepție"
+
+msgid "Symbol rate"
+msgstr "Rată de simboluri"
+
+msgid "Transponder capacity"
+msgstr "Capacitatea transponderului"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Flux"
+
+msgid "Share of transponder"
+msgstr "Cota din transponder"
+
+msgid "Aspect ratio"
+msgstr "Raport de aspect"
+
+msgid "Colour"
+msgstr "Culoare"
+
+msgid "Track"
+msgstr "Pistă"
+
+msgid "Now & next"
+msgstr "Acum și urmează"
+
+msgid "Encryption"
+msgstr "Criptare"
+
+msgid "Interactive"
+msgstr "Interactiv"
+
+msgid "Stream health"
+msgstr "Starea fluxului"
+
+msgid "Transport errors"
+msgstr "Erori de transport"
+
+msgid "Timeshift buffer"
+msgstr "Buffer timeshift"
+
+msgid "interlaced"
+msgstr "întrețesut"
+
+msgid "Hardware"
+msgstr "Hardware"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "{n} tracks"
+msgstr "{n} piste"
+
+msgid "Free-to-air"
+msgstr "Necodat"
+
+msgid "Signal level"
+msgstr "Nivelul semnalului"
+
+msgid "Internet stream"
+msgstr "Flux de internet"
+
+msgid "continuity errors"
+msgstr "erori de continuitate"
+
+msgid "Stream / PLP"
+msgstr "Flux / PLP"
+
+msgid "Source of the figures"
+msgstr "Sursa valorilor"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Avertizează pe ecran când recepția slăbește"
+
+msgid "Open log folder"
+msgstr "Deschide dosarul jurnalului"
+
+msgid "stream"
+msgstr "flux"
+
+msgid "none (a plain stream)"
+msgstr "niciuna (flux simplu)"
+
+msgid "internet stream"
+msgstr "flux de internet"
+
+msgid "Transport Stream"
+msgstr "Flux de transport"
+
+msgid "This channel only"
+msgstr "Doar acest canal"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Măsoară tot transponderul (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Canalele de internet nu au transponder."
+
+msgid "whole transponder"
+msgstr "tot transponderul"
+
+msgid "Video & Audio"
+msgstr "Video și audio"
+
+msgid "Black bars"
+msgstr "Benzi negre"
+
+msgid "Click a track to listen to it."
+msgstr "Faceți clic pe o pistă pentru a o asculta."
+
+msgid "Integrated"
+msgstr "Integrată"
+
+msgid "Teletext and subtitles"
+msgstr "Teletext și subtitrări"
+
+msgid "interlaced capable"
+msgstr "compatibil cu întrețesut"
+
+msgid "no"
+msgstr "nu"
+
+msgid "{n} frames"
+msgstr "{n} cadre"
+
+msgid "schedule"
+msgstr "program"
+
+msgid "subtitles"
+msgstr "subtitrări"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletext PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Acest canal nu are teletext sau subtitrări."
+
+msgid "Table"
+msgstr "Tabel"
+
+msgid "Changes"
+msgstr "Modificări"
+
+msgid "Repetition"
+msgstr "Repetare"
+
+msgid "Sections"
+msgstr "Secțiuni"
+
+msgid "Programme guide and clock"
+msgstr "Ghid de programe și ceas"
+
+msgid "Guide reaches"
+msgstr "Ghidul ajunge până la"
+
+msgid "Clock of the channel"
+msgstr "Ceasul canalului"
+
+msgid "EIT schedule"
+msgstr "EIT program"
+
+msgid "missing"
+msgstr "lipsește"
+
+msgid "(other services)"
+msgstr "(alte servicii)"
+
+msgid "{n} sections"
+msgstr "{n} secțiuni"
+
+msgid "Descrambling"
+msgstr "Decodare"
+
+msgid "Descrambler state"
+msgstr "Starea decodorului"
+
+msgid "Conditional access systems"
+msgstr "Sisteme de acces condiționat"
+
+msgid "For"
+msgstr "Pentru"
+
+msgid "Key changes"
+msgstr "Schimbări de cheie"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Acest canal este criptat. LinDVB îl decodează doar cu propriul card de abonament (softcam sau modul CI)."
+
+msgid "scrambled"
+msgstr "codat"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "aplicație de test"
+
+msgid "This channel has no HbbTV application."
+msgstr "Acest canal nu are aplicație HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Acest canal nu are carusel de obiecte."
+
+msgid "Export"
+msgstr "Exportă"
+
+msgid "Compare with another channel…"
+msgstr "Compară cu alt canal…"
+
+msgid "Analyse another channel…"
+msgstr "Analizează alt canal…"
+
+msgid "Window: {w}"
+msgstr "Fereastră: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Urmărește canalul de pe ecran"
+
+msgid "Watch this channel"
+msgstr "Vizionează acest canal"
+
+msgid "Try again"
+msgstr "Încearcă din nou"
+
+msgid "Copy as text"
+msgstr "Copiază ca text"
+
+msgid "Export report…"
+msgstr "Exportă raportul…"
+
+msgid "Source: none"
+msgstr "Sursă: niciuna"
+
+msgid "Saved {path}"
+msgstr "{path} salvat"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Se înregistrează următoarele 30 de secunde…"
+
+msgid "Choose a channel"
+msgstr "Alegeți un canal"
+
+msgid "Channel name"
+msgstr "Numele canalului"
+
+msgid "Compare channels"
+msgstr "Compară canale"
+
+msgid "Comparison"
+msgstr "Comparație"
+
+msgid "Close (Esc)"
+msgstr "Închide (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Analiza canalului…"
