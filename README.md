@@ -15,9 +15,8 @@ It is a GTK 4 application written in Python that uses the standard Linux DVB sta
 * **GStreamer** `playbin` for decoding, `tsparse`/`tsdemux`, `GstMpegts` for the EPG and
   `teletextdec` (libzvbi) for teletext
 
-The feature set follows DVBViewer on Windows. [docs/FEATURES.md](docs/FEATURES.md)
-lists each DVBViewer function, the evidence for it from a DVBViewer installation,
-and whether LinDVB has it.
+[docs/FEATURES.md](docs/FEATURES.md) lists the features and whether LinDVB has
+them.
 
 ![Live TV with the on-screen programme info](docs/screenshots/01-live-tv-osd.png)
 
@@ -107,7 +106,7 @@ picture and hides itself when the mouse is still.
   ([docs/HBBTV.md](docs/HBBTV.md))
 * Channel editor and favourites
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
-  DVBViewer channel lists (`*.ini`); IPTV playlists also from a web address
+  `*.ini` channel lists; IPTV playlists also from a web address
   (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
@@ -255,7 +254,7 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 ## First steps
 
 1. **Preferences → Tuner and Channels → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
-   dtv-scan-tables, or add a folder with DVBViewer-style transponder lists), LNB and
+   dtv-scan-tables, or add a folder with `.ini` transponder lists), LNB and
    DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
 2. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.
 3. Set timers in **Programme Guide** (Record / Record Series) or **Timer Recordings**.
