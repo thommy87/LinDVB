@@ -2136,3 +2136,1086 @@ msgstr "Rindpārlēces TV attēli (lielākā daļa SD un 1080i kanālu). Videoka
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name} video dekodēšana neizdevās, atskaņo ar nākamo dekoderi"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Attēla kļūdas: {n} blokus neizdevās izlabot"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Vāja uztveršana: tikai {db} dB rezerve"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} nelabojami bloki"
+
+msgid "Lock lost"
+msgstr "Sinhronizācija zaudēta"
+
+msgid "{n} continuity errors"
+msgstr "{n} nepārtrauktības kļūdas"
+
+msgid "PCR jump"
+msgstr "PCR lēciens"
+
+msgid "New table version (0x{tid})"
+msgstr "Jauna tabulas versija (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Skaļuma lēciens {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Atkārtota buferēšana"
+
+msgid "Measured since {time}"
+msgstr "Mērīts kopš {time}"
+
+msgid "Delivery"
+msgstr "Pārraide"
+
+msgid "Frame rate"
+msgstr "Kadru ātrums"
+
+msgid "Average bit rate"
+msgstr "Vidējais bitu ātrums"
+
+msgid "Peak bit rate"
+msgstr "Maksimālais bitu ātrums"
+
+msgid "Margin"
+msgstr "Rezerve"
+
+msgid "Loudness"
+msgstr "Skaļums"
+
+msgid "Bit rate"
+msgstr "Bitu ātrums"
+
+msgid "Events"
+msgstr "Notikumi"
+
+msgid "1 minute"
+msgstr "1 minūte"
+
+msgid "15 minutes"
+msgstr "15 minūtes"
+
+msgid "5 minutes"
+msgstr "5 minūtes"
+
+msgid "hard of hearing"
+msgstr "cilvēkiem ar dzirdes traucējumiem"
+
+msgid "Data"
+msgstr "Dati"
+
+msgid "Level"
+msgstr "Līmenis"
+
+msgid "Carrier"
+msgstr "Nesējs"
+
+msgid "Uncorrectable blocks"
+msgstr "Nelabojami bloki"
+
+msgid "Lock losses"
+msgstr "Sinhronizācijas zudumi"
+
+msgid "C/N history"
+msgstr "C/N vēsture"
+
+msgid "Errors"
+msgstr "Kļūdas"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / piloti"
+
+msgid "Protocol"
+msgstr "Protokols"
+
+msgid "Response time"
+msgstr "Atbildes laiks"
+
+msgid "Bad"
+msgstr "Slikta"
+
+msgid "Fair"
+msgstr "Vidēja"
+
+msgid "Good"
+msgstr "Laba"
+
+msgid "Poor"
+msgstr "Vāja"
+
+msgid "NO LOCK"
+msgstr "NAV SINHRONIZĀCIJAS"
+
+msgid "Buffer"
+msgstr "Buferis"
+
+msgid "Download"
+msgstr "Lejupielāde"
+
+msgid "Buffer history"
+msgstr "Bufera vēsture"
+
+msgid "(driver value)"
+msgstr "(draivera vērtība)"
+
+msgid "since start"
+msgstr "kopš sākuma"
+
+msgid "required"
+msgstr "nepieciešams"
+
+msgid "Quality history"
+msgstr "Kvalitātes vēsture"
+
+msgid "horizontal"
+msgstr "horizontāla"
+
+msgid "left"
+msgstr "kreisā"
+
+msgid "vertical"
+msgstr "vertikāla"
+
+msgid "right"
+msgstr "labā"
+
+msgid "Port {n}"
+msgstr "Ports {n}"
+
+msgid "(theoretical)"
+msgstr "(teorētiskā)"
+
+msgid "Overview"
+msgstr "Pārskats"
+
+msgid "Bit rate of the channel"
+msgstr "Kanāla bitu ātrums"
+
+msgid "Average"
+msgstr "Vidēji"
+
+msgid "Peak"
+msgstr "Maksimums"
+
+msgid "Codec"
+msgstr "Kodeks"
+
+msgid "Decoder"
+msgstr "Dekoderis"
+
+msgid "Dropped frames"
+msgstr "Izlaisti kadri"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Automātiska palaišana"
+
+msgid "PCR arrival jitter"
+msgstr "PCR pienākšanas trīce"
+
+msgid "PCR interval"
+msgstr "PCR intervāls"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT intervāls"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teleteksts / subtitri / dati"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresīvs"
+
+msgid "only for the channel on screen"
+msgstr "tikai ekrānā redzamajam kanālam"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Skaļums (pašreizējais celiņš): {lufs} · maksimums {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Skaļums: tikai ekrānā redzamajam kanālam"
+
+msgid "scrambled packets"
+msgstr "šifrētas paketes"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT nav CA deskriptoru"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} lappuses"
+
+msgid "Quality"
+msgstr "Kvalitāte"
+
+msgid "Carrier to noise ratio"
+msgstr "Nesēja un trokšņa attiecība"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Bitu kļūdu biežums (log₁₀)"
+
+msgid "Address"
+msgstr "Adrese"
+
+msgid "HTTP status"
+msgstr "HTTP statuss"
+
+msgid "Content type"
+msgstr "Satura tips"
+
+msgid "Download speed"
+msgstr "Lejupielādes ātrums"
+
+msgid "Segments"
+msgstr "Segmenti"
+
+msgid "Error"
+msgstr "Kļūda"
+
+msgid "Variants"
+msgstr "Varianti"
+
+msgid "Codecs"
+msgstr "Kodeki"
+
+msgid "Error timeline"
+msgstr "Kļūdu laika josla"
+
+msgid "uncorrectable blocks"
+msgstr "nelabojami bloki"
+
+msgid "lock lost"
+msgstr "sinhronizācija zaudēta"
+
+msgid "rebuffering"
+msgstr "atkārtota buferēšana"
+
+msgid "loudness jump"
+msgstr "skaļuma lēciens"
+
+msgid "table version"
+msgstr "tabulas versija"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Noregulētie parametri (no frontend)"
+
+msgid "Delivery system"
+msgstr "Pārraides sistēma"
+
+msgid "Code rate"
+msgstr "Koda ātrums"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Aizsargintervāls"
+
+msgid "Pilots"
+msgstr "Piloti"
+
+msgid "Carriers"
+msgstr "Nesēji"
+
+msgid "C/N needed"
+msgstr "Nepieciešamais C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Palīdzība antenas pavēršanai…"
+
+msgid "Logging and warnings"
+msgstr "Žurnāls un brīdinājumi"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Reģistrēt uztveršanu (viena rinda minūtē, glabā 31 dienu)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Brīdināt zem šīs rezerves (dB)"
+
+msgid "Reception over the last days"
+msgstr "Uztveršana pēdējās dienās"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · maksimums {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× straumes ātrums"
+
+msgid "Download and stream rate"
+msgstr "Lejupielādes un straumes ātrums"
+
+msgid "HLS with {n} variants"
+msgstr "HLS ar {n} variantiem"
+
+msgid "HLS media playlist"
+msgstr "HLS multivides saraksts"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "tiešraide"
+
+msgid "on demand"
+msgstr "pēc pieprasījuma"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmenti pa Ø {s} (mērķis {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Nav variantu saraksta: adrese ir viena straume."
+
+msgid "No events so far."
+msgstr "Pagaidām nav notikumu."
+
+msgid "{n} minutes logged for this channel."
+msgstr "Šim kanālam reģistrētas {n} minūtes."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Šim kanālam vēl nekas nav reģistrēts."
+
+msgid "min {min} · max {max}"
+msgstr "min. {min} · maks. {max}"
+
+msgid "needs {db}"
+msgstr "nepieciešams {db}"
+
+msgid "relative (driver)"
+msgstr "relatīvs (draiveris)"
+
+msgid "post FEC {v}"
+msgstr "pēc FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "nepieciešams tīram attēlam"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 statistika"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (draivera skala)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Elementārās straumes un PID"
+
+msgid "Whole stream"
+msgstr "Visa straume"
+
+msgid "Sort by PID"
+msgstr "Kārtot pēc PID"
+
+msgid "Sort by bit rate"
+msgstr "Kārtot pēc bitu ātruma"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC kļūdas"
+
+msgid "Scrambled"
+msgstr "Šifrēts"
+
+msgid "Last 60 s"
+msgstr "Pēdējās 60 s"
+
+msgid "Packets"
+msgstr "Paketes"
+
+msgid "Sync losses"
+msgstr "Sinhronizācijas zudumi"
+
+msgid "Null packets"
+msgstr "Tukšās paketes"
+
+msgid "PCR jumps"
+msgstr "PCR lēcieni"
+
+msgid "PID filter"
+msgstr "PID filtrs"
+
+msgid "unknown"
+msgstr "nezināms"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Tukšs"
+
+msgid "Other"
+msgstr "Cits"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Kopā ({n} PID): {rate} · {cc} nepārtrauktības kļūdas"
+
+msgid "Measuring…"
+msgstr "Mēra…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "brīvs / tukšs"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} aizņemts no {cap} · mērīts {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Tiek saņemti tikai šī kanāla PID. Izmēriet visu transponderu, lai redzētu citus tā kanālus."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profils / līmenis"
+
+msgid "Scan"
+msgstr "Izvērse"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Filma (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Kadri parādīti / izlaisti"
+
+msgid "Measured bit rate"
+msgstr "Izmērītais bitu ātrums"
+
+msgid "Nominal bit rate"
+msgstr "Nominālais bitu ātrums"
+
+msgid "VBV buffer"
+msgstr "VBV buferis"
+
+msgid "Frame sizes"
+msgstr "Kadru izmēri"
+
+msgid "B frame"
+msgstr "B kadrs"
+
+msgid "I frame"
+msgstr "I kadrs"
+
+msgid "P frame"
+msgstr "P kadrs"
+
+msgid "GOP length"
+msgstr "GOP garums"
+
+msgid "I frame average"
+msgstr "I kadra vidējais"
+
+msgid "P/B frame average"
+msgstr "P/B kadra vidējais"
+
+msgid "Nominal"
+msgstr "Nominālais"
+
+msgid "Sample rate"
+msgstr "Iztveršanas frekvence"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Izmērīts"
+
+msgid "Notes"
+msgstr "Piezīmes"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Skaļums (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentānais"
+
+msgid "Short term"
+msgstr "Īslaicīgais"
+
+msgid "Loudness range"
+msgstr "Skaļuma diapazons"
+
+msgid "Sample peak"
+msgstr "Parauga maksimums"
+
+msgid "level {l}"
+msgstr "līmenis {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "lauki"
+
+msgid "mixed"
+msgstr "jaukts"
+
+msgid "not sent"
+msgstr "netiek sūtīts"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % augšā un apakšā"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % sānos"
+
+msgid "picture {ratio}:1"
+msgstr "attēls {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "jā, atkārtoti lauki"
+
+msgid "mastering display data"
+msgstr "mastering displeja dati"
+
+msgid "(maximum)"
+msgstr "(maksimums)"
+
+msgid "not signalled (variable)"
+msgstr "nav norādīts (mainīgs)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "tagad {now} · Ø {avg} · maksimums {max}"
+
+msgid "clean audio"
+msgstr "skaidra runa"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU mērķis −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Mērīts ekrānā redzamā kanāla dekodētajā skaņā, pirms ekvalaizera."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} skaļuma lēcieni par 6 LU vai vairāk (programma ↔ reklāma)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Skaļums tiek mērīts tikai ekrānā redzamajam kanālam."
+
+msgid "index"
+msgstr "indekss"
+
+msgid "info"
+msgstr "informācija"
+
+msgid "subtitles (hard of hearing)"
+msgstr "subtitri (dzirdes traucējumiem)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB subtitri PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabulas un EPG"
+
+msgid "SI tables"
+msgstr "SI tabulas"
+
+msgid "Version"
+msgstr "Versija"
+
+msgid "Events in the guide"
+msgstr "Raidījumi ceļvedī"
+
+msgid "EIT now/next"
+msgstr "EIT tagad/nākamais"
+
+msgid "Difference to this computer"
+msgstr "Atšķirība no šī datora"
+
+msgid "Local time offset"
+msgstr "Vietējā laika nobīde"
+
+msgid "Network"
+msgstr "Tīkls"
+
+msgid "Raw view"
+msgstr "Neapstrādāts skats"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "lēni"
+
+msgid "(all services)"
+msgstr "(visi pakalpojumi)"
+
+msgid "not seen"
+msgstr "nav redzēts"
+
+msgid "seen {s} s ago"
+msgstr "redzēts pirms {s} s"
+
+msgid "timers may start early or late"
+msgstr "taimeri var sākties par agru vai par vēlu"
+
+msgid "no TDT/TOT"
+msgstr "nav TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Šifrētas paketes"
+
+msgid "CA system ID"
+msgstr "CA sistēmas ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM ātrums"
+
+msgid "Scrambling per stream"
+msgstr "Šifrēšana pa straumēm"
+
+msgid "Crypto period"
+msgstr "Kriptoperiods"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Atslēgas maiņa ir pāreja starp pāra un nepāra vadības vārdu; kriptoperiods ir laiks starp divām maiņām."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT nav nosacītās piekļuves un nav šifrētu pakešu."
+
+msgid "free"
+msgstr "brīvs"
+
+msgid "all streams"
+msgstr "visas straumes"
+
+msgid "not received"
+msgstr "nav saņemts"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Nav saņemta CAT ar EMM straumēm."
+
+msgid "Applications (AIT)"
+msgstr "Lietotnes (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizācija / lietotne"
+
+msgid "Control"
+msgstr "Vadība"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Datu karuseļi (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT versija {v} uz PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanāls izziņo AIT uz PID {pid}; tā vēl nav pienākusi."
+
+msgid "Channel Analysis – {name}"
+msgstr "Kanāla analīze – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Iesaldēt mērījumu"
+
+msgid "Copy report as text"
+msgstr "Kopēt atskaiti kā tekstu"
+
+msgid "Save report as text…"
+msgstr "Saglabāt atskaiti kā tekstu…"
+
+msgid "Save report as JSON…"
+msgstr "Saglabāt atskaiti kā JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Saglabāt vēsturi kā CSV…"
+
+msgid "Save window as picture…"
+msgstr "Saglabāt logu kā attēlu…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Saglabāt 30 s straumes…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Kanāla analīze · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Tiešraide · mēra {t}"
+
+msgid "Paused"
+msgstr "Apturēts"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Šim kanālam nav brīva uztvērēja. Skatieties to vai mēģiniet vēlreiz, kad uztvērējs atbrīvosies."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Šī kanāla uztvērējs tika pārslēgts uz citu kanālu."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Mērīts fonā ar atsevišķu uztvērēju; attēls, skaņa un skaļums tiek mērīti tikai ekrānā redzamajam kanālam."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Šis interneta kanāls tiek lejupielādēts fonā bez dekodēšanas; skatieties to, lai redzētu attēla, skaņas un bufera vērtības."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Avots: DVB adapteris {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc statistika"
+
+msgid "Source: background download"
+msgstr "Avots: lejupielāde fonā"
+
+msgid "Source: the player's stream"
+msgstr "Avots: atskaņotāja straume"
+
+msgid "updated every second"
+msgstr "atjaunina katru sekundi"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Nav ko saglabāt: kanāls netiek uztverts."
+
+msgid "Compare {name} with"
+msgstr "Salīdzināt {name} ar"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Vērtības katras analīzes laika logā; attēls un skaļums tikai ekrānā redzamajam kanālam."
+
+msgid "Dish alignment aid"
+msgstr "Palīdzība antenas pavēršanai"
+
+msgid "Tone"
+msgstr "Tonis"
+
+msgid "Reset best value"
+msgstr "Atiestatīt labāko vērtību"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Grieziet antenu lēni; ar labāku signālu tonis kļūst augstāks."
+
+msgid "% quality"
+msgstr "% kvalitāte"
+
+msgid "Best so far: {v}"
+msgstr "Labākais līdz šim: {v}"
+
+msgid "Signal lost"
+msgstr "Signāls zaudēts"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Uztvērējs bija vajadzīgs skatīšanai vai ierakstīšanai."
+
+msgid "Channel analysis: {name}"
+msgstr "Kanāla analīze: {name}"
+
+msgid "Resolution"
+msgstr "Izšķirtspēja"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Signāla kvalitāte"
+
+msgid "Continuity errors"
+msgstr "Nepārtrauktības kļūdas"
+
+msgid "Content"
+msgstr "Saturs"
+
+msgid "audio description"
+msgstr "audioapraksts"
+
+msgid "DVB subtitles"
+msgstr "DVB subtitri"
+
+msgid "Signal"
+msgstr "Signāls"
+
+msgid "Reception"
+msgstr "Uztveršana"
+
+msgid "Symbol rate"
+msgstr "Simbolu ātrums"
+
+msgid "Transponder capacity"
+msgstr "Transpondera ietilpība"
+
+msgid "Server"
+msgstr "Serveris"
+
+msgid "Stream"
+msgstr "Straume"
+
+msgid "Share of transponder"
+msgstr "Daļa no transpondera"
+
+msgid "Aspect ratio"
+msgstr "Malu attiecība"
+
+msgid "Colour"
+msgstr "Krāsa"
+
+msgid "Track"
+msgstr "Celiņš"
+
+msgid "Now & next"
+msgstr "Tagad un pēc tam"
+
+msgid "Encryption"
+msgstr "Šifrēšana"
+
+msgid "Interactive"
+msgstr "Interaktīvs"
+
+msgid "Stream health"
+msgstr "Straumes stāvoklis"
+
+msgid "Transport errors"
+msgstr "Pārraides kļūdas"
+
+msgid "Timeshift buffer"
+msgstr "Laika nobīdes buferis"
+
+msgid "interlaced"
+msgstr "rindpārlēce"
+
+msgid "Hardware"
+msgstr "Aparatūra"
+
+msgid "Software"
+msgstr "Programmatūra"
+
+msgid "{n} tracks"
+msgstr "{n} celiņi"
+
+msgid "Free-to-air"
+msgstr "Nešifrēts"
+
+msgid "Signal level"
+msgstr "Signāla līmenis"
+
+msgid "Internet stream"
+msgstr "Interneta straume"
+
+msgid "continuity errors"
+msgstr "nepārtrauktības kļūdas"
+
+msgid "Stream / PLP"
+msgstr "Straume / PLP"
+
+msgid "Source of the figures"
+msgstr "Vērtību avots"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Brīdināt ekrānā, kad uztveršana pavājinās"
+
+msgid "Open log folder"
+msgstr "Atvērt žurnāla mapi"
+
+msgid "stream"
+msgstr "straume"
+
+msgid "none (a plain stream)"
+msgstr "nav (vienkārša straume)"
+
+msgid "internet stream"
+msgstr "interneta straume"
+
+msgid "Transport Stream"
+msgstr "Transporta straume"
+
+msgid "This channel only"
+msgstr "Tikai šis kanāls"
+
+msgid "Transponder"
+msgstr "Transponders"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Izmērīt visu transponderu (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Interneta kanāliem nav transpondera."
+
+msgid "whole transponder"
+msgstr "viss transponders"
+
+msgid "Video & Audio"
+msgstr "Video un audio"
+
+msgid "Black bars"
+msgstr "Melnas joslas"
+
+msgid "Click a track to listen to it."
+msgstr "Noklikšķiniet uz celiņa, lai to noklausītos."
+
+msgid "Integrated"
+msgstr "Integrētais"
+
+msgid "Teletext and subtitles"
+msgstr "Teleteksts un subtitri"
+
+msgid "interlaced capable"
+msgstr "atbalsta rindpārlēci"
+
+msgid "no"
+msgstr "nē"
+
+msgid "{n} frames"
+msgstr "{n} kadri"
+
+msgid "schedule"
+msgstr "programma"
+
+msgid "subtitles"
+msgstr "subtitri"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teleteksts PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Šim kanālam nav teleteksta un subtitru."
+
+msgid "Table"
+msgstr "Tabula"
+
+msgid "Changes"
+msgstr "Izmaiņas"
+
+msgid "Repetition"
+msgstr "Atkārtošana"
+
+msgid "Sections"
+msgstr "Sekcijas"
+
+msgid "Programme guide and clock"
+msgstr "Programmu ceļvedis un pulkstenis"
+
+msgid "Guide reaches"
+msgstr "Ceļvedis sniedzas līdz"
+
+msgid "Clock of the channel"
+msgstr "Kanāla pulkstenis"
+
+msgid "EIT schedule"
+msgstr "EIT programma"
+
+msgid "missing"
+msgstr "trūkst"
+
+msgid "(other services)"
+msgstr "(citi pakalpojumi)"
+
+msgid "{n} sections"
+msgstr "{n} sekcijas"
+
+msgid "Descrambling"
+msgstr "Atšifrēšana"
+
+msgid "Descrambler state"
+msgstr "Atšifrētāja stāvoklis"
+
+msgid "Conditional access systems"
+msgstr "Nosacītās piekļuves sistēmas"
+
+msgid "For"
+msgstr "Kam"
+
+msgid "Key changes"
+msgstr "Atslēgu maiņas"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Šis kanāls ir šifrēts. LinDVB to atšifrē tikai ar jūsu pašu abonēšanas karti (softcam vai CI modulis)."
+
+msgid "scrambled"
+msgstr "šifrēts"
+
+msgid "Profile"
+msgstr "Profils"
+
+msgid "test application"
+msgstr "testa lietotne"
+
+msgid "This channel has no HbbTV application."
+msgstr "Šim kanālam nav HbbTV lietotnes."
+
+msgid "No object carousel in this channel."
+msgstr "Šim kanālam nav objektu karuseļa."
+
+msgid "Export"
+msgstr "Eksportēt"
+
+msgid "Compare with another channel…"
+msgstr "Salīdzināt ar citu kanālu…"
+
+msgid "Analyse another channel…"
+msgstr "Analizēt citu kanālu…"
+
+msgid "Window: {w}"
+msgstr "Logs: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Sekot ekrānā redzamajam kanālam"
+
+msgid "Watch this channel"
+msgstr "Skatīties šo kanālu"
+
+msgid "Try again"
+msgstr "Mēģināt vēlreiz"
+
+msgid "Copy as text"
+msgstr "Kopēt kā tekstu"
+
+msgid "Export report…"
+msgstr "Eksportēt atskaiti…"
+
+msgid "Source: none"
+msgstr "Avots: nav"
+
+msgid "Saved {path}"
+msgstr "Saglabāts: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Tiek ierakstītas nākamās 30 sekundes…"
+
+msgid "Choose a channel"
+msgstr "Izvēlieties kanālu"
+
+msgid "Channel name"
+msgstr "Kanāla nosaukums"
+
+msgid "Compare channels"
+msgstr "Salīdzināt kanālus"
+
+msgid "Comparison"
+msgstr "Salīdzinājums"
+
+msgid "Close (Esc)"
+msgstr "Aizvērt (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Kanāla analīze…"

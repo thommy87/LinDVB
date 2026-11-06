@@ -2136,3 +2136,1086 @@ msgstr "Stampi tat-TV interlaced (il-biċċa l-kbira tal-kanali SD u 1080i). Fuq
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Id-dekodifikazzjoni tal-vidjo {name} falliet, qed jindaqq bid-dekoder li jmiss"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Żbalji fl-istampa: {n} blokki ma setgħux jiġu kkoreġuti"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Riċezzjoni dgħajfa: {db} dB marġni biss"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} blokki li ma jistgħux jiġu kkoreġuti"
+
+msgid "Lock lost"
+msgstr "Il-lock intilef"
+
+msgid "{n} continuity errors"
+msgstr "{n} żbalji ta' kontinwità"
+
+msgid "PCR jump"
+msgstr "Qabża tal-PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Verżjoni ġdida tat-tabella (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Qabża fil-qawwa tal-ħoss {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Rebuffering"
+
+msgid "Measured since {time}"
+msgstr "Imkejjel minn {time}"
+
+msgid "Delivery"
+msgstr "Xandir"
+
+msgid "Frame rate"
+msgstr "Rata tal-frejms"
+
+msgid "Average bit rate"
+msgstr "Bitrate medja"
+
+msgid "Peak bit rate"
+msgstr "Bitrate massima"
+
+msgid "Margin"
+msgstr "Marġni"
+
+msgid "Loudness"
+msgstr "Qawwa tal-ħoss"
+
+msgid "Bit rate"
+msgstr "Bitrate"
+
+msgid "Events"
+msgstr "Avvenimenti"
+
+msgid "1 minute"
+msgstr "Minuta"
+
+msgid "15 minutes"
+msgstr "15-il minuta"
+
+msgid "5 minutes"
+msgstr "5 minuti"
+
+msgid "hard of hearing"
+msgstr "għal persuni b'diffikultà fis-smigħ"
+
+msgid "Data"
+msgstr "Dejta"
+
+msgid "Level"
+msgstr "Livell"
+
+msgid "Carrier"
+msgstr "Carrier"
+
+msgid "Uncorrectable blocks"
+msgstr "Blokki li ma jistgħux jiġu kkoreġuti"
+
+msgid "Lock losses"
+msgstr "Telf tal-lock"
+
+msgid "C/N history"
+msgstr "Storja tas-C/N"
+
+msgid "Errors"
+msgstr "Żbalji"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilots"
+
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgid "Response time"
+msgstr "Ħin tar-rispons"
+
+msgid "Bad"
+msgstr "Ħażin"
+
+msgid "Fair"
+msgstr "Medju"
+
+msgid "Good"
+msgstr "Tajjeb"
+
+msgid "Poor"
+msgstr "Dgħajjef"
+
+msgid "NO LOCK"
+msgstr "L-EBDA LOCK"
+
+msgid "Buffer"
+msgstr "Buffer"
+
+msgid "Download"
+msgstr "Tniżżil"
+
+msgid "Buffer history"
+msgstr "Storja tal-buffer"
+
+msgid "(driver value)"
+msgstr "(valur tad-driver)"
+
+msgid "since start"
+msgstr "mill-bidu"
+
+msgid "required"
+msgstr "meħtieġ"
+
+msgid "Quality history"
+msgstr "Storja tal-kwalità"
+
+msgid "horizontal"
+msgstr "orizzontali"
+
+msgid "left"
+msgstr "xellug"
+
+msgid "vertical"
+msgstr "vertikali"
+
+msgid "right"
+msgstr "lemin"
+
+msgid "Port {n}"
+msgstr "Port {n}"
+
+msgid "(theoretical)"
+msgstr "(teoretika)"
+
+msgid "Overview"
+msgstr "Ħarsa ġenerali"
+
+msgid "Bit rate of the channel"
+msgstr "Bitrate tal-istazzjon"
+
+msgid "Average"
+msgstr "Medja"
+
+msgid "Peak"
+msgstr "Quċċata"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Decoder"
+msgstr "Decoder"
+
+msgid "Dropped frames"
+msgstr "Frejms mitlufa"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Bidu awtomatiku"
+
+msgid "PCR arrival jitter"
+msgstr "Jitter tal-wasla tal-PCR"
+
+msgid "PCR interval"
+msgstr "Intervall tal-PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Intervall PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletext / sottotitli / dejta"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progressiv"
+
+msgid "only for the channel on screen"
+msgstr "għall-istazzjon fuq l-iskrin biss"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Qawwa tal-ħoss (track attwali): {lufs} · quċċata {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Qawwa tal-ħoss: għall-istazzjon fuq l-iskrin biss"
+
+msgid "scrambled packets"
+msgstr "pakketti kriptati"
+
+msgid "no CA descriptors in the PMT"
+msgstr "l-ebda deskrittur CA fil-PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} paġni"
+
+msgid "Quality"
+msgstr "Kwalità"
+
+msgid "Carrier to noise ratio"
+msgstr "Proporzjon carrier/storbju"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Rata ta' żbalji fil-bits (log₁₀)"
+
+msgid "Address"
+msgstr "Indirizz"
+
+msgid "HTTP status"
+msgstr "Status HTTP"
+
+msgid "Content type"
+msgstr "Tip ta' kontenut"
+
+msgid "Download speed"
+msgstr "Veloċità tat-tniżżil"
+
+msgid "Segments"
+msgstr "Segmenti"
+
+msgid "Error"
+msgstr "Żball"
+
+msgid "Variants"
+msgstr "Varjanti"
+
+msgid "Codecs"
+msgstr "Codecs"
+
+msgid "Error timeline"
+msgstr "Kronoloġija taż-żbalji"
+
+msgid "uncorrectable blocks"
+msgstr "blokki li ma jistgħux jiġu kkoreġuti"
+
+msgid "lock lost"
+msgstr "il-lock intilef"
+
+msgid "rebuffering"
+msgstr "rebuffering"
+
+msgid "loudness jump"
+msgstr "qabża fil-qawwa tal-ħoss"
+
+msgid "table version"
+msgstr "verżjoni tat-tabella"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Parametri sintonizzati (mill-frontend)"
+
+msgid "Delivery system"
+msgstr "Sistema tax-xandir"
+
+msgid "Code rate"
+msgstr "Rata tal-kodiċi"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Intervall ta' protezzjoni"
+
+msgid "Pilots"
+msgstr "Pilots"
+
+msgid "Carriers"
+msgstr "Carriers"
+
+msgid "C/N needed"
+msgstr "C/N meħtieġ"
+
+msgid "Dish alignment aid…"
+msgstr "Għajnuna biex tindirizza d-dixx…"
+
+msgid "Logging and warnings"
+msgstr "Reġistru u twissijiet"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Irreġistra r-riċezzjoni (linja kull minuta, miżmuma 31 jum)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Wissi taħt dan il-marġni (dB)"
+
+msgid "Reception over the last days"
+msgstr "Riċezzjoni tal-aħħar jiem"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · quċċata {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× ir-rata tal-fluss"
+
+msgid "Download and stream rate"
+msgstr "Rata tat-tniżżil u tal-fluss"
+
+msgid "HLS with {n} variants"
+msgstr "HLS b'{n} varjanti"
+
+msgid "HLS media playlist"
+msgstr "Playlist tal-midja HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "dirett"
+
+msgid "on demand"
+msgstr "on demand"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmenti ta' Ø {s} (mira {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "L-ebda lista ta' varjanti: l-indirizz huwa fluss wieħed."
+
+msgid "No events so far."
+msgstr "Għad m'hemm l-ebda avveniment."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minuti rreġistrati għal dan l-istazzjon."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Għad ma ġie rreġistrat xejn għal dan l-istazzjon."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · mass {max}"
+
+msgid "needs {db}"
+msgstr "jeħtieġ {db}"
+
+msgid "relative (driver)"
+msgstr "relattiv (driver)"
+
+msgid "post FEC {v}"
+msgstr "wara FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "meħtieġ għal stampa nadifa"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistika DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (skala tad-driver)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Flussi elementari u PIDs"
+
+msgid "Whole stream"
+msgstr "Il-fluss kollu"
+
+msgid "Sort by PID"
+msgstr "Issortja skont il-PID"
+
+msgid "Sort by bit rate"
+msgstr "Issortja skont il-bitrate"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "Żbalji CC"
+
+msgid "Scrambled"
+msgstr "Kriptat"
+
+msgid "Last 60 s"
+msgstr "L-aħħar 60 s"
+
+msgid "Packets"
+msgstr "Pakketti"
+
+msgid "Sync losses"
+msgstr "Telf tas-sinkronizzazzjoni"
+
+msgid "Null packets"
+msgstr "Pakketti nulli"
+
+msgid "PCR jumps"
+msgstr "Qabżiet tal-PCR"
+
+msgid "PID filter"
+msgstr "Filtru PID"
+
+msgid "unknown"
+msgstr "mhux magħruf"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "Oħrajn"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Total ({n} PIDs): {rate} · {cc} żbalji ta' kontinwità"
+
+msgid "Measuring…"
+msgstr "Qed jitkejjel…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "ħieles / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} użati minn {cap} · imkejjel {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Jiġu riċevuti biss il-PIDs ta' dan l-istazzjon. Kejjel it-transponder kollu biex tara l-istazzjonijiet l-oħra fuqu."
+
+msgid "{n} PIDs"
+msgstr "{n} PIDs"
+
+msgid "Profile / level"
+msgstr "Profil / livell"
+
+msgid "Scan"
+msgstr "Skennjar"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Frejms murija / mitlufa"
+
+msgid "Measured bit rate"
+msgstr "Bitrate imkejla"
+
+msgid "Nominal bit rate"
+msgstr "Bitrate nominali"
+
+msgid "VBV buffer"
+msgstr "Buffer VBV"
+
+msgid "Frame sizes"
+msgstr "Daqsijiet tal-frejms"
+
+msgid "B frame"
+msgstr "Frejm B"
+
+msgid "I frame"
+msgstr "Frejm I"
+
+msgid "P frame"
+msgstr "Frejm P"
+
+msgid "GOP length"
+msgstr "Tul tal-GOP"
+
+msgid "I frame average"
+msgstr "Medja tal-frejm I"
+
+msgid "P/B frame average"
+msgstr "Medja tal-frejm P/B"
+
+msgid "Nominal"
+msgstr "Nominali"
+
+msgid "Sample rate"
+msgstr "Rata tal-kampjunar"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Imkejjel"
+
+msgid "Notes"
+msgstr "Noti"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Qawwa tal-ħoss (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentanja"
+
+msgid "Short term"
+msgstr "Terminu qasir"
+
+msgid "Loudness range"
+msgstr "Firxa tal-qawwa tal-ħoss"
+
+msgid "Sample peak"
+msgstr "Quċċata tal-kampjun"
+
+msgid "level {l}"
+msgstr "livell {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "oqsma"
+
+msgid "mixed"
+msgstr "imħallat"
+
+msgid "not sent"
+msgstr "mhux mibgħut"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % fuq u isfel"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % fil-ġnub"
+
+msgid "picture {ratio}:1"
+msgstr "stampa {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "iva, oqsma ripetuti"
+
+msgid "mastering display data"
+msgstr "dejta tal-iskrin tal-mastering"
+
+msgid "(maximum)"
+msgstr "(massimu)"
+
+msgid "not signalled (variable)"
+msgstr "mhux indikat (varjabbli)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "issa {now} · Ø {avg} · quċċata {max}"
+
+msgid "clean audio"
+msgstr "diskors ċar"
+
+msgid "EBU target −23 LUFS"
+msgstr "Mira tal-EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Imkejjel fuq il-ħoss dekodifikat tal-istazzjon fuq l-iskrin, qabel l-ekwalizzatur."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} qabżiet fil-qawwa tal-ħoss ta' 6 LU jew aktar (programm ↔ reklami)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Il-qawwa tal-ħoss titkejjel biss għall-istazzjon fuq l-iskrin."
+
+msgid "index"
+msgstr "indiċi"
+
+msgid "info"
+msgstr "informazzjoni"
+
+msgid "subtitles (hard of hearing)"
+msgstr "sottotitli (diffikultà fis-smigħ)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Sottotitli DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabelli u EPG"
+
+msgid "SI tables"
+msgstr "Tabelli SI"
+
+msgid "Version"
+msgstr "Verżjoni"
+
+msgid "Events in the guide"
+msgstr "Programmi fil-gwida"
+
+msgid "EIT now/next"
+msgstr "EIT issa/li jmiss"
+
+msgid "Difference to this computer"
+msgstr "Differenza minn dan il-kompjuter"
+
+msgid "Local time offset"
+msgstr "Offset tal-ħin lokali"
+
+msgid "Network"
+msgstr "Netwerk"
+
+msgid "Raw view"
+msgstr "Veduta mhux ipproċessata"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "bil-mod"
+
+msgid "(all services)"
+msgstr "(is-servizzi kollha)"
+
+msgid "not seen"
+msgstr "mhux muri"
+
+msgid "seen {s} s ago"
+msgstr "muri {s} s ilu"
+
+msgid "timers may start early or late"
+msgstr "it-tajmers jistgħu jibdew kmieni jew tard wisq"
+
+msgid "no TDT/TOT"
+msgstr "l-ebda TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Pakketti kriptati"
+
+msgid "CA system ID"
+msgstr "ID tas-sistema CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Rata ECM"
+
+msgid "Scrambling per stream"
+msgstr "Kriptaġġ skont il-fluss"
+
+msgid "Crypto period"
+msgstr "Perjodu kripto"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Bidla taċ-ċavetta hija l-qalba bejn il-kelma ta' kontroll pari u fard; il-perjodu kripto huwa l-ħin bejn żewġ bidliet."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "L-ebda aċċess kundizzjonali fil-PMT u l-ebda pakkett kriptat."
+
+msgid "free"
+msgstr "ħieles"
+
+msgid "all streams"
+msgstr "il-flussi kollha"
+
+msgid "not received"
+msgstr "mhux riċevut"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Ma waslet l-ebda CAT bi flussi EMM."
+
+msgid "Applications (AIT)"
+msgstr "Applikazzjonijiet (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizzazzjoni / app"
+
+msgid "Control"
+msgstr "Kontroll"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Karużelli tad-dejta (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Verżjoni AIT {v} fuq il-PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "L-istazzjon iħabbar AIT fuq il-PID {pid}; għadha ma waslitx."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analiżi tal-istazzjon – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Iffriża l-kejl"
+
+msgid "Copy report as text"
+msgstr "Ikkopja r-rapport bħala test"
+
+msgid "Save report as text…"
+msgstr "Issejvja r-rapport bħala test…"
+
+msgid "Save report as JSON…"
+msgstr "Issejvja r-rapport bħala JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Issejvja l-istorja bħala CSV…"
+
+msgid "Save window as picture…"
+msgstr "Issejvja t-tieqa bħala stampa…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Issejvja 30 s tal-fluss…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analiżi tal-istazzjon · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Dirett · qed ikejjel minn {t}"
+
+msgid "Paused"
+msgstr "Mwaqqaf"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "L-ebda tuner mhu ħieles għal dan l-istazzjon. Araħ, jew erġa' pprova meta jkun hemm tuner ħieles."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "It-tuner ta' dan l-istazzjon inqaleb għal stazzjon ieħor."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Imkejjel fl-isfond fuq tuner tiegħu; stampa, ħoss u qawwa tal-ħoss jitkejlu biss għall-istazzjon fuq l-iskrin."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Dan l-istazzjon tal-internet jitniżżel fl-isfond mingħajr ma jiġi dekodifikat; araħ għall-valuri tal-istampa, tal-ħoss u tal-buffer."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Sors: adapter DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "statistika dvbsrc"
+
+msgid "Source: background download"
+msgstr "Sors: tniżżil fl-isfond"
+
+msgid "Source: the player's stream"
+msgstr "Sors: il-fluss tal-player"
+
+msgid "updated every second"
+msgstr "aġġornat kull sekonda"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Xejn x'tissejvja: l-istazzjon mhux qed jiġi riċevut."
+
+msgid "Compare {name} with"
+msgstr "Qabbel {name} ma'"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Valuri fuq it-tieqa tal-ħin ta' kull analiżi; stampa u qawwa tal-ħoss għall-istazzjon fuq l-iskrin biss."
+
+msgid "Dish alignment aid"
+msgstr "Għajnuna biex tindirizza d-dixx"
+
+msgid "Tone"
+msgstr "Ton"
+
+msgid "Reset best value"
+msgstr "Irrisettja l-aħjar valur"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Dawwar id-dixx bil-mod; it-ton jogħla b'sinjal aħjar."
+
+msgid "% quality"
+msgstr "% kwalità"
+
+msgid "Best so far: {v}"
+msgstr "L-aħjar s'issa: {v}"
+
+msgid "Signal lost"
+msgstr "Sinjal mitluf"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "It-tuner kien meħtieġ biex tara jew tirreġistra."
+
+msgid "Channel analysis: {name}"
+msgstr "Analiżi tal-istazzjon: {name}"
+
+msgid "Resolution"
+msgstr "Riżoluzzjoni"
+
+msgid "Audio"
+msgstr "Awdjo"
+
+msgid "Video"
+msgstr "Vidjo"
+
+msgid "Signal quality"
+msgstr "Kwalità tas-sinjal"
+
+msgid "Continuity errors"
+msgstr "Żbalji ta' kontinwità"
+
+msgid "Content"
+msgstr "Kontenut"
+
+msgid "audio description"
+msgstr "deskrizzjoni awdjo"
+
+msgid "DVB subtitles"
+msgstr "Sottotitli DVB"
+
+msgid "Signal"
+msgstr "Sinjal"
+
+msgid "Reception"
+msgstr "Riċezzjoni"
+
+msgid "Symbol rate"
+msgstr "Rata tas-simboli"
+
+msgid "Transponder capacity"
+msgstr "Kapaċità tat-transponder"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Stream"
+msgstr "Fluss"
+
+msgid "Share of transponder"
+msgstr "Sehem mit-transponder"
+
+msgid "Aspect ratio"
+msgstr "Proporzjon tal-aspett"
+
+msgid "Colour"
+msgstr "Kulur"
+
+msgid "Track"
+msgstr "Track"
+
+msgid "Now & next"
+msgstr "Issa u wara"
+
+msgid "Encryption"
+msgstr "Kriptaġġ"
+
+msgid "Interactive"
+msgstr "Interattiv"
+
+msgid "Stream health"
+msgstr "Saħħa tal-fluss"
+
+msgid "Transport errors"
+msgstr "Żbalji tat-trasport"
+
+msgid "Timeshift buffer"
+msgstr "Buffer tat-timeshift"
+
+msgid "interlaced"
+msgstr "interlaced"
+
+msgid "Hardware"
+msgstr "Hardware"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "{n} tracks"
+msgstr "{n} tracks"
+
+msgid "Free-to-air"
+msgstr "Ħieles"
+
+msgid "Signal level"
+msgstr "Livell tas-sinjal"
+
+msgid "Internet stream"
+msgstr "Fluss tal-internet"
+
+msgid "continuity errors"
+msgstr "żbalji ta' kontinwità"
+
+msgid "Stream / PLP"
+msgstr "Fluss / PLP"
+
+msgid "Source of the figures"
+msgstr "Sors tal-valuri"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Wissi fuq l-iskrin meta r-riċezzjoni ddgħajjef"
+
+msgid "Open log folder"
+msgstr "Iftaħ il-folder tar-reġistru"
+
+msgid "stream"
+msgstr "fluss"
+
+msgid "none (a plain stream)"
+msgstr "xejn (fluss sempliċi)"
+
+msgid "internet stream"
+msgstr "fluss tal-internet"
+
+msgid "Transport Stream"
+msgstr "Fluss tat-trasport"
+
+msgid "This channel only"
+msgstr "Dan l-istazzjon biss"
+
+msgid "Transponder"
+msgstr "Transponder"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Kejjel it-transponder kollu (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "L-istazzjonijiet tal-internet m'għandhomx transponder."
+
+msgid "whole transponder"
+msgstr "it-transponder kollu"
+
+msgid "Video & Audio"
+msgstr "Vidjo u awdjo"
+
+msgid "Black bars"
+msgstr "Strixxi suwed"
+
+msgid "Click a track to listen to it."
+msgstr "Ikklikkja fuq track biex tismgħu."
+
+msgid "Integrated"
+msgstr "Integrata"
+
+msgid "Teletext and subtitles"
+msgstr "Teletext u sottotitli"
+
+msgid "interlaced capable"
+msgstr "kapaċi interlaced"
+
+msgid "no"
+msgstr "le"
+
+msgid "{n} frames"
+msgstr "{n} frejms"
+
+msgid "schedule"
+msgstr "skeda"
+
+msgid "subtitles"
+msgstr "sottotitli"
+
+msgid "Teletext PID {pid}:"
+msgstr "Teletext PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "L-ebda teletext jew sottotitli f'dan l-istazzjon."
+
+msgid "Table"
+msgstr "Tabella"
+
+msgid "Changes"
+msgstr "Bidliet"
+
+msgid "Repetition"
+msgstr "Ripetizzjoni"
+
+msgid "Sections"
+msgstr "Taqsimiet"
+
+msgid "Programme guide and clock"
+msgstr "Gwida tal-programmi u arloġġ"
+
+msgid "Guide reaches"
+msgstr "Il-gwida tasal sa"
+
+msgid "Clock of the channel"
+msgstr "Arloġġ tal-istazzjon"
+
+msgid "EIT schedule"
+msgstr "Skeda EIT"
+
+msgid "missing"
+msgstr "nieqsa"
+
+msgid "(other services)"
+msgstr "(servizzi oħra)"
+
+msgid "{n} sections"
+msgstr "{n} taqsimiet"
+
+msgid "Descrambling"
+msgstr "Dekriptaġġ"
+
+msgid "Descrambler state"
+msgstr "Stat tad-dekriptatur"
+
+msgid "Conditional access systems"
+msgstr "Sistemi ta' aċċess kundizzjonali"
+
+msgid "For"
+msgstr "Għal"
+
+msgid "Key changes"
+msgstr "Bidliet taċ-ċavetta"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Dan l-istazzjon huwa kriptat. LinDVB jiddekriptah biss bil-karta tal-abbonament tiegħek (softcam jew modulu CI)."
+
+msgid "scrambled"
+msgstr "kriptat"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "test application"
+msgstr "applikazzjoni tat-test"
+
+msgid "This channel has no HbbTV application."
+msgstr "Dan l-istazzjon m'għandux applikazzjoni HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "L-ebda karużell tal-oġġetti f'dan l-istazzjon."
+
+msgid "Export"
+msgstr "Esporta"
+
+msgid "Compare with another channel…"
+msgstr "Qabbel ma' stazzjon ieħor…"
+
+msgid "Analyse another channel…"
+msgstr "Analizza stazzjon ieħor…"
+
+msgid "Window: {w}"
+msgstr "Tieqa: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Segwi l-istazzjon fuq l-iskrin"
+
+msgid "Watch this channel"
+msgstr "Ara dan l-istazzjon"
+
+msgid "Try again"
+msgstr "Erġa' pprova"
+
+msgid "Copy as text"
+msgstr "Ikkopja bħala test"
+
+msgid "Export report…"
+msgstr "Esporta r-rapport…"
+
+msgid "Source: none"
+msgstr "Sors: xejn"
+
+msgid "Saved {path}"
+msgstr "Issejvjat: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Qed jiġu rreġistrati t-30 sekonda li jmiss…"
+
+msgid "Choose a channel"
+msgstr "Agħżel stazzjon"
+
+msgid "Channel name"
+msgstr "Isem l-istazzjon"
+
+msgid "Compare channels"
+msgstr "Qabbel stazzjonijiet"
+
+msgid "Comparison"
+msgstr "Paragun"
+
+msgid "Close (Esc)"
+msgstr "Agħlaq (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Analiżi tal-istazzjon…"

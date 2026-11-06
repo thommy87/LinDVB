@@ -2136,3 +2136,1086 @@ msgstr "Презредово ТВ изображение (повечето SD и
 #: lindvb/ui/window.py
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "Декодирането на видео с {name} е неуспешно, възпроизвеждане със следващия декодер"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Грешки в картината: {n} блока не можаха да се коригират"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Слаб прием: само {db} dB резерв"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} некоригируеми блока"
+
+msgid "Lock lost"
+msgstr "Захватът е загубен"
+
+msgid "{n} continuity errors"
+msgstr "{n} грешки в непрекъснатостта"
+
+msgid "PCR jump"
+msgstr "Скок на PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Нова версия на таблица (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Скок на силата на звука {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Повторно буфериране"
+
+msgid "Measured since {time}"
+msgstr "Измерва се от {time}"
+
+msgid "Delivery"
+msgstr "Излъчване"
+
+msgid "Frame rate"
+msgstr "Кадрова честота"
+
+msgid "Average bit rate"
+msgstr "Среден битрейт"
+
+msgid "Peak bit rate"
+msgstr "Пиков битрейт"
+
+msgid "Margin"
+msgstr "Резерв"
+
+msgid "Loudness"
+msgstr "Сила на звука"
+
+msgid "Bit rate"
+msgstr "Битрейт"
+
+msgid "Events"
+msgstr "Събития"
+
+msgid "1 minute"
+msgstr "1 минута"
+
+msgid "15 minutes"
+msgstr "15 минути"
+
+msgid "5 minutes"
+msgstr "5 минути"
+
+msgid "hard of hearing"
+msgstr "за хора с увреден слух"
+
+msgid "Data"
+msgstr "Данни"
+
+msgid "Level"
+msgstr "Ниво"
+
+msgid "Carrier"
+msgstr "Носеща"
+
+msgid "Uncorrectable blocks"
+msgstr "Некоригируеми блокове"
+
+msgid "Lock losses"
+msgstr "Загуби на захват"
+
+msgid "C/N history"
+msgstr "История на C/N"
+
+msgid "Errors"
+msgstr "Грешки"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / пилоти"
+
+msgid "Protocol"
+msgstr "Протокол"
+
+msgid "Response time"
+msgstr "Време за отговор"
+
+msgid "Bad"
+msgstr "Лошо"
+
+msgid "Fair"
+msgstr "Средно"
+
+msgid "Good"
+msgstr "Добро"
+
+msgid "Poor"
+msgstr "Слабо"
+
+msgid "NO LOCK"
+msgstr "НЯМА ЗАХВАТ"
+
+msgid "Buffer"
+msgstr "Буфер"
+
+msgid "Download"
+msgstr "Изтегляне"
+
+msgid "Buffer history"
+msgstr "История на буфера"
+
+msgid "(driver value)"
+msgstr "(стойност на драйвера)"
+
+msgid "since start"
+msgstr "от началото"
+
+msgid "required"
+msgstr "необходимо"
+
+msgid "Quality history"
+msgstr "История на качеството"
+
+msgid "horizontal"
+msgstr "хоризонтална"
+
+msgid "left"
+msgstr "лява"
+
+msgid "vertical"
+msgstr "вертикална"
+
+msgid "right"
+msgstr "дясна"
+
+msgid "Port {n}"
+msgstr "Порт {n}"
+
+msgid "(theoretical)"
+msgstr "(теоретичен)"
+
+msgid "Overview"
+msgstr "Обзор"
+
+msgid "Bit rate of the channel"
+msgstr "Битрейт на канала"
+
+msgid "Average"
+msgstr "Средно"
+
+msgid "Peak"
+msgstr "Пик"
+
+msgid "Codec"
+msgstr "Кодек"
+
+msgid "Decoder"
+msgstr "Декодер"
+
+msgid "Dropped frames"
+msgstr "Изпуснати кадри"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Автостарт"
+
+msgid "PCR arrival jitter"
+msgstr "Джитер при пристигане на PCR"
+
+msgid "PCR interval"
+msgstr "Интервал на PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Интервал на PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Телетекст / субтитри / данни"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "прогресивна"
+
+msgid "only for the channel on screen"
+msgstr "само за канала на екрана"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Сила на звука (текуща писта): {lufs} · пик {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Сила на звука: само за канала на екрана"
+
+msgid "scrambled packets"
+msgstr "кодирани пакети"
+
+msgid "no CA descriptors in the PMT"
+msgstr "няма CA дескриптори в PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} страници"
+
+msgid "Quality"
+msgstr "Качество"
+
+msgid "Carrier to noise ratio"
+msgstr "Съотношение носеща/шум"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Честота на битови грешки (log₁₀)"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "HTTP status"
+msgstr "HTTP статус"
+
+msgid "Content type"
+msgstr "Тип на съдържанието"
+
+msgid "Download speed"
+msgstr "Скорост на изтегляне"
+
+msgid "Segments"
+msgstr "Сегменти"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Variants"
+msgstr "Варианти"
+
+msgid "Codecs"
+msgstr "Кодеци"
+
+msgid "Error timeline"
+msgstr "Хронология на грешките"
+
+msgid "uncorrectable blocks"
+msgstr "некоригируеми блокове"
+
+msgid "lock lost"
+msgstr "захватът е загубен"
+
+msgid "rebuffering"
+msgstr "повторно буфериране"
+
+msgid "loudness jump"
+msgstr "скок на силата на звука"
+
+msgid "table version"
+msgstr "версия на таблица"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Настроени параметри (от frontend)"
+
+msgid "Delivery system"
+msgstr "Система за излъчване"
+
+msgid "Code rate"
+msgstr "Кодова скорост"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Защитен интервал"
+
+msgid "Pilots"
+msgstr "Пилоти"
+
+msgid "Carriers"
+msgstr "Носещи"
+
+msgid "C/N needed"
+msgstr "Необходимо C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Помощ за насочване на антената…"
+
+msgid "Logging and warnings"
+msgstr "Дневник и предупреждения"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Записвай приема (един ред на минута, пази се 31 дни)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Предупреждавай под този резерв (dB)"
+
+msgid "Reception over the last days"
+msgstr "Прием през последните дни"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · мин. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · пик {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× скоростта на потока"
+
+msgid "Download and stream rate"
+msgstr "Скорост на изтегляне и на потока"
+
+msgid "HLS with {n} variants"
+msgstr "HLS с {n} варианта"
+
+msgid "HLS media playlist"
+msgstr "Медиен плейлист HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "на живо"
+
+msgid "on demand"
+msgstr "при поискване"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} сегмента по Ø {s} (цел {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Няма списък с варианти: адресът е един поток."
+
+msgid "No events so far."
+msgstr "Все още няма събития."
+
+msgid "{n} minutes logged for this channel."
+msgstr "За този канал са записани {n} минути."
+
+msgid "Nothing logged for this channel yet."
+msgstr "За този канал още няма записи."
+
+msgid "min {min} · max {max}"
+msgstr "мин. {min} · макс. {max}"
+
+msgid "needs {db}"
+msgstr "нужни са {db}"
+
+msgid "relative (driver)"
+msgstr "относително (драйвер)"
+
+msgid "post FEC {v}"
+msgstr "след FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "нужно за чиста картина"
+
+msgid "DVB API v5 statistics"
+msgstr "Статистика DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (скала на драйвера)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Елементарни потоци и PID"
+
+msgid "Whole stream"
+msgstr "Целият поток"
+
+msgid "Sort by PID"
+msgstr "Сортирай по PID"
+
+msgid "Sort by bit rate"
+msgstr "Сортирай по битрейт"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "дес."
+
+msgid "CC errors"
+msgstr "CC грешки"
+
+msgid "Scrambled"
+msgstr "Кодирано"
+
+msgid "Last 60 s"
+msgstr "Последните 60 s"
+
+msgid "Packets"
+msgstr "Пакети"
+
+msgid "Sync losses"
+msgstr "Загуби на синхронизация"
+
+msgid "Null packets"
+msgstr "Нулеви пакети"
+
+msgid "PCR jumps"
+msgstr "Скокове на PCR"
+
+msgid "PID filter"
+msgstr "PID филтър"
+
+msgid "unknown"
+msgstr "неизвестно"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Нулев"
+
+msgid "Other"
+msgstr "Друго"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Сума ({n} PID): {rate} · {cc} грешки в непрекъснатостта"
+
+msgid "Measuring…"
+msgstr "Измерване…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "свободно / нулево"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} заети от {cap} · измерено {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Приемат се само PID на този канал. Измерете целия транспондер, за да видите другите канали на него."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Профил / ниво"
+
+msgid "Scan"
+msgstr "Развивка"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Филм (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "Показани / изпуснати кадри"
+
+msgid "Measured bit rate"
+msgstr "Измерен битрейт"
+
+msgid "Nominal bit rate"
+msgstr "Номинален битрейт"
+
+msgid "VBV buffer"
+msgstr "VBV буфер"
+
+msgid "Frame sizes"
+msgstr "Размери на кадрите"
+
+msgid "B frame"
+msgstr "B кадър"
+
+msgid "I frame"
+msgstr "I кадър"
+
+msgid "P frame"
+msgstr "P кадър"
+
+msgid "GOP length"
+msgstr "Дължина на GOP"
+
+msgid "I frame average"
+msgstr "Среден I кадър"
+
+msgid "P/B frame average"
+msgstr "Среден P/B кадър"
+
+msgid "Nominal"
+msgstr "Номинален"
+
+msgid "Sample rate"
+msgstr "Честота на дискретизация"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Измерен"
+
+msgid "Notes"
+msgstr "Бележки"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Сила на звука (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Моментна"
+
+msgid "Short term"
+msgstr "Краткосрочна"
+
+msgid "Loudness range"
+msgstr "Обхват на силата на звука"
+
+msgid "Sample peak"
+msgstr "Пик на семпъл"
+
+msgid "level {l}"
+msgstr "ниво {l}"
+
+msgid "tier {t}"
+msgstr "tier {t}"
+
+msgid "fields"
+msgstr "полета"
+
+msgid "mixed"
+msgstr "смесена"
+
+msgid "not sent"
+msgstr "не се изпраща"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % горе и долу"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % отстрани"
+
+msgid "picture {ratio}:1"
+msgstr "картина {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "да, повтарящи се полета"
+
+msgid "mastering display data"
+msgstr "данни за мастеринг дисплея"
+
+msgid "(maximum)"
+msgstr "(максимум)"
+
+msgid "not signalled (variable)"
+msgstr "не е посочен (променлив)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "сега {now} · Ø {avg} · пик {max}"
+
+msgid "clean audio"
+msgstr "ясна реч"
+
+msgid "EBU target −23 LUFS"
+msgstr "Цел EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Измерва се по декодирания звук на канала на екрана, преди еквалайзера."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} скока на силата на звука с 6 LU или повече (програма ↔ реклама)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Силата на звука се измерва само за канала на екрана."
+
+msgid "index"
+msgstr "индекс"
+
+msgid "info"
+msgstr "информация"
+
+msgid "subtitles (hard of hearing)"
+msgstr "субтитри (за хора с увреден слух)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB субтитри PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Таблици и EPG"
+
+msgid "SI tables"
+msgstr "SI таблици"
+
+msgid "Version"
+msgstr "Версия"
+
+msgid "Events in the guide"
+msgstr "Предавания в програмата"
+
+msgid "EIT now/next"
+msgstr "EIT сега/следва"
+
+msgid "Difference to this computer"
+msgstr "Разлика спрямо този компютър"
+
+msgid "Local time offset"
+msgstr "Местно отместване на времето"
+
+msgid "Network"
+msgstr "Мрежа"
+
+msgid "Raw view"
+msgstr "Суров изглед"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "бавно"
+
+msgid "(all services)"
+msgstr "(всички услуги)"
+
+msgid "not seen"
+msgstr "не е видяна"
+
+msgid "seen {s} s ago"
+msgstr "видяна преди {s} s"
+
+msgid "timers may start early or late"
+msgstr "таймерите може да стартират по-рано или по-късно"
+
+msgid "no TDT/TOT"
+msgstr "няма TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Кодирани пакети"
+
+msgid "CA system ID"
+msgstr "ID на CA системата"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM скорост"
+
+msgid "Scrambling per stream"
+msgstr "Кодиране по потоци"
+
+msgid "Crypto period"
+msgstr "Криптопериод"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Смяната на ключа е преходът между четната и нечетната контролна дума; криптопериодът е времето между две смени."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Няма условен достъп в PMT и няма кодирани пакети."
+
+msgid "free"
+msgstr "свободно"
+
+msgid "all streams"
+msgstr "всички потоци"
+
+msgid "not received"
+msgstr "не е приет"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Не е получена CAT с EMM потоци."
+
+msgid "Applications (AIT)"
+msgstr "Приложения (AIT)"
+
+msgid "Organisation / app"
+msgstr "Организация / приложение"
+
+msgid "Control"
+msgstr "Управление"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Карусели с данни (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT версия {v} на PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Каналът обявява AIT на PID {pid}; тя още не е пристигнала."
+
+msgid "Channel Analysis – {name}"
+msgstr "Анализ на канала – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Замрази измерването"
+
+msgid "Copy report as text"
+msgstr "Копирай отчета като текст"
+
+msgid "Save report as text…"
+msgstr "Запази отчета като текст…"
+
+msgid "Save report as JSON…"
+msgstr "Запази отчета като JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Запази историята като CSV…"
+
+msgid "Save window as picture…"
+msgstr "Запази прозореца като изображение…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Запази 30 s от потока…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Анализ на канала · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "На живо · измерва от {t}"
+
+msgid "Paused"
+msgstr "Пауза"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Няма свободен тунер за този канал. Гледайте го или опитайте отново, когато се освободи тунер."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Тунерът на този канал беше превключен на друг канал."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Измерва се във фонов режим на собствен тунер; картина, звук и сила на звука се измерват само за канала на екрана."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Този интернет канал се изтегля във фонов режим без декодиране; гледайте го, за да видите стойности за картина, звук и буфер."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Източник: DVB адаптер {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "статистика на dvbsrc"
+
+msgid "Source: background download"
+msgstr "Източник: изтегляне във фонов режим"
+
+msgid "Source: the player's stream"
+msgstr "Източник: потокът на плейъра"
+
+msgid "updated every second"
+msgstr "обновява се всяка секунда"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Няма какво да се запази: каналът не се приема."
+
+msgid "Compare {name} with"
+msgstr "Сравни {name} с"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Стойности за времевия прозорец на всеки анализ; картина и сила на звука само за канала на екрана."
+
+msgid "Dish alignment aid"
+msgstr "Помощ за насочване на антената"
+
+msgid "Tone"
+msgstr "Тон"
+
+msgid "Reset best value"
+msgstr "Нулирай най-добрата стойност"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Въртете антената бавно; тонът се повишава при по-добър сигнал."
+
+msgid "% quality"
+msgstr "% качество"
+
+msgid "Best so far: {v}"
+msgstr "Най-добро досега: {v}"
+
+msgid "Signal lost"
+msgstr "Сигналът е загубен"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Тунерът беше нужен за гледане или запис."
+
+msgid "Channel analysis: {name}"
+msgstr "Анализ на канала: {name}"
+
+msgid "Resolution"
+msgstr "Разделителна способност"
+
+msgid "Audio"
+msgstr "Звук"
+
+msgid "Video"
+msgstr "Видео"
+
+msgid "Signal quality"
+msgstr "Качество на сигнала"
+
+msgid "Continuity errors"
+msgstr "Грешки в непрекъснатостта"
+
+msgid "Content"
+msgstr "Съдържание"
+
+msgid "audio description"
+msgstr "аудиоописание"
+
+msgid "DVB subtitles"
+msgstr "DVB субтитри"
+
+msgid "Signal"
+msgstr "Сигнал"
+
+msgid "Reception"
+msgstr "Прием"
+
+msgid "Symbol rate"
+msgstr "Символна скорост"
+
+msgid "Transponder capacity"
+msgstr "Капацитет на транспондера"
+
+msgid "Server"
+msgstr "Сървър"
+
+msgid "Stream"
+msgstr "Поток"
+
+msgid "Share of transponder"
+msgstr "Дял от транспондера"
+
+msgid "Aspect ratio"
+msgstr "Съотношение на страните"
+
+msgid "Colour"
+msgstr "Цвят"
+
+msgid "Track"
+msgstr "Писта"
+
+msgid "Now & next"
+msgstr "Сега и после"
+
+msgid "Encryption"
+msgstr "Криптиране"
+
+msgid "Interactive"
+msgstr "Интерактивно"
+
+msgid "Stream health"
+msgstr "Състояние на потока"
+
+msgid "Transport errors"
+msgstr "Грешки в транспорта"
+
+msgid "Timeshift buffer"
+msgstr "Timeshift буфер"
+
+msgid "interlaced"
+msgstr "презредова"
+
+msgid "Hardware"
+msgstr "Хардуер"
+
+msgid "Software"
+msgstr "Софтуер"
+
+msgid "{n} tracks"
+msgstr "{n} писти"
+
+msgid "Free-to-air"
+msgstr "Некодиран"
+
+msgid "Signal level"
+msgstr "Ниво на сигнала"
+
+msgid "Internet stream"
+msgstr "Интернет поток"
+
+msgid "continuity errors"
+msgstr "грешки в непрекъснатостта"
+
+msgid "Stream / PLP"
+msgstr "Поток / PLP"
+
+msgid "Source of the figures"
+msgstr "Източник на стойностите"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Предупреждавай на екрана при отслабване на приема"
+
+msgid "Open log folder"
+msgstr "Отвори папката на дневника"
+
+msgid "stream"
+msgstr "поток"
+
+msgid "none (a plain stream)"
+msgstr "няма (обикновен поток)"
+
+msgid "internet stream"
+msgstr "интернет поток"
+
+msgid "Transport Stream"
+msgstr "Транспортен поток"
+
+msgid "This channel only"
+msgstr "Само този канал"
+
+msgid "Transponder"
+msgstr "Транспондер"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Измери целия транспондер (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Интернет каналите нямат транспондер."
+
+msgid "whole transponder"
+msgstr "целият транспондер"
+
+msgid "Video & Audio"
+msgstr "Видео и звук"
+
+msgid "Black bars"
+msgstr "Черни ленти"
+
+msgid "Click a track to listen to it."
+msgstr "Щракнете върху писта, за да я чуете."
+
+msgid "Integrated"
+msgstr "Интегрирана"
+
+msgid "Teletext and subtitles"
+msgstr "Телетекст и субтитри"
+
+msgid "interlaced capable"
+msgstr "поддържа презредова"
+
+msgid "no"
+msgstr "не"
+
+msgid "{n} frames"
+msgstr "{n} кадъра"
+
+msgid "schedule"
+msgstr "разписание"
+
+msgid "subtitles"
+msgstr "субтитри"
+
+msgid "Teletext PID {pid}:"
+msgstr "Телетекст PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Този канал няма телетекст и субтитри."
+
+msgid "Table"
+msgstr "Таблица"
+
+msgid "Changes"
+msgstr "Промени"
+
+msgid "Repetition"
+msgstr "Повторение"
+
+msgid "Sections"
+msgstr "Секции"
+
+msgid "Programme guide and clock"
+msgstr "Програма и часовник"
+
+msgid "Guide reaches"
+msgstr "Програмата стига до"
+
+msgid "Clock of the channel"
+msgstr "Часовник на канала"
+
+msgid "EIT schedule"
+msgstr "EIT разписание"
+
+msgid "missing"
+msgstr "липсва"
+
+msgid "(other services)"
+msgstr "(други услуги)"
+
+msgid "{n} sections"
+msgstr "{n} секции"
+
+msgid "Descrambling"
+msgstr "Декодиране"
+
+msgid "Descrambler state"
+msgstr "Състояние на декодера"
+
+msgid "Conditional access systems"
+msgstr "Системи за условен достъп"
+
+msgid "For"
+msgstr "За"
+
+msgid "Key changes"
+msgstr "Смени на ключа"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Този канал е криптиран. LinDVB го декодира само с вашата собствена абонаментна карта (softcam или CI модул)."
+
+msgid "scrambled"
+msgstr "кодирано"
+
+msgid "Profile"
+msgstr "Профил"
+
+msgid "test application"
+msgstr "тестово приложение"
+
+msgid "This channel has no HbbTV application."
+msgstr "Този канал няма HbbTV приложение."
+
+msgid "No object carousel in this channel."
+msgstr "Този канал няма карусел с обекти."
+
+msgid "Export"
+msgstr "Експорт"
+
+msgid "Compare with another channel…"
+msgstr "Сравни с друг канал…"
+
+msgid "Analyse another channel…"
+msgstr "Анализирай друг канал…"
+
+msgid "Window: {w}"
+msgstr "Прозорец: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Следвай канала на екрана"
+
+msgid "Watch this channel"
+msgstr "Гледай този канал"
+
+msgid "Try again"
+msgstr "Опитай отново"
+
+msgid "Copy as text"
+msgstr "Копирай като текст"
+
+msgid "Export report…"
+msgstr "Експортирай отчет…"
+
+msgid "Source: none"
+msgstr "Източник: няма"
+
+msgid "Saved {path}"
+msgstr "Запазено: {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Записват се следващите 30 секунди…"
+
+msgid "Choose a channel"
+msgstr "Изберете канал"
+
+msgid "Channel name"
+msgstr "Име на канала"
+
+msgid "Compare channels"
+msgstr "Сравни канали"
+
+msgid "Comparison"
+msgstr "Сравнение"
+
+msgid "Close (Esc)"
+msgstr "Затвори (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Анализ на канала…"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LinDVB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 15:20+0000\n"
+"POT-Creation-Date: 2026-11-05 23:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,1137 +17,2877 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lindvb/app.py:36
-msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+#: lindvb/analysis.py:142
+#, python-brace-format
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr ""
+
+#: lindvb/analysis.py:144
+#, python-brace-format
+msgid "Weak reception: only {db} dB margin"
+msgstr ""
+
+#: lindvb/analysis.py:146
+msgid "Signal lost"
+msgstr ""
+
+#: lindvb/analysis.py:378 lindvb/ui/analysis.py:1966
+msgid "The tuner was needed for watching or recording."
+msgstr ""
+
+#: lindvb/analysis.py:530
+#, python-brace-format
+msgid "{n} uncorrectable blocks"
+msgstr ""
+
+#: lindvb/analysis.py:533
+msgid "Lock lost"
+msgstr ""
+
+#: lindvb/analysis.py:540
+#, python-brace-format
+msgid "{n} continuity errors"
+msgstr ""
+
+#: lindvb/analysis.py:544 lindvb/ui/analysis.py:860
+msgid "PCR jump"
+msgstr ""
+
+#: lindvb/analysis.py:546
+#, python-brace-format
+msgid "New table version (0x{tid})"
+msgstr ""
+
+#: lindvb/analysis.py:568
+#, python-brace-format
+msgid "Loudness jump {lu} LU"
+msgstr ""
+
+#: lindvb/analysis.py:579 lindvb/ui/analysis.py:403 lindvb/ui/analysis.py:844
+#: lindvb/ui/analysis.py:964
+msgid "Rebuffering"
+msgstr ""
+
+#: lindvb/analysis.py:629 lindvb/ui/dialogs.py:250
+msgid "Internet"
+msgstr ""
+
+#: lindvb/analysis.py:689
+#, python-brace-format
+msgid "Channel analysis: {name}"
+msgstr ""
+
+#: lindvb/analysis.py:690
+#, python-brace-format
+msgid "Measured since {time}"
+msgstr ""
+
+#: lindvb/analysis.py:691 lindvb/ui/analysis.py:2106
+msgid "Delivery"
+msgstr ""
+
+#: lindvb/analysis.py:691 lindvb/ui/analysis.py:564 lindvb/ui/analysis.py:849
+#: lindvb/ui/analysis.py:1272 lindvb/ui/analysis.py:2107
+msgid "Frame rate"
+msgstr ""
+
+#: lindvb/analysis.py:691 lindvb/ui/analysis.py:564 lindvb/ui/analysis.py:848
+#: lindvb/ui/analysis.py:1272 lindvb/ui/analysis.py:2106
+msgid "Resolution"
+msgstr ""
+
+#: lindvb/analysis.py:692 lindvb/ui/analysis.py:305 lindvb/ui/analysis.py:571
+#: lindvb/ui/analysis.py:1196 lindvb/ui/analysis.py:2107
+msgid "Audio"
+msgstr ""
+
+#: lindvb/analysis.py:692 lindvb/ui/analysis.py:2108
+msgid "Average bit rate"
+msgstr ""
+
+#: lindvb/analysis.py:692 lindvb/ui/analysis.py:309 lindvb/ui/analysis.py:559
+#: lindvb/ui/analysis.py:645 lindvb/ui/analysis.py:1196
+#: lindvb/ui/analysis.py:1268 lindvb/ui/analysis.py:2107
+msgid "Video"
+msgstr ""
+
+#: lindvb/analysis.py:693 lindvb/ui/analysis.py:2108
+msgid "Peak bit rate"
+msgstr ""
+
+#: lindvb/analysis.py:693 lindvb/ui/analysis.py:1067 lindvb/ui/analysis.py:2109
+msgid "Signal quality"
+msgstr ""
+
+#: lindvb/analysis.py:694 lindvb/ui/analysis.py:609 lindvb/ui/analysis.py:1145
+#: lindvb/ui/analysis.py:2110
+msgid "Continuity errors"
+msgstr ""
+
+#: lindvb/analysis.py:694 lindvb/ui/analysis.py:362 lindvb/ui/analysis.py:465
+#: lindvb/ui/analysis.py:808 lindvb/ui/analysis.py:1046
+#: lindvb/ui/analysis.py:2109
+msgid "Margin"
+msgstr ""
+
+#: lindvb/analysis.py:695 lindvb/ui/analysis.py:2110
+msgid "Loudness"
+msgstr ""
+
+#: lindvb/analysis.py:698 lindvb/ui/analysis.py:848 lindvb/ui/analysis.py:1121
+#: lindvb/ui/analysis.py:1737
+msgid "Bit rate"
+msgstr ""
+
+#: lindvb/analysis.py:698 lindvb/ui/analysis.py:1120 lindvb/ui/analysis.py:1669
+msgid "Content"
+msgstr ""
+
+#: lindvb/analysis.py:703
+msgid "Events"
 msgstr ""
 
 #: lindvb/app.py:38
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr ""
+
+#: lindvb/app.py:40
 msgid "Start with this channel (name or number)"
 msgstr ""
 
-#: lindvb/app.py:99
+#: lindvb/app.py:109
 #, python-brace-format
 msgid "{channel} at {time}"
 msgstr ""
 
-#: lindvb/app.py:101 lindvb/ui/epg.py:63 lindvb/ui/window.py:788
+#: lindvb/app.py:111 lindvb/ui/epg.py:64 lindvb/ui/window.py:848
 msgid "Watch"
 msgstr ""
 
-#: lindvb/app.py:105
+#: lindvb/app.py:115
 #, python-brace-format
 msgid "Reminder: {title} on {channel} at {time}"
 msgstr ""
 
-#: lindvb/app.py:169
+#: lindvb/app.py:219
 msgid "Set an XMLTV URL in the preferences first"
 msgstr ""
 
-#: lindvb/app.py:171
+#: lindvb/app.py:221
 msgid "Downloading XMLTV guide…"
 msgstr ""
 
-#: lindvb/app.py:195
+#: lindvb/app.py:245
 #, python-brace-format
 msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
 msgstr ""
 
-#: lindvb/app.py:272
+#: lindvb/app.py:322
 msgid "DVB-I: loading the service list…"
 msgstr ""
 
-#: lindvb/app.py:307
+#: lindvb/app.py:357
 msgid "Search the web"
 msgstr ""
 
-#: lindvb/recformat.py:32
-msgid "MPEG-TS (.ts)"
+#: lindvb/credits.py:12
+msgid "Contains code from"
+msgstr ""
+
+#: lindvb/credits.py:20
+msgid "Built with"
+msgstr ""
+
+#: lindvb/credits.py:31
+msgid "Visualisations"
+msgstr ""
+
+#: lindvb/epgmerge.py:41
+msgid "Broadcast (EIT)"
+msgstr ""
+
+#: lindvb/epgmerge.py:42
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr ""
+
+#: lindvb/epgmerge.py:43
+msgid "DVB-I content guide"
+msgstr ""
+
+#: lindvb/epgmerge.py:44
+msgid "XMLTV (internet)"
 msgstr ""
 
 #: lindvb/recformat.py:33
+msgid "MPEG-TS (.ts)"
+msgstr ""
+
+#: lindvb/recformat.py:34
 msgid "MPEG-PS (.mpg)"
 msgstr ""
 
-#: lindvb/recformat.py:35
+#: lindvb/recformat.py:36
 msgid "Matroska (.mkv)"
 msgstr ""
 
-#: lindvb/recformat.py:46
+#: lindvb/recformat.py:47
 msgid "Teletext (TS)"
 msgstr ""
 
-#: lindvb/recformat.py:47
+#: lindvb/recformat.py:48
 msgid "Subtitles (TS / MKV)"
 msgstr ""
 
-#: lindvb/recformat.py:48
+#: lindvb/recformat.py:49
 msgid "EPG data (TS)"
 msgstr ""
 
-#: lindvb/recformat.py:63
+#: lindvb/recformat.py:64
 msgid "All audio tracks"
 msgstr ""
 
-#: lindvb/recformat.py:64
+#: lindvb/recformat.py:65
 msgid "Preferred language only"
 msgstr ""
 
-#: lindvb/recformat.py:65
+#: lindvb/recformat.py:66
 msgid "First audio track only"
 msgstr ""
 
-#: lindvb/recformat.py:71 lindvb/ui/epg.py:63 lindvb/ui/timers.py:613
-#: lindvb/ui/window.py:790
+#: lindvb/recformat.py:72 lindvb/ui/epg.py:64 lindvb/ui/timers.py:614
+#: lindvb/ui/window.py:850
 msgid "Record"
 msgstr ""
 
-#: lindvb/recformat.py:71
+#: lindvb/recformat.py:72
 msgid "Record and tune"
 msgstr ""
 
-#: lindvb/recformat.py:71
+#: lindvb/recformat.py:72
 msgid "Tune only"
 msgstr ""
 
-#: lindvb/recformat.py:72
+#: lindvb/recformat.py:73
 msgid "Hibernate"
 msgstr ""
 
-#: lindvb/recformat.py:72 lindvb/ui/dialogs.py:275 lindvb/ui/scan.py:17
+#: lindvb/recformat.py:73 lindvb/ui/dialogs.py:346 lindvb/ui/scan.py:18
 msgid "None"
 msgstr ""
 
-#: lindvb/recformat.py:72
+#: lindvb/recformat.py:73
 msgid "Power off"
 msgstr ""
 
-#: lindvb/recformat.py:72
+#: lindvb/recformat.py:73
 msgid "Quit LinDVB"
 msgstr ""
 
-#: lindvb/recformat.py:72
+#: lindvb/recformat.py:73
 msgid "Standby"
 msgstr ""
 
-#: lindvb/recformat.py:116
+#: lindvb/recformat.py:117
 msgid "Internet streams have no teletext, subtitle or EPG data streams."
 msgstr ""
 
-#: lindvb/recformat.py:130
+#: lindvb/recformat.py:131
 msgid "MP4 keeps one audio track (the preferred language when it is on air)."
 msgstr ""
 
-#: lindvb/recformat.py:132
+#: lindvb/recformat.py:133
 msgid "The audio file keeps one track (the preferred language when it is on air)."
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Fr"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Mo"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Sa"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Su"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Th"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "Tu"
 msgstr ""
 
-#: lindvb/recorder.py:24
+#: lindvb/recorder.py:25
 msgid "We"
 msgstr ""
 
-#: lindvb/recorder.py:104 lindvb/ui/timers.py:561
+#: lindvb/recorder.py:105 lindvb/ui/timers.py:562
 msgid "Scheduled"
 msgstr ""
 
-#: lindvb/recorder.py:444
+#: lindvb/recorder.py:449
 msgid "Done"
 msgstr ""
 
-#: lindvb/recorder.py:452
+#: lindvb/recorder.py:457
 msgid "Channel missing"
 msgstr ""
 
-#: lindvb/recorder.py:457
+#: lindvb/recorder.py:462
 msgid "Tuned"
 msgstr ""
 
-#: lindvb/recorder.py:459
+#: lindvb/recorder.py:464
 msgid "Recording"
 msgstr ""
 
-#: lindvb/recorder.py:461
+#: lindvb/recorder.py:466
 msgid "Failed"
 msgstr ""
 
-#: lindvb/recorder.py:464
+#: lindvb/recorder.py:469
 msgid "Missed"
 msgstr ""
 
-#: lindvb/recorder.py:475
+#: lindvb/recorder.py:480
 #, python-brace-format
 msgid "After recording: {action}"
 msgstr ""
 
-#: lindvb/ui/cam.py:29
+#: lindvb/ui/analysis.py:27
+msgid "1 minute"
+msgstr ""
+
+#: lindvb/ui/analysis.py:27
+msgid "15 minutes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:27
+msgid "5 minutes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:307 lindvb/ui/analysis.py:1427
+msgid "audio description"
+msgstr ""
+
+#: lindvb/ui/analysis.py:311 lindvb/ui/analysis.py:604 lindvb/ui/window.py:313
+msgid "Teletext"
+msgstr ""
+
+#: lindvb/ui/analysis.py:313 lindvb/ui/analysis.py:604
+msgid "DVB subtitles"
+msgstr ""
+
+#: lindvb/ui/analysis.py:315 lindvb/ui/analysis.py:777
+msgid "hard of hearing"
+msgstr ""
+
+#: lindvb/ui/analysis.py:317 lindvb/ui/analysis.py:1197
+msgid "Data"
+msgstr ""
+
+#: lindvb/ui/analysis.py:352 lindvb/ui/analysis.py:378
+#: lindvb/ui/analysis.py:416 lindvb/ui/analysis.py:802
+msgid "Signal"
+msgstr ""
+
+#: lindvb/ui/analysis.py:362 lindvb/ui/analysis.py:453
+#: lindvb/ui/analysis.py:455 lindvb/ui/analysis.py:809
+#: lindvb/ui/analysis.py:1048 lindvb/ui/analysis.py:1051
+msgid "Level"
+msgstr ""
+
+#: lindvb/ui/analysis.py:378
+msgid "Carrier"
+msgstr ""
+
+#: lindvb/ui/analysis.py:386
+msgid "Uncorrectable blocks"
+msgstr ""
+
+#: lindvb/ui/analysis.py:387
+msgid "Lock losses"
+msgstr ""
+
+#: lindvb/ui/analysis.py:389 lindvb/ui/analysis.py:484
+msgid "C/N history"
+msgstr ""
+
+#: lindvb/ui/analysis.py:393
+msgid "Errors"
+msgstr ""
+
+#: lindvb/ui/analysis.py:396
+msgid "Reception"
+msgstr ""
+
+#: lindvb/ui/analysis.py:398 lindvb/ui/analysis.py:878 lindvb/ui/scan.py:19
+msgid "Frequency"
+msgstr ""
+
+#: lindvb/ui/analysis.py:398 lindvb/ui/analysis.py:880
+msgid "Symbol rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:399 lindvb/ui/analysis.py:879 lindvb/ui/dialogs.py:541
+msgid "Modulation"
+msgstr ""
+
+#: lindvb/ui/analysis.py:399
+msgid "Roll-off / pilots"
+msgstr ""
+
+#: lindvb/ui/analysis.py:400
+msgid "Transponder capacity"
+msgstr ""
+
+#: lindvb/ui/analysis.py:401 lindvb/ui/analysis.py:840
+msgid "Protocol"
+msgstr ""
+
+#: lindvb/ui/analysis.py:402 lindvb/ui/analysis.py:842
+msgid "Response time"
+msgstr ""
+
+#: lindvb/ui/analysis.py:402 lindvb/ui/analysis.py:841
+msgid "Server"
+msgstr ""
+
+#: lindvb/ui/analysis.py:413
+msgid "Bad"
+msgstr ""
+
+#: lindvb/ui/analysis.py:413
+msgid "Fair"
+msgstr ""
+
+#: lindvb/ui/analysis.py:413
+msgid "Good"
+msgstr ""
+
+#: lindvb/ui/analysis.py:413 lindvb/ui/window.py:2133
+msgid "No signal"
+msgstr ""
+
+#: lindvb/ui/analysis.py:413
+msgid "Poor"
+msgstr ""
+
+#: lindvb/ui/analysis.py:416 lindvb/ui/analysis.py:435
+#: lindvb/ui/analysis.py:956
+msgid "Stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:420
+msgid "NO LOCK"
+msgstr ""
+
+#: lindvb/ui/analysis.py:430 lindvb/ui/analysis.py:963
+msgid "Buffer"
+msgstr ""
+
+#: lindvb/ui/analysis.py:433 lindvb/ui/analysis.py:960
+msgid "Download"
+msgstr ""
+
+#: lindvb/ui/analysis.py:436 lindvb/ui/analysis.py:965
+msgid "Buffer history"
+msgstr ""
+
+#: lindvb/ui/analysis.py:470
+msgid "(driver value)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:473 lindvb/ui/analysis.py:964
+msgid "since start"
+msgstr ""
+
+#: lindvb/ui/analysis.py:483
+msgid "required"
+msgstr ""
+
+#: lindvb/ui/analysis.py:484
+msgid "Quality history"
+msgstr ""
+
+#: lindvb/ui/analysis.py:489
+msgid "horizontal"
+msgstr ""
+
+#: lindvb/ui/analysis.py:489
+msgid "left"
+msgstr ""
+
+#: lindvb/ui/analysis.py:489
+msgid "vertical"
+msgstr ""
+
+#: lindvb/ui/analysis.py:490
+msgid "right"
+msgstr ""
+
+#: lindvb/ui/analysis.py:503
+#, python-brace-format
+msgid "Port {n}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:505
+msgid "(theoretical)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:522
+msgid "Overview"
+msgstr ""
+
+#: lindvb/ui/analysis.py:534
+msgid "Bit rate of the channel"
+msgstr ""
+
+#: lindvb/ui/analysis.py:539
+msgid "Average"
+msgstr ""
+
+#: lindvb/ui/analysis.py:539 lindvb/ui/analysis.py:1499 lindvb/ui/epg.py:95
+msgid "Now"
+msgstr ""
+
+#: lindvb/ui/analysis.py:539
+msgid "Peak"
+msgstr ""
+
+#: lindvb/ui/analysis.py:540
+msgid "Share of transponder"
+msgstr ""
+
+#: lindvb/ui/analysis.py:564 lindvb/ui/analysis.py:1271
+msgid "Codec"
+msgstr ""
+
+#: lindvb/ui/analysis.py:565 lindvb/ui/analysis.py:1273
+msgid "Aspect ratio"
+msgstr ""
+
+#: lindvb/ui/analysis.py:565 lindvb/ui/analysis.py:1274
+msgid "Colour"
+msgstr ""
+
+#: lindvb/ui/analysis.py:566 lindvb/ui/analysis.py:1275
+msgid "Decoder"
+msgstr ""
+
+#: lindvb/ui/analysis.py:566
+msgid "Dropped frames"
+msgstr ""
+
+#: lindvb/ui/analysis.py:575 lindvb/ui/analysis.py:1120
+#: lindvb/ui/analysis.py:1304 lindvb/ui/timers.py:138
+msgid "Format"
+msgstr ""
+
+#: lindvb/ui/analysis.py:575
+msgid "Track"
+msgstr ""
+
+#: lindvb/ui/analysis.py:576 lindvb/ui/analysis.py:1304
+#: lindvb/ui/dialogs.py:199
+msgid "Channels"
+msgstr ""
+
+#: lindvb/ui/analysis.py:585
+msgid "EIT"
+msgstr ""
+
+#: lindvb/ui/analysis.py:585
+msgid "Now & next"
+msgstr ""
+
+#: lindvb/ui/analysis.py:594 lindvb/ui/analysis.py:1643
+msgid "Encryption"
+msgstr ""
+
+#: lindvb/ui/analysis.py:601
+msgid "Interactive"
+msgstr ""
+
+#: lindvb/ui/analysis.py:603
+msgid "Autostart"
+msgstr ""
+
+#: lindvb/ui/analysis.py:607 lindvb/ui/analysis.py:1141
+msgid "Stream health"
+msgstr ""
+
+#: lindvb/ui/analysis.py:609 lindvb/ui/analysis.py:1145
+msgid "Transport errors"
+msgstr ""
+
+#: lindvb/ui/analysis.py:610 lindvb/ui/analysis.py:1146
+msgid "PCR arrival jitter"
+msgstr ""
+
+#: lindvb/ui/analysis.py:610 lindvb/ui/analysis.py:1146
+msgid "PCR interval"
+msgstr ""
+
+#: lindvb/ui/analysis.py:611
+msgid "PAT / PMT interval"
+msgstr ""
+
+#: lindvb/ui/analysis.py:611
+msgid "Timeshift buffer"
+msgstr ""
+
+#: lindvb/ui/analysis.py:646
+msgid "Teletext / subtitles / data"
+msgstr ""
+
+#: lindvb/ui/analysis.py:661
+#, python-brace-format
+msgid "Ø {v}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:690 lindvb/ui/analysis.py:1358
+msgid "interlaced"
+msgstr ""
+
+#: lindvb/ui/analysis.py:691 lindvb/ui/analysis.py:1358
+#: lindvb/ui/analysis.py:1361
+msgid "progressive"
+msgstr ""
+
+#: lindvb/ui/analysis.py:702 lindvb/ui/analysis.py:963
+#: lindvb/ui/analysis.py:1387 lindvb/ui/analysis.py:1400
+msgid "only for the channel on screen"
+msgstr ""
+
+#: lindvb/ui/analysis.py:706
+msgid "Hardware"
+msgstr ""
+
+#: lindvb/ui/analysis.py:706
+msgid "Software"
+msgstr ""
+
+#: lindvb/ui/analysis.py:723
+msgid "AD"
+msgstr ""
+
+#: lindvb/ui/analysis.py:733
+#, python-brace-format
+msgid "{n} tracks"
+msgstr ""
+
+#: lindvb/ui/analysis.py:737
+#, python-brace-format
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:741
+msgid "Loudness: only for the channel on screen"
+msgstr ""
+
+#: lindvb/ui/analysis.py:752 lindvb/ui/window.py:2096
+msgid "No programme information"
+msgstr ""
+
+#: lindvb/ui/analysis.py:762 lindvb/ui/analysis.py:1689
+#: lindvb/ui/dialogs.py:536 lindvb/ui/window.py:51
+msgid "Encrypted"
+msgstr ""
+
+#: lindvb/ui/analysis.py:763
+msgid "scrambled packets"
+msgstr ""
+
+#: lindvb/ui/analysis.py:765 lindvb/ui/analysis.py:1693
+msgid "Free-to-air"
+msgstr ""
+
+#: lindvb/ui/analysis.py:766
+msgid "no CA descriptors in the PMT"
+msgstr ""
+
+#: lindvb/ui/analysis.py:769 lindvb/ui/analysis.py:775
+#: lindvb/ui/analysis.py:779 lindvb/ui/analysis.py:1380 lindvb/ui/dialogs.py:35
+msgid "none"
+msgstr ""
+
+#: lindvb/ui/analysis.py:774
+#, python-brace-format
+msgid "PID {pid} · {n} pages"
+msgstr ""
+
+#: lindvb/ui/analysis.py:808
+msgid "Quality"
+msgstr ""
+
+#: lindvb/ui/analysis.py:819 lindvb/ui/analysis.py:1060
+msgid "Carrier to noise ratio"
+msgstr ""
+
+#: lindvb/ui/analysis.py:825 lindvb/ui/analysis.py:1054
+msgid "Signal level"
+msgstr ""
+
+#: lindvb/ui/analysis.py:830
+msgid "Bit error rate (log₁₀)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:837
+msgid "Internet stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:840 lindvb/ui/analysis.py:1732
+msgid "Address"
+msgstr ""
+
+#: lindvb/ui/analysis.py:840
+msgid "HTTP status"
+msgstr ""
+
+#: lindvb/ui/analysis.py:841
+msgid "Content type"
+msgstr ""
+
+#: lindvb/ui/analysis.py:842
+msgid "Download speed"
+msgstr ""
+
+#: lindvb/ui/analysis.py:843 lindvb/ui/window.py:342
+msgid "Playlist"
+msgstr ""
+
+#: lindvb/ui/analysis.py:843
+msgid "Segments"
+msgstr ""
+
+#: lindvb/ui/analysis.py:844
+msgid "Error"
+msgstr ""
+
+#: lindvb/ui/analysis.py:847
+msgid "Variants"
+msgstr ""
+
+#: lindvb/ui/analysis.py:849
+msgid "Codecs"
+msgstr ""
+
+#: lindvb/ui/analysis.py:854
+msgid "Error timeline"
+msgstr ""
+
+#: lindvb/ui/analysis.py:858
+msgid "continuity errors"
+msgstr ""
+
+#: lindvb/ui/analysis.py:858
+msgid "uncorrectable blocks"
+msgstr ""
+
+#: lindvb/ui/analysis.py:859
+msgid "lock lost"
+msgstr ""
+
+#: lindvb/ui/analysis.py:859
+msgid "rebuffering"
+msgstr ""
+
+#: lindvb/ui/analysis.py:860
+msgid "loudness jump"
+msgstr ""
+
+#: lindvb/ui/analysis.py:861
+msgid "table version"
+msgstr ""
+
+#: lindvb/ui/analysis.py:875
+msgid "Tuned parameters (from the frontend)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:878
+msgid "Delivery system"
+msgstr ""
+
+#: lindvb/ui/analysis.py:879
+msgid "Code rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:880
+msgid "Roll-off"
+msgstr ""
+
+#: lindvb/ui/analysis.py:881
+msgid "Guard interval"
+msgstr ""
+
+#: lindvb/ui/analysis.py:881
+msgid "Pilots"
+msgstr ""
+
+#: lindvb/ui/analysis.py:882
+msgid "Carriers"
+msgstr ""
+
+#: lindvb/ui/analysis.py:882
+msgid "Stream / PLP"
+msgstr ""
+
+#: lindvb/ui/analysis.py:883
+msgid "C/N needed"
+msgstr ""
+
+#: lindvb/ui/analysis.py:883
+msgid "Source of the figures"
+msgstr ""
+
+#: lindvb/ui/analysis.py:886 lindvb/ui/analysis.py:1819
+msgid "Dish alignment aid…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:890
+msgid "Logging and warnings"
+msgstr ""
+
+#: lindvb/ui/analysis.py:894
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:897
+msgid "Warn on screen when the reception gets weak"
+msgstr ""
+
+#: lindvb/ui/analysis.py:901
+msgid "Warn below this margin (dB)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:902
+msgid "Reception over the last days"
+msgstr ""
+
+#: lindvb/ui/analysis.py:907
+msgid "Open log folder"
+msgstr ""
+
+#: lindvb/ui/analysis.py:951 lindvb/ui/analysis.py:1038
+#, python-brace-format
+msgid "Ø {avg} · min {min}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:955
+#, python-brace-format
+msgid "Ø {avg} · peak {max}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:959
+#, python-brace-format
+msgid "{x}× the stream rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:971
+msgid "Download and stream rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:977
+msgid "stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:990
+#, python-brace-format
+msgid "HLS with {n} variants"
+msgstr ""
+
+#: lindvb/ui/analysis.py:991
+msgid "HLS media playlist"
+msgstr ""
+
+#: lindvb/ui/analysis.py:992
+msgid "MPEG-DASH"
+msgstr ""
+
+#: lindvb/ui/analysis.py:992
+msgid "none (a plain stream)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:993
+msgid "live"
+msgstr ""
+
+#: lindvb/ui/analysis.py:993
+msgid "on demand"
+msgstr ""
+
+#: lindvb/ui/analysis.py:995
+#, python-brace-format
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1009
+msgid "No variant list: the address is a single stream."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1018
+msgid "No events so far."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1028
+#, python-brace-format
+msgid "{n} minutes logged for this channel."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1029
+msgid "Nothing logged for this channel yet."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1041
+#, python-brace-format
+msgid "min {min} · max {max}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1045
+#, python-brace-format
+msgid "needs {db}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1051
+msgid "relative (driver)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1052
+#, python-brace-format
+msgid "post FEC {v}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1064
+msgid "needed for a clean picture"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1096 lindvb/ui/analysis.py:1990
+msgid "DVB API v5 statistics"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1098
+msgid "dvbsrc (driver scale)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1098
+msgid "internet stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1109
+msgid "Transport Stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1113
+msgid "Elementary streams and PIDs"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1115
+msgid "This channel only"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1115
+msgid "Whole stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1116
+msgid "Sort by PID"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1116
+msgid "Sort by bit rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1119
+msgid "PID hex"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1119
+msgid "dec"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1121 lindvb/ui/analysis.py:1737
+#: lindvb/ui/dialogs.py:495 lindvb/ui/epgsettings.py:100
+msgid "Type"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1122
+msgid "CC errors"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1122 lindvb/ui/analysis.py:1670
+msgid "Scrambled"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1123
+msgid "Last 60 s"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1129
+msgid "Transponder"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1137 lindvb/ui/analysis.py:1223
+msgid "Measure the whole transponder (10 s)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1144
+msgid "Packets"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1144
+msgid "Sync losses"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1147
+msgid "Null packets"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1147
+msgid "PCR jumps"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1148
+msgid "PID filter"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1200 lindvb/ui/analysis.py:1702
+msgid "unknown"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1205
+msgid "SI"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1206
+msgid "Null"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1206
+msgid "Other"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1215
+#, python-brace-format
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1223
+msgid "Measuring…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1230
+msgid "SI / EPG"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1232
+msgid "free / null"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1234
+#, python-brace-format
+msgid "{used} used of {cap} · measured {time}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1243
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1245
+msgid "Internet channels have no transponder."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1258
+msgid "whole transponder"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1259
+#, python-brace-format
+msgid "{n} PIDs"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1263
+msgid "Video & Audio"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1271
+msgid "Profile / level"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1272
+msgid "Scan"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1273
+msgid "Black bars"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1274
+msgid "Film (3:2 pulldown)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1275
+msgid "Frames shown / dropped"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1276
+msgid "Measured bit rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1276
+msgid "Nominal bit rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1277
+msgid "VBV buffer"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1281
+msgid "Frame sizes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1286
+msgid "B frame"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1286
+msgid "I frame"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1286
+msgid "P frame"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1296
+msgid "GOP length"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1296
+msgid "I frame average"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1297
+msgid "P/B frame average"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1302 lindvb/ui/dialogs.py:344
+msgid "Audio tracks"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1303 lindvb/ui/dialogs.py:126 lindvb/ui/dialogs.py:129
+msgid "Language"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1305
+msgid "Nominal"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1305
+msgid "Sample rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1306
+msgid "Dialnorm"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1306
+msgid "Measured"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1307
+msgid "Notes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1309
+msgid "Click a track to listen to it."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1311
+msgid "Loudness (EBU R 128)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1314
+msgid "Momentary"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1314
+msgid "Short term"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1315
+msgid "Integrated"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1315
+msgid "Loudness range"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1316
+msgid "Sample peak"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1329
+msgid "Teletext and subtitles"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1353
+#, python-brace-format
+msgid "level {l}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1354
+#, python-brace-format
+msgid "tier {t}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1359
+msgid "fields"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1359
+msgid "mixed"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1361
+msgid "interlaced capable"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1371
+msgid "not sent"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1376
+#, python-brace-format
+msgid "letterbox {pct} % top and bottom"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1378
+#, python-brace-format
+msgid "pillarbox {pct} % at the sides"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1384
+#, python-brace-format
+msgid "picture {ratio}:1"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1389
+msgid "no"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1389
+msgid "yes, repeated fields"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1398
+msgid "mastering display data"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1403
+msgid "(maximum)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1404
+msgid "not signalled (variable)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1407
+#, python-brace-format
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1412
+#, python-brace-format
+msgid "{n} frames"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1429
+msgid "clean audio"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1456
+msgid "EBU target −23 LUFS"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1459
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1460
+#, python-brace-format
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1461
+msgid "Loudness is measured for the channel on screen only."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1465
+msgid "index"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1465
+msgid "info"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1465
+msgid "schedule"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1465
+msgid "subtitles"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1466
+msgid "subtitles (hard of hearing)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1467
+#, python-brace-format
+msgid "Teletext PID {pid}:"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1471
+#, python-brace-format
+msgid "DVB subtitles PID {pid}:"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1473
+msgid "No teletext or subtitles in this channel."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1483
+msgid "Tables & EPG"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1488
+msgid "SI tables"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1490
+msgid "Table"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1491
+msgid "Changes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1491
+msgid "Version"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1492
+msgid "Repetition"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1492
+msgid "Sections"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1493 lindvb/ui/analysis.py:1647
+#: lindvb/ui/timers.py:140
+msgid "Status"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1496
+msgid "Programme guide and clock"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1499
+msgid "Events in the guide"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1499 lindvb/ui/epg.py:95 lindvb/ui/window.py:338
+msgid "Next"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1500
+msgid "EIT now/next"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1500
+msgid "Guide reaches"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1501
+msgid "Clock of the channel"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1501
+msgid "EIT schedule"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1502
+msgid "Difference to this computer"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1502
+msgid "Local time offset"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1503
+msgid "Network"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1503 lindvb/ui/scan.py:19
+msgid "Provider"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1508
+msgid "Raw view"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1526
+msgid "Hex"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1588
+msgid "missing"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1589
+msgid "ok"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1589
+msgid "slow"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1594
+msgid "(all services)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1596
+msgid "(other services)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1623 lindvb/ui/analysis.py:1625
+msgid "not seen"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1623
+#, python-brace-format
+msgid "seen {s} s ago"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1625
+#, python-brace-format
+msgid "{n} sections"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1629
+msgid "timers may start early or late"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1632
+msgid "no TDT/TOT"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1655
+msgid "Descrambling"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1655
+msgid "SDT free_CA_mode"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1656
+msgid "Descrambler state"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1656
+msgid "Scrambled packets"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1660
+msgid "Conditional access systems"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1661
+msgid "CA system ID"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1661 lindvb/ui/dialogs.py:539
+msgid "System"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1662
+msgid "ECM PID"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1662
+msgid "For"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1663
+msgid "ECM rate"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1668
+msgid "Scrambling per stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1670
+msgid "Key changes"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1671
+msgid "Crypto period"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1673
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1690
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1694
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1696
+msgid "free"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1696
+msgid "scrambled"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1703
+msgid "all streams"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1704
+msgid "not received"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1707
+#, python-brace-format
+msgid "EMM (CAT): {list}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1709
+msgid "No CAT with EMM streams received."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1727
+msgid "Applications (AIT)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1730 lindvb/ui/dialogs.py:492 lindvb/ui/dialogs.py:531
+#: lindvb/ui/timers.py:134 lindvb/ui/timers.py:451
+msgid "Name"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1730
+msgid "Organisation / app"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1731
+msgid "Control"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1731
+msgid "Profile"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1735
+msgid "Data carousels (DSM-CC)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1736
+msgid "Component tag"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1753
+#, python-brace-format
+msgid "AIT version {v} on PID {pid}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1754
+msgid "test application"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1761
+#, python-brace-format
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1762
+msgid "This channel has no HbbTV application."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1770
+msgid "No object carousel in this channel."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1782 lindvb/ui/analysis.py:1917
+#, python-brace-format
+msgid "Channel Analysis – {name}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1803
+msgid "Freeze the measurement"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1807
+msgid "Copy report as text"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1808
+msgid "Save report as text…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1809
+msgid "Save report as JSON…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1810
+msgid "Save history as CSV…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1811
+msgid "Save window as picture…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1812 lindvb/ui/analysis.py:1885
+msgid "Save 30 s of the stream…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1815
+msgid "Export"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1818
+msgid "Compare with another channel…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1820 lindvb/ui/analysis.py:2129
+msgid "Analyse another channel…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1862
+#, python-brace-format
+msgid "Window: {w}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1866
+msgid "Follow the channel on screen"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1873
+msgid "Watch this channel"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1875
+msgid "Try again"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1884
+msgid "Copy as text"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1884
+msgid "Export report…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1889 lindvb/ui/timers.py:322 lindvb/ui/window.py:349
+msgid "Close"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1918
+#, python-brace-format
+msgid "Channel Analysis · {name}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1962
+#, python-brace-format
+msgid "Live · measuring for {t}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1963
+msgid "Paused"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1965
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1967
+msgid "The tuner of this channel was switched to another channel."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1974
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1980
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr ""
+
+#: lindvb/ui/analysis.py:1989
+#, python-brace-format
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1991
+msgid "dvbsrc statistics"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1993
+msgid "Source: background download"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1993
+msgid "Source: the player's stream"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1995
+msgid "Source: none"
+msgstr ""
+
+#: lindvb/ui/analysis.py:1996
+msgid "updated every second"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2033 lindvb/ui/analysis.py:2041
+#, python-brace-format
+msgid "Saved {path}"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2034
+msgid "Nothing to save: the channel is not received."
+msgstr ""
+
+#: lindvb/ui/analysis.py:2036
+msgid "Recording the next 30 seconds…"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2068
+msgid "Choose a channel"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2075
+msgid "Channel name"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2106 lindvb/ui/epg.py:107 lindvb/ui/epg.py:160
+#: lindvb/ui/epgsettings.py:244 lindvb/ui/timers.py:123 lindvb/ui/timers.py:131
+#: lindvb/ui/timers.py:199 lindvb/ui/timers.py:329 lindvb/ui/timers.py:450
+#: lindvb/ui/xmltvmatch.py:48
+msgid "Channel"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2113
+msgid "Compare channels"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2126
+#, python-brace-format
+msgid "Compare {name} with"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2133
+msgid "Comparison"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2143
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr ""
+
+#: lindvb/ui/analysis.py:2182
+msgid "Dish alignment aid"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2205
+msgid "Tone"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2208
+msgid "Reset best value"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2211
+msgid "Close (Esc)"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2215
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr ""
+
+#: lindvb/ui/analysis.py:2238
+msgid "% quality"
+msgstr ""
+
+#: lindvb/ui/analysis.py:2248
+#, python-brace-format
+msgid "Best so far: {v}"
+msgstr ""
+
+#: lindvb/ui/cam.py:30
 msgid "The module was removed or reset."
 msgstr ""
 
-#: lindvb/ui/cam.py:36
+#: lindvb/ui/cam.py:37
 msgid "CAM Menu"
 msgstr ""
 
-#: lindvb/ui/cam.py:68 lindvb/ui/dialogs.py:57 lindvb/ui/dvbi.py:284
-#: lindvb/ui/timers.py:610 lindvb/ui/window.py:313 lindvb/ui/window.py:1111
-#: lindvb/ui/xmltvmatch.py:84
+#: lindvb/ui/cam.py:69 lindvb/ui/dialogs.py:80 lindvb/ui/dvbi.py:285
+#: lindvb/ui/hbbtv.py:303 lindvb/ui/timers.py:611 lindvb/ui/window.py:356
+#: lindvb/ui/window.py:1182 lindvb/ui/xmltvmatch.py:85
 msgid "Cancel"
 msgstr ""
 
-#: lindvb/ui/cam.py:70 lindvb/ui/cam.py:141
+#: lindvb/ui/cam.py:71 lindvb/ui/cam.py:142
 msgid "OK"
 msgstr ""
 
-#: lindvb/ui/cam.py:86
+#: lindvb/ui/cam.py:87
 msgid "Open CAM Menu"
 msgstr ""
 
-#: lindvb/ui/cam.py:88
+#: lindvb/ui/cam.py:89
 msgid "Select"
 msgstr ""
 
-#: lindvb/ui/cam.py:90 lindvb/ui/cam.py:141 lindvb/ui/dialogs.py:650
+#: lindvb/ui/cam.py:91 lindvb/ui/cam.py:142 lindvb/ui/dialogs.py:752
 msgid "Back"
 msgstr ""
 
-#: lindvb/ui/cam.py:92
+#: lindvb/ui/cam.py:93
 msgid "Close Menu"
 msgstr ""
 
-#: lindvb/ui/cam.py:111
+#: lindvb/ui/cam.py:112
 #, python-brace-format
 msgid "Device: {path} – {state}"
 msgstr ""
 
-#: lindvb/ui/cam.py:169
+#: lindvb/ui/cam.py:170
 msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
 msgstr ""
 
-#: lindvb/ui/cam.py:177
+#: lindvb/ui/cam.py:178
 msgid "The module has not finished starting yet."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:23 lindvb/ui/dialogs.py:116
+#: lindvb/ui/dialogs.py:25
+msgid "Automatic (graphics card when possible)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:27
+msgid "V4L2 (ARM boards)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:28
+msgid "Software (processor)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:34
+#, python-brace-format
+msgid "Graphics card decoders found: {list}"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:38
+#, python-brace-format
+msgid "Switched off after an error: {list}"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:42
+#, python-brace-format
+msgid "Decoding now: {decoder}"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:46 lindvb/ui/dialogs.py:139
 msgid "Custom colour"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:23
+#: lindvb/ui/dialogs.py:46
 msgid "LinDVB blue (default)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:23
+#: lindvb/ui/dialogs.py:46
 msgid "System accent colour"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:49 lindvb/ui/window.py:347
+#: lindvb/ui/dialogs.py:72 lindvb/ui/window.py:395
 msgid "Preferences"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:60 lindvb/ui/xmltvmatch.py:86
+#: lindvb/ui/dialogs.py:83 lindvb/ui/xmltvmatch.py:87
 msgid "Save"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:102
+#: lindvb/ui/dialogs.py:125
 msgid "Appearance"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:103 lindvb/ui/dialogs.py:106
-msgid "Language"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:109
+#: lindvb/ui/dialogs.py:132
 msgid "Takes effect when LinDVB is started again."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:110 lindvb/ui/dialogs.py:112 lindvb/ui/dialogs.py:325
+#: lindvb/ui/dialogs.py:133 lindvb/ui/dialogs.py:135 lindvb/ui/dialogs.py:396
 msgid "Accent colour"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:114
+#: lindvb/ui/dialogs.py:137
 msgid "Used for highlights, selections and buttons in every window."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:121
+#: lindvb/ui/dialogs.py:144
 msgid "On-screen display"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:122
+#: lindvb/ui/dialogs.py:145
 msgid "OSD display time (s)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:125
+#: lindvb/ui/dialogs.py:148
 msgid "Visualisation"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:126
+#: lindvb/ui/dialogs.py:149
 msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:129
+#: lindvb/ui/dialogs.py:152
 msgid "Overlay"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:130
+#: lindvb/ui/dialogs.py:153
 msgid "Station logo tile"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:131
+#: lindvb/ui/dialogs.py:154
 msgid "The channel's logo, or a tile with the station name when there is none."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:132
+#: lindvb/ui/dialogs.py:155
 msgid "Album cover"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:133
+#: lindvb/ui/dialogs.py:156
 msgid "The cover of the song on air, from the file or looked up online."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:134
+#: lindvb/ui/dialogs.py:157
 msgid "Song information"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:135
+#: lindvb/ui/dialogs.py:158
 msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:137
+#: lindvb/ui/dialogs.py:160
 msgid "Clock in the top right corner"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:138
+#: lindvb/ui/dialogs.py:161
 msgid "Sources"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:139
+#: lindvb/ui/dialogs.py:162
 msgid "Look up covers online"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:140
+#: lindvb/ui/dialogs.py:163
 msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:142
+#: lindvb/ui/dialogs.py:165
 msgid "Station logo folder"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:143
+#: lindvb/ui/dialogs.py:166
 #, python-brace-format
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:146
+#: lindvb/ui/dialogs.py:169
 msgid "Playback"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:148
-msgid "Deinterlace video"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:149
-msgid "Screenshot folder"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:150 lindvb/ui/window.py:1624
-msgid "Timeshift"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:151
-msgid "Timeshift folder"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:152
-msgid "Timeshift buffer (MB)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:155
-msgid "Tuner and Channels"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:156
-msgid "DVB hardware"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:157
-msgid "Adapter numbers LinDVB may use, comma separated."
-msgstr ""
-
-#: lindvb/ui/dialogs.py:157
-msgid "DVB adapters"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:159
-msgid "Frontend"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:160
-msgid "Capture whole transponder"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:161
-msgid "Needed for all audio tracks when the channel list knows only one audio PID."
-msgstr ""
-
-#: lindvb/ui/dialogs.py:162
-msgid "Satellite LNB"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:163
-msgid "LOF low band (kHz)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:164
-msgid "LOF high band (kHz)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:165
-msgid "Switch frequency (kHz)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:166
-msgid "Channels"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:167
-msgid "Channel Search…"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:169
-msgid "Channel search"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:170
-msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
-msgstr ""
-
-#: lindvb/ui/dialogs.py:171
-msgid "Channel Editor / Favourites"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:173
-msgid "Channel editor"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:174
-msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+#: lindvb/ui/dialogs.py:175
+msgid "Video decoding"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:179
-msgid "Internet"
+msgid "Deinterlace video"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:180
-msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:182
+msgid "Screenshot folder"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:183 lindvb/ui/window.py:1709
+msgid "Timeshift"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:184
+msgid "Timeshift folder"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:185
+msgid "Timeshift buffer (MB)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:188
+msgid "Tuner and Channels"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:189
+msgid "DVB hardware"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:190
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:190
+msgid "DVB adapters"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:192
+msgid "Frontend"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:193
+msgid "Capture whole transponder"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:194
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:195
+msgid "Satellite LNB"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:196
+msgid "LOF low band (kHz)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:197
+msgid "LOF high band (kHz)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:198
+msgid "Switch frequency (kHz)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:200
+msgid "Channel Search…"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:202
+msgid "Channel search"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:203
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:204
+msgid "Channel Editor / Favourites"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:206
+msgid "Channel editor"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:207
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:208 lindvb/ui/window.py:432
+msgid "HbbTV"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:210
+msgid "Interactive services (HbbTV)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:211
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:213
+msgid "Start automatically"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:214
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:216
+msgid "Subtitles in media libraries"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:217
+msgid "Applications show subtitles in their videos from the start."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:218
+msgid "Audio description in media libraries"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:219
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:220
+msgid "Teletext from the interactive service"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:221
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:225 lindvb/ui/hbbtv.py:293
+msgid "Youth protection"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:226 lindvb/ui/window.py:1778
+msgid "Off"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:226
+#, python-brace-format
+msgid "Viewers from {age} years"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:228
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:232
+msgid "Current PIN"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:233
+msgid "Needed to change the youth protection or the PIN."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:234
+msgid "New PIN"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:235
+msgid "Leave empty to keep the current PIN."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:236
+msgid "Companion screens on the network"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:237
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:240
+msgid "Allow third-party cookies"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:241
+msgid "Advertising networks use them to follow you across channels."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:242
+msgid "Delete HbbTV Data"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:244
+msgid "Cookies and storage"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:245
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:251
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:263
 msgctxt "preferences page"
 msgid "Recording"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:194 lindvb/ui/timers.py:287
+#: lindvb/ui/dialogs.py:265 lindvb/ui/timers.py:288
 msgid "Recording folder"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:195
+#: lindvb/ui/dialogs.py:266
 msgid "File naming scheme"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:196
+#: lindvb/ui/dialogs.py:267
 msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:198
+#: lindvb/ui/dialogs.py:269
 msgid "Timer padding"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:199
+#: lindvb/ui/dialogs.py:270
 msgid "Start earlier by (min)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:200
+#: lindvb/ui/dialogs.py:271
 msgid "Stop later by (min)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:201
+#: lindvb/ui/dialogs.py:272
 msgid "Timers"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:202
+#: lindvb/ui/dialogs.py:273
 msgid "Open the timer window after creating a timer"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:203
+#: lindvb/ui/dialogs.py:274
 msgid "After Record in the programme guide, edit the new timer straight away."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:207
+#: lindvb/ui/dialogs.py:278
 msgid "EPG"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:207
+#: lindvb/ui/dialogs.py:278
 msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:212 lindvb/ui/dialogs.py:761
+#: lindvb/ui/dialogs.py:283 lindvb/ui/dialogs.py:863
 msgid "Conditional access"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:213
+#: lindvb/ui/dialogs.py:284
 msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:218
+#: lindvb/ui/dialogs.py:289
 msgid "None (leave scrambled)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:219
+#: lindvb/ui/dialogs.py:290
 msgid "External softcam (DVBAPI / OSCam)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:220
+#: lindvb/ui/dialogs.py:291
 msgid "Hardware CI / CI+ module"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:223
+#: lindvb/ui/dialogs.py:294
 msgid "Descrambling via"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:225
+#: lindvb/ui/dialogs.py:296
 msgid "Softcam"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:226
+#: lindvb/ui/dialogs.py:297
 msgid "DVBAPI socket"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:226
+#: lindvb/ui/dialogs.py:297
 msgid "Unix socket path, or host:port."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:227
+#: lindvb/ui/dialogs.py:298
 msgid "CI module"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:228
+#: lindvb/ui/dialogs.py:299
 msgid "CI adapter number"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:229
+#: lindvb/ui/dialogs.py:300
 msgid "CA device number"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:232 lindvb/ui/dialogs.py:754 lindvb/ui/dialogs.py:779
+#: lindvb/ui/dialogs.py:303 lindvb/ui/dialogs.py:856 lindvb/ui/dialogs.py:881
 msgid "Plugins"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:234
+#: lindvb/ui/dialogs.py:305
 msgid "Load plugins at startup"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:235
+#: lindvb/ui/dialogs.py:306
 msgid "Manage Plugins…"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:252
+#: lindvb/ui/dialogs.py:323
 msgid "Format and tracks"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:254
+#: lindvb/ui/dialogs.py:325
 msgid ""
 "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\n"
 "TS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:271
+#: lindvb/ui/dialogs.py:342
 msgid "TV format"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:272
+#: lindvb/ui/dialogs.py:343
 msgid "Radio format"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:273
-msgid "Audio tracks"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:276
+#: lindvb/ui/dialogs.py:347
 msgid "Preferred audio language"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:277
+#: lindvb/ui/dialogs.py:348
 msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:302
+#: lindvb/ui/dialogs.py:373
 #, python-brace-format
 msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:306
+#: lindvb/ui/dialogs.py:377
 #, python-brace-format
 msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:308
+#: lindvb/ui/dialogs.py:379
 msgid " and "
 msgstr ""
 
-#: lindvb/ui/dialogs.py:314
+#: lindvb/ui/dialogs.py:385
 msgid "No preferred audio language is set, so only the first audio track is recorded."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:343
+#: lindvb/ui/dialogs.py:414
 #, python-brace-format
 msgid "Desktop accent: {found}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:344
+#: lindvb/ui/dialogs.py:415
 msgid "No desktop accent found, using LinDVB blue."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:346
+#: lindvb/ui/dialogs.py:417
 #, python-brace-format
 msgid "Current accent: {color}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:386
-msgid "Channel Editor"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:390 lindvb/ui/dialogs.py:429 lindvb/ui/timers.py:133
-#: lindvb/ui/timers.py:450
-msgid "Name"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:391 lindvb/ui/dialogs.py:430
-msgid "Category"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:391 lindvb/ui/dialogs.py:429
-msgid "Group"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:392
-msgid "Fav"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:393 lindvb/ui/epgsettings.py:97
-msgid "Type"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:396 lindvb/ui/xmltvmatch.py:39
-msgid "Filter channels"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:428
-msgid "General"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:430
-msgid "Stream URL"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:432
-msgid "Favourite"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:433 lindvb/ui/dialogs.py:518 lindvb/ui/window.py:394
-msgid "Radio"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:434 lindvb/ui/window.py:48
-msgid "Encrypted"
+#: lindvb/ui/dialogs.py:435
+msgid "Youth protection not changed"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:436
-msgid "Tuning"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:437
-msgid "System"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:438
-msgid "Polarity"
-msgstr ""
-
-#: lindvb/ui/dialogs.py:439
-msgid "Modulation"
+msgid "The current PIN is wrong."
 msgstr ""
 
 #: lindvb/ui/dialogs.py:440
-msgid "Frequency (kHz)"
+msgid "Youth protection needs a PIN"
 msgstr ""
 
 #: lindvb/ui/dialogs.py:441
+msgid "Set a PIN to switch on the youth protection."
+msgstr ""
+
+#: lindvb/ui/dialogs.py:488
+msgid "Channel Editor"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:493 lindvb/ui/dialogs.py:532
+msgid "Category"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:493 lindvb/ui/dialogs.py:531
+msgid "Group"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:494
+msgid "Fav"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:498 lindvb/ui/xmltvmatch.py:40
+msgid "Filter channels"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:530
+msgid "General"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:532
+msgid "Stream URL"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:534
+msgid "Favourite"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:535 lindvb/ui/dialogs.py:620 lindvb/ui/window.py:447
+msgid "Radio"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:538
+msgid "Tuning"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:540
+msgid "Polarity"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:542
+msgid "Frequency (kHz)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py:543
 msgid "Symbol rate (kBd)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:442
+#: lindvb/ui/dialogs.py:544
 msgid "Bandwidth (Hz)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:443
+#: lindvb/ui/dialogs.py:545
 msgid "Stream ID"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:444
+#: lindvb/ui/dialogs.py:546
 msgid "DiSEqC port (-1 none)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:447
+#: lindvb/ui/dialogs.py:549
 msgid "Service and PIDs"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:448
+#: lindvb/ui/dialogs.py:550
 msgid "Service ID"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:448
+#: lindvb/ui/dialogs.py:550
 msgid "Transport ID"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:449
+#: lindvb/ui/dialogs.py:551
 msgid "Video PID"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:450
+#: lindvb/ui/dialogs.py:552
 msgid "Audio PIDs"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:451
+#: lindvb/ui/dialogs.py:553
 msgid "Teletext PID"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:457
+#: lindvb/ui/dialogs.py:559
 msgid "Apply changes (Ctrl+S)"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:460 lindvb/ui/dialogs.py:562
+#: lindvb/ui/dialogs.py:562 lindvb/ui/dialogs.py:664
 msgid "New channel"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:461
+#: lindvb/ui/dialogs.py:563
 msgid "Delete channel"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:463
+#: lindvb/ui/dialogs.py:565
 msgid "Move up"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:464
+#: lindvb/ui/dialogs.py:566
 msgid "Move down"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:465
+#: lindvb/ui/dialogs.py:567
 msgid "Sort by group and name"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:514
+#: lindvb/ui/dialogs.py:616
 msgid "No channel selected"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:515
+#: lindvb/ui/dialogs.py:617
 msgid "Pick a channel in the list to edit it."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:517
+#: lindvb/ui/dialogs.py:619
 msgid "Unnamed channel"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:594 lindvb/ui/window.py:270
+#: lindvb/ui/dialogs.py:696 lindvb/ui/window.py:311
 msgid "Recording and Device Statistics"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:617
+#: lindvb/ui/dialogs.py:719
 msgid "Active recordings:"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:626
+#: lindvb/ui/dialogs.py:728
 #, python-brace-format
 msgid ""
 "\n"
 "Next timer: {v0}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:635
+#: lindvb/ui/dialogs.py:737
 #, python-brace-format
 msgid "Teletext – {name}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:652
+#: lindvb/ui/dialogs.py:754
 msgid "Find on page"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:654
+#: lindvb/ui/dialogs.py:756
 msgid "Copy page"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:656
+#: lindvb/ui/dialogs.py:758
 msgid "Save page"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:661
+#: lindvb/ui/dialogs.py:763
 msgid "Waiting for teletext…"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:668
+#: lindvb/ui/dialogs.py:770
 msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:723
+#: lindvb/ui/dialogs.py:825
 #, python-brace-format
 msgid "Searching page {page}…"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:764
+#: lindvb/ui/dialogs.py:866
 msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:768
+#: lindvb/ui/dialogs.py:870
 #, python-brace-format
 msgid "Provider '{v0}' is not available."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:770
+#: lindvb/ui/dialogs.py:872
 #, python-brace-format
 msgid ""
 "Provider: CI module – {status}\n"
 "The module descrambles with your card inside the tuner."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:772
+#: lindvb/ui/dialogs.py:874
 #, python-brace-format
 msgid ""
 "Provider: {name}\n"
 "LinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:775
+#: lindvb/ui/dialogs.py:877
 msgid "Open CAM Menu…"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:792
+#: lindvb/ui/dialogs.py:894
 #, python-brace-format
 msgid "Failed to load: {v0}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:796
+#: lindvb/ui/dialogs.py:898
 msgid "Switched off"
 msgstr ""
 
-#: lindvb/ui/dialogs.py:806
+#: lindvb/ui/dialogs.py:908
 msgid "Changes take effect when LinDVB is started again."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:810
+#: lindvb/ui/dialogs.py:912
 msgid "No plugins installed."
 msgstr ""
 
-#: lindvb/ui/dialogs.py:813
+#: lindvb/ui/dialogs.py:915
 msgid "Plugin actions"
 msgstr ""
 
-#: lindvb/ui/dialogs.py
+#: lindvb/ui/dialogs.py:924 lindvb/ui/dialogs.py:927
 #, python-brace-format
 msgid "Plugin folder: {path}"
 msgstr ""
 
-#: lindvb/ui/dialogs.py
+#: lindvb/ui/dialogs.py:929
 msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
 msgstr ""
 
-#: lindvb/ui/dialogs.py
+#: lindvb/ui/dialogs.py:932
 msgid "Open Plugin Folder"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:46
+#: lindvb/ui/dialogs.py:943 lindvb/ui/window.py:1137
+#, python-brace-format
+msgid "Cannot open {folder}: {message}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py:47
 msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:52
+#: lindvb/ui/dvbi.py:53
 msgid "Privacy"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:55
+#: lindvb/ui/dvbi.py:56
 msgid "I have read the privacy notice"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:59
+#: lindvb/ui/dvbi.py:60
 msgid "Load the programme guide (EPG) of the DVB-I channels"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:64
+#: lindvb/ui/dvbi.py:65
 msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:69
+#: lindvb/ui/dvbi.py:70
 msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:76
+#: lindvb/ui/dvbi.py:77
 msgid "Service list"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:78
+#: lindvb/ui/dvbi.py:79
 msgid "Load Lists from Registry"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:89
+#: lindvb/ui/dvbi.py:90
 #, python-brace-format
 msgid "In use: {current}"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:90
+#: lindvb/ui/dvbi.py:91
 msgid "No DVB-I list is in use yet."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:93 lindvb/ui/dvbi.py:108
+#: lindvb/ui/dvbi.py:94 lindvb/ui/dvbi.py:109
 msgid "Region"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:94
+#: lindvb/ui/dvbi.py:95
 msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:97
+#: lindvb/ui/dvbi.py:98
 msgid "Postcode"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:103
+#: lindvb/ui/dvbi.py:104
 msgid "No postcode: nationwide list"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:119
+#: lindvb/ui/dvbi.py:120
 msgid "Remove DVB-I Channels"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:121
+#: lindvb/ui/dvbi.py:122
 msgid "Update Now"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:122
+#: lindvb/ui/dvbi.py:123
 msgid "Load the chosen list again (it is also checked daily)"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:124
+#: lindvb/ui/dvbi.py:125
 msgid "Install Channel List"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:179
+#: lindvb/ui/dvbi.py:180
 msgid "Asking the service list registry…"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:194
+#: lindvb/ui/dvbi.py:195
 #, python-brace-format
 msgid "The registry could not be reached: {error}"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:209
+#: lindvb/ui/dvbi.py:210
 msgid "Default"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:225
+#: lindvb/ui/dvbi.py:226
 #, python-brace-format
 msgid "{v0} service lists from {netloc}"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:226
+#: lindvb/ui/dvbi.py:227
 msgid "The registry offers no service list for Germany."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:237
+#: lindvb/ui/dvbi.py:238
 msgid "Please enter a postcode with five digits"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:263
+#: lindvb/ui/dvbi.py:264
 msgid "Loading the service list…"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:267
+#: lindvb/ui/dvbi.py:268
 #, python-brace-format
 msgid "In use: {v0}"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:274
+#: lindvb/ui/dvbi.py:275
 msgid ""
 "\n"
 "Choose your region and press Install again."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:280
+#: lindvb/ui/dvbi.py:281
 msgid "Enter Again"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:280
+#: lindvb/ui/dvbi.py:281
 msgid "The service list does not know this postcode."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:282
+#: lindvb/ui/dvbi.py:283
 #, python-brace-format
 msgid "The service list server answered {code}."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:282
+#: lindvb/ui/dvbi.py:283
 msgid "Try Again"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:283
+#: lindvb/ui/dvbi.py:284
 msgid "You can try again or use the nationwide list without a postcode."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:284
+#: lindvb/ui/dvbi.py:285
 msgid "Nationwide List"
 msgstr ""
 
-#: lindvb/ui/dvbi.py:323
+#: lindvb/ui/dvbi.py:324
 msgid "No DVB-I list is in use."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:324
+#: lindvb/ui/dvbi.py:325
 #, python-brace-format
 msgid "{removed} DVB-I channels removed"
 msgstr ""
 
-#: lindvb/ui/epg.py:18
+#: lindvb/ui/epg.py:19
 msgid "All programmes"
 msgstr ""
 
-#: lindvb/ui/epg.py:18
+#: lindvb/ui/epg.py:19
 msgid "With audio description"
 msgstr ""
 
-#: lindvb/ui/epg.py:19
+#: lindvb/ui/epg.py:20
 msgid "With subtitles"
 msgstr ""
 
-#: lindvb/ui/epg.py:31 lindvb/ui/window.py:791
+#: lindvb/ui/epg.py:32 lindvb/ui/window.py:851
 msgid "Programme Guide"
 msgstr ""
 
-#: lindvb/ui/epg.py:44
+#: lindvb/ui/epg.py:45
 msgid "Now / Next"
 msgstr ""
 
-#: lindvb/ui/epg.py:45
+#: lindvb/ui/epg.py:46
 msgid "Per Channel"
 msgstr ""
 
-#: lindvb/ui/epg.py:46
+#: lindvb/ui/epg.py:47
 msgid "TV Guide"
 msgstr ""
 
-#: lindvb/ui/epg.py:47 lindvb/ui/epg.py:154
+#: lindvb/ui/epg.py:48 lindvb/ui/epg.py:155
 msgid "Search"
 msgstr ""
 
-#: lindvb/ui/epg.py:64
+#: lindvb/ui/epg.py:65
 msgid "Record Series"
 msgstr ""
 
-#: lindvb/ui/epg.py:64 lindvb/ui/epg.py:390
+#: lindvb/ui/epg.py:65 lindvb/ui/epg.py:391
 msgid "Remind Me"
 msgstr ""
 
-#: lindvb/ui/epg.py:65
+#: lindvb/ui/epg.py:66
 msgid "Search Web"
 msgstr ""
 
-#: lindvb/ui/epg.py:73
+#: lindvb/ui/epg.py:74
 msgid "Export the guide as XMLTV"
 msgstr ""
 
-#: lindvb/ui/epg.py:94 lindvb/ui/window.py:295
-msgid "Next"
-msgstr ""
-
-#: lindvb/ui/epg.py:94
-msgid "Now"
-msgstr ""
-
-#: lindvb/ui/epg.py:96
+#: lindvb/ui/epg.py:97
 msgid "Only favourites"
 msgstr ""
 
-#: lindvb/ui/epg.py:99
+#: lindvb/ui/epg.py:100
 msgid "Accessibility features (DVB-I programme guide)"
 msgstr ""
 
-#: lindvb/ui/epg.py:101
+#: lindvb/ui/epg.py:102
 msgid "Show:"
 msgstr ""
 
-#: lindvb/ui/epg.py:106 lindvb/ui/epg.py:159 lindvb/ui/timers.py:122
-#: lindvb/ui/timers.py:130 lindvb/ui/timers.py:198 lindvb/ui/timers.py:328
-#: lindvb/ui/timers.py:449 lindvb/ui/xmltvmatch.py:47
-msgid "Channel"
-msgstr ""
-
-#: lindvb/ui/epg.py:106 lindvb/ui/epg.py:128 lindvb/ui/epg.py:160
-#: lindvb/ui/timers.py:132
+#: lindvb/ui/epg.py:107 lindvb/ui/epg.py:129 lindvb/ui/epg.py:161
+#: lindvb/ui/hbbtv.py:682 lindvb/ui/timers.py:133
 msgid "Start"
 msgstr ""
 
-#: lindvb/ui/epg.py:107 lindvb/ui/timers.py:132
+#: lindvb/ui/epg.py:108 lindvb/ui/timers.py:133
 msgid "End"
 msgstr ""
 
-#: lindvb/ui/epg.py:107 lindvb/ui/epg.py:130 lindvb/ui/epg.py:160
+#: lindvb/ui/epg.py:108 lindvb/ui/epg.py:131 lindvb/ui/epg.py:161
 msgid "Title"
 msgstr ""
 
-#: lindvb/ui/epg.py:108
+#: lindvb/ui/epg.py:109
 msgid "Genre"
 msgstr ""
 
-#: lindvb/ui/epg.py:128 lindvb/ui/epg.py:159
+#: lindvb/ui/epg.py:129 lindvb/ui/epg.py:160
 msgid "Day"
 msgstr ""
 
-#: lindvb/ui/epg.py:129
+#: lindvb/ui/epg.py:130
 msgid "Duration"
 msgstr ""
 
-#: lindvb/ui/epg.py:130
+#: lindvb/ui/epg.py:131
 msgid "Subheading"
 msgstr ""
 
-#: lindvb/ui/epg.py:150
+#: lindvb/ui/epg.py:151
 msgid "Title or description"
 msgstr ""
 
-#: lindvb/ui/epg.py:152
+#: lindvb/ui/epg.py:153
 msgid "Include description"
 msgstr ""
 
-#: lindvb/ui/epg.py:153
+#: lindvb/ui/epg.py:154
 msgid "Case sensitive"
 msgstr ""
 
-#: lindvb/ui/epg.py:262
+#: lindvb/ui/epg.py:263
 #, python-brace-format
 msgid ""
 "<b>{v0}</b>  {v1}\n"
@@ -1156,1071 +2896,1190 @@ msgid ""
 "{v9}"
 msgstr ""
 
-#: lindvb/ui/epg.py:369
+#: lindvb/ui/epg.py:370
 #, python-brace-format
 msgid "Series recording: {title}"
 msgstr ""
 
-#: lindvb/ui/epg.py:378
+#: lindvb/ui/epg.py:379
 #, python-brace-format
 msgid "Reminder removed: {title}"
 msgstr ""
 
-#: lindvb/ui/epg.py:380
+#: lindvb/ui/epg.py:381
 #, python-brace-format
 msgid "{title} has already started"
 msgstr ""
 
-#: lindvb/ui/epg.py:383
+#: lindvb/ui/epg.py:384
 #, python-brace-format
 msgid "Reminder set: {title}, {time}"
 msgstr ""
 
-#: lindvb/ui/epg.py:390
+#: lindvb/ui/epg.py:391
 msgid "Remove Reminder"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:37
+#: lindvb/ui/epgsettings.py:40
 msgid "Save EPG data"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:38
+#: lindvb/ui/epgsettings.py:41
 msgid "Keeps the guide on disk after LinDVB is closed."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:39
+#: lindvb/ui/epgsettings.py:42
 msgid "Show EPG info on channel change (s)"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:40
+#: lindvb/ui/epgsettings.py:43
 msgid "0 = do not show it."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:42
+#: lindvb/ui/epgsettings.py:45
 msgid "Remind before start (min)"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:44
+#: lindvb/ui/epgsettings.py:47
 msgid "Reminders set in the programme guide notify you this early."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:51
+#: lindvb/ui/epgsettings.py:54
 msgid "Preferred language"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:54
+#: lindvb/ui/epgsettings.py:57
 msgid "Used when a programme is broadcast in several languages."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:56
+#: lindvb/ui/epgsettings.py:59
 msgid "Time zone"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:58
+#: lindvb/ui/epgsettings.py:61
 msgid "Set time zone automatically"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:59
+#: lindvb/ui/epgsettings.py:62
 msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:60
+#: lindvb/ui/epgsettings.py:63
 msgid "Offset to GMT"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:69
+#: lindvb/ui/epgsettings.py:72
 msgid "Internet EPG (IPTV)"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:71
+#: lindvb/ui/epgsettings.py:74
 msgid "Internet EPG source, used in addition to the broadcast EPG."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:72
+#: lindvb/ui/epgsettings.py:75
 msgid "Match IPTV Channels…"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:75
+#: lindvb/ui/epgsettings.py:78
 msgid "Check or fix which guide channel belongs to which M3U channel."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:77
+#: lindvb/ui/epgsettings.py:80
 msgid "MediaHighway / Freesat frequencies"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:80
+#: lindvb/ui/epgsettings.py:83
 msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:87 lindvb/ui/epgsettings.py:95
+#: lindvb/ui/epgsettings.py:90 lindvb/ui/epgsettings.py:98
 msgid "Frequency (MHz)"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:90 lindvb/ui/timers.py:312
+#: lindvb/ui/epgsettings.py:93 lindvb/ui/timers.py:313
 msgid "Add"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:96
+#: lindvb/ui/epgsettings.py:99
 msgid "Polarisation"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:103
+#: lindvb/ui/epgsettings.py:106 lindvb/ui/epgsettings.py:234
 msgid "Defaults"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:103 lindvb/ui/timers.py:314
-#: lindvb/ui/window.py:1111
+#: lindvb/ui/epgsettings.py:106 lindvb/ui/timers.py:315
+#: lindvb/ui/window.py:1182
 msgid "Delete"
 msgstr ""
 
-#: lindvb/ui/epgsettings.py:129
+#: lindvb/ui/epgsettings.py:134
 msgid "Enter the transponder frequency in MHz."
 msgstr ""
 
-#: lindvb/ui/iptv.py:18
+#: lindvb/ui/epgsettings.py:196
+msgid "Advanced"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:197
+msgid "Priority of the EPG sources"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:198
+msgid "Automatic (recommended)"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:198
+msgid "Custom order"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:200
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:205
+msgid "Order of the EPG sources"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:208
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:215
+msgid "Applies to"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:220
+msgid "Remove Channel"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:230
+msgid "Move Up"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:232
+msgid "Move Down"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:245
+msgid "Own Order for Channel"
+msgstr ""
+
+#: lindvb/ui/epgsettings.py:267 lindvb/ui/window.py:51
+msgid "All channels"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:45
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:47
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:66
+msgid "HbbTV data deleted"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:279
+#, python-brace-format
+msgid "This interactive service is rated {age}+."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:284
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:287 lindvb/ui/hbbtv.py:323
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:298
+msgid "PIN"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:304
+msgid "Unlock"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:326
+msgid "Wrong PIN."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:345
+#, python-brace-format
+msgid "This video is rated {age}+."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:353
+#, python-brace-format
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:356
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:679
+msgid "Start an application from another device?"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:680
+#, python-brace-format
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:681
+msgid "an HbbTV application"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:682
+msgid "Refuse"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:802
+#, python-brace-format
+msgid "HbbTV: {name}"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py:886
+#, python-brace-format
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr ""
+
+#: lindvb/ui/iptv.py:19
 msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
 msgstr ""
 
-#: lindvb/ui/iptv.py:23
+#: lindvb/ui/iptv.py:24
 msgid "All files"
 msgstr ""
 
-#: lindvb/ui/iptv.py:34
+#: lindvb/ui/iptv.py:35
 msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
 msgstr ""
 
-#: lindvb/ui/iptv.py:38
+#: lindvb/ui/iptv.py:39
 msgid "Import Files…"
 msgstr ""
 
-#: lindvb/ui/iptv.py:40
+#: lindvb/ui/iptv.py:41
 msgid "From files"
 msgstr ""
 
-#: lindvb/ui/iptv.py:41
+#: lindvb/ui/iptv.py:42
 msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
 msgstr ""
 
-#: lindvb/ui/iptv.py:46
+#: lindvb/ui/iptv.py:47
 msgid "Import"
 msgstr ""
 
-#: lindvb/ui/iptv.py:50
+#: lindvb/ui/iptv.py:51
 msgid "From a web address"
 msgstr ""
 
-#: lindvb/ui/iptv.py:51
+#: lindvb/ui/iptv.py:52
 msgid "The address of an M3U playlist. Import it again to update the channels."
 msgstr ""
 
-#: lindvb/ui/iptv.py:59
+#: lindvb/ui/iptv.py:60
 #, python-brace-format
 msgid "IPTV channels in your channel list: {n}"
 msgstr ""
 
-#: lindvb/ui/iptv.py:64
+#: lindvb/ui/iptv.py:65
 msgid "Import IPTV channel lists"
 msgstr ""
 
-#: lindvb/ui/iptv.py:85
+#: lindvb/ui/iptv.py:86
 #, python-brace-format
 msgid "Downloading {url}…"
 msgstr ""
 
-#: lindvb/ui/iptv.py:101 lindvb/ui/window.py:1533
+#: lindvb/ui/iptv.py:102 lindvb/ui/window.py:1618
 #, python-brace-format
 msgid "Could not import {name}"
 msgstr ""
 
-#: lindvb/ui/iptv.py:102
+#: lindvb/ui/iptv.py:103
 msgid "The address has no channels."
 msgstr ""
 
-#: lindvb/ui/iptv.py:107 lindvb/ui/window.py:1540
+#: lindvb/ui/iptv.py:108 lindvb/ui/window.py:1625
 #, python-brace-format
 msgid "Imported {total_a} new and {total_u} updated channels"
 msgstr ""
 
-#: lindvb/ui/nowplaying.py:154
+#: lindvb/ui/nowplaying.py:155
 #, python-brace-format
 msgid "Cover lookup failed: {e}"
 msgstr ""
 
-#: lindvb/ui/pip.py:85
+#: lindvb/ui/pip.py:86
 msgid "Swap with the main picture"
 msgstr ""
 
-#: lindvb/ui/pip.py:88
+#: lindvb/ui/pip.py:89
 msgid "Close picture in picture"
 msgstr ""
 
-#: lindvb/ui/pip.py:99
+#: lindvb/ui/pip.py:100
 #, python-brace-format
 msgid "Picture in picture: {error}"
 msgstr ""
 
-#: lindvb/ui/pip.py:107
+#: lindvb/ui/pip.py:108
 msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
 msgstr ""
 
-#: lindvb/ui/pip.py:124
+#: lindvb/ui/pip.py:125
 msgid "Channel Mosaic"
 msgstr ""
 
-#: lindvb/ui/pip.py:134
+#: lindvb/ui/pip.py:135
 msgid "Previous channels"
 msgstr ""
 
-#: lindvb/ui/pip.py:135
+#: lindvb/ui/pip.py:136
 msgid "Next channels"
 msgstr ""
 
-#: lindvb/ui/pip.py:146
+#: lindvb/ui/pip.py:147
 msgid "The mosaic shows internet channels. The list has none in the current view."
 msgstr ""
 
-#: lindvb/ui/pip.py:177
+#: lindvb/ui/pip.py:178
 #, python-brace-format
 msgid "Page {page} of {pages} · {n} internet channels"
 msgstr ""
 
-#: lindvb/ui/pip.py:188
+#: lindvb/ui/pip.py:189
 #, python-brace-format
 msgid "Click to watch {name}"
 msgstr ""
 
-#: lindvb/ui/scan.py:14
+#: lindvb/ui/scan.py:15
 msgid "Single 10750"
 msgstr ""
 
-#: lindvb/ui/scan.py:14
+#: lindvb/ui/scan.py:15
 msgid "Universal (9750/10600, 11700)"
 msgstr ""
 
-#: lindvb/ui/scan.py:15
+#: lindvb/ui/scan.py:16
 msgid "Single 10700"
 msgstr ""
 
-#: lindvb/ui/scan.py:15
+#: lindvb/ui/scan.py:16
 msgid "Single 11300"
 msgstr ""
 
-#: lindvb/ui/scan.py:16
+#: lindvb/ui/scan.py:17
 msgid "Extended"
 msgstr ""
 
-#: lindvb/ui/scan.py:16
+#: lindvb/ui/scan.py:17
 msgid "None / not satellite"
 msgstr ""
 
-#: lindvb/ui/scan.py:17
+#: lindvb/ui/scan.py:18
 msgid "Port 1 (A/A)"
 msgstr ""
 
-#: lindvb/ui/scan.py:17
+#: lindvb/ui/scan.py:18
 msgid "Port 2 (B/A)"
 msgstr ""
 
-#: lindvb/ui/scan.py:17
+#: lindvb/ui/scan.py:18
 msgid "Port 3 (A/B)"
 msgstr ""
 
-#: lindvb/ui/scan.py:17
+#: lindvb/ui/scan.py:18
 msgid "Port 4 (B/B)"
 msgstr ""
 
-#: lindvb/ui/scan.py:18
-msgid "Frequency"
-msgstr ""
-
-#: lindvb/ui/scan.py:18
+#: lindvb/ui/scan.py:19
 msgid "Initial letter"
 msgstr ""
 
-#: lindvb/ui/scan.py:18
-msgid "Provider"
-msgstr ""
-
-#: lindvb/ui/scan.py:23
+#: lindvb/ui/scan.py:24
 msgid "Channel Search"
 msgstr ""
 
-#: lindvb/ui/scan.py:33
+#: lindvb/ui/scan.py:34
 msgid "Device"
 msgstr ""
 
-#: lindvb/ui/scan.py:36
+#: lindvb/ui/scan.py:37
 msgid "(choose…)"
 msgstr ""
 
-#: lindvb/ui/scan.py:40
+#: lindvb/ui/scan.py:41
 msgid "Add folder…"
 msgstr ""
 
-#: lindvb/ui/scan.py:40
+#: lindvb/ui/scan.py:41
 msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
 msgstr ""
 
-#: lindvb/ui/scan.py:45
+#: lindvb/ui/scan.py:46
 msgid "Transponder list"
 msgstr ""
 
-#: lindvb/ui/scan.py:46
+#: lindvb/ui/scan.py:47
 msgid "LNB type"
 msgstr ""
 
-#: lindvb/ui/scan.py:47
+#: lindvb/ui/scan.py:48
 msgid "DiSEqC"
 msgstr ""
 
-#: lindvb/ui/scan.py:48
+#: lindvb/ui/scan.py:49
 msgid "Target group"
 msgstr ""
 
-#: lindvb/ui/scan.py:48
+#: lindvb/ui/scan.py:49
 msgid "e.g. Astra 19.2°E"
 msgstr ""
 
-#: lindvb/ui/scan.py:50
+#: lindvb/ui/scan.py:51
 msgid "Search for additional frequencies (NIT)"
 msgstr ""
 
-#: lindvb/ui/scan.py:51
+#: lindvb/ui/scan.py:52
 msgid "Only add free-to-air channels"
 msgstr ""
 
-#: lindvb/ui/scan.py:52
+#: lindvb/ui/scan.py:53
 msgid "Only update existing channels"
 msgstr ""
 
-#: lindvb/ui/scan.py:53
+#: lindvb/ui/scan.py:54
 msgid "Update channel names"
 msgstr ""
 
-#: lindvb/ui/scan.py:57
+#: lindvb/ui/scan.py:58
 msgid "Group by"
 msgstr ""
 
-#: lindvb/ui/scan.py:60
+#: lindvb/ui/scan.py:61
 msgid "Start Search"
 msgstr ""
 
-#: lindvb/ui/scan.py:62
+#: lindvb/ui/scan.py:63
 msgid "Stop"
 msgstr ""
 
-#: lindvb/ui/scan.py:84
+#: lindvb/ui/scan.py:85
 msgid "Folder with transponder lists"
 msgstr ""
 
-#: lindvb/ui/scan.py:106
+#: lindvb/ui/scan.py:107
 msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
 msgstr ""
 
-#: lindvb/ui/scan.py:164
+#: lindvb/ui/scan.py:165
 msgid ""
 "\n"
 "No channels found.\n"
 msgstr ""
 
-#: lindvb/ui/scan.py:179
+#: lindvb/ui/scan.py:180
 #, python-brace-format
 msgid ""
 "\n"
 "Done: {added} new, {updated} updated channels.\n"
 msgstr ""
 
-#: lindvb/ui/timers.py:34
+#: lindvb/ui/timers.py:35
 msgid "HH:MM"
 msgstr ""
 
-#: lindvb/ui/timers.py:111
+#: lindvb/ui/timers.py:112
 msgid "Recording Timers"
 msgstr ""
 
-#: lindvb/ui/timers.py:119
+#: lindvb/ui/timers.py:120
 msgid "Search channels"
 msgstr ""
 
-#: lindvb/ui/timers.py:122
+#: lindvb/ui/timers.py:123
 msgid "  (Radio)"
 msgstr ""
 
-#: lindvb/ui/timers.py:131
+#: lindvb/ui/timers.py:132
 msgid "Date"
 msgstr ""
 
-#: lindvb/ui/timers.py:134
+#: lindvb/ui/timers.py:135
 msgid "Repeat"
 msgstr ""
 
-#: lindvb/ui/timers.py:135
+#: lindvb/ui/timers.py:136
 msgid "Once"
 msgstr ""
 
-#: lindvb/ui/timers.py:135
+#: lindvb/ui/timers.py:136
 msgid "Series"
 msgstr ""
 
-#: lindvb/ui/timers.py:136
+#: lindvb/ui/timers.py:137
 msgid "Action"
 msgstr ""
 
-#: lindvb/ui/timers.py:137
-msgid "Format"
-msgstr ""
-
-#: lindvb/ui/timers.py:138
+#: lindvb/ui/timers.py:139
 msgid "After"
 msgstr ""
 
-#: lindvb/ui/timers.py:139
+#: lindvb/ui/timers.py:140
 msgid "Disabled"
 msgstr ""
 
-#: lindvb/ui/timers.py:139
-msgid "Status"
-msgstr ""
-
-#: lindvb/ui/timers.py:184
+#: lindvb/ui/timers.py:185
 #, python-brace-format
 msgid "Repeat every {day}"
 msgstr ""
 
-#: lindvb/ui/timers.py:187
+#: lindvb/ui/timers.py:188
 msgid "_Date"
 msgstr ""
 
-#: lindvb/ui/timers.py:187
+#: lindvb/ui/timers.py:188
 msgid "_Lead (min)"
 msgstr ""
 
-#: lindvb/ui/timers.py:188
+#: lindvb/ui/timers.py:189
 msgid "_End"
 msgstr ""
 
-#: lindvb/ui/timers.py:188
+#: lindvb/ui/timers.py:189
 msgid "_Start"
 msgstr ""
 
-#: lindvb/ui/timers.py:189
+#: lindvb/ui/timers.py:190
 msgid "Repeat on"
 msgstr ""
 
-#: lindvb/ui/timers.py:189
+#: lindvb/ui/timers.py:190
 msgid "_Follow (min)"
 msgstr ""
 
-#: lindvb/ui/timers.py:195
+#: lindvb/ui/timers.py:196
 msgid "Pick a channel on the left"
 msgstr ""
 
-#: lindvb/ui/timers.py:200
+#: lindvb/ui/timers.py:201
 msgid "_Name"
 msgstr ""
 
-#: lindvb/ui/timers.py:211
+#: lindvb/ui/timers.py:212
 msgid "_Timer action"
 msgstr ""
 
-#: lindvb/ui/timers.py:213
+#: lindvb/ui/timers.py:214
 msgid "_After recording"
 msgstr ""
 
-#: lindvb/ui/timers.py:215
+#: lindvb/ui/timers.py:216
 msgid "T_V format"
 msgstr ""
 
-#: lindvb/ui/timers.py:217
+#: lindvb/ui/timers.py:218
 msgid "_Radio format"
 msgstr ""
 
-#: lindvb/ui/timers.py:224
+#: lindvb/ui/timers.py:225
 msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
 msgstr ""
 
-#: lindvb/ui/timers.py:227 lindvb/ui/timers.py:630
+#: lindvb/ui/timers.py:228 lindvb/ui/timers.py:631
 msgid "Audi_o tracks"
 msgstr ""
 
-#: lindvb/ui/timers.py:235
+#: lindvb/ui/timers.py:236
 msgid "Teletext only exists in MPEG-TS, so TS is used."
 msgstr ""
 
-#: lindvb/ui/timers.py:236
+#: lindvb/ui/timers.py:237
 msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
 msgstr ""
 
-#: lindvb/ui/timers.py:238
+#: lindvb/ui/timers.py:239
 msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
 msgstr ""
 
-#: lindvb/ui/timers.py:240
+#: lindvb/ui/timers.py:241
 msgid "Tracks"
 msgstr ""
 
-#: lindvb/ui/timers.py:248
+#: lindvb/ui/timers.py:249
 msgid "File _naming scheme"
 msgstr ""
 
-#: lindvb/ui/timers.py:251
+#: lindvb/ui/timers.py:252
 msgid "Folder…"
 msgstr ""
 
-#: lindvb/ui/timers.py:256
+#: lindvb/ui/timers.py:257
 msgid "Use the recording folder from the preferences"
 msgstr ""
 
-#: lindvb/ui/timers.py:276
+#: lindvb/ui/timers.py:277
 msgid "Placeholders"
 msgstr ""
 
-#: lindvb/ui/timers.py:305
+#: lindvb/ui/timers.py:306
 msgid "Folder: "
 msgstr ""
 
-#: lindvb/ui/timers.py:311
+#: lindvb/ui/timers.py:312
 msgid "Clear the editor"
 msgstr ""
 
-#: lindvb/ui/timers.py:311
+#: lindvb/ui/timers.py:312
 msgid "New"
 msgstr ""
 
-#: lindvb/ui/timers.py:312
+#: lindvb/ui/timers.py:313
 msgid "Add the editor's settings as a new timer"
 msgstr ""
 
-#: lindvb/ui/timers.py:313
+#: lindvb/ui/timers.py:314
 msgid "Apply"
 msgstr ""
 
-#: lindvb/ui/timers.py:313
+#: lindvb/ui/timers.py:314
 msgid "Save the editor's settings to the selected timer"
 msgstr ""
 
-#: lindvb/ui/timers.py:314
+#: lindvb/ui/timers.py:315
 msgid "Delete the selected timer"
 msgstr ""
 
-#: lindvb/ui/timers.py:315
+#: lindvb/ui/timers.py:316
 msgid "Enable/Disable"
 msgstr ""
 
-#: lindvb/ui/timers.py:315
+#: lindvb/ui/timers.py:316
 msgid "Switch the selected timer on or off"
 msgstr ""
 
-#: lindvb/ui/timers.py:316
+#: lindvb/ui/timers.py:317
 msgid "Save as default"
 msgstr ""
 
-#: lindvb/ui/timers.py:317
+#: lindvb/ui/timers.py:318
 msgid "Use these formats and extra streams for new timers and manual recordings"
 msgstr ""
 
-#: lindvb/ui/timers.py:321 lindvb/ui/window.py:306
-msgid "Close"
-msgstr ""
-
-#: lindvb/ui/timers.py:327
+#: lindvb/ui/timers.py:328
 msgid "Series title"
 msgstr ""
 
-#: lindvb/ui/timers.py:331
+#: lindvb/ui/timers.py:332
 msgid "Delete series rule"
 msgstr ""
 
-#: lindvb/ui/timers.py:338
+#: lindvb/ui/timers.py:339
 msgid "Series recordings"
 msgstr ""
 
-#: lindvb/ui/timers.py:412
+#: lindvb/ui/timers.py:413
 msgid "Subtitles fit into TS or MKV."
 msgstr ""
 
-#: lindvb/ui/timers.py:417 lindvb/ui/timers.py:671
+#: lindvb/ui/timers.py:418 lindvb/ui/timers.py:672
 msgid "No preferred audio language in the preferences: the first track is recorded."
 msgstr ""
 
-#: lindvb/ui/timers.py:452
+#: lindvb/ui/timers.py:453
 #, python-brace-format
 msgid "File: {v0}"
 msgstr ""
 
-#: lindvb/ui/timers.py:528
+#: lindvb/ui/timers.py:529
 msgid "Invalid start or end time"
 msgstr ""
 
-#: lindvb/ui/timers.py:528
+#: lindvb/ui/timers.py:529
 msgid "Use HH:MM, for example 20:15."
 msgstr ""
 
-#: lindvb/ui/timers.py:532
+#: lindvb/ui/timers.py:533
 msgid "No channel"
 msgstr ""
 
-#: lindvb/ui/timers.py:532
+#: lindvb/ui/timers.py:533
 msgid "Pick the channel to record in the list on the left."
 msgstr ""
 
-#: lindvb/ui/timers.py:585
+#: lindvb/ui/timers.py:586
 msgid "Recording defaults saved"
 msgstr ""
 
-#: lindvb/ui/timers.py:602
+#: lindvb/ui/timers.py:603
 msgid "Record with Options"
 msgstr ""
 
-#: lindvb/ui/timers.py:625
+#: lindvb/ui/timers.py:626
 msgid "_Format"
 msgstr ""
 
-#: lindvb/ui/timers.py:664
+#: lindvb/ui/timers.py:665
 msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
 msgstr ""
 
-#: lindvb/ui/timers.py:670
+#: lindvb/ui/timers.py:671
 #, python-brace-format
 msgid "Preferred audio language: {lang}."
 msgstr ""
 
-#: lindvb/ui/visualizer.py:135
+#: lindvb/ui/visualizer.py:136
 #, python-brace-format
 msgid "Visualisation '{v0}' failed: {e}"
 msgstr ""
 
-#: lindvb/ui/visualizer.py:154
+#: lindvb/ui/visualizer.py:155
 #, python-brace-format
 msgid "OpenGL{v0} {major}.{minor} is too old"
 msgstr ""
 
-#: lindvb/ui/window.py:42 lindvb/ui/window.py:43
+#: lindvb/ui/window.py:45 lindvb/ui/window.py:46
 msgid "Playback error: "
 msgstr ""
 
-#: lindvb/ui/window.py:48
-msgid "All channels"
-msgstr ""
-
-#: lindvb/ui/window.py:48
+#: lindvb/ui/window.py:51
 msgid "Favourites (TV + Radio)"
 msgstr ""
 
-#: lindvb/ui/window.py:48
+#: lindvb/ui/window.py:51
 msgid "Free to air"
 msgstr ""
 
-#: lindvb/ui/window.py:49
+#: lindvb/ui/window.py:52
 msgid "Internet streams"
 msgstr ""
 
-#: lindvb/ui/window.py:54
+#: lindvb/ui/window.py:57
 msgid "Fill (crop)"
 msgstr ""
 
-#: lindvb/ui/window.py:54
+#: lindvb/ui/window.py:57
 msgid "Fit"
 msgstr ""
 
-#: lindvb/ui/window.py:55
+#: lindvb/ui/window.py:58
 msgid "Stretch"
 msgstr ""
 
-#: lindvb/ui/window.py:117
+#: lindvb/ui/window.py:135
 #, python-brace-format
 msgid "Playback error: {m}"
 msgstr ""
 
-#: lindvb/ui/window.py:253
+#: lindvb/ui/window.py:138
+#, python-brace-format
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr ""
+
+#: lindvb/ui/window.py:294
 #, python-brace-format
 msgid "Plugin action failed: {e}"
 msgstr ""
 
-#: lindvb/ui/window.py:258
+#: lindvb/ui/window.py:299
 msgid "Open Media File…"
 msgstr ""
 
-#: lindvb/ui/window.py:259
+#: lindvb/ui/window.py:300
 msgid "Open URL…"
 msgstr ""
 
-#: lindvb/ui/window.py:260
+#: lindvb/ui/window.py:301
 msgid "Import Channel List…"
 msgstr ""
 
-#: lindvb/ui/window.py:261
+#: lindvb/ui/window.py:302
 msgid "Export Channel List…"
 msgstr ""
 
-#: lindvb/ui/window.py:262
+#: lindvb/ui/window.py:303
 msgid "Export Programme Guide (XMLTV)…"
 msgstr ""
 
-#: lindvb/ui/window.py:265
+#: lindvb/ui/window.py:306
 msgid "Switch TV / Radio"
 msgstr ""
 
-#: lindvb/ui/window.py:266 lindvb/ui/window.py:396
+#: lindvb/ui/window.py:307 lindvb/ui/window.py:449
 msgid "Recordings"
 msgstr ""
 
-#: lindvb/ui/window.py:267
+#: lindvb/ui/window.py:308
 msgid "Programme Guide (EPG)"
 msgstr ""
 
-#: lindvb/ui/window.py:268
+#: lindvb/ui/window.py:309
 msgid "Timer Recordings"
 msgstr ""
 
-#: lindvb/ui/window.py:269 lindvb/ui/window.py:589
+#: lindvb/ui/window.py:310 lindvb/ui/window.py:647
 msgid "Record with Options…"
 msgstr ""
 
-#: lindvb/ui/window.py:271
-msgid "Teletext"
+#: lindvb/ui/window.py:312 lindvb/ui/window.py:855
+msgid "Channel Analysis…"
 msgstr ""
 
-#: lindvb/ui/window.py:272
+#: lindvb/ui/window.py:314
+msgid "HbbTV (red button)"
+msgstr ""
+
+#: lindvb/ui/window.py:315
 msgid "CAM Menu (CI Module)…"
 msgstr ""
 
-#: lindvb/ui/window.py:275
+#: lindvb/ui/window.py:318
 msgid "Update Internet EPG (XMLTV)"
 msgstr ""
 
-#: lindvb/ui/window.py:281
+#: lindvb/ui/window.py:324
 msgid "Audio Track"
 msgstr ""
 
-#: lindvb/ui/window.py:282 lindvb/ui/window.py:632 lindvb/ui/window.py:1710
+#: lindvb/ui/window.py:325 lindvb/ui/window.py:690 lindvb/ui/window.py:1803
 msgid "Subtitles"
 msgstr ""
 
-#: lindvb/ui/window.py:286
+#: lindvb/ui/window.py:329
 msgid "Play Rate"
 msgstr ""
 
-#: lindvb/ui/window.py:288
+#: lindvb/ui/window.py:331
 msgid "Back 10 s"
 msgstr ""
 
-#: lindvb/ui/window.py:289
+#: lindvb/ui/window.py:332
 msgid "Forward 10 s"
 msgstr ""
 
-#: lindvb/ui/window.py:290
+#: lindvb/ui/window.py:333
 msgid "Back 1 min"
 msgstr ""
 
-#: lindvb/ui/window.py:291
+#: lindvb/ui/window.py:334
 msgid "Forward 1 min"
 msgstr ""
 
-#: lindvb/ui/window.py:292
+#: lindvb/ui/window.py:335
 msgid "Back to Live"
 msgstr ""
 
-#: lindvb/ui/window.py:293
+#: lindvb/ui/window.py:336
 msgid "Jump"
 msgstr ""
 
-#: lindvb/ui/window.py:296
+#: lindvb/ui/window.py:339
 msgid "Previous"
 msgstr ""
 
-#: lindvb/ui/window.py:297
+#: lindvb/ui/window.py:340
 msgid "Random Order"
 msgstr ""
 
-#: lindvb/ui/window.py:298
+#: lindvb/ui/window.py:341
 msgid "Endless Playback"
 msgstr ""
 
-#: lindvb/ui/window.py:299
-msgid "Playlist"
-msgstr ""
-
-#: lindvb/ui/window.py:300
+#: lindvb/ui/window.py:343
 msgid "Keep Timeshift as Recording"
 msgstr ""
 
-#: lindvb/ui/window.py:301
+#: lindvb/ui/window.py:344
 msgid "Rebuild Playback"
 msgstr ""
 
-#: lindvb/ui/window.py:302
+#: lindvb/ui/window.py:345
 msgid "Video Off (audio only)"
 msgstr ""
 
-#: lindvb/ui/window.py:304
+#: lindvb/ui/window.py:347
 msgid "Show Selected Channel"
 msgstr ""
 
-#: lindvb/ui/window.py:305
+#: lindvb/ui/window.py:348
 msgid "Swap Pictures"
 msgstr ""
 
-#: lindvb/ui/window.py:307
+#: lindvb/ui/window.py:350
 msgid "Picture in Picture"
 msgstr ""
 
-#: lindvb/ui/window.py:308
+#: lindvb/ui/window.py:351
 msgid "Channel Mosaic…"
 msgstr ""
 
-#: lindvb/ui/window.py:311
+#: lindvb/ui/window.py:354
 #, python-brace-format
 msgid "Stop in {mins} min"
 msgstr ""
 
-#: lindvb/ui/window.py:312
+#: lindvb/ui/window.py:355
 msgid "Stop after current programme"
 msgstr ""
 
-#: lindvb/ui/window.py:314
+#: lindvb/ui/window.py:357
 msgid "Sleep Timer"
 msgstr ""
 
-#: lindvb/ui/window.py:316
+#: lindvb/ui/window.py:359
 #, python-brace-format
 msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
 msgstr ""
 
-#: lindvb/ui/window.py:317
+#: lindvb/ui/window.py:360
 #, python-brace-format
 msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
 msgstr ""
 
-#: lindvb/ui/window.py:318
+#: lindvb/ui/window.py:361
 msgid "Reset"
 msgstr ""
 
-#: lindvb/ui/window.py:319
+#: lindvb/ui/window.py:362
 msgid "Audio Delay (this channel)"
 msgstr ""
 
-#: lindvb/ui/window.py:323
+#: lindvb/ui/window.py:366
 msgid "Full Screen"
 msgstr ""
 
-#: lindvb/ui/window.py:324
+#: lindvb/ui/window.py:367
 msgid "Show/Hide Channel List"
 msgstr ""
 
-#: lindvb/ui/window.py:328
+#: lindvb/ui/window.py:371
 msgid "Aspect / Zoom"
 msgstr ""
 
-#: lindvb/ui/window.py:332
+#: lindvb/ui/window.py:375
 msgid "Window Size"
 msgstr ""
 
-#: lindvb/ui/window.py:333
+#: lindvb/ui/window.py:376
 msgid "Picture Settings…"
 msgstr ""
 
-#: lindvb/ui/window.py:334
+#: lindvb/ui/window.py:377
 msgid "Equalizer…"
 msgstr ""
 
-#: lindvb/ui/window.py:339
+#: lindvb/ui/window.py:387
 msgid "Radio Visualisation"
 msgstr ""
 
-#: lindvb/ui/window.py:340
+#: lindvb/ui/window.py:388
 msgid "Screenshot"
 msgstr ""
 
-#: lindvb/ui/window.py:348
+#: lindvb/ui/window.py:396
 msgid "Plugins…"
 msgstr ""
 
-#: lindvb/ui/window.py:351
+#: lindvb/ui/window.py:399
 msgid "About LinDVB"
 msgstr ""
 
-#: lindvb/ui/window.py:363
+#: lindvb/ui/window.py:411
 msgid "Show/hide channel list (F9)"
 msgstr ""
 
-#: lindvb/ui/window.py:375
+#: lindvb/ui/window.py:423
 msgid "Main menu (F10)"
 msgstr ""
 
-#: lindvb/ui/window.py:379
+#: lindvb/ui/window.py:427
 msgid "Programme guide (Ctrl+E)"
 msgstr ""
 
-#: lindvb/ui/window.py:380
+#: lindvb/ui/window.py:428
 msgid "TXT"
 msgstr ""
 
-#: lindvb/ui/window.py:381 lindvb/ui/window.py:1636
+#: lindvb/ui/window.py:429 lindvb/ui/window.py:1727
 msgid "Teletext (Ctrl+Shift+T)"
 msgstr ""
 
-#: lindvb/ui/window.py:393
+#: lindvb/ui/window.py:434 lindvb/ui/window.py:884
+msgid "Interactive service of the channel (red button, F5)"
+msgstr ""
+
+#: lindvb/ui/window.py:446
 msgid "Show TV channels (Ctrl+M switches)"
 msgstr ""
 
-#: lindvb/ui/window.py:395
+#: lindvb/ui/window.py:448
 msgid "Show radio stations (Ctrl+M switches)"
 msgstr ""
 
-#: lindvb/ui/window.py:397
+#: lindvb/ui/window.py:450
 msgid "Show your recordings (double-click plays one)"
 msgstr ""
 
-#: lindvb/ui/window.py:413 lindvb/ui/window.py:1201
+#: lindvb/ui/window.py:466 lindvb/ui/window.py:1272
 msgid "Search name or number"
 msgstr ""
 
-#: lindvb/ui/window.py:428 lindvb/ui/window.py:730
+#: lindvb/ui/window.py:481 lindvb/ui/window.py:789
 msgid "All groups"
 msgstr ""
 
-#: lindvb/ui/window.py:578
+#: lindvb/ui/window.py:636
 msgid "Previous channel (Page Down)"
 msgstr ""
 
-#: lindvb/ui/window.py:580
+#: lindvb/ui/window.py:638
 msgid "Pause / timeshift (Space)"
 msgstr ""
 
-#: lindvb/ui/window.py:581
+#: lindvb/ui/window.py:639
 msgid "Stop (switch the channel off)"
 msgstr ""
 
-#: lindvb/ui/window.py:582
+#: lindvb/ui/window.py:640
 msgid "Next channel (Page Up)"
 msgstr ""
 
-#: lindvb/ui/window.py:584
+#: lindvb/ui/window.py:642
 msgid "Record current channel (Ctrl+R)"
 msgstr ""
 
-#: lindvb/ui/window.py:592
+#: lindvb/ui/window.py:650
 msgid "Choose format and tracks for this recording"
 msgstr ""
 
-#: lindvb/ui/window.py:606
+#: lindvb/ui/window.py:664
 msgid "Seek"
 msgstr ""
 
-#: lindvb/ui/window.py:609 lindvb/ui/window.py:2103
+#: lindvb/ui/window.py:667 lindvb/ui/window.py:2269
 msgid "LIVE"
 msgstr ""
 
-#: lindvb/ui/window.py:610
+#: lindvb/ui/window.py:668
 msgid "Back to live (L)"
 msgstr ""
 
-#: lindvb/ui/window.py:616
+#: lindvb/ui/window.py:674
 msgid "Mute (M)"
 msgstr ""
 
-#: lindvb/ui/window.py:623
+#: lindvb/ui/window.py:681
 msgid "Volume"
 msgstr ""
 
-#: lindvb/ui/window.py:631
+#: lindvb/ui/window.py:689
 msgid "Audio track"
 msgstr ""
 
-#: lindvb/ui/window.py:633
+#: lindvb/ui/window.py:691
 msgid "Playback and picture settings"
 msgstr ""
 
-#: lindvb/ui/window.py:638 lindvb/ui/window.py:1807
+#: lindvb/ui/window.py:696 lindvb/ui/window.py:1900
 msgid "Full screen (F)"
 msgstr ""
 
-#: lindvb/ui/window.py:669
+#: lindvb/ui/window.py:727
 #, python-brace-format
 msgid ""
 "\n"
 "Now: {title}"
 msgstr ""
 
-#: lindvb/ui/window.py:739 lindvb/ui/window.py:748
+#: lindvb/ui/window.py:798 lindvb/ui/window.py:807
 #, python-brace-format
 msgid "{n} of {total}"
 msgstr ""
 
-#: lindvb/ui/window.py:740
+#: lindvb/ui/window.py:799
 #, python-brace-format
 msgid "{n} of {total} recordings shown"
 msgstr ""
 
-#: lindvb/ui/window.py:750
+#: lindvb/ui/window.py:809
 #, python-brace-format
 msgid "{n} of {total} favourites shown"
 msgstr ""
 
-#: lindvb/ui/window.py:752
+#: lindvb/ui/window.py:811
 #, python-brace-format
 msgid "{n} of {total} radio stations shown"
 msgstr ""
 
-#: lindvb/ui/window.py:754
+#: lindvb/ui/window.py:813
 #, python-brace-format
 msgid "{n} of {total} TV channels shown"
 msgstr ""
 
-#: lindvb/ui/window.py:789
+#: lindvb/ui/window.py:849
 msgid "Add to Favourites"
 msgstr ""
 
-#: lindvb/ui/window.py:789
+#: lindvb/ui/window.py:849
 msgid "Remove from Favourites"
 msgstr ""
 
-#: lindvb/ui/window.py:792
+#: lindvb/ui/window.py:852
 msgid "Edit…"
 msgstr ""
 
-#: lindvb/ui/window.py:794
+#: lindvb/ui/window.py:854
 msgid "Show as Picture in Picture"
 msgstr ""
 
-#: lindvb/ui/window.py:804
+#: lindvb/ui/window.py:865
 msgid "Select a channel in the list first"
 msgstr ""
 
-#: lindvb/ui/window.py:854
+#: lindvb/ui/window.py:883
+msgid "Close the interactive service (Esc)"
+msgstr ""
+
+#: lindvb/ui/window.py:925
 msgid "By channel"
 msgstr ""
 
-#: lindvb/ui/window.py:854
+#: lindvb/ui/window.py:925
 msgid "By title"
 msgstr ""
 
-#: lindvb/ui/window.py:854
+#: lindvb/ui/window.py:925
 msgid "Newest first"
 msgstr ""
 
-#: lindvb/ui/window.py:854
+#: lindvb/ui/window.py:925
 msgid "Oldest first"
 msgstr ""
 
-#: lindvb/ui/window.py:855
+#: lindvb/ui/window.py:926
 msgid "Largest first"
 msgstr ""
 
-#: lindvb/ui/window.py:856
+#: lindvb/ui/window.py:927
 msgid "Sort the recordings"
 msgstr ""
 
-#: lindvb/ui/window.py:864
+#: lindvb/ui/window.py:935
 msgid "Open the recording folder"
 msgstr ""
 
-#: lindvb/ui/window.py:866
+#: lindvb/ui/window.py:937
 msgid "Look for new recordings"
 msgstr ""
 
-#: lindvb/ui/window.py:920
+#: lindvb/ui/window.py:991
 #, python-brace-format
 msgid ""
 "No recordings yet.\n"
@@ -2229,81 +4088,76 @@ msgid ""
 "{main}"
 msgstr ""
 
-#: lindvb/ui/window.py:921
+#: lindvb/ui/window.py:992
 msgid "No recording folder set in the preferences."
 msgstr ""
 
-#: lindvb/ui/window.py:950
+#: lindvb/ui/window.py:1021
 msgid "Recording in progress"
 msgstr ""
 
-#: lindvb/ui/window.py:975
+#: lindvb/ui/window.py:1046
 msgid "Watched"
 msgstr ""
 
-#: lindvb/ui/window.py:976
+#: lindvb/ui/window.py:1047
 #, python-brace-format
 msgid "Watched up to {pos}"
 msgstr ""
 
-#: lindvb/ui/window.py:1011
+#: lindvb/ui/window.py:1082
 #, python-brace-format
 msgid "Recording not found: {path}"
 msgstr ""
 
-#: lindvb/ui/window.py:1018
+#: lindvb/ui/window.py:1089
 #, python-brace-format
 msgid "Continuing at {pos}"
 msgstr ""
 
-#: lindvb/ui/window.py:1061
+#: lindvb/ui/window.py:1132
 #, python-brace-format
 msgid "Folder not found: {folder}"
 msgstr ""
 
-#: lindvb/ui/window.py:1066
-#, python-brace-format
-msgid "Cannot open {folder}: {message}"
-msgstr ""
-
-#: lindvb/ui/window.py:1084
+#: lindvb/ui/window.py:1155
 msgid "Play"
 msgstr ""
 
-#: lindvb/ui/window.py:1086
+#: lindvb/ui/window.py:1157
 msgid "Play from the Beginning"
 msgstr ""
 
-#: lindvb/ui/window.py:1087
+#: lindvb/ui/window.py:1158
 msgid "Details…"
 msgstr ""
 
-#: lindvb/ui/window.py:1089
+#: lindvb/ui/window.py:1160
 msgid "Mark as Unwatched"
 msgstr ""
 
-#: lindvb/ui/window.py:1091
+#: lindvb/ui/window.py:1162
 msgid "Mark as Watched"
 msgstr ""
 
-#: lindvb/ui/window.py:1092
+#: lindvb/ui/window.py:1163
 msgid "Show in Folder"
 msgstr ""
 
-#: lindvb/ui/window.py:1093
+#: lindvb/ui/window.py:1164
 msgid "Delete…"
 msgstr ""
 
-#: lindvb/ui/window.py:1107
+#: lindvb/ui/window.py:1178
 msgid "Stop the recording before deleting it"
 msgstr ""
 
-#: lindvb/ui/window.py:1109
+#: lindvb/ui/window.py:1180
 #, python-brace-format
 msgid "Delete “{title}”?"
 msgstr ""
 
-#: lindvb/ui/window.py:1110
+#: lindvb/ui/window.py:1181
 #, python-brace-format
 msgid ""
 "{path}\n"
@@ -2311,660 +4165,308 @@ msgid ""
 "The file is removed from the disk."
 msgstr ""
 
-#: lindvb/ui/window.py:1127
+#: lindvb/ui/window.py:1198
 #, python-brace-format
 msgid "Deleted {name}"
 msgstr ""
 
-#: lindvb/ui/window.py:1129
+#: lindvb/ui/window.py:1200
 #, python-brace-format
 msgid "Cannot delete {name}: {strerror}"
 msgstr ""
 
-#: lindvb/ui/window.py:1169 lindvb/ui/window.py:2068
+#: lindvb/ui/window.py:1240 lindvb/ui/window.py:2234
 #, python-brace-format
 msgid "Tuning {name}…"
 msgstr ""
 
-#: lindvb/ui/window.py:1200
+#: lindvb/ui/window.py:1271
 msgid "Search recordings"
 msgstr ""
 
-#: lindvb/ui/window.py:1217
+#: lindvb/ui/window.py:1288
 msgid "No radio stations in the channel list"
 msgstr ""
 
-#: lindvb/ui/window.py:1218
+#: lindvb/ui/window.py:1289
 msgid "No TV channels in the channel list"
 msgstr ""
 
-#: lindvb/ui/window.py:1298
+#: lindvb/ui/window.py:1379
 #, python-brace-format
 msgid "{name}: {v1} – switched to {kind}"
 msgstr ""
 
-#: lindvb/ui/window.py:1314 lindvb/ui/window.py:1317
+#: lindvb/ui/window.py:1395 lindvb/ui/window.py:1398
 #, python-brace-format
 msgid "{name} is not on air at the moment"
 msgstr ""
 
-#: lindvb/ui/window.py:1362
+#: lindvb/ui/window.py:1444
 msgid "Live TV stopped: tuner needed for a timer recording"
 msgstr ""
 
-#: lindvb/ui/window.py:1406
+#: lindvb/ui/window.py:1491
 msgid "Stopped"
 msgstr ""
 
-#: lindvb/ui/window.py:1422
+#: lindvb/ui/window.py:1507
 #, python-brace-format
 msgid "Sound {ms} ms later"
 msgstr ""
 
-#: lindvb/ui/window.py:1424
+#: lindvb/ui/window.py:1509
 #, python-brace-format
 msgid "Sound {v0} ms earlier"
 msgstr ""
 
-#: lindvb/ui/window.py:1426
+#: lindvb/ui/window.py:1511
 msgid "Audio delay off"
 msgstr ""
 
-#: lindvb/ui/window.py:1457
+#: lindvb/ui/window.py:1542
 #, python-brace-format
 msgid "Playing {item}"
 msgstr ""
 
-#: lindvb/ui/window.py:1470
+#: lindvb/ui/window.py:1555
 msgid "Open media files"
 msgstr ""
 
-#: lindvb/ui/window.py:1483
+#: lindvb/ui/window.py:1568
 msgid "Open URL"
 msgstr ""
 
-#: lindvb/ui/window.py:1486
+#: lindvb/ui/window.py:1571
 msgid "http://…, rtp://…, udp://…, rtsp://…"
 msgstr ""
 
-#: lindvb/ui/window.py:1500
+#: lindvb/ui/window.py:1585
 msgid "Open"
 msgstr ""
 
-#: lindvb/ui/window.py:1515
+#: lindvb/ui/window.py:1600
 msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr ""
 
-#: lindvb/ui/window.py:1546
+#: lindvb/ui/window.py:1631
 msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
 msgstr ""
 
-#: lindvb/ui/window.py:1563 lindvb/ui/window.py:1579
+#: lindvb/ui/window.py:1648 lindvb/ui/window.py:1664
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr ""
 
-#: lindvb/ui/window.py:1566
+#: lindvb/ui/window.py:1651
 msgid "Export the programme guide (XMLTV)"
 msgstr ""
 
-#: lindvb/ui/window.py:1581
+#: lindvb/ui/window.py:1666
 #, python-brace-format
 msgid "Cannot write {path}: {error}"
 msgstr ""
 
-#: lindvb/ui/window.py:1589 lindvb/ui/window.py:1602
+#: lindvb/ui/window.py:1674 lindvb/ui/window.py:1687
 msgid "Nothing to record"
 msgstr ""
 
-#: lindvb/ui/window.py:1605
+#: lindvb/ui/window.py:1690
 msgid "This channel is already being recorded"
 msgstr ""
 
-#: lindvb/ui/window.py:1637
+#: lindvb/ui/window.py:1723
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr ""
+
+#: lindvb/ui/window.py:1728
 msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
 msgstr ""
 
-#: lindvb/ui/window.py:1638
+#: lindvb/ui/window.py:1729
 msgid "Teletext: not available on this channel"
 msgstr ""
 
-#: lindvb/ui/window.py:1642
+#: lindvb/ui/window.py:1735
 msgid "Teletext needs a DVB channel"
 msgstr ""
 
-#: lindvb/ui/window.py:1673
+#: lindvb/ui/window.py:1766
 #, python-brace-format
 msgid "Volume {v0}%"
 msgstr ""
 
-#: lindvb/ui/window.py:1685
-msgid "Off"
-msgstr ""
-
-#: lindvb/ui/window.py:1691
+#: lindvb/ui/window.py:1784
 msgid "Closed Captions (CEA-608/708)"
 msgstr ""
 
-#: lindvb/ui/window.py:1706
+#: lindvb/ui/window.py:1799
 #, python-brace-format
 msgid "{n} languages"
 msgstr ""
 
-#: lindvb/ui/window.py:1708
+#: lindvb/ui/window.py:1801
 #, python-brace-format
 msgid "{n} audio tracks"
 msgstr ""
 
-#: lindvb/ui/window.py:1723
+#: lindvb/ui/window.py:1816
 #, python-brace-format
 msgid "Screenshot saved: {path}"
 msgstr ""
 
-#: lindvb/ui/window.py:1724
+#: lindvb/ui/window.py:1817
 msgid "Screenshot failed"
 msgstr ""
 
-#: lindvb/ui/window.py:1727
+#: lindvb/ui/window.py:1820
 msgid "Picture Settings"
 msgstr ""
 
-#: lindvb/ui/window.py:1741
+#: lindvb/ui/window.py:1834
 msgid "Restore Defaults"
 msgstr ""
 
-#: lindvb/ui/window.py:1748
+#: lindvb/ui/window.py:1841
 msgid "Equalizer"
 msgstr ""
 
-#: lindvb/ui/window.py:1807
+#: lindvb/ui/window.py:1900
 msgid "Leave full screen (F)"
 msgstr ""
 
-#: lindvb/ui/window.py:1877
+#: lindvb/ui/window.py:1947
+#, python-brace-format
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr ""
+
+#: lindvb/ui/window.py:1955
+msgid "All presets (shuffled)"
+msgstr ""
+
+#: lindvb/ui/window.py:1963
+#, python-brace-format
+msgid "All of {name}"
+msgstr ""
+
+#: lindvb/ui/window.py:1999
 #, python-brace-format
 msgid "Visualisation failed: {e}"
 msgstr ""
 
-#: lindvb/ui/window.py:1893
+#: lindvb/ui/window.py:2015
 msgid "Radio visualisation"
 msgstr ""
 
-#: lindvb/ui/window.py:1894
+#: lindvb/ui/window.py:2016
 msgid "Radio visualisation (only for radio and audio)"
 msgstr ""
 
-#: lindvb/ui/window.py:1930
+#: lindvb/ui/window.py:2052
 #, python-brace-format
 msgid "Playback stops at {v0}"
 msgstr ""
 
-#: lindvb/ui/window.py:1938
+#: lindvb/ui/window.py:2060
 msgid "No programme information for the sleep timer"
 msgstr ""
 
-#: lindvb/ui/window.py:1948
+#: lindvb/ui/window.py:2070
 msgid "Sleep timer: playback stopped"
 msgstr ""
 
-#: lindvb/ui/window.py:1972
-msgid "No programme information"
-msgstr ""
-
-#: lindvb/ui/window.py:1974
+#: lindvb/ui/window.py:2098
 #, python-brace-format
 msgid "Next: {v0}  {title}"
 msgstr ""
 
-#: lindvb/ui/window.py:2008
-#, python-brace-format
-msgid "Signal {v0}%"
-msgstr ""
-
-#: lindvb/ui/window.py
+#: lindvb/ui/window.py:2135
 #, python-brace-format
 msgid "Signal quality {v0}%"
 msgstr ""
 
-#: lindvb/ui/window.py
+#: lindvb/ui/window.py:2137
 #, python-brace-format
 msgid "Stream quality {v0}%"
 msgstr ""
 
-#: lindvb/ui/window.py
-msgid "No signal"
+#: lindvb/ui/window.py:2174
+#, python-brace-format
+msgid "Signal {v0}%"
 msgstr ""
 
-#: lindvb/ui/window.py:2058
+#: lindvb/ui/window.py:2224
 #, python-brace-format
 msgid "● REC {n}"
 msgstr ""
 
-#: lindvb/ui/window.py:2067
+#: lindvb/ui/window.py:2233
 msgid "Live"
 msgstr ""
 
-#: lindvb/ui/window.py:2067
+#: lindvb/ui/window.py:2233
 #, python-brace-format
 msgid "Timeshift −{v0}:{v1:02d}"
 msgstr ""
 
-#: lindvb/ui/window.py:2179
+#: lindvb/ui/window.py:2349
 msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:14
+#: lindvb/ui/xmltvmatch.py:15
 msgid "Match IPTV Channels to XMLTV"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:29
+#: lindvb/ui/xmltvmatch.py:30
 msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:32
+#: lindvb/ui/xmltvmatch.py:33
 msgid "Download XMLTV guide now"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:41
+#: lindvb/ui/xmltvmatch.py:42
 msgid "Only channels without guide"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:50
+#: lindvb/ui/xmltvmatch.py:51
 msgid "Match"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:56
+#: lindvb/ui/xmltvmatch.py:57
 msgid "Guide channel:"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:64
+#: lindvb/ui/xmltvmatch.py:65
 msgid "Assign"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:66
+#: lindvb/ui/xmltvmatch.py:67
 msgid "Suggest"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:74
+#: lindvb/ui/xmltvmatch.py:75
 msgid "Auto-match all"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:75
+#: lindvb/ui/xmltvmatch.py:76
 msgid "Match every channel that was not assigned by hand"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:77
+#: lindvb/ui/xmltvmatch.py:78
 msgid "Reset to automatic"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:78
+#: lindvb/ui/xmltvmatch.py:79
 msgid "Let the automatic matching decide for the selected channel again"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:109
+#: lindvb/ui/xmltvmatch.py:110
 #, python-brace-format
 msgid "{done} of {v1} channels have a guide channel"
 msgstr ""
 
-#: lindvb/ui/xmltvmatch.py:141
+#: lindvb/ui/xmltvmatch.py:142
 #, python-brace-format
 msgid "No suggestion for {name}"
-msgstr ""
-
-msgid "{name} could not start ({m}), showing {other} instead"
-msgstr ""
-
-msgid "Off (station name only)"
-msgstr ""
-
-msgid "Spectrum analyser (classic)"
-msgstr ""
-
-msgid "VU meters (classic)"
-msgstr ""
-
-msgid "Oscilloscope (classic)"
-msgstr ""
-
-msgid "Glow waves (modern)"
-msgstr ""
-
-msgid "Nebula particles (modern)"
-msgstr ""
-
-msgid "Light ribbons (modern)"
-msgstr ""
-
-msgid "Pulsar (modern)"
-msgstr ""
-
-msgid "Supernova (modern)"
-msgstr ""
-
-msgid "Occasus solis (modern)"
-msgstr ""
-
-msgid "Aurora borealis (modern)"
-msgstr ""
-
-msgid "Goom HD (GPU)"
-msgstr ""
-
-msgid "All presets (shuffled)"
-msgstr ""
-
-msgid "All of {name}"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Dancer"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Drawing"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Fractal"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Geometric"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Hypnotic"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Particles"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Reaction"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Sparkle"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Supernova"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "Waveform"
-msgstr ""
-
-#. projectM preset folder (Cream of the Crop collection)
-msgid "! Transition"
-msgstr ""
-
-msgid "HbbTV"
-msgstr ""
-
-msgid "Interactive services (HbbTV)"
-msgstr ""
-
-msgid "Media libraries, teletext successors and more behind the red button (F5)."
-msgstr ""
-
-msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
-msgstr ""
-
-msgid "Start automatically"
-msgstr ""
-
-msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
-msgstr ""
-
-msgid "Allow third-party cookies"
-msgstr ""
-
-msgid "Advertising networks use them to follow you across channels."
-msgstr ""
-
-msgid "Delete HbbTV Data"
-msgstr ""
-
-msgid "Cookies and storage"
-msgstr ""
-
-msgid "Removes what HbbTV applications stored, such as cookies and settings."
-msgstr ""
-
-msgid "HbbTV data deleted"
-msgstr ""
-
-msgid "HbbTV: {name}"
-msgstr ""
-
-msgid "HbbTV application could not be loaded: {msg}"
-msgstr ""
-
-msgid "HbbTV (red button)"
-msgstr ""
-
-msgid "Interactive service of the channel (red button, F5)"
-msgstr ""
-
-msgid "Close the interactive service (Esc)"
-msgstr ""
-
-msgid "Subtitles in media libraries"
-msgstr ""
-
-msgid "Applications show subtitles in their videos from the start."
-msgstr ""
-
-msgid "Audio description in media libraries"
-msgstr ""
-
-msgid "Applications prefer the soundtrack that describes the picture."
-msgstr ""
-
-msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
-msgstr ""
-
-msgid "This interactive service is rated {age}+."
-msgstr ""
-
-msgid "Blocked by youth protection. Set a PIN in the preferences."
-msgstr ""
-
-msgid "Too many wrong PINs. Try again in a few minutes."
-msgstr ""
-
-msgid "Youth protection"
-msgstr ""
-
-msgid "PIN"
-msgstr ""
-
-msgid "Unlock"
-msgstr ""
-
-msgid "Wrong PIN."
-msgstr ""
-
-msgid "This video is rated {age}+."
-msgstr ""
-
-msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
-msgstr ""
-
-msgid "Teletext from the interactive service"
-msgstr ""
-
-msgid "The TXT button opens the channel's HbbTV teletext where there is one."
-msgstr ""
-
-msgid "Viewers from {age} years"
-msgstr ""
-
-msgid "Applications and their videos rated above this age need the PIN."
-msgstr ""
-
-msgid "Current PIN"
-msgstr ""
-
-msgid "Needed to change the youth protection or the PIN."
-msgstr ""
-
-msgid "New PIN"
-msgstr ""
-
-msgid "Leave empty to keep the current PIN."
-msgstr ""
-
-msgid "Youth protection not changed"
-msgstr ""
-
-msgid "The current PIN is wrong."
-msgstr ""
-
-msgid "Youth protection needs a PIN"
-msgstr ""
-
-msgid "Set a PIN to switch on the youth protection."
-msgstr ""
-
-msgid "Companion screens on the network"
-msgstr ""
-
-msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
-msgstr ""
-
-msgid "Start an application from another device?"
-msgstr ""
-
-msgid "A device on your network wants to start “{name}” ({url})."
-msgstr ""
-
-msgid "an HbbTV application"
-msgstr ""
-
-msgid "Refuse"
-msgstr ""
-
-msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
-msgstr ""
-
-msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
-msgstr ""
-
-#: lindvb/credits.py
-msgid "Contains code from"
-msgstr ""
-
-#: lindvb/credits.py
-msgid "Built with"
-msgstr ""
-
-#: lindvb/credits.py
-msgid "Visualisations"
-msgstr ""
-
-#: lindvb/epgmerge.py
-msgid "Broadcast (EIT)"
-msgstr ""
-
-#: lindvb/epgmerge.py
-msgid "Provider EPG (MediaHighway / Freesat)"
-msgstr ""
-
-#: lindvb/epgmerge.py
-msgid "DVB-I content guide"
-msgstr ""
-
-#: lindvb/epgmerge.py
-msgid "XMLTV (internet)"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Advanced"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Priority of the EPG sources"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Automatic (recommended)"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Custom order"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Order of the EPG sources"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Applies to"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Remove Channel"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Move Up"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Move Down"
-msgstr ""
-
-#: lindvb/ui/epgsettings.py
-msgid "Own Order for Channel"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Automatic (graphics card when possible)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "V4L2 (ARM boards)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Software (processor)"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Graphics card decoders found: {list}"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "none"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Switched off after an error: {list}"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Decoding now: {decoder}"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Video decoding"
-msgstr ""
-
-#: lindvb/ui/dialogs.py
-msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
-msgstr ""
-
-#: lindvb/ui/window.py
-msgid "{name} video decoding failed, playing with the next decoder"
 msgstr ""

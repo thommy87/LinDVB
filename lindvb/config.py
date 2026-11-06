@@ -112,6 +112,12 @@ DEFAULTS = {
     # Station logos: image files named after the channel (DVBViewer's
     # channel logos work as they are). "" = DATA_DIR/logos.
     "logo_dir": "",
+    # channel analysis ----------------------------------------------------------
+    # one line a minute about the reception of the channel on screen (31 days)
+    "reception_log": False,
+    # warn on screen when the signal margin falls below this many dB
+    "analysis_warn": False,
+    "analysis_warn_margin": 2.0,
     # EPG ---------------------------------------------------------------------
     # Keep the guide on disk so it survives the end of the program.
     "epg_save": True,

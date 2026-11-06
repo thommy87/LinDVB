@@ -271,6 +271,9 @@ def cable_conflict(profile, channel, busy, settings):
 
 # -- the choice ------------------------------------------------------------------
 
+ANALYSIS = "analysis"           # the user of a capture for a channel analysis
+
+
 class NoTuner(RuntimeError):
     pass
 
@@ -284,7 +287,9 @@ def choose(channel, user, profiles, captures, settings, can_share=True):
     * ``("join", capture)``: the capture already carries the channel,
     * ``("share", capture)``: the capture's tuner is on the channel's transponder,
     * ``("tune", profile, preempt)``: tune *profile*; *preempt* is the capture
-      of the live view to stop first, or None.
+      of the live view or of a background channel analysis to stop first, or None.
+
+    A channel analysis (*user* ``ANALYSIS``) only takes a free tuner.
 
     Raises :class:`NoTuner` with a message for the user.
     """
@@ -307,21 +312,20 @@ def choose(channel, user, profiles, captures, settings, can_share=True):
         if p["adapter"] not in captures and not cable_conflict(p, channel, busy(), settings):
             return ("tune", p, None)
 
-    # Take a tuner from the live view: a recording always may; the live view
-    # may give up its own tuner when it switches channel.
-    for p in suitable:
-        cap = captures.get(p["adapter"])
-        if cap is not None and cap.users == {"live"}:
-            if not cable_conflict(p, channel, busy(without=p["adapter"]), settings):
-                return ("tune", p, cap)
-    live = [c for c in captures.values() if c.users == {"live"}]
-    if live:
-        # The live tuner blocks a free tuner on its cable: stop it, then tune.
-        a = next(a for a, c in captures.items() if c is live[0])
-        for p in suitable:
-            if p["adapter"] not in captures or p["adapter"] == a:
+    if user == ANALYSIS:
+        raise NoTuner("No free tuner for the analysis.")
+    # Take a tuner from a channel analysis in the background, else from the
+    # live view (a recording always may; the live view gives up its own tuner
+    # when it switches channel). Stopping it may also free a tuner on its cable.
+    for only in ({ANALYSIS}, {"live"}):
+        for a, cap in captures.items():
+            if cap.users != only:
+                continue
+            for p in suitable:
+                if p["adapter"] in captures and p["adapter"] != a:
+                    continue
                 if not cable_conflict(p, channel, busy(without=a), settings):
-                    return ("tune", p, live[0])
+                    return ("tune", p, cap)
     if user == "live":
         raise NoTuner("All tuners are busy recording.")
     raise NoTuner("No free tuner for the recording.")

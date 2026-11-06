@@ -182,3 +182,17 @@ def test_tuner_manager_shares_and_releases(monkeypatch):
     assert not rec.destroyed
     tm.release(rec, "live")
     assert rec.destroyed and 0 not in tm.captures
+
+
+def test_analysis_takes_only_free_tuners_and_gives_way():
+    s0 = prof(0)
+    live = Cap(sat("A", 11494000), s0, {"live"})
+    with pytest.raises(tp.NoTuner, match="analysis"):
+        tp.choose(sat("B", 12187000), tp.ANALYSIS, [s0], {0: live}, SETTINGS)
+    bg = Cap(sat("A", 11494000), s0, {tp.ANALYSIS})
+    assert tp.choose(sat("B", 12187000), "live", [s0], {0: bg}, SETTINGS) == ("tune", s0, bg)
+    # the analysis goes before the live view
+    s1 = prof(1)
+    how = tp.choose(sat("C", 12500000), "rec", [s0, s1],
+                    {0: live, 1: Cap(sat("B", 12187000), s1, {tp.ANALYSIS})}, SETTINGS)
+    assert how[1] is s1 and how[2].users == {tp.ANALYSIS}
