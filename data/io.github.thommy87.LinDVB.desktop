@@ -2,7 +2,7 @@
 Type=Application
 Name=LinDVB
 GenericName=TV Viewer
-Comment=Watch and record DVB and internet TV
+Comment=Digital TV and radio: watch and record
 Exec=lindvb %U
 Icon=lindvb
 Terminal=false

@@ -11,7 +11,9 @@ A profile describes one DVB frontend LinDVB may use::
 * ``priority``: higher numbers are used first.
 * ``group``: tuners with the same non-empty group hang on one antenna cable
   (loop-through, or a single LNB output behind a splitter). They can only
-  receive the same satellite band, polarisation and DiSEqC port at a time.
+  receive the same satellite band, polarisation and DiSEqC port at a time,
+  unless they use Unicable / JESS: then each needs a user band of its own.
+* ``unicable``: the single-cable setup (see lindvb.unicable), or missing.
 * ``lnb``: the tuner's own LNB oscillators (low, high, switch frequency in kHz),
   or missing for the global LNB settings.
 
@@ -260,9 +262,19 @@ def cable_conflict(profile, channel, busy, settings):
     group = (profile.get("group") or "").strip()
     if not group or not channel.is_sat:
         return None
+    from . import unicable
+    uc = unicable.config(profile)
     want = sat_state(channel, tuner_lnb(profile, settings))
     for other, ch in busy:
-        if other.get("adapter") == profile.get("adapter") or (other.get("group") or "").strip() != group or not ch.is_sat:
+        if other.get("adapter") == profile.get("adapter") or \
+                (other.get("group") or "").strip() != group or not ch.is_sat:
+            continue
+        other_uc = unicable.config(other)
+        if uc is not None or other_uc is not None:
+            # single cable: every tuner has its own user band, only one per band
+            if uc is not None and other_uc is not None and \
+                    int(uc.get("slot", 0)) == int(other_uc.get("slot", 0)):
+                return other, ch
             continue
         if sat_state(ch, tuner_lnb(other, settings)) != want:
             return other, ch

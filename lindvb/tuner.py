@@ -7,6 +7,7 @@ recorder all read from those segments, so one tuner feeds all of them.
 """
 
 import os
+import random
 import shutil
 import tempfile
 import time
@@ -19,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import tunerprofiles  # noqa: E402
+from . import directtune, tunerprofiles, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -29,6 +30,10 @@ except (ImportError, ValueError):
     GstMpegts = None
 
 SEGMENT_BYTES = 64 * 1024 * 1024
+# Unicable / JESS: seconds to wait for a lock before the command is sent again,
+# and how often it is sent at most
+UNICABLE_LOCK_WAIT = 4
+UNICABLE_TRIES = 3
 # ATSC terrestrial (8VSB) and US cable (QAM annex B): the guide is in PSIP
 ATSC_SYSTEMS = ("atsc", "dvb-c-b")
 TS_PACKET = 188
@@ -200,6 +205,12 @@ class Capture(GObject.Object):
         # this capture carries (more than one when they share the transponder)
         self.tuner = tuner or tunerprofiles.new_profile(adapter, frontend)
         self.channels = {channel.key: channel}
+        # Unicable / JESS: LinDVB tunes the frontend itself (lindvb.directtune)
+        # and reads the stream from the DVR device instead of dvbsrc.
+        self._uc = unicable.config(self.tuner) if channel.is_sat else None
+        self._lnb = tunerprofiles.tuner_lnb(self.tuner, settings)
+        self._direct = None
+        self._uc_tries = 0
         # Conditional access for the user's own encrypted channels: a provider
         # supplies control words (from an external softcam or a CI module) and
         # descrambles the captured transport stream in place.
@@ -232,13 +243,22 @@ class Capture(GObject.Object):
                 f'filesrc location="{test_ts}" ! tsparse set-timestamps=true '
                 '! clocksync sync-to-first=true', True)
         else:
-            src = Gst.ElementFactory.make("dvbsrc", "src")
-            if src is None:
-                raise RuntimeError("GStreamer element 'dvbsrc' is missing (gst-plugins-bad).")
-            props = dvbsrc_properties(channel, settings, adapter, frontend,
-                                      tunerprofiles.tuner_lnb(self.tuner, settings))
-            for k, v in props.items():
-                Gst.util_set_object_arg(src, k, str(v))
+            props = dvbsrc_properties(channel, settings, adapter, frontend, self._lnb)
+            if self._uc is not None:
+                # the DVR device is read by a thread (see _start_direct)
+                src = Gst.ElementFactory.make("appsrc", "src")
+                src.set_property("caps", Gst.Caps.from_string(
+                    "video/mpegts,systemstream=true,packetsize=188"))
+                Gst.util_set_object_arg(src, "format", "bytes")
+                src.set_property("is-live", True)
+                src.set_property("do-timestamp", True)
+                self._direct = directtune.DirectTuner(adapter, frontend)
+            else:
+                src = Gst.ElementFactory.make("dvbsrc", "src")
+                if src is None:
+                    raise RuntimeError("GStreamer element 'dvbsrc' is missing (gst-plugins-bad).")
+                for k, v in props.items():
+                    Gst.util_set_object_arg(src, k, str(v))
             self._src = src
             self._pids = str(props.get("pids", ""))
         parse = Gst.ElementFactory.make("tsparse", "parse")
@@ -376,8 +396,18 @@ class Capture(GObject.Object):
             return
         have = {int(x) for x in self._pids.split(":") if x.isdigit()}
         if have and 8192 not in have and pid not in have:
-            self._pids = ":".join(map(str, sorted(have | {pid})))
-            self._src.set_property("pids", self._pids)
+            self._set_pids(":".join(map(str, sorted(have | {pid}))))
+
+    def _set_pids(self, pids):
+        self._pids = pids
+        if self._direct is not None:
+            if self._direct.fe is not None:
+                try:
+                    self._direct.set_pids([int(x) for x in pids.split(":") if x.isdigit()])
+                except OSError as e:
+                    self.emit("error", f"Could not set the PID filter: {e.strerror}")
+        else:
+            self._src.set_property("pids", pids)
 
     def add_channel(self, channel):
         """Carry *channel* too: it is on this transponder (main loop)."""
@@ -391,8 +421,7 @@ class Capture(GObject.Object):
         if not channel.pmt_pid:
             want = {8192}                # stream layout unknown: take everything
         if want != have:
-            self._pids = ":".join(map(str, sorted(want)))
-            self._src.set_property("pids", self._pids)
+            self._set_pids(":".join(map(str, sorted(want))))
 
     def _on_ait_pids(self, pids):
         def deliver():
@@ -408,8 +437,56 @@ class Capture(GObject.Object):
         GLib.idle_add(lambda: (self.emit("provider-epg", key, events), False)[1])
 
     def start(self):
+        if self._direct is not None and not self._start_direct():
+            return
         if self.pipeline.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
             self.emit("error", f"Could not open DVB adapter {self.adapter}.")
+
+    def _start_direct(self):
+        """Single cable: open the frontend, send the command, tune the user band."""
+        try:
+            self._direct.open()
+            self._direct.tune(self._uc, self.channel, self._lnb)
+            self._direct.set_pids([int(x) for x in self._pids.split(":") if x.isdigit()])
+        except (OSError, ValueError) as e:
+            self._direct.close()
+            msg = e.strerror if isinstance(e, OSError) else str(e)
+            self.emit("error", f"Could not tune adapter {self.adapter} (single cable): {msg}")
+            return False
+        self._uc_tries = 1
+        import threading
+        threading.Thread(target=self._direct.read_loop, args=(self._push_direct,),
+                         daemon=True, name=f"dvr{self.adapter}").start()
+        from .festats import Frontend
+        self._fe_stats = Frontend(self.adapter, self.frontend)
+        GLib.timeout_add_seconds(1, self._poll_direct)
+        return True
+
+    def _push_direct(self, data):
+        """Reader thread: hand a chunk of the DVR stream to the pipeline."""
+        if not self.store.finished:
+            self._src.emit("push-buffer", Gst.Buffer.new_wrapped(data))
+
+    def _poll_direct(self):
+        """Signal figures for the single-cable tuner (dvbsrc would post them),
+        and the command again without a lock: another receiver on the cable may
+        have sent at the same moment and the command got lost."""
+        if self.store.finished:
+            self._fe_stats.close()
+            return False
+        st = directtune.dvb_stats(self._fe_stats.read())
+        self.stats = st
+        self.emit("stats", st)
+        waited = time.time() - self.started_at
+        if not st.get("lock") and self._uc_tries < UNICABLE_TRIES and \
+                waited >= UNICABLE_LOCK_WAIT * self._uc_tries:
+            time.sleep(random.uniform(0.05, 0.3))
+            try:
+                self._direct.tune(self._uc, self.channel, self._lnb)
+            except (OSError, ValueError):
+                pass
+            self._uc_tries += 1
+        return True
 
     def _ca_probe(self, pad, info):
         """Run the CA provider over every TS packet, descrambling in place."""
@@ -473,6 +550,8 @@ class Capture(GObject.Object):
         self.pipeline.set_state(Gst.State.NULL)
         self.pipeline.get_bus().remove_signal_watch()
         self.store.finished = True
+        if self._direct is not None:
+            self._direct.close()
 
     def destroy(self):
         self.stop()
