@@ -1347,7 +1347,10 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("provider-epg", self.app.on_provider_epg)
             self.capture.connect("tsid", self.app.on_tsid)
             self.capture.connect("ait-pid", self.app.on_ait_pid)
-            self.hbbtv.channel_changed(c, self.capture)
+            # HbbTV follows the AIT of the channel the tuner was tuned for; a
+            # channel that only shares its transponder starts without signalling.
+            own = self.capture if self.capture.channel.key == c.key else None
+            self.hbbtv.channel_changed(c, own)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
 

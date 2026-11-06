@@ -186,13 +186,19 @@ class PrefsWindow(Gtk.Window):
 
         # -- Tuner
         pg = page("tuner", _("Tuner and Channels"))
+        pg.append(Gtk.Label(label=_("Tuners"), xalign=0, css_classes=["lv-section-title"],
+                            margin_top=4))
+        pg.append(Gtk.Label(label=_("LinDVB records and plays on several tuners at once and "
+                                    "uses the tuners with the highest priority first. Channels "
+                                    "on one transponder share a tuner."),
+                            xalign=0, wrap=True, css_classes=["lv-hint"]))
+        self._build_tuners(pg, s)
         g = group(pg, _("DVB hardware"))
-        entry(g, "adapters", _("DVB adapters"), _("Adapter numbers LinDVB may use, comma separated."))
-        self.w["adapters"][0].set_text(", ".join(map(str, s["adapters"])))
-        spin(g, "frontend", _("Frontend"), 0, 7)
         switch(g, "full_transponder", _("Capture whole transponder"),
                _("Needed for all audio tracks when the channel list knows only one audio PID."))
         g = group(pg, _("Satellite LNB"))
+        g.append(Gtk.Label(label=_("For all tuners without an LNB of their own."), xalign=0,
+                           wrap=True, css_classes=["lv-hint"]))
         spin(g, "lnb_lof1", _("LOF low band (kHz)"), 0, 20000000)
         spin(g, "lnb_lof2", _("LOF high band (kHz)"), 0, 20000000)
         spin(g, "lnb_slof", _("Switch frequency (kHz)"), 0, 20000000)
@@ -445,6 +451,64 @@ class PrefsWindow(Gtk.Window):
             s["hbbtv_pin_salt"] = hb_core.new_salt()
             s["hbbtv_pin"] = hb_core.hash_pin(pin, s["hbbtv_pin_salt"])
 
+    def _build_tuners(self, pg, s):
+        """One block per tuner: on/off, priority, shared cable and its own LNB."""
+        from .. import tunerprofiles as tp
+        legacy = None if s.get("tuners") else list(s.get("adapters") or [0])
+        found = tp.merge_profiles(s.get("tuners") or [], tp.detect_tuners(), legacy)
+        if not found:
+            found = [dict(p, present=False) for p in tp.legacy_profiles(s)]
+        self._tuner_rows = []
+        glob = tp.tuner_lnb(None, s)
+        for prof in found:
+            g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+            pg.append(g)
+            head = f"{prof['name']}  (adapter{prof['adapter']}/frontend{prof['frontend']})"
+            info = tp.systems_label(prof.get("systems") or []) or _("Reception types unknown")
+            if not prof.get("present", True):
+                info += " · " + _("not connected")
+            on = _row(g, head, Gtk.Switch(active=bool(prof.get("enabled", True))), info)
+            prio = _row(g, _("Priority"), Gtk.SpinButton.new_with_range(0, 9, 1),
+                        _("Higher numbers are used first."))
+            prio.set_value(int(prof.get("priority", 0) or 0))
+            row = {"profile": prof, "on": on, "prio": prio, "group": None, "lnb": None}
+            sat = not prof.get("systems") or tp.supports(prof, "dvb-s")
+            if sat:
+                row["group"] = _row(g, _("Shared antenna cable"),
+                                    Gtk.Entry(text=prof.get("group", "")),
+                                    _("Give tuners on one cable the same name (loop-through or a "
+                                      "splitter on one LNB output). They then only receive one "
+                                      "band and polarisation at a time. Empty: own cable."))
+                own = list(prof.get("lnb") or glob)
+                row["lnb"] = []
+                for label, value in zip((_("LOF low band (kHz)"), _("LOF high band (kHz)"),
+                                         _("Switch frequency (kHz)")), own):
+                    sp = _row(g, label, Gtk.SpinButton.new_with_range(0, 20000000, 1))
+                    sp.set_value(value)
+                    row["lnb"].append(sp)
+            self._tuner_rows.append(row)
+
+    def _save_tuners(self, s):
+        from .. import tunerprofiles as tp
+        glob = tp.tuner_lnb(None, s)
+        tuners = []
+        for row in self._tuner_rows:
+            prof = {k: v for k, v in row["profile"].items() if k not in ("present", "lnb")}
+            prof["enabled"] = row["on"].get_active()
+            prof["priority"] = int(row["prio"].get_value())
+            if row["group"] is not None:
+                prof["group"] = row["group"].get_text().strip()
+            if row["lnb"]:
+                lnb = tuple(int(sp.get_value()) for sp in row["lnb"])
+                if lnb != glob and all(lnb):
+                    prof["lnb"] = list(lnb)
+            tuners.append(prof)
+        s["tuners"] = tuners
+        on = [p for p in tuners if p["enabled"]]
+        # the older settings, still read by the channel search
+        s["adapters"] = sorted({p["adapter"] for p in on}) or [0]
+        s["frontend"] = on[0]["frontend"] if on else 0
+
     def on_save(self):
         s = self.app.settings
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
@@ -459,10 +523,9 @@ class PrefsWindow(Gtk.Window):
                 s[k] = w.get_active()
             elif typ is int:
                 s[k] = int(w.get_value())
-            elif k == "adapters":
-                s[k] = [int(x) for x in w.get_text().replace(" ", "").split(",") if x.isdigit()]
             else:
                 s[k] = w.get_text()
+        self._save_tuners(s)
         self._epg.save(s)
         s.save()
         self._saved = True
@@ -708,7 +771,9 @@ class StatsWindow(Gtk.Window):
         for a, cap in sorted(self.app.tuners.captures.items()):
             st = cap.stats
             start, end = cap.store.bounds()
-            lines.append(f"  adapter{a}: {cap.channel.name}  users={','.join(sorted(cap.users))}")
+            names = ", ".join(c.name for c in getattr(cap, "channels", {0: cap.channel}).values())
+            lines.append(f"  adapter{a}/frontend{getattr(cap, 'frontend', 0)}: {names}  "
+                         f"users={','.join(sorted(cap.users))}")
             lines.append(f"    lock={st.get('lock', '?')} signal={st.get('signal', '?')} "
                          f"snr={st.get('snr', '?')} ber={st.get('ber', '?')} unc={st.get('unc', '?')}")
             lines.append(f"    rate={cap.byte_rate() * 8 / 1e6:.2f} Mbit/s  "

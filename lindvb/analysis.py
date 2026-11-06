@@ -123,7 +123,7 @@ class ReceptionMonitor:
             self.close()
             self._fe_cap = cap
             if not os.environ.get("LINDVB_TEST_TS"):
-                self._fe = Frontend(cap.adapter, s.get("frontend", 0))
+                self._fe = Frontend(cap.adapter, getattr(cap, "frontend", s.get("frontend", 0)))
                 self._tuning = self._fe.tuning()
         fe = self._fe.read() if self._fe is not None else {}
         sm = signal_sample(stats, fe, self._tuning, cap.channel)
@@ -327,7 +327,7 @@ class AnalysisSession(GObject.Object):
         cap.add_tap(self.analyzer.feed)
         self.status = "background" if cap.users == {ANALYSIS} else "live"
         if not os.environ.get("LINDVB_TEST_TS"):
-            self.frontend = Frontend(cap.adapter, self.app.settings.get("frontend", 0))
+            self.frontend = Frontend(cap.adapter, getattr(cap, "frontend", self.app.settings.get("frontend", 0)))
             self.tuning = self.frontend.tuning()
 
     def _detach(self):

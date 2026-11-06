@@ -78,7 +78,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Signal and stream analysis | **Yes**: the Channel Analysis window (seven pages) with signal margin, C/N/level/BER curves, error timeline, dish alignment tone, PID table with bit rates, CC errors and PCR jitter, transponder occupancy, video/audio formats with frame sizes and EBU R 128 loudness, SI tables with a decoded tree and hex view, clock offset, CA systems and crypto period, AIT applications; internet channels with server, HLS/DASH variants and buffer; reception log, comparison of two channels and export |
 | Sleep timer, stop recording after programme | **Yes** (playback sleep timer) |
 | Recording database, media libraries (video, music, pictures) | **Partly**: the Recordings tab lists the recordings with preview picture, programme details (title, subheading, channel, description from the EPG at recording time), sorting and search, and remembers where each one was left; no music or picture library |
-| Multiple tuners | **Yes**: list of adapters; a timer can take a tuner from live TV |
+| Multiple tuners | **Yes**: tuner list with reception types, on/off and priority; channels go to a tuner that can receive them, channels of one transponder share a tuner, tuners on one antenna cable (loop-through) keep to one band and polarisation, LNB per tuner; a timer can take a tuner from live TV |
 
 ## Integration and other functions
 

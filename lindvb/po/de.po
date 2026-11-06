@@ -2215,6 +2215,42 @@ msgstr "Interlaced-Bilder (die meisten SD- und 1080i-Sender). Auf der Grafikkart
 msgid "{name} video decoding failed, playing with the next decoder"
 msgstr "{name}-Videodekodierung fehlgeschlagen, es geht mit dem nächsten Decoder weiter"
 
+#: lindvb/ui/dialogs.py
+msgid "Tuners"
+msgstr "Tuner"
+
+#: lindvb/ui/dialogs.py
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB nimmt auf mehreren Tunern gleichzeitig auf und spielt ab. Tuner mit der höchsten Priorität werden zuerst genutzt. Sender auf einem Transponder teilen sich einen Tuner."
+
+#: lindvb/ui/dialogs.py
+msgid "Reception types unknown"
+msgstr "Empfangsarten unbekannt"
+
+#: lindvb/ui/dialogs.py
+msgid "not connected"
+msgstr "nicht angeschlossen"
+
+#: lindvb/ui/dialogs.py
+msgid "Priority"
+msgstr "Priorität"
+
+#: lindvb/ui/dialogs.py
+msgid "Higher numbers are used first."
+msgstr "Höhere Zahlen werden zuerst genutzt."
+
+#: lindvb/ui/dialogs.py
+msgid "Shared antenna cable"
+msgstr "Gemeinsames Antennenkabel"
+
+#: lindvb/ui/dialogs.py
+msgid "Give tuners on one cable the same name (loop-through or a splitter on one LNB output). They then only receive one band and polarisation at a time. Empty: own cable."
+msgstr "Tuner an einem Kabel bekommen denselben Namen (durchgeschleift oder Verteiler an einem LNB-Ausgang). Sie empfangen dann gleichzeitig nur ein Band und eine Polarisation. Leer: eigenes Kabel."
+
+#: lindvb/ui/dialogs.py
+msgid "For all tuners without an LNB of their own."
+msgstr "Für alle Tuner ohne eigenes LNB."
+
 msgid "Picture errors: {n} blocks could not be corrected"
 msgstr "Bildfehler: {n} Blöcke konnten nicht korrigiert werden"
 
