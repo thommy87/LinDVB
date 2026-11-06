@@ -259,6 +259,8 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 2. Several tuners: **Preferences → Tuner and Channels → Tuners** lists every tuner found,
    with its reception types. Switch tuners on or off, set a priority, give tuners on one
    antenna cable (loop-through, splitter) the same cable name, and set an LNB per tuner.
+   For a single-cable system (Unicable I / EN 50494, Unicable II / JESS / EN 50607) set
+   the type, user band and its frequency per tuner; the channel search works on it too.
    LinDVB picks a tuner that can receive the channel, lets channels of one transponder
    share a tuner, and takes the live tuner only for a recording.
 3. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.
@@ -322,7 +324,7 @@ print or single-colour uses.
 
 ## Not yet implemented
 
-Picture in picture and mosaic for DVB channels (internet channels work), CI+ host authentication, Unicable and DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins. See
+Picture in picture and mosaic for DVB channels (internet channels work), CI+ host authentication, DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins. See
 [docs/FEATURES.md](docs/FEATURES.md).
 
 ## If LinDVB stops responding

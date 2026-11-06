@@ -3333,3 +3333,55 @@ msgstr "Schließen (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Senderanalyse…"
+
+#: lindvb/ui/dialogs.py
+msgid "Single cable (Unicable)"
+msgstr "Einkabel (Unicable)"
+
+#: lindvb/ui/dialogs.py
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+#: lindvb/ui/dialogs.py
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+#: lindvb/ui/dialogs.py
+msgid "All tuners hang on one cable and each has a user band of its own. Give them the same cable name above."
+msgstr "Alle Tuner hängen an einem Kabel, jeder hat ein eigenes Userband. Gib ihnen oben denselben Kabelnamen."
+
+#: lindvb/ui/dialogs.py
+msgid "User band"
+msgstr "Userband"
+
+#: lindvb/ui/dialogs.py
+msgid "Each tuner on the cable needs a different user band."
+msgstr "Jeder Tuner am Kabel braucht ein anderes Userband."
+
+#: lindvb/ui/dialogs.py
+msgid "User band frequency (MHz)"
+msgstr "Userband-Frequenz (MHz)"
+
+#: lindvb/ui/dialogs.py
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "Steht auf dem Etikett oder in der Anleitung des LNB oder Multischalters."
+
+#: lindvb/ui/dialogs.py
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "Nur für ein geschütztes Userband (0–255). Meist leer."
+
+#: lindvb/ui/dialogs.py
+msgid "Fill in from"
+msgstr "Ausfüllen nach"
+
+#: lindvb/ui/dialogs.py
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "Gängige Geräte: setzt den Typ und die Frequenz des Userbands oben."
+
+#: lindvb/ui/scan.py
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Diese Transponderliste enthält keine Satelliten-Transponder.\n"
+
+#: lindvb/ui/scan.py
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Der Tuner ist belegt (Aufnahme oder Kanalanalyse).\n"

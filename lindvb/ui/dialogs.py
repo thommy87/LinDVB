@@ -471,7 +471,8 @@ class PrefsWindow(Gtk.Window):
             prio = _row(g, _("Priority"), Gtk.SpinButton.new_with_range(0, 9, 1),
                         _("Higher numbers are used first."))
             prio.set_value(int(prof.get("priority", 0) or 0))
-            row = {"profile": prof, "on": on, "prio": prio, "group": None, "lnb": None}
+            row = {"profile": prof, "on": on, "prio": prio, "group": None, "lnb": None,
+                   "uc": None}
             sat = not prof.get("systems") or tp.supports(prof, "dvb-s")
             if sat:
                 row["group"] = _row(g, _("Shared antenna cable"),
@@ -486,7 +487,53 @@ class PrefsWindow(Gtk.Window):
                     sp = _row(g, label, Gtk.SpinButton.new_with_range(0, 20000000, 1))
                     sp.set_value(value)
                     row["lnb"].append(sp)
+                row["uc"] = self._single_cable_rows(g, prof)
             self._tuner_rows.append(row)
+
+    def _single_cable_rows(self, g, prof):
+        """Unicable / JESS: standard, user band, its frequency and PIN."""
+        from .. import unicable
+        uc = prof.get("unicable") or {}
+        kinds = ["", *unicable.STANDARDS]
+        std = _row(g, _("Single cable (Unicable)"), dropdown(
+            [_("Off"), _("Unicable I (EN 50494)"), _("Unicable II / JESS (EN 50607)")],
+            kinds.index(uc.get("standard")) if uc.get("standard") in kinds else 0),
+            _("All tuners hang on one cable and each has a user band of its own. "
+              "Give them the same cable name above."))
+        slot = _row(g, _("User band"), Gtk.SpinButton.new_with_range(1, 32, 1),
+                    _("Each tuner on the cable needs a different user band."))
+        slot.set_value(int(uc.get("slot", 0)) + 1)
+        freq = _row(g, _("User band frequency (MHz)"),
+                    Gtk.SpinButton.new_with_range(950, 2150, 1),
+                    _("From the label or manual of the LNB or multiswitch."))
+        freq.set_value(int(uc.get("frequency", 1210000)) // 1000)
+        pin = _row(g, _("PIN"), Gtk.Entry(text="" if uc.get("pin") is None else str(uc["pin"])),
+                   _("Only for a protected user band (0-255). Usually empty."))
+        names = list(unicable.TEMPLATES)
+        tmpl = _row(g, _("Fill in from"), dropdown([_("(choose…)"), *names], 0),
+                    _("Common devices: sets the type and the frequency of the user band "
+                      "above."))
+
+        def fill(dd, _pspec):
+            i = dd.get_selected()
+            if i <= 0:
+                return
+            kind, freqs = unicable.TEMPLATES[names[i - 1]]
+            std.set_selected(kinds.index(kind))
+            n = int(slot.get_value()) - 1
+            if n >= len(freqs):
+                slot.set_value(1)
+                n = 0
+            freq.set_value(freqs[n])
+        tmpl.connect("notify::selected", fill)
+
+        def sensitive(*_a):
+            on = std.get_selected() > 0
+            for w in (slot, freq, pin):
+                w.set_sensitive(on)
+        std.connect("notify::selected", sensitive)
+        sensitive()
+        return {"std": std, "slot": slot, "freq": freq, "pin": pin, "kinds": kinds}
 
     def _save_tuners(self, s):
         from .. import tunerprofiles as tp
@@ -502,6 +549,17 @@ class PrefsWindow(Gtk.Window):
                 lnb = tuple(int(sp.get_value()) for sp in row["lnb"])
                 if lnb != glob and all(lnb):
                     prof["lnb"] = list(lnb)
+            prof.pop("unicable", None)
+            uc = row.get("uc")
+            if uc and uc["std"].get_selected() > 0:
+                kind = uc["kinds"][uc["std"].get_selected()]
+                from .. import unicable
+                pin = uc["pin"].get_text().strip()
+                prof["unicable"] = {
+                    "standard": kind,
+                    "slot": min(int(uc["slot"].get_value()), unicable.SLOTS[kind]) - 1,
+                    "frequency": int(uc["freq"].get_value()) * 1000,
+                    "pin": int(pin) & 0xFF if pin.isdigit() else None}
             tuners.append(prof)
         s["tuners"] = tuners
         on = [p for p in tuners if p["enabled"]]

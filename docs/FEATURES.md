@@ -13,7 +13,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Scan options: NIT search, update only, FTA only, update names, group by provider/frequency/letter | **Yes** (FTA filter applies to lists that carry CA info; dvbv5 output does not) |
 | LNB types and LOFs | **Yes**: LNB type for the scan, LOF1/LOF2/switch frequency in Preferences |
 | DiSEqC switches, positioner | **Partly**: committed DiSEqC ports 1–4; no motor/positioner control |
-| Unicable (SCR) | **No**: `dvbsrc` has no SCR support; would need libdvbv5 directly |
+| Unicable (SCR) | **Yes**: Unicable I (EN 50494, 8 user bands, positions A/B) and Unicable II / JESS (EN 50607, 32 user bands, 64 positions) per tuner, with user band, frequency, optional PIN and templates of common devices; LinDVB tunes these tuners itself (frontend, demux and DVR device) and sends the command again when there is no lock; channel search on the tuner too |
 | Channel list with filters | **Yes**: TV/Radio switch (the list shows one kind; favourites mix both), All/Favourites/FTA/Encrypted/HD/Internet filters, group filter, search, channel numbers; a third "Recordings" tab lists the recordings in the recording folder (newest first, searchable, double-click plays, right-click shows the folder or deletes) |
 | Channel editor | **Yes**: edit name, group, tuning data, PIDs, reorder, sort, delete, new IPTV entry |
 | Favourites and favourite zapping | **Yes**: favourite flag, favourites filter, favourite plus/minus actions |

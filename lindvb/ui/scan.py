@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""Reception settings and channel search (runs dvbv5-scan)."""
+"""Reception settings and channel search (dvbv5-scan; single-cable tuners: lindvb.scscan)."""
 
 import tempfile
 from pathlib import Path
@@ -25,6 +25,7 @@ class ScanWindow(Gtk.Window):
                          default_width=820, default_height=620)
         self.app = app
         self.proc = None
+        self._cancel = False
         self.lists = []
 
         g = Gtk.Grid(row_spacing=6, column_spacing=8, margin_start=12, margin_end=12, margin_top=12)
@@ -61,7 +62,7 @@ class ScanWindow(Gtk.Window):
         self.start_btn = Gtk.Button(label=_("Start Search"), css_classes=["suggested-action"])
         self.start_btn.connect("clicked", lambda *_: self.on_start())
         self.stop_btn = Gtk.Button(label=_("Stop"), sensitive=False)
-        self.stop_btn.connect("clicked", lambda *_: self.proc and self.proc.force_exit())
+        self.stop_btn.connect("clicked", lambda *_: self._stop())
         self.progress = Gtk.ProgressBar(hexpand=True, valign=Gtk.Align.CENTER, show_text=True)
         for w in (self.start_btn, self.stop_btn, self.progress):
             bar.append(w)
@@ -75,6 +76,11 @@ class ScanWindow(Gtk.Window):
         box.append(sw)
         self.set_child(box)
         self._reload_lists()
+
+    def _stop(self):
+        self._cancel = True                  # single-cable search (thread)
+        if self.proc:
+            self.proc.force_exit()
 
     def _reload_lists(self, extra=()):
         dirs = list(extra) + self.app.settings.get("transponder_dirs", [])
@@ -120,6 +126,12 @@ class ScanWindow(Gtk.Window):
         if not self.root.get_text().strip():
             self.root.set_text(tpl.name)
         a, f, _unused = self.adapters[self.adapter.get_selected()]
+        profile = self._profile(a, f)
+        from .. import unicable
+        uc = unicable.config(profile)
+        if uc is not None and tpl.kind == "sat":
+            self._start_single_cable(profile, uc, tpl, a, f, diseqc)
+            return
         lnb = LNB_TYPES[self.lnb.get_selected()][1] if tpl.kind == "sat" else ""
         try:
             cmd = scan_command(a, f, str(scan_file), str(self.out_file), lnb, diseqc,
@@ -139,6 +151,71 @@ class ScanWindow(Gtk.Window):
         self.stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
         self.start_btn.set_sensitive(False)
         self.stop_btn.set_sensitive(True)
+
+    def _profile(self, adapter, frontend):
+        from .. import tunerprofiles
+        for p in tunerprofiles.configured_profiles(self.app.settings):
+            if p["adapter"] == adapter and p.get("frontend", 0) == frontend:
+                return p
+        return None
+
+    def _start_single_cable(self, profile, uc, tpl, a, f, diseqc):
+        """Unicable / JESS: LinDVB tunes each transponder itself (lindvb.scscan)."""
+        import threading
+        from .. import directtune, scscan, tunerprofiles, unicable
+        from ..festats import Frontend
+        tps = scscan.transponders(tpl)
+        if not tps:
+            self.log_line(_("This transponder list has no satellite transponders.\n"))
+            return
+        win = self.app.window
+        if win.capture and win.capture.adapter == a:
+            win.stop_playback()
+        if a in self.app.tuners.captures:
+            self.log_line(_("The tuner is busy (recording or channel analysis).\n"))
+            return
+        self.total, self.done = len(tps), 0
+        self._cancel = False
+        self.log_line(unicable.describe(uc) + "\n")
+        lnb = tunerprofiles.tuner_lnb(profile, self.app.settings)
+        root = self.root.get_text().strip()
+        self.start_btn.set_sensitive(False)
+        self.stop_btn.set_sensitive(True)
+
+        def log(text):
+            def show():
+                self.log_line(text + "\n")
+                if text.startswith("Scanning frequency"):
+                    self.done += 1
+                    self.progress.set_fraction(min(1, self.done / self.total))
+                    self.progress.set_text(f"{self.done} / {self.total}")
+                return False
+            GLib.idle_add(show)
+
+        def run():
+            tuner = directtune.DirectTuner(a, f)
+            fe = Frontend(a, f)
+            chans = []
+            try:
+                tuner.open()
+                chans = scscan.scan(tuner, fe.status, uc, lnb, tps, max(diseqc, 0), root, log,
+                                    cancelled=lambda: self._cancel)
+            except OSError as e:
+                log(f"Could not open the tuner: {e.strerror}")
+            finally:
+                fe.close()
+                tuner.close()
+            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
+
+        threading.Thread(target=run, daemon=True, name="single-cable-scan").start()
+
+    def _single_cable_done(self, chans):
+        self.start_btn.set_sensitive(True)
+        self.stop_btn.set_sensitive(False)
+        if not chans:
+            self.log_line(_("\nNo channels found.\n"))
+            return
+        self._merge(chans)
 
     def _on_line(self, stream, res):
         try:
@@ -164,7 +241,9 @@ class ScanWindow(Gtk.Window):
         except OSError:
             self.log_line(_("\nNo channels found.\n"))
             return
-        chans = parse_dvbv5(text, root=self.root.get_text().strip())
+        self._merge(parse_dvbv5(text, root=self.root.get_text().strip()))
+
+    def _merge(self, chans):
         grp = self.group_by.get_selected()
         for c in chans:
             if grp == 1:
