@@ -4,16 +4,17 @@
 
 <h1 align="center">LinDVB</h1>
 
-DVB Stream Viewer App for Gnome Desktop.
+**Digital TV and Radio App for the GNOME desktop.**
 
-LinDVB watches and records satellite, cable, terrestrial and internet TV on Linux.
-It is a GTK 4 application written in Python that uses the standard Linux DVB stack:
+LinDVB watches and records TV and radio from satellite, cable and terrestrial tuners,
+from internet streams (IPTV, HLS, DASH, multicast, DVB-I) and from files. It is a GTK 4
+application written in Python on top of the standard Linux media stack:
 
-* **Linux DVB API v5** through GStreamer's `dvbsrc` for tuning (DVB-S/S2, DVB-C,
-  DVB-T/T2, ATSC, ISDB-T, DTMB)
+* **Linux DVB API v5** for tuning (DVB-S/S2, DVB-C, DVB-T/T2, ATSC, ISDB-T, DTMB),
+  through GStreamer's `dvbsrc`, or driven directly for single-cable (Unicable / JESS) tuners
 * **libdvbv5** (`dvbv5-scan` from v4l-utils) for channel search
-* **GStreamer** `playbin` for decoding, `tsparse`/`tsdemux`, `GstMpegts` for the EPG and
-  `teletextdec` (libzvbi) for teletext
+* **GStreamer** for playback, recording and remuxing, `GstMpegts` for the programme guide
+  and `teletextdec` (libzvbi) for teletext
 
 [docs/FEATURES.md](docs/FEATURES.md) lists the features and whether LinDVB has
 them.
@@ -38,11 +39,30 @@ picture and hides itself when the mouse is still.
 
 ## Features
 
+### Watching and listening
+
 * Separate TV and radio: a TV/Radio switch (Ctrl+M) above the channel list, which
   shows one kind at a time; favourites mix both. LinDVB remembers the last channel
   of each kind and tunes the last one again at start
 * Channel list with search, favourites/FTA/encrypted/HD/internet filters and
   groups; channel number entry, last channel, channel and favourite zapping
+* Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
+  RTP/UDP multicast including source-specific `rtp://source@group:port`)
+* Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
+* Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
+  saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
+  play rate for files, playlists, sleep timer
+* Hardware video decoding on the graphics card (Preferences ▸ Playback ▸ Video
+  decoding): automatic VA-API (Intel, AMD), NVDEC (NVIDIA) or V4L2 (ARM boards)
+  with a fallback to the next decoder and finally software when a driver fails;
+  Vulkan Video or software can be chosen by hand. With VA-API, deinterlacing
+  runs on the graphics card too
+* Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
+  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-608/708) for
+  ATSC and US cable channels (Subtitles ▸ Closed Captions)
+* Teletext window with page navigation, find, copy and save, opened from the "TXT"
+  button in the header bar (greyed out when the channel carries no teletext)
+* Picture in picture and a channel mosaic (nine channels at once) for internet channels
 * Radio visualisations, drawn on the graphics card (OpenGL) at full resolution:
   glow waves, nebula particles, light ribbons (threads of light over a
   rippling water reflection), pulsar (a core bursting into spectrum-shaped
@@ -54,25 +74,29 @@ picture and hides itself when the mouse is still.
   GStreamer add-on; plugins can add their own.
   A button at the bottom right of the control bar picks the visualisation; it
   is only active while radio or audio plays
-* Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
-  RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Now playing over the radio visualisation, each part switchable in
   Preferences › Visualisation: station logo tile, album cover, artist / album and
   year / track and title, and a clock. Song details come from the RDS RadioText of
   DVB radio, the ICY stream title of internet radio and the tags of audio files;
   covers from the file or the iTunes Search API, logos from a logo folder
-* Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
+
+### Recording
+
 * Recording: instant, timer (lead/follow-up time, weekday repeat, record or tune,
   after-recording standby/hibernate/power off/quit), from the EPG, and series rules by title
-* Recordings tab: a library of the recordings with preview picture, programme title,
-  subheading, channel, date, length and description (saved beside each recording as
-  `<name>.lindvb.json`), sorting, search, and "continue watching": a recording starts
-  where you stopped it, with a bar showing how much you have seen
 * Recording formats: TS, MPG, MP4 or MKV for TV and native MP2/MP3/AAC/AC3 for radio,
   with teletext, subtitles and EPG data; audio tracks: all, preferred language only or
   the first (MP4 keeps one). Defaults in Preferences > Recording, changeable per timer
   and with "Record with Options…" for one instant recording; file naming scheme with
   placeholders (%date %time %station %name ...) and sub-folders
+* Recordings tab: a library of the recordings with preview picture, programme title,
+  subheading, channel, date, length and description (saved beside each recording as
+  `<name>.lindvb.json`), sorting, search, and "continue watching": a recording starts
+  where you stopped it, with a bar showing how much you have seen
+* Recording and device statistics (lock, signal, SNR, BER, bitrate)
+
+### Programme guide
+
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
   web search links; on-screen now/next display; XMLTV for internet channels
   with automatic and manual matching of M3U channels to guide channels;
@@ -80,43 +104,20 @@ picture and hides itself when the mouse is still.
 * Reminders: "Remind Me" in the programme guide sends a desktop notification a few
   minutes before the programme starts (with a button to switch to the channel)
 * Export the programme guide as XMLTV for other programs
-* Media keys and the GNOME media controls (MPRIS): play/pause, stop, next/previous
-  channel, with channel, programme and logo shown
-* Script hooks: your own programs in `~/.config/lindvb/hooks/` run on channel change,
-  recording start/stop and reminders (environment variables `LINDVB_CHANNEL`,
-  `LINDVB_TITLE`, `LINDVB_FILE`, ...)
-* Picture in picture and a channel mosaic (nine channels at once) for internet channels
-* Teletext window with page navigation, find, copy and save, opened from the "TXT"
-  button in the header bar (greyed out when the channel carries no teletext)
-* Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
-  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-608/708) for
-  ATSC and US cable channels (Subtitles ▸ Closed Captions)
+
+### Reception and tuners
+
+* Several tuners at once: every tuner with its reception types, on/off and priority;
+  a channel goes to a tuner that can receive it, channels of one transponder share a
+  tuner, tuners on one antenna cable (loop-through) keep to one band and
+  polarisation, and each tuner can have an LNB of its own
+* Single cable: Unicable I (EN 50494) and Unicable II / JESS (EN 50607) with a user
+  band per tuner, optional PIN and templates of common devices
+* Channel search with dvbv5-scan (DiSEqC 1.0 ports, LNB types, NIT search), and
+  LinDVB's own search on single-cable tuners
 * ATSC (USA, Canada, Mexico, South Korea): virtual channel numbers like 7.1 in the
   channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
   (channel table, EIT and extended texts, GPS time)
-* Channel search with dvbv5-scan, DiSEqC 1.0 ports, LNB types, NIT search
-* DVB-I (Preferences ▸ Internet): the channel list of your region from the German
-  service list registry, with postcode, channel numbers (LCN), logos and a daily
-  update; each channel uses your antenna/cable/satellite channel where the
-  channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
-* HbbTV 2.0.4 (red button, F5): the channels' interactive services in a transparent
-  WebKitGTK view over the picture: media libraries (MPEG-DASH with subtitles),
-  applications from the broadcast (object carousel), stream events, digital teletext,
-  youth protection with PIN, companion screens and media synchronisation
-  ([docs/HBBTV.md](docs/HBBTV.md))
-* Channel editor and favourites
-* Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
-  `*.ini` channel lists; IPTV playlists also from a web address
-  (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
-* Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
-  saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
-  play rate for files, playlists, sleep timer
-* Hardware video decoding on the graphics card (Preferences ▸ Playback ▸ Video
-  decoding): automatic VA-API (Intel, AMD), NVDEC (NVIDIA) or V4L2 (ARM boards)
-  with a fallback to the next decoder and finally software when a driver fails;
-  Vulkan Video or software can be chosen by hand. With VA-API, deinterlacing
-  runs on the graphics card too
-* Recording and device statistics (lock, signal, SNR, BER, bitrate)
 * Channel analysis (right click on a channel ▸ Channel Analysis…, or the main menu ▸ Channel
   Analysis…): a window of its own with seven pages. Overview: signal ring, level,
   C/N and the margin in dB to what the modulation needs, the bit rate of video,
@@ -136,12 +137,36 @@ picture and hides itself when the mouse is still.
   free second tuner in the background, can follow the channel on screen, compares
   two channels side by side and exports text, JSON, CSV, a picture of the window or
   30 s of the stream
-* Plugins: Python add-ons for channel-list importers, conditional-access
-  providers, radio visualisations, life-cycle hooks and menu entries
+* Channel editor and favourites
+* Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
+  `*.ini` channel lists; IPTV playlists also from a web address
+  (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
 * Conditional access for your own encrypted channels: an external softcam
   (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
   module supplies the control words from your subscription card; CAM menu for
   CI modules (smart card info, parental control, PIN prompts)
+
+### Internet and interactive TV
+
+* DVB-I (Preferences ▸ Internet): the channel list of your region from the German
+  service list registry, with postcode, channel numbers (LCN), logos and a daily
+  update; each channel uses your antenna/cable/satellite channel where the
+  channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
+* HbbTV 2.0.4 (red button, F5): the channels' interactive services in a transparent
+  WebKitGTK view over the picture: media libraries (MPEG-DASH with subtitles),
+  applications from the broadcast (object carousel), stream events, digital teletext,
+  youth protection with PIN, companion screens and media synchronisation
+  ([docs/HBBTV.md](docs/HBBTV.md))
+
+### Integration
+
+* Media keys and the GNOME media controls (MPRIS): play/pause, stop, next/previous
+  channel, with channel, programme and logo shown
+* Script hooks: your own programs in `~/.config/lindvb/hooks/` run on channel change,
+  recording start/stop and reminders (environment variables `LINDVB_CHANNEL`,
+  `LINDVB_TITLE`, `LINDVB_FILE`, ...)
+* Plugins: Python add-ons for channel-list importers, conditional-access
+  providers, radio visualisations, life-cycle hooks and menu entries
 
 ## Plugins and conditional access
 
@@ -296,7 +321,7 @@ with these keys; use `ir-keytable` to remap buttons.
 
 ## Releasing
 
-Run the **Release** workflow from the Actions tab and enter a tag such as `v0.3.0`. It
+Run the **Release** workflow from the Actions tab and enter a tag such as `v0.9.0`. It
 builds the AppImage, Flatpak, Snap, Ubuntu `.deb` and Python source package (sdist) and
 publishes them in one GitHub release. Pushes and pull requests build only the AppImage; the
 other packages are built only for releases (or by starting their workflows by hand).
@@ -324,8 +349,14 @@ print or single-colour uses.
 
 ## Not yet implemented
 
-Picture in picture and mosaic for DVB channels (internet channels work), CI+ host authentication, DiSEqC motors, HbbTV, media server/UPnP/RTSP server, OSD skins. See
-[docs/FEATURES.md](docs/FEATURES.md).
+* Picture in picture and mosaic for DVB channels (internet channels work)
+* CI+ host authentication
+* DiSEqC motors (positioners)
+* Streaming to other devices (media server, UPnP, RTSP, SAT>IP)
+* Audio passthrough (AC-3/DTS to an AV receiver)
+* OSD skins
+
+See [docs/FEATURES.md](docs/FEATURES.md).
 
 ## If LinDVB stops responding
 

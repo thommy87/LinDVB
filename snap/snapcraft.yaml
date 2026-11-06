@@ -1,10 +1,12 @@
 name: lindvb
 title: LinDVB
-summary: Watch and record DVB and internet TV
+summary: Digital TV and radio: watch and record
 description: |
-  LinDVB plays and records satellite, cable, terrestrial and internet TV using
-  the Linux DVB API and GStreamer. It has timeshift, timer and series
-  recordings, a programme guide, teletext, channel search and a channel editor.
+  LinDVB is a digital TV and radio app. It plays and records satellite, cable,
+  terrestrial and internet TV and radio using the Linux DVB API and GStreamer.
+  It has timeshift, timer and series recordings, a programme guide, teletext,
+  HbbTV, several tuners at once including Unicable/JESS, channel search and a
+  channel editor.
 
   To use a DVB tuner, connect the dvb interface:
     sudo snap connect lindvb:dvb
