@@ -475,11 +475,15 @@ class MainWindow(Gtk.ApplicationWindow):
                                     transition_type=Gtk.StackTransitionType.CROSSFADE)
         chan_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
+        # the list filter and group last used come back at the next start
         self.filter_dd = Gtk.DropDown.new_from_strings(FILTERS)
-        self.filter_dd.connect("notify::selected", lambda *_: self._refilter())
+        f = self.settings.get("list_filter", 0)
+        self.filter_dd.set_selected(f if isinstance(f, int) and 0 <= f < len(FILTERS) else 0)
+        self.filter_dd.connect("notify::selected", lambda *_: self._on_list_filter())
         self.filter_dd.set_hexpand(True)
+        self._group_sync = False     # set while reload_channels rebuilds the group list
         self.group_dd = Gtk.DropDown.new_from_strings([_("All groups")])
-        self.group_dd.connect("notify::selected", lambda *_: self._refilter())
+        self.group_dd.connect("notify::selected", lambda *_: self._on_list_group())
         self.group_dd.set_hexpand(True)
         row.append(self.filter_dd)
         row.append(self.group_dd)
@@ -792,7 +796,24 @@ class MainWindow(Gtk.ApplicationWindow):
         self.store.remove_all()
         self.store.splice(0, 0, [Row(c) for c in chans])
         self._groups = [_("All groups")] + self.app.db.roots()
+        self._group_sync = True
         self.group_dd.set_model(Gtk.StringList.new(self._groups))
+        group = self.settings.get("list_group") or ""
+        self.group_dd.set_selected(self._groups.index(group) if group in self._groups[1:] else 0)
+        self._group_sync = False
+        self._refilter()
+        if self.current is not None:
+            self._select_in_list(self.current)
+
+    def _on_list_filter(self):
+        self.settings["list_filter"] = self.filter_dd.get_selected()
+        self._refilter()
+
+    def _on_list_group(self):
+        if not self._group_sync:
+            g = self.group_dd.get_selected()
+            self.settings["list_group"] = (self._groups[g] if 0 < g < len(self._groups)
+                                           else "")
         self._refilter()
 
     def _refilter(self):

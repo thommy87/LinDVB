@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Preferences, channel editor, recording statistics and teletext windows."""
 
+import dataclasses
 import time
 from pathlib import Path
 
@@ -601,7 +602,11 @@ class PrefsWindow(Gtk.Window):
 
 
 class EditorWindow(Gtk.Window):
-    """Channel editor: rename, reorder, favourites, tuning data, delete."""
+    """Channel editor: rename, reorder, favourites, tuning data, delete.
+
+    Edits are kept as drafts per channel while moving through the list (the
+    favourite switches in the list included) and written all at once with
+    Apply; closing the window with drafts left asks what to do with them."""
 
     SECTIONS = ("general", "tuning", "pids")
 
@@ -610,12 +615,20 @@ class EditorWindow(Gtk.Window):
                          default_width=1040, default_height=640)
         self.app = app
         self.current = None
-        cols = [("#", lambda c: str(c.number), False), (_("Name"), lambda c: c.name, True),
-                (_("Group"), lambda c: c.root, False), (_("Category"), lambda c: c.category, False),
-                (_("Fav"), lambda c: "★" if c.favourite else "", False),
-                (_("Type"), lambda c: c.delsys, False)]
+        self.drafts = {}             # id(channel) -> (channel, edited copy)
+        self._filling = False        # set while the list is rebuilt
+        self._close_ok = False
+        sh = self._shown
+
+        def name(c):
+            return sh(c).name + ("  ✎" if id(c) in self.drafts else "")
+        cols = [("#", lambda c: str(c.number), False), (_("Name"), name, True),
+                (_("Group"), lambda c: sh(c).root, False),
+                (_("Category"), lambda c: sh(c).category, False),
+                (_("Type"), lambda c: sh(c).delsys, False)]
         self.view, self.store, self.sel = make_column_view(cols)
-        self.sel.connect("notify::selected-item", lambda *_: self._load(selected(self.sel)))
+        self.view.insert_column(4, self._fav_column())
+        self.sel.connect("notify::selected-item", lambda *_: self._on_select())
         self.filter = Gtk.SearchEntry(placeholder_text=_("Filter channels"))
         self.filter.connect("search-changed", lambda *_: self.refresh())
 
@@ -652,9 +665,8 @@ class EditorWindow(Gtk.Window):
         for r, (k, lbl) in enumerate([("name", _("Name")), ("root", _("Group")),
                                       ("category", _("Category")), ("url", _("Stream URL"))]):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
-        self.fav = field(g, 4, _("Favourite"), Gtk.Switch())
-        self.radio = field(g, 5, _("Radio"), Gtk.Switch())
-        self.enc = field(g, 6, _("Encrypted"), Gtk.Switch())
+        self.radio = field(g, 4, _("Radio"), Gtk.Switch())
+        self.enc = field(g, 5, _("Encrypted"), Gtk.Switch())
 
         g = section("tuning", _("Tuning"))
         self.delsys = field(g, 0, _("System"), dropdown(DELSYS))
@@ -677,7 +689,8 @@ class EditorWindow(Gtk.Window):
         # -- slim vertical strip of actions beside the details
         strip = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
                         css_classes=["lv-toolstrip"])
-        for item in (("object-select-symbolic", _("Apply changes (Ctrl+S)"), self.on_apply,
+        for item in (("object-select-symbolic",
+                      _("Apply the changes of all edited channels (Ctrl+S)"), self.on_apply,
                       "lv-primary"),
                      None,
                      ("list-add-symbolic", _("New channel"), self.on_new, None),
@@ -718,9 +731,122 @@ class EditorWindow(Gtk.Window):
                                        action=Gtk.CallbackAction.new(
                                            lambda *_: (self.on_apply(), True)[1])))
         self.add_controller(keys)
+        self.connect("close-request", self._on_close_request)
 
         self.refresh()
         self._load(channel)
+        self._select_row(channel)
+
+    # -- drafts: edits not applied yet
+    def _shown(self, c):
+        """The channel as the editor shows it: its draft if it has one."""
+        return self.drafts.get(id(c), (c, c))[1]
+
+    def _in_db(self, c):
+        return any(x is c for x in self.app.db.channels)
+
+    def _set_draft(self, c, d):
+        if dataclasses.asdict(d) == dataclasses.asdict(c):
+            changed = self.drafts.pop(id(c), None) is not None
+        else:
+            changed = True
+            self.drafts[id(c)] = (c, d)
+        self._update_title()
+        return changed
+
+    def _stash(self):
+        """Keep the form of the channel shown as its draft."""
+        c = self.current
+        if c is None or not self._in_db(c):
+            return
+        d = dataclasses.replace(self._shown(c))
+        self._save_into(d)
+        if self._set_draft(c, d):
+            self._redraw(c)
+
+    def _redraw(self, c):
+        """Bind the row of ``c`` again (draft marker, favourite switch)."""
+        for i in range(self.store.get_n_items()):
+            if self.store.get_item(i).data is c:
+                self._filling = True
+                self.store.items_changed(i, 1, 1)
+                self._filling = False
+                return
+
+    def _update_title(self):
+        n = len(self.drafts)
+        self.set_title(_("Channel Editor") if not n else
+                       _("Channel Editor – {n} channels not applied yet").format(n=n))
+
+    def _fav_column(self):
+        """Favourite switch in every row: a draft like any other edit."""
+        fac = Gtk.SignalListItemFactory()
+
+        def setup(_f, li):
+            sw = Gtk.Switch(halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
+            sw.update_property([Gtk.AccessibleProperty.LABEL], [_("Favourite")])
+            sw.chan = None
+            sw.connect("notify::active", self._on_fav_switch)
+            li.set_child(sw)
+
+        def bind(_f, li):
+            sw = li.get_child()
+            sw.chan = None                     # no draft while the switch is set up
+            sw.set_active(self._shown(li.get_item().data).favourite)
+            sw.chan = li.get_item().data
+
+        def unbind(_f, li):
+            li.get_child().chan = None
+
+        fac.connect("setup", setup)
+        fac.connect("bind", bind)
+        fac.connect("unbind", unbind)
+        return Gtk.ColumnViewColumn(title=_("Favourite"), factory=fac)
+
+    def _on_fav_switch(self, sw, _pspec):
+        c = sw.chan
+        if c is None or self._shown(c).favourite == sw.get_active():
+            return
+        if c is self.current:
+            self._stash()                      # keep what was typed in the form
+        d = dataclasses.replace(self._shown(c))
+        d.favourite = sw.get_active()
+        if self._set_draft(c, d):
+            GLib.idle_add(lambda: (self._redraw(c), False)[1])
+
+    def _on_select(self):
+        if self._filling:
+            return
+        self._stash()
+        self._load(selected(self.sel))
+
+    def _on_close_request(self, *_a):
+        if self._close_ok:
+            return False
+        self._stash()
+        if not self.drafts:
+            return False
+        n = len(self.drafts)
+        dlg = Gtk.AlertDialog(
+            message=_("Apply the changes to {n} channels?").format(n=n),
+            detail=_("The edits were not applied yet. Without applying they are lost."),
+            buttons=[_("Cancel"), _("Discard"), _("Apply")], cancel_button=0, default_button=2)
+
+        def done(d, res):
+            try:
+                choice = d.choose_finish(res)
+            except GLib.Error:
+                return
+            if choice == 0:
+                return
+            if choice == 2:
+                self.on_apply()
+            self.drafts.clear()
+            self._close_ok = True
+            self.close()
+
+        dlg.choose(self, None, done)
+        return True
 
     def _remember_sections(self):
         self.app.settings["editor_sections_open"] = [
@@ -728,8 +854,26 @@ class EditorWindow(Gtk.Window):
         self.app.settings.save()
 
     def refresh(self):
+        """Rebuild the list; the channel shown stays selected and its form kept."""
+        self._stash()
         q = self.filter.get_text().lower()
-        fill(self.store, [c for c in self.app.db.channels if q in c.name.lower()])
+        items = [c for c in self.app.db.channels if q in self._shown(c).name.lower()]
+        self._filling = True
+        fill(self.store, items)
+        self._filling = False
+        self._select_row(self.current)
+
+    def _select_row(self, c):
+        """Select the row of ``c`` without loading it again."""
+        pos = next((i for i in range(self.store.get_n_items())
+                    if c is not None and self.store.get_item(i).data is c),
+                   Gtk.INVALID_LIST_POSITION)
+        self._filling = True
+        self.sel.set_selected(pos)
+        self._filling = False
+        if pos != Gtk.INVALID_LIST_POSITION:
+            self.view.scroll_to(pos, None, Gtk.ListScrollFlags.NONE, None) \
+                if hasattr(self.view, "scroll_to") else None
 
     def _load(self, c):
         self.current = c
@@ -737,6 +881,7 @@ class EditorWindow(Gtk.Window):
             self.title.set_text(_("No channel selected"))
             self.subtitle.set_text(_("Pick a channel in the list to edit it."))
             return
+        c = self._shown(c)
         self.title.set_text(c.name or _("Unnamed channel"))
         kind = _("Radio") if c.radio else "TV"
         self.subtitle.set_text(f"#{c.number} · {kind} · {c.delsys}")
@@ -747,12 +892,18 @@ class EditorWindow(Gtk.Window):
         pols = ["", "h", "v", "l", "r"]
         self.pol.set_selected(pols.index(c.polarity) if c.polarity in pols else 0)
         self.mod.set_selected(MODS.index(c.modulation) if c.modulation in MODS else 0)
-        self.fav.set_active(c.favourite)
+        # what the form showed, so that only a real edit counts as a change
+        self._loaded = {k: w.get_text() for k, w in self.f.items()}
+        self._loaded_sel = (self.delsys.get_selected(), self.pol.get_selected(),
+                            self.mod.get_selected())
         self.enc.set_active(c.encrypted)
         self.radio.set_active(c.radio)
 
     def _save_into(self, c):
+        loaded = getattr(self, "_loaded", {})
         for k, w in self.f.items():
+            if w.get_text() == loaded.get(k):
+                continue                       # untouched: keep the value as it is
             t = w.get_text().strip()
             cur = getattr(c, k)
             if isinstance(cur, list):
@@ -764,10 +915,15 @@ class EditorWindow(Gtk.Window):
                     pass
             else:
                 setattr(c, k, t)
-        c.delsys = DELSYS[self.delsys.get_selected()]
-        c.polarity = ["", "h", "v", "l", "r"][self.pol.get_selected()]
-        c.modulation = MODS[self.mod.get_selected()]
-        c.favourite, c.encrypted, c.radio = self.fav.get_active(), self.enc.get_active(), self.radio.get_active()
+        sel = (self.delsys.get_selected(), self.pol.get_selected(), self.mod.get_selected())
+        before = getattr(self, "_loaded_sel", (None, None, None))
+        if sel[0] != before[0]:
+            c.delsys = DELSYS[sel[0]]
+        if sel[1] != before[1]:
+            c.polarity = ["", "h", "v", "l", "r"][sel[1]]
+        if sel[2] != before[2]:
+            c.modulation = MODS[sel[2]]
+        c.encrypted, c.radio = self.enc.get_active(), self.radio.get_active()
 
     def _commit(self):
         self.app.db.renumber()
@@ -776,22 +932,34 @@ class EditorWindow(Gtk.Window):
         self.app.window.reload_channels()
 
     def on_apply(self):
-        if self.current:
-            self._save_into(self.current)
-            self._commit()
-            self._load(self.current)
+        """Write the drafts of all edited channels and save the list once."""
+        self._stash()
+        for c, d in self.drafts.values():
+            if self._in_db(c):
+                for f in dataclasses.fields(Channel):
+                    setattr(c, f.name, getattr(d, f.name))
+        self.drafts.clear()
+        self._update_title()
+        self._commit()
+        self._load(self.current)
 
     def on_new(self):
+        self._stash()
         c = Channel(name=_("New channel"), delsys="iptv")
         self.app.db.channels.append(c)
+        self.current = c
         self._load(c)
         self._commit()
 
     def on_delete(self):
         c = selected(self.sel)
         if c:
+            self.drafts.pop(id(c), None)
+            self._update_title()
             self.app.db.channels.remove(c)
+            self.current = None
             self._commit()
+            self._load(selected(self.sel))
 
     def on_move(self, step):
         c = selected(self.sel)
@@ -802,8 +970,7 @@ class EditorWindow(Gtk.Window):
         j = i + step
         if 0 <= j < len(ch):
             ch[i], ch[j] = ch[j], ch[i]
-            self._commit()
-            self.sel.set_selected(j)
+            self._commit()             # the moved channel stays selected
 
     def on_sort(self):
         self.app.db.channels.sort(key=lambda c: (c.root, c.name.lower()))
