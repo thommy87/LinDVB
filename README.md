@@ -47,7 +47,7 @@ them.
 ![Teletext](docs/screenshots/dark_teletext_hbbtv.png)
 
 **Radio**
-![Radio with Album Cover](docs/screenshots/dark_Radio with Album Cover_2.png)
+![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png)
 
  **Preferences**
 ![Teletext](docs/screenshots/dark_preferences.png) |
