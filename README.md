@@ -20,7 +20,7 @@ application written in Python on top of the standard Linux media stack:
 them.
 
  **Live TV** 
-![Live TV with the on-screen programme info](docs/screenshots/dark_Tv_Sation.png)
+![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png)
 
  **Timeshift** 
 ![Timeshift](docs/screenshots/08-timeshift.png) 
@@ -47,7 +47,7 @@ them.
 ![Teletext](docs/screenshots/dark_teletext_hbbtv.png)
 
 **Radio**
-![Radio with Album Cover](docs/screenshots/dark_Tv%20Sation.png)
+![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png)
 
  **Preferences**
 ![Teletext](docs/screenshots/dark_preferences.png) |
