@@ -21,7 +21,7 @@ them.
 
 ![Live TV with the on-screen programme info](/docs/screenshots/dark_Tv_Sation.png)
 
-
+| --- | --- |
 | **Timeshift** | **File playback** |
 | ![Timeshift](docs/screenshots/08-timeshift.png) | ![File playback](docs/screenshots/02-file-playback.png) |
 | **Programme guide** | **TV guide timeline** |
