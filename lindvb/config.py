@@ -82,6 +82,10 @@ DEFAULTS = {
     "last_tv_channel": None,
     "last_radio_channel": None,
     "mode": "tv",                    # channel list shows "tv" or "radio"
+    # Channel list filter (index into the filter list, 1 = favourites) and
+    # group ("" = all groups) last chosen, shown again at the next start.
+    "list_filter": 0,
+    "list_group": "",
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,
     # goomhd, bars, vu, scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",

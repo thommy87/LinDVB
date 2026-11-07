@@ -3385,3 +3385,23 @@ msgstr "Diese Transponderliste enthält keine Satelliten-Transponder.\n"
 #: lindvb/ui/scan.py
 msgid "The tuner is busy (recording or channel analysis).\n"
 msgstr "Der Tuner ist belegt (Aufnahme oder Kanalanalyse).\n"
+
+#: lindvb/ui/dialogs.py
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "Änderungen aller bearbeiteten Sender übernehmen (Strg+S)"
+
+#: lindvb/ui/dialogs.py
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "Sendereditor – {n} Sender noch nicht übernommen"
+
+#: lindvb/ui/dialogs.py
+msgid "Apply the changes to {n} channels?"
+msgstr "Änderungen an {n} Sendern übernehmen?"
+
+#: lindvb/ui/dialogs.py
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "Die Änderungen wurden noch nicht übernommen. Ohne Übernehmen gehen sie verloren."
+
+#: lindvb/ui/dialogs.py
+msgid "Discard"
+msgstr "Verwerfen"
