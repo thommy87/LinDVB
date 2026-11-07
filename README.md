@@ -19,23 +19,19 @@ application written in Python on top of the standard Linux media stack:
 [docs/FEATURES.md](docs/FEATURES.md) lists the features and whether LinDVB has
 them.
 
-![Live TV with the on-screen programme info](docs/screenshots/01-live-tv-osd.png)
+![Live TV with the on-screen programme info](/docs/screenshots/dark_Tv_Sation.png)
 
-The player uses a minimal dark look with a blue accent: the picture fills the
-window, and one slim control bar holds previous/next, play/pause, record, the seek
-bar (file position, or the timeshift buffer with a LIVE button for TV), volume,
-audio track, subtitles and a settings menu. In full screen the bar floats over the
-picture and hides itself when the mouse is still.
 
-| Timeshift | File playback |
-|---|---|
+| **Timeshift** | **File playback** |
 | ![Timeshift](docs/screenshots/08-timeshift.png) | ![File playback](docs/screenshots/02-file-playback.png) |
 | **Programme guide** | **TV guide timeline** |
-| ![EPG now/next](docs/screenshots/03-epg-now.png) | ![TV guide](docs/screenshots/04-epg-tv-guide.png) |
+| ![EPG now/next](/docs/screenshots/dark_EPG_Now.png) | ![TV guide](/docs/screenshots/dark_EPG_all_stations.png) |
 | **Timer recordings** | **Channel search** |
-| ![Timers](docs/screenshots/05-timers.png) | ![Channel search](docs/screenshots/06-channel-search.png) |
-
-(Screenshots use invented channels and programmes and a generated test stream.)
+| ![Timers](docs/screenshots/05-timers.png) | ![Channel search](/docs/screenshots/06-channel-search.png) |
+| **HbbTV** | **Teletext** |
+| ![HbbTV](/docs/screenshots/dark_hbbtv.png) | ![Teletext](/docs/screenshots/dark_teletext_hbbtv.png) |
+| **Radio** | **Preferences** |
+| ![Radio with Album Cover](/docs/screenshots/dark_Radio with Album Cover_2.png) | ![Teletext](/docs/screenshots/dark_preferences.png) |
 
 ## Features
 
