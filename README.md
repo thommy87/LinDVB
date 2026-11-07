@@ -18,20 +18,24 @@ application written in Python on top of the standard Linux media stack:
 
 [docs/FEATURES.md](docs/FEATURES.md) lists the features and whether LinDVB has
 them.
-
+| --- | --- |
 ![Live TV with the on-screen programme info](/docs/screenshots/dark_Tv_Sation.png)
-
 | --- | --- |
 | **Timeshift** | **File playback** |
 | ![Timeshift](docs/screenshots/08-timeshift.png) | ![File playback](docs/screenshots/02-file-playback.png) |
+| --- | --- |
 | **Programme guide** | **TV guide timeline** |
 | ![EPG now/next](/docs/screenshots/dark_EPG_Now.png) | ![TV guide](/docs/screenshots/dark_EPG_all_stations.png) |
+| --- | --- |
 | **Timer recordings** | **Channel search** |
 | ![Timers](docs/screenshots/05-timers.png) | ![Channel search](/docs/screenshots/06-channel-search.png) |
+| --- | --- |
 | **HbbTV** | **Teletext** |
 | ![HbbTV](/docs/screenshots/dark_hbbtv.png) | ![Teletext](/docs/screenshots/dark_teletext_hbbtv.png) |
+| --- | --- |
 | **Radio** | **Preferences** |
 | ![Radio with Album Cover](/docs/screenshots/dark_Radio with Album Cover_2.png) | ![Teletext](/docs/screenshots/dark_preferences.png) |
+| --- | --- |
 
 ## Features
 
