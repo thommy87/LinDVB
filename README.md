@@ -20,7 +20,7 @@ application written in Python on top of the standard Linux media stack:
 them.
 
  **Live TV** 
-![Live TV with the on-screen programme info](/docs/screenshots/dark_Tv_Sation.png)
+![Live TV with the on-screen programme info](docs/screenshots/dark_Tv_Sation.png)
 
  **Timeshift** 
 ![Timeshift](docs/screenshots/08-timeshift.png) 
@@ -29,28 +29,28 @@ them.
 ![File playback](docs/screenshots/02-file-playback.png) 
 
 **Programme guide**
-![EPG now/next](/docs/screenshots/dark_EPG_Now.png)
+![EPG now/next](docs/screenshots/dark_EPG_Now.png)
 
  **TV guide timeline**
-![TV guide](/docs/screenshots/dark_EPG_all_stations.png)
+![TV guide](docs/screenshots/dark_EPG_all_stations.png)
 
 **Timer recordings**
 ![Timers](docs/screenshots/05-timers.png)
 
 **Channel search**
- ![Channel search](/docs/screenshots/06-channel-search.png)
+ ![Channel search](docs/screenshots/06-channel-search.png)
 
 **HbbTV**
-![HbbTV](/docs/screenshots/dark_hbbtv.png)
+![HbbTV](docs/screenshots/dark_hbbtv.png)
 
 **Teletext**
-![Teletext](/docs/screenshots/dark_teletext_hbbtv.png)
+![Teletext](docs/screenshots/dark_teletext_hbbtv.png)
 
 **Radio**
-![Radio with Album Cover](/docs/screenshots/dark_Radio with Album Cover_2.png)
+![Radio with Album Cover](docs/screenshots/dark_Radio with Album Cover_2.png)
 
  **Preferences**
-![Teletext](/docs/screenshots/dark_preferences.png) |
+![Teletext](docs/screenshots/dark_preferences.png) |
 
 
 ## Features
