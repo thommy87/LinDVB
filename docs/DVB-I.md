@@ -1,17 +1,56 @@
 # DVB-I
 
-LinDVB can load its channel list from DVB-I (ETSI TS 103 770), following the
-German profile "DTVP DVB-I Implementierungsprofil V1.1.0" (2026). Open it with
+LinDVB can load its channel list from DVB-I (ETSI TS 103 770). Open it with
 **Preferences ▸ Internet**, section DVB-I. Its settings apply at once,
 without the Save button.
+
+## Country
+
+DVB-I is the same everywhere, but each country adds a profile on top. The
+**Country** at the top of the DVB-I settings decides which registry is asked,
+which privacy notice and consents are shown and how your region is found
+(`lindvb/dvbi_countries.py`). Each country keeps its own settings (list,
+postcode, region, consents); switching back brings them back. The country is
+also what HbbTV applications are told (`configuration.countryId`), and the
+youth protection steps in Preferences ▸ HbbTV follow it.
+
+| | Germany | Italy | New Zealand |
+|---|---|---|---|
+| Profile | DTVP DVB-I Implementierungsprofil V1.1.0 | HD Forum Italia UHD Book 2.2 (A177r7, HbbTV 2.0.5) | Freeview NextGen (HbbTV 2.0.4 Annex O) |
+| Registry (`TargetCountry`) | `deu.csr.dvbservices.org`, `csr.dvb-i-slr.de` (DEU) | `ita.csr.dvbservices.org`, `csr.dvbservices.org` (ITA) | `nzl.csr.dvbservices.org`, `csr.dvbservices.org` (NZL) |
+| Region | postcode (5 digits) or nationwide list | regione from a list (19 regions and the autonomous provinces of Trento and Bolzano, as for local LCNs), CAP optional; the CAP suggests the regione | Freeview region (Auckland, Waikato, Central, Wellington, Christchurch, Dunedin), postcode (4 digits) optional |
+| Consents | privacy notice | privacy information (art. 13 GDPR, required); audience measurement and personalised advertising (optional, not ticked in advance, withdrawable, stored with the time) | privacy notice (required); anonymous viewing information (optional) |
+| Names and guide | German first | Italian first | English, then Māori |
+| Antenna/satellite before internet | off (list priority, IT-10) | on (UHD Book: best receivable variant on an LCN conflict) | on (merged line-up without duplicates) |
+| Youth protection steps | 6, 12, 16 | 6, 14 (Italian 6+/14+/18+) | 13, 16 |
+
+The optional consents switch real settings: without the audience measurement
+consent, HbbTV applications see Do Not Track (`navigator.doNotTrack = "1"`,
+`hbbtv_do_not_track`); personalised advertising is the third-party cookie
+setting of Preferences ▸ HbbTV. A consent never given counts as refused.
+
+The fixed region (regione, Freeview region) is matched to the regions of the
+service list by id (ISTAT region code, ISO 3166-2, Freeview bouquet id) or by
+name; with a postcode as well, it narrows the postcode's regions.
+
+The Italian and New Zealand registry addresses follow the pattern of the
+German one and are not confirmed yet; they can be changed under **Registry
+address** in the settings (Enter keeps the change, empty brings back the
+country's defaults).
+
+Other countries with DVB-I trials (France, Ireland, Spain, Australia) have no
+published receiver profile yet.
+
+The rest of this page describes the German profile; requirement numbers
+(IT-n) refer to it.
 
 ## What happens
 
 1. LinDVB shows the privacy notice. Nothing is loaded before you confirm it.
 2. It asks the service list registry for Germany (`TargetCountry=DEU`). The
    DVB subdomain `deu.csr.dvbservices.org` is tried first, then
-   `csr.dvb-i-slr.de`. The registries can be changed in `settings.json`
-   (`dvbi_registries`).
+   `csr.dvb-i-slr.de`. The registries can be changed under **Registry
+   address** (`dvbi_registries`).
 3. You pick a service list. The regulator's default list comes first and is
    selected; lists flagged by the regulator are marked "official"; the other
    lists keep the registry's order.

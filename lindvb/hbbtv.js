@@ -170,6 +170,14 @@
 
   /* ---------------------------------------------------------------- configuration */
   var cfg = init.config || {};
+  if (cfg.doNotTrack) {
+    // no consent to audience measurement (Italy, New Zealand): tell the
+    // application's scripts, as a browser with Do Not Track on would
+    try {
+      Object.defineProperty(Navigator.prototype, "doNotTrack", { get: function () { return "1"; }, configurable: true });
+      Object.defineProperty(Navigator.prototype, "globalPrivacyControl", { get: function () { return true; }, configurable: true });
+    } catch (e) { /* read-only in this engine */ }
+  }
   var configuration = {
     preferredAudioLanguage: cfg.audioLanguage || "deu",
     preferredSubtitleLanguage: cfg.subtitleLanguage || "deu",

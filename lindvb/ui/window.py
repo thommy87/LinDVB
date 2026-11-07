@@ -1388,7 +1388,8 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.stopped is not None:
             return False
         alts = dvbi.alternatives(c, self.app.db.channels,
-                                 sat_direct=self.settings.get("dvbi_sat_direct", True))
+                                 sat_direct=self.settings.get("dvbi_sat_direct", True),
+                                 prefer_broadcast=self.settings.get("dvbi_prefer_broadcast", False))
         for alt in alts:
             sig = _tuning_sig(alt)
             if sig in self._tried:

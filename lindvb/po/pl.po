@@ -705,9 +705,6 @@ msgstr "{v0} list usług z {netloc}"
 msgid "The registry offers no service list for Germany."
 msgstr "Rejestr nie oferuje listy usług dla Niemiec."
 
-msgid "Please enter a postcode with five digits"
-msgstr "Wpisz pięciocyfrowy kod pocztowy"
-
 msgid "Loading the service list…"
 msgstr "Wczytywanie listy usług…"
 

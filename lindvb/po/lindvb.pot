@@ -2733,10 +2733,6 @@ msgstr ""
 msgid "The registry offers no service list for Germany."
 msgstr ""
 
-#: lindvb/ui/dvbi.py:238
-msgid "Please enter a postcode with five digits"
-msgstr ""
-
 #: lindvb/ui/dvbi.py:264
 msgid "Loading the service list…"
 msgstr ""
@@ -4469,4 +4465,147 @@ msgstr ""
 #: lindvb/ui/xmltvmatch.py:142
 #, python-brace-format
 msgid "No suggestion for {name}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Germany"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Italy"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "New Zealand"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "CAP"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Regione"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Freeview region"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Country"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Options"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Registry address"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Region in the list"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Your region selects the regional channels and their numbering."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "Settings follow: {profile}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Optional consents can be given or withdrawn here at any time; DVB-I works without them."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Choose…"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "e.g. {example}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "The registry offers no service list for {country}."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "Please enter a postcode with {n} digits"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+#, python-brace-format
+msgid "Last change: {date}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Privacy information (art. 13 GDPR). To show the DVB-I channels LinDVB contacts the Italian service list registry, the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. They see your IP address and the time of the request. Your region and, only if you enter it, your CAP are used to pick the regional channels and their numbering; the CAP goes to the service list server only. LinDVB keeps the list, the logos and your choices only on this computer and sends nothing else. The broadcasters process the data of their streams and interactive services as data controllers under their own privacy policies. Each optional consent below can be withdrawn here at any time; without them DVB-I works all the same."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "I have read the privacy information"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Audience measurement"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Personalised advertising"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Broadcasters' interactive services may measure which programmes are watched (audience research). Off: LinDVB asks the services not to track you (Do Not Track)."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Interactive services may use third-party cookies to show advertising based on your viewing."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The region selects the local channels (LCN 10-19 and 71-99 of your region) the way the terrestrial channel search does."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Freeview NextGen loads the channel list from the internet. LinDVB contacts the Freeview service list registry, the server of the service list, the servers that host the channel logos and, when the programme guide is switched on, the guide servers. They see your IP address and the time of the request. Your Freeview region and, only if you enter it, your postcode select the regional channels; the postcode goes to the service list server only. LinDVB keeps the list and logos on this computer and sends nothing else. Channels and the Freeview application are provided under the privacy policies of Freeview and the broadcasters (Privacy Act 2020)."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Share anonymous viewing information"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The Freeview application and the broadcasters may count which channels are watched to improve the service. Off: LinDVB asks them not to track you."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
 msgstr ""

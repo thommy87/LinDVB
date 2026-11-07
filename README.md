@@ -164,9 +164,10 @@ them.
 
 ### Internet and interactive TV
 
-* DVB-I (Preferences ▸ Internet): the channel list of your region from the German
-  service list registry, with postcode, channel numbers (LCN), logos and a daily
-  update; each channel uses your antenna/cable/satellite channel where the
+* DVB-I (Preferences ▸ Internet): the channel list of your region with the
+  settings of your country (Germany: DTVP profile with postcode; Italy: UHD Book
+  2.2 with regione, CAP and GDPR consents; New Zealand: Freeview NextGen), with
+  channel numbers (LCN), logos and a daily update; each channel uses your antenna/cable/satellite channel where the
   channel search found it and the internet stream otherwise ([docs/DVB-I.md](docs/DVB-I.md))
 * HbbTV 2.0.4 (red button, F5): the channels' interactive services in a transparent
   WebKitGTK view over the picture: media libraries (MPEG-DASH with subtitles),

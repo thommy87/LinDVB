@@ -41,6 +41,7 @@ DEFAULTS = {
     # start a channel's AUTOSTART application by itself (else only with the red button)
     "hbbtv_autostart": False,
     "hbbtv_third_party_cookies": False,
+    "hbbtv_do_not_track": False,        # send DNT: 1 (no audience measurement consent)
     "hbbtv_country": "DEU",             # configuration.countryId (ISO 3166 alpha-3)
     # what applications are told about the viewer (configuration object, and
     # the first audio / subtitle choice in their DASH videos)
@@ -166,6 +167,12 @@ DEFAULTS = {
     # Channel editor sections that are unfolded.
     "editor_sections_open": ["general"],
     # DVB-I (Preferences ▸ Internet, see lindvb.dvbi) --------------------------
+    # Country whose DVB-I profile is used (lindvb.dvbi_countries: "DEU",
+    # "ITA", "NZL"). The dvbi_* keys below up to dvbi_prefer_broadcast belong
+    # to that country; the settings of the other countries are kept in
+    # dvbi_country_state and come back when switching to them again.
+    "dvbi_country": "DEU",
+    "dvbi_country_state": {},
     # Service list registries, asked in this order; the chosen service list,
     # the postcode for the region, the region chosen when several match, and
     # the state of the daily update check.
@@ -178,6 +185,13 @@ DEFAULTS = {
     "dvbi_last_modified": "",
     "dvbi_etag": "",
     "dvbi_privacy_ack": False,
+    # Region from the country's fixed list (Italian regione, Freeview region;
+    # lindvb.dvbi_countries.Area.id), the optional consents given with their
+    # time ({key: {"given", "time"}}) and whether antenna, cable and satellite
+    # come before internet streams (on in Italy and New Zealand).
+    "dvbi_area": "",
+    "dvbi_consents": {},
+    "dvbi_prefer_broadcast": False,
     # Load the programme guide of DVB-I channels from the list's content
     # guide servers (now/next and 7 days ahead, refreshed every 6 hours).
     "dvbi_guide": True,
