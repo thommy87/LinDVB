@@ -263,11 +263,7 @@ class PrefsWindow(Gtk.Window):
                   "playlists. These settings apply at once."))
         pg.append(Gtk.Label(label="DVB-I", xalign=0, css_classes=["lv-section-title"],
                             margin_top=4))
-        def sync(key, value):
-            # a consent switched a setting that has a switch here too
-            if key in self.w and isinstance(self.w[key][0], Gtk.Switch):
-                self.w[key][0].set_active(bool(value))
-        self._dvbi = DVBIPanel(app, sync)
+        self._dvbi = DVBIPanel(app)
         pg.append(self._dvbi)
         pg.append(Gtk.Label(label="IPTV", xalign=0, css_classes=["lv-section-title"],
                             margin_top=4))

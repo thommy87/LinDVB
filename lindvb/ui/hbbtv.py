@@ -641,7 +641,6 @@ class HbbTV:
             "components": self._components(),
             "config": {"audioLanguage": lang, "subtitleLanguage": lang, "uiLanguage": lang,
                        "country": self.settings.get("hbbtv_country", "DEU"),
-                       "doNotTrack": bool(self.settings.get("hbbtv_do_not_track", False)),
                        "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
                        "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
                        "ageLimit": self.age_limit, "hasPin": self.pin.has_pin},

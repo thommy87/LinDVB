@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""DVB-I settings: the country, its privacy notice and consents, the service
+"""DVB-I settings: the country, its privacy notice where the profile asks for one, the service
 list from the registry, postcode and region (see lindvb.dvbi and
 lindvb.dvbi_countries)."""
 
@@ -34,16 +34,13 @@ def _clear(box):
 
 class DVBIPanel(Gtk.Box):
     """The DVB-I section of Preferences › Internet. Its settings apply at once,
-    the Save button of the preferences is not needed for them. *sync(key,
-    value)* tells the preferences window about a setting a consent changed,
-    so its own switch shows the same."""
+    the Save button of the preferences is not needed for them."""
 
-    def __init__(self, app, sync=None):
+    def __init__(self, app):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=10,
                          css_classes=["lv-group"])
         self.app = app
         self.s = app.settings
-        self.sync = sync or (lambda key, value: None)
         self.country = countries.get(self.s.get("dvbi_country"))
         self.offers = []
         self.region_ids = []
@@ -98,6 +95,17 @@ class DVBIPanel(Gtk.Box):
         self.prefer.connect("toggled", lambda b: self._set("dvbi_prefer_broadcast",
                                                           b.get_active()))
         box.append(self.prefer)
+        # UHD Book 7.5 / 7.5.1.5: the viewer may switch the automatic update
+        # off, with a warning
+        self.auto = _check(label=_("Update the channel list automatically (daily)"),
+                           active=bool(self.s.get("dvbi_auto_update", True)))
+        self.auto.connect("toggled", lambda b: self._auto_toggled(b.get_active()))
+        box.append(self.auto)
+        self.auto_warn = self.hint(box, _("Warning! With this switched off, LinDVB can no "
+                                          "longer keep your channel list up to date with the "
+                                          "channels on air."))
+        self.auto_warn.set_margin_start(28)
+        self.auto_warn.set_visible(not self.auto.get_active())
 
         # IT-7/IT-8: lists from the national registry, default list first
         self.title(box, _("Service list"))
@@ -132,6 +140,13 @@ class DVBIPanel(Gtk.Box):
         self.region_dd = Gtk.DropDown.new_from_strings([])
         grid.attach(self.region_lbl, 0, 0, 1, 1)
         grid.attach(self.region_dd, 1, 0, 2, 1)
+        # subscription packages of the list (UHD Book 7.5.1.2, IP2)
+        self.package_lbl = Gtk.Label(label=_("Package"), xalign=0)
+        self.package_dd = Gtk.DropDown.new_from_strings([])
+        self.package_dd.connect("notify::selected", lambda *_: self._package_changed())
+        self.package_names = []
+        grid.attach(self.package_lbl, 0, 1, 1, 1)
+        grid.attach(self.package_dd, 1, 1, 2, 1)
         box.append(grid)
         self.notes_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         box.append(self.notes_box)
@@ -170,9 +185,12 @@ class DVBIPanel(Gtk.Box):
         c, s = self.country, self.s
         self.profile_lbl.set_text(_("Settings follow: {profile}").format(profile=c.profile))
 
+        # only what the country's profile asks for (Germany: IT-17)
         _clear(self.privacy_box)
-        self.title(self.privacy_box, _("Privacy"))
-        self.privacy_box.append(Gtk.Label(label=_(c.privacy_notice), xalign=0, wrap=True))
+        self.privacy_box.set_visible(bool(c.privacy_notice or c.consents))
+        if c.privacy_notice:
+            self.title(self.privacy_box, _("Privacy"))
+            self.privacy_box.append(Gtk.Label(label=_(c.privacy_notice), xalign=0, wrap=True))
         self.consent_checks = {}
         for consent in c.consents:
             chk = _check(label=_(consent.title),
@@ -184,15 +202,6 @@ class DVBIPanel(Gtk.Box):
                 lbl.set_margin_start(28)
             self.consent_checks[consent.key] = chk
         self.ack = self.consent_checks.get("privacy")
-        optional = [k for k in self.consent_checks if k != "privacy"]
-        if optional:
-            when = [s.get("dvbi_consents", {}).get(k, {}).get("time") for k in optional]
-            when = max((t for t in when if t), default=0)
-            self.hint(self.privacy_box,
-                      _("Optional consents can be given or withdrawn here at any time; DVB-I "
-                        "works without them.") +
-                      ("" if not when else " " + _("Last change: {date}").format(
-                          date=time.strftime("%x %X", time.localtime(when)))))
 
         _clear(self.region_box)
         grid = Gtk.Grid(column_spacing=12, row_spacing=8)
@@ -242,7 +251,32 @@ class DVBIPanel(Gtk.Box):
         self.current_lbl.set_text(_("In use: {current}").format(current=current) if current
                                   else _("No DVB-I list is in use yet."))
         self._show_regions([])
+        self._show_packages([])
         self._sensitive()
+
+    def _show_packages(self, names):
+        self.package_names = []
+        self.package_dd.set_model(Gtk.StringList.new([_("Free channels only")] + list(names)))
+        cur = self.s.get("dvbi_package", "")
+        self.package_dd.set_selected(list(names).index(cur) + 1 if cur in names else 0)
+        self.package_names = list(names)
+        self.package_lbl.set_visible(bool(names))
+        self.package_dd.set_visible(bool(names))
+
+    def _package_changed(self):
+        if not self.package_names and self.package_dd.get_selected() == 0:
+            return                       # the model is being filled
+        i = self.package_dd.get_selected()
+        new = self.package_names[i - 1] if 0 < i <= len(self.package_names) else ""
+        if new != self.s.get("dvbi_package", ""):
+            self.s["dvbi_package"] = new
+            self.s.save()
+            self.status.set_text(_("Press Install again to use the channel numbers of this "
+                                   "package."))
+
+    def _auto_toggled(self, on):
+        self._set("dvbi_auto_update", on)
+        self.auto_warn.set_visible(not on)
 
     # ------------------------------------------------------------------ country
     def _country_changed(self):
@@ -253,22 +287,16 @@ class DVBIPanel(Gtk.Box):
         self.country = countries.switch_country(self.s, code)
         dvbi.use_country(code)
         self.s.save()
-        for c in self.country.consents:
-            if c.setting:
-                self.sync(c.setting, self.s.get(c.setting))
         self._build_country()
         self.status.set_text(
             _("The DVB-I channels of the previous country stay until you install a list for "
               "{country} or remove them.").format(country=_(self.country.name)) if had else "")
-        if self.ack is not None and self.ack.get_active():
+        if self._ack_ok():
             self._load_registry()
 
     def _consent_toggled(self, key, btn):
         countries.set_consent(self.s, self.country, key, btn.get_active(), time.time())
         self.s.save()
-        for c in self.country.consents:
-            if c.key == key and c.setting:
-                self.sync(c.setting, self.s.get(c.setting))
         self._sensitive()
 
     def _area_changed(self):
@@ -296,7 +324,7 @@ class DVBIPanel(Gtk.Box):
         self.s["dvbi_registries"] = urls or list(self.country.registries)
         self.s.save()
         self.registry_entry.set_text(" ".join(self.s["dvbi_registries"]))
-        if self.ack is not None and self.ack.get_active():
+        if self._ack_ok():
             self._load_registry()
 
     def start(self):
@@ -304,7 +332,7 @@ class DVBIPanel(Gtk.Box):
         not each time the preferences open."""
         if not self._started:
             self._started = True
-            if self.ack is not None and self.ack.get_active():
+            if self._ack_ok():
                 self._load_registry()
 
     # ------------------------------------------------------------------ state
@@ -323,8 +351,12 @@ class DVBIPanel(Gtk.Box):
             return self.area_dd.get_selected() > 0
         return self.nationwide.get_active()
 
+    def _ack_ok(self):
+        """The confirmation the profile asks for is given (or none is asked)."""
+        return self.ack is None or self.ack.get_active()
+
     def _sensitive(self):
-        ok = self.ack is None or self.ack.get_active()
+        ok = self._ack_ok()
         self.load_btn.set_sensitive(ok)
         self.postcode.set_sensitive(ok and not self.nationwide.get_active())
         if self.area_dd is not None:
@@ -379,7 +411,7 @@ class DVBIPanel(Gtk.Box):
         self._busy(False)
         if code != self.country.code:          # the country changed meanwhile
             return False
-        self.load_btn.set_sensitive(self.ack is None or self.ack.get_active())
+        self.load_btn.set_sensitive(self._ack_ok())
         if error:
             self.status.set_text(_("The registry could not be reached: {error}").format(error=error))
             return False
@@ -470,6 +502,7 @@ class DVBIPanel(Gtk.Box):
             if cands:
                 self.status.set_text(msg + _("\nChoose your region and press Install again."))
             self._show_regions(cands, res.region)
+            self._show_packages(res.packages)
 
     def _ask_after_error(self, code):
         """IT-5: tell the user and offer to try again or the nationwide list."""

@@ -8,35 +8,36 @@ without the Save button.
 
 DVB-I is the same everywhere, but each country adds a profile on top. The
 **Country** at the top of the DVB-I settings decides which registry is asked,
-which privacy notice and consents are shown and how your region is found
+whether a privacy notice is shown and how your region is found
 (`lindvb/dvbi_countries.py`). Each country keeps its own settings (list,
-postcode, region, consents); switching back brings them back. The country is
+postcode, region, package); switching back brings them back. The country is
 also what HbbTV applications are told (`configuration.countryId`), and the
 youth protection steps in Preferences ▸ HbbTV follow it.
 
 | | Germany | Italy | New Zealand |
 |---|---|---|---|
 | Profile | DTVP DVB-I Implementierungsprofil V1.1.0 | HD Forum Italia UHD Book 2.2 (A177r7, HbbTV 2.0.5) | Freeview NextGen (HbbTV 2.0.4 Annex O) |
-| Registry (`TargetCountry`) | `deu.csr.dvbservices.org`, `csr.dvb-i-slr.de` (DEU) | `ita.csr.dvbservices.org`, `csr.dvbservices.org` (ITA) | `nzl.csr.dvbservices.org`, `csr.dvbservices.org` (NZL) |
-| Region | postcode (5 digits) or nationwide list | regione from a list (19 regions and the autonomous provinces of Trento and Bolzano, as for local LCNs), CAP optional; the CAP suggests the regione | Freeview region (Auckland, Waikato, Central, Wellington, Christchurch, Dunedin), postcode (4 digits) optional |
-| Consents | privacy notice | privacy information (art. 13 GDPR, required); audience measurement and personalised advertising (optional, not ticked in advance, withdrawable, stored with the time) | privacy notice (required); anonymous viewing information (optional) |
+| Registry (`TargetCountry`) | `deu.csr.dvbservices.org`, `csr.dvb-i-slr.de` (DEU) | `ita.csr.dvbservices.org`, `csr.dvbservices.org` (ITA, with the RF delivery, 7.5.1.1) | `nzl.csr.dvbservices.org`, `csr.dvbservices.org` (NZL) |
+| Privacy notice | yes (IT-17) | none (the UHD Book asks for none) | none (none specified) |
+| Region | postcode (5 digits) or nationwide list | TargetRegion chosen by the viewer (7.5.1.2): regione from a list (19 regions and the autonomous provinces of Trento and Bolzano), CAP optional and suggests the regione | Freeview region (Auckland, Waikato, Central, Wellington, Christchurch, Dunedin), postcode (4 digits) optional |
+| Subscription package | when the list has packages | when the list has packages (7.5.1.2) | when the list has packages |
+| Services without LCN | after the highest LCN | Main Overflow 850–999, then downwards from 849 (7.5.1.2) | after the highest LCN |
+| Instance order | list priority (IT-10) | list priority (7.3, TS 103 770 5.2.13) | broadcast first (merged line-up) |
 | Names and guide | German first | Italian first | English, then Māori |
-| Antenna/satellite before internet | off (list priority, IT-10) | on (UHD Book: best receivable variant on an LCN conflict) | on (merged line-up without duplicates) |
-| Youth protection steps | 6, 12, 16 | 6, 14 (Italian 6+/14+/18+) | 13, 16 |
+| Youth protection steps | 6, 12, 16 | PIN from 14 and from 18 (9.2.3) | 13, 16 |
 
-The optional consents switch real settings: without the audience measurement
-consent, HbbTV applications see Do Not Track (`navigator.doNotTrack = "1"`,
-`hbbtv_do_not_track`); personalised advertising is the third-party cookie
-setting of Preferences ▸ HbbTV. A consent never given counts as refused.
+**Update the channel list automatically** can be switched off (UHD Book 7.5,
+7.5.1.5); LinDVB then shows the warning the UHD Book gives and only
+**Update Now** loads the list.
 
 The fixed region (regione, Freeview region) is matched to the regions of the
 service list by id (ISTAT region code, ISO 3166-2, Freeview bouquet id) or by
 name; with a postcode as well, it narrows the postcode's regions.
 
-The Italian and New Zealand registry addresses follow the pattern of the
-German one and are not confirmed yet; they can be changed under **Registry
-address** in the settings (Enter keeps the change, empty brings back the
-country's defaults).
+The UHD Book gives no registry address ("https://CSR-URL/query"). The Italian
+and New Zealand addresses follow the pattern of the German one and are not
+confirmed; they can be changed under **Registry address** in the settings
+(Enter keeps the change, empty brings back the country's defaults).
 
 Other countries with DVB-I trials (France, Ireland, Spain, Australia) have no
 published receiver profile yet.

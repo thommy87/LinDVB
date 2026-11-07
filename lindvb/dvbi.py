@@ -354,6 +354,7 @@ class LCNTable:
     regions: list = field(default_factory=list)
     entries: list = field(default_factory=list)
     ranges: list = field(default_factory=list)       # (start, end, fill_gaps)
+    packages: list = field(default_factory=list)     # SubscriptionPackage names
 
 
 @dataclass
@@ -364,6 +365,7 @@ class ServiceList:
     services: list = field(default_factory=list)
     regions: list = field(default_factory=list)      # all regions, depth first
     lcn_tables: list = field(default_factory=list)
+    packages: list = field(default_factory=list)     # subscription packages, list order
     content_guides: dict = field(default_factory=dict)   # CGSID -> {schedule, program, ...}
     default_guide: dict = field(default_factory=dict)    # the list's own ContentGuideSource
 
@@ -550,7 +552,8 @@ def parse_service_list(data):
         sl.regions = _regions(rl)
     lcnl = _kid(root, "LCNTableList")
     for t in _kids(lcnl, "LCNTable"):
-        tab = LCNTable(regions=[_text(r) for r in _kids(t, "TargetRegion") if _text(r)])
+        tab = LCNTable(regions=[_text(r) for r in _kids(t, "TargetRegion") if _text(r)],
+                       packages=[_text(p) for p in _kids(t, "SubscriptionPackage") if _text(p)])
         for e in _kids(t, "LCN"):
             num = _int(e.get("channelNumber"))
             if num is None or not e.get("serviceRef"):
@@ -564,6 +567,12 @@ def parse_service_list(data):
                 tab.ranges.append((start, _int(r.get("end"), start + 9999),
                                    r.get("fillMethod") == "fillGaps"))
         sl.lcn_tables.append(tab)
+    # subscription packages: the list's own SubscriptionPackageList, then any
+    # an LCN table names (TS 103 770 5.3.6; UHD Book 7.5.1.2)
+    spl = _kid(root, "SubscriptionPackageList")
+    names = [_text(p) for p in _kids(spl, "SubscriptionPackage") if _text(p)]
+    names += [p for t in sl.lcn_tables for p in t.packages]
+    sl.packages = list(dict.fromkeys(names))
     default_cg = _kid(root, "ContentGuideSource")
     if default_cg is not None:
         sl.default_guide = _guide(default_cg)
@@ -646,16 +655,21 @@ def selectable_regions(sl):
 
 # ---------------------------------------------------------------- line-up
 
-def lcn_table_for(sl, region_id):
-    """LCN table for the region: the nearest one by region hierarchy, else the
-    table without a target region, else the first table."""
+def lcn_table_for(sl, region_id, package=""):
+    """LCN table for the region and subscription package the viewer chose
+    (UHD Book 7.5.1.2, IP2): the nearest one by region hierarchy, else the
+    table without a target region, else the first table. Tables of the chosen
+    package come first; without a choice, tables without a package."""
     if not sl.lcn_tables:
         return None
+    tables = [t for t in sl.lcn_tables if (package in t.packages if package else
+                                           not t.packages)] or \
+        [t for t in sl.lcn_tables if not t.packages] or sl.lcn_tables
     for rid in sl.ancestors(region_id) if region_id else []:
-        for t in sl.lcn_tables:
+        for t in tables:
             if rid in t.regions:
                 return t
-    return next((t for t in sl.lcn_tables if not t.regions), sl.lcn_tables[0])
+    return next((t for t in tables if not t.regions), tables[0])
 
 
 @dataclass
@@ -666,14 +680,16 @@ class LineupEntry:
     visible: bool = True
 
 
-def lineup(sl, region_id=None):
+def lineup(sl, region_id=None, package="", overflow=None):
     """Services of the region in LCN order (IT-5, IT-9). Services the LCN table
     does not number get numbers from its LCN ranges, else after the highest
-    LCN. Service prominence is not used for the order."""
+    LCN, or with *overflow* (first, last) in that range and then downwards
+    from first - 1 (Italy: the Main Overflow 850-999, UHD Book 7.5.1.2).
+    Service prominence is not used for the order."""
     area = set(sl.ancestors(region_id)) if region_id else set()
     services = [s for s in sl.services
                 if not s.target_regions or not region_id or area & set(s.target_regions)]
-    table = lcn_table_for(sl, region_id)
+    table = lcn_table_for(sl, region_id, package)
     by_ref = {}
     if table:
         for e in table.entries:
@@ -694,6 +710,10 @@ def lineup(sl, region_id=None):
             for n in range(first, end + 1):
                 if n not in used:
                     yield n
+        if overflow:
+            first, last = overflow
+            yield from (n for n in range(first, last + 1) if n not in used)
+            yield from (n for n in range(first - 1, 0, -1) if n not in used)
         n = max(used, default=0) + 1
         while True:
             if n not in used:
@@ -951,7 +971,7 @@ class BuildResult:
 
 
 def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
-                   prefer_broadcast=False):
+                   prefer_broadcast=False, package="", overflow=None):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
     channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
     satellite instances may be tuned from their delivery parameters;
@@ -959,7 +979,7 @@ def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
-    for entry in lineup(sl, region_id):
+    for entry in lineup(sl, region_id, package, overflow):
         svc = entry.service
         ch, inst = resolve(svc, scanned, sat_direct, prefer_broadcast)
         if ch is None:
@@ -1108,8 +1128,10 @@ def download_logos(channels, folder, fetcher=fetch, max_age=7 * 24 * 3600):
 
 
 def update_due(settings, now=None):
+    """The daily check is due (IT-18). The viewer can switch the automatic
+    update off (UHD Book 7.5: dvbi_auto_update)."""
     now = time.time() if now is None else now
-    return bool(settings.get("dvbi_list_url")) and \
+    return bool(settings.get("dvbi_list_url")) and settings.get("dvbi_auto_update", True) and \
         now - float(settings.get("dvbi_last_check") or 0) >= UPDATE_INTERVAL
 
 
@@ -1126,6 +1148,7 @@ class UpdateResult:
     service_list: ServiceList = None
     region: str = ""
     regions: list = field(default_factory=list)   # candidates when ambiguous
+    packages: list = field(default_factory=list)  # subscription packages of the list
     last_modified: str = ""
     etag: str = ""
     error: str = ""
@@ -1216,7 +1239,11 @@ class Updater:
         res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name,
                                    sat_direct=s.get("dvbi_sat_direct", True),
                                    prefer_broadcast=s.get("dvbi_prefer_broadcast",
-                                                          country.prefer_broadcast))
+                                                          country.prefer_broadcast),
+                                   package=s.get("dvbi_package", "") if s.get("dvbi_package", "")
+                                   in sl.packages else "",
+                                   overflow=country.overflow)
+        res.packages = list(sl.packages)
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)
         res.changed = True

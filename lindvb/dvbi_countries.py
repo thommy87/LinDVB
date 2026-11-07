@@ -8,15 +8,20 @@ before it goes online, the preferred languages and the youth protection steps.
 
 * Germany follows the DTVP "DVB-I Implementierungsprofil" (postcode, privacy
   notice, IT-n requirements, see lindvb.dvbi).
-* Italy follows HD Forum Italia's UHD Book 2.2 (section 7.3 Linear IP
-  services, 7.4.1.3 DVB-I service discovery, 7.5.1.1 access to the DVB-I SLR)
-  with the Italian DTT conventions: the region (regione, with the autonomous
-  provinces of Trento and Bolzano on their own, as for local LCNs), an
-  optional CAP, and separate, revocable consents in line with the GDPR and
-  the Garante's guidance (nothing ticked in advance).
+* Italy follows HD Forum Italia's UHD Book 2.2: the Italian SLR is queried
+  with TargetCountry=ITA and the RF delivery (7.5.1.1), the LCN table of the
+  region (TargetRegion) and subscription package the viewer chose is used
+  (7.5.1.2), services without an LCN go to the Main Overflow 850-999, the
+  instances follow the list's precedence (7.3, TS 103 770 5.2.13), the
+  automatic list update can be switched off with a warning (7.5, 7.5.1.5),
+  youth protection has at least the 14 and 18 year steps (9.2.3). The region
+  list (regione, with the autonomous provinces of Trento and Bolzano on their
+  own) and the optional CAP select the TargetRegion. The UHD Book asks for no
+  privacy notice or consent, so none is shown.
 * New Zealand follows Freeview NextGen (DVB-I with HbbTV linked applications,
   broadcast and internet channels merged into one line-up): the Freeview
-  region and an optional four-digit postcode.
+  region and an optional four-digit postcode. No notice or consent is
+  specified.
 
 The module has no GTK; the settings panel is lindvb.ui.dvbi.
 """
@@ -39,15 +44,13 @@ class Area:
 
 @dataclass(frozen=True)
 class Consent:
-    """One consent the viewer gives (or not) before LinDVB uses DVB-I.
-    ``required``: DVB-I stays off without it. ``setting``: a LinDVB setting
-    the consent switches (with ``invert`` when consent means False)."""
+    """A confirmation the national profile asks for before DVB-I is used
+    (Germany: the privacy notice, IT-17). ``required``: DVB-I stays off
+    without it."""
     key: str
     title: str
     text: str
     required: bool = False
-    setting: str = ""
-    invert: bool = False
 
 
 @dataclass(frozen=True)
@@ -67,6 +70,7 @@ class Country:
     area_label: str = "Region"
     prefer_broadcast: bool = False    # default for "antenna/cable/satellite before internet"
     age_limits: tuple = (0, 6, 12, 16)
+    overflow: tuple = None            # (first, last) numbers for services without an LCN
     notes: tuple = field(default=())  # short hints shown with the settings
 
 
@@ -137,37 +141,19 @@ ITALY = Country(
     # TargetCountry=ITA is the fallback. Both can be changed in the settings.
     registries=("https://ita.csr.dvbservices.org/query", "https://csr.dvbservices.org/query"),
     languages=("it", "ita", "en", "eng"),
-    privacy_notice=(
-        "Privacy information (art. 13 GDPR). To show the DVB-I channels LinDVB contacts the "
-        "Italian service list registry, the server of the service list you choose, the "
-        "servers that host the channel logos and, when the programme guide is switched on, "
-        "the broadcasters' programme guide servers. They see your IP address and the time "
-        "of the request. Your region and, only if you enter it, your CAP are used to pick "
-        "the regional channels and their numbering; the CAP goes to the service list server "
-        "only. LinDVB keeps the list, the logos and your choices only on this computer and "
-        "sends nothing else. The broadcasters process the data of their streams and "
-        "interactive services as data controllers under their own privacy policies. Each "
-        "optional consent below can be withdrawn here at any time; without them DVB-I works "
-        "all the same."),
-    consents=(
-        Consent("privacy", "I have read the privacy information", "", required=True),
-        Consent("measurement", "Audience measurement",
-                "Broadcasters' interactive services may measure which programmes are watched "
-                "(audience research). Off: LinDVB asks the services not to track you "
-                "(Do Not Track).", setting="hbbtv_do_not_track", invert=True),
-        Consent("profiling", "Personalised advertising",
-                "Interactive services may use third-party cookies to show advertising based "
-                "on your viewing.", setting="hbbtv_third_party_cookies"),
-    ),
+    # The UHD Book asks for no privacy notice or consent before DVB-I is used
+    privacy_notice="",
     postcode_digits=5, postcode_example="00184", postcode_label="CAP",
     areas=ITALY_AREAS, area_label="Regione",
-    # UHD Book: on an LCN conflict the best receivable variant is preferred,
-    # so the terrestrial channel comes before the internet stream.
-    prefer_broadcast=True,
-    # Italian age classification: all, 6+, 14+, 18+
-    age_limits=(0, 6, 14),
-    notes=("The region selects the local channels (LCN 10-19 and 71-99 of your region) "
-           "the way the terrestrial channel search does.",),
+    # UHD Book 7.3: service instance precedence as in TS 103 770 5.2.13, so
+    # the list's priorities decide (the viewer can still prefer broadcast)
+    prefer_broadcast=False,
+    # UHD Book 9.2.3: at least the 14 and 18 year thresholds (the limit is
+    # the youngest viewer's age: 13 asks the PIN from 14, 17 from 18)
+    age_limits=(0, 13, 17),
+    overflow=(850, 999),            # UHD Book 7.5.1.2: the Main Overflow
+    notes=("The region selects the LCN table of your area, with the local channels, the way "
+           "the terrestrial channel search does. Channels without a number go to 850-999.",),
 )
 
 
@@ -196,23 +182,7 @@ NEW_ZEALAND = Country(
     profile="Freeview NextGen (DVB-I with HbbTV 2.0.4 Annex O)",
     registries=("https://nzl.csr.dvbservices.org/query", "https://csr.dvbservices.org/query"),
     languages=("en", "eng", "mi", "mri"),
-    privacy_notice=(
-        "Freeview NextGen loads the channel list from the internet. LinDVB contacts the "
-        "Freeview service list registry, the server of the service list, the servers that "
-        "host the channel logos and, when the programme guide is switched on, the guide "
-        "servers. They see your IP address and the time of the request. Your Freeview "
-        "region and, only if you enter it, your postcode select the regional channels; the "
-        "postcode goes to the service list server only. LinDVB keeps the list and logos on "
-        "this computer and sends nothing else. Channels and the Freeview application are "
-        "provided under the privacy policies of Freeview and the broadcasters (Privacy Act "
-        "2020)."),
-    consents=(
-        Consent("privacy", "I have read the privacy notice", "", required=True),
-        Consent("measurement", "Share anonymous viewing information",
-                "The Freeview application and the broadcasters may count which channels are "
-                "watched to improve the service. Off: LinDVB asks them not to track you.",
-                setting="hbbtv_do_not_track", invert=True),
-    ),
+    privacy_notice="",               # no notice or consent is specified
     postcode_digits=4, postcode_example="6011",
     areas=NZ_AREAS, area_label="Freeview region",
     prefer_broadcast=True,          # merged line-up: the broadcast copy first, no duplicates
@@ -283,14 +253,14 @@ def match_area(regions, a):
 # and come back when the viewer switches to that country again.
 COUNTRY_KEYS = ("dvbi_list_url", "dvbi_list_name", "dvbi_postcode", "dvbi_region",
                 "dvbi_last_modified", "dvbi_etag", "dvbi_privacy_ack", "dvbi_registries",
-                "dvbi_area", "dvbi_consents", "dvbi_prefer_broadcast")
+                "dvbi_area", "dvbi_consents", "dvbi_prefer_broadcast", "dvbi_package")
 
 
 def fresh_state(country):
     return {"dvbi_list_url": "", "dvbi_list_name": "", "dvbi_postcode": "", "dvbi_region": "",
             "dvbi_last_modified": "", "dvbi_etag": "", "dvbi_privacy_ack": False,
             "dvbi_registries": list(country.registries), "dvbi_area": "", "dvbi_consents": {},
-            "dvbi_prefer_broadcast": country.prefer_broadcast}
+            "dvbi_prefer_broadcast": country.prefer_broadcast, "dvbi_package": ""}
 
 
 def switch_country(settings, code):
@@ -301,7 +271,8 @@ def switch_country(settings, code):
     new = get(code)
     store = dict(settings.get("dvbi_country_state") or {})
     if old.code != new.code:
-        store[old.code] = {k: settings.get(k) for k in COUNTRY_KEYS}
+        base = fresh_state(old)
+        store[old.code] = {k: settings.get(k, base[k]) for k in COUNTRY_KEYS}
         state = fresh_state(new)
         state.update(store.get(new.code) or {})
         for k in COUNTRY_KEYS:
@@ -310,34 +281,24 @@ def switch_country(settings, code):
     settings["dvbi_country_state"] = store
     settings["dvbi_country"] = new.code
     settings["hbbtv_country"] = new.code
-    # a consent never asked for counts as refused (nothing ticked in advance)
-    given = settings.get("dvbi_consents") or {}
-    for c in new.consents:
-        if c.setting and c.key not in given:
-            settings[c.setting] = bool(c.invert)
     return new
 
 
 def set_consent(settings, country, key, given, now):
-    """Record a consent (with the time, so it can be shown and withdrawn) and
-    switch the setting it stands for."""
+    """Record a confirmation with its time."""
     consents = dict(settings.get("dvbi_consents") or {})
     consents[key] = {"given": bool(given), "time": int(now)}
     settings["dvbi_consents"] = consents
-    c = next((c for c in country.consents if c.key == key), None)
-    if c is not None:
-        if c.key == "privacy":
-            settings["dvbi_privacy_ack"] = bool(given)
-        if c.setting:
-            settings[c.setting] = (not given) if c.invert else bool(given)
+    if key == "privacy":
+        settings["dvbi_privacy_ack"] = bool(given)
 
 
 def consent_given(settings, country, key):
-    """Whether the consent stands. One that switches a setting follows that
-    setting, so a change made elsewhere (Preferences › HbbTV) shows here."""
     if key == "privacy":
         return bool(settings.get("dvbi_privacy_ack"))
-    c = next((c for c in country.consents if c.key == key), None)
-    if c is not None and c.setting:
-        return bool(settings.get(c.setting)) != c.invert
     return bool((settings.get("dvbi_consents") or {}).get(key, {}).get("given"))
+
+
+def needs_ack(country):
+    """Whether DVB-I waits for a confirmation the profile asks for."""
+    return any(c.required for c in country.consents)

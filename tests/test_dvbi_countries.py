@@ -26,6 +26,9 @@ IT_LIST = """<?xml version="1.0" encoding="UTF-8"?>
     <LCNTable><LCN channelNumber="5" serviceRef="tag:c5"/><LCN channelNumber="10" serviceRef="tag:local-mi"/></LCNTable>
     <LCNTable><TargetRegion>12</TargetRegion>
       <LCN channelNumber="5" serviceRef="tag:c5"/><LCN channelNumber="10" serviceRef="tag:local-rm"/></LCNTable>
+    <LCNTable><TargetRegion>12</TargetRegion><SubscriptionPackage>Premium</SubscriptionPackage>
+      <LCN channelNumber="5" serviceRef="tag:c5"/><LCN channelNumber="10" serviceRef="tag:local-rm"/>
+      <LCN channelNumber="20" serviceRef="tag:new"/></LCNTable>
   </LCNTableList>
   <Service version="1">
     <UniqueIdentifier>tag:c5</UniqueIdentifier>
@@ -53,6 +56,12 @@ IT_LIST = """<?xml version="1.0" encoding="UTF-8"?>
       <dvbi-types:URI>https://example.org/mi.mpd</dvbi-types:URI></UriBasedLocation></DASHDeliveryParameters></ServiceInstance>
     <ServiceName>Milano TV</ServiceName><ProviderName>MI</ProviderName>
   </Service>
+  <Service version="1">
+    <UniqueIdentifier>tag:new</UniqueIdentifier>
+    <ServiceInstance><DASHDeliveryParameters><UriBasedLocation contentType="application/dash+xml">
+      <dvbi-types:URI>https://example.org/new.mpd</dvbi-types:URI></UriBasedLocation></DASHDeliveryParameters></ServiceInstance>
+    <ServiceName>Nuovo</ServiceName><ProviderName>N</ProviderName>
+  </Service>
 </ServiceList>
 """.encode()
 
@@ -66,8 +75,11 @@ def test_profiles():
     it, nz = countries.ITALY, countries.NEW_ZEALAND
     # 21 Italian areas: 19 regions and the autonomous provinces of Trento and Bolzano
     assert len(it.areas) == 21 and len({a.id for a in it.areas}) == 21
-    assert it.consents[0].key == "privacy" and it.consents[0].required
-    assert not any(c.required for c in it.consents[1:])        # optional ones are optional
+    # only Germany's profile asks for a privacy notice (IT-17); the UHD Book
+    # and Freeview NextGen ask for none
+    assert countries.needs_ack(countries.GERMANY)
+    assert not it.consents and not it.privacy_notice and not countries.needs_ack(it)
+    assert not nz.consents and not nz.privacy_notice
     assert dvbi.valid_postcode("00184", "ITA") and not dvbi.valid_postcode("0018", it)
     assert dvbi.valid_postcode("6011", nz) and not dvbi.valid_postcode("60110", nz)
     assert dvbi.valid_postcode("80331")                          # Germany stays the default
@@ -101,27 +113,20 @@ def test_registry_query_for_the_country():
 def test_switch_country_keeps_each_countrys_settings():
     s = {"dvbi_country": "DEU", "dvbi_list_url": "https://example.org/de.xml",
          "dvbi_list_name": "Deutschland", "dvbi_postcode": "80331", "dvbi_privacy_ack": True,
-         "dvbi_registries": list(countries.GERMANY.registries), "dvbi_last_check": 5,
-         "hbbtv_third_party_cookies": True}
+         "dvbi_registries": list(countries.GERMANY.registries), "dvbi_last_check": 5}
     it = countries.switch_country(s, "ITA")
     assert it is countries.ITALY and s["dvbi_country"] == s["hbbtv_country"] == "ITA"
     assert s["dvbi_list_url"] == "" and not s["dvbi_privacy_ack"] and s["dvbi_postcode"] == ""
     assert s["dvbi_registries"] == list(countries.ITALY.registries)
-    assert s["dvbi_prefer_broadcast"] is True and s["dvbi_last_check"] == 0
-    # consents never given count as refused: no third-party cookies, Do Not Track
-    assert s["hbbtv_third_party_cookies"] is False and s["hbbtv_do_not_track"] is True
-    countries.set_consent(s, it, "privacy", True, 100)
-    countries.set_consent(s, it, "measurement", True, 101)
-    s["dvbi_area"] = "IT-62"
-    assert s["dvbi_privacy_ack"] and s["hbbtv_do_not_track"] is False
-    assert countries.consent_given(s, it, "measurement")
-    assert not countries.consent_given(s, it, "profiling")
-    assert s["dvbi_consents"]["measurement"] == {"given": True, "time": 101}
+    assert s["dvbi_prefer_broadcast"] is False and s["dvbi_last_check"] == 0   # list precedence
+    s["dvbi_area"], s["dvbi_package"] = "IT-62", "Premium"
     countries.switch_country(s, "DEU")
     assert s["dvbi_list_url"] == "https://example.org/de.xml" and s["dvbi_postcode"] == "80331"
-    assert s["dvbi_privacy_ack"] and s["hbbtv_country"] == "DEU"
+    assert s["dvbi_privacy_ack"] and s["hbbtv_country"] == "DEU" and s["dvbi_package"] == ""
+    countries.set_consent(s, countries.GERMANY, "privacy", False, 100)
+    assert not countries.consent_given(s, countries.GERMANY, "privacy")
     countries.switch_country(s, "ITA")
-    assert s["dvbi_area"] == "IT-62" and s["dvbi_consents"]["measurement"]["given"]
+    assert s["dvbi_area"] == "IT-62" and s["dvbi_package"] == "Premium"
 
 
 def test_match_area_in_service_list_regions():
@@ -137,7 +142,7 @@ def test_match_area_in_service_list_regions():
 def test_italian_update_by_region_without_cap(tmp_path):
     net = FakeNet({"https://example.org/it.xml": IT_LIST})
     s = {"dvbi_country": "ITA", "dvbi_list_url": "https://example.org/it.xml",
-         "dvbi_postcode": "", "dvbi_area": "IT-62", "dvbi_prefer_broadcast": True}
+         "dvbi_postcode": "", "dvbi_area": "IT-62", "dvbi_prefer_broadcast": True}  # viewer's choice
     try:
         res = dvbi.Updater(s, tmp_path / "c", tmp_path / "l", fetcher=net).run([C5_DTT],
                                                                                 logos=False)
@@ -149,6 +154,43 @@ def test_italian_update_by_region_without_cap(tmp_path):
     assert by_lcn[10].name == "Roma TV"                               # the Lazio table
     # Italian names first, and the terrestrial copy before the internet stream
     assert by_lcn[5].name == "Canale 5" and by_lcn[5].delsys == "dvb-t2"
+    # services without an LCN go to the Main Overflow (UHD Book 7.5.1.2)
+    assert {by_lcn[850].name, by_lcn[851].name} == {"Milano TV", "Nuovo"}
+    assert res.packages == ["Premium"]
+
+
+def test_subscription_package_table(tmp_path):
+    net = FakeNet({"https://example.org/it.xml": IT_LIST})
+    s = {"dvbi_country": "ITA", "dvbi_list_url": "https://example.org/it.xml",
+         "dvbi_area": "IT-62", "dvbi_package": "Premium"}
+    try:
+        res = dvbi.Updater(s, tmp_path / "c", tmp_path / "l", fetcher=net).run([], logos=False)
+    finally:
+        dvbi.use_country("DEU")
+    assert {c.lcn: c.name for c in res.build.channels}[20] == "Nuovo"
+    s["dvbi_package"] = "Gone"                                        # not in the list: free table
+    sl = dvbi.parse_service_list(IT_LIST)
+    assert dvbi.lcn_table_for(sl, "12", "").packages == []
+    assert dvbi.lcn_table_for(sl, "12", "Premium").packages == ["Premium"]
+
+
+def test_overflow_fills_downwards():
+    sl = dvbi.parse_service_list(IT_LIST)
+    # two services without an LCN, one place in the overflow: then from 849 down
+    nums = sorted(e.lcn for e in dvbi.lineup(sl, "12", overflow=(850, 850))
+                  if e.service.uid in ("tag:new", "tag:local-mi"))
+    assert nums == [849, 850]
+    # a number the table gives keeps its place
+    sl.lcn_tables[1].entries.append(dvbi.LCNEntry(850, "tag:new"))
+    by_uid = {e.service.uid: e.lcn for e in dvbi.lineup(sl, "12", overflow=(850, 850))}
+    assert by_uid["tag:new"] == 850 and by_uid["tag:local-mi"] == 849
+
+
+def test_automatic_update_can_be_switched_off():
+    s = {"dvbi_list_url": "https://example.org/it.xml", "dvbi_last_check": 0}
+    assert dvbi.update_due(s, now=10**9)
+    s["dvbi_auto_update"] = False
+    assert not dvbi.update_due(s, now=10**9)
 
 
 def test_cap_and_region_together(tmp_path):

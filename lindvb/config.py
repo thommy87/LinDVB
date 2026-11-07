@@ -41,7 +41,6 @@ DEFAULTS = {
     # start a channel's AUTOSTART application by itself (else only with the red button)
     "hbbtv_autostart": False,
     "hbbtv_third_party_cookies": False,
-    "hbbtv_do_not_track": False,        # send DNT: 1 (no audience measurement consent)
     "hbbtv_country": "DEU",             # configuration.countryId (ISO 3166 alpha-3)
     # what applications are told about the viewer (configuration object, and
     # the first audio / subtitle choice in their DASH videos)
@@ -186,12 +185,16 @@ DEFAULTS = {
     "dvbi_etag": "",
     "dvbi_privacy_ack": False,
     # Region from the country's fixed list (Italian regione, Freeview region;
-    # lindvb.dvbi_countries.Area.id), the optional consents given with their
-    # time ({key: {"given", "time"}}) and whether antenna, cable and satellite
-    # come before internet streams (on in Italy and New Zealand).
+    # lindvb.dvbi_countries.Area.id), the confirmations given with their time
+    # ({key: {"given", "time"}}) and whether antenna, cable and satellite
+    # come before internet streams (on in New Zealand).
     "dvbi_area": "",
     "dvbi_consents": {},
     "dvbi_prefer_broadcast": False,
+    # subscription package whose LCN table is used ("" = the free one)
+    "dvbi_package": "",
+    # check the chosen list daily by itself (off: only with Update Now)
+    "dvbi_auto_update": True,
     # Load the programme guide of DVB-I channels from the list's content
     # guide servers (now/next and 7 days ahead, refreshed every 6 hours).
     "dvbi_guide": True,

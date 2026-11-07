@@ -3445,9 +3445,6 @@ msgstr "Ihre Region bestimmt die regionalen Sender und ihre Nummerierung."
 msgid "Settings follow: {profile}"
 msgstr "Die Einstellungen folgen: {profile}"
 
-msgid "Optional consents can be given or withdrawn here at any time; DVB-I works without them."
-msgstr "Freiwillige Einwilligungen können Sie hier jederzeit erteilen oder widerrufen; DVB-I funktioniert auch ohne sie."
-
 msgid "Choose…"
 msgstr "Auswählen…"
 
@@ -3466,41 +3463,26 @@ msgstr "Die Registry bietet keine Dienstliste für {country} an."
 msgid "Please enter a postcode with {n} digits"
 msgstr "Bitte eine Postleitzahl mit {n} Ziffern eingeben"
 
-msgid "Last change: {date}"
-msgstr "Letzte Änderung: {date}"
-
 msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
 msgstr "DVB-I lädt die Senderliste aus dem Internet. Dazu kontaktiert LinDVB die deutsche Service-List-Registry (csr.dvb-i-slr.de), den Server der gewählten Dienstliste, die Server mit den Senderlogos und, wenn der Programmführer eingeschaltet ist, die Programmführer-Server der Sender. Diese Server sehen Ihre IP-Adresse und den Zeitpunkt der Anfrage. Wenn Sie eine Postleitzahl eingeben, wird sie an den Server der Dienstliste gesendet, damit er die Sender Ihrer Region liefern kann. LinDVB sendet keine weiteren persönlichen Daten und speichert Liste und Logos nur auf diesem Computer. Internet-Sender werden von den Servern der Sender gestreamt, die Ihre Anfragen nach ihren eigenen Datenschutzbestimmungen protokollieren können."
 
-msgid "Privacy information (art. 13 GDPR). To show the DVB-I channels LinDVB contacts the Italian service list registry, the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. They see your IP address and the time of the request. Your region and, only if you enter it, your CAP are used to pick the regional channels and their numbering; the CAP goes to the service list server only. LinDVB keeps the list, the logos and your choices only on this computer and sends nothing else. The broadcasters process the data of their streams and interactive services as data controllers under their own privacy policies. Each optional consent below can be withdrawn here at any time; without them DVB-I works all the same."
-msgstr "Datenschutzinformation (Art. 13 DSGVO). Um die DVB-I-Sender anzuzeigen, kontaktiert LinDVB die italienische Service-List-Registry, den Server der gewählten Dienstliste, die Server mit den Senderlogos und, wenn der Programmführer eingeschaltet ist, die Programmführer-Server der Sender. Sie sehen Ihre IP-Adresse und den Zeitpunkt der Anfrage. Ihre Region und, nur wenn Sie ihn eingeben, Ihr CAP bestimmen die regionalen Sender und ihre Nummerierung; der CAP geht nur an den Server der Dienstliste. LinDVB speichert Liste, Logos und Ihre Entscheidungen nur auf diesem Computer und sendet nichts weiter. Die Sender verarbeiten die Daten ihrer Streams und interaktiven Dienste als Verantwortliche nach ihren eigenen Datenschutzbestimmungen. Jede freiwillige Einwilligung unten können Sie hier jederzeit widerrufen; ohne sie funktioniert DVB-I genauso."
-
-msgid "I have read the privacy information"
-msgstr "Ich habe die Datenschutzinformation gelesen"
-
-msgid "Audience measurement"
-msgstr "Reichweitenmessung"
-
-msgid "Personalised advertising"
-msgstr "Personalisierte Werbung"
-
-msgid "Broadcasters' interactive services may measure which programmes are watched (audience research). Off: LinDVB asks the services not to track you (Do Not Track)."
-msgstr "Interaktive Dienste der Sender dürfen messen, welche Sendungen gesehen werden (Zuschauerforschung). Aus: LinDVB bittet die Dienste, Sie nicht zu verfolgen (Do Not Track)."
-
-msgid "Interactive services may use third-party cookies to show advertising based on your viewing."
-msgstr "Interaktive Dienste dürfen Drittanbieter-Cookies nutzen, um Werbung passend zu Ihrem Sehverhalten zu zeigen."
-
-msgid "The region selects the local channels (LCN 10-19 and 71-99 of your region) the way the terrestrial channel search does."
-msgstr "Die Region wählt die Lokalsender (LCN 10–19 und 71–99 Ihrer Region) so aus, wie es der terrestrische Sendersuchlauf tut."
-
-msgid "Freeview NextGen loads the channel list from the internet. LinDVB contacts the Freeview service list registry, the server of the service list, the servers that host the channel logos and, when the programme guide is switched on, the guide servers. They see your IP address and the time of the request. Your Freeview region and, only if you enter it, your postcode select the regional channels; the postcode goes to the service list server only. LinDVB keeps the list and logos on this computer and sends nothing else. Channels and the Freeview application are provided under the privacy policies of Freeview and the broadcasters (Privacy Act 2020)."
-msgstr "Freeview NextGen lädt die Senderliste aus dem Internet. LinDVB kontaktiert die Freeview-Service-List-Registry, den Server der Dienstliste, die Server mit den Senderlogos und, wenn der Programmführer eingeschaltet ist, die Programmführer-Server. Sie sehen Ihre IP-Adresse und den Zeitpunkt der Anfrage. Ihre Freeview-Region und, nur wenn Sie sie eingeben, Ihre Postleitzahl bestimmen die regionalen Sender; die Postleitzahl geht nur an den Server der Dienstliste. LinDVB speichert Liste und Logos auf diesem Computer und sendet nichts weiter. Sender und die Freeview-Anwendung unterliegen den Datenschutzbestimmungen von Freeview und der Sender (Privacy Act 2020)."
-
-msgid "Share anonymous viewing information"
-msgstr "Anonyme Nutzungsdaten teilen"
-
-msgid "The Freeview application and the broadcasters may count which channels are watched to improve the service. Off: LinDVB asks them not to track you."
-msgstr "Die Freeview-Anwendung und die Sender dürfen zählen, welche Sender gesehen werden, um den Dienst zu verbessern. Aus: LinDVB bittet sie, Sie nicht zu verfolgen."
-
 msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
 msgstr "Antennen-, Satelliten- und Internet-Sender werden ohne Doppelte zu einer Liste zusammengeführt; ein Sender, den Sie per Antenne oder Schüssel empfangen, nutzt zuerst diesen Weg."
+
+msgid "Update the channel list automatically (daily)"
+msgstr "Senderliste automatisch aktualisieren (täglich)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "Achtung! Wenn dies ausgeschaltet ist, kann LinDVB Ihre Senderliste nicht mehr automatisch an die tatsächlich gesendeten Sender anpassen."
+
+msgid "Package"
+msgstr "Paket"
+
+msgid "Free channels only"
+msgstr "Nur freie Sender"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "Erneut auf Installieren drücken, um die Sendernummern dieses Pakets zu verwenden."
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "Die Region wählt die LCN-Tabelle Ihres Gebiets mit den Lokalsendern aus, so wie es der terrestrische Sendersuchlauf tut. Sender ohne Nummer kommen auf 850–999."
