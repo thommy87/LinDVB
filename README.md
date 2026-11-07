@@ -50,7 +50,7 @@ them.
 ![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png)
 
  **Preferences**
-![Teletext](docs/screenshots/dark_preferences.png) |
+![Teletext](docs/screenshots/dark_preferences.png)
 
 
 ## Features
