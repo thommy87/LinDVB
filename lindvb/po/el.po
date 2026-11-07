@@ -705,9 +705,6 @@ msgstr "Λίστες υπηρεσιών από {netloc}: {v0}"
 msgid "The registry offers no service list for Germany."
 msgstr "Το μητρώο δεν προσφέρει λίστα υπηρεσιών για τη Γερμανία."
 
-msgid "Please enter a postcode with five digits"
-msgstr "Εισαγάγετε πενταψήφιο ταχυδρομικό κώδικα"
-
 msgid "Loading the service list…"
 msgstr "Φόρτωση λίστας υπηρεσιών…"
 

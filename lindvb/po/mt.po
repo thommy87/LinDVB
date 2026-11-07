@@ -705,9 +705,6 @@ msgstr "Listi tas-servizzi minn {netloc}: {v0}"
 msgid "The registry offers no service list for Germany."
 msgstr "Ir-reġistru ma joffri l-ebda lista tas-servizzi għall-Ġermanja."
 
-msgid "Please enter a postcode with five digits"
-msgstr "Daħħal kodiċi postali ta' ħames ċifri"
-
 msgid "Loading the service list…"
 msgstr "Qed titgħabba l-lista tas-servizzi…"
 

@@ -705,9 +705,6 @@ msgstr "{v0} Dienstlisten von {netloc}"
 msgid "The registry offers no service list for Germany."
 msgstr "Das Verzeichnis bietet keine Dienstliste für Deutschland an."
 
-msgid "Please enter a postcode with five digits"
-msgstr "Bitte eine fünfstellige Postleitzahl eingeben"
-
 msgid "Loading the service list…"
 msgstr "Dienstliste wird geladen…"
 
@@ -3405,3 +3402,87 @@ msgstr "Die Änderungen wurden noch nicht übernommen. Ohne Übernehmen gehen si
 #: lindvb/ui/dialogs.py
 msgid "Discard"
 msgstr "Verwerfen"
+
+msgid "Germany"
+msgstr "Deutschland"
+
+msgid "Italy"
+msgstr "Italien"
+
+msgid "New Zealand"
+msgstr "Neuseeland"
+
+msgid "CAP"
+msgstr "CAP (Postleitzahl)"
+
+msgid "Regione"
+msgstr "Region (Regione)"
+
+msgid "Freeview region"
+msgstr "Freeview-Region"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Options"
+msgstr "Optionen"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "Werden in dieser Reihenfolge gefragt, durch Leerzeichen getrennt. Eine Änderung mit der Eingabetaste übernehmen; leer stellt die Registries des Landes wieder her."
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "Antenne, Kabel und Satellit dem Internet-Stream vorziehen, wenn ein Sender beides hat"
+
+msgid "Registry address"
+msgstr "Adresse der Registry"
+
+msgid "Region in the list"
+msgstr "Region in der Liste"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "Ihre Region bestimmt die regionalen Sender und ihre Nummerierung."
+
+msgid "Settings follow: {profile}"
+msgstr "Die Einstellungen folgen: {profile}"
+
+msgid "Choose…"
+msgstr "Auswählen…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "Freiwillig. Ihre {label} wird nur an den Server der Dienstliste gesendet."
+
+msgid "e.g. {example}"
+msgstr "z. B. {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "Die DVB-I-Sender des bisherigen Landes bleiben, bis Sie eine Liste für {country} installieren oder sie entfernen."
+
+msgid "The registry offers no service list for {country}."
+msgstr "Die Registry bietet keine Dienstliste für {country} an."
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "Bitte eine Postleitzahl mit {n} Ziffern eingeben"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I lädt die Senderliste aus dem Internet. Dazu kontaktiert LinDVB die deutsche Service-List-Registry (csr.dvb-i-slr.de), den Server der gewählten Dienstliste, die Server mit den Senderlogos und, wenn der Programmführer eingeschaltet ist, die Programmführer-Server der Sender. Diese Server sehen Ihre IP-Adresse und den Zeitpunkt der Anfrage. Wenn Sie eine Postleitzahl eingeben, wird sie an den Server der Dienstliste gesendet, damit er die Sender Ihrer Region liefern kann. LinDVB sendet keine weiteren persönlichen Daten und speichert Liste und Logos nur auf diesem Computer. Internet-Sender werden von den Servern der Sender gestreamt, die Ihre Anfragen nach ihren eigenen Datenschutzbestimmungen protokollieren können."
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "Antennen-, Satelliten- und Internet-Sender werden ohne Doppelte zu einer Liste zusammengeführt; ein Sender, den Sie per Antenne oder Schüssel empfangen, nutzt zuerst diesen Weg."
+
+msgid "Update the channel list automatically (daily)"
+msgstr "Senderliste automatisch aktualisieren (täglich)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "Achtung! Wenn dies ausgeschaltet ist, kann LinDVB Ihre Senderliste nicht mehr automatisch an die tatsächlich gesendeten Sender anpassen."
+
+msgid "Package"
+msgstr "Paket"
+
+msgid "Free channels only"
+msgstr "Nur freie Sender"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "Erneut auf Installieren drücken, um die Sendernummern dieses Pakets zu verwenden."
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "Die Region wählt die LCN-Tabelle Ihres Gebiets mit den Lokalsendern aus, so wie es der terrestrische Sendersuchlauf tut. Sender ohne Nummer kommen auf 850–999."

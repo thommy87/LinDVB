@@ -28,7 +28,9 @@ This module is the part that runs without GTK:
 
 The German profile is "DTVP DVB-I Implementierungsprofil V1.1.0" (2026), on
 top of TS 103 770 V1.2.1 profile IP2. Requirement numbers (IT-n) in the
-comments refer to it.
+comments refer to it. What differs in other countries (registry, region,
+consents, languages: Italy, New Zealand) is in lindvb.dvbi_countries; the
+functions here take the country where it matters, Germany by default.
 """
 
 import base64
@@ -45,12 +47,13 @@ from collections import Counter
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 
+from . import dvbi_countries as countries
 from .channels import Channel
 
 # National service list registry (IT-7). The DVB subdomain is tried first
 # when it exists; the DTVP registry is the fallback.
-REGISTRIES = ("https://deu.csr.dvbservices.org/query", "https://csr.dvb-i-slr.de/query")
-TARGET_COUNTRY = "DEU"
+REGISTRIES = countries.GERMANY.registries
+TARGET_COUNTRY = countries.GERMANY.code
 # Delivery types LinDVB can receive (registry query parameter values).
 DELIVERY = ("dvb-dash", "dvb-t", "dvb-c", "dvb-s", "application")
 
@@ -68,17 +71,19 @@ APP_MEDIA = LINKED_APP_CS + ":1.2"
 APP_TYPES = ("application/vnd.dvb.ait+xml", "application/vnd.hbbtv.xhtml+xml",
              "application/xhtml+xml", "text/html")
 
-PRIVACY_NOTICE = (
-    "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the "
-    "German service list registry (csr.dvb-i-slr.de), the server of the service list "
-    "you choose, the servers that host the channel logos and, when the programme "
-    "guide is switched on, the broadcasters' programme guide servers. These servers "
-    "see your "
-    "IP address and the time of the request. If you enter a postcode, it is sent to "
-    "the service list server so that it can return the channels of your region. "
-    "LinDVB sends no other personal data and keeps the list and logos only on this "
-    "computer. Internet channels are streamed from the broadcasters' servers, which "
-    "may log your requests according to their own privacy policies.")
+PRIVACY_NOTICE = countries.GERMANY.privacy_notice
+
+# Preferred xml:lang values for names and guide texts: those of the DVB-I
+# country in use (use_country), German by default.
+LANGUAGES = countries.GERMANY.languages
+
+
+def use_country(code):
+    """Prefer the languages of the DVB-I country *code*. Returns the Country."""
+    global LANGUAGES
+    c = countries.get(code)
+    LANGUAGES = c.languages
+    return c
 
 
 class DVBIError(Exception):
@@ -119,8 +124,10 @@ def _lang(el):
     return el.get(XML_LANG, "").lower() if el is not None else ""
 
 
-def pick_text(elements, languages=("de", "deu", "ger", "en", "eng")):
-    """Text of the element in the first preferred language, else the first one."""
+def pick_text(elements, languages=None):
+    """Text of the element in the first preferred language (those of the
+    DVB-I country by default), else the first one."""
+    languages = languages or LANGUAGES
     elements = [e for e in elements if _text(e)]
     if not elements:
         return ""
@@ -347,6 +354,7 @@ class LCNTable:
     regions: list = field(default_factory=list)
     entries: list = field(default_factory=list)
     ranges: list = field(default_factory=list)       # (start, end, fill_gaps)
+    packages: list = field(default_factory=list)     # SubscriptionPackage names
 
 
 @dataclass
@@ -357,6 +365,7 @@ class ServiceList:
     services: list = field(default_factory=list)
     regions: list = field(default_factory=list)      # all regions, depth first
     lcn_tables: list = field(default_factory=list)
+    packages: list = field(default_factory=list)     # subscription packages, list order
     content_guides: dict = field(default_factory=dict)   # CGSID -> {schedule, program, ...}
     default_guide: dict = field(default_factory=dict)    # the list's own ContentGuideSource
 
@@ -543,7 +552,8 @@ def parse_service_list(data):
         sl.regions = _regions(rl)
     lcnl = _kid(root, "LCNTableList")
     for t in _kids(lcnl, "LCNTable"):
-        tab = LCNTable(regions=[_text(r) for r in _kids(t, "TargetRegion") if _text(r)])
+        tab = LCNTable(regions=[_text(r) for r in _kids(t, "TargetRegion") if _text(r)],
+                       packages=[_text(p) for p in _kids(t, "SubscriptionPackage") if _text(p)])
         for e in _kids(t, "LCN"):
             num = _int(e.get("channelNumber"))
             if num is None or not e.get("serviceRef"):
@@ -557,6 +567,12 @@ def parse_service_list(data):
                 tab.ranges.append((start, _int(r.get("end"), start + 9999),
                                    r.get("fillMethod") == "fillGaps"))
         sl.lcn_tables.append(tab)
+    # subscription packages: the list's own SubscriptionPackageList, then any
+    # an LCN table names (TS 103 770 5.3.6; UHD Book 7.5.1.2)
+    spl = _kid(root, "SubscriptionPackageList")
+    names = [_text(p) for p in _kids(spl, "SubscriptionPackage") if _text(p)]
+    names += [p for t in sl.lcn_tables for p in t.packages]
+    sl.packages = list(dict.fromkeys(names))
     default_cg = _kid(root, "ContentGuideSource")
     if default_cg is not None:
         sl.default_guide = _guide(default_cg)
@@ -591,9 +607,11 @@ def parse_service_list(data):
 
 # ---------------------------------------------------------------- regions and postcodes
 
-def valid_postcode(text):
-    """German postcode: five digits."""
-    return bool(re.fullmatch(r"\d{5}", (text or "").strip()))
+def valid_postcode(text, country=None):
+    """Postcode of the country: five digits in Germany and Italy (CAP), four
+    in New Zealand."""
+    return countries.valid_postcode(countries.get(country) if isinstance(country, str) or
+                                    country is None else country, text)
 
 
 def _wildcard(pattern, postcode):
@@ -637,16 +655,21 @@ def selectable_regions(sl):
 
 # ---------------------------------------------------------------- line-up
 
-def lcn_table_for(sl, region_id):
-    """LCN table for the region: the nearest one by region hierarchy, else the
-    table without a target region, else the first table."""
+def lcn_table_for(sl, region_id, package=""):
+    """LCN table for the region and subscription package the viewer chose
+    (UHD Book 7.5.1.2, IP2): the nearest one by region hierarchy, else the
+    table without a target region, else the first table. Tables of the chosen
+    package come first; without a choice, tables without a package."""
     if not sl.lcn_tables:
         return None
+    tables = [t for t in sl.lcn_tables if (package in t.packages if package else
+                                           not t.packages)] or \
+        [t for t in sl.lcn_tables if not t.packages] or sl.lcn_tables
     for rid in sl.ancestors(region_id) if region_id else []:
-        for t in sl.lcn_tables:
+        for t in tables:
             if rid in t.regions:
                 return t
-    return next((t for t in sl.lcn_tables if not t.regions), sl.lcn_tables[0])
+    return next((t for t in tables if not t.regions), tables[0])
 
 
 @dataclass
@@ -657,14 +680,16 @@ class LineupEntry:
     visible: bool = True
 
 
-def lineup(sl, region_id=None):
+def lineup(sl, region_id=None, package="", overflow=None):
     """Services of the region in LCN order (IT-5, IT-9). Services the LCN table
     does not number get numbers from its LCN ranges, else after the highest
-    LCN. Service prominence is not used for the order."""
+    LCN, or with *overflow* (first, last) in that range and then downwards
+    from first - 1 (Italy: the Main Overflow 850-999, UHD Book 7.5.1.2).
+    Service prominence is not used for the order."""
     area = set(sl.ancestors(region_id)) if region_id else set()
     services = [s for s in sl.services
                 if not s.target_regions or not region_id or area & set(s.target_regions)]
-    table = lcn_table_for(sl, region_id)
+    table = lcn_table_for(sl, region_id, package)
     by_ref = {}
     if table:
         for e in table.entries:
@@ -685,6 +710,10 @@ def lineup(sl, region_id=None):
             for n in range(first, end + 1):
                 if n not in used:
                     yield n
+        if overflow:
+            first, last = overflow
+            yield from (n for n in range(first, last + 1) if n not in used)
+            yield from (n for n in range(first - 1, 0, -1) if n not in used)
         n = max(used, default=0) + 1
         while True:
             if n not in used:
@@ -854,20 +883,32 @@ def candidates(instances, scanned, name="", radio=False, sat_direct=True, servic
     return out, reasons
 
 
-def resolve(service, scanned, sat_direct=True):
+BROADCAST_KINDS = ("dvb-t", "dvb-c", "dvb-s")
+
+
+def by_preference(instances, prefer_broadcast=False):
+    """The instances in priority order (IT-10); with *prefer_broadcast* the
+    antenna, cable and satellite ones come first (Italy: the best receivable
+    variant on an LCN conflict; New Zealand: the merged line-up)."""
+    if not prefer_broadcast:
+        return list(instances)
+    return sorted(instances, key=lambda i: i.kind not in BROADCAST_KINDS)
+
+
+def resolve(service, scanned, sat_direct=True, prefer_broadcast=False):
     """The channel for the best playable instance in priority order (IT-10), or
     (None, reason). A broadcast instance needs a matching channel from the
     channel search, or for satellite the delivery parameters; DRM-protected
     internet instances cannot be played."""
-    found, reasons = candidates(service.instances, scanned, service.name, service.radio,
-                                sat_direct, service.apps)
+    found, reasons = candidates(by_preference(service.instances, prefer_broadcast), scanned,
+                                service.name, service.radio, sat_direct, service.apps)
     if found:
         inst, ch = found[0]
         return ch, inst
     return None, "; ".join(reasons) or "no playable instance"
 
 
-def alternatives(channel, scanned, sat_direct=True):
+def alternatives(channel, scanned, sat_direct=True, prefer_broadcast=False):
     """IT-10 failover: the other playable instances of a DVB-I channel, in
     priority order, as channels with the channel's identity (name, number,
     DVB-I fields) and the tuning of that instance."""
@@ -880,7 +921,8 @@ def alternatives(channel, scanned, sat_direct=True):
             continue
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     service_apps = [a for a in channel.dvbi_apps if a.get("level") == "service"]
-    found, _ = candidates(insts, scanned, channel.name, channel.radio, sat_direct, service_apps)
+    found, _ = candidates(by_preference(insts, prefer_broadcast), scanned, channel.name,
+                          channel.radio, sat_direct, service_apps)
     out = []
     tuning = ("delsys", "root", "frequency", "polarity", "symbol_rate", "modulation", "fec",
               "bandwidth_hz", "stream_id", "diseqc", "sid", "tsid", "onid", "pmt_pid",
@@ -928,16 +970,18 @@ class BuildResult:
     missing: list = field(default_factory=list)    # (service name, reason)
 
 
-def build_channels(sl, region_id, scanned, list_name="", sat_direct=True):
+def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
+                   prefer_broadcast=False, package="", overflow=None):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
     channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
-    satellite instances may be tuned from their delivery parameters."""
+    satellite instances may be tuned from their delivery parameters;
+    *prefer_broadcast*: those before internet ones (see by_preference)."""
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
-    for entry in lineup(sl, region_id):
+    for entry in lineup(sl, region_id, package, overflow):
         svc = entry.service
-        ch, inst = resolve(svc, scanned, sat_direct)
+        ch, inst = resolve(svc, scanned, sat_direct, prefer_broadcast)
         if ch is None:
             res.missing.append((svc.name, inst))
             continue
@@ -1019,12 +1063,12 @@ def decode_data_uri(uri):
     return urllib.parse.unquote_to_bytes(payload)
 
 
-def query_registry(registries=REGISTRIES, fetcher=fetch):
+def query_registry(registries=REGISTRIES, fetcher=fetch, country=TARGET_COUNTRY):
     """Ask the registries in order; the first that answers wins (IT-7)."""
     errors = []
     for base in registries:
         try:
-            resp = fetcher(registry_query_url(base))
+            resp = fetcher(registry_query_url(base, country))
             return parse_registry(resp.data), base
         except DVBIError as e:
             errors.append(str(e))
@@ -1084,8 +1128,10 @@ def download_logos(channels, folder, fetcher=fetch, max_age=7 * 24 * 3600):
 
 
 def update_due(settings, now=None):
+    """The daily check is due (IT-18). The viewer can switch the automatic
+    update off (UHD Book 7.5: dvbi_auto_update)."""
     now = time.time() if now is None else now
-    return bool(settings.get("dvbi_list_url")) and \
+    return bool(settings.get("dvbi_list_url")) and settings.get("dvbi_auto_update", True) and \
         now - float(settings.get("dvbi_last_check") or 0) >= UPDATE_INTERVAL
 
 
@@ -1102,6 +1148,7 @@ class UpdateResult:
     service_list: ServiceList = None
     region: str = ""
     regions: list = field(default_factory=list)   # candidates when ambiguous
+    packages: list = field(default_factory=list)  # subscription packages of the list
     last_modified: str = ""
     etag: str = ""
     error: str = ""
@@ -1130,14 +1177,20 @@ class Updater:
         except (OSError, DVBIError):
             return None
 
-    def choose_region(self, sl, postcode, stored=""):
+    def choose_region(self, sl, postcode, stored="", area=None):
         """(region id, candidates). A stored choice wins while the list still
-        has it; otherwise the postcode decides (IT-5)."""
+        has it; otherwise the postcode decides (IT-5), and without a postcode
+        the region the viewer picked from the country's fixed list (Italian
+        regione, Freeview region)."""
         if stored and sl.region(stored):
             return stored, []
         if not sl.regions:
             return "", []
         cands = regions_for_postcode(sl, postcode) if postcode else []
+        if area is not None:
+            by_area = countries.match_area(sl.regions, area)
+            # the area narrows the postcode's candidates, or stands alone
+            cands = [r for r in cands if r in by_area] or cands or by_area
         if len(cands) == 1:
             return cands[0].id, []
         return (cands[0].id if cands else ""), cands
@@ -1145,6 +1198,7 @@ class Updater:
     def run(self, scanned, force=False, region=None, logos=True):
         s = self.settings
         res = UpdateResult()
+        use_country(s.get("dvbi_country"))
         url = s.get("dvbi_list_url")
         if not url:
             res.error = "No DVB-I service list chosen"
@@ -1177,11 +1231,19 @@ class Updater:
             if sl is None:
                 res.error = "The service list is unchanged but no copy is cached"
                 return res
+        country = countries.get(s.get("dvbi_country"))
         rid, cands = self.choose_region(sl, postcode,
-                                        region if region is not None else s.get("dvbi_region", ""))
+                                        region if region is not None else s.get("dvbi_region", ""),
+                                        countries.area(country, s.get("dvbi_area", "")))
         res.region, res.regions, res.service_list = rid, cands, sl
         res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name,
-                                   sat_direct=s.get("dvbi_sat_direct", True))
+                                   sat_direct=s.get("dvbi_sat_direct", True),
+                                   prefer_broadcast=s.get("dvbi_prefer_broadcast",
+                                                          country.prefer_broadcast),
+                                   package=s.get("dvbi_package", "") if s.get("dvbi_package", "")
+                                   in sl.packages else "",
+                                   overflow=country.overflow)
+        res.packages = list(sl.packages)
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)
         res.changed = True

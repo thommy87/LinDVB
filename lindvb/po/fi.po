@@ -705,9 +705,6 @@ msgstr "{v0} palveluluetteloa osoitteesta {netloc}"
 msgid "The registry offers no service list for Germany."
 msgstr "Rekisteri ei tarjoa palveluluetteloa Saksalle."
 
-msgid "Please enter a postcode with five digits"
-msgstr "Anna viisinumeroinen postinumero"
-
 msgid "Loading the service list…"
 msgstr "Ladataan palveluluetteloa…"
 

@@ -226,9 +226,13 @@ class PrefsWindow(Gtk.Window):
                _("Applications prefer the soundtrack that describes the picture."))
         switch(g, "hbbtv_teletext", _("Teletext from the interactive service"),
                _("The TXT button opens the channel's HbbTV teletext where there is one."))
-        from .. import hbbtv as hb_core
-        ages = list(hb_core.AGE_LIMITS)
+        from .. import dvbi_countries
+        # the age steps of the country chosen for DVB-I (Germany 6/12/16,
+        # Italy 6/14, New Zealand 13/16); a limit set before stays a choice
+        ages = list(dvbi_countries.get(s.get("dvbi_country")).age_limits)
         cur = int(s.get("hbbtv_age_limit", 0) or 0)
+        if cur not in ages:
+            ages = sorted(ages + [cur])
         self._age_drop = _row(g, _("Youth protection"), dropdown(
             [_("Off")] + [_("Viewers from {age} years").format(age=a) for a in ages[1:]],
             ages.index(cur) if cur in ages else 0),

@@ -49,6 +49,8 @@ class LinDVBApp(Gtk.Application):
         if i18n.is_rtl():
             Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
         channels_mod.DVBI_GUIDE_FIRST = bool(self.settings.get("dvbi_guide", True))
+        from . import dvbi
+        dvbi.use_country(self.settings.get("dvbi_country"))
         self.plugins = PluginManager(self.settings)
         self.plugins.load_all()
         self.db = ChannelDB()
