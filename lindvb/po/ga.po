@@ -3519,3 +3519,36 @@ msgstr "Mar an gcóras"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Coinníonn an pictiúr a fhráma dorcha i gcónaí."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Ní liostaítear ach na tiúnóirí atá ceangailte anois; coinnítear socruithe na cinn eile faoi “Gan cheangal”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Glacann sé gach rud a chraolann an trasfhreagróir in ionad sruthanna an chainéil amháin. Teastaíonn níos mó leithead banda ar thiúnóirí USB, ach seinneann agus taifeadann sé gach rian fuaime fiú nuair nach bhfuil ach rian amháin ar eolas ag an liosta cainéal. Baineann sé le teilifís bheo agus le taifeadtaí."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "D'ainm féin don tiúnóir seo. Folamh: ainm an ghléis."
+
+msgid "Satellite"
+msgstr "Satailít"
+
+msgid "Antenna (terrestrial)"
+msgstr "Aeróg (talún)"
+
+msgid "Cable"
+msgstr "Cábla"
+
+msgid "Connected to"
+msgstr "Ceangailte le"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Glacann tiúnóir comhcheangailte cineál amháin ag an am, ar an soicéad a bhfuil sé ceangailte leis. Ní úsáideann LinDVB é ansin ach do chainéil den chineál sin."
+
+msgid "No tuner is connected."
+msgstr "Níl aon tiúnóir ceangailte."
+
+msgid "Not connected ({n})"
+msgstr "Gan cheangal ({n})"
+
+msgid "All its reception types"
+msgstr "A chineálacha glactha go léir"

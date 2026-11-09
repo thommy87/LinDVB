@@ -3519,3 +3519,36 @@ msgstr "Kao sustav"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Slika uvijek zadržava svoj tamni okvir."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Prikazani su samo trenutačno priključeni prijemnici; postavke ostalih čuvaju se pod „Nije priključeno”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Prima sve što transponder emitira umjesto samo vlastitih tokova kanala. Na USB prijemnicima to traži veću propusnost, ali reproducira i snima sve zvučne zapise čak i kad popis kanala poznaje samo jedan. Vrijedi za TV uživo i snimke."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Vaš vlastiti naziv za ovaj prijemnik. Prazno: naziv uređaja."
+
+msgid "Satellite"
+msgstr "Satelit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antena (zemaljska)"
+
+msgid "Cable"
+msgstr "Kabel"
+
+msgid "Connected to"
+msgstr "Priključen na"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Kombinirani prijemnik prima jednu vrstu odjednom, na utičnici na koju je priključen. LinDVB ga tada koristi samo za kanale te vrste."
+
+msgid "No tuner is connected."
+msgstr "Nijedan prijemnik nije priključen."
+
+msgid "Not connected ({n})"
+msgstr "Nije priključeno ({n})"
+
+msgid "All its reception types"
+msgstr "Sve njegove vrste prijema"

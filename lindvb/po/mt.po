@@ -3519,3 +3519,36 @@ msgstr "Bħas-sistema"
 
 msgid "The picture always keeps its dark frame."
 msgstr "L-istampa dejjem iżżomm il-qafas skur tagħha."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Jintwerew biss it-tuners imqabbdin issa; is-settings tal-oħrajn jinżammu taħt “Mhux imqabbdin”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Jirċievi dak kollu li jibgħat it-transponder minflok biss il-flussi tal-kanal. Fuq tuners USB jeħtieġ aktar bandwidth, iżda jdoqq u jirrekordja l-binarji tal-awdjo kollha anke meta l-lista tal-kanali taf waħda biss. Japplika għat-TV dirett u għar-reġistrazzjonijiet."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "L-isem tiegħek għal dan it-tuner. Vojt: l-isem tal-apparat."
+
+msgid "Satellite"
+msgstr "Satellita"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenna (terrestri)"
+
+msgid "Cable"
+msgstr "Kejbil"
+
+msgid "Connected to"
+msgstr "Imqabbad ma'"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Tuner kombinat jirċievi tip wieħed kull darba, fuq is-sokit li miegħu huwa mqabbad. LinDVB imbagħad jużah biss għal kanali ta' dak it-tip."
+
+msgid "No tuner is connected."
+msgstr "L-ebda tuner mhu mqabbad."
+
+msgid "Not connected ({n})"
+msgstr "Mhux imqabbdin ({n})"
+
+msgid "All its reception types"
+msgstr "It-tipi kollha ta' riċeviment tiegħu"

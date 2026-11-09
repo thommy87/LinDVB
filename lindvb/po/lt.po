@@ -3519,3 +3519,36 @@ msgstr "Kaip sistemoje"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Vaizdas visada išlaiko tamsų rėmelį."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Rodomi tik dabar prijungti imtuvai; kitų nustatymai išsaugomi skiltyje „Neprijungti“."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Priima viską, ką siunčia retransliatorius, o ne tik kanalo srautus. USB imtuvams tai reikalauja daugiau pralaidumo, bet atkuria ir įrašo visus garso takelius, net jei kanalų sąraše žinomas tik vienas. Taikoma tiesioginei TV ir įrašams."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Jūsų pačių pavadinimas šiam imtuvui. Tuščia: įrenginio pavadinimas."
+
+msgid "Satellite"
+msgstr "Palydovas"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antena (antžeminė)"
+
+msgid "Cable"
+msgstr "Kabelis"
+
+msgid "Connected to"
+msgstr "Prijungtas prie"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Kombinuotas imtuvas vienu metu priima vieną tipą – per lizdą, prie kurio prijungtas. Tada LinDVB naudoja jį tik to tipo kanalams."
+
+msgid "No tuner is connected."
+msgstr "Neprijungtas joks imtuvas."
+
+msgid "Not connected ({n})"
+msgstr "Neprijungti ({n})"
+
+msgid "All its reception types"
+msgstr "Visi jo priėmimo tipai"

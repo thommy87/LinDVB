@@ -3789,3 +3789,36 @@ msgstr "Wie das System"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Das Bild behält immer seinen dunklen Rahmen."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Angezeigt werden nur die jetzt angeschlossenen Tuner; die Einstellungen der übrigen bleiben unter „Nicht angeschlossen“ erhalten."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Empfängt alles, was der Transponder sendet, statt nur der eigenen Datenströme des Senders. Das kostet bei USB-Tunern mehr Bandbreite, spielt und nimmt aber alle Tonspuren auf, auch wenn die Senderliste nur eine kennt. Gilt für Live-TV und Aufnahmen."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Ihr eigener Name für diesen Tuner. Leer: der Name des Geräts."
+
+msgid "Satellite"
+msgstr "Satellit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenne (terrestrisch)"
+
+msgid "Cable"
+msgstr "Kabel"
+
+msgid "Connected to"
+msgstr "Angeschlossen an"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Ein Kombi-Tuner empfängt immer nur eine Art, an der Buchse, an der er angeschlossen ist. LinDVB nutzt ihn dann nur für Sender dieser Art."
+
+msgid "No tuner is connected."
+msgstr "Kein Tuner ist angeschlossen."
+
+msgid "Not connected ({n})"
+msgstr "Nicht angeschlossen ({n})"
+
+msgid "All its reception types"
+msgstr "Alle seine Empfangsarten"

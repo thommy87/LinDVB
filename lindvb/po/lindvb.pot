@@ -4891,3 +4891,36 @@ msgstr ""
 
 msgid "The picture always keeps its dark frame."
 msgstr ""
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr ""
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr ""
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr ""
+
+msgid "Satellite"
+msgstr ""
+
+msgid "Antenna (terrestrial)"
+msgstr ""
+
+msgid "Cable"
+msgstr ""
+
+msgid "Connected to"
+msgstr ""
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr ""
+
+msgid "No tuner is connected."
+msgstr ""
+
+msgid "Not connected ({n})"
+msgstr ""
+
+msgid "All its reception types"
+msgstr ""

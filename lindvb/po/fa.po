@@ -3574,3 +3574,36 @@ msgstr "مانند سیستم"
 
 msgid "The picture always keeps its dark frame."
 msgstr "تصویر همیشه قاب تیرهٔ خود را نگه می‌دارد."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "فقط تیونرهایی که اکنون وصل هستند نمایش داده می‌شوند؛ تنظیمات بقیه زیر «وصل نیست» نگه داشته می‌شود."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "به‌جای فقط جریان‌های خود کانال، هر چه ترنسپوندر می‌فرستد را دریافت می‌کند. در تیونرهای USB پهنای باند بیشتری می‌گیرد، اما همهٔ ترک‌های صدا را پخش و ضبط می‌کند، حتی وقتی فهرست کانال فقط یکی را می‌شناسد. برای تلویزیون زنده و ضبط‌ها اعمال می‌شود."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "نام دلخواه شما برای این تیونر. خالی: نام دستگاه."
+
+msgid "Satellite"
+msgstr "ماهواره"
+
+msgid "Antenna (terrestrial)"
+msgstr "آنتن (زمینی)"
+
+msgid "Cable"
+msgstr "کابل"
+
+msgid "Connected to"
+msgstr "وصل به"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "تیونر ترکیبی هر بار فقط یک نوع را از درگاهی که به آن وصل است دریافت می‌کند. LinDVB سپس فقط برای کانال‌های همان نوع از آن استفاده می‌کند."
+
+msgid "No tuner is connected."
+msgstr "هیچ تیونری وصل نیست."
+
+msgid "Not connected ({n})"
+msgstr "وصل نیست ({n})"
+
+msgid "All its reception types"
+msgstr "همهٔ انواع دریافت آن"

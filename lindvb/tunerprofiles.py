@@ -205,8 +205,42 @@ def active_profiles(settings, systems_for=None, detect=None):
     return [p for _, _, p in sorted(out, key=lambda t: t[:2])]
 
 
+# the reception types a combined tuner can be set to (profile["use"])
+FAMILIES = {
+    "sat": ("dvb-s", "dvb-s2", "turbo", "dss", "isdb-s"),
+    "ter": ("dvb-t", "dvb-t2", "isdb-t", "atsc", "dtmb"),
+    "cab": ("dvb-c", "dvb-c-a", "dvb-c-b", "dvb-c-c", "dvb-c2"),
+}
+
+
+def family_of(delsys):
+    """"sat", "ter" or "cab" for a delivery system, "" if none."""
+    for fam, systems in FAMILIES.items():
+        if delsys in systems:
+            return fam
+    return ""
+
+
+def families(profile):
+    """The reception types the tuner's systems cover, in FAMILIES order."""
+    have = {family_of(s) for s in profile.get("systems") or []}
+    return [f for f in FAMILIES if f in have]
+
+
+def display_name(profile):
+    """The user's own name for the tuner, else the detected one."""
+    return (profile.get("label") or "").strip() or profile.get("name") or \
+        f"Adapter {profile.get('adapter', 0)}"
+
+
 def supports(profile, delsys):
-    """True if the tuner can receive channels of *delsys*."""
+    """True if the tuner can receive channels of *delsys*.
+
+    A combined tuner set to one reception type (``use``) only takes that one.
+    """
+    use = profile.get("use") or ""
+    if use and len(families(profile)) > 1 and family_of(delsys) not in ("", use):
+        return False
     systems = profile.get("systems") or []
     if not systems:
         return True

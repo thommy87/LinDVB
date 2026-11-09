@@ -3519,3 +3519,36 @@ msgstr "Som systemet"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Billedet beholder altid sin mørke ramme."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Kun de tunere, der er tilsluttet nu, vises; indstillingerne for de øvrige gemmes under »Ikke tilsluttet«."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Modtager alt, hvad transponderen sender, i stedet for kun kanalens egne strømme. Det kræver mere båndbredde på USB-tunere, men afspiller og optager alle lydspor, også når kanallisten kun kender ét. Gælder live-tv og optagelser."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Dit eget navn til denne tuner. Tomt: enhedens navn."
+
+msgid "Satellite"
+msgstr "Satellit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenne (jordbaseret)"
+
+msgid "Cable"
+msgstr "Kabel"
+
+msgid "Connected to"
+msgstr "Tilsluttet"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "En kombineret tuner modtager én type ad gangen, på det stik den er tilsluttet. LinDVB bruger den så kun til kanaler af den type."
+
+msgid "No tuner is connected."
+msgstr "Ingen tuner er tilsluttet."
+
+msgid "Not connected ({n})"
+msgstr "Ikke tilsluttet ({n})"
+
+msgid "All its reception types"
+msgstr "Alle dens modtagetyper"

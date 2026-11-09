@@ -3519,3 +3519,36 @@ msgstr "A rendszer szerint"
 
 msgid "The picture always keeps its dark frame."
 msgstr "A kép mindig megtartja sötét keretét."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Csak a most csatlakoztatott tunerek látszanak; a többiek beállításai a „Nincs csatlakoztatva” alatt maradnak meg."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "A transzponder minden adását veszi, nem csak a csatorna saját adatfolyamait. USB-tunereken több sávszélességet igényel, de minden hangsávot lejátszik és rögzít akkor is, ha a csatornalista csak egyet ismer. Élő tévére és felvételekre is érvényes."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "A tuner saját neve. Üres: az eszköz neve."
+
+msgid "Satellite"
+msgstr "Műhold"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenna (földi)"
+
+msgid "Cable"
+msgstr "Kábel"
+
+msgid "Connected to"
+msgstr "Csatlakoztatva ide"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "A kombinált tuner egyszerre egy típust vesz, azon az aljzaton, amelyre csatlakoztatva van. A LinDVB ekkor csak az ilyen típusú csatornákhoz használja."
+
+msgid "No tuner is connected."
+msgstr "Nincs csatlakoztatott tuner."
+
+msgid "Not connected ({n})"
+msgstr "Nincs csatlakoztatva ({n})"
+
+msgid "All its reception types"
+msgstr "Minden vételi típusa"

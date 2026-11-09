@@ -3519,3 +3519,36 @@ msgstr "Как в системе"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Изображение всегда остаётся в тёмной рамке."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Показаны только подключённые сейчас тюнеры; настройки остальных сохраняются в разделе «Не подключены»."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Принимает всё, что передаёт транспондер, а не только собственные потоки канала. Для USB-тюнеров требует большей пропускной способности, но воспроизводит и записывает все звуковые дорожки, даже если список каналов знает только одну. Действует для прямого эфира и записей."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Ваше собственное имя для этого тюнера. Пусто: имя устройства."
+
+msgid "Satellite"
+msgstr "Спутник"
+
+msgid "Antenna (terrestrial)"
+msgstr "Антенна (эфирная)"
+
+msgid "Cable"
+msgstr "Кабель"
+
+msgid "Connected to"
+msgstr "Подключён к"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Комбинированный тюнер принимает один тип за раз, через гнездо, к которому подключён. Тогда LinDVB использует его только для каналов этого типа."
+
+msgid "No tuner is connected."
+msgstr "Ни один тюнер не подключён."
+
+msgid "Not connected ({n})"
+msgstr "Не подключены ({n})"
+
+msgid "All its reception types"
+msgstr "Все его типы приёма"

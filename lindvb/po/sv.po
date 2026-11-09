@@ -3519,3 +3519,36 @@ msgstr "Som systemet"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Bilden behåller alltid sin mörka ram."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Endast de mottagare som är anslutna nu visas; inställningarna för de övriga sparas under ”Inte anslutna”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Tar emot allt som transpondern sänder i stället för bara kanalens egna strömmar. Det kräver mer bandbredd på USB-mottagare, men spelar upp och spelar in alla ljudspår även när kanallistan bara känner till ett. Gäller direkt-tv och inspelningar."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Ditt eget namn på den här mottagaren. Tomt: enhetens namn."
+
+msgid "Satellite"
+msgstr "Satellit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenn (marksänd)"
+
+msgid "Cable"
+msgstr "Kabel"
+
+msgid "Connected to"
+msgstr "Ansluten till"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "En kombinerad mottagare tar emot en typ åt gången, på uttaget den är ansluten till. LinDVB använder den då bara för kanaler av den typen."
+
+msgid "No tuner is connected."
+msgstr "Ingen mottagare är ansluten."
+
+msgid "Not connected ({n})"
+msgstr "Inte anslutna ({n})"
+
+msgid "All its reception types"
+msgstr "Alla dess mottagningstyper"

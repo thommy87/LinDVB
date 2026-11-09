@@ -3519,3 +3519,36 @@ msgstr "مثل النظام"
 
 msgid "The picture always keeps its dark frame."
 msgstr "تحتفظ الصورة دائماً بإطارها الداكن."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "تُعرض فقط أجهزة الموالفة الموصولة الآن؛ وتُحفظ إعدادات غيرها تحت «غير موصول»."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "يستقبل كل ما يبثه المرسل المستجيب بدلاً من تدفقات القناة وحدها. يحتاج ذلك نطاقاً ترددياً أكبر في أجهزة الموالفة USB، لكنه يشغّل ويسجّل جميع المسارات الصوتية حتى لو كانت قائمة القنوات تعرف مساراً واحداً فقط. ينطبق على البث المباشر والتسجيلات."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "اسمك الخاص لهذا الموالف. فارغ: اسم الجهاز."
+
+msgid "Satellite"
+msgstr "قمر صناعي"
+
+msgid "Antenna (terrestrial)"
+msgstr "هوائي (أرضي)"
+
+msgid "Cable"
+msgstr "كابل"
+
+msgid "Connected to"
+msgstr "موصول بـ"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "يستقبل الموالف المدمج نوعاً واحداً في كل مرة، عبر المقبس الموصول به. ويستخدمه LinDVB عندئذ لقنوات هذا النوع فقط."
+
+msgid "No tuner is connected."
+msgstr "لا يوجد موالف موصول."
+
+msgid "Not connected ({n})"
+msgstr "غير موصول ({n})"
+
+msgid "All its reception types"
+msgstr "كل أنواع الاستقبال لديه"

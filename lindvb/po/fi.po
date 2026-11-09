@@ -3519,3 +3519,36 @@ msgstr "Kuten järjestelmä"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Kuva säilyttää aina tumman kehyksensä."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Vain nyt liitetyt virittimet näytetään; muiden asetukset säilyvät kohdassa ”Ei liitetty”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Vastaanottaa kaiken, mitä transponderi lähettää, eikä vain kanavan omia virtoja. Se vie USB-virittimillä enemmän kaistaa, mutta toistaa ja tallentaa kaikki ääniraidat, vaikka kanavalista tuntisi vain yhden. Koskee suoraa lähetystä ja tallenteita."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Oma nimesi tälle virittimelle. Tyhjä: laitteen nimi."
+
+msgid "Satellite"
+msgstr "Satelliitti"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenni (maanpäällinen)"
+
+msgid "Cable"
+msgstr "Kaapeli"
+
+msgid "Connected to"
+msgstr "Liitetty"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Yhdistelmäviritin vastaanottaa yhtä tyyppiä kerrallaan siitä liitännästä, johon se on kytketty. LinDVB käyttää sitä silloin vain sen tyypin kanaville."
+
+msgid "No tuner is connected."
+msgstr "Viritintä ei ole liitetty."
+
+msgid "Not connected ({n})"
+msgstr "Ei liitetty ({n})"
+
+msgid "All its reception types"
+msgstr "Kaikki sen vastaanottotyypit"

@@ -160,14 +160,8 @@ def find_adapters():
     for fe in sorted(Path("/dev/dvb").glob("adapter*/frontend*")):
         a = int(fe.parent.name[7:])
         f = int(fe.name[8:])
-        name = ""
-        sysname = Path(f"/sys/class/dvb/dvb{a}.frontend{f}/device")
-        for cand in ("product", "model"):
-            try:
-                name = (sysname / cand).read_text().strip()
-                break
-            except OSError:
-                pass
+        from .tunernames import card_name
+        name = card_name(a, f)
         if not name and is_virtual_adapter(a, f):
             name = "Virtual tuner (vidtv)"
         res.append((a, f, name or f"Adapter {a}"))
