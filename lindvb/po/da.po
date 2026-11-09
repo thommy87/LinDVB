@@ -3565,6 +3565,10 @@ msgstr "Find picons på nettet"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Hent et sæt til din satellit, dit kabel eller din antenne der, og pak det ud i logomappen."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Udbyder / Kategori"
+
 msgid "Extra streams"
 msgstr "Ekstra streams"
 

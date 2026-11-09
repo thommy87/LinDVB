@@ -563,7 +563,9 @@ def parse_dvbviewer_ini(text):
             c.frequency = num("Frequency") * 1000
             c.polarity = g.get("Polarity", "h").lower()[:1]
             c.symbol_rate = num("Symbolrate")
-            c.diseqc = {0: -1, 1: 0, 2: 1, 3: -1}.get(num("DiseqC"), -1)
+            # DVBViewer: 1/2 = simple A/B (tone burst), 3..6 = DiSEqC 1.0
+            # ports 1..4 (PosA/OptA, PosB/OptA, PosA/OptB, PosB/OptB)
+            c.diseqc = {1: 0, 2: 1, 3: 0, 4: 1, 5: 2, 6: 3}.get(num("DiseqC"), -1)
             sub = num("SubStreamID", -1)
             c.stream_id = sub if 0 <= sub < 256 else -1
         elif tuner == 0:                                 # cable

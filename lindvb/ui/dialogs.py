@@ -624,26 +624,30 @@ class PrefsWindow(Gtk.Window):
             row["uc"] = self._single_cable_rows(g, prof)
             sat_rows = _children(g)[first:]
         if row["use"] is not None and sat_rows:
+            uc_rows = row["uc"]["rows"]
+
             def show(dd, *_a):
                 use = row["uses"][dd.get_selected()]
                 for r in sat_rows:
-                    r.set_visible(use in ("", "sat"))
+                    if r not in uc_rows:
+                        r.set_visible(use in ("", "sat"))
+                row["uc"]["show"](use in ("", "sat"))
             row["use"].connect("notify::selected", show)
             show(row["use"])
         return row
 
     def _single_cable_rows(self, g, prof):
-        """Unicable / JESS: standard, user band, its frequency and PIN."""
+        """Unicable / JESS: standard, user band, its frequency and PIN. Only the
+        choice of the standard shows while no single cable is set."""
         from .. import unicable
         uc = prof.get("unicable") or {}
         kinds = ["", *unicable.STANDARDS]
-        std = _row(g, _("Single cable (Unicable)"), dropdown(
-            [_("Off"), _("Unicable I (EN 50494)"), _("Unicable II / JESS (EN 50607)")],
-            kinds.index(uc.get("standard")) if uc.get("standard") in kinds else 0),
-            _("All tuners hang on one cable and each has a user band of its own. "
-              "Give them the same cable name above."))
+        std = _row(g, _("Unicable"), dropdown(
+            [_("No Unicable"), _("Unicable I (EN 50494)"), _("Unicable II / JESS (EN 50607)")],
+            kinds.index(uc.get("standard")) if uc.get("standard") in kinds else 0))
         slot = _row(g, _("User band"), Gtk.SpinButton.new_with_range(1, 32, 1),
-                    _("Each tuner on the cable needs a different user band."))
+                    _("Each tuner on the cable needs a different user band. Give all "
+                      "tuners on the cable the same cable name above."))
         slot.set_value(int(uc.get("slot", 0)) + 1)
         freq = _row(g, _("User band frequency (MHz)"),
                     Gtk.SpinButton.new_with_range(950, 2150, 1),
@@ -669,13 +673,22 @@ class PrefsWindow(Gtk.Window):
             freq.set_value(freqs[n])
         tmpl.connect("notify::selected", fill)
 
-        def sensitive(*_a):
-            on = std.get_selected() > 0
-            for w in (slot, freq, pin):
-                w.set_sensitive(on)
-        std.connect("notify::selected", sensitive)
-        sensitive()
-        return {"std": std, "slot": slot, "freq": freq, "pin": pin, "kinds": kinds}
+        details = [w.get_parent() for w in (slot, freq, pin, tmpl)]
+        state = {"shown": True}            # False while the tuner is not used for satellite
+
+        def update(*_a):
+            on = state["shown"] and std.get_selected() > 0
+            for r in details:
+                r.set_visible(on)
+        std.connect("notify::selected", update)
+        update()
+
+        def show(visible):
+            state["shown"] = visible
+            std.get_parent().set_visible(visible)
+            update()
+        return {"std": std, "slot": slot, "freq": freq, "pin": pin, "kinds": kinds,
+                "rows": [std.get_parent(), *details], "show": show}
 
     def _save_tuners(self, s):
         from .. import tunerprofiles as tp

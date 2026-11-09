@@ -3565,6 +3565,10 @@ msgstr "Etsi piconeja verkosta"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lataa sieltä sarja satelliitillesi, kaapelillesi tai antennillesi ja pura se logokansioon."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Palveluntarjoaja / Luokka"
+
 msgid "Extra streams"
 msgstr "Lisävirrat"
 

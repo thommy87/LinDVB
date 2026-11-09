@@ -3565,6 +3565,10 @@ msgstr "Meklēt picon tiešsaistē"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lejupielādējiet tur komplektu savam satelītam, kabelim vai antenai un izpakojiet to logotipu mapē."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Pakalpojumu sniedzējs / Kategorija"
+
 msgid "Extra streams"
 msgstr "Papildu straumes"
 

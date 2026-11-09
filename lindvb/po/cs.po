@@ -3565,6 +3565,10 @@ msgstr "Najít picony na internetu"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Stáhněte si tam sadu pro svůj satelit, kabel nebo anténu a rozbalte ji do složky s logy."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Poskytovatel / Kategorie"
+
 msgid "Extra streams"
 msgstr "Další streamy"
 

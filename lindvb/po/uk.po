@@ -3565,6 +3565,10 @@ msgstr "Знайти пікони в інтернеті"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Завантажте там набір для вашого супутника, кабелю чи антени й розпакуйте його в теку логотипів."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Провайдер / Категорія"
+
 msgid "Extra streams"
 msgstr "Додаткові потоки"
 
