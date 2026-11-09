@@ -3414,3 +3414,21 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numero"
+
+msgid "Name A–Z"
+msgstr "Nimi A–Ö"
+
+msgid "Name Z–A"
+msgstr "Nimi Ö–A"
+
+msgid "Picture quality"
+msgstr "Kuvanlaatu"
+
+msgid "Sort by"
+msgstr "Lajitteluperuste"
+
+msgid "All"
+msgstr "Kaikki"

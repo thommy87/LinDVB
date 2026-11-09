@@ -86,6 +86,8 @@ DEFAULTS = {
     # group ("" = all groups) last chosen, shown again at the next start.
     "list_filter": 0,
     "list_group": "",
+    "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
+    "list_sort_value": "",          # the provider / transponder / quality shown
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,
     # goomhd, bars, vu, scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",

@@ -3414,3 +3414,21 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Uimhir"
+
+msgid "Name A–Z"
+msgstr "Ainm A–Z"
+
+msgid "Name Z–A"
+msgstr "Ainm Z–A"
+
+msgid "Picture quality"
+msgstr "Cáilíocht pictiúir"
+
+msgid "Sort by"
+msgstr "Sórtáil de réir"
+
+msgid "All"
+msgstr "Gach"

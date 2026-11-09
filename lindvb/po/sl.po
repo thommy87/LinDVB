@@ -3414,3 +3414,21 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Številka"
+
+msgid "Name A–Z"
+msgstr "Ime A–Ž"
+
+msgid "Name Z–A"
+msgstr "Ime Ž–A"
+
+msgid "Picture quality"
+msgstr "Kakovost slike"
+
+msgid "Sort by"
+msgstr "Razvrsti po"
+
+msgid "All"
+msgstr "Vse"

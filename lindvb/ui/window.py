@@ -8,7 +8,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gst, Gtk, Pango
 
-from .. import dvbi
+from .. import chansort, dvbi
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
@@ -499,10 +499,29 @@ class MainWindow(Gtk.ApplicationWindow):
         row.append(self.filter_dd)
         row.append(self.group_dd)
         chan_page.append(row)
+        # sort order, and for grouping orders (provider …) one value to show
+        row2 = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
+        self._sorts = [k for k, _l in chansort.SORTS]
+        self.sort_dd = Gtk.DropDown.new_from_strings([lbl for _k, lbl in chansort.SORTS])
+        self.sort_dd.set_tooltip_text(_("Sort by"))
+        srt = self.settings.get("list_sort", "number")
+        self.sort_dd.set_selected(self._sorts.index(srt) if srt in self._sorts else 0)
+        self.sort_dd.set_hexpand(True)
+        self._values = [""]
+        self._value_sync = False
+        self.value_dd = Gtk.DropDown.new_from_strings([_("All")])
+        self.value_dd.set_hexpand(True)
+        row2.append(self.sort_dd)
+        row2.append(self.value_dd)
+        chan_page.append(row2)
 
         self.store = Gio.ListStore(item_type=Row)
         self.filter = Gtk.CustomFilter.new(self._filter_func)
-        self.filtered = Gtk.FilterListModel(model=self.store, filter=self.filter)
+        self._filter_model = Gtk.FilterListModel(model=self.store, filter=self.filter)
+        self.sorter = Gtk.CustomSorter.new(self._sort_func)
+        self.filtered = Gtk.SortListModel(model=self._filter_model)
+        self.sort_dd.connect("notify::selected", lambda *_: self._on_list_sort())
+        self.value_dd.connect("notify::selected", lambda *_: self._on_list_value())
         self.selection = Gtk.SingleSelection(model=self.filtered, autoselect=False)
         fac = Gtk.SignalListItemFactory()
         fac.connect("setup", self._row_setup)
@@ -793,6 +812,10 @@ class MainWindow(Gtk.ApplicationWindow):
         g = self.group_dd.get_selected()
         if g > 0 and self._groups[g] != c.root:
             return False
+        v = self.value_dd.get_selected()
+        if 0 < v < len(self._values) and \
+                chansort.group_value(c, self._sort()) != self._values[v]:
+            return False
         q = self.search.get_text().strip().lower()
         if q:
             if q.isdigit():
@@ -813,9 +836,49 @@ class MainWindow(Gtk.ApplicationWindow):
         group = self.settings.get("list_group") or ""
         self.group_dd.set_selected(self._groups.index(group) if group in self._groups[1:] else 0)
         self._group_sync = False
+        self._update_sort()
         self._refilter()
         if self.current is not None:
             self._select_in_list(self.current)
+
+    def _sort(self):
+        i = self.sort_dd.get_selected()
+        return self._sorts[i] if 0 <= i < len(self._sorts) else "number"
+
+    def _sort_func(self, a, b, _data=None):
+        srt = self._sort()
+        ka, kb = chansort.sort_key(a.data, srt), chansort.sort_key(b.data, srt)
+        if srt == "za":
+            ka, kb = kb, ka
+        return (ka > kb) - (ka < kb)
+
+    def _update_sort(self):
+        """Apply the sort order and offer the values of a grouping order."""
+        srt = self._sort()
+        self.filtered.set_sorter(None if srt == "number" else self.sorter)
+        if srt != "number":
+            self.sorter.changed(Gtk.SorterChange.DIFFERENT)
+        grouped = srt in chansort.GROUPED
+        keep = self.settings.get("list_sort_value", "")
+        self._values = [""] + (chansort.values(self.app.db.channels, srt) if grouped else [])
+        self._value_sync = True
+        self.value_dd.set_model(Gtk.StringList.new([_("All")] + self._values[1:]))
+        self.value_dd.set_selected(self._values.index(keep) if keep in self._values[1:] else 0)
+        self._value_sync = False
+        self.value_dd.set_visible(grouped)
+
+    def _on_list_sort(self):
+        self.settings["list_sort"] = self._sort()
+        self.settings["list_sort_value"] = ""
+        self._update_sort()
+        self._refilter()
+
+    def _on_list_value(self):
+        if not self._value_sync:
+            v = self.value_dd.get_selected()
+            self.settings["list_sort_value"] = (self._values[v] if 0 < v < len(self._values)
+                                                else "")
+            self._refilter()
 
     def _on_list_filter(self):
         self.settings["list_filter"] = self.filter_dd.get_selected()
