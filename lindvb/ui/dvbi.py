@@ -27,9 +27,18 @@ def _check(label, active=False):
     return btn
 
 
-def _clear(box):
-    while (child := box.get_first_child()) is not None:
-        box.remove(child)
+def _renew(box):
+    """Put an empty copy of ``box`` in its place and return it.
+
+    Removing and adding children of a box that stays in place can leave GTK with
+    the box's old height (seen on Wayland after a country change): a long
+    wrapped text then runs over the widgets below it. A new box is measured
+    from scratch."""
+    new = Gtk.Box(orientation=box.get_orientation(), spacing=box.get_spacing())
+    parent = box.get_parent()
+    parent.insert_child_after(new, box)
+    parent.remove(box)
+    return new
 
 
 class DVBIPanel(Gtk.Box):
@@ -199,7 +208,7 @@ class DVBIPanel(Gtk.Box):
         self.profile_lbl.set_text(_("Settings follow: {profile}").format(profile=c.profile))
 
         # only what the country's profile asks for (Germany: IT-17)
-        _clear(self.privacy_box)
+        self.privacy_box = _renew(self.privacy_box)
         self.privacy_box.set_visible(bool(c.privacy_notice or c.consents))
         if c.privacy_notice:
             self.title(self.privacy_box, _("Privacy"))
@@ -216,7 +225,7 @@ class DVBIPanel(Gtk.Box):
             self.consent_checks[consent.key] = chk
         self.ack = self.consent_checks.get("privacy")
 
-        _clear(self.region_box)
+        self.region_box = _renew(self.region_box)
         grid = Gtk.Grid(column_spacing=12, row_spacing=8)
         self.region_box.append(grid)
         y = 0
@@ -253,7 +262,7 @@ class DVBIPanel(Gtk.Box):
         grid.attach(self.nationwide, 2, y, 1, 1)
         self.hint(self.region_box, pc_hint)
 
-        _clear(self.notes_box)
+        self.notes_box = _renew(self.notes_box)
         for note in c.notes:
             self.hint(self.notes_box, _(note))
 
