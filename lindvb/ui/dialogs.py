@@ -99,7 +99,7 @@ class PrefsWindow(Gtk.Window):
         body = Gtk.Box()
         body.append(nav)
         body.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
-        body.append(scrolled(self.stack))
+        body.append(self.stack)
         self.set_child(body)
 
         def page(name, title, intro=None):
@@ -108,7 +108,13 @@ class PrefsWindow(Gtk.Window):
             box.append(Gtk.Label(label=title, xalign=0, css_classes=["lv-page-title"]))
             if intro:
                 box.append(Gtk.Label(label=intro, xalign=0, wrap=True, css_classes=["lv-hint"]))
-            self.stack.add_titled(box, name, title)
+            # every page scrolls on its own and only as far as its content goes;
+            # no sideways scrolling: the window opens as wide as the widest page
+            # needs in the chosen language, so no control is cut off
+            sw = Gtk.ScrolledWindow(hexpand=True, vexpand=True,
+                                    hscrollbar_policy=Gtk.PolicyType.NEVER)
+            sw.set_child(box)
+            self.stack.add_titled(sw, name, title)
             return box
 
         def group(pg, heading=None):
@@ -372,6 +378,10 @@ class PrefsWindow(Gtk.Window):
             self.stack.set_visible_child_name(page_name)
 
     def _page_shown(self):
+        # every page opens at its top, not where it was scrolled to before
+        sw = self.stack.get_visible_child()
+        if isinstance(sw, Gtk.ScrolledWindow):
+            sw.get_vadjustment().set_value(0)
         if self.stack.get_visible_child_name() == "internet":
             self._dvbi.start()
 
