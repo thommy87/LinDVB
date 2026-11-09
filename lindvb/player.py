@@ -42,6 +42,12 @@ PLAY_FLAGS_VIS = 8
 
 SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
+# hlsdemux2 / dashdemux2 (playbin3): start on a good quality instead of
+# climbing up through every variant (each switch can stall the picture), and
+# only stop to buffer when less than a few seconds are left. On ARD alpha the
+# old setting stalled once for 2.6 s and went through five picture sizes in 90 s.
+ADAPTIVE_DEMUX_SETTINGS = {"start-bitrate": 5_000_000,              # bit/s
+                           "low-watermark-time": 3_000_000_000}     # ns
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
@@ -648,6 +654,10 @@ class Player(GObject.Object):
         dec = hwaccel.factory_backend(element)
         if dec is not None:
             self.video_decoder = dec
+        if f and f.get_name() in ("hlsdemux2", "dashdemux2"):
+            for k, v in ADAPTIVE_DEMUX_SETTINGS.items():
+                if element.find_property(k) is not None:
+                    element.set_property(k, v)
         if f and f.get_name() == "tsdemux":
             element.get_static_pad("sink").add_probe(Gst.PadProbeType.BUFFER, self._ts_probe)
             if self.sid:
