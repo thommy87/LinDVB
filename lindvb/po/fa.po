@@ -3638,3 +3638,15 @@ msgstr "{folder} (از تنظیمات)"
 
 msgid "{items} can only be kept in MPEG-TS, so TS is used."
 msgstr "{items} فقط در MPEG-TS حفظ می‌شوند، بنابراین از TS استفاده می‌شود."
+
+msgid "Privacy Notice"
+msgstr "اطلاعیه حریم خصوصی"
+
+msgid "Show Privacy Notice…"
+msgstr "نمایش اطلاعیه حریم خصوصی…"
+
+msgid "Agree"
+msgstr "موافقم"
+
+msgid "Please read the privacy notice to the end."
+msgstr "لطفاً اطلاعیه حریم خصوصی را تا انتها بخوانید."

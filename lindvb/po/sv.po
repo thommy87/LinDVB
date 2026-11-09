@@ -3583,3 +3583,15 @@ msgstr "{folder} (från inställningarna)"
 
 msgid "{items} can only be kept in MPEG-TS, so TS is used."
 msgstr "{items} kan bara behållas i MPEG-TS, så TS används."
+
+msgid "Privacy Notice"
+msgstr "Integritetsmeddelande"
+
+msgid "Show Privacy Notice…"
+msgstr "Visa integritetsmeddelande…"
+
+msgid "Agree"
+msgstr "Godkänn"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Läs integritetsmeddelandet till slutet."

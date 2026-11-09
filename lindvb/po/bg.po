@@ -3583,3 +3583,15 @@ msgstr "{folder} (от настройките)"
 
 msgid "{items} can only be kept in MPEG-TS, so TS is used."
 msgstr "{items} могат да се запазят само в MPEG-TS, затова се използва TS."
+
+msgid "Privacy Notice"
+msgstr "Известие за поверителност"
+
+msgid "Show Privacy Notice…"
+msgstr "Показване на известието за поверителност…"
+
+msgid "Agree"
+msgstr "Съгласен съм"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Моля, прочетете известието за поверителност докрай."

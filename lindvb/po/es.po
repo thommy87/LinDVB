@@ -3583,3 +3583,15 @@ msgstr "{folder} (de las preferencias)"
 
 msgid "{items} can only be kept in MPEG-TS, so TS is used."
 msgstr "{items} solo se pueden conservar en MPEG-TS, por eso se usa TS."
+
+msgid "Privacy Notice"
+msgstr "Aviso de privacidad"
+
+msgid "Show Privacy Notice…"
+msgstr "Mostrar aviso de privacidad…"
+
+msgid "Agree"
+msgstr "Aceptar"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Lea el aviso de privacidad hasta el final."

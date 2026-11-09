@@ -5040,4 +5040,19 @@ msgstr ""
 
 #: lindvb/ui/timers.py
 msgid "{items} can only be kept in MPEG-TS, so TS is used."
+
+#: lindvb/ui/dvbi.py
+msgid "Privacy Notice"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Show Privacy Notice…"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Agree"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Please read the privacy notice to the end."
 msgstr ""
