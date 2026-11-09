@@ -29,7 +29,8 @@ sudo chmod -R a+rw /dev/dvb  # or add yourself to the "video" group
 ```
 
 In LinDVB, open **Preferences ▸ Tuner and Channels ▸ Channel Search** (Shift+Ctrl+S): the adapter is listed as
-"Virtual tuner (vidtv)" and the transponder lists as `scantables/vidtv-…`.
+"Virtual tuner (vidtv)"; pick the country "Virtual tuner (vidtv)" (cable and
+terrestrial) or 19.2°E (satellite) to search with the `scantables/vidtv-…` lists.
 Search, then play "Beethoven": you hear a tone sequence, see the radio
 visualisation, the EPG fills, and recording, timeshift and timers work as with
 a real tuner. Remove it again with `sudo modprobe -r vidtv`.

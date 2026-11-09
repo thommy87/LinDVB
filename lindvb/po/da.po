@@ -3607,3 +3607,243 @@ msgstr "Accepter"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Læs privatlivserklæringen til ende."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentina"
+
+msgid "Austria"
+msgstr "Østrig"
+
+msgid "Australia"
+msgstr "Australien"
+
+msgid "Åland Islands"
+msgstr "Ålandsøerne"
+
+msgid "Belgium"
+msgstr "Belgien"
+
+msgid "Bulgaria"
+msgstr "Bulgarien"
+
+msgid "Brazil"
+msgstr "Brasilien"
+
+msgid "Canada"
+msgstr "Canada"
+
+msgid "Switzerland"
+msgstr "Schweiz"
+
+msgid "China"
+msgstr "Kina"
+
+msgid "Colombia"
+msgstr "Colombia"
+
+msgid "Czechia"
+msgstr "Tjekkiet"
+
+msgid "Germany"
+msgstr "Tyskland"
+
+msgid "Denmark"
+msgstr "Danmark"
+
+msgid "Estonia"
+msgstr "Estland"
+
+msgid "Spain"
+msgstr "Spanien"
+
+msgid "Finland"
+msgstr "Finland"
+
+msgid "France"
+msgstr "Frankrig"
+
+msgid "Greece"
+msgstr "Grækenland"
+
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+msgid "Croatia"
+msgstr "Kroatien"
+
+msgid "Hungary"
+msgstr "Ungarn"
+
+msgid "Ireland"
+msgstr "Irland"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Iran"
+msgstr "Iran"
+
+msgid "Iceland"
+msgstr "Island"
+
+msgid "Italy"
+msgstr "Italien"
+
+msgid "Kenya"
+msgstr "Kenya"
+
+msgid "South Korea"
+msgstr "Sydkorea"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Litauen"
+
+msgid "Luxembourg"
+msgstr "Luxembourg"
+
+msgid "Latvia"
+msgstr "Letland"
+
+msgid "Netherlands"
+msgstr "Nederlandene"
+
+msgid "Norway"
+msgstr "Norge"
+
+msgid "New Zealand"
+msgstr "New Zealand"
+
+msgid "Poland"
+msgstr "Polen"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+msgid "Romania"
+msgstr "Rumænien"
+
+msgid "Russia"
+msgstr "Rusland"
+
+msgid "Sweden"
+msgstr "Sverige"
+
+msgid "Slovenia"
+msgstr "Slovenien"
+
+msgid "Slovakia"
+msgstr "Slovakiet"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ukraine"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Storbritannien"
+
+msgid "United States"
+msgstr "USA"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Alle frekvenser, 7/8 MHz (Europa, Afrika, Asien)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Alle frekvenser, 7 MHz (Australien)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Alle frekvenser, 6 MHz (Amerika)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Alle frekvenser, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Hele landet"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Virtuel tuner (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Andet land (ingen liste)"
+
+msgid "Own lists"
+msgstr "Egne lister"
+
+msgid "All frequencies (blind scan)"
+msgstr "Alle frekvenser (blindsøgning)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Alle frekvenser, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Alle frekvenser (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Alle frekvenser, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Jordbaseret"
+
+msgid "Satellites"
+msgstr "Satellitter"
+
+msgid "Add satellite"
+msgstr "Tilføj satellit"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Søg flere parabolpositioner bag en DiSEqC-switch på én gang"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "More options"
+msgstr "Flere indstillinger"
+
+msgid "Receives: {systems}"
+msgstr "Modtager: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Tuneren oplyser ikke, hvad den modtager, så alle lister tilbydes."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Enkeltkabelopsætning for denne tuner: {setup}"
+
+msgid "(no lists found)"
+msgstr "(ingen lister fundet)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC-port"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Hver satellit skal have sin egen DiSEqC-port."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transpondere fra listerne for disse positioner; søgningen tilføjer dem, netværket melder (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Blindsøgning: prøver {n} frekvenser, cirka {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frekvenser fra listen."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Denne transponderliste har ingen satellittranspondere.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Tuneren er optaget (optagelse eller kanalanalyse).\n"
+
+msgid "Transponder lists"
+msgstr "Transponderlister"

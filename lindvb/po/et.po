@@ -3607,3 +3607,243 @@ msgstr "Nõustun"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Palun lugege privaatsusteade lõpuni."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentina"
+
+msgid "Austria"
+msgstr "Austria"
+
+msgid "Australia"
+msgstr "Austraalia"
+
+msgid "Åland Islands"
+msgstr "Ahvenamaa"
+
+msgid "Belgium"
+msgstr "Belgia"
+
+msgid "Bulgaria"
+msgstr "Bulgaaria"
+
+msgid "Brazil"
+msgstr "Brasiilia"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Switzerland"
+msgstr "Šveits"
+
+msgid "China"
+msgstr "Hiina"
+
+msgid "Colombia"
+msgstr "Colombia"
+
+msgid "Czechia"
+msgstr "Tšehhi"
+
+msgid "Germany"
+msgstr "Saksamaa"
+
+msgid "Denmark"
+msgstr "Taani"
+
+msgid "Estonia"
+msgstr "Eesti"
+
+msgid "Spain"
+msgstr "Hispaania"
+
+msgid "Finland"
+msgstr "Soome"
+
+msgid "France"
+msgstr "Prantsusmaa"
+
+msgid "Greece"
+msgstr "Kreeka"
+
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+msgid "Croatia"
+msgstr "Horvaatia"
+
+msgid "Hungary"
+msgstr "Ungari"
+
+msgid "Ireland"
+msgstr "Iirimaa"
+
+msgid "Israel"
+msgstr "Iisrael"
+
+msgid "Iran"
+msgstr "Iraan"
+
+msgid "Iceland"
+msgstr "Island"
+
+msgid "Italy"
+msgstr "Itaalia"
+
+msgid "Kenya"
+msgstr "Keenia"
+
+msgid "South Korea"
+msgstr "Lõuna-Korea"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Leedu"
+
+msgid "Luxembourg"
+msgstr "Luksemburg"
+
+msgid "Latvia"
+msgstr "Läti"
+
+msgid "Netherlands"
+msgstr "Holland"
+
+msgid "Norway"
+msgstr "Norra"
+
+msgid "New Zealand"
+msgstr "Uus-Meremaa"
+
+msgid "Poland"
+msgstr "Poola"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+msgid "Romania"
+msgstr "Rumeenia"
+
+msgid "Russia"
+msgstr "Venemaa"
+
+msgid "Sweden"
+msgstr "Rootsi"
+
+msgid "Slovenia"
+msgstr "Sloveenia"
+
+msgid "Slovakia"
+msgstr "Slovakkia"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ukraina"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Ühendkuningriik"
+
+msgid "United States"
+msgstr "Ameerika Ühendriigid"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Kõik sagedused, 7/8 MHz (Euroopa, Aafrika, Aasia)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Kõik sagedused, 7 MHz (Austraalia)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Kõik sagedused, 6 MHz (Ameerika)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Kõik sagedused, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Kogu riik"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Virtuaalne tuuner (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Muu riik (loend puudub)"
+
+msgid "Own lists"
+msgstr "Omad loendid"
+
+msgid "All frequencies (blind scan)"
+msgstr "Kõik sagedused (pimeotsing)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Kõik sagedused, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Kõik sagedused (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Kõik sagedused, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Maapealne"
+
+msgid "Satellites"
+msgstr "Satelliidid"
+
+msgid "Add satellite"
+msgstr "Lisa satelliit"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Otsi korraga mitut antenni asendit DiSEqC-lüliti taga"
+
+msgid "Country"
+msgstr "Riik"
+
+msgid "More options"
+msgstr "Rohkem valikuid"
+
+msgid "Receives: {systems}"
+msgstr "Võtab vastu: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Tuuner ei teata, mida ta vastu võtab, seega pakutakse kõiki loendeid."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Selle tuuneri ühe kaabli seadistus: {setup}"
+
+msgid "(no lists found)"
+msgstr "(loendeid ei leitud)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC-port"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Iga satelliit vajab oma DiSEqC-porti."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transponderit nende asendite loenditest; otsing lisab need, mida võrk teatab (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Pimeotsing: proovib {n} sagedust, umbes {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} sagedust loendist."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Selles transponderite loendis pole satelliiditranspondereid.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Tuuner on hõivatud (salvestus või kanali analüüs).\n"
+
+msgid "Transponder lists"
+msgstr "Transponderite loendid"

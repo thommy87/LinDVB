@@ -3662,3 +3662,231 @@ msgstr "موافقم"
 
 msgid "Please read the privacy notice to the end."
 msgstr "لطفاً اطلاعیه حریم خصوصی را تا انتها بخوانید."
+
+msgid "Andorra"
+msgstr "آندورا"
+
+msgid "Argentina"
+msgstr "آرژانتین"
+
+msgid "Austria"
+msgstr "اتریش"
+
+msgid "Australia"
+msgstr "استرالیا"
+
+msgid "Åland Islands"
+msgstr "جزایر آلاند"
+
+msgid "Belgium"
+msgstr "بلژیک"
+
+msgid "Bulgaria"
+msgstr "بلغارستان"
+
+msgid "Brazil"
+msgstr "برزیل"
+
+msgid "Canada"
+msgstr "کانادا"
+
+msgid "Switzerland"
+msgstr "سوئیس"
+
+msgid "China"
+msgstr "چین"
+
+msgid "Colombia"
+msgstr "کلمبیا"
+
+msgid "Czechia"
+msgstr "چک"
+
+msgid "Denmark"
+msgstr "دانمارک"
+
+msgid "Estonia"
+msgstr "استونی"
+
+msgid "Spain"
+msgstr "اسپانیا"
+
+msgid "Finland"
+msgstr "فنلاند"
+
+msgid "France"
+msgstr "فرانسه"
+
+msgid "Greece"
+msgstr "یونان"
+
+msgid "Hong Kong"
+msgstr "هنگ کنگ"
+
+msgid "Croatia"
+msgstr "کرواسی"
+
+msgid "Hungary"
+msgstr "مجارستان"
+
+msgid "Ireland"
+msgstr "ایرلند"
+
+msgid "Israel"
+msgstr "اسرائیل"
+
+msgid "Iran"
+msgstr "ایران"
+
+msgid "Iceland"
+msgstr "ایسلند"
+
+msgid "Kenya"
+msgstr "کنیا"
+
+msgid "South Korea"
+msgstr "کره جنوبی"
+
+msgid "Liechtenstein"
+msgstr "لیختن‌اشتاین"
+
+msgid "Lithuania"
+msgstr "لیتوانی"
+
+msgid "Luxembourg"
+msgstr "لوکزامبورگ"
+
+msgid "Latvia"
+msgstr "لتونی"
+
+msgid "Netherlands"
+msgstr "هلند"
+
+msgid "Norway"
+msgstr "نروژ"
+
+msgid "Poland"
+msgstr "لهستان"
+
+msgid "Portugal"
+msgstr "پرتغال"
+
+msgid "Romania"
+msgstr "رومانی"
+
+msgid "Russia"
+msgstr "روسیه"
+
+msgid "Sweden"
+msgstr "سوئد"
+
+msgid "Slovenia"
+msgstr "اسلوونی"
+
+msgid "Slovakia"
+msgstr "اسلواکی"
+
+msgid "Taiwan"
+msgstr "تایوان"
+
+msgid "Ukraine"
+msgstr "اوکراین"
+
+msgid "Uganda"
+msgstr "اوگاندا"
+
+msgid "United Kingdom"
+msgstr "بریتانیا"
+
+msgid "United States"
+msgstr "ایالات متحده"
+
+msgid "Vietnam"
+msgstr "ویتنام"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "همه فرکانس‌ها، ۷/۸ مگاهرتز (اروپا، آفریقا، آسیا)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "همه فرکانس‌ها، ۷ مگاهرتز (استرالیا)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "همه فرکانس‌ها، ۶ مگاهرتز (قاره آمریکا)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "همه فرکانس‌ها، ۶ مگاهرتز (تایوان)"
+
+msgid "Whole country"
+msgstr "کل کشور"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "تیونر مجازی (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "کشور دیگر (بدون فهرست)"
+
+msgid "Own lists"
+msgstr "فهرست‌های خودم"
+
+msgid "All frequencies (blind scan)"
+msgstr "همه فرکانس‌ها (جستجوی کور)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "همه فرکانس‌ها، ۶ مگاهرتز (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "همه فرکانس‌ها (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "همه فرکانس‌ها، ۸ مگاهرتز (DTMB)"
+
+msgid "Terrestrial"
+msgstr "زمینی"
+
+msgid "Satellites"
+msgstr "ماهواره‌ها"
+
+msgid "Add satellite"
+msgstr "افزودن ماهواره"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "جستجوی چند موقعیت دیش پشت یک سوئیچ DiSEqC به‌یک‌باره"
+
+msgid "More options"
+msgstr "گزینه‌های بیشتر"
+
+msgid "Receives: {systems}"
+msgstr "دریافت می‌کند: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "تیونر نمی‌گوید چه چیزی دریافت می‌کند، پس همه فهرست‌ها پیشنهاد می‌شوند."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "تنظیم تک‌کابلی این تیونر: {setup}"
+
+msgid "(no lists found)"
+msgstr "(فهرستی پیدا نشد)"
+
+msgid "DiSEqC port"
+msgstr "درگاه DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "هر ماهواره به درگاه DiSEqC جداگانه‌ای نیاز دارد."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} ترنسپاندر از فهرست‌های این موقعیت‌ها؛ جستجو مواردی را که شبکه اعلام می‌کند (NIT) اضافه می‌کند."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "جستجوی کور: {n} فرکانس را امتحان می‌کند، حدود {minutes} دقیقه."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} فرکانس از فهرست."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "این فهرست ترنسپاندر هیچ ترنسپاندر ماهواره‌ای ندارد.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "تیونر مشغول است (ضبط یا تحلیل کانال).\n"
+
+msgid "Transponder lists"
+msgstr "فهرست‌های ترنسپاندر"

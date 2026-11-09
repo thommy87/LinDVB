@@ -3607,3 +3607,243 @@ msgstr "Súhlasím"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Prečítajte si oznámenie o ochrane súkromia až do konca."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentína"
+
+msgid "Austria"
+msgstr "Rakúsko"
+
+msgid "Australia"
+msgstr "Austrália"
+
+msgid "Åland Islands"
+msgstr "Alandy"
+
+msgid "Belgium"
+msgstr "Belgicko"
+
+msgid "Bulgaria"
+msgstr "Bulharsko"
+
+msgid "Brazil"
+msgstr "Brazília"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Switzerland"
+msgstr "Švajčiarsko"
+
+msgid "China"
+msgstr "Čína"
+
+msgid "Colombia"
+msgstr "Kolumbia"
+
+msgid "Czechia"
+msgstr "Česko"
+
+msgid "Germany"
+msgstr "Nemecko"
+
+msgid "Denmark"
+msgstr "Dánsko"
+
+msgid "Estonia"
+msgstr "Estónsko"
+
+msgid "Spain"
+msgstr "Španielsko"
+
+msgid "Finland"
+msgstr "Fínsko"
+
+msgid "France"
+msgstr "Francúzsko"
+
+msgid "Greece"
+msgstr "Grécko"
+
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+msgid "Croatia"
+msgstr "Chorvátsko"
+
+msgid "Hungary"
+msgstr "Maďarsko"
+
+msgid "Ireland"
+msgstr "Írsko"
+
+msgid "Israel"
+msgstr "Izrael"
+
+msgid "Iran"
+msgstr "Irán"
+
+msgid "Iceland"
+msgstr "Island"
+
+msgid "Italy"
+msgstr "Taliansko"
+
+msgid "Kenya"
+msgstr "Keňa"
+
+msgid "South Korea"
+msgstr "Južná Kórea"
+
+msgid "Liechtenstein"
+msgstr "Lichtenštajnsko"
+
+msgid "Lithuania"
+msgstr "Litva"
+
+msgid "Luxembourg"
+msgstr "Luxembursko"
+
+msgid "Latvia"
+msgstr "Lotyšsko"
+
+msgid "Netherlands"
+msgstr "Holandsko"
+
+msgid "Norway"
+msgstr "Nórsko"
+
+msgid "New Zealand"
+msgstr "Nový Zéland"
+
+msgid "Poland"
+msgstr "Poľsko"
+
+msgid "Portugal"
+msgstr "Portugalsko"
+
+msgid "Romania"
+msgstr "Rumunsko"
+
+msgid "Russia"
+msgstr "Rusko"
+
+msgid "Sweden"
+msgstr "Švédsko"
+
+msgid "Slovenia"
+msgstr "Slovinsko"
+
+msgid "Slovakia"
+msgstr "Slovensko"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ukrajina"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Spojené kráľovstvo"
+
+msgid "United States"
+msgstr "Spojené štáty"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Všetky frekvencie, 7/8 MHz (Európa, Afrika, Ázia)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Všetky frekvencie, 7 MHz (Austrália)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Všetky frekvencie, 6 MHz (Amerika)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Všetky frekvencie, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Celá krajina"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Virtuálny tuner (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Iná krajina (bez zoznamu)"
+
+msgid "Own lists"
+msgstr "Vlastné zoznamy"
+
+msgid "All frequencies (blind scan)"
+msgstr "Všetky frekvencie (slepé hľadanie)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Všetky frekvencie, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Všetky frekvencie (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Všetky frekvencie, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Pozemné"
+
+msgid "Satellites"
+msgstr "Satelity"
+
+msgid "Add satellite"
+msgstr "Pridať satelit"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Prehľadať naraz niekoľko polôh paraboly za prepínačom DiSEqC"
+
+msgid "Country"
+msgstr "Krajina"
+
+msgid "More options"
+msgstr "Ďalšie možnosti"
+
+msgid "Receives: {systems}"
+msgstr "Prijíma: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Tuner neuvádza, čo prijíma, preto sa ponúkajú všetky zoznamy."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Jednokáblové nastavenie tohto tunera: {setup}"
+
+msgid "(no lists found)"
+msgstr "(nenašli sa žiadne zoznamy)"
+
+msgid "DiSEqC port"
+msgstr "Port DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Každý satelit potrebuje vlastný port DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transpondérov zo zoznamov týchto polôh; hľadanie pridá tie, ktoré ohlási sieť (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Slepé hľadanie: skúša {n} frekvencií, asi {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frekvencií zo zoznamu."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Tento zoznam transpondérov neobsahuje žiadne satelitné transpondéry.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Tuner je obsadený (nahrávanie alebo analýza kanála).\n"
+
+msgid "Transponder lists"
+msgstr "Zoznamy transpondérov"

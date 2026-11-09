@@ -3607,3 +3607,243 @@ msgstr "Συμφωνώ"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Διαβάστε την ειδοποίηση απορρήτου μέχρι το τέλος."
+
+msgid "Andorra"
+msgstr "Ανδόρα"
+
+msgid "Argentina"
+msgstr "Αργεντινή"
+
+msgid "Austria"
+msgstr "Αυστρία"
+
+msgid "Australia"
+msgstr "Αυστραλία"
+
+msgid "Åland Islands"
+msgstr "Νήσοι Όλαντ"
+
+msgid "Belgium"
+msgstr "Βέλγιο"
+
+msgid "Bulgaria"
+msgstr "Βουλγαρία"
+
+msgid "Brazil"
+msgstr "Βραζιλία"
+
+msgid "Canada"
+msgstr "Καναδάς"
+
+msgid "Switzerland"
+msgstr "Ελβετία"
+
+msgid "China"
+msgstr "Κίνα"
+
+msgid "Colombia"
+msgstr "Κολομβία"
+
+msgid "Czechia"
+msgstr "Τσεχία"
+
+msgid "Germany"
+msgstr "Γερμανία"
+
+msgid "Denmark"
+msgstr "Δανία"
+
+msgid "Estonia"
+msgstr "Εσθονία"
+
+msgid "Spain"
+msgstr "Ισπανία"
+
+msgid "Finland"
+msgstr "Φινλανδία"
+
+msgid "France"
+msgstr "Γαλλία"
+
+msgid "Greece"
+msgstr "Ελλάδα"
+
+msgid "Hong Kong"
+msgstr "Χονγκ Κονγκ"
+
+msgid "Croatia"
+msgstr "Κροατία"
+
+msgid "Hungary"
+msgstr "Ουγγαρία"
+
+msgid "Ireland"
+msgstr "Ιρλανδία"
+
+msgid "Israel"
+msgstr "Ισραήλ"
+
+msgid "Iran"
+msgstr "Ιράν"
+
+msgid "Iceland"
+msgstr "Ισλανδία"
+
+msgid "Italy"
+msgstr "Ιταλία"
+
+msgid "Kenya"
+msgstr "Κένυα"
+
+msgid "South Korea"
+msgstr "Νότια Κορέα"
+
+msgid "Liechtenstein"
+msgstr "Λιχτενστάιν"
+
+msgid "Lithuania"
+msgstr "Λιθουανία"
+
+msgid "Luxembourg"
+msgstr "Λουξεμβούργο"
+
+msgid "Latvia"
+msgstr "Λετονία"
+
+msgid "Netherlands"
+msgstr "Ολλανδία"
+
+msgid "Norway"
+msgstr "Νορβηγία"
+
+msgid "New Zealand"
+msgstr "Νέα Ζηλανδία"
+
+msgid "Poland"
+msgstr "Πολωνία"
+
+msgid "Portugal"
+msgstr "Πορτογαλία"
+
+msgid "Romania"
+msgstr "Ρουμανία"
+
+msgid "Russia"
+msgstr "Ρωσία"
+
+msgid "Sweden"
+msgstr "Σουηδία"
+
+msgid "Slovenia"
+msgstr "Σλοβενία"
+
+msgid "Slovakia"
+msgstr "Σλοβακία"
+
+msgid "Taiwan"
+msgstr "Ταϊβάν"
+
+msgid "Ukraine"
+msgstr "Ουκρανία"
+
+msgid "Uganda"
+msgstr "Ουγκάντα"
+
+msgid "United Kingdom"
+msgstr "Ηνωμένο Βασίλειο"
+
+msgid "United States"
+msgstr "Ηνωμένες Πολιτείες"
+
+msgid "Vietnam"
+msgstr "Βιετνάμ"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Όλες οι συχνότητες, 7/8 MHz (Ευρώπη, Αφρική, Ασία)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Όλες οι συχνότητες, 7 MHz (Αυστραλία)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Όλες οι συχνότητες, 6 MHz (Αμερική)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Όλες οι συχνότητες, 6 MHz (Ταϊβάν)"
+
+msgid "Whole country"
+msgstr "Όλη η χώρα"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Εικονικός δέκτης (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Άλλη χώρα (χωρίς λίστα)"
+
+msgid "Own lists"
+msgstr "Δικές μου λίστες"
+
+msgid "All frequencies (blind scan)"
+msgstr "Όλες οι συχνότητες (τυφλή αναζήτηση)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Όλες οι συχνότητες, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Όλες οι συχνότητες (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Όλες οι συχνότητες, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Επίγεια"
+
+msgid "Satellites"
+msgstr "Δορυφόροι"
+
+msgid "Add satellite"
+msgstr "Προσθήκη δορυφόρου"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Αναζήτηση πολλών θέσεων κεραίας πίσω από διακόπτη DiSEqC με μία φορά"
+
+msgid "Country"
+msgstr "Χώρα"
+
+msgid "More options"
+msgstr "Περισσότερες επιλογές"
+
+msgid "Receives: {systems}"
+msgstr "Λαμβάνει: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Ο δέκτης δεν αναφέρει τι λαμβάνει, οπότε προσφέρονται όλες οι λίστες."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Ρύθμιση μονού καλωδίου αυτού του δέκτη: {setup}"
+
+msgid "(no lists found)"
+msgstr "(δεν βρέθηκαν λίστες)"
+
+msgid "DiSEqC port"
+msgstr "Θύρα DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Κάθε δορυφόρος χρειάζεται δική του θύρα DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} αναμεταδότες από τις λίστες αυτών των θέσεων· η αναζήτηση προσθέτει όσους ανακοινώνει το δίκτυο (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Τυφλή αναζήτηση: δοκιμάζει {n} συχνότητες, περίπου {minutes} λεπτά."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} συχνότητες από τη λίστα."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Αυτή η λίστα αναμεταδοτών δεν έχει δορυφορικούς αναμεταδότες.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Ο δέκτης είναι απασχολημένος (εγγραφή ή ανάλυση καναλιού).\n"
+
+msgid "Transponder lists"
+msgstr "Λίστες αναμεταδοτών"

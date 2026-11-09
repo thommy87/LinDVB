@@ -3607,3 +3607,243 @@ msgstr "Sunt de acord"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Citiți notificarea privind confidențialitatea până la sfârșit."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentina"
+
+msgid "Austria"
+msgstr "Austria"
+
+msgid "Australia"
+msgstr "Australia"
+
+msgid "Åland Islands"
+msgstr "Insulele Åland"
+
+msgid "Belgium"
+msgstr "Belgia"
+
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+msgid "Brazil"
+msgstr "Brazilia"
+
+msgid "Canada"
+msgstr "Canada"
+
+msgid "Switzerland"
+msgstr "Elveția"
+
+msgid "China"
+msgstr "China"
+
+msgid "Colombia"
+msgstr "Columbia"
+
+msgid "Czechia"
+msgstr "Cehia"
+
+msgid "Germany"
+msgstr "Germania"
+
+msgid "Denmark"
+msgstr "Danemarca"
+
+msgid "Estonia"
+msgstr "Estonia"
+
+msgid "Spain"
+msgstr "Spania"
+
+msgid "Finland"
+msgstr "Finlanda"
+
+msgid "France"
+msgstr "Franța"
+
+msgid "Greece"
+msgstr "Grecia"
+
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+msgid "Croatia"
+msgstr "Croația"
+
+msgid "Hungary"
+msgstr "Ungaria"
+
+msgid "Ireland"
+msgstr "Irlanda"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Iran"
+msgstr "Iran"
+
+msgid "Iceland"
+msgstr "Islanda"
+
+msgid "Italy"
+msgstr "Italia"
+
+msgid "Kenya"
+msgstr "Kenya"
+
+msgid "South Korea"
+msgstr "Coreea de Sud"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Lituania"
+
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+msgid "Latvia"
+msgstr "Letonia"
+
+msgid "Netherlands"
+msgstr "Țările de Jos"
+
+msgid "Norway"
+msgstr "Norvegia"
+
+msgid "New Zealand"
+msgstr "Noua Zeelandă"
+
+msgid "Poland"
+msgstr "Polonia"
+
+msgid "Portugal"
+msgstr "Portugalia"
+
+msgid "Romania"
+msgstr "România"
+
+msgid "Russia"
+msgstr "Rusia"
+
+msgid "Sweden"
+msgstr "Suedia"
+
+msgid "Slovenia"
+msgstr "Slovenia"
+
+msgid "Slovakia"
+msgstr "Slovacia"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ucraina"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Regatul Unit"
+
+msgid "United States"
+msgstr "Statele Unite"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Toate frecvențele, 7/8 MHz (Europa, Africa, Asia)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Toate frecvențele, 7 MHz (Australia)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Toate frecvențele, 6 MHz (America)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Toate frecvențele, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Toată țara"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Tuner virtual (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Altă țară (fără listă)"
+
+msgid "Own lists"
+msgstr "Liste proprii"
+
+msgid "All frequencies (blind scan)"
+msgstr "Toate frecvențele (căutare oarbă)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Toate frecvențele, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Toate frecvențele (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Toate frecvențele, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Terestru"
+
+msgid "Satellites"
+msgstr "Sateliți"
+
+msgid "Add satellite"
+msgstr "Adaugă satelit"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Caută dintr-o dată mai multe poziții ale antenei în spatele unui comutator DiSEqC"
+
+msgid "Country"
+msgstr "Țară"
+
+msgid "More options"
+msgstr "Mai multe opțiuni"
+
+msgid "Receives: {systems}"
+msgstr "Recepționează: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Tunerul nu spune ce recepționează, așa că sunt oferite toate listele."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Configurare cu un singur cablu a acestui tuner: {setup}"
+
+msgid "(no lists found)"
+msgstr "(nu s-au găsit liste)"
+
+msgid "DiSEqC port"
+msgstr "Port DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Fiecare satelit are nevoie de propriul port DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transpondere din listele acestor poziții; căutarea le adaugă pe cele anunțate de rețea (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Căutare oarbă: încearcă {n} frecvențe, circa {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frecvențe din listă."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Această listă de transpondere nu are transpondere de satelit.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Tunerul este ocupat (înregistrare sau analiză de canal).\n"
+
+msgid "Transponder lists"
+msgstr "Liste de transpondere"

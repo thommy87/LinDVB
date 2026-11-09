@@ -130,8 +130,11 @@ them.
   polarisation, and each tuner can have an LNB of its own
 * Single cable: Unicable I (EN 50494) and Unicable II / JESS (EN 50607) with a user
   band per tuner, optional PIN and templates of common devices
-* Channel search with dvbv5-scan (DiSEqC 1.0 ports, LNB types, NIT search), and
-  LinDVB's own search on single-cable tuners
+* Channel search with dvbv5-scan and the current transponder lists of dtv-scan-tables
+  built in: the dialog shows what the tuner receives (satellite: orbital positions with a
+  DiSEqC port each and the LNB; cable: country and provider; terrestrial, ATSC, ISDB-T:
+  country and region), a blind scan over all frequencies where there is no list, NIT
+  search, and LinDVB's own search on single-cable tuners
 * ATSC (USA, Canada, Mexico, South Korea): virtual channel numbers like 7.1 in the
   channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
   (channel table, EIT and extended texts, GPS time)
@@ -296,9 +299,10 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
 
 ## First steps
 
-1. **Preferences → Tuner and Channels → Channel Search** (Shift+Ctrl+S): pick your tuner, a transponder list (from
-   dtv-scan-tables, or add a folder with `.ini` transponder lists), LNB and
-   DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
+1. **Preferences → Tuner and Channels → Channel Search** (Shift+Ctrl+S): pick your tuner, then your
+   satellite position(s) with their DiSEqC port, or your country and cable provider or region
+   (no list for your country: "All frequencies"), then start. Own `.ini` or dvbv5 lists can be
+   added under "More options". Or **Menu → Import Channel List** to load an existing list.
 2. Several tuners: **Preferences → Tuner and Channels → Tuners** lists every tuner found,
    with its reception types. Switch tuners on or off, set a priority, switch on "Shared
    antenna cable" for tuners on one cable (loop-through, splitter; with more than two
