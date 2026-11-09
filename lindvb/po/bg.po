@@ -3504,3 +3504,18 @@ msgstr "Файлът няма канали."
 
 msgid "{n} channels removed"
 msgstr "{n} канала премахнати"
+
+msgid "Colour scheme"
+msgstr "Цветова схема"
+
+msgid "Dark"
+msgstr "Тъмна"
+
+msgid "Light"
+msgstr "Светла"
+
+msgid "Same as the system"
+msgstr "Като системата"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Картината винаги запазва тъмната си рамка."

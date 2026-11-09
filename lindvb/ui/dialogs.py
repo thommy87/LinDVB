@@ -15,7 +15,7 @@ from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LA
                          RADIO_FORMATS, TV_FORMATS, audio_note, effective_format)
 from ..tuner import SegmentReader
 from .common import dropdown, fill, make_column_view, scrolled, selected
-from .theme import ACCENT, ACCENT_MODES, apply_accent, system_accent, to_hex
+from .theme import ACCENT, ACCENT_MODES, SCHEMES, apply_accent, apply_theme, system_accent, to_hex
 from ..i18n import LANGUAGES as LANGUAGES_UI, C_, _
 
 DELSYS = ["dvb-s", "dvb-s2", "dvb-c-a", "dvb-c-b", "dvb-t", "dvb-t2", "atsc", "isdb-t", "dtmb", "iptv"]
@@ -131,6 +131,15 @@ class PrefsWindow(Gtk.Window):
             [_(n) if c == "" else n for c, n in LANGUAGES_UI.items()],
             self._lang_codes.index(lang) if lang in self._lang_codes else 0),
             _("Takes effect when LinDVB is started again."))
+        g = group(pg, _("Colour scheme"))
+        theme = s.get("theme", "dark")
+        self._theme_drop = _row(g, _("Colour scheme"), dropdown(
+            [_("Dark"), _("Light"), _("Same as the system")],
+            SCHEMES.index(theme) if theme in SCHEMES else 0),
+            _("The picture always keeps its dark frame."))
+        self._theme_drop.connect("notify::selected", lambda *_: apply_theme(
+            SCHEMES[self._theme_drop.get_selected()] if
+            SCHEMES[self._theme_drop.get_selected()] != "system" else {"theme": "system"}))
         g = group(pg, _("Accent colour"))
         mode = s.get("accent_mode", "default")
         self._accent_drop = _row(g, _("Accent colour"), dropdown(
@@ -451,6 +460,7 @@ class PrefsWindow(Gtk.Window):
     def _on_close(self, *_):
         if not self._saved:
             apply_accent(self.app.settings)    # drop the unsaved preview
+            apply_theme(self.app.settings)
         return False
 
     def _font_button(self, family):
@@ -647,6 +657,7 @@ class PrefsWindow(Gtk.Window):
         s["video_decoder"] = self._dec_codes[self._dec_drop.get_selected()]
         self._save_youth_protection(s)
         s.update(self._accent_settings())
+        s["theme"] = SCHEMES[self._theme_drop.get_selected()]
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
         s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
@@ -667,6 +678,7 @@ class PrefsWindow(Gtk.Window):
         s.save()
         self._saved = True
         apply_accent(s)
+        apply_theme(s)
         self._epg.apply(s)
         win = getattr(self.app, "window", None)
         if win is not None:

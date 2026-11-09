@@ -3504,3 +3504,18 @@ msgstr "A fájlban nincs csatorna."
 
 msgid "{n} channels removed"
 msgstr "{n} csatorna eltávolítva"
+
+msgid "Colour scheme"
+msgstr "Színséma"
+
+msgid "Dark"
+msgstr "Sötét"
+
+msgid "Light"
+msgstr "Világos"
+
+msgid "Same as the system"
+msgstr "A rendszer szerint"
+
+msgid "The picture always keeps its dark frame."
+msgstr "A kép mindig megtartja sötét keretét."

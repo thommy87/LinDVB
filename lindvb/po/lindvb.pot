@@ -4876,3 +4876,18 @@ msgstr ""
 
 msgid "{n} channels removed"
 msgstr ""
+
+msgid "Colour scheme"
+msgstr ""
+
+msgid "Dark"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Same as the system"
+msgstr ""
+
+msgid "The picture always keeps its dark frame."
+msgstr ""

@@ -20,7 +20,7 @@ from ..recordings import find_recordings, sort_recordings
 from ..signalq import Meter as QualityMeter, NONE as Q_NONE
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
-from .theme import CSS, OSD_WIDTH, apply_accent, apply_display, resolve_accent
+from .theme import OSD_WIDTH, apply_accent, apply_display, apply_theme, resolve_accent
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
 from ..i18n import _
@@ -113,14 +113,10 @@ class MainWindow(Gtk.ApplicationWindow):
         GLib.timeout_add_seconds(30, self._save_positions)
         self._vis_id = None          # visualisation style currently drawn
 
-        # The player is always dark, whatever the desktop theme.
-        Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
+        # dark (the default), light, or the desktop's scheme (Preferences › Appearance)
         self.add_css_class("lindvb")
-        prov = Gtk.CssProvider()
-        prov.load_from_string(CSS) if hasattr(prov, "load_from_string") else \
-            prov.load_from_data(CSS.encode())
-        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
-                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        apply_theme(self.settings)
+        self._watch_color_scheme()
         # LinDVB's own symbolic icons (e.g. the visualisation sine wave)
         Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_search_path(
             str(Path(__file__).resolve().parent.parent / "icons"))
@@ -1382,6 +1378,20 @@ class MainWindow(Gtk.ApplicationWindow):
         self._update_transport()
         self._update_visualizer()
         return True
+
+    def _watch_color_scheme(self):
+        """Follow the desktop's light / dark switch while "system" is chosen."""
+        def changed(*_a):
+            if self.settings.get("theme", "dark") == "system":
+                apply_theme(self.settings)
+        try:
+            src = Gio.SettingsSchemaSource.get_default()
+            if src is not None and src.lookup("org.gnome.desktop.interface", True):
+                self._gnome_iface = Gio.Settings.new("org.gnome.desktop.interface")
+                self._gnome_iface.connect("changed::color-scheme", changed)
+                self._gnome_iface.connect("changed::gtk-theme", changed)
+        except Exception:          # noqa: BLE001 - no GNOME settings
+            pass
 
     def _remember(self, c):
         """Last channel overall (tuned at start) and per kind (for the TV/Radio switch)."""

@@ -3504,3 +3504,18 @@ msgstr "Failis pole kanaleid."
 
 msgid "{n} channels removed"
 msgstr "{n} kanalit eemaldatud"
+
+msgid "Colour scheme"
+msgstr "Värviskeem"
+
+msgid "Dark"
+msgstr "Tume"
+
+msgid "Light"
+msgstr "Hele"
+
+msgid "Same as the system"
+msgstr "Nagu süsteem"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Pilt säilitab alati oma tumeda raami."

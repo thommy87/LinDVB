@@ -3504,3 +3504,18 @@ msgstr "Il-fajl m'għandux stazzjonijiet."
 
 msgid "{n} channels removed"
 msgstr "{n} stazzjonijiet imneħħija"
+
+msgid "Colour scheme"
+msgstr "Skema tal-kuluri"
+
+msgid "Dark"
+msgstr "Skur"
+
+msgid "Light"
+msgstr "Ċar"
+
+msgid "Same as the system"
+msgstr "Bħas-sistema"
+
+msgid "The picture always keeps its dark frame."
+msgstr "L-istampa dejjem iżżomm il-qafas skur tagħha."

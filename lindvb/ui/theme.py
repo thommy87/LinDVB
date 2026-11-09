@@ -11,20 +11,24 @@ GTK switches transitions off on its own when animations are disabled.
 
 ACCENT = "#119CFF"
 
-CSS = """
-@define-color lv_bg #0A0A0C;
-@define-color lv_surface #121215;
-@define-color lv_surface_2 #1B1B20;
-@define-color lv_surface_3 #26262D;
-@define-color lv_text #F2F2F5;
-@define-color lv_text_dim #A3A3AD;
-@define-color lv_rec #FF453A;
+# Colour schemes: dark (the default) and light; "system" follows the desktop.
+SCHEMES = ("dark", "light", "system")
+PALETTES = {
+    "dark": {"lv_bg": "#0A0A0C", "lv_surface": "#121215", "lv_surface_2": "#1B1B20",
+             "lv_surface_3": "#26262D", "lv_text": "#F2F2F5", "lv_text_dim": "#A3A3AD",
+             "lv_rec": "#FF453A", "lv_line": "white"},
+    "light": {"lv_bg": "#F4F4F7", "lv_surface": "#FFFFFF", "lv_surface_2": "#ECECF0",
+              "lv_surface_3": "#E0E0E6", "lv_text": "#17171C", "lv_text_dim": "#5B5B66",
+              "lv_rec": "#D70015", "lv_line": "black"},
+}
+
+CSS_BODY = """
 
 /* ---------- window & header ---------- */
 window.lindvb { background: @lv_bg; color: @lv_text; }
 window.lindvb headerbar {
   background: @lv_surface; color: @lv_text; min-height: 40px; padding: 2px 6px;
-  box-shadow: none; border-bottom: 1px solid alpha(white, 0.06);
+  box-shadow: none; border-bottom: 1px solid alpha(@lv_line, 0.06);
 }
 window.lindvb headerbar .title { font-weight: 600; }
 window.lindvb headerbar .subtitle { color: @lv_text_dim; font-size: 0.85em; }
@@ -33,7 +37,7 @@ window.lindvb headerbar button {
   background: none; box-shadow: none; border: none;
   transition: background 150ms ease, color 150ms ease;
 }
-window.lindvb headerbar button:hover { background: alpha(white, 0.07); color: @lv_text; }
+window.lindvb headerbar button:hover { background: alpha(@lv_line, 0.07); color: @lv_text; }
 window.lindvb headerbar button:checked { background: alpha(@lv_accent, 0.18); color: @lv_accent; }
 window.lindvb headerbar windowcontrols button { min-width: 28px; min-height: 28px; }
 
@@ -44,12 +48,12 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
 }
 
 /* ---------- sidebar / channel list ---------- */
-.lv-sidebar { background: @lv_surface; border-right: 1px solid alpha(white, 0.06); }
+.lv-sidebar { background: @lv_surface; border-right: 1px solid alpha(@lv_line, 0.06); }
 .lv-sidebar .lv-heading { font-weight: 700; font-size: 1.05em; }
 .lv-sidebar .lv-count { color: @lv_text_dim; font-size: 0.85em; font-feature-settings: "tnum"; }
 .lv-sidebar entry, .lv-sidebar dropdown > button {
   background: @lv_surface_2; color: @lv_text; border-radius: 8px;
-  border: 1px solid alpha(white, 0.06); box-shadow: none; min-height: 32px;
+  border: 1px solid alpha(@lv_line, 0.06); box-shadow: none; min-height: 32px;
 }
 .lv-sidebar entry:focus-within { border-color: alpha(@lv_accent, 0.6); }
 .lv-sidebar scrolledwindow, .lv-sidebar listview { background: transparent; }
@@ -57,8 +61,8 @@ window.lindvb entry:focus-within, window.lindvb dropdown > button:focus-visible 
   border-radius: 8px; margin: 1px 6px; padding: 6px 8px; color: @lv_text;
   transition: background 150ms ease;
 }
-.lv-sidebar listview > row:hover { background: alpha(white, 0.05); }
-.lv-sidebar listview > row:selected { background: alpha(@lv_accent, 0.20); color: white; }
+.lv-sidebar listview > row:hover { background: alpha(@lv_line, 0.05); }
+.lv-sidebar listview > row:selected { background: alpha(@lv_accent, 0.20); color: @lv_text; }
 .lv-sidebar listview > row:selected .lv-num { color: @lv_accent; }
 .lv-num { color: @lv_text_dim; font-feature-settings: "tnum"; font-size: 0.9em; }
 .lv-chan-icon { color: @lv_text_dim; }
@@ -74,12 +78,12 @@ progressbar.lv-rec-progress progress { background: @lv_accent; }
 .lv-fav { color: #FFC83D; }
 /* TV / Radio switch */
 .lv-mode { background: @lv_surface_2; border-radius: 10px; padding: 3px;
-           border: 1px solid alpha(white, 0.06); }
+           border: 1px solid alpha(@lv_line, 0.06); }
 .lv-mode > button {
   min-height: 28px; border-radius: 7px; background: none; box-shadow: none; border: none;
   color: @lv_text_dim; font-weight: 600; transition: background 150ms ease, color 150ms ease;
 }
-.lv-mode > button:hover { color: @lv_text; background: alpha(white, 0.05); }
+.lv-mode > button:hover { color: @lv_text; background: alpha(@lv_line, 0.05); }
 .lv-mode > button:checked { background: @lv_accent; color: @lv_on_accent; }
 .lv-visualizer { background: black; }
 paned.lv-paned > separator { background: transparent; min-width: 1px; }
@@ -88,7 +92,7 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .video { background: black; }
 .osd {
   background: alpha(@lv_surface, 0.86); color: @lv_text; border-radius: 14px;
-  padding: 14px 18px; border: 1px solid alpha(white, 0.08);
+  padding: 14px 18px; border: 1px solid alpha(@lv_line, 0.08);
 }
 .osd .lv-osd-num {
   background: @lv_accent; color: @lv_on_accent; font-weight: 800; border-radius: 6px;
@@ -101,13 +105,13 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .osd .lv-osd-meta { color: @lv_text_dim; font-size: 0.85em; }
 .osd .lv-osd-tag {
   color: @lv_text_dim; font-size: 0.75em; font-weight: 600; border-radius: 4px;
-  padding: 0 5px; border: 1px solid alpha(white, 0.22);
+  padding: 0 5px; border: 1px solid alpha(@lv_line, 0.22);
 }
 .osd .lv-osd-tag.lv-current { color: @lv_text; border-color: @lv_accent; }
-.osd progressbar trough { min-height: 4px; border-radius: 2px; background: alpha(white, 0.12); }
+.osd progressbar trough { min-height: 4px; border-radius: 2px; background: alpha(@lv_line, 0.12); }
 .osd progressbar progress { min-height: 4px; border-radius: 2px; background: @lv_accent; }
 /* signal quality strip: empty = no signal, then red, orange, yellow, green */
-.osd progressbar.lv-osd-quality trough { min-height: 3px; border-radius: 2px; background: alpha(white, 0.10); }
+.osd progressbar.lv-osd-quality trough { min-height: 3px; border-radius: 2px; background: alpha(@lv_line, 0.10); }
 .osd progressbar.lv-osd-quality progress { min-height: 3px; border-radius: 2px; border: none; background: transparent; }
 .osd progressbar.lv-osd-quality.lv-q-bad progress { background: #e5484d; }
 .osd progressbar.lv-osd-quality.lv-q-poor progress { background: #f5891f; }
@@ -115,7 +119,7 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .osd progressbar.lv-osd-quality.lv-q-good progress { background: #3fbf5f; }
 .osd-num {
   background: alpha(@lv_surface, 0.86); color: @lv_text; font-size: 2.2em; font-weight: 800;
-  border-radius: 12px; padding: 6px 18px; border: 1px solid alpha(white, 0.08);
+  border-radius: 12px; padding: 6px 18px; border: 1px solid alpha(@lv_line, 0.08);
   font-feature-settings: "tnum";
 }
 .lv-keycap {
@@ -128,11 +132,11 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 
 /* ---------- bottom control bar ---------- */
 .lv-controls {
-  background: @lv_surface; border-top: 1px solid alpha(white, 0.06);
+  background: @lv_surface; border-top: 1px solid alpha(@lv_line, 0.06);
   padding: 8px 12px;
 }
 .lv-floating .lv-controls {
-  background: alpha(@lv_surface, 0.90); border: 1px solid alpha(white, 0.08);
+  background: alpha(@lv_surface, 0.90); border: 1px solid alpha(@lv_line, 0.08);
   border-radius: 14px; margin: 0 24px 20px 24px;
 }
 .lv-controls button, .lv-controls menubutton > button {
@@ -141,9 +145,9 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
   transition: background 150ms ease, color 150ms ease;
 }
 .lv-controls button:hover, .lv-controls menubutton > button:hover {
-  background: alpha(white, 0.07); color: @lv_text;
+  background: alpha(@lv_line, 0.07); color: @lv_text;
 }
-.lv-controls button:active, .lv-controls menubutton > button:active { background: alpha(white, 0.12); }
+.lv-controls button:active, .lv-controls menubutton > button:active { background: alpha(@lv_line, 0.12); }
 .lv-controls button:checked, .lv-controls menubutton > button:checked {
   background: alpha(@lv_accent, 0.18); color: @lv_accent;
 }
@@ -160,16 +164,16 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 .lv-controls button.lv-live {
   min-width: 0; padding: 0 10px; min-height: 24px; border-radius: 12px;
   font-size: 0.78em; font-weight: 800; letter-spacing: 1px;
-  background: alpha(white, 0.08); color: @lv_text_dim;
+  background: alpha(@lv_line, 0.08); color: @lv_text_dim;
 }
 .lv-controls button.lv-live.lv-at-live { background: alpha(@lv_accent, 0.18); color: @lv_accent; }
-.lv-controls button.lv-live:hover { background: alpha(@lv_accent, 0.28); color: white; }
-.lv-sep { background: alpha(white, 0.08); min-width: 1px; margin: 8px 6px; }
+.lv-controls button.lv-live:hover { background: alpha(@lv_accent, 0.28); color: @lv_text; }
+.lv-sep { background: alpha(@lv_line, 0.08); min-width: 1px; margin: 8px 6px; }
 
 /* sliders: slim track, accent fill, pill knob */
 .lv-controls scale { padding: 10px 0; }
 .lv-controls scale trough {
-  min-height: 6px; border-radius: 3px; background: alpha(white, 0.10); border: none;
+  min-height: 6px; border-radius: 3px; background: alpha(@lv_line, 0.10); border: none;
 }
 .lv-controls scale highlight {
   background: @lv_accent; border-radius: 3px; border: none; min-height: 6px; margin: 0;
@@ -179,10 +183,10 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
   background: @lv_accent; border: none; box-shadow: 0 0 0 2px alpha(@lv_bg, 0.6);
   transition: min-width 150ms ease;
 }
-.lv-controls scale:hover slider { background: white; }
+.lv-controls scale:hover slider { background: @lv_text; }
 .lv-controls scale.lv-volume highlight { background: @lv_text; }
 .lv-controls scale.lv-volume slider { background: @lv_text; }
-.lv-controls scale:disabled trough { background: alpha(white, 0.05); }
+.lv-controls scale:disabled trough { background: alpha(@lv_line, 0.05); }
 .lv-controls scale:disabled slider { background: transparent; box-shadow: none; }
 
 /* ---------- status strip ---------- */
@@ -202,37 +206,117 @@ window.lindvb popover modelbutton:hover, window.lindvb popover modelbutton:selec
 
 # ---------- dialogs (channel editor, preferences, ...) ----------
 # Applies to every window of the app, not just the main one.
-CSS += """
-.lv-dialog-pane { background: alpha(white, 0.02); }
+CSS_BODY += """
+.lv-dialog-pane { background: alpha(@lv_line, 0.02); }
 .lv-section-title { font-weight: 700; }
 expander.lv-section > title { padding: 6px 4px; border-radius: 8px; }
-expander.lv-section > title:hover { background: alpha(white, 0.05); }
+expander.lv-section > title:hover { background: alpha(@lv_line, 0.05); }
 .lv-section-body { margin: 2px 6px 10px 22px; }
 .lv-field-label { color: @lv_text_dim; }
 .lv-hint { color: @lv_text_dim; font-size: 0.85em; }
 .lv-toolstrip {
-  background: alpha(white, 0.03); border-left: 1px solid alpha(white, 0.06);
+  background: alpha(@lv_line, 0.03); border-left: 1px solid alpha(@lv_line, 0.06);
   padding: 8px 6px;
 }
 .lv-toolstrip button {
   min-width: 34px; min-height: 34px; padding: 0; border-radius: 8px;
   background: none; box-shadow: none; border: none;
 }
-.lv-toolstrip button:hover { background: alpha(white, 0.08); }
+.lv-toolstrip button:hover { background: alpha(@lv_line, 0.08); }
 .lv-toolstrip button.lv-primary { background: @lv_accent; color: @lv_on_accent; }
 .lv-toolstrip button.lv-primary:hover { background: @lv_accent_hover; }
 .lv-toolstrip button.lv-danger:hover { background: alpha(@lv_rec, 0.18); color: @lv_rec; }
-.lv-toolstrip separator { margin: 6px 4px; background: alpha(white, 0.08); }
+.lv-toolstrip separator { margin: 6px 4px; background: alpha(@lv_line, 0.08); }
 .lv-group {
-  background: alpha(white, 0.04); border: 1px solid alpha(white, 0.06);
+  background: alpha(@lv_line, 0.04); border: 1px solid alpha(@lv_line, 0.06);
   border-radius: 12px; padding: 4px 14px;
 }
 .lv-group > .lv-row { padding: 8px 0; }
-.lv-group > .lv-row + .lv-row { border-top: 1px solid alpha(white, 0.06); }
+.lv-group > .lv-row + .lv-row { border-top: 1px solid alpha(@lv_line, 0.06); }
 .lv-page-title { font-size: 1.25em; font-weight: 700; }
-stacksidebar.lv-nav { background: alpha(white, 0.02); }
+stacksidebar.lv-nav { background: alpha(@lv_line, 0.02); }
 stacksidebar.lv-nav row { padding: 8px 12px; border-radius: 8px; margin: 1px 6px; }
 """
+
+# The OSD sits on the picture, so it stays dark in the light scheme too.
+_LIGHT_OSD = """
+.osd, .osd-num { background: alpha(#121215, 0.86); color: #F2F2F5;
+                 border-color: alpha(white, 0.08); }
+.osd .lv-osd-time, .osd .lv-osd-next, .osd .lv-osd-meta, .osd .lv-osd-tag { color: #A3A3AD; }
+.osd .lv-osd-tag { border-color: alpha(white, 0.22); }
+.osd .lv-osd-tag.lv-current { color: #F2F2F5; border-color: @lv_accent; }
+.osd progressbar trough { background: alpha(white, 0.12); }
+.osd progressbar.lv-osd-quality trough { background: alpha(white, 0.10); }
+"""
+
+
+def theme_css(scheme="dark"):
+    """The player's CSS in the colour scheme "dark" or "light"."""
+    pal = PALETTES["light" if scheme == "light" else "dark"]
+    defs = "".join(f"@define-color {k} {v};\n" for k, v in pal.items())
+    return defs + CSS_BODY + (_LIGHT_OSD if scheme == "light" else "")
+
+
+CSS = theme_css("dark")
+
+
+def system_scheme():
+    """"light" or "dark" from the desktop (GNOME colour scheme, else the GTK
+    theme name); "dark" when nothing says otherwise."""
+    try:
+        from gi.repository import Gio
+        src = Gio.SettingsSchemaSource.get_default()
+        if src is not None and src.lookup("org.gnome.desktop.interface", True) is not None:
+            gs = Gio.Settings.new("org.gnome.desktop.interface")
+            keys = gs.props.settings_schema.list_keys()
+            if "color-scheme" in keys:
+                v = gs.get_string("color-scheme")
+                if v == "prefer-dark":
+                    return "dark"
+                if v in ("prefer-light", "default"):
+                    name = gs.get_string("gtk-theme") if "gtk-theme" in keys else ""
+                    return "dark" if "dark" in name.lower() else "light"
+    except Exception:          # noqa: BLE001 - no GNOME settings: keep dark
+        pass
+    try:
+        from gi.repository import Gtk
+        name = Gtk.Settings.get_default().get_property("gtk-theme-name") or ""
+        if name.lower().endswith("-dark") or ":dark" in name.lower():
+            return "dark"
+    except Exception:          # noqa: BLE001
+        pass
+    return "dark"
+
+
+def resolve_scheme(settings):
+    mode = settings.get("theme", "dark")
+    if mode == "system":
+        return system_scheme()
+    return "light" if mode == "light" else "dark"
+
+
+_theme_provider = None
+
+
+def apply_theme(settings_or_scheme):
+    """Install or replace the player's CSS in the chosen colour scheme."""
+    global _theme_provider
+    from gi.repository import Gdk, Gtk
+    scheme = settings_or_scheme if isinstance(settings_or_scheme, str) else \
+        resolve_scheme(settings_or_scheme)
+    Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme",
+                                            scheme != "light")
+    css = theme_css(scheme)
+    if _theme_provider is None:
+        _theme_provider = Gtk.CssProvider()
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), _theme_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    if hasattr(_theme_provider, "load_from_string"):
+        _theme_provider.load_from_string(css)
+    else:
+        _theme_provider.load_from_data(css.encode())
+    return scheme
+
 
 # ---------- accent colour ----------------------------------------------------
 # The accent is kept in its own style provider so it can be swapped at run

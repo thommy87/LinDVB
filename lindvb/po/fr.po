@@ -3504,3 +3504,18 @@ msgstr "Le fichier ne contient aucune chaîne."
 
 msgid "{n} channels removed"
 msgstr "{n} chaînes supprimées"
+
+msgid "Colour scheme"
+msgstr "Jeu de couleurs"
+
+msgid "Dark"
+msgstr "Sombre"
+
+msgid "Light"
+msgstr "Clair"
+
+msgid "Same as the system"
+msgstr "Comme le système"
+
+msgid "The picture always keeps its dark frame."
+msgstr "L'image garde toujours son cadre sombre."

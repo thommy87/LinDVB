@@ -3504,3 +3504,18 @@ msgstr "У файлі немає каналів."
 
 msgid "{n} channels removed"
 msgstr "Вилучено каналів: {n}"
+
+msgid "Colour scheme"
+msgstr "Колірна схема"
+
+msgid "Dark"
+msgstr "Темна"
+
+msgid "Light"
+msgstr "Світла"
+
+msgid "Same as the system"
+msgstr "Як у системі"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Зображення завжди зберігає темну рамку."

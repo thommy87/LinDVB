@@ -3774,3 +3774,18 @@ msgstr "Die Datei enthält keine Sender."
 
 msgid "{n} channels removed"
 msgstr "{n} Sender entfernt"
+
+msgid "Colour scheme"
+msgstr "Farbschema"
+
+msgid "Dark"
+msgstr "Dunkel"
+
+msgid "Light"
+msgstr "Hell"
+
+msgid "Same as the system"
+msgstr "Wie das System"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Das Bild behält immer seinen dunklen Rahmen."

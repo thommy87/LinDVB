@@ -3504,3 +3504,18 @@ msgstr "Faile nėra kanalų."
 
 msgid "{n} channels removed"
 msgstr "Pašalinta kanalų: {n}"
+
+msgid "Colour scheme"
+msgstr "Spalvų schema"
+
+msgid "Dark"
+msgstr "Tamsi"
+
+msgid "Light"
+msgstr "Šviesi"
+
+msgid "Same as the system"
+msgstr "Kaip sistemoje"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Vaizdas visada išlaiko tamsų rėmelį."
