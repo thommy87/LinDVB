@@ -25,9 +25,9 @@ NATIVE_NAMES = {
     "fr": "Français", "ga": "Gaeilge", "hr": "Hrvatski", "hu": "Magyar", "it": "Italiano",
     "lt": "Lietuvių", "lv": "Latviešu", "mt": "Malti", "nl": "Nederlands", "pl": "Polski",
     "pt": "Português", "ro": "Română", "sk": "Slovenčina", "sl": "Slovenščina",
-    "sv": "Svenska", "ar": "العربية", "ru": "Русский", "uk": "Українська",
+    "sv": "Svenska", "ar": "العربية", "fa": "فارسی", "ru": "Русский", "uk": "Українська",
 }
-RTL_LANGUAGES = {"ar"}
+RTL_LANGUAGES = {"ar", "fa"}
 LANGUAGES = {code: name for code, name in NATIVE_NAMES.items()
              if code in ("", "en") or (PO_DIR / f"{code}.po").exists()}
 
