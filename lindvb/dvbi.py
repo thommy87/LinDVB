@@ -206,7 +206,9 @@ class ListOffering:
 def registry_query_url(base, country=TARGET_COUNTRY, delivery=DELIVERY):
     """Query URL for the registry (IT-7, IT-8: TargetCountry=DEU, never
     regulatorListFlag=false)."""
-    params = [("TargetCountry", country)] + [("Delivery[]", d) for d in delivery]
+    # no TargetCountry for a registry of the viewer's own choice (country "" or OTHER)
+    params = [("TargetCountry", country)] if country and country != countries.OTHER.code else []
+    params += [("Delivery[]", d) for d in delivery]
     sep = "&" if "?" in base else "?"
     return base + sep + urllib.parse.urlencode(params)
 

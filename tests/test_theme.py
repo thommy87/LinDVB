@@ -37,3 +37,17 @@ def test_accent_css_overrides_theme_unless_system():
     plain = theme.accent_css("#E95420", override_theme=False)
     assert "@define-color lv_accent #E95420;" in plain
     assert "row:selected" not in plain
+
+
+def test_display_css_and_subtitle_font():
+    from lindvb.player import subtitle_font_desc
+    from lindvb.ui.theme import display_css
+    css = display_css({"osd_scale": 150, "subtitle_scale": 200, "subtitle_font": 'Noto "Sans'})
+    assert ".osd, .osd-num { font-size: 1.50em; }" in css
+    assert ".ttxsub { font-size: 3.00em; }" in css and 'font-family: "Noto Sans"' in css
+    assert "font-family" not in display_css({})
+    assert display_css({"osd_scale": "x"}).startswith(".osd, .osd-num { font-size: 1.00em; }")
+    # GStreamer keeps its own font until the preferences change it
+    assert subtitle_font_desc({}) is None
+    assert subtitle_font_desc({"subtitle_scale": 150}) == "Sans 27"
+    assert subtitle_font_desc({"subtitle_font": "DejaVu Serif"}) == "DejaVu Serif 18"

@@ -128,7 +128,20 @@ class DVBIPanel(Gtk.Box):
         ebox.append(self.registry_entry)
         self.hint(ebox, _("Asked in this order, separated by spaces. Press Enter to keep a "
                           "change; empty brings back the country's registries."))
+        # a service list without a registry (any country, e.g. one a broadcaster
+        # or a community publishes)
+        ebox.append(Gtk.Label(label=_("Service list address"), xalign=0, margin_top=8))
+        lrow = Gtk.Box(spacing=8)
+        self.list_entry = Gtk.Entry(hexpand=True, placeholder_text="https://…/servicelist.xml")
+        self.list_entry.connect("activate", lambda *_: self._use_list_url())
+        lrow.append(self.list_entry)
+        use = Gtk.Button(label=_("Use This List"))
+        use.connect("clicked", lambda *_: self._use_list_url())
+        lrow.append(use)
+        ebox.append(lrow)
+        self.hint(ebox, _("Loads this service list directly, without asking a registry."))
         exp.set_child(ebox)
+        self.registry_exp = exp
         box.append(exp)
 
         # country part 2: postcode and fixed region list (IT-5)
@@ -246,6 +259,9 @@ class DVBIPanel(Gtk.Box):
 
         self.prefer.set_active(bool(s.get("dvbi_prefer_broadcast", c.prefer_broadcast)))
         self.registry_entry.set_text(" ".join(s.get("dvbi_registries") or c.registries))
+        self.list_entry.set_text("")
+        if not c.registries:
+            self.registry_exp.set_expanded(True)
         self._clear_lists()
         current = s.get("dvbi_list_name") or s.get("dvbi_list_url")
         self.current_lbl.set_text(_("In use: {current}").format(current=current) if current
@@ -327,6 +343,27 @@ class DVBIPanel(Gtk.Box):
         if self._ack_ok():
             self._load_registry()
 
+    def _use_list_url(self):
+        url = self.list_entry.get_text().strip()
+        if not url:
+            return
+        if "://" not in url:
+            url = "https://" + url
+        if not url.startswith(("http://", "https://")):
+            self.status.set_text(_("Please enter a web address (https://…)."))
+            return
+        if not self._ack_ok():
+            self.status.set_text(_("Please confirm the privacy notice first."))
+            return
+        s = self.s
+        s["dvbi_list_url"] = url
+        s["dvbi_list_name"] = urllib.parse.urlsplit(url).netloc or url
+        s["dvbi_last_modified"] = s["dvbi_etag"] = s["dvbi_region"] = ""
+        s["dvbi_privacy_ack"] = True
+        s.save()
+        self.lists.unselect_all()
+        self._run(force=True, region=None)
+
     def start(self):
         """Called when the Internet page is shown: ask the registry only then,
         not each time the preferences open."""
@@ -398,6 +435,10 @@ class DVBIPanel(Gtk.Box):
         self._busy(True, _("Asking the service list registry…"))
         registries = self.s.get("dvbi_registries") or list(self.country.registries)
         code = self.country.code
+        if not registries:                     # "Other": nothing entered yet
+            self.registry_exp.set_expanded(True)
+            self._busy(False, _("Enter the address of a registry or of a service list."))
+            return
 
         def work():
             try:

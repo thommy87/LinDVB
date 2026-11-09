@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Now-playing overlay over the radio visualisation.
 
-Separately switchable in Preferences › Visualisation: a station logo tile,
+Separately switchable in Preferences › OSD and Visualisations: a station logo tile,
 the album cover of the song on air, the song details (artist, album and year,
 track and title) and a clock in the top right corner. It is a plain drawing
 area over the visualisation, so it works with every style, the GPU ones and

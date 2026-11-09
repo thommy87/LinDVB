@@ -3228,3 +3228,171 @@ msgstr "TV vagy rádió lejátszása"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: ezen a csatornán nem érhető el"
+
+msgid "OSD and Visualisations"
+msgstr "OSD és vizualizációk"
+
+msgid "OSD size (%)"
+msgstr "OSD mérete (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "A műsorinformáció a kép felett és a csatornaszám."
+
+msgid "Font"
+msgstr "Betűtípus"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Teletext-feliratok és fájlok, streamek szöveges feliratai."
+
+msgid "Size (%)"
+msgstr "Méret (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "A képként küldött feliratok (DVB-feliratok) megtartják a csatorna méretét."
+
+msgid "Subtitle font"
+msgstr "Felirat betűtípusa"
+
+msgid "Default font"
+msgstr "Alapértelmezett betűtípus"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Rádió és hang lejátszásakor látható; a vizualizáció gombbal is választható."
+
+msgid "Draw on the graphics card"
+msgstr "Rajzolás a videokártyával"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL a beépített vizualizációkhoz. A LinDVB újraindítása után lép életbe."
+
+msgid "Resolution of projectM"
+msgstr "A projectM felbontása"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "„auto” (a képernyő) vagy szélesség x magasság, pl. 1280x720. A kisebb méretek gyorsabban indulnak és kevesebb számítást igényelnek."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: másodperc presetenként"
+
+msgid "projectM preset folder"
+msgstr "projectM preset-mappa"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Üres: a projectM szokásos mappái."
+
+msgid "Service list address"
+msgstr "A szolgáltatáslista címe"
+
+msgid "Use This List"
+msgstr "Lista használata"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Közvetlenül betölti ezt a szolgáltatáslistát, regiszter megkérdezése nélkül."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Adjon meg egy webcímet (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Előbb fogadja el az adatvédelmi tájékoztatót."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Adja meg egy regiszter vagy szolgáltatáslista címét."
+
+msgid "Pause / play"
+msgstr "Szünet / lejátszás"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 másodperc vissza / előre (időcsúsztatás, fájlok)"
+
+msgid "Back to live"
+msgstr "Vissza az élő adásra"
+
+msgid "Mute"
+msgstr "Némítás"
+
+msgid "Volume up / down"
+msgstr "Hangerő fel / le"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Hang korábban / később (a csatorna hangkésleltetése)"
+
+msgid "Next radio visualisation"
+msgstr "Következő rádió-vizualizáció"
+
+msgid "Next / previous playlist entry"
+msgstr "Következő / előző lejátszásilista-elem"
+
+msgid "Previous / next channel"
+msgstr "Előző / következő csatorna"
+
+msgid "Next / previous channel"
+msgstr "Következő / előző csatorna"
+
+msgid "Channel by number (type the digits)"
+msgstr "Csatorna szám szerint (írja be a számjegyeket)"
+
+msgid "Last channel"
+msgstr "Utolsó csatorna"
+
+msgid "Switch TV / radio"
+msgstr "TV / rádió váltása"
+
+msgid "Show / hide the channel list"
+msgstr "Csatornalista megjelenítése / elrejtése"
+
+msgid "Programme guide and recording"
+msgstr "Műsorújság és felvétel"
+
+msgid "Programme guide (EPG)"
+msgstr "Műsorújság (EPG)"
+
+msgid "Timer recordings"
+msgstr "Időzített felvételek"
+
+msgid "Programme info (OSD)"
+msgstr "Műsorinformáció (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teletext és interaktív szolgáltatások"
+
+msgid "View"
+msgstr "Nézet"
+
+msgid "Full screen"
+msgstr "Teljes képernyő"
+
+msgid "Leave full screen"
+msgstr "Kilépés a teljes képernyőből"
+
+msgid "Application"
+msgstr "Alkalmazás"
+
+msgid "Main menu"
+msgstr "Főmenü"
+
+msgid "Open media file"
+msgstr "Médiafájl megnyitása"
+
+msgid "Keyboard shortcuts"
+msgstr "Billentyűparancsok"
+
+msgid "Keyboard Shortcuts"
+msgstr "Billentyűparancsok"
+
+msgid "Time"
+msgstr "Idő"
+
+msgid "Programme"
+msgstr "Műsor"
+
+msgid "File"
+msgstr "Fájl"
+
+msgid "Other (own registry or list)"
+msgstr "Egyéb (saját regiszter vagy lista)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "A DVB-I az internetről tölti le a csatornalistát. Ehhez a LinDVB felveszi a kapcsolatot a megadott című regiszterrel vagy szolgáltatáslista-szerverrel, a csatornalogókat tároló szerverekkel, és ha a műsorújság be van kapcsolva, a műsorszolgáltatók műsorújság-szervereivel. Ezek a szerverek látják az IP-címét és a kérés idejét. Ha irányítószámot ad meg, azt elküldi a szolgáltatáslista-szervernek."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Alább adja meg egy szolgáltatáslista-regiszter címét, vagy közvetlenül egy szolgáltatáslistáét."

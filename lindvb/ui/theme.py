@@ -118,6 +118,11 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
   border-radius: 12px; padding: 6px 18px; border: 1px solid alpha(white, 0.08);
   font-feature-settings: "tnum";
 }
+.lv-keycap {
+  background: alpha(@lv_text, 0.08); border: 1px solid alpha(@lv_text, 0.22);
+  border-bottom-width: 2px; border-radius: 5px; padding: 0 7px; min-width: 14px;
+  font-size: 0.9em; font-feature-settings: "tnum";
+}
 .ttxsub { background: rgba(0,0,0,0.75); color: white; font-size: 1.5em; font-weight: bold;
           border-radius: 4px; padding: 2px 10px; }
 
@@ -424,3 +429,43 @@ def apply_accent(settings_or_color):
     else:
         _provider.load_from_data(css.encode())
     return color
+
+
+# -- sizes set in the preferences (OSD, subtitles) ------------------------------------
+
+OSD_WIDTH = 420           # px of the OSD box at 100 %
+_display_provider = None
+
+
+def _clamp_percent(value, lo=50, hi=300):
+    try:
+        return max(lo, min(hi, int(value)))
+    except (TypeError, ValueError):
+        return 100
+
+
+def display_css(settings):
+    """CSS for the OSD size and the subtitle font from the preferences."""
+    osd = _clamp_percent(settings.get("osd_scale", 100)) / 100
+    sub = _clamp_percent(settings.get("subtitle_scale", 100)) / 100
+    family = str(settings.get("subtitle_font") or "").replace('"', "").replace("\\", "").strip()
+    css = (f".osd, .osd-num {{ font-size: {osd:.2f}em; }}\n"
+           f".ttxsub {{ font-size: {1.5 * sub:.2f}em; }}\n")
+    if family:
+        css += f'.ttxsub {{ font-family: "{family}"; }}\n'
+    return css
+
+
+def apply_display(settings):
+    """Install or replace the provider for the OSD and subtitle sizes."""
+    global _display_provider
+    from gi.repository import Gdk, Gtk
+    css = display_css(settings)
+    if _display_provider is None:
+        _display_provider = Gtk.CssProvider()
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), _display_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 2)
+    if hasattr(_display_provider, "load_from_string"):
+        _display_provider.load_from_string(css)
+    else:
+        _display_provider.load_from_data(css.encode())

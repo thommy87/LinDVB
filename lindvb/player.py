@@ -47,6 +47,19 @@ EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
 
 
+def subtitle_font_desc(settings, base_points=18):
+    """Pango font for the text subtitles GStreamer draws into the video, or
+    None to keep GStreamer's own choice (both preferences untouched)."""
+    family = str(settings.get("subtitle_font") or "").strip()
+    try:
+        scale = max(50, min(300, int(settings.get("subtitle_scale", 100))))
+    except (TypeError, ValueError):
+        scale = 100
+    if not family and scale == 100:
+        return None
+    return f"{family or 'Sans'} {max(6, round(base_points * scale / 100))}"
+
+
 def _has_playbin3():
     return Gst.ElementFactory.find("playbin3") is not None
 
@@ -601,6 +614,7 @@ class Player(GObject.Object):
         pb.set_property("mute", self._mute)
         # playbin's av-offset > 0 plays the audio earlier, so it is the negated delay
         pb.set_property("av-offset", -int(self.audio_delay_ms) * Gst.MSECOND)
+        self.apply_subtitle_font()
         if self.video_off:
             # set before the pipeline starts, so playbin and playbin3 both
             # leave the video out (internet streams rebuild the pipeline)
@@ -1171,6 +1185,12 @@ class Player(GObject.Object):
                     self._select_streams(Gst.StreamType.TEXT, streams[i])
             else:
                 self.playbin.set_property("current-text", i)
+
+    def apply_subtitle_font(self):
+        """Font of the text subtitles (files, streams) from the preferences."""
+        if self.playbin:
+            # None: GStreamer's own font and size
+            self.playbin.set_property("subtitle-font-desc", subtitle_font_desc(self.settings))
 
     def disable_video(self, off):
         self.video_off = bool(off)

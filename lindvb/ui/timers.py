@@ -21,7 +21,7 @@ from ..recformat import (AFTER_ACTIONS, AUDIO_MODE_LABELS, AUDIO_MODES, EXTENSIO
                          usable_extras)
 from ..recorder import WEEKDAYS, Timer
 from .common import day, dropdown, fill, hm, make_column_view, message, scrolled, selected
-from ..i18n import _, N_
+from ..i18n import C_, _, N_
 
 
 def _label(text, mnemonic_widget=None):
@@ -166,7 +166,19 @@ class TimersWindow(Gtk.Window):
 
     # -- editor ---------------------------------------------------------------
     def _editor(self):
-        g = Gtk.Grid(row_spacing=4, column_spacing=10)
+        """The editor in titled groups, laid out like the preferences."""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        def section(title):
+            box.append(Gtk.Label(label=title, xalign=0, css_classes=["lv-section-title"],
+                                 margin_top=6))
+            grid = Gtk.Grid(row_spacing=4, column_spacing=10, margin_top=8, margin_bottom=10)
+            frame = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+            frame.append(grid)
+            box.append(frame)
+            return grid
+
+        g = section(_("Time"))
         s = self.app.settings
 
         # Row 1: date, lead, start, end, follow, weekdays
@@ -191,17 +203,20 @@ class TimersWindow(Gtk.Window):
             g.attach(_label(text, w), col, 0, 1, 1)
             g.attach(w, col, 1, 1, 1)
 
-        # Row 2: channel and name
-        self.ch_e = Gtk.Entry(editable=False, can_focus=False,
+        # channel and name
+        g = section(_("Programme"))
+        self.ch_e = Gtk.Entry(editable=False, can_focus=False, width_chars=26,
                               placeholder_text=_("Pick a channel on the left"))
         self.title_e = Gtk.Entry(hexpand=True)
         self.title_e.connect("changed", lambda *_: self._update_preview())
-        g.attach(_label(_("Channel")), 0, 2, 2, 1)
-        g.attach(self.ch_e, 0, 3, 2, 1)
-        g.attach(_label(_("_Name"), self.title_e), 2, 2, 4, 1)
-        g.attach(self.title_e, 2, 3, 4, 1)
+        g.attach(_label(_("Channel")), 0, 0, 2, 1)
+        g.attach(self.ch_e, 0, 1, 2, 1)
+        g.attach(_label(_("_Name"), self.title_e), 2, 0, 4, 1)
+        g.attach(self.title_e, 2, 1, 4, 1)
 
-        # Row 3: actions and formats, extras on the right
+        # actions and formats, tracks on the right
+        g = section(C_("preferences page", "Recording"))
+        g.set_column_homogeneous(True)
         self.action = dropdown([_(a) for a in TIMER_ACTIONS])
         self.after = dropdown([_(a) for a in AFTER_ACTIONS])
         self.tv_fmt = FormatChooser(TV_FORMATS, radio=False)
@@ -209,17 +224,16 @@ class TimersWindow(Gtk.Window):
         for w in (self.tv_fmt.widget, self.radio_fmt.widget):
             w.connect("notify::selected", lambda *_: self._format_changed())
         self.action.connect("notify::selected", lambda *_: self._sync_action())
-        g.attach(_label(_("_Timer action"), self.action), 0, 4, 2, 1)
-        g.attach(self.action, 0, 5, 2, 1)
-        g.attach(_label(_("_After recording"), self.after), 0, 6, 2, 1)
-        g.attach(self.after, 0, 7, 2, 1)
-        g.attach(_label(_("T_V format"), self.tv_fmt.widget), 2, 4, 2, 1)
-        g.attach(self.tv_fmt.widget, 2, 5, 2, 1)
-        g.attach(_label(_("_Radio format"), self.radio_fmt.widget), 2, 6, 2, 1)
-        g.attach(self.radio_fmt.widget, 2, 7, 2, 1)
+        g.attach(_label(_("_Timer action"), self.action), 0, 0, 2, 1)
+        g.attach(self.action, 0, 1, 2, 1)
+        g.attach(_label(_("_After recording"), self.after), 0, 2, 2, 1)
+        g.attach(self.after, 0, 3, 2, 1)
+        g.attach(_label(_("T_V format"), self.tv_fmt.widget), 2, 0, 2, 1)
+        g.attach(self.tv_fmt.widget, 2, 1, 2, 1)
+        g.attach(_label(_("_Radio format"), self.radio_fmt.widget), 2, 2, 2, 1)
+        g.attach(self.radio_fmt.widget, 2, 3, 2, 1)
 
-        ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, margin_start=8,
-                       margin_end=8, margin_top=4, margin_bottom=6)
+        ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, valign=Gtk.Align.START)
         self.audio = dropdown([AUDIO_MODE_LABELS[m] for m in AUDIO_MODES])
         self.audio.set_tooltip_text(
             _("Preferred language only: the tracks in the audio language from the preferences, "
@@ -238,33 +252,33 @@ class TimersWindow(Gtk.Window):
         self.extra_btns["subtitles"].set_tooltip_text(
             _("TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
             "DVB bitmap subtitles are kept in TS only."))
-        frame = Gtk.Frame(label=_("Tracks"), child=ebox, valign=Gtk.Align.START)
-        g.attach(frame, 4, 4, 2, 4)
-        self.fmt_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["dim-label"])
-        g.attach(self.fmt_hint, 0, 8, 6, 1)
+        g.attach(ebox, 4, 0, 2, 4)
+        self.fmt_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"])
+        g.attach(self.fmt_hint, 0, 4, 6, 1)
 
-        # Row 4: file naming scheme, placeholders, folder
+        # file naming scheme, placeholders, folder
+        g = section(_("File"))
         self.scheme_e = Gtk.Entry(hexpand=True)
         self.scheme_e.connect("changed", lambda *_: self._update_preview())
-        g.attach(_label(_("File _naming scheme"), self.scheme_e), 0, 9, 4, 1)
-        g.attach(self.scheme_e, 0, 10, 4, 1)
-        g.attach(self._placeholder_button(), 4, 10, 1, 1)
+        g.attach(_label(_("File _naming scheme"), self.scheme_e), 0, 0, 4, 1)
+        g.attach(self.scheme_e, 0, 1, 4, 1)
+        g.attach(self._placeholder_button(), 4, 1, 1, 1)
         folder_btn = Gtk.Button(label=_("Folder…"))
         folder_btn.connect("clicked", lambda *_: self._choose_folder())
-        g.attach(folder_btn, 5, 10, 1, 1)
-        self.folder_lbl = Gtk.Label(xalign=0, ellipsize=1, hexpand=True, css_classes=["dim-label"])
+        g.attach(folder_btn, 5, 1, 1, 1)
+        self.folder_lbl = Gtk.Label(xalign=0, ellipsize=1, hexpand=True, css_classes=["lv-hint"])
         reset = Gtk.Button(icon_name="edit-undo-symbolic", css_classes=["flat"],
                            tooltip_text=_("Use the recording folder from the preferences"))
         reset.connect("clicked", lambda *_: self._set_folder(""))
         fbox = Gtk.Box(spacing=4)
         fbox.append(self.folder_lbl)
         fbox.append(reset)
-        g.attach(fbox, 0, 11, 6, 1)
-        self.preview = Gtk.Label(xalign=0, ellipsize=1, selectable=True, css_classes=["dim-label"])
-        g.attach(self.preview, 0, 12, 6, 1)
+        g.attach(fbox, 0, 2, 6, 1)
+        self.preview = Gtk.Label(xalign=0, ellipsize=1, selectable=True, css_classes=["lv-hint"])
+        g.attach(self.preview, 0, 3, 6, 1)
         self.scheme_e.set_tooltip_text(", ".join(p for p, _unused in PLACEHOLDERS))
         self._default_scheme = s["name_scheme"]
-        return g
+        return box
 
     def _placeholder_button(self):
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)

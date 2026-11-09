@@ -3228,3 +3228,171 @@ msgstr "Qed tindaqq it-TV jew ir-radju"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: mhux disponibbli fuq dan l-istazzjon"
+
+msgid "OSD and Visualisations"
+msgstr "OSD u viżwalizzazzjonijiet"
+
+msgid "OSD size (%)"
+msgstr "Daqs tal-OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "L-informazzjoni tal-programm fuq l-istampa u n-numru tal-istazzjon."
+
+msgid "Font"
+msgstr "Font"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Sottotitoli tat-teletext u sottotitoli tat-test ta' fajls u streams."
+
+msgid "Size (%)"
+msgstr "Daqs (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Is-sottotitoli mibgħuta bħala stampi (sottotitoli DVB) iżommu d-daqs tal-istazzjon."
+
+msgid "Subtitle font"
+msgstr "Font tas-sottotitoli"
+
+msgid "Default font"
+msgstr "Font awtomatiku"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Tidher mar-radju u l-awdjo; ukoll mill-buttuna tal-viżwalizzazzjoni."
+
+msgid "Draw on the graphics card"
+msgstr "Pinġi bil-karta grafika"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL għall-viżwalizzazzjonijiet inklużi. Tidħol fis-seħħ meta LinDVB jerġa' jinfetaħ."
+
+msgid "Resolution of projectM"
+msgstr "Riżoluzzjoni ta' projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "\"auto\" (l-iskrin) jew wisa' x għoli, eż. 1280x720. Daqsijiet iżgħar jibdew aktar malajr u jeħtieġu inqas qawwa tal-ipproċessar."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: sekondi għal kull preset"
+
+msgid "projectM preset folder"
+msgstr "Folder tal-presets ta' projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Vojt: il-folders tas-soltu ta' projectM."
+
+msgid "Service list address"
+msgstr "Indirizz tal-lista tas-servizzi"
+
+msgid "Use This List"
+msgstr "Uża Din il-Lista"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Itella' din il-lista tas-servizzi direttament, mingħajr ma jistaqsi reġistru."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Daħħal indirizz web (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "L-ewwel ikkonferma l-avviż tal-privatezza."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Daħħal l-indirizz ta' reġistru jew ta' lista tas-servizzi."
+
+msgid "Pause / play"
+msgstr "Pawsa / ħaddem"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 sekondi lura / 'il quddiem (timeshift, fajls)"
+
+msgid "Back to live"
+msgstr "Lura għad-dirett"
+
+msgid "Mute"
+msgstr "Sikket"
+
+msgid "Volume up / down"
+msgstr "Volum 'il fuq / 'l isfel"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Ħoss aktar kmieni / aktar tard (dewmien tal-awdjo tal-istazzjon)"
+
+msgid "Next radio visualisation"
+msgstr "Il-viżwalizzazzjoni tar-radju li jmiss"
+
+msgid "Next / previous playlist entry"
+msgstr "Id-daħla li jmiss / ta' qabel fil-playlist"
+
+msgid "Previous / next channel"
+msgstr "Stazzjon ta' qabel / li jmiss"
+
+msgid "Next / previous channel"
+msgstr "Stazzjon li jmiss / ta' qabel"
+
+msgid "Channel by number (type the digits)"
+msgstr "Stazzjon bin-numru (ittajpja ċ-ċifri)"
+
+msgid "Last channel"
+msgstr "L-aħħar stazzjon"
+
+msgid "Switch TV / radio"
+msgstr "Aqleb TV / radju"
+
+msgid "Show / hide the channel list"
+msgstr "Uri / aħbi l-lista tal-istazzjonijiet"
+
+msgid "Programme guide and recording"
+msgstr "Gwida tal-programmi u reġistrazzjoni"
+
+msgid "Programme guide (EPG)"
+msgstr "Gwida tal-programmi (EPG)"
+
+msgid "Timer recordings"
+msgstr "Reġistrazzjonijiet skedati"
+
+msgid "Programme info (OSD)"
+msgstr "Informazzjoni tal-programm (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teletext u servizzi interattivi"
+
+msgid "View"
+msgstr "Veduta"
+
+msgid "Full screen"
+msgstr "Skrin sħiħ"
+
+msgid "Leave full screen"
+msgstr "Oħroġ mill-iskrin sħiħ"
+
+msgid "Application"
+msgstr "Applikazzjoni"
+
+msgid "Main menu"
+msgstr "Menu prinċipali"
+
+msgid "Open media file"
+msgstr "Iftaħ fajl tal-midja"
+
+msgid "Keyboard shortcuts"
+msgstr "Shortcuts tat-tastiera"
+
+msgid "Keyboard Shortcuts"
+msgstr "Shortcuts tat-Tastiera"
+
+msgid "Time"
+msgstr "Ħin"
+
+msgid "Programme"
+msgstr "Programm"
+
+msgid "File"
+msgstr "Fajl"
+
+msgid "Other (own registry or list)"
+msgstr "Oħrajn (reġistru jew lista tiegħek)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I itella' l-lista tal-istazzjonijiet mill-internet. Biex jagħmel dan, LinDVB jikkuntattja r-reġistru jew is-server tal-lista tas-servizzi li ddaħħal l-indirizz tiegħu, is-servers tal-logos tal-istazzjonijiet u, meta l-gwida tal-programmi tkun mixgħula, is-servers tal-gwida tax-xandara. Dawn is-servers jaraw l-indirizz IP tiegħek u l-ħin tat-talba. Jekk iddaħħal kodiċi postali, jintbagħat lis-server tal-lista tas-servizzi."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Hawn taħt daħħal l-indirizz ta' reġistru tal-listi tas-servizzi, jew direttament ta' lista tas-servizzi."

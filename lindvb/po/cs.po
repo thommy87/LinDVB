@@ -3228,3 +3228,171 @@ msgstr "Přehrávání TV nebo rádia"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: na tomto kanálu není k dispozici"
+
+msgid "OSD and Visualisations"
+msgstr "OSD a vizualizace"
+
+msgid "OSD size (%)"
+msgstr "Velikost OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Informace o pořadu přes obraz a číslo kanálu."
+
+msgid "Font"
+msgstr "Písmo"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Titulky z teletextu a textové titulky souborů a streamů."
+
+msgid "Size (%)"
+msgstr "Velikost (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Titulky vysílané jako obrázky (titulky DVB) si ponechají velikost kanálu."
+
+msgid "Subtitle font"
+msgstr "Písmo titulků"
+
+msgid "Default font"
+msgstr "Výchozí písmo"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Zobrazuje se u rádia a zvuku; také přes tlačítko vizualizace."
+
+msgid "Draw on the graphics card"
+msgstr "Kreslit grafickou kartou"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL pro vestavěné vizualizace. Projeví se po novém spuštění LinDVB."
+
+msgid "Resolution of projectM"
+msgstr "Rozlišení projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "„auto“ (obrazovka) nebo šířka x výška, např. 1280x720. Menší velikosti startují rychleji a potřebují méně výkonu."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: sekundy na preset"
+
+msgid "projectM preset folder"
+msgstr "Složka presetů projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Prázdné: obvyklé složky projectM."
+
+msgid "Service list address"
+msgstr "Adresa seznamu služeb"
+
+msgid "Use This List"
+msgstr "Použít tento seznam"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Načte tento seznam služeb přímo, bez dotazu na registr."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Zadejte webovou adresu (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Nejprve potvrďte informace o ochraně soukromí."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Zadejte adresu registru nebo seznamu služeb."
+
+msgid "Pause / play"
+msgstr "Pauza / přehrát"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 sekund zpět / vpřed (timeshift, soubory)"
+
+msgid "Back to live"
+msgstr "Zpět na živé vysílání"
+
+msgid "Mute"
+msgstr "Ztlumit"
+
+msgid "Volume up / down"
+msgstr "Hlasitost nahoru / dolů"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Zvuk dříve / později (zpoždění zvuku kanálu)"
+
+msgid "Next radio visualisation"
+msgstr "Další vizualizace rádia"
+
+msgid "Next / previous playlist entry"
+msgstr "Další / předchozí položka seznamu skladeb"
+
+msgid "Previous / next channel"
+msgstr "Předchozí / další kanál"
+
+msgid "Next / previous channel"
+msgstr "Další / předchozí kanál"
+
+msgid "Channel by number (type the digits)"
+msgstr "Kanál podle čísla (napište číslice)"
+
+msgid "Last channel"
+msgstr "Poslední kanál"
+
+msgid "Switch TV / radio"
+msgstr "Přepnout TV / rádio"
+
+msgid "Show / hide the channel list"
+msgstr "Zobrazit / skrýt seznam kanálů"
+
+msgid "Programme guide and recording"
+msgstr "Programový průvodce a nahrávání"
+
+msgid "Programme guide (EPG)"
+msgstr "Programový průvodce (EPG)"
+
+msgid "Timer recordings"
+msgstr "Naplánovaná nahrávání"
+
+msgid "Programme info (OSD)"
+msgstr "Informace o pořadu (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teletext a interaktivní služby"
+
+msgid "View"
+msgstr "Zobrazení"
+
+msgid "Full screen"
+msgstr "Celá obrazovka"
+
+msgid "Leave full screen"
+msgstr "Opustit celou obrazovku"
+
+msgid "Application"
+msgstr "Aplikace"
+
+msgid "Main menu"
+msgstr "Hlavní nabídka"
+
+msgid "Open media file"
+msgstr "Otevřít mediální soubor"
+
+msgid "Keyboard shortcuts"
+msgstr "Klávesové zkratky"
+
+msgid "Keyboard Shortcuts"
+msgstr "Klávesové zkratky"
+
+msgid "Time"
+msgstr "Čas"
+
+msgid "Programme"
+msgstr "Pořad"
+
+msgid "File"
+msgstr "Soubor"
+
+msgid "Other (own registry or list)"
+msgstr "Jiné (vlastní registr nebo seznam)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I načítá seznam kanálů z internetu. LinDVB přitom kontaktuje registr nebo server seznamu služeb, jehož adresu zadáte, servery s logy kanálů a při zapnutém programovém průvodci servery průvodců vysílatelů. Tyto servery vidí vaši IP adresu a čas požadavku. Zadáte-li PSČ, odešle se serveru seznamu služeb."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Níže zadejte adresu registru seznamů služeb nebo přímo adresu seznamu služeb."
