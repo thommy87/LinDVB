@@ -22,9 +22,9 @@ from gi.repository import GLib, Gst  # noqa: E402
 
 RUNS = (
     # (name, engine, hlsdemux2/dashdemux2 properties)
-    ("playbin3, as LinDVB plays it", "playbin3", {}),
-    ("playbin3, 10 s buffer, buffering below 3 s", "playbin3",
-     {"high-watermark-time": 10, "low-watermark-time": 3}),
+    ("playbin3, as LinDVB 0.11 played it", "playbin3", {}),
+    ("playbin3, as LinDVB plays it now (start at 5 Mbit/s, buffering below 3 s)", "playbin3",
+     {"start-bitrate": 5_000_000, "low-watermark-time": 3_000_000_000}),
     ("playbin (classic hlsdemux)", "playbin", {}),
 )
 
@@ -45,7 +45,7 @@ def run(url, name, engine, props, seconds):
         f = el.get_factory()
         if f and f.get_name() in ("hlsdemux2", "dashdemux2"):
             for k, v in props.items():
-                el.set_property(k, v * Gst.SECOND)
+                el.set_property(k, v)
 
     def on_message(_bus, msg):
         t = msg.type
