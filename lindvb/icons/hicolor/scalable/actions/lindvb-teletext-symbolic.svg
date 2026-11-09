@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- a TV set with teletext's block graphics on the screen -->
+  <path fill="#222222" fill-rule="evenodd" d="M2 1.5 H14 A1.5 1.5 0 0 1 15.5 3 V11.5 A1.5 1.5 0 0 1 14 13 H2 A1.5 1.5 0 0 1 0.5 11.5 V3 A1.5 1.5 0 0 1 2 1.5 Z M2 3 V11.5 H14 V3 Z"/>
+  <rect fill="#222222" x="4.5" y="13.5" width="7" height="1.5" rx="0.5"/>
+  <rect fill="#222222" x="3" y="4.5" width="4" height="1.5"/>
+  <rect fill="#222222" x="8" y="4.5" width="1.5" height="1.5"/>
+  <rect fill="#222222" x="10.5" y="4.5" width="2.5" height="1.5"/>
+  <rect fill="#222222" x="3" y="6.5" width="2.5" height="1.5"/>
+  <rect fill="#222222" x="6.5" y="6.5" width="6.5" height="1.5"/>
+  <rect fill="#222222" x="3" y="8.5" width="5.5" height="1.5"/>
+  <rect fill="#222222" x="9.5" y="8.5" width="2" height="1.5"/>
+</svg>

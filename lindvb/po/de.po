@@ -3498,3 +3498,171 @@ msgstr "TV- oder Radiowiedergabe"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: auf diesem Sender nicht verfügbar"
+
+msgid "OSD and Visualisations"
+msgstr "OSD und Visualisierungen"
+
+msgid "OSD size (%)"
+msgstr "OSD-Größe (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Die Programminfo über dem Bild und die Sendernummer."
+
+msgid "Font"
+msgstr "Schriftart"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Videotext-Untertitel und die Text-Untertitel von Dateien und Streams."
+
+msgid "Size (%)"
+msgstr "Größe (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Untertitel, die als Bild gesendet werden (DVB-Untertitel), behalten die Größe des Senders."
+
+msgid "Subtitle font"
+msgstr "Untertitel-Schriftart"
+
+msgid "Default font"
+msgstr "Standardschrift"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Wird bei Radio und Audio gezeigt; auch über den Visualisierungs-Knopf wählbar."
+
+msgid "Draw on the graphics card"
+msgstr "Mit der Grafikkarte zeichnen"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL für die eingebauten Visualisierungen. Wirkt nach einem Neustart von LinDVB."
+
+msgid "Resolution of projectM"
+msgstr "Auflösung von projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "„auto“ (der Bildschirm) oder Breite x Höhe, z. B. 1280x720. Kleinere Größen starten schneller und brauchen weniger Rechenleistung."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: Sekunden pro Preset"
+
+msgid "projectM preset folder"
+msgstr "projectM-Preset-Ordner"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Leer: die üblichen Ordner von projectM."
+
+msgid "Service list address"
+msgstr "Adresse der Service-Liste"
+
+msgid "Use This List"
+msgstr "Diese Liste verwenden"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Lädt diese Service-Liste direkt, ohne eine Registry zu fragen."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Bitte eine Webadresse eingeben (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Bitte zuerst den Datenschutzhinweis bestätigen."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Adresse einer Registry oder einer Service-Liste eingeben."
+
+msgid "Pause / play"
+msgstr "Pause / Wiedergabe"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 Sekunden zurück / vor (Timeshift, Dateien)"
+
+msgid "Back to live"
+msgstr "Zurück zum Live-Bild"
+
+msgid "Mute"
+msgstr "Stumm"
+
+msgid "Volume up / down"
+msgstr "Lauter / leiser"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Ton früher / später (Audioverzögerung des Senders)"
+
+msgid "Next radio visualisation"
+msgstr "Nächste Radio-Visualisierung"
+
+msgid "Next / previous playlist entry"
+msgstr "Nächster / vorheriger Playlist-Eintrag"
+
+msgid "Previous / next channel"
+msgstr "Vorheriger / nächster Sender"
+
+msgid "Next / previous channel"
+msgstr "Nächster / vorheriger Sender"
+
+msgid "Channel by number (type the digits)"
+msgstr "Sender per Nummer (Ziffern eingeben)"
+
+msgid "Last channel"
+msgstr "Letzter Sender"
+
+msgid "Switch TV / radio"
+msgstr "TV / Radio umschalten"
+
+msgid "Show / hide the channel list"
+msgstr "Senderliste ein-/ausblenden"
+
+msgid "Programme guide and recording"
+msgstr "Programmführer und Aufnahme"
+
+msgid "Programme guide (EPG)"
+msgstr "Programmführer (EPG)"
+
+msgid "Timer recordings"
+msgstr "Timer-Aufnahmen"
+
+msgid "Programme info (OSD)"
+msgstr "Programminfo (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Videotext und interaktive Dienste"
+
+msgid "View"
+msgstr "Ansicht"
+
+msgid "Full screen"
+msgstr "Vollbild"
+
+msgid "Leave full screen"
+msgstr "Vollbild verlassen"
+
+msgid "Application"
+msgstr "Anwendung"
+
+msgid "Main menu"
+msgstr "Hauptmenü"
+
+msgid "Open media file"
+msgstr "Mediendatei öffnen"
+
+msgid "Keyboard shortcuts"
+msgstr "Tastenkürzel"
+
+msgid "Keyboard Shortcuts"
+msgstr "Tastenkürzel"
+
+msgid "Time"
+msgstr "Zeit"
+
+msgid "Programme"
+msgstr "Sendung"
+
+msgid "File"
+msgstr "Datei"
+
+msgid "Other (own registry or list)"
+msgstr "Andere (eigene Registry oder Liste)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I lädt die Senderliste aus dem Internet. Dazu kontaktiert LinDVB die Registry oder den Server der Service-Liste, deren Adresse Sie eingeben, die Server mit den Senderlogos und, wenn der Programmführer eingeschaltet ist, die Programmführer-Server der Sender. Diese Server sehen Ihre IP-Adresse und die Uhrzeit der Anfrage. Wenn Sie eine Postleitzahl eingeben, wird sie an den Server der Service-Liste gesendet."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Geben Sie unten die Adresse einer Service-List-Registry oder direkt einer Service-Liste ein."

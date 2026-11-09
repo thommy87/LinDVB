@@ -3228,3 +3228,171 @@ msgstr "Atskaņo TV vai radio"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: šajā kanālā nav pieejams"
+
+msgid "OSD and Visualisations"
+msgstr "OSD un vizualizācijas"
+
+msgid "OSD size (%)"
+msgstr "OSD izmērs (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Raidījuma informācija virs attēla un kanāla numurs."
+
+msgid "Font"
+msgstr "Fonts"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Teleteksta subtitri un failu un straumju teksta subtitri."
+
+msgid "Size (%)"
+msgstr "Izmērs (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Subtitri, kas sūtīti kā attēli (DVB subtitri), saglabā kanāla izmēru."
+
+msgid "Subtitle font"
+msgstr "Subtitru fonts"
+
+msgid "Default font"
+msgstr "Noklusējuma fonts"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Tiek rādīta radio un audio laikā; arī ar vizualizācijas pogu."
+
+msgid "Draw on the graphics card"
+msgstr "Zīmēt ar grafisko karti"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL iebūvētajām vizualizācijām. Stājas spēkā pēc LinDVB restartēšanas."
+
+msgid "Resolution of projectM"
+msgstr "projectM izšķirtspēja"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "“auto” (ekrāns) vai platums x augstums, piem., 1280x720. Mazāki izmēri startē ātrāk un prasa mazāk skaitļošanas jaudas."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: sekundes uz presetu"
+
+msgid "projectM preset folder"
+msgstr "projectM presetu mape"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Tukšs: projectM parastās mapes."
+
+msgid "Service list address"
+msgstr "Pakalpojumu saraksta adrese"
+
+msgid "Use This List"
+msgstr "Izmantot šo sarakstu"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Ielādē šo pakalpojumu sarakstu tieši, nevaicājot reģistram."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Ievadiet tīmekļa adresi (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Vispirms apstipriniet privātuma paziņojumu."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Ievadiet reģistra vai pakalpojumu saraksta adresi."
+
+msgid "Pause / play"
+msgstr "Pauze / atskaņot"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 sekundes atpakaļ / uz priekšu (laika nobīde, faili)"
+
+msgid "Back to live"
+msgstr "Atpakaļ uz tiešraidi"
+
+msgid "Mute"
+msgstr "Izslēgt skaņu"
+
+msgid "Volume up / down"
+msgstr "Skaļāk / klusāk"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Skaņa agrāk / vēlāk (kanāla skaņas aizture)"
+
+msgid "Next radio visualisation"
+msgstr "Nākamā radio vizualizācija"
+
+msgid "Next / previous playlist entry"
+msgstr "Nākamais / iepriekšējais atskaņošanas saraksta ieraksts"
+
+msgid "Previous / next channel"
+msgstr "Iepriekšējais / nākamais kanāls"
+
+msgid "Next / previous channel"
+msgstr "Nākamais / iepriekšējais kanāls"
+
+msgid "Channel by number (type the digits)"
+msgstr "Kanāls pēc numura (ievadiet ciparus)"
+
+msgid "Last channel"
+msgstr "Pēdējais kanāls"
+
+msgid "Switch TV / radio"
+msgstr "Pārslēgt TV / radio"
+
+msgid "Show / hide the channel list"
+msgstr "Rādīt / slēpt kanālu sarakstu"
+
+msgid "Programme guide and recording"
+msgstr "Programmu ceļvedis un ierakstīšana"
+
+msgid "Programme guide (EPG)"
+msgstr "Programmu ceļvedis (EPG)"
+
+msgid "Timer recordings"
+msgstr "Ieplānotie ieraksti"
+
+msgid "Programme info (OSD)"
+msgstr "Raidījuma informācija (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teleteksts un interaktīvie pakalpojumi"
+
+msgid "View"
+msgstr "Skats"
+
+msgid "Full screen"
+msgstr "Pilnekrāns"
+
+msgid "Leave full screen"
+msgstr "Iziet no pilnekrāna"
+
+msgid "Application"
+msgstr "Lietotne"
+
+msgid "Main menu"
+msgstr "Galvenā izvēlne"
+
+msgid "Open media file"
+msgstr "Atvērt multivides failu"
+
+msgid "Keyboard shortcuts"
+msgstr "Īsinājumtaustiņi"
+
+msgid "Keyboard Shortcuts"
+msgstr "Īsinājumtaustiņi"
+
+msgid "Time"
+msgstr "Laiks"
+
+msgid "Programme"
+msgstr "Raidījums"
+
+msgid "File"
+msgstr "Fails"
+
+msgid "Other (own registry or list)"
+msgstr "Cits (savs reģistrs vai saraksts)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I ielādē kanālu sarakstu no interneta. Lai to izdarītu, LinDVB sazinās ar reģistru vai pakalpojumu saraksta serveri, kura adresi ievadāt, ar kanālu logotipu serveriem un, ja programmu ceļvedis ir ieslēgts, ar raidorganizāciju ceļveža serveriem. Šie serveri redz jūsu IP adresi un pieprasījuma laiku. Ja ievadāt pasta indeksu, tas tiek nosūtīts pakalpojumu saraksta serverim."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Zemāk ievadiet pakalpojumu sarakstu reģistra adresi vai tieši pakalpojumu saraksta adresi."

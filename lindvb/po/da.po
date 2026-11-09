@@ -3228,3 +3228,171 @@ msgstr "Afspiller tv eller radio"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: ikke tilgængelig på denne kanal"
+
+msgid "OSD and Visualisations"
+msgstr "OSD og visualiseringer"
+
+msgid "OSD size (%)"
+msgstr "OSD-størrelse (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Programinfo over billedet og kanalnummeret."
+
+msgid "Font"
+msgstr "Skrifttype"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Tekst-tv-undertekster og tekstundertekster i filer og streams."
+
+msgid "Size (%)"
+msgstr "Størrelse (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Undertekster sendt som billeder (DVB-undertekster) beholder kanalens størrelse."
+
+msgid "Subtitle font"
+msgstr "Skrifttype til undertekster"
+
+msgid "Default font"
+msgstr "Standardskrifttype"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Vises ved radio og lyd; også via visualiseringsknappen."
+
+msgid "Draw on the graphics card"
+msgstr "Tegn med grafikkortet"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL til de indbyggede visualiseringer. Træder i kraft, når LinDVB startes igen."
+
+msgid "Resolution of projectM"
+msgstr "Opløsning for projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "\"auto\" (skærmen) eller bredde x højde, f.eks. 1280x720. Mindre størrelser starter hurtigere og kræver mindre regnekraft."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: sekunder pr. preset"
+
+msgid "projectM preset folder"
+msgstr "Presetmappe for projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Tom: projectMs sædvanlige mapper."
+
+msgid "Service list address"
+msgstr "Adresse på servicelisten"
+
+msgid "Use This List"
+msgstr "Brug denne liste"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Indlæser denne serviceliste direkte uden at spørge et register."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Indtast en webadresse (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Bekræft først privatlivserklæringen."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Indtast adressen på et register eller en serviceliste."
+
+msgid "Pause / play"
+msgstr "Pause / afspil"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 sekunder tilbage / frem (timeshift, filer)"
+
+msgid "Back to live"
+msgstr "Tilbage til live"
+
+msgid "Mute"
+msgstr "Lydløs"
+
+msgid "Volume up / down"
+msgstr "Lydstyrke op / ned"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Lyd tidligere / senere (kanalens lydforsinkelse)"
+
+msgid "Next radio visualisation"
+msgstr "Næste radiovisualisering"
+
+msgid "Next / previous playlist entry"
+msgstr "Næste / forrige punkt i afspilningslisten"
+
+msgid "Previous / next channel"
+msgstr "Forrige / næste kanal"
+
+msgid "Next / previous channel"
+msgstr "Næste / forrige kanal"
+
+msgid "Channel by number (type the digits)"
+msgstr "Kanal efter nummer (indtast cifrene)"
+
+msgid "Last channel"
+msgstr "Sidste kanal"
+
+msgid "Switch TV / radio"
+msgstr "Skift tv / radio"
+
+msgid "Show / hide the channel list"
+msgstr "Vis / skjul kanallisten"
+
+msgid "Programme guide and recording"
+msgstr "Programguide og optagelse"
+
+msgid "Programme guide (EPG)"
+msgstr "Programguide (EPG)"
+
+msgid "Timer recordings"
+msgstr "Planlagte optagelser"
+
+msgid "Programme info (OSD)"
+msgstr "Programinfo (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Tekst-tv og interaktive tjenester"
+
+msgid "View"
+msgstr "Vis"
+
+msgid "Full screen"
+msgstr "Fuld skærm"
+
+msgid "Leave full screen"
+msgstr "Forlad fuld skærm"
+
+msgid "Application"
+msgstr "Program"
+
+msgid "Main menu"
+msgstr "Hovedmenu"
+
+msgid "Open media file"
+msgstr "Åbn mediefil"
+
+msgid "Keyboard shortcuts"
+msgstr "Tastaturgenveje"
+
+msgid "Keyboard Shortcuts"
+msgstr "Tastaturgenveje"
+
+msgid "Time"
+msgstr "Tid"
+
+msgid "Programme"
+msgstr "Udsendelse"
+
+msgid "File"
+msgstr "Fil"
+
+msgid "Other (own registry or list)"
+msgstr "Andet (eget register eller egen liste)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I henter kanallisten fra internettet. Til det kontakter LinDVB det register eller den servicelisteserver, hvis adresse du indtaster, serverne med kanallogoerne og, når programguiden er slået til, tv-selskabernes guideservere. Disse servere ser din IP-adresse og tidspunktet for forespørgslen. Hvis du indtaster et postnummer, sendes det til servicelisteserveren."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Indtast nedenfor adressen på et register over servicelister eller direkte på en serviceliste."

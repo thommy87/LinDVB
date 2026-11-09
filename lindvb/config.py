@@ -97,6 +97,10 @@ DEFAULTS = {
     # the CPU and uses "goom_resolution" (default 640x360).
     "visualizer_resolution": "auto",
     "goom_resolution": "640x360",
+    # projectM (add-on gst_visualizers): seconds per preset and the preset
+    # folder ("" = the usual system folders).
+    "projectm_preset_seconds": 20,
+    "projectm_preset_dir": "",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
@@ -104,7 +108,13 @@ DEFAULTS = {
         ["TMDB", "https://www.themoviedb.org/search?query={q}"],
     ],
     "osd_seconds": 4,
-    # Shown over the radio visualisation (Preferences › Visualisation): the
+    # Size of the on-screen display in percent (Preferences › OSD and Visualisations).
+    "osd_scale": 100,
+    # Subtitles: font family ("" = the default) and size in percent of the
+    # normal size (teletext subtitles and text subtitles of files and streams).
+    "subtitle_font": "",
+    "subtitle_scale": 100,
+    # Shown over the radio visualisation (Preferences › OSD and Visualisations): the
     # station logo tile, the album cover, the song (artist, album, title, from
     # DVB RadioText, internet radio ICY titles or file tags) and a clock.
     "vis_show_logo": True,

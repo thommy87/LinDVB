@@ -3228,3 +3228,171 @@ msgstr "Воспроизведение ТВ или радио"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: недоступно на этом канале"
+
+msgid "OSD and Visualisations"
+msgstr "OSD и визуализации"
+
+msgid "OSD size (%)"
+msgstr "Размер OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Информация о передаче поверх изображения и номер канала."
+
+msgid "Font"
+msgstr "Шрифт"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Субтитры телетекста и текстовые субтитры файлов и потоков."
+
+msgid "Size (%)"
+msgstr "Размер (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Субтитры, передаваемые картинками (DVB-субтитры), сохраняют размер канала."
+
+msgid "Subtitle font"
+msgstr "Шрифт субтитров"
+
+msgid "Default font"
+msgstr "Шрифт по умолчанию"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Показывается при радио и аудио; также через кнопку визуализации."
+
+msgid "Draw on the graphics card"
+msgstr "Рисовать видеокартой"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL для встроенных визуализаций. Вступает в силу после перезапуска LinDVB."
+
+msgid "Resolution of projectM"
+msgstr "Разрешение projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "«auto» (экран) или ширина x высота, например 1280x720. Меньшие размеры запускаются быстрее и требуют меньше вычислительной мощности."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: секунд на пресет"
+
+msgid "projectM preset folder"
+msgstr "Папка пресетов projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Пусто: обычные папки projectM."
+
+msgid "Service list address"
+msgstr "Адрес списка услуг"
+
+msgid "Use This List"
+msgstr "Использовать этот список"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Загружает этот список услуг напрямую, без запроса к реестру."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Введите веб-адрес (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Сначала подтвердите уведомление о конфиденциальности."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Введите адрес реестра или списка услуг."
+
+msgid "Pause / play"
+msgstr "Пауза / воспроизведение"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 секунд назад / вперёд (timeshift, файлы)"
+
+msgid "Back to live"
+msgstr "Вернуться в прямой эфир"
+
+msgid "Mute"
+msgstr "Без звука"
+
+msgid "Volume up / down"
+msgstr "Громкость выше / ниже"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Звук раньше / позже (задержка звука канала)"
+
+msgid "Next radio visualisation"
+msgstr "Следующая визуализация радио"
+
+msgid "Next / previous playlist entry"
+msgstr "Следующий / предыдущий элемент плейлиста"
+
+msgid "Previous / next channel"
+msgstr "Предыдущий / следующий канал"
+
+msgid "Next / previous channel"
+msgstr "Следующий / предыдущий канал"
+
+msgid "Channel by number (type the digits)"
+msgstr "Канал по номеру (введите цифры)"
+
+msgid "Last channel"
+msgstr "Последний канал"
+
+msgid "Switch TV / radio"
+msgstr "Переключить ТВ / радио"
+
+msgid "Show / hide the channel list"
+msgstr "Показать / скрыть список каналов"
+
+msgid "Programme guide and recording"
+msgstr "Телегид и запись"
+
+msgid "Programme guide (EPG)"
+msgstr "Телегид (EPG)"
+
+msgid "Timer recordings"
+msgstr "Запланированные записи"
+
+msgid "Programme info (OSD)"
+msgstr "Информация о передаче (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Телетекст и интерактивные службы"
+
+msgid "View"
+msgstr "Вид"
+
+msgid "Full screen"
+msgstr "Полный экран"
+
+msgid "Leave full screen"
+msgstr "Выйти из полноэкранного режима"
+
+msgid "Application"
+msgstr "Приложение"
+
+msgid "Main menu"
+msgstr "Главное меню"
+
+msgid "Open media file"
+msgstr "Открыть медиафайл"
+
+msgid "Keyboard shortcuts"
+msgstr "Сочетания клавиш"
+
+msgid "Keyboard Shortcuts"
+msgstr "Сочетания клавиш"
+
+msgid "Time"
+msgstr "Время"
+
+msgid "Programme"
+msgstr "Передача"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Other (own registry or list)"
+msgstr "Другое (свой реестр или список)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I загружает список каналов из интернета. Для этого LinDVB обращается к реестру или серверу списка услуг, адрес которого вы вводите, к серверам с логотипами каналов и, если телегид включён, к серверам телегида вещателей. Эти серверы видят ваш IP-адрес и время запроса. Если вы введёте почтовый индекс, он отправляется серверу списка услуг."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Ниже введите адрес реестра списков услуг или сразу адрес списка услуг."

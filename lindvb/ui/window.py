@@ -20,7 +20,7 @@ from ..recordings import find_recordings, sort_recordings
 from ..signalq import Meter as QualityMeter, NONE as Q_NONE
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
-from .theme import CSS, apply_accent, resolve_accent
+from .theme import CSS, OSD_WIDTH, apply_accent, apply_display, resolve_accent
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
 from ..i18n import _
@@ -128,6 +128,7 @@ class MainWindow(Gtk.ApplicationWindow):
         Gtk.Window.set_default_icon_name("lindvb")
         self.set_icon_name("lindvb")
         apply_accent(self.settings)
+        apply_display(self.settings)
 
         self._build_actions()
         self._build_ui()
@@ -211,7 +212,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "rec-refresh": self.reload_recordings, "rec-folder": self.open_recording_folder,
             "vis-next": self.cycle_visualizer,
             "pip": self.pip_selected, "pip-swap": self.pip_swap, "pip-close": self.pip_close,
-            "mosaic": self.show_mosaic,
+            "mosaic": self.show_mosaic, "shortcuts": self.show_shortcuts,
         }
         for name, fn in acts.items():
             a = Gio.SimpleAction.new(name, None)
@@ -285,7 +286,7 @@ class MainWindow(Gtk.ApplicationWindow):
             "win.teletext": ["<Ctrl><Shift>t"], "win.screenshot": ["<Ctrl><Shift>p"],
             "win.ch-next": ["Page_Up"], "win.ch-prev": ["Page_Down"],
             "win.last-channel": ["<Ctrl>BackSpace"], "win.editor": ["<Ctrl><Shift>e"],
-            "win.toggle-mode": ["<Ctrl>m"],
+            "win.toggle-mode": ["<Ctrl>m"], "win.shortcuts": ["<Ctrl>question"],
         }
         for k, v in accels.items():
             self.app.set_accels_for_action(k, v)
@@ -304,22 +305,25 @@ class MainWindow(Gtk.ApplicationWindow):
         file.append(_("Open URL…"), "win.open-url")
         file.append(_("Import Channel List…"), "win.import")
         file.append(_("Export Channel List…"), "win.export")
-        file.append(_("Export Programme Guide (XMLTV)…"), "win.export-epg")
         m.append_section(None, file)
+        # programme guide and the channel's interactive service, second group
+        guide = Gio.Menu()
+        guide.append(_("Programme Guide (EPG)"), "win.epg")
+        guide.append(_("Update Internet EPG (XMLTV)"), "win.xmltv")
+        guide.append(_("Export Programme Guide (XMLTV)…"), "win.export-epg")
+        guide.append(_("HbbTV (red button)"), "win.hbbtv")
+        m.append_section(None, guide)
         tv = Gio.Menu()
         tv.append(_("Switch TV / Radio"), "win.toggle-mode")
         tv.append(_("Recordings"), "win.mode-recordings")
-        tv.append(_("Programme Guide (EPG)"), "win.epg")
         tv.append(_("Timer Recordings"), "win.timers")
         tv.append(_("Record with Options…"), "win.record-options")
         tv.append(_("Recording and Device Statistics"), "win.stats")
         tv.append(_("Channel Analysis…"), "win.analysis")
         tv.append(_("Teletext"), "win.teletext")
-        tv.append(_("HbbTV (red button)"), "win.hbbtv")
         tv.append(_("CAM Menu (CI Module)…"), "win.cam-menu")
         # channel search, channel editor and DVB-I live in the preferences
         # (Tuner and Channels, Internet); their shortcuts still work
-        tv.append(_("Update Internet EPG (XMLTV)"), "win.xmltv")
         m.append_section(None, tv)
 
         play = Gio.Menu()
@@ -397,6 +401,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.settings_menu.append_section(None, view)
         end = Gio.Menu()
         end.append(_("Preferences"), "win.prefs")
+        end.append(_("Keyboard Shortcuts"), "win.shortcuts")
         end.append(_("Plugins…"), "win.plugins")
         for i, (_plugin, label, _cb) in enumerate(self.app.plugins.menu_actions):
             end.append(label, f"win.plugin-action({i})")
@@ -429,7 +434,7 @@ class MainWindow(Gtk.ApplicationWindow):
         hb.pack_end(menu)
         hb.pack_end(Gtk.Button(icon_name="x-office-calendar-symbolic", action_name="win.epg",
                                tooltip_text=_("Programme guide (Ctrl+E)")))
-        self.ttx_btn = Gtk.Button(label=_("TXT"), action_name="win.teletext",
+        self.ttx_btn = Gtk.Button(icon_name="lindvb-teletext-symbolic", action_name="win.teletext",
                                   tooltip_text=_("Teletext (Ctrl+Shift+T)"))
         hb.pack_end(self.ttx_btn)
         # HbbTV: like the red button of a remote control
@@ -533,7 +538,8 @@ class MainWindow(Gtk.ApplicationWindow):
         overlay.add_overlay(self.nowplaying)
         self.osd = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
                            valign=Gtk.Align.END, halign=Gtk.Align.START,
-                           margin_start=24, margin_end=24, margin_bottom=24, width_request=420)
+                           margin_start=24, margin_end=24, margin_bottom=24,
+                           width_request=self._osd_width())
         self.osd.add_css_class("osd")
         top = Gtk.Box(spacing=10)
         self.osd_num = Gtk.Label(css_classes=["lv-osd-num"], valign=Gtk.Align.CENTER)
@@ -1506,6 +1512,19 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.zap(c)
                 return
 
+    def _osd_width(self):
+        try:
+            scale = max(50, min(300, int(self.settings.get("osd_scale", 100))))
+        except (TypeError, ValueError):
+            scale = 100
+        return round(OSD_WIDTH * scale / 100)
+
+    def apply_display_settings(self):
+        """OSD size and subtitle font after the preferences changed."""
+        apply_display(self.settings)
+        self.osd.set_size_request(self._osd_width(), -1)
+        self.player.apply_subtitle_font()
+
     def update_inhibit(self, playing=None):
         """Keep the screen saver off while playing, if the preferences say so."""
         if playing is None:
@@ -2072,7 +2091,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _update_nowplaying(self, audio_only=None, name=None):
         """Logo, cover, song and clock over the visualisation (Preferences ›
-        Visualisation)."""
+        OSD and Visualisations)."""
         if audio_only is None:
             audio_only = self.vis.get_visible() or (
                 self.player.playbin is not None and
@@ -2397,6 +2416,10 @@ class MainWindow(Gtk.ApplicationWindow):
         return False
 
     # ------------------------------------------------------------------ misc
+    def show_shortcuts(self):
+        from .shortcuts import ShortcutsWindow
+        ShortcutsWindow(self).present()
+
     def on_about(self):
         from .. import COPYRIGHT, WEBSITE, __version__
         from ..credits import CREDITS

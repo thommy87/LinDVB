@@ -70,7 +70,7 @@ C5_DTT = Channel(name="Canale 5 HD", delsys="dvb-t2", frequency=546000, sid=2, t
 
 
 def test_profiles():
-    assert [c.code for c in countries.COUNTRIES] == ["DEU", "ITA", "NZL"]
+    assert [c.code for c in countries.COUNTRIES] == ["DEU", "ITA", "NZL", "ZZZ"]
     assert countries.get("ita").name == "Italy" and countries.get("xx") is countries.GERMANY
     it, nz = countries.ITALY, countries.NEW_ZEALAND
     # 21 Italian areas: 19 regions and the autonomous provinces of Trento and Bolzano
@@ -212,3 +212,19 @@ def test_list_priority_without_prefer_broadcast():
     assert inst.kind == "dash"                                      # Germany: IT-10 priority
     ch, inst = dvbi.resolve(c5, [C5_DTT], prefer_broadcast=True)
     assert inst.kind == "dvb-t" and ch.delsys == "dvb-t2"
+
+
+def test_other_country_uses_the_viewers_registry_or_list():
+    other = countries.OTHER
+    assert countries.get("ZZZ") is other and not other.registries
+    # no TargetCountry for a registry the viewer chose
+    url = dvbi.registry_query_url("https://csr.example.org/query", other.code)
+    assert "TargetCountry" not in url and "Delivery" in url
+    assert "TargetCountry=DEU" in dvbi.registry_query_url("https://csr.example.org/query", "DEU")
+    # postcodes without a national format
+    assert countries.valid_postcode(other, "1234-56") and countries.valid_postcode(other, "SW1A 1")
+    assert not countries.valid_postcode(other, "") and not countries.valid_postcode(other, "x" * 12)
+    # HbbTV keeps its country
+    s = {"dvbi_country": "DEU", "hbbtv_country": "DEU"}
+    assert countries.switch_country(s, "ZZZ") is other
+    assert s["dvbi_country"] == "ZZZ" and s["hbbtv_country"] == "DEU" and s["dvbi_registries"] == []

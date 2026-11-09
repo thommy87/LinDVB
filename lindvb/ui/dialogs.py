@@ -5,7 +5,7 @@ import dataclasses
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, Gio, GLib, Gst, Gtk
+from gi.repository import Gdk, Gio, GLib, Gst, Gtk, Pango
 
 from ..channels import Channel
 from .. import hwaccel
@@ -142,15 +142,20 @@ class PrefsWindow(Gtk.Window):
                                       margin_top=4, margin_bottom=6)
         g.append(self._accent_hint)
         self._accent_drop.connect("notify::selected", lambda *_: self._preview_accent())
+
+        # -- OSD and visualisations
+        pg = page("visualisation", _("OSD and Visualisations"))
         g = group(pg, _("On-screen display"))
         spin(g, "osd_seconds", _("OSD display time (s)"), 1, 30)
-
-        # -- Visualisation
-        pg = page("visualisation", _("Visualisation"),
-                  _("What is shown over the radio visualisation while a radio channel or an "
-                  "audio file plays. Song details come from the RadioText of DVB radio, the "
-                  "stream title of internet radio and the tags of audio files."))
+        spin(g, "osd_scale", _("OSD size (%)"), 50, 250,
+             _("The programme info over the picture and the channel number."))
         g = group(pg, _("Overlay"))
+        g.append(Gtk.Label(label=_("What is shown over the radio visualisation while a radio "
+                                   "channel or an audio file plays. Song details come from the "
+                                   "RadioText of DVB radio, the stream title of internet radio "
+                                   "and the tags of audio files."),
+                           xalign=0, wrap=True, css_classes=["lv-hint"], margin_top=10,
+                           margin_bottom=4))
         switch(g, "vis_show_logo", _("Station logo tile"),
                _("The channel's logo, or a tile with the station name when there is none."))
         switch(g, "vis_show_cover", _("Album cover"),
@@ -165,6 +170,7 @@ class PrefsWindow(Gtk.Window):
                "the album, year and cover."))
         entry(g, "logo_dir", _("Station logo folder"),
               _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}").format(v0=DATA_DIR / 'logos'))
+        self._build_visualisations(group(pg, _("Visualisations")), s, spin, entry, switch)
 
         # -- Playback
         pg = page("playback", _("Playback"))
@@ -183,6 +189,11 @@ class PrefsWindow(Gtk.Window):
         switch(g, "inhibit_screensaver", _("No screen saver during playback"),
                _("Keeps the screen on while TV, radio or a file plays."))
         entry(g, "screenshot_dir", _("Screenshot folder"))
+        g = group(pg, _("Subtitles"))
+        self._sub_font = _row(g, _("Font"), self._font_button(s.get("subtitle_font", "")),
+                              _("Teletext subtitles and the text subtitles of files and streams."))
+        spin(g, "subtitle_scale", _("Size (%)"), 50, 300,
+             _("Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."))
         g = group(pg, _("Timeshift"))
         entry(g, "timeshift_dir", _("Timeshift folder"))
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
@@ -434,6 +445,52 @@ class PrefsWindow(Gtk.Window):
             apply_accent(self.app.settings)    # drop the unsaved preview
         return False
 
+    def _font_button(self, family):
+        """Font family picker; a plain entry where GTK has no FontDialogButton."""
+        if hasattr(Gtk, "FontDialogButton"):
+            btn = Gtk.FontDialogButton(dialog=Gtk.FontDialog(title=_("Subtitle font")),
+                                       level=Gtk.FontLevel.FAMILY)
+            if family:
+                btn.set_font_desc(Pango.FontDescription.from_string(family))
+            box = Gtk.Box(spacing=6)
+            box.append(btn)
+            reset = Gtk.Button(icon_name="edit-clear-symbolic", tooltip_text=_("Default font"))
+            reset.connect("clicked", lambda *_: btn.set_font_desc(Pango.FontDescription()))
+            box.append(reset)
+            box.font_btn = btn
+            return box
+        return Gtk.Entry(text=family, placeholder_text=_("Default font"))
+
+    def _font_value(self):
+        w = self._sub_font
+        btn = getattr(w, "font_btn", None)
+        if btn is None:
+            return w.get_text().strip()
+        desc = btn.get_font_desc()
+        return (desc.get_family() or "") if desc is not None else ""
+
+    def _build_visualisations(self, g, s, spin, entry, switch):
+        """Radio visualisation: style, drawing and the GStreamer visualisations."""
+        win = getattr(self.app, "window", None)
+        vis = getattr(win, "visualizers", None) or {}
+        self._vis_ids = [v for v in vis if "|" not in v]
+        current = s.get("visualizer", "")
+        base = current.split("|", 1)[0]
+        self._vis_drop = None
+        if self._vis_ids:
+            self._vis_drop = _row(g, _("Visualisation"), dropdown(
+                [vis[v][0] for v in self._vis_ids],
+                self._vis_ids.index(base) if base in self._vis_ids else 0),
+                _("Shown while radio or audio plays; also in the visualisation button."))
+        switch(g, "visualizer_gpu", _("Draw on the graphics card"),
+               _("OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."))
+        entry(g, "visualizer_resolution", _("Resolution of projectM"),
+              _("\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start "
+                "faster and need less processing power."))
+        spin(g, "projectm_preset_seconds", _("projectM: seconds per preset"), 5, 600)
+        entry(g, "projectm_preset_dir", _("projectM preset folder"),
+              _("Empty: the usual folders of projectM."))
+
     def _save_youth_protection(self, s):
         """Age limit and PIN; with a PIN set, only after the current PIN."""
         from .. import hbbtv as hb_core
@@ -583,6 +640,12 @@ class PrefsWindow(Gtk.Window):
         self._save_youth_protection(s)
         s.update(self._accent_settings())
         s.update(self._rec_values())
+        s["subtitle_font"] = self._font_value()
+        vis_before = s.get("visualizer", "")
+        if self._vis_drop is not None:
+            chosen = self._vis_ids[self._vis_drop.get_selected()]
+            if chosen != vis_before.split("|", 1)[0]:
+                s["visualizer"] = chosen
         for k, (w, typ) in self.w.items():
             if typ is bool:
                 s[k] = w.get_active()
@@ -601,6 +664,9 @@ class PrefsWindow(Gtk.Window):
             win.nowplaying.refresh()
             win._update_nowplaying()
             win.update_inhibit()
+            win.apply_display_settings()
+            if s.get("visualizer") != vis_before:
+                win.set_visualizer(s["visualizer"])
             if (s["video_decoder"], bool(s["deinterlace"])) != video_before:
                 win.player.apply_decoder_setting()
                 if win.player.playbin is not None:

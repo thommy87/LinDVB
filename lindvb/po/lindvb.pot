@@ -4600,3 +4600,171 @@ msgstr ""
 #: lindvb/ui/window.py
 msgid "HbbTV: not available on this channel"
 msgstr ""
+
+msgid "OSD and Visualisations"
+msgstr ""
+
+msgid "OSD size (%)"
+msgstr ""
+
+msgid "The programme info over the picture and the channel number."
+msgstr ""
+
+msgid "Font"
+msgstr ""
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr ""
+
+msgid "Size (%)"
+msgstr ""
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr ""
+
+msgid "Subtitle font"
+msgstr ""
+
+msgid "Default font"
+msgstr ""
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr ""
+
+msgid "Draw on the graphics card"
+msgstr ""
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr ""
+
+msgid "Resolution of projectM"
+msgstr ""
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr ""
+
+msgid "projectM: seconds per preset"
+msgstr ""
+
+msgid "projectM preset folder"
+msgstr ""
+
+msgid "Empty: the usual folders of projectM."
+msgstr ""
+
+msgid "Service list address"
+msgstr ""
+
+msgid "Use This List"
+msgstr ""
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr ""
+
+msgid "Please enter a web address (https://…)."
+msgstr ""
+
+msgid "Please confirm the privacy notice first."
+msgstr ""
+
+msgid "Enter the address of a registry or of a service list."
+msgstr ""
+
+msgid "Pause / play"
+msgstr ""
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr ""
+
+msgid "Back to live"
+msgstr ""
+
+msgid "Mute"
+msgstr ""
+
+msgid "Volume up / down"
+msgstr ""
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr ""
+
+msgid "Next radio visualisation"
+msgstr ""
+
+msgid "Next / previous playlist entry"
+msgstr ""
+
+msgid "Previous / next channel"
+msgstr ""
+
+msgid "Next / previous channel"
+msgstr ""
+
+msgid "Channel by number (type the digits)"
+msgstr ""
+
+msgid "Last channel"
+msgstr ""
+
+msgid "Switch TV / radio"
+msgstr ""
+
+msgid "Show / hide the channel list"
+msgstr ""
+
+msgid "Programme guide and recording"
+msgstr ""
+
+msgid "Programme guide (EPG)"
+msgstr ""
+
+msgid "Timer recordings"
+msgstr ""
+
+msgid "Programme info (OSD)"
+msgstr ""
+
+msgid "Teletext and interactive services"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Full screen"
+msgstr ""
+
+msgid "Leave full screen"
+msgstr ""
+
+msgid "Application"
+msgstr ""
+
+msgid "Main menu"
+msgstr ""
+
+msgid "Open media file"
+msgstr ""
+
+msgid "Keyboard shortcuts"
+msgstr ""
+
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Programme"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Other (own registry or list)"
+msgstr ""
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr ""
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr ""

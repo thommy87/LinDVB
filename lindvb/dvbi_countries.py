@@ -192,7 +192,29 @@ NEW_ZEALAND = Country(
 )
 
 
-COUNTRIES = (GERMANY, ITALY, NEW_ZEALAND)
+# ---------------------------------------------------------------- any other country
+
+# No national profile: the viewer enters a registry (CSR) or the address of a
+# service list. "ZZZ" is a user-assigned ISO 3166 code; it is not sent to
+# registries as TargetCountry and not given to HbbTV applications.
+OTHER = Country(
+    code="ZZZ", name="Other (own registry or list)",
+    profile="DVB-I (ETSI TS 103 770) without a national profile",
+    registries=(),
+    languages=("en", "eng"),
+    privacy_notice=(
+        "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the "
+        "registry or service list server whose address you enter, the servers that host "
+        "the channel logos and, when the programme guide is switched on, the broadcasters' "
+        "programme guide servers. These servers see your IP address and the time of the "
+        "request. If you enter a postcode, it is sent to the service list server."),
+    consents=(Consent("privacy", "I have read the privacy notice", "", required=True),),
+    postcode_digits=10, postcode_example="",
+    notes=("Enter the address of a service list registry, or of a service list directly, "
+           "below.",),
+)
+
+COUNTRIES = (GERMANY, ITALY, NEW_ZEALAND, OTHER)
 DEFAULT = GERMANY.code
 
 
@@ -203,6 +225,8 @@ def get(code):
 
 
 def valid_postcode(country, text):
+    if country.code == OTHER.code:         # no national format to check
+        return bool(re.fullmatch(r"[0-9A-Za-z][0-9A-Za-z -]{1,9}", (text or "").strip()))
     return bool(re.fullmatch(r"\d{%d}" % country.postcode_digits, (text or "").strip()))
 
 
@@ -280,7 +304,8 @@ def switch_country(settings, code):
         settings["dvbi_last_check"] = 0
     settings["dvbi_country_state"] = store
     settings["dvbi_country"] = new.code
-    settings["hbbtv_country"] = new.code
+    if new.code != OTHER.code:              # HbbTV keeps the country it had
+        settings["hbbtv_country"] = new.code
     return new
 
 

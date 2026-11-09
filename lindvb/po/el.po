@@ -3228,3 +3228,171 @@ msgstr "Αναπαραγωγή TV ή ραδιοφώνου"
 
 msgid "HbbTV: not available on this channel"
 msgstr "HbbTV: δεν είναι διαθέσιμο σε αυτό το κανάλι"
+
+msgid "OSD and Visualisations"
+msgstr "OSD και οπτικοποιήσεις"
+
+msgid "OSD size (%)"
+msgstr "Μέγεθος OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Οι πληροφορίες εκπομπής πάνω στην εικόνα και ο αριθμός καναλιού."
+
+msgid "Font"
+msgstr "Γραμματοσειρά"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Υπότιτλοι teletext και υπότιτλοι κειμένου αρχείων και ροών."
+
+msgid "Size (%)"
+msgstr "Μέγεθος (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Οι υπότιτλοι που στέλνονται ως εικόνες (υπότιτλοι DVB) κρατούν το μέγεθος του καναλιού."
+
+msgid "Subtitle font"
+msgstr "Γραμματοσειρά υποτίτλων"
+
+msgid "Default font"
+msgstr "Προεπιλεγμένη γραμματοσειρά"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Εμφανίζεται με ραδιόφωνο και ήχο· και από το κουμπί οπτικοποίησης."
+
+msgid "Draw on the graphics card"
+msgstr "Σχεδίαση με την κάρτα γραφικών"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL για τις ενσωματωμένες οπτικοποιήσεις. Ισχύει στην επόμενη εκκίνηση του LinDVB."
+
+msgid "Resolution of projectM"
+msgstr "Ανάλυση του projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "«auto» (η οθόνη) ή πλάτος x ύψος, π.χ. 1280x720. Τα μικρότερα μεγέθη ξεκινούν γρηγορότερα και χρειάζονται λιγότερη υπολογιστική ισχύ."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: δευτερόλεπτα ανά preset"
+
+msgid "projectM preset folder"
+msgstr "Φάκελος presets του projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "Κενό: οι συνήθεις φάκελοι του projectM."
+
+msgid "Service list address"
+msgstr "Διεύθυνση λίστας υπηρεσιών"
+
+msgid "Use This List"
+msgstr "Χρήση αυτής της λίστας"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Φορτώνει αυτή τη λίστα υπηρεσιών απευθείας, χωρίς ερώτημα σε μητρώο."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Εισαγάγετε μια διεύθυνση web (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Επιβεβαιώστε πρώτα τη δήλωση απορρήτου."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Εισαγάγετε τη διεύθυνση ενός μητρώου ή μιας λίστας υπηρεσιών."
+
+msgid "Pause / play"
+msgstr "Παύση / αναπαραγωγή"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 δευτερόλεπτα πίσω / μπροστά (timeshift, αρχεία)"
+
+msgid "Back to live"
+msgstr "Επιστροφή στο ζωντανό"
+
+msgid "Mute"
+msgstr "Σίγαση"
+
+msgid "Volume up / down"
+msgstr "Ένταση πάνω / κάτω"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Ήχος νωρίτερα / αργότερα (καθυστέρηση ήχου καναλιού)"
+
+msgid "Next radio visualisation"
+msgstr "Επόμενη οπτικοποίηση ραδιοφώνου"
+
+msgid "Next / previous playlist entry"
+msgstr "Επόμενη / προηγούμενη καταχώριση λίστας"
+
+msgid "Previous / next channel"
+msgstr "Προηγούμενο / επόμενο κανάλι"
+
+msgid "Next / previous channel"
+msgstr "Επόμενο / προηγούμενο κανάλι"
+
+msgid "Channel by number (type the digits)"
+msgstr "Κανάλι με αριθμό (πληκτρολογήστε τα ψηφία)"
+
+msgid "Last channel"
+msgstr "Τελευταίο κανάλι"
+
+msgid "Switch TV / radio"
+msgstr "Εναλλαγή TV / ραδιόφωνο"
+
+msgid "Show / hide the channel list"
+msgstr "Εμφάνιση / απόκρυψη λίστας καναλιών"
+
+msgid "Programme guide and recording"
+msgstr "Οδηγός προγράμματος και εγγραφή"
+
+msgid "Programme guide (EPG)"
+msgstr "Οδηγός προγράμματος (EPG)"
+
+msgid "Timer recordings"
+msgstr "Προγραμματισμένες εγγραφές"
+
+msgid "Programme info (OSD)"
+msgstr "Πληροφορίες εκπομπής (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teletext και διαδραστικές υπηρεσίες"
+
+msgid "View"
+msgstr "Προβολή"
+
+msgid "Full screen"
+msgstr "Πλήρης οθόνη"
+
+msgid "Leave full screen"
+msgstr "Έξοδος από πλήρη οθόνη"
+
+msgid "Application"
+msgstr "Εφαρμογή"
+
+msgid "Main menu"
+msgstr "Κύριο μενού"
+
+msgid "Open media file"
+msgstr "Άνοιγμα αρχείου πολυμέσων"
+
+msgid "Keyboard shortcuts"
+msgstr "Συντομεύσεις πληκτρολογίου"
+
+msgid "Keyboard Shortcuts"
+msgstr "Συντομεύσεις πληκτρολογίου"
+
+msgid "Time"
+msgstr "Ώρα"
+
+msgid "Programme"
+msgstr "Εκπομπή"
+
+msgid "File"
+msgstr "Αρχείο"
+
+msgid "Other (own registry or list)"
+msgstr "Άλλο (δικό σας μητρώο ή λίστα)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "Το DVB-I φορτώνει τη λίστα καναλιών από το διαδίκτυο. Για αυτό, το LinDVB επικοινωνεί με το μητρώο ή τον διακομιστή της λίστας υπηρεσιών του οποίου τη διεύθυνση εισάγετε, με τους διακομιστές των λογοτύπων και, όταν ο οδηγός προγράμματος είναι ενεργός, με τους διακομιστές οδηγού των σταθμών. Αυτοί οι διακομιστές βλέπουν τη διεύθυνση IP σας και την ώρα του αιτήματος. Αν εισαγάγετε ταχυδρομικό κώδικα, αποστέλλεται στον διακομιστή της λίστας υπηρεσιών."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Εισαγάγετε παρακάτω τη διεύθυνση ενός μητρώου λιστών υπηρεσιών ή απευθείας μιας λίστας υπηρεσιών."
