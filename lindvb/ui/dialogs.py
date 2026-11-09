@@ -180,6 +180,8 @@ class PrefsWindow(Gtk.Window):
         switch(g, "deinterlace", _("Deinterlace video"),
                _("Interlaced TV pictures (most SD and 1080i channels). Done on the graphics "
                  "card when VA-API decodes, else by the processor."))
+        switch(g, "inhibit_screensaver", _("No screen saver during playback"),
+               _("Keeps the screen on while TV, radio or a file plays."))
         entry(g, "screenshot_dir", _("Screenshot folder"))
         g = group(pg, _("Timeshift"))
         entry(g, "timeshift_dir", _("Timeshift folder"))
@@ -598,6 +600,7 @@ class PrefsWindow(Gtk.Window):
         if win is not None:
             win.nowplaying.refresh()
             win._update_nowplaying()
+            win.update_inhibit()
             if (s["video_decoder"], bool(s["deinterlace"])) != video_before:
                 win.player.apply_decoder_setting()
                 if win.player.playbin is not None:

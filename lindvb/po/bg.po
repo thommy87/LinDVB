@@ -3216,3 +3216,15 @@ msgstr "Затвори (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Анализ на канала…"
+
+msgid "No screen saver during playback"
+msgstr "Без скрийнсейвър по време на възпроизвеждане"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Държи екрана включен, докато се възпроизвежда телевизия, радио или файл."
+
+msgid "Playing TV or radio"
+msgstr "Възпроизвеждане на ТВ или радио"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: не е налично за този канал"

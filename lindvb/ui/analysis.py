@@ -12,7 +12,7 @@ import math
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import sitree
 from ..analysis import AnalysisSession, ca_lines, report_json
@@ -156,14 +156,21 @@ def subtitle(text):
 class KV(Gtk.Grid):
     """A two-column list of names and values, set by key."""
 
-    def __init__(self):
+    def __init__(self, stable=False):
         super().__init__(column_spacing=14, row_spacing=4)
         self._rows = {}
+        # stable: one line per value (cut off, full text in the tooltip) and
+        # no rows hidden, so the size does not change with the values
+        self.stable = stable
 
     def row(self, key, name):
         n = len(self._rows)
         k = label(name, ["lv-dim"])
-        v = label("–", ["lv-tnum"], wrap=True, hexpand=True, selectable=False)
+        if self.stable:
+            v = label("–", ["lv-tnum"], hexpand=True, width_chars=1,
+                      ellipsize=Pango.EllipsizeMode.END)
+        else:
+            v = label("–", ["lv-tnum"], wrap=True, hexpand=True, selectable=False)
         self.attach(k, 0, n, 1, 1)
         self.attach(v, 1, n, 1, 1)
         self._rows[key] = (k, v)
@@ -171,7 +178,11 @@ class KV(Gtk.Grid):
 
     def set(self, key, value, visible=True):
         k, v = self._rows[key]
-        v.set_text(value if value not in (None, "") else "–")
+        text = value if value not in (None, "") and (visible or not self.stable) else "–"
+        v.set_text(text)
+        if self.stable:
+            v.set_tooltip_text(text if text != "–" else None)
+            return
         k.set_visible(visible)
         v.set_visible(visible)
 
@@ -1264,10 +1275,12 @@ class MediaPage(Page):
 
     def build(self):
         box = page_box()
-        row = Gtk.Box(spacing=12)
+        # two halves of the same width: the cards keep their size while the
+        # values change
+        row = Gtk.Box(spacing=12, homogeneous=True)
         c = card(_("Video"))
         c.set_hexpand(True)
-        self.vkv = KV()
+        self.vkv = KV(stable=True)
         for key, name in (("codec", _("Codec")), ("profile", _("Profile / level")),
                           ("res", _("Resolution")), ("scan", _("Scan")), ("fps", _("Frame rate")),
                           ("aspect", _("Aspect ratio")), ("afd", "AFD"), ("bars", _("Black bars")),
@@ -1279,7 +1292,7 @@ class MediaPage(Page):
         c.append(self.vkv)
         row.append(c)
         c = card(_("Frame sizes"))
-        c.set_size_request(420, -1)
+        c.set_hexpand(True)
         self.frames = FrameBars(height=110)
         c.append(self.frames)
         legend = Gtk.Box(spacing=12)
@@ -1292,7 +1305,7 @@ class MediaPage(Page):
             b.append(label(name, ["lv-dim"]))
             legend.append(b)
         c.append(legend)
-        self.fkv = KV()
+        self.fkv = KV(stable=True)
         for key, name in (("gop", _("GOP length")), ("iavg", _("I frame average")),
                           ("pavg", _("P/B frame average"))):
             self.fkv.row(key, name)

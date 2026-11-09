@@ -3216,3 +3216,15 @@ msgstr "Κλείσιμο (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Ανάλυση καναλιού…"
+
+msgid "No screen saver during playback"
+msgstr "Χωρίς προφύλαξη οθόνης κατά την αναπαραγωγή"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Κρατά την οθόνη αναμμένη όσο παίζει TV, ραδιόφωνο ή αρχείο."
+
+msgid "Playing TV or radio"
+msgstr "Αναπαραγωγή TV ή ραδιοφώνου"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: δεν είναι διαθέσιμο σε αυτό το κανάλι"

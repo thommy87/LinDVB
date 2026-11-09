@@ -3486,3 +3486,15 @@ msgstr "Erneut auf Installieren drücken, um die Sendernummern dieses Pakets zu 
 
 msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
 msgstr "Die Region wählt die LCN-Tabelle Ihres Gebiets mit den Lokalsendern aus, so wie es der terrestrische Sendersuchlauf tut. Sender ohne Nummer kommen auf 850–999."
+
+msgid "No screen saver during playback"
+msgstr "Kein Bildschirmschoner während der Wiedergabe"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Hält den Bildschirm an, solange TV, Radio oder eine Datei läuft."
+
+msgid "Playing TV or radio"
+msgstr "TV- oder Radiowiedergabe"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: auf diesem Sender nicht verfügbar"

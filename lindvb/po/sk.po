@@ -3216,3 +3216,15 @@ msgstr "Zavrieť (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Analýza kanála…"
+
+msgid "No screen saver during playback"
+msgstr "Žiadny šetrič obrazovky počas prehrávania"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Udržiava obrazovku zapnutú pri prehrávaní televízie, rádia alebo súboru."
+
+msgid "Playing TV or radio"
+msgstr "Prehrávanie TV alebo rádia"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: na tomto kanáli nie je k dispozícii"

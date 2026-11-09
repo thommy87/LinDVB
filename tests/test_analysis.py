@@ -335,3 +335,15 @@ def test_free_tuners_needs_a_device(monkeypatch):
     assert free_tuners(M) == ([7] if os.path.exists("/dev/dvb/adapter7") else [])
     monkeypatch.setenv("LINDVB_TEST_TS", "/tmp/x.ts")
     assert free_tuners(M) == [7]
+
+
+# ---------------------------------------------------------------- internet stream bit rate
+
+def test_stream_rate_prefers_tag_then_buffer_output():
+    from lindvb.analysis import stream_rate
+    # internet radio: the announced 128 kbit/s, not the download burst
+    assert stream_rate({"in": 1_076_000, "out": 16_000}, 128_000) == 128_000
+    # no tag: what the buffer hands on to playback, not what it downloads
+    assert stream_rate({"in": 1_076_000, "out": 16_000}) == 128_000
+    assert stream_rate({"in": 20_000, "out": -1}) == 160_000
+    assert stream_rate({}) is None and stream_rate(None) is None

@@ -3216,3 +3216,15 @@ msgstr "Luk (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Kanalanalyse…"
+
+msgid "No screen saver during playback"
+msgstr "Ingen pauseskærm under afspilning"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Holder skærmen tændt, mens tv, radio eller en fil afspilles."
+
+msgid "Playing TV or radio"
+msgstr "Afspiller tv eller radio"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: ikke tilgængelig på denne kanal"

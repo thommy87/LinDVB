@@ -3216,3 +3216,15 @@ msgstr "Sluiten (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Zenderanalyse…"
+
+msgid "No screen saver during playback"
+msgstr "Geen schermbeveiliging tijdens het afspelen"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Houdt het scherm aan terwijl tv, radio of een bestand speelt."
+
+msgid "Playing TV or radio"
+msgstr "Tv of radio speelt"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: niet beschikbaar op deze zender"

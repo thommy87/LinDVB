@@ -264,6 +264,7 @@ class Player(GObject.Object):
         self.video_decoder = None       # (factory, backend) decoding the video now
         self.video = VideoBin(picture)
         self.playbin = None
+        self.video_off = False          # "Video Off (audio only)": kept across rebuilds
         self.feeder = None
         self.capture = None
         self.sid = 0
@@ -600,6 +601,10 @@ class Player(GObject.Object):
         pb.set_property("mute", self._mute)
         # playbin's av-offset > 0 plays the audio earlier, so it is the negated delay
         pb.set_property("av-offset", -int(self.audio_delay_ms) * Gst.MSECOND)
+        if self.video_off:
+            # set before the pipeline starts, so playbin and playbin3 both
+            # leave the video out (internet streams rebuild the pipeline)
+            pb.set_property("flags", pb.get_property("flags") & ~PLAY_FLAGS_VIDEO)
         for k, v in self.balance.items():
             self.vbal.set_property(k, v)
         if self.eq is not None:
@@ -1168,10 +1173,16 @@ class Player(GObject.Object):
                 self.playbin.set_property("current-text", i)
 
     def disable_video(self, off):
-        if self.playbin:
-            flags = self.playbin.get_property("flags")
-            flags = flags & ~PLAY_FLAGS_VIDEO if off else flags | PLAY_FLAGS_VIDEO
-            self.playbin.set_property("flags", flags)
+        self.video_off = bool(off)
+        if not self.playbin:
+            return
+        flags = self.playbin.get_property("flags")
+        flags = flags & ~PLAY_FLAGS_VIDEO if off else flags | PLAY_FLAGS_VIDEO
+        self.playbin.set_property("flags", flags)
+        if self._pb3 and self._collection is not None:
+            # playbin3 does not follow the flag while playing: select the streams
+            video = self._streams(Gst.StreamType.VIDEO)
+            self._select_streams(Gst.StreamType.VIDEO, None if off or not video else video[0])
 
     def screenshot(self, path):
         if not self.playbin:
@@ -1228,6 +1239,31 @@ class Player(GObject.Object):
         except (TypeError, ValueError):
             return
         self.fragments = (self.fragments + [frag])[-30:]
+
+    def audio_bitrate(self):
+        """Bit rate of the audio track playing, from its tags (bit/s), or None.
+
+        Internet radio sends it (e.g. icy-br, or the MP3/AAC headers); it is
+        what the stream needs, unlike the download rate of the network buffer.
+        """
+        if not self.playbin:
+            return None
+        tags = None
+        if self._pb3:
+            for st in self._streams(Gst.StreamType.AUDIO):
+                if st.get_stream_id() in self._selected or tags is None:
+                    tags = st.get_tags()
+        else:
+            cur = max(0, self.playbin.get_property("current-audio"))
+            if self.playbin.get_property("n-audio") > cur:
+                tags = self.playbin.emit("get-audio-tags", cur)
+        if not tags:
+            return None
+        for tag in (Gst.TAG_NOMINAL_BITRATE, Gst.TAG_BITRATE):
+            ok, br = tags.get_uint(tag)
+            if ok and 1000 <= br <= 2_000_000:
+                return br
+        return None
 
     def video_info(self):
         """What the picture on screen is: codec, size, rate, scan, colour, decoder."""

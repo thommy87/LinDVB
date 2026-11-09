@@ -151,6 +151,10 @@ class MainWindow(Gtk.ApplicationWindow):
         # quality bar in the OSD for internet channels: the stream's health
         self.player.connect("buffering", self._on_stream_buffering)
         self.player.connect("state", self._on_stream_state)
+        # no screen saver while something plays (Preferences › Playback)
+        self._inhibit_cookie = 0
+        self.player.connect("state", lambda _p, st: self.update_inhibit(st == "playing"))
+        self.player.connect("error", lambda _p, _m: self.update_inhibit(False))
         self.player.connect("error", lambda _p, _m: self._on_stream_failed())
         self.app.tuners.connect("preempt-live", self._on_preempt)
         self.app.timers.connect("message", lambda _t, m: self.set_status(m))
@@ -429,9 +433,11 @@ class MainWindow(Gtk.ApplicationWindow):
                                   tooltip_text=_("Teletext (Ctrl+Shift+T)"))
         hb.pack_end(self.ttx_btn)
         # HbbTV: like the red button of a remote control
-        self.hbbtv_btn = Gtk.Button(label=_("HbbTV"), action_name="win.hbbtv", visible=False,
+        # like the TXT button: always there, greyed out when the channel has none
+        self.hbbtv_btn = Gtk.Button(label=_("HbbTV"), action_name="win.hbbtv",
                                     css_classes=["lv-hbbtv"],
-                                    tooltip_text=_("Interactive service of the channel (red button, F5)"))
+                                    tooltip_text=_("HbbTV: not available on this channel"))
+        self.lookup_action("hbbtv").set_enabled(False)
         hb.pack_end(self.hbbtv_btn)
 
         # sidebar
@@ -904,10 +910,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.pip.close()
 
     def _on_hbbtv_state(self, has_app, running):
-        self.hbbtv_btn.set_visible(has_app or running)
+        self.lookup_action("hbbtv").set_enabled(bool(has_app or running))
         self.hbbtv_btn.set_tooltip_text(
             _("Close the interactive service (Esc)") if running else
-            _("Interactive service of the channel (red button, F5)"))
+            _("Interactive service of the channel (red button, F5)") if has_app else
+            _("HbbTV: not available on this channel"))
         self._update_teletext()
 
     def _place_overlay_child(self, overlay, widget, rect):
@@ -1498,6 +1505,18 @@ class MainWindow(Gtk.ApplicationWindow):
             if c.number == num and c.selectable:
                 self.zap(c)
                 return
+
+    def update_inhibit(self, playing=None):
+        """Keep the screen saver off while playing, if the preferences say so."""
+        if playing is None:
+            playing = bool(self.player.playbin) and not self.player.paused
+        want = playing and bool(self.settings.get("inhibit_screensaver", True))
+        if want and not self._inhibit_cookie:
+            self._inhibit_cookie = self.app.inhibit(
+                self, Gtk.ApplicationInhibitFlags.IDLE, _("Playing TV or radio")) or 0
+        elif not want and self._inhibit_cookie:
+            self.app.uninhibit(self._inhibit_cookie)
+            self._inhibit_cookie = 0
 
     def stop_playback(self):
         """Switch the channel (or file) off completely; Play brings it back."""
