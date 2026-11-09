@@ -3332,8 +3332,12 @@ msgid "Channel Analysis…"
 msgstr "Senderanalyse…"
 
 #: lindvb/ui/dialogs.py
-msgid "Single cable (Unicable)"
-msgstr "Einkabel (Unicable)"
+msgid "Unicable"
+msgstr "Unicable"
+
+#: lindvb/ui/dialogs.py
+msgid "No Unicable"
+msgstr "Kein Unicable"
 
 #: lindvb/ui/dialogs.py
 msgid "Unicable I (EN 50494)"
@@ -3344,16 +3348,12 @@ msgid "Unicable II / JESS (EN 50607)"
 msgstr "Unicable II / JESS (EN 50607)"
 
 #: lindvb/ui/dialogs.py
-msgid "All tuners hang on one cable and each has a user band of its own. Give them the same cable name above."
-msgstr "Alle Tuner hängen an einem Kabel, jeder hat ein eigenes Userband. Gib ihnen oben denselben Kabelnamen."
-
-#: lindvb/ui/dialogs.py
 msgid "User band"
 msgstr "Userband"
 
 #: lindvb/ui/dialogs.py
-msgid "Each tuner on the cable needs a different user band."
-msgstr "Jeder Tuner am Kabel braucht ein anderes Userband."
+msgid "Each tuner on the cable needs a different user band. Give all tuners on the cable the same cable name above."
+msgstr "Jeder Tuner am Kabel braucht ein anderes Userband. Gib allen Tunern am Kabel oben denselben Kabelnamen."
 
 #: lindvb/ui/dialogs.py
 msgid "User band frequency (MHz)"
@@ -3834,6 +3834,25 @@ msgstr "Picons im Internet finden"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lade dort einen Satz für deinen Satelliten, dein Kabel oder deine Antenne herunter und entpacke ihn in den Logo-Ordner."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Anbieter / Kategorie"
+
+msgid "Extra streams"
+msgstr "Zusatzströme"
+
+msgid "New timer"
+msgstr "Neuer Timer"
+
+msgid "Edit timer"
+msgstr "Timer bearbeiten"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (aus den Einstellungen)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} können nur in MPEG-TS erhalten bleiben, daher wird TS verwendet."
 
 msgid "Privacy Notice"
 msgstr "Datenschutzhinweis"

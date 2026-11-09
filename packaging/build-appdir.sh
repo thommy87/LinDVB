@@ -223,6 +223,18 @@ export GSETTINGS_SCHEMA_DIR="\$HERE/usr/share/glib-2.0/schemas"
 export GIO_MODULE_DIR="\$HERE/usr/lib/gio/modules"
 export XDG_DATA_DIRS="\$HERE/usr/share:\${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 export PATH="\$HERE/usr/bin:\$PATH"
+# The bundled OpenSSL and GnuTLS look for the CA certificates where Ubuntu keeps
+# them; point them at the host's bundle (Fedora, openSUSE … keep it elsewhere).
+if [ -z "\${SSL_CERT_FILE:-}" ]; then
+    for f in /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt \\
+             /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/ssl/ca-bundle.pem \\
+             /etc/ssl/cert.pem /etc/pki/tls/cacert.pem; do
+        if [ -r "\$f" ]; then export SSL_CERT_FILE="\$f"; break; fi
+    done
+fi
+if [ -n "\${SSL_CERT_FILE:-}" ] && [ -z "\${GTLS_SYSTEM_CA_FILE:-}" ]; then
+    export GTLS_SYSTEM_CA_FILE="\$SSL_CERT_FILE"
+fi
 if [ -d "\$HERE/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders" ]; then
     export GDK_PIXBUF_MODULEDIR="\$HERE/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     export GDK_PIXBUF_MODULE_FILE="\${XDG_CACHE_HOME:-\$HOME/.cache}/lindvb/loaders-appimage.cache"

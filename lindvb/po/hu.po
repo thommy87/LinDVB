@@ -3565,6 +3565,25 @@ msgstr "Piconok keresése az interneten"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Töltsön le ott egy készletet a műholdjához, kábeléhez vagy antennájához, és csomagolja ki a logómappába."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Szolgáltató / Kategória"
+
+msgid "Extra streams"
+msgstr "További adatfolyamok"
+
+msgid "New timer"
+msgstr "Új időzítő"
+
+msgid "Edit timer"
+msgstr "Időzítő szerkesztése"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (a beállításokból)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} csak MPEG-TS-ben őrizhetők meg, ezért TS-t használ."
+
 msgid "Privacy Notice"
 msgstr "Adatvédelmi tájékoztató"
 

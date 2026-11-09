@@ -5,7 +5,7 @@ from .i18n import _
 
 # the "Sort by" choices of the channel list: (setting value, label)
 SORTS = (("number", _("Number")), ("az", _("Name A–Z")), ("za", _("Name Z–A")),
-         ("provider", _("Provider")), ("transponder", _("Transponder")),
+         ("provider", _("Provider / category")), ("transponder", _("Transponder")),
          ("quality", _("Picture quality")))
 GROUPED = ("provider", "transponder", "quality")   # these offer a value to pick
 

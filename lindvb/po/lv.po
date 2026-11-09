@@ -3565,6 +3565,25 @@ msgstr "Meklēt picon tiešsaistē"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lejupielādējiet tur komplektu savam satelītam, kabelim vai antenai un izpakojiet to logotipu mapē."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Pakalpojumu sniedzējs / Kategorija"
+
+msgid "Extra streams"
+msgstr "Papildu straumes"
+
+msgid "New timer"
+msgstr "Jauns taimeris"
+
+msgid "Edit timer"
+msgstr "Rediģēt taimeri"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (no iestatījumiem)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} var saglabāt tikai MPEG-TS, tāpēc tiek izmantots TS."
+
 msgid "Privacy Notice"
 msgstr "Paziņojums par privātumu"
 

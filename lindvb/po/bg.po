@@ -3565,6 +3565,25 @@ msgstr "Намиране на picon онлайн"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Изтеглете оттам набор за вашия сателит, кабел или антена и го разархивирайте в папката с лога."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Доставчик / Категория"
+
+msgid "Extra streams"
+msgstr "Допълнителни потоци"
+
+msgid "New timer"
+msgstr "Нов таймер"
+
+msgid "Edit timer"
+msgstr "Редактиране на таймер"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (от настройките)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} могат да се запазят само в MPEG-TS, затова се използва TS."
+
 msgid "Privacy Notice"
 msgstr "Известие за поверителност"
 

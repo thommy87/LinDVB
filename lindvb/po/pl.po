@@ -3565,6 +3565,25 @@ msgstr "Znajdź picony w internecie"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Pobierz tam zestaw dla swojego satelity, kablówki lub anteny i rozpakuj go do folderu logo."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Dostawca / Kategoria"
+
+msgid "Extra streams"
+msgstr "Dodatkowe strumienie"
+
+msgid "New timer"
+msgstr "Nowy timer"
+
+msgid "Edit timer"
+msgstr "Edytuj timer"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (z preferencji)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} można zachować tylko w MPEG-TS, dlatego używany jest TS."
+
 msgid "Privacy Notice"
 msgstr "Informacja o prywatności"
 

@@ -4955,16 +4955,16 @@ msgstr ""
 msgid "Higher numbers are used first."
 msgstr ""
 
-msgid "Single cable (Unicable)"
+msgid "Unicable"
 msgstr ""
 
-msgid "All tuners hang on one cable and each has a user band of its own. Give them the same cable name above."
+msgid "No Unicable"
 msgstr ""
 
 msgid "User band"
 msgstr ""
 
-msgid "Each tuner on the cable needs a different user band."
+msgid "Each tuner on the cable needs a different user band. Give all tuners on the cable the same cable name above."
 msgstr ""
 
 msgid "User band frequency (MHz)"
@@ -5017,6 +5017,29 @@ msgstr ""
 
 msgid "Apply the changes to {n} channels?"
 msgstr ""
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "Extra streams"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "New timer"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "Edit timer"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "{folder} (from the preferences)"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
 
 #: lindvb/ui/dvbi.py
 msgid "Privacy Notice"

@@ -3565,6 +3565,25 @@ msgstr "Sib picons onlajn"
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Niżżel hemm sett għas-satellita, il-kejbil jew l-antenna tiegħek u ftħu fil-folder tal-logos."
 
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Fornitur / Kategorija"
+
+msgid "Extra streams"
+msgstr "Flussi addizzjonali"
+
+msgid "New timer"
+msgstr "Timer ġdid"
+
+msgid "Edit timer"
+msgstr "Editja t-timer"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (mill-preferenzi)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} jistgħu jinżammu biss f'MPEG-TS, għalhekk jintuża TS."
+
 msgid "Privacy Notice"
 msgstr "Avviż ta’ privatezza"
 
