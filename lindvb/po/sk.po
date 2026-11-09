@@ -3453,3 +3453,9 @@ msgstr "_Použiť na"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Všeobecné nastavenia: formáty, zvukové stopy a ďalšie prúdy sa pri spustení záznamu prevezmú z predvolieb."
+
+msgid "All streams of the channel (TS)"
+msgstr "Všetky prúdy kanála (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Nahrá každý prúd, ktorý kanál ohlasuje, aj dáta HbbTV a nové zvukové stopy, s tabuľkou programov len pre tento kanál. Pojme to len MPEG-TS, preto sa použije TS."

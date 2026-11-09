@@ -3453,3 +3453,9 @@ msgstr "_Toepassen op"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Algemene instellingen: formaten, audiosporen en extra streams komen bij de start van de opname uit de voorkeuren."
+
+msgid "All streams of the channel (TS)"
+msgstr "Alle streams van de zender (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Neemt elke stream op die de zender aankondigt, ook HbbTV-data en nieuwe audiosporen, met een programmatabel voor alleen deze zender. Alleen MPEG-TS kan dat bevatten, dus TS wordt gebruikt."

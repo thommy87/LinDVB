@@ -3453,3 +3453,9 @@ msgstr "_Tillämpa på"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Allmänna inställningar: format, ljudspår och extra strömmar hämtas från inställningarna när inspelningen startar."
+
+msgid "All streams of the channel (TS)"
+msgstr "Alla kanalens strömmar (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Spelar in varje ström som kanalen annonserar, även HbbTV-data och nya ljudspår, med en programtabell bara för denna kanal. Bara MPEG-TS kan rymma det, så TS används."

@@ -3453,3 +3453,9 @@ msgstr "_Aplică la"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Setări generale: formatele, pistele audio și fluxurile suplimentare se iau din preferințe la începutul înregistrării."
+
+msgid "All streams of the channel (TS)"
+msgstr "Toate fluxurile canalului (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Înregistrează fiecare flux anunțat de canal, inclusiv datele HbbTV și pistele audio noi, cu un tabel de programe doar pentru acest canal. Doar MPEG-TS îl poate conține, așa că se folosește TS."

@@ -3453,3 +3453,9 @@ msgstr "_Primijeni na"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Opće postavke: formati, audiozapisi i dodatni tokovi uzimaju se iz postavki pri početku snimanja."
+
+msgid "All streams of the channel (TS)"
+msgstr "Svi tokovi kanala (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Snima svaki tok koji kanal najavljuje, i HbbTV podatke i nove audiozapise, s tablicom programa samo za ovaj kanal. Samo MPEG-TS to može sadržavati, pa se koristi TS."

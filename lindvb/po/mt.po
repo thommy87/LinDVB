@@ -3453,3 +3453,9 @@ msgstr "_Applika għal"
 
 msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
 msgstr "Settings ġenerali: il-formati, il-binarji tal-awdjo u l-flussi żejda jittieħdu mill-preferenzi meta tibda r-reġistrazzjoni."
+
+msgid "All streams of the channel (TS)"
+msgstr "Il-flussi kollha tal-istazzjon (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Jirreġistra kull fluss li jħabbar l-istazzjon, anke data HbbTV u binarji tal-awdjo ġodda, b'tabella tal-programmi għal dan l-istazzjon biss. MPEG-TS biss jista' jżommu, għalhekk jintuża TS."

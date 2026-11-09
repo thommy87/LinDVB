@@ -14,8 +14,9 @@ from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
 from .i18n import N_, _
-from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
-                        SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
+from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRA_DEFAULTS,  # noqa: F401
+                        EXTRAS, SINGLE_AUDIO, TIMER_ACTIONS, PatCleaner, PidFilter,
+                        audio_mode_from_legacy, pmt_all_pids,
                         choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
                         usable_extras)
 from .tuner import SegmentReader
@@ -72,6 +73,7 @@ class Timer:
     subtitles: bool = True
     epg_data: bool = True
     audio_mode: str = "all"        # see recformat.AUDIO_MODES
+    all_streams: bool = False      # every stream of the PMT, cleaned PAT (TS)
     # True: formats, audio tracks and extra streams come from the preferences
     # when the recording starts (new timers); False: the values above
     general: bool = False
@@ -130,7 +132,7 @@ class Recording:
     """
 
     def __init__(self, path, capture=None, url=None, start_offset=None, fmt="TS",
-                 channel=None, extras=EXTRAS, audio_mode="all", language="",
+                 channel=None, extras=tuple(e for e in EXTRAS if EXTRA_DEFAULTS[e]), audio_mode="all", language="",
                  full_capture=False):
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -158,8 +160,16 @@ class Recording:
                 choose = (lambda pmt: choose_from_pmt(pmt, pids, channel.audio_pids,
                                                       self.audio_mode, language, single,
                                                       captured))
+            pat = None
+            if pids is not None and fmt == "TS" and "all_streams" in self.extras:
+                # every stream of the PMT (data, carousels, new tracks) and a
+                # PAT that names this channel only
+                base = set(pids)
+                choose = (lambda pmt: base | pmt_all_pids(pmt))
+                pat = PatCleaner(channel.sid, channel.pmt_pid) if channel.sid else None
             want_pmt = self.want_sub_page or choose is not None
-            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt and channel else 0, choose)
+            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt and channel else 0, choose,
+                                    pat=pat)
             if fmt != "TS":
                 # The PID filter has already picked the audio tracks.
                 self.remux = self._remuxer(program=channel.sid if channel else 0,
@@ -286,7 +296,7 @@ class TimerManager(GObject.Object):
         return {"tv_format": s.get("rec_tv_format", "TS"),
                 "radio_format": s.get("rec_radio_format", "TS"),
                 "audio_mode": mode if mode in AUDIO_MODES else "all",
-                **{e: bool(s.get("rec_" + e, True)) for e in EXTRAS}}
+                **{e: bool(s.get("rec_" + e, EXTRA_DEFAULTS[e])) for e in EXTRAS}}
 
     def new_timer(self, channel, title, start, end, **kw):
         """A Timer with the default recording options from the preferences."""

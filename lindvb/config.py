@@ -65,6 +65,7 @@ DEFAULTS = {
     "rec_teletext": True,
     "rec_subtitles": True,
     "rec_epg_data": True,
+    "rec_all_streams": False,      # every stream of the PMT, cleaned PAT (TS)
     # Audio tracks: "all", "language" (the preferred language only) or "first".
     # MP4 and the radio audio file keep one track either way.
     "rec_audio_mode": "all",

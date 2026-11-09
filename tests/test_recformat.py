@@ -191,3 +191,24 @@ def test_choose_streams_hls():
     assert choose_streams(streams, "language", "fra", single=True) == ["v", "a-deu"]
     assert choose_streams(streams, "all") == ["v", "a-deu", "a-mul", "a-eng"]
     assert choose_streams([("a", "audio", "", False)], "all", single=True) == ["a"]
+
+
+def test_all_streams_and_cleaned_pat():
+    from lindvb.epgsources import mpeg_crc
+    from lindvb.recformat import PatCleaner, pmt_all_pids, single_program_pat
+    pmt = _pmt([(0x02, 5101, b""), (0x03, 5102, _lang("deu")), (0x05, 5110, b""),
+                (0x0B, 5111, b"")])                  # video, audio, AIT, DSM-CC carousel
+    assert pmt_all_pids(pmt) == {5101, 5102, 5110, 5111}
+    assert allowed_formats(["all_streams"]) == ["TS"]
+    sec = single_program_pat(0x0437, 3, 28106, 5100)
+    assert mpeg_crc(sec) == 0 and sec[8:12] == bytes([0x6D, 0xCA, 0xE0 | 0x13, 0xEC])
+    # a PAT with two programs comes out with one; its continuation is dropped
+    two = bytes([0x00, 0xB0, 0x11, 0x04, 0x37, 0xC7, 0, 0, 0x6D, 0xCA, 0xF3, 0xEC,
+                 0x6D, 0xCB, 0xF3, 0xED]) + b"\0\0\0\0"
+    data = _pkt(0, True, b"\x00" + two) + _pkt(0) + _pkt(5101)
+    f = PidFilter({0, 5101}, pat=PatCleaner(28106, 5100))
+    out = f.feed(data)
+    assert len(out) == 2 * 188 and out[188:] == _pkt(5101)
+    pat = out[5:5 + 16]
+    assert pat[3:5] == bytes([0x04, 0x37]) and pat[8:10] == bytes([0x6D, 0xCA])
+    assert (pat[1] & 0x0F) << 8 | pat[2] == 13 and mpeg_crc(pat) == 0

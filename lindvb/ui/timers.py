@@ -24,6 +24,11 @@ from .common import day, dropdown, fill, hm, make_column_view, message, scrolled
 from ..i18n import C_, _, N_
 
 
+ALL_STREAMS_TIP = _("Records every stream the channel announces, also HbbTV data and new "
+                    "audio tracks, with a programme table for this channel only. "
+                    "Only MPEG-TS can hold it, so TS is used.")
+
+
 def _label(text, mnemonic_widget=None):
     lbl = Gtk.Label(label=text, xalign=0, use_underline=True)
     if mnemonic_widget is not None:
@@ -263,6 +268,7 @@ class TimersWindow(Gtk.Window):
             self.extra_btns[e] = b
         self.extra_btns["teletext"].set_tooltip_text(_("Teletext only exists in MPEG-TS, so TS is used."))
         self.extra_btns["epg_data"].set_tooltip_text(_("EPG data (EIT) only exists in MPEG-TS, so TS is used."))
+        self.extra_btns["all_streams"].set_tooltip_text(ALL_STREAMS_TIP)
         self.extra_btns["subtitles"].set_tooltip_text(
             _("TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
             "DVB bitmap subtitles are kept in TS only."))
@@ -428,7 +434,8 @@ class TimersWindow(Gtk.Window):
         records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
         for b in self.extra_btns.values():
             b.set_sensitive(records and not iptv)
-        why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data") if e in extras]
+        why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data", "all_streams")
+               if e in extras]
         radio = bool(self.channel and self.channel.radio)
         fmt = effective_format((self.radio_fmt if radio else self.tv_fmt).get(), extras, radio,
                                iptv)
@@ -732,6 +739,8 @@ class RecordOptionsWindow(Gtk.Window):
             notes.append(IPTV_EXTRAS_NOTE)
         if any(e in extras for e in ("teletext", "epg_data")):
             notes.append(_("Teletext and EPG data can only be kept in MPEG-TS, so TS is used."))
+        elif "all_streams" in extras:
+            notes.append(ALL_STREAMS_TIP)
         note = audio_note(self.fmt.get(), mode, iptv)
         if note:
             notes.append(note)

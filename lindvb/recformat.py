@@ -42,12 +42,15 @@ TS_SYNC_BYTE = bytes([TS_SYNC])
 EXTENSIONS = {"TS": ".ts", "MPG": ".mpg", "MP4": ".mp4", "MKV": ".mkv", "Audio": ".mp2"}
 
 # Extra streams, in the order the timer dialog shows them.
-EXTRAS = ("teletext", "subtitles", "epg_data")
+EXTRAS = ("teletext", "subtitles", "epg_data", "all_streams")
 EXTRA_LABELS = {
     "teletext": _("Teletext (TS)"),
     "subtitles": _("Subtitles (TS / MKV)"),
     "epg_data": _("EPG data (TS)"),
+    "all_streams": _("All streams of the channel (TS)"),
 }
+# extras ticked when nothing says otherwise ("all streams" is opt-in)
+EXTRA_DEFAULTS = {"teletext": True, "subtitles": True, "epg_data": True, "all_streams": False}
 
 # Which extra streams each container can hold.
 CAN_HOLD = {
@@ -181,6 +184,54 @@ def _descriptors(loop):
         i += 2 + length
 
 
+def pmt_all_pids(section):
+    """Every PID the PMT names: PCR, elementary streams (audio, video,
+    subtitles, teletext, HbbTV data and carousels) and their ECMs."""
+    pmt = parse_pmt(section)
+    pids = {pid for _t, pid, _ca, _info in pmt.streams}
+    pids.update(pmt.ca_pids)
+    if 0 < pmt.pcr_pid < 0x1FFF:
+        pids.add(pmt.pcr_pid)
+    return pids
+
+
+def single_program_pat(tsid, version, program, pmt_pid):
+    """A PAT section naming only *program* (a cleaned PAT for one channel)."""
+    from .epgsources import mpeg_crc
+    body = bytes([(tsid >> 8) & 0xFF, tsid & 0xFF, 0xC1 | ((version & 0x1F) << 1), 0, 0,
+                  (program >> 8) & 0xFF, program & 0xFF,
+                  0xE0 | ((pmt_pid >> 8) & 0x1F), pmt_pid & 0xFF])
+    length = len(body) + 4
+    sec = bytes([0x00, 0xB0 | ((length >> 8) & 0x0F), length & 0xFF]) + body
+    return sec + mpeg_crc(sec).to_bytes(4, "big")
+
+
+class PatCleaner:
+    """Rewrites the PAT (PID 0) of a transport stream so it names one
+    program only. Packets of other PIDs pass unchanged."""
+
+    def __init__(self, program, pmt_pid):
+        self.program, self.pmt_pid = program, pmt_pid
+        self._cc = 0
+
+    def packet(self, pkt):
+        """The cleaned PAT packet for PAT packet *pkt*, or None to drop it
+        (a continuation of a PAT section)."""
+        if not pkt[1] & 0x40:
+            return None
+        off = ts_payload_offset(pkt)
+        if off is None or off >= TS_PACKET:
+            return None
+        sec = bytes(pkt[off + 1 + pkt[off]:])
+        if len(sec) < 8 or sec[0] != 0x00:
+            return None
+        tsid, version = (sec[3] << 8) | sec[4], (sec[5] >> 1) & 0x1F
+        payload = b"\x00" + single_program_pat(tsid, version, self.program, self.pmt_pid)
+        head = bytes([TS_SYNC, 0x40, 0x00, 0x10 | self._cc])
+        self._cc = (self._cc + 1) & 0x0F
+        return head + payload + b"\xff" * (TS_PACKET - 4 - len(payload))
+
+
 def pmt_audio_tracks(section):
     """Audio tracks of a PMT section as (pid, language, special) in PMT order.
 
@@ -303,7 +354,8 @@ class PidFilter:
     are held (at most *hold_limit* bytes, then the given *pids* are used).
     """
 
-    def __init__(self, pids=None, pmt_pid=0, choose=None, hold_limit=4 << 20):
+    def __init__(self, pids=None, pmt_pid=0, choose=None, hold_limit=4 << 20, pat=None):
+        self.pat = pat               # a PatCleaner, or None to keep the PAT as it is
         self.pids = pids
         self.pmt_pid = pmt_pid
         self.pmt = None              # first complete PMT section seen
@@ -326,7 +378,8 @@ class PidFilter:
 
     def feed(self, data):
         data = self._rest + data
-        if self.choose is None and self.pids is None and (self.pmt is not None or not self.pmt_pid):
+        if self.pat is None and self.choose is None and self.pids is None and \
+                (self.pmt is not None or not self.pmt_pid):
             n = len(data) - len(data) % TS_PACKET
             self._rest = data[n:]
             return data[:n]
@@ -346,6 +399,10 @@ class PidFilter:
             i += TS_PACKET
             if self.pmt is None and pid == self.pmt_pid and pkt[1] & 0x40:
                 self._grab_pmt(bytes(pkt))
+            if pid == 0 and self.pat is not None:
+                pkt = self.pat.packet(pkt)
+                if pkt is None:
+                    continue
             if self.choose is not None:
                 self._held.append(bytes(pkt))
                 self._held_bytes += TS_PACKET
