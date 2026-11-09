@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "الرقم"
+
+msgid "Name A–Z"
+msgstr "الاسم أ–ي"
+
+msgid "Name Z–A"
+msgstr "الاسم ي–أ"
+
+msgid "Picture quality"
+msgstr "جودة الصورة"
+
+msgid "Sort by"
+msgstr "الترتيب حسب"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "General settings"
+msgstr "الإعدادات العامة"
+
+msgid "For this recording"
+msgstr "لهذا التسجيل"
+
+msgid "Formats and _tracks"
+msgstr "الصيغ و_المسارات"
+
+msgid "Whole series"
+msgstr "السلسلة كاملة"
+
+msgid "Next recording only"
+msgstr "التسجيل التالي فقط"
+
+msgid "_Apply to"
+msgstr "_تطبيق على"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "الإعدادات العامة: تؤخذ الصيغ ومسارات الصوت والتدفقات الإضافية من التفضيلات عند بدء التسجيل."
+
+msgid "All streams of the channel (TS)"
+msgstr "كل تدفقات القناة (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "يسجّل كل تدفق تعلنه القناة، بما في ذلك بيانات HbbTV ومسارات الصوت الجديدة، مع جدول برامج لهذه القناة فقط. لا يحتويه إلا MPEG-TS، لذا يُستخدم TS."
+
+msgid "Web address"
+msgstr "عنوان الويب"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "عنوان قائمة تشغيل M3U أو بث HLS منفرد (.m3u8)."
+
+msgid "User name"
+msgstr "اسم المستخدم"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "القنوات المباشرة لحساب Xtream Codes. تُحفظ كلمة المرور في عنوان القائمة ضمن إعدادات LinDVB."
+
+msgid "Your lists"
+msgstr "قوائمك"
+
+msgid "Source"
+msgstr "المصدر"
+
+msgid "Updated"
+msgstr "آخر تحديث"
+
+msgid "Update"
+msgstr "تحديث"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "إعادة تحميل القائمة: تبقى المفضلة وأرقام القنوات وربط الدليل، وتُحذف القنوات التي لم تعد في القائمة."
+
+msgid "Remove"
+msgstr "إزالة"
+
+msgid "Remove the list and its channels"
+msgstr "إزالة القائمة وقنواتها"
+
+msgid "{n} removed"
+msgstr "أُزيلت {n}"
+
+msgid "The file has no channels."
+msgstr "الملف لا يحتوي على قنوات."
+
+msgid "{n} channels removed"
+msgstr "أُزيلت {n} قناة"

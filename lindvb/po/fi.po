@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numero"
+
+msgid "Name A–Z"
+msgstr "Nimi A–Ö"
+
+msgid "Name Z–A"
+msgstr "Nimi Ö–A"
+
+msgid "Picture quality"
+msgstr "Kuvanlaatu"
+
+msgid "Sort by"
+msgstr "Lajitteluperuste"
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "General settings"
+msgstr "Yleiset asetukset"
+
+msgid "For this recording"
+msgstr "Tälle tallenteelle"
+
+msgid "Formats and _tracks"
+msgstr "Muodot ja _raidat"
+
+msgid "Whole series"
+msgstr "Koko sarja"
+
+msgid "Next recording only"
+msgstr "Vain seuraava tallenne"
+
+msgid "_Apply to"
+msgstr "_Käytä kohteeseen"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Yleiset asetukset: muodot, ääniraidat ja lisävirrat otetaan asetuksista tallennuksen alkaessa."
+
+msgid "All streams of the channel (TS)"
+msgstr "Kaikki kanavan virrat (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Tallentaa jokaisen kanavan ilmoittaman virran, myös HbbTV-datan ja uudet ääniraidat, ohjelmataululla vain tälle kanavalle. Vain MPEG-TS voi sisältää sen, joten käytetään TS:ää."
+
+msgid "Web address"
+msgstr "Verkko-osoite"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U-soittolistan tai yksittäisen HLS-virran (.m3u8) osoite."
+
+msgid "User name"
+msgstr "Käyttäjänimi"
+
+msgid "Password"
+msgstr "Salasana"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes -tilin suorat kanavat. Salasana säilytetään listan osoitteessa LinDVB:n asetuksissa."
+
+msgid "Your lists"
+msgstr "Omat listat"
+
+msgid "Source"
+msgstr "Lähde"
+
+msgid "Updated"
+msgstr "Päivitetty"
+
+msgid "Update"
+msgstr "Päivitä"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Lataa listan uudelleen: suosikit, kanavanumerot ja ohjelmaoppaan kytkennät säilyvät, listalta poistuneet kanavat poistetaan."
+
+msgid "Remove"
+msgstr "Poista"
+
+msgid "Remove the list and its channels"
+msgstr "Poista lista ja sen kanavat"
+
+msgid "{n} removed"
+msgstr "{n} poistettu"
+
+msgid "The file has no channels."
+msgstr "Tiedostossa ei ole kanavia."
+
+msgid "{n} channels removed"
+msgstr "{n} kanavaa poistettu"

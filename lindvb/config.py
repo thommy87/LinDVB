@@ -65,6 +65,7 @@ DEFAULTS = {
     "rec_teletext": True,
     "rec_subtitles": True,
     "rec_epg_data": True,
+    "rec_all_streams": False,      # every stream of the PMT, cleaned PAT (TS)
     # Audio tracks: "all", "language" (the preferred language only) or "first".
     # MP4 and the radio audio file keep one track either way.
     "rec_audio_mode": "all",
@@ -86,6 +87,9 @@ DEFAULTS = {
     # group ("" = all groups) last chosen, shown again at the next start.
     "list_filter": 0,
     "list_group": "",
+    "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
+    "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
+    "list_sort_value": "",          # the provider / transponder / quality shown
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,
     # goomhd, bars, vu, scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",

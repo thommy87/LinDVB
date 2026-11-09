@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Номер"
+
+msgid "Name A–Z"
+msgstr "Име А–Я"
+
+msgid "Name Z–A"
+msgstr "Име Я–А"
+
+msgid "Picture quality"
+msgstr "Качество на картината"
+
+msgid "Sort by"
+msgstr "Подреждане по"
+
+msgid "All"
+msgstr "Всички"
+
+msgid "General settings"
+msgstr "Общи настройки"
+
+msgid "For this recording"
+msgstr "За този запис"
+
+msgid "Formats and _tracks"
+msgstr "Формати и _писти"
+
+msgid "Whole series"
+msgstr "Цялата поредица"
+
+msgid "Next recording only"
+msgstr "Само следващия запис"
+
+msgid "_Apply to"
+msgstr "_Приложи за"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Общи настройки: форматите, аудио пистите и допълнителните потоци се вземат от настройките при старта на записа."
+
+msgid "All streams of the channel (TS)"
+msgstr "Всички потоци на канала (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Записва всеки поток, който каналът обявява, включително данни за HbbTV и нови аудио писти, с програмна таблица само за този канал. Само MPEG-TS може да го съдържа, затова се използва TS."
+
+msgid "Web address"
+msgstr "Уеб адрес"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Адресът на M3U плейлист или на единичен HLS поток (.m3u8)."
+
+msgid "User name"
+msgstr "Потребителско име"
+
+msgid "Password"
+msgstr "Парола"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Каналите на живо на акаунт в Xtream Codes. Паролата се пази в адреса на списъка в настройките на LinDVB."
+
+msgid "Your lists"
+msgstr "Вашите списъци"
+
+msgid "Source"
+msgstr "Източник"
+
+msgid "Updated"
+msgstr "Обновено"
+
+msgid "Update"
+msgstr "Обнови"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Зарежда списъка отново: любимите, номерата на каналите и връзките с програмата остават, каналите, които вече не са в списъка, се премахват."
+
+msgid "Remove"
+msgstr "Премахни"
+
+msgid "Remove the list and its channels"
+msgstr "Премахни списъка и каналите му"
+
+msgid "{n} removed"
+msgstr "{n} премахнати"
+
+msgid "The file has no channels."
+msgstr "Файлът няма канали."
+
+msgid "{n} channels removed"
+msgstr "{n} канала премахнати"

@@ -3498,3 +3498,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numero"
+
+msgid "Name A–Z"
+msgstr "Nome A–Z"
+
+msgid "Name Z–A"
+msgstr "Nome Z–A"
+
+msgid "Picture quality"
+msgstr "Qualità dell'immagine"
+
+msgid "Sort by"
+msgstr "Ordina per"
+
+msgid "All"
+msgstr "Tutti"
+
+msgid "General settings"
+msgstr "Impostazioni generali"
+
+msgid "For this recording"
+msgstr "Per questa registrazione"
+
+msgid "Formats and _tracks"
+msgstr "Formati e _tracce"
+
+msgid "Whole series"
+msgstr "Intera serie"
+
+msgid "Next recording only"
+msgstr "Solo la prossima registrazione"
+
+msgid "_Apply to"
+msgstr "_Applica a"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Impostazioni generali: formati, tracce audio e flussi extra vengono presi dalle preferenze all'avvio della registrazione."
+
+msgid "All streams of the channel (TS)"
+msgstr "Tutti i flussi del canale (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Registra ogni flusso annunciato dal canale, anche dati HbbTV e nuove tracce audio, con una tabella dei programmi solo per questo canale. Solo MPEG-TS può contenerlo, quindi si usa TS."
+
+msgid "Web address"
+msgstr "Indirizzo web"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "L'indirizzo di una playlist M3U o di un singolo flusso HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Nome utente"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "I canali in diretta di un account Xtream Codes. La password resta nell'indirizzo della lista nelle impostazioni di LinDVB."
+
+msgid "Your lists"
+msgstr "Le tue liste"
+
+msgid "Source"
+msgstr "Origine"
+
+msgid "Updated"
+msgstr "Aggiornata"
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Ricarica la lista: preferiti, numeri dei canali e abbinamenti della guida restano, i canali non più presenti vengono rimossi."
+
+msgid "Remove"
+msgstr "Rimuovi"
+
+msgid "Remove the list and its channels"
+msgstr "Rimuovi la lista e i suoi canali"
+
+msgid "{n} removed"
+msgstr "{n} rimossi"
+
+msgid "The file has no channels."
+msgstr "Il file non contiene canali."
+
+msgid "{n} channels removed"
+msgstr "{n} canali rimossi"

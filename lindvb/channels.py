@@ -14,6 +14,7 @@ import configparser
 import csv
 import io
 import json
+import os
 import re
 import urllib.parse
 from dataclasses import asdict, dataclass, field, fields
@@ -455,12 +456,14 @@ def parse_m3u(text, root="IPTV"):
                     "category": attrs.get("group-title", ""),
                     "radio": attrs.get("radio", "") == "true",
                     "tvg_id": attrs.get("tvg-id", "").strip(),
-                    "tvg_name": attrs.get("tvg-name", "").strip()}
+                    "tvg_name": attrs.get("tvg-name", "").strip(),
+                    "logo_url": attrs.get("tvg-logo", "").strip()}
         elif line and not line.startswith("#"):
             out.append(Channel(name=info.get("name") or line, delsys="iptv", url=line,
                                root=root, category=info.get("category", ""),
                                radio=info.get("radio", False),
-                               tvg_id=info.get("tvg_id", ""), tvg_name=info.get("tvg_name", "")))
+                               tvg_id=info.get("tvg_id", ""), tvg_name=info.get("tvg_name", ""),
+                               logo_url=info.get("logo_url", "")))
             info = {}
     return out
 
@@ -598,7 +601,7 @@ def decode_text(raw: bytes):
 def import_file(path):
     """Detect the format of *path* and return a list of channels."""
     with open(path, "rb") as f:
-        return import_data(f.read(), str(path))
+        return import_data(f.read(), str(path), source=str(path))
 
 
 def download_name(url):
@@ -609,12 +612,26 @@ def download_name(url):
     return name or parts.netloc or "IPTV"
 
 
-def import_data(raw, name):
+def is_hls_playlist(text):
+    """True for the playlist of one HLS stream (a master or media playlist),
+    which is a single channel and not a channel list."""
+    return "#EXT-X-STREAM-INF" in text or "#EXT-X-TARGETDURATION" in text or \
+        "#EXT-X-MEDIA-SEQUENCE" in text
+
+
+def import_data(raw, name, source=""):
     """Detect the format of *raw* (the bytes of a file or a download called
-    *name*) and return a list of channels."""
+    *name*) and return a list of channels. *source* is the web address or
+    the file path it came from (needed for a single HLS stream)."""
     text = decode_text(raw)
     low = name.lower()
     stem = re.sub(r"^\d{4}_", "", name.rsplit("/", 1)[-1].rsplit(".", 1)[0])
+    if is_hls_playlist(text):
+        if not source:
+            raise ValueError("This is the playlist of a single stream; add its address instead.")
+        url = source if "://" in source else "file://" + urllib.parse.quote(
+            os.path.abspath(source))
+        return [Channel(name=stem or "Stream", delsys="iptv", url=url, root=stem or "IPTV")]
     if low.endswith((".m3u", ".m3u8")) or text.lstrip().startswith("#EXTM3U"):
         return parse_m3u(text, root=stem)
     if low.endswith(".csv"):

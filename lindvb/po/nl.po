@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Name A–Z"
+msgstr "Naam A–Z"
+
+msgid "Name Z–A"
+msgstr "Naam Z–A"
+
+msgid "Picture quality"
+msgstr "Beeldkwaliteit"
+
+msgid "Sort by"
+msgstr "Sorteren op"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+msgid "For this recording"
+msgstr "Voor deze opname"
+
+msgid "Formats and _tracks"
+msgstr "Formaten en _sporen"
+
+msgid "Whole series"
+msgstr "Hele serie"
+
+msgid "Next recording only"
+msgstr "Alleen volgende opname"
+
+msgid "_Apply to"
+msgstr "_Toepassen op"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Algemene instellingen: formaten, audiosporen en extra streams komen bij de start van de opname uit de voorkeuren."
+
+msgid "All streams of the channel (TS)"
+msgstr "Alle streams van de zender (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Neemt elke stream op die de zender aankondigt, ook HbbTV-data en nieuwe audiosporen, met een programmatabel voor alleen deze zender. Alleen MPEG-TS kan dat bevatten, dus TS wordt gebruikt."
+
+msgid "Web address"
+msgstr "Webadres"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Het adres van een M3U-afspeellijst of van één HLS-stream (.m3u8)."
+
+msgid "User name"
+msgstr "Gebruikersnaam"
+
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "De livezenders van een Xtream Codes-account. Het wachtwoord staat in het adres van de lijst in de LinDVB-instellingen."
+
+msgid "Your lists"
+msgstr "Je lijsten"
+
+msgid "Source"
+msgstr "Bron"
+
+msgid "Updated"
+msgstr "Bijgewerkt"
+
+msgid "Update"
+msgstr "Bijwerken"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Laadt de lijst opnieuw: favorieten, zendernummers en gidskoppelingen blijven, zenders die niet meer in de lijst staan worden verwijderd."
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Remove the list and its channels"
+msgstr "De lijst en haar zenders verwijderen"
+
+msgid "{n} removed"
+msgstr "{n} verwijderd"
+
+msgid "The file has no channels."
+msgstr "Het bestand bevat geen zenders."
+
+msgid "{n} channels removed"
+msgstr "{n} zenders verwijderd"

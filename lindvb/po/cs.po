@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Číslo"
+
+msgid "Name A–Z"
+msgstr "Název A–Z"
+
+msgid "Name Z–A"
+msgstr "Název Z–A"
+
+msgid "Picture quality"
+msgstr "Kvalita obrazu"
+
+msgid "Sort by"
+msgstr "Řadit podle"
+
+msgid "All"
+msgstr "Vše"
+
+msgid "General settings"
+msgstr "Obecná nastavení"
+
+msgid "For this recording"
+msgstr "Pro tento záznam"
+
+msgid "Formats and _tracks"
+msgstr "Formáty a _stopy"
+
+msgid "Whole series"
+msgstr "Celý seriál"
+
+msgid "Next recording only"
+msgstr "Jen další záznam"
+
+msgid "_Apply to"
+msgstr "_Použít na"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Obecná nastavení: formáty, zvukové stopy a další proudy se při spuštění záznamu převezmou z předvoleb."
+
+msgid "All streams of the channel (TS)"
+msgstr "Všechny proudy kanálu (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Nahraje každý proud, který kanál ohlašuje, i data HbbTV a nové zvukové stopy, s tabulkou programů jen pro tento kanál. Pojme to jen MPEG-TS, proto se použije TS."
+
+msgid "Web address"
+msgstr "Webová adresa"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Adresa seznamu M3U nebo jednoho proudu HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Uživatelské jméno"
+
+msgid "Password"
+msgstr "Heslo"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Živé kanály účtu Xtream Codes. Heslo je uloženo v adrese seznamu v nastavení LinDVB."
+
+msgid "Your lists"
+msgstr "Vaše seznamy"
+
+msgid "Source"
+msgstr "Zdroj"
+
+msgid "Updated"
+msgstr "Aktualizováno"
+
+msgid "Update"
+msgstr "Aktualizovat"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Znovu načte seznam: oblíbené, čísla kanálů a přiřazení programu zůstanou, kanály, které už v seznamu nejsou, se odstraní."
+
+msgid "Remove"
+msgstr "Odstranit"
+
+msgid "Remove the list and its channels"
+msgstr "Odstranit seznam a jeho kanály"
+
+msgid "{n} removed"
+msgstr "Odstraněno: {n}"
+
+msgid "The file has no channels."
+msgstr "Soubor neobsahuje žádné kanály."
+
+msgid "{n} channels removed"
+msgstr "Odstraněno kanálů: {n}"

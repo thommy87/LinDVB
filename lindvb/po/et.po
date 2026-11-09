@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Number"
+
+msgid "Name A–Z"
+msgstr "Nimi A–Z"
+
+msgid "Name Z–A"
+msgstr "Nimi Z–A"
+
+msgid "Picture quality"
+msgstr "Pildikvaliteet"
+
+msgid "Sort by"
+msgstr "Sorteeri"
+
+msgid "All"
+msgstr "Kõik"
+
+msgid "General settings"
+msgstr "Üldseaded"
+
+msgid "For this recording"
+msgstr "Selle salvestuse jaoks"
+
+msgid "Formats and _tracks"
+msgstr "Vormingud ja _rajad"
+
+msgid "Whole series"
+msgstr "Kogu sari"
+
+msgid "Next recording only"
+msgstr "Ainult järgmine salvestus"
+
+msgid "_Apply to"
+msgstr "_Rakenda"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Üldseaded: vormingud, helirajad ja lisavood võetakse salvestuse algul eelistustest."
+
+msgid "All streams of the channel (TS)"
+msgstr "Kõik kanali vood (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Salvestab iga voo, mille kanal teatab, ka HbbTV andmed ja uued helirajad, programmitabeliga ainult selle kanali jaoks. Seda mahutab ainult MPEG-TS, seega kasutatakse TS-i."
+
+msgid "Web address"
+msgstr "Veebiaadress"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U-esitusloendi või üksiku HLS-voo (.m3u8) aadress."
+
+msgid "User name"
+msgstr "Kasutajanimi"
+
+msgid "Password"
+msgstr "Parool"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes konto otsekanalid. Parool hoitakse loendi aadressis LinDVB seadetes."
+
+msgid "Your lists"
+msgstr "Sinu loendid"
+
+msgid "Source"
+msgstr "Allikas"
+
+msgid "Updated"
+msgstr "Uuendatud"
+
+msgid "Update"
+msgstr "Uuenda"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Laadib loendi uuesti: lemmikud, kanalinumbrid ja kavaseosed jäävad, loendist kadunud kanalid eemaldatakse."
+
+msgid "Remove"
+msgstr "Eemalda"
+
+msgid "Remove the list and its channels"
+msgstr "Eemalda loend ja selle kanalid"
+
+msgid "{n} removed"
+msgstr "{n} eemaldatud"
+
+msgid "The file has no channels."
+msgstr "Failis pole kanaleid."
+
+msgid "{n} channels removed"
+msgstr "{n} kanalit eemaldatud"

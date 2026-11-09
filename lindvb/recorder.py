@@ -14,8 +14,9 @@ from gi.repository import Gio, GLib, GObject
 
 from .config import CONFIG_DIR
 from .i18n import N_, _
-from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRAS,  # noqa: F401
-                        SINGLE_AUDIO, TIMER_ACTIONS, PidFilter, audio_mode_from_legacy,
+from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRA_DEFAULTS,  # noqa: F401
+                        EXTRAS, SINGLE_AUDIO, TIMER_ACTIONS, PatCleaner, PidFilter,
+                        audio_mode_from_legacy, pmt_all_pids,
                         choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
                         usable_extras)
 from .tuner import SegmentReader
@@ -72,6 +73,10 @@ class Timer:
     subtitles: bool = True
     epg_data: bool = True
     audio_mode: str = "all"        # see recformat.AUDIO_MODES
+    all_streams: bool = False      # every stream of the PMT, cleaned PAT (TS)
+    # True: formats, audio tracks and extra streams come from the preferences
+    # when the recording starts (new timers); False: the values above
+    general: bool = False
 
     @property
     def rec_start(self):
@@ -110,6 +115,12 @@ class SeriesRule:
     title: str
     channel_key: str = ""       # empty: any channel
     id: str = field(default_factory=lambda: uuid.uuid4().hex[:8])
+    # recording options of the whole series (tv_format, …); empty: the preferences
+    options: dict = field(default_factory=dict)
+
+    def matches(self, timer):
+        return timer.series and timer.title.lower() == self.title.lower() and \
+            (not self.channel_key or self.channel_key == timer.channel_key)
 
 
 class Recording:
@@ -121,7 +132,7 @@ class Recording:
     """
 
     def __init__(self, path, capture=None, url=None, start_offset=None, fmt="TS",
-                 channel=None, extras=EXTRAS, audio_mode="all", language="",
+                 channel=None, extras=tuple(e for e in EXTRAS if EXTRA_DEFAULTS[e]), audio_mode="all", language="",
                  full_capture=False):
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -149,8 +160,16 @@ class Recording:
                 choose = (lambda pmt: choose_from_pmt(pmt, pids, channel.audio_pids,
                                                       self.audio_mode, language, single,
                                                       captured))
+            pat = None
+            if pids is not None and fmt == "TS" and "all_streams" in self.extras:
+                # every stream of the PMT (data, carousels, new tracks) and a
+                # PAT that names this channel only
+                base = set(pids)
+                choose = (lambda pmt: base | pmt_all_pids(pmt))
+                pat = PatCleaner(channel.sid, channel.pmt_pid) if channel.sid else None
             want_pmt = self.want_sub_page or choose is not None
-            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt and channel else 0, choose)
+            self.filter = PidFilter(pids, channel.pmt_pid if want_pmt and channel else 0, choose,
+                                    pat=pat)
             if fmt != "TS":
                 # The PID filter has already picked the audio tracks.
                 self.remux = self._remuxer(program=channel.sid if channel else 0,
@@ -277,12 +296,35 @@ class TimerManager(GObject.Object):
         return {"tv_format": s.get("rec_tv_format", "TS"),
                 "radio_format": s.get("rec_radio_format", "TS"),
                 "audio_mode": mode if mode in AUDIO_MODES else "all",
-                **{e: bool(s.get("rec_" + e, True)) for e in EXTRAS}}
+                **{e: bool(s.get("rec_" + e, EXTRA_DEFAULTS[e])) for e in EXTRAS}}
 
     def new_timer(self, channel, title, start, end, **kw):
         """A Timer with the default recording options from the preferences."""
         return Timer(channel.key, channel.name, title, int(start), int(end),
-                     **{**self.defaults(), **kw})
+                     **{**self.defaults(), "general": True, **kw})
+
+    def options_of(self, timer):
+        """The recording options a timer records with (dict)."""
+        if timer.general:
+            return self.defaults()
+        return {"tv_format": timer.tv_format, "radio_format": timer.radio_format,
+                "audio_mode": timer.audio_mode, **{e: getattr(timer, e) for e in EXTRAS}}
+
+    def rule_of(self, timer):
+        return next((r for r in self.rules if r.matches(timer)), None)
+
+    def set_series_options(self, timer, options):
+        """Use *options* (None: the preferences) for the whole series of
+        *timer*: its rule and every scheduled timer of it."""
+        rule = self.rule_of(timer)
+        if rule is not None:
+            rule.options = dict(options or {})
+        for t in self.timers:
+            if t.id in self.active or not (rule.matches(t) if rule else t.id == timer.id):
+                continue
+            t.general = options is None
+            for k, v in (options or {}).items():
+                setattr(t, k, v)
 
     def add(self, timer, with_margins=True):
         s = self.app.settings
@@ -327,7 +369,9 @@ class TimerManager(GObject.Object):
                     if ev.title.lower() == rule.title.lower() and \
                             (ch.key, ev.title, ev.start) not in known and \
                             (ch.key, ev.title, ev.start - lead) not in known:
-                        self.add(self.new_timer(ch, ev.title, ev.start, ev.end, series=True))
+                        opts = dict(rule.options, general=False) if rule.options else {}
+                        self.add(self.new_timer(ch, ev.title, ev.start, ev.end, series=True,
+                                                **opts))
                         known.add((ch.key, ev.title, ev.start))
 
     # -- manual recording -----------------------------------------------------
@@ -358,6 +402,9 @@ class TimerManager(GObject.Object):
                options=None):
         s = self.app.settings
         opts = timer or options or Timer("", "", "", 0, 0, **self.defaults())
+        if opts.general:
+            opts = Timer("", "", "", 0, 0, **{**self.defaults(), "name_scheme": opts.name_scheme,
+                                              "folder": opts.folder})
         audio = {"audio_mode": opts.audio_mode, "language": s.get("rec_audio_language", "")}
         full = bool(s.get("full_transponder")) or not channel.pmt_pid
         extras = usable_extras(opts.extras, channel.is_iptv)

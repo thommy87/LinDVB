@@ -24,6 +24,11 @@ from .common import day, dropdown, fill, hm, make_column_view, message, scrolled
 from ..i18n import C_, _, N_
 
 
+ALL_STREAMS_TIP = _("Records every stream the channel announces, also HbbTV data and new "
+                    "audio tracks, with a programme table for this channel only. "
+                    "Only MPEG-TS can hold it, so TS is used.")
+
+
 def _label(text, mnemonic_widget=None):
     lbl = Gtk.Label(label=text, xalign=0, use_underline=True)
     if mnemonic_widget is not None:
@@ -217,6 +222,20 @@ class TimersWindow(Gtk.Window):
         # actions and formats, tracks on the right
         g = section(C_("preferences page", "Recording"))
         g.set_column_homogeneous(True)
+        # formats and tracks: from the preferences, or chosen for this timer;
+        # for a series timer also: the whole series or this recording only
+        self.opt_mode = dropdown([_("General settings"), _("For this recording")])
+        self.opt_mode.set_tooltip_text(
+            _("General settings: formats, audio tracks and extra streams come from the "
+              "preferences when the recording starts."))
+        self.opt_mode.connect("notify::selected", lambda *_: self._on_opt_mode())
+        g.attach(_label(_("Formats and _tracks"), self.opt_mode), 0, -2, 2, 1)
+        g.attach(self.opt_mode, 0, -1, 2, 1)
+        self.scope = dropdown([_("Whole series"), _("Next recording only")])
+        self.scope_lbl = _label(_("_Apply to"), self.scope)
+        g.attach(self.scope_lbl, 2, -2, 2, 1)
+        g.attach(self.scope, 2, -1, 2, 1)
+        self._show_scope(False)
         self.action = dropdown([_(a) for a in TIMER_ACTIONS])
         self.after = dropdown([_(a) for a in AFTER_ACTIONS])
         self.tv_fmt = FormatChooser(TV_FORMATS, radio=False)
@@ -249,6 +268,7 @@ class TimersWindow(Gtk.Window):
             self.extra_btns[e] = b
         self.extra_btns["teletext"].set_tooltip_text(_("Teletext only exists in MPEG-TS, so TS is used."))
         self.extra_btns["epg_data"].set_tooltip_text(_("EPG data (EIT) only exists in MPEG-TS, so TS is used."))
+        self.extra_btns["all_streams"].set_tooltip_text(ALL_STREAMS_TIP)
         self.extra_btns["subtitles"].set_tooltip_text(
             _("TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
             "DVB bitmap subtitles are kept in TS only."))
@@ -414,7 +434,8 @@ class TimersWindow(Gtk.Window):
         records = TIMER_ACTIONS[self.action.get_selected()] != "Tune only"
         for b in self.extra_btns.values():
             b.set_sensitive(records and not iptv)
-        why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data") if e in extras]
+        why = [EXTRA_LABELS[e].split(" (")[0] for e in ("teletext", "epg_data", "all_streams")
+               if e in extras]
         radio = bool(self.channel and self.channel.radio)
         fmt = effective_format((self.radio_fmt if radio else self.tv_fmt).get(), extras, radio,
                                iptv)
@@ -433,6 +454,37 @@ class TimersWindow(Gtk.Window):
                          "recorded."))
         self.fmt_hint.set_text(" ".join(notes))
         self._update_preview()
+        self._grey_general()
+
+    def _general(self):
+        return self.opt_mode.get_selected() == 0
+
+    def _show_scope(self, on):
+        self.scope_lbl.set_visible(on)
+        self.scope.set_visible(on)
+        self.scope.set_selected(0)
+
+    def _on_opt_mode(self):
+        """General settings: show the preferences' values, greyed out."""
+        if not hasattr(self, "extra_btns"):
+            return
+        if self._general():
+            d = self.app.timers.defaults()
+            for e, b in self.extra_btns.items():
+                b.set_active(d[e])
+            self._set_audio_mode(d["audio_mode"])
+            extras = [e for e in d if e in self.extra_btns and d[e]]
+            self.tv_fmt.restrict(extras, self._iptv())
+            self.radio_fmt.restrict(extras, self._iptv())
+            self.tv_fmt.set(d["tv_format"])
+            self.radio_fmt.set(d["radio_format"])
+        self._sync_action()
+
+    def _grey_general(self):
+        if hasattr(self, "opt_mode") and self._general():
+            for w in (self.tv_fmt.widget, self.radio_fmt.widget, self.audio,
+                      *self.extra_btns.values()):
+                w.set_sensitive(False)
 
     def _format_changed(self):
         if hasattr(self, "audio"):
@@ -450,6 +502,8 @@ class TimersWindow(Gtk.Window):
         else:
             self.tv_fmt.widget.set_sensitive(False)
             self.radio_fmt.widget.set_sensitive(False)
+        self.opt_mode.set_sensitive(records)
+        self._grey_general()
 
     def _update_preview(self):
         if not hasattr(self, "preview"):
@@ -492,7 +546,9 @@ class TimersWindow(Gtk.Window):
         self.radio_fmt.set(t.radio_format)
         self.scheme_e.set_text(t.name_scheme or self._default_scheme)
         self._set_folder(t.folder)
-        self._sync_action()
+        self.opt_mode.set_selected(0 if t.general else 1)
+        self._show_scope(t.series)
+        self._on_opt_mode()
 
     def on_new(self):
         s = self.app.settings
@@ -519,6 +575,8 @@ class TimersWindow(Gtk.Window):
         self.radio_fmt.set(d["radio_format"])
         self.scheme_e.set_text(self._default_scheme)
         self._set_folder("")
+        self.opt_mode.set_selected(0)
+        self._show_scope(False)
         if self.channel is None and self.app.window is not None:
             self.channel = getattr(self.app.window, "current", None)
             if self.channel is not None:
@@ -556,7 +614,7 @@ class TimersWindow(Gtk.Window):
                      name_scheme="" if scheme == self._default_scheme else scheme,
                      folder=self.folder,
                      tv_format=self.tv_fmt.get(), radio_format=self.radio_fmt.get(),
-                     audio_mode=self._audio_mode(),
+                     audio_mode=self._audio_mode(), general=self._general(),
                      **{e: b.get_active() for e, b in self.extra_btns.items()})
 
     def on_add(self):
@@ -575,6 +633,10 @@ class TimersWindow(Gtk.Window):
         t.id, t.enabled, t.series = old.id, old.enabled, old.series
         t.status = old.status if old.id in self.app.timers.active else N_("Scheduled")
         self.app.timers.timers = [t if x.id == old.id else x for x in self.app.timers.timers]
+        if t.series and self.scope.get_selected() == 0:
+            # the whole series records with these options from now on
+            tm = self.app.timers
+            tm.set_series_options(t, None if t.general else tm.options_of(t))
         self.app.timers.timers.sort(key=lambda x: x.rec_start)
         self.app.timers.save()
 
@@ -677,6 +739,8 @@ class RecordOptionsWindow(Gtk.Window):
             notes.append(IPTV_EXTRAS_NOTE)
         if any(e in extras for e in ("teletext", "epg_data")):
             notes.append(_("Teletext and EPG data can only be kept in MPEG-TS, so TS is used."))
+        elif "all_streams" in extras:
+            notes.append(ALL_STREAMS_TIP)
         note = audio_note(self.fmt.get(), mode, iptv)
         if note:
             notes.append(note)

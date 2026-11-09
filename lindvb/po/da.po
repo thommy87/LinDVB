@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Name A–Z"
+msgstr "Navn A–Å"
+
+msgid "Name Z–A"
+msgstr "Navn Å–A"
+
+msgid "Picture quality"
+msgstr "Billedkvalitet"
+
+msgid "Sort by"
+msgstr "Sortér efter"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "General settings"
+msgstr "Generelle indstillinger"
+
+msgid "For this recording"
+msgstr "For denne optagelse"
+
+msgid "Formats and _tracks"
+msgstr "Formater og _spor"
+
+msgid "Whole series"
+msgstr "Hele serien"
+
+msgid "Next recording only"
+msgstr "Kun næste optagelse"
+
+msgid "_Apply to"
+msgstr "_Anvend på"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Generelle indstillinger: formater, lydspor og ekstra strømme hentes fra indstillingerne, når optagelsen starter."
+
+msgid "All streams of the channel (TS)"
+msgstr "Alle kanalens strømme (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Optager alle strømme, kanalen annoncerer, også HbbTV-data og nye lydspor, med en programtabel kun for denne kanal. Kun MPEG-TS kan rumme det, så TS bruges."
+
+msgid "Web address"
+msgstr "Webadresse"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Adressen på en M3U-playliste eller på en enkelt HLS-strøm (.m3u8)."
+
+msgid "User name"
+msgstr "Brugernavn"
+
+msgid "Password"
+msgstr "Adgangskode"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Livekanalerne fra en Xtream Codes-konto. Adgangskoden gemmes i listens adresse i LinDVB-indstillingerne."
+
+msgid "Your lists"
+msgstr "Dine lister"
+
+msgid "Source"
+msgstr "Kilde"
+
+msgid "Updated"
+msgstr "Opdateret"
+
+msgid "Update"
+msgstr "Opdatér"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Indlæs listen igen: favoritter, kanalnumre og guidetilknytninger bevares, kanaler der ikke længere er på listen fjernes."
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Remove the list and its channels"
+msgstr "Fjern listen og dens kanaler"
+
+msgid "{n} removed"
+msgstr "{n} fjernet"
+
+msgid "The file has no channels."
+msgstr "Filen indeholder ingen kanaler."
+
+msgid "{n} channels removed"
+msgstr "{n} kanaler fjernet"

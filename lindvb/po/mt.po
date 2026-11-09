@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numru"
+
+msgid "Name A–Z"
+msgstr "Isem A–Ż"
+
+msgid "Name Z–A"
+msgstr "Isem Ż–A"
+
+msgid "Picture quality"
+msgstr "Kwalità tal-istampa"
+
+msgid "Sort by"
+msgstr "Issortja skont"
+
+msgid "All"
+msgstr "Kollha"
+
+msgid "General settings"
+msgstr "Settings ġenerali"
+
+msgid "For this recording"
+msgstr "Għal din ir-reġistrazzjoni"
+
+msgid "Formats and _tracks"
+msgstr "Formati u _binarji"
+
+msgid "Whole series"
+msgstr "Is-serje kollha"
+
+msgid "Next recording only"
+msgstr "Ir-reġistrazzjoni li jmiss biss"
+
+msgid "_Apply to"
+msgstr "_Applika għal"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Settings ġenerali: il-formati, il-binarji tal-awdjo u l-flussi żejda jittieħdu mill-preferenzi meta tibda r-reġistrazzjoni."
+
+msgid "All streams of the channel (TS)"
+msgstr "Il-flussi kollha tal-istazzjon (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Jirreġistra kull fluss li jħabbar l-istazzjon, anke data HbbTV u binarji tal-awdjo ġodda, b'tabella tal-programmi għal dan l-istazzjon biss. MPEG-TS biss jista' jżommu, għalhekk jintuża TS."
+
+msgid "Web address"
+msgstr "Indirizz tal-web"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "L-indirizz ta' playlist M3U jew ta' fluss HLS wieħed (.m3u8)."
+
+msgid "User name"
+msgstr "Isem l-utent"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "L-istazzjonijiet diretti ta' kont Xtream Codes. Il-password tinżamm fl-indirizz tal-lista fis-settings ta' LinDVB."
+
+msgid "Your lists"
+msgstr "Il-listi tiegħek"
+
+msgid "Source"
+msgstr "Sors"
+
+msgid "Updated"
+msgstr "Aġġornata"
+
+msgid "Update"
+msgstr "Aġġorna"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Terġa' ttella' l-lista: il-favoriti, in-numri tal-istazzjonijiet u r-rabtiet tal-gwida jibqgħu, l-istazzjonijiet li m'għadhomx fil-lista jitneħħew."
+
+msgid "Remove"
+msgstr "Neħħi"
+
+msgid "Remove the list and its channels"
+msgstr "Neħħi l-lista u l-istazzjonijiet tagħha"
+
+msgid "{n} removed"
+msgstr "{n} imneħħija"
+
+msgid "The file has no channels."
+msgstr "Il-fajl m'għandux stazzjonijiet."
+
+msgid "{n} channels removed"
+msgstr "{n} stazzjonijiet imneħħija"

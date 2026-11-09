@@ -3414,3 +3414,93 @@ msgstr "Dolby Digital (AC-3)"
 
 msgid "Dolby Digital Plus (E-AC-3)"
 msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numeris"
+
+msgid "Name A–Z"
+msgstr "Pavadinimas A–Ž"
+
+msgid "Name Z–A"
+msgstr "Pavadinimas Ž–A"
+
+msgid "Picture quality"
+msgstr "Vaizdo kokybė"
+
+msgid "Sort by"
+msgstr "Rikiuoti pagal"
+
+msgid "All"
+msgstr "Visi"
+
+msgid "General settings"
+msgstr "Bendrieji nustatymai"
+
+msgid "For this recording"
+msgstr "Šiam įrašui"
+
+msgid "Formats and _tracks"
+msgstr "Formatai ir _takeliai"
+
+msgid "Whole series"
+msgstr "Visa serija"
+
+msgid "Next recording only"
+msgstr "Tik kitas įrašas"
+
+msgid "_Apply to"
+msgstr "_Taikyti"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Bendrieji nustatymai: formatai, garso takeliai ir papildomi srautai imami iš nuostatų, kai prasideda įrašymas."
+
+msgid "All streams of the channel (TS)"
+msgstr "Visi kanalo srautai (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Įrašo kiekvieną kanalo skelbiamą srautą, taip pat HbbTV duomenis ir naujus garso takelius, su programų lentele tik šiam kanalui. Tai gali talpinti tik MPEG-TS, todėl naudojamas TS."
+
+msgid "Web address"
+msgstr "Žiniatinklio adresas"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U grojaraščio arba vieno HLS srauto (.m3u8) adresas."
+
+msgid "User name"
+msgstr "Naudotojo vardas"
+
+msgid "Password"
+msgstr "Slaptažodis"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes paskyros tiesioginiai kanalai. Slaptažodis laikomas sąrašo adrese LinDVB nustatymuose."
+
+msgid "Your lists"
+msgstr "Jūsų sąrašai"
+
+msgid "Source"
+msgstr "Šaltinis"
+
+msgid "Updated"
+msgstr "Atnaujinta"
+
+msgid "Update"
+msgstr "Atnaujinti"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Įkelia sąrašą iš naujo: mėgstamiausi, kanalų numeriai ir programos susiejimai lieka, sąraše nebesantys kanalai pašalinami."
+
+msgid "Remove"
+msgstr "Pašalinti"
+
+msgid "Remove the list and its channels"
+msgstr "Pašalinti sąrašą ir jo kanalus"
+
+msgid "{n} removed"
+msgstr "Pašalinta: {n}"
+
+msgid "The file has no channels."
+msgstr "Faile nėra kanalų."
+
+msgid "{n} channels removed"
+msgstr "Pašalinta kanalų: {n}"
