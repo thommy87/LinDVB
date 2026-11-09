@@ -1420,7 +1420,11 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("ait-pid", self.app.on_ait_pid)
             # HbbTV follows the AIT of the channel the tuner was tuned for; a
             # channel that only shares its transponder starts without signalling.
-            own = self.capture if self.capture.channel.key == c.key else None
+            # A channel that only shares the transponder (a recording tuned
+            # it) gets a view of its own signalling on the same capture.
+            cap = self.capture
+            own = cap if cap.channel.key == c.key else \
+                getattr(cap, "service_view", lambda _c: None)(c)
             self.hbbtv.channel_changed(c, own)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
@@ -1512,6 +1516,8 @@ class MainWindow(Gtk.ApplicationWindow):
     def _release_capture(self):
         self.player.stop()
         if self.capture:
+            if self._tuned is not None and hasattr(self.capture, "drop_service_view"):
+                self.capture.drop_service_view(self._tuned.key)
             self.app.tuners.release(self.capture, "live")
             self.capture = None
         self._update_teletext()

@@ -215,3 +215,23 @@ def test_zap_on_transponder_only_for_clear_live_capture():
     cap.users = {"live"}
     cap.ca = object()
     assert not ok(b)                    # descrambling is bound to one service
+
+
+def test_hbbtv_view_of_a_shared_service():
+    from types import SimpleNamespace
+    from lindvb.channels import Channel
+    from lindvb.tuner import Capture
+    rec = Channel(name="Rec", delsys="DVBT2", frequency=506000000, sid=1, pmt_pid=100)
+    live = Channel(name="Live", delsys="DVBT2", frequency=506000000, sid=2, pmt_pid=200)
+    added = []
+    cap = SimpleNamespace(ait_monitor=object(), channels={rec.key: rec, live.key: live},
+                          _views={}, add_pid=added.append)
+    view = Capture.service_view(cap, live)
+    assert view.ait_monitor.sid == 2 and view.ait is None
+    assert Capture.service_view(cap, live) is view      # one view per channel
+    view.add_pid(321)
+    assert added == [321]
+    Capture.drop_service_view(cap, live.key)
+    assert cap._views == {}
+    cap.ait_monitor = None                               # HbbTV switched off
+    assert Capture.service_view(cap, live) is None

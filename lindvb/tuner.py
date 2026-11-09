@@ -179,6 +179,37 @@ class SegmentReader:
             self.file = None
 
 
+class ServiceView(GObject.Object):
+    """HbbTV's view of one more service on a shared capture: the AIT of a
+    channel watched while the tuner is tuned for another (a recording)."""
+
+    __gsignals__ = {
+        "ait": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+    }
+
+    def __init__(self, capture, channel):
+        super().__init__()
+        from .ait import AitMonitor
+        self.capture = capture
+        self.channel = channel
+        self.ait = None
+        self.ait_monitor = AitMonitor(channel.sid, channel.pmt_pid, self._on_ait,
+                                      self._on_pids)
+
+    def add_pid(self, pid):
+        self.capture.add_pid(pid)
+
+    def _on_ait(self, ait):
+        def deliver():
+            self.ait = ait
+            self.emit("ait", ait)
+            return False
+        GLib.idle_add(deliver)
+
+    def _on_pids(self, pids):
+        GLib.idle_add(lambda: (self.add_pid(pids[0] if pids else 0), False)[1])
+
+
 class Capture(GObject.Object):
     """One tuned service written to a SegmentStore."""
 
@@ -296,6 +327,7 @@ class Capture(GObject.Object):
 
         # HbbTV: watch the PMT for the AIT and the AIT for applications
         self.ait_monitor = None
+        self._views = {}                 # channel key -> ServiceView (shared services)
         if settings.get("hbbtv_enabled", True) and channel.sid and channel.delsys not in ATSC_SYSTEMS:
             from .ait import AitMonitor
             self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait, self._on_ait_pids)
@@ -376,7 +408,10 @@ class Capture(GObject.Object):
             ok, mapinfo = buf.map(Gst.MapFlags.READ)
             if ok:
                 try:
-                    self.ait_monitor.feed_buffer(bytes(mapinfo.data))
+                    data = bytes(mapinfo.data)
+                    self.ait_monitor.feed_buffer(data)
+                    for view in tuple(self._views.values()):
+                        view.ait_monitor.feed_buffer(data)
                 finally:
                     buf.unmap(mapinfo)
         return Gst.PadProbeReturn.OK
@@ -430,6 +465,21 @@ class Capture(GObject.Object):
                 and channel.key != self.channel.key
                 and tunerprofiles.same_transponder(self.channel, channel))
 
+    def service_view(self, channel):
+        """HbbTV signalling of *channel*, another service this capture
+        carries: a ServiceView, or None (HbbTV off, ATSC, no service id)."""
+        if self.ait_monitor is None or not channel.sid or channel.key not in self.channels:
+            return None
+        view = self._views.get(channel.key)
+        if view is None:
+            view = ServiceView(self, channel)
+            self._views = dict(self._views, **{channel.key: view})
+        return view
+
+    def drop_service_view(self, key):
+        if key in self._views:
+            self._views = {k: v for k, v in self._views.items() if k != key}
+
     def switch_service(self, channel):
         """Make *channel* (on this transponder) the service of the capture
         (main loop): its PIDs join the filter, HbbTV follows its AIT."""
@@ -437,6 +487,7 @@ class Capture(GObject.Object):
         self.channel = channel
         self._pmt_pid = channel.pmt_pid
         self.ait = None
+        self._views = {}
         if self.ait_monitor is not None and channel.sid:
             from .ait import AitMonitor
             self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait,
