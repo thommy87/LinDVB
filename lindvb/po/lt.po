@@ -3564,3 +3564,15 @@ msgstr "Rasti picon internete"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Ten atsisiųskite rinkinį savo palydovui, kabeliui ar antenai ir išpakuokite jį į logotipų aplanką."
+
+msgid "Privacy Notice"
+msgstr "Privatumo pranešimas"
+
+msgid "Show Privacy Notice…"
+msgstr "Rodyti privatumo pranešimą…"
+
+msgid "Agree"
+msgstr "Sutinku"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Perskaitykite privatumo pranešimą iki galo."

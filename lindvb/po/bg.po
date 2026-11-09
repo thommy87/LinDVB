@@ -3564,3 +3564,15 @@ msgstr "Намиране на picon онлайн"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Изтеглете оттам набор за вашия сателит, кабел или антена и го разархивирайте в папката с лога."
+
+msgid "Privacy Notice"
+msgstr "Известие за поверителност"
+
+msgid "Show Privacy Notice…"
+msgstr "Показване на известието за поверителност…"
+
+msgid "Agree"
+msgstr "Съгласен съм"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Моля, прочетете известието за поверителност докрай."

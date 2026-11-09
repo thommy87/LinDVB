@@ -3564,3 +3564,15 @@ msgstr "Aimsigh picons ar líne"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Íoslódáil tacar do do shatailít, do chábla nó d’aeróg ansin agus díphacáil é san fhillteán lógónna."
+
+msgid "Privacy Notice"
+msgstr "Fógra príobháideachais"
+
+msgid "Show Privacy Notice…"
+msgstr "Taispeáin an fógra príobháideachais…"
+
+msgid "Agree"
+msgstr "Aontaím"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Léigh an fógra príobháideachais go dtí an deireadh."

@@ -3564,3 +3564,15 @@ msgstr "Etsi piconeja verkosta"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lataa sieltä sarja satelliitillesi, kaapelillesi tai antennillesi ja pura se logokansioon."
+
+msgid "Privacy Notice"
+msgstr "Tietosuojailmoitus"
+
+msgid "Show Privacy Notice…"
+msgstr "Näytä tietosuojailmoitus…"
+
+msgid "Agree"
+msgstr "Hyväksy"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Lue tietosuojailmoitus loppuun asti."

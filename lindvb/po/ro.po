@@ -3564,3 +3564,15 @@ msgstr "Caută picon-uri online"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Descărcați acolo un set pentru satelitul, cablul sau antena dvs. și dezarhivați-l în dosarul de logo-uri."
+
+msgid "Privacy Notice"
+msgstr "Notificare privind confidențialitatea"
+
+msgid "Show Privacy Notice…"
+msgstr "Afișează notificarea privind confidențialitatea…"
+
+msgid "Agree"
+msgstr "Sunt de acord"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Citiți notificarea privind confidențialitatea până la sfârșit."

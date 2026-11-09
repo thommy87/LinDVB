@@ -3564,3 +3564,15 @@ msgstr "Picons online zoeken"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Download daar een set voor uw satelliet, kabel of antenne en pak die uit in de logomap."
+
+msgid "Privacy Notice"
+msgstr "Privacyverklaring"
+
+msgid "Show Privacy Notice…"
+msgstr "Privacyverklaring tonen…"
+
+msgid "Agree"
+msgstr "Akkoord"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Lees de privacyverklaring tot het einde."

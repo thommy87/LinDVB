@@ -3564,3 +3564,15 @@ msgstr "Procurar picons na Internet"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Transfira aí um conjunto para o seu satélite, cabo ou antena e descompacte-o na pasta dos logótipos."
+
+msgid "Privacy Notice"
+msgstr "Aviso de privacidade"
+
+msgid "Show Privacy Notice…"
+msgstr "Mostrar aviso de privacidade…"
+
+msgid "Agree"
+msgstr "Aceitar"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Leia o aviso de privacidade até ao fim."

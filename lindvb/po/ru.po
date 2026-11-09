@@ -3564,3 +3564,15 @@ msgstr "Найти пиконы в интернете"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Скачайте там набор для вашего спутника, кабеля или антенны и распакуйте его в папку логотипов."
+
+msgid "Privacy Notice"
+msgstr "Уведомление о конфиденциальности"
+
+msgid "Show Privacy Notice…"
+msgstr "Показать уведомление о конфиденциальности…"
+
+msgid "Agree"
+msgstr "Согласен"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Прочитайте уведомление о конфиденциальности до конца."

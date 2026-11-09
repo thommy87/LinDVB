@@ -3564,3 +3564,15 @@ msgstr "Meklēt picon tiešsaistē"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lejupielādējiet tur komplektu savam satelītam, kabelim vai antenai un izpakojiet to logotipu mapē."
+
+msgid "Privacy Notice"
+msgstr "Paziņojums par privātumu"
+
+msgid "Show Privacy Notice…"
+msgstr "Rādīt paziņojumu par privātumu…"
+
+msgid "Agree"
+msgstr "Piekrītu"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Lūdzu, izlasiet paziņojumu par privātumu līdz beigām."

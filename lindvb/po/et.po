@@ -3564,3 +3564,15 @@ msgstr "Otsi picone veebist"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Laadi sealt alla komplekt oma satelliidi, kaabli või antenni jaoks ja paki see logode kausta lahti."
+
+msgid "Privacy Notice"
+msgstr "Privaatsusteade"
+
+msgid "Show Privacy Notice…"
+msgstr "Näita privaatsusteadet…"
+
+msgid "Agree"
+msgstr "Nõustun"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Palun lugege privaatsusteade lõpuni."

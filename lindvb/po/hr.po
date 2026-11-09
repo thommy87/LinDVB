@@ -3564,3 +3564,15 @@ msgstr "Pronađi picone na internetu"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Ondje preuzmite skup za svoj satelit, kabel ili antenu i raspakirajte ga u mapu s logotipima."
+
+msgid "Privacy Notice"
+msgstr "Obavijest o privatnosti"
+
+msgid "Show Privacy Notice…"
+msgstr "Prikaži obavijest o privatnosti…"
+
+msgid "Agree"
+msgstr "Slažem se"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Pročitajte obavijest o privatnosti do kraja."

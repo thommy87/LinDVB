@@ -3564,3 +3564,15 @@ msgstr "البحث عن picon عبر الإنترنت"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "نزّل من هناك مجموعة لقمرك الصناعي أو الكابل أو الهوائي وفك ضغطها في مجلد الشعارات."
+
+msgid "Privacy Notice"
+msgstr "إشعار الخصوصية"
+
+msgid "Show Privacy Notice…"
+msgstr "عرض إشعار الخصوصية…"
+
+msgid "Agree"
+msgstr "موافق"
+
+msgid "Please read the privacy notice to the end."
+msgstr "يرجى قراءة إشعار الخصوصية حتى النهاية."

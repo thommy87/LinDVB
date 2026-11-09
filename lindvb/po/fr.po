@@ -3564,3 +3564,15 @@ msgstr "Trouver des picons en ligne"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Téléchargez-y un jeu pour votre satellite, câble ou antenne et décompressez-le dans le dossier des logos."
+
+msgid "Privacy Notice"
+msgstr "Avis de confidentialité"
+
+msgid "Show Privacy Notice…"
+msgstr "Afficher l’avis de confidentialité…"
+
+msgid "Agree"
+msgstr "Accepter"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Veuillez lire l’avis de confidentialité jusqu’au bout."

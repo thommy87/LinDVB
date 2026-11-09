@@ -3564,3 +3564,15 @@ msgstr "Sib picons onlajn"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Niżżel hemm sett għas-satellita, il-kejbil jew l-antenna tiegħek u ftħu fil-folder tal-logos."
+
+msgid "Privacy Notice"
+msgstr "Avviż ta’ privatezza"
+
+msgid "Show Privacy Notice…"
+msgstr "Uri l-avviż ta’ privatezza…"
+
+msgid "Agree"
+msgstr "Naqbel"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Jekk jogħġbok aqra l-avviż ta’ privatezza sal-aħħar."

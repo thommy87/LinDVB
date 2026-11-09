@@ -3564,3 +3564,15 @@ msgstr "Nájsť picony na internete"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Stiahnite si tam sadu pre svoj satelit, kábel alebo anténu a rozbaľte ju do priečinka s logami."
+
+msgid "Privacy Notice"
+msgstr "Oznámenie o ochrane súkromia"
+
+msgid "Show Privacy Notice…"
+msgstr "Zobraziť oznámenie o ochrane súkromia…"
+
+msgid "Agree"
+msgstr "Súhlasím"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Prečítajte si oznámenie o ochrane súkromia až do konca."

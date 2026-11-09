@@ -3564,3 +3564,15 @@ msgstr "Hitta picons på nätet"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Hämta där en uppsättning för din satellit, ditt kabelnät eller din antenn och packa upp den i logotypmappen."
+
+msgid "Privacy Notice"
+msgstr "Integritetsmeddelande"
+
+msgid "Show Privacy Notice…"
+msgstr "Visa integritetsmeddelande…"
+
+msgid "Agree"
+msgstr "Godkänn"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Läs integritetsmeddelandet till slutet."

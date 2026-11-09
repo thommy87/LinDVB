@@ -5017,3 +5017,19 @@ msgstr ""
 
 msgid "Apply the changes to {n} channels?"
 msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Privacy Notice"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Show Privacy Notice…"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Agree"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Please read the privacy notice to the end."
+msgstr ""

@@ -3648,3 +3648,15 @@ msgstr "Trova picon online"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Scarica lì un set per il tuo satellite, cavo o antenna e scompattalo nella cartella dei loghi."
+
+msgid "Privacy Notice"
+msgstr "Informativa sulla privacy"
+
+msgid "Show Privacy Notice…"
+msgstr "Mostra l’informativa sulla privacy…"
+
+msgid "Agree"
+msgstr "Accetto"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Leggi l’informativa sulla privacy fino alla fine."

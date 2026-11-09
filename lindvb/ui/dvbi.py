@@ -54,6 +54,7 @@ class DVBIPanel(Gtk.Box):
         self.offers = []
         self.region_ids = []
         self.consent_checks = {}
+        self._consent_guard = False
         self.ack = None
         self.postcode = self.nationwide = self.area_dd = None
         self._started = False
@@ -210,15 +211,20 @@ class DVBIPanel(Gtk.Box):
         # only what the country's profile asks for (Germany: IT-17)
         self.privacy_box = _renew(self.privacy_box)
         self.privacy_box.set_visible(bool(c.privacy_notice or c.consents))
-        if c.privacy_notice:
+        if c.privacy_notice or c.consents:
             self.title(self.privacy_box, _("Privacy"))
-            self.privacy_box.append(Gtk.Label(label=_(c.privacy_notice), xalign=0, wrap=True))
         self.consent_checks = {}
         for consent in c.consents:
             chk = _check(label=_(consent.title),
                          active=countries.consent_given(s, c, consent.key))
             chk.connect("toggled", lambda b, k=consent.key: self._consent_toggled(k, b))
             self.privacy_box.append(chk)
+            if consent.key == "privacy" and c.privacy_notice:
+                # the notice opens in its own window, to be read to the end
+                show = Gtk.Button(label=_("Show Privacy Notice…"), halign=Gtk.Align.START,
+                                  margin_start=28)
+                show.connect("clicked", lambda *_: self._show_privacy_notice())
+                self.privacy_box.append(show)
             if consent.text:
                 lbl = self.hint(self.privacy_box, _(consent.text))
                 lbl.set_margin_start(28)
@@ -320,9 +326,70 @@ class DVBIPanel(Gtk.Box):
             self._load_registry()
 
     def _consent_toggled(self, key, btn):
+        if self._consent_guard:
+            return
+        if key == "privacy" and btn.get_active() and self.country.privacy_notice:
+            # ticked only by Agree in the notice window
+            self._consent_guard = True
+            btn.set_active(False)
+            self._consent_guard = False
+            self._show_privacy_notice()
+            return
         countries.set_consent(self.s, self.country, key, btn.get_active(), time.time())
         self.s.save()
         self._sensitive()
+
+    def _show_privacy_notice(self):
+        """The privacy notice in its own window; Agree, at the bottom, is
+        available once the text has been scrolled to the end."""
+        country = self.country
+        win = Gtk.Window(title=_("Privacy Notice"), transient_for=self.get_root(), modal=True,
+                         default_width=560, default_height=440, destroy_with_parent=True)
+        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        text = Gtk.Label(label=_(country.privacy_notice), xalign=0, yalign=0, wrap=True,
+                         margin_start=20, margin_end=20, margin_top=16,
+                         margin_bottom=16)
+        sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        sw.set_child(text)
+        outer.append(sw)
+        bar = Gtk.ActionBar()
+        hint = Gtk.Label(label=_("Please read the privacy notice to the end."), xalign=0,
+                         wrap=True, css_classes=["lv-hint"])
+        bar.pack_start(hint)
+        agree = Gtk.Button(label=_("Agree"), css_classes=["suggested-action"], sensitive=False)
+        cancel = Gtk.Button(label=_("Cancel"))
+        bar.pack_end(agree)
+        bar.pack_end(cancel)
+        outer.append(bar)
+        win.set_child(outer)
+
+        adj = sw.get_vadjustment()
+
+        def check_end(*_a):
+            # also when the whole text fits without scrolling
+            at_end = adj.get_value() + adj.get_page_size() >= adj.get_upper() - 2
+            if at_end:
+                agree.set_sensitive(True)
+                hint.set_visible(False)
+        for sig in ("value-changed", "changed"):
+            adj.connect(sig, check_end)
+
+        def on_agree(*_a):
+            win.close()
+            chk = self.consent_checks.get("privacy")
+            if country is not self.country or chk is None:
+                return                         # the country changed meanwhile
+            if not chk.get_active():
+                self._consent_guard = True
+                chk.set_active(True)
+                self._consent_guard = False
+            countries.set_consent(self.s, country, "privacy", True, time.time())
+            self.s.save()
+            self._sensitive()
+        agree.connect("clicked", on_agree)
+        cancel.connect("clicked", lambda *_a: win.close())
+        win.present()
+        return win
 
     def _area_changed(self):
         i = self.area_dd.get_selected()

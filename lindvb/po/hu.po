@@ -3564,3 +3564,15 @@ msgstr "Piconok keresése az interneten"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Töltsön le ott egy készletet a műholdjához, kábeléhez vagy antennájához, és csomagolja ki a logómappába."
+
+msgid "Privacy Notice"
+msgstr "Adatvédelmi tájékoztató"
+
+msgid "Show Privacy Notice…"
+msgstr "Adatvédelmi tájékoztató megjelenítése…"
+
+msgid "Agree"
+msgstr "Elfogadom"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Kérjük, olvassa végig az adatvédelmi tájékoztatót."

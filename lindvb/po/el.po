@@ -3564,3 +3564,15 @@ msgstr "Εύρεση picon στο διαδίκτυο"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφόρο, το καλωδιακό ή την κεραία σας και αποσυμπιέστε το στον φάκελο λογοτύπων."
+
+msgid "Privacy Notice"
+msgstr "Ειδοποίηση απορρήτου"
+
+msgid "Show Privacy Notice…"
+msgstr "Εμφάνιση ειδοποίησης απορρήτου…"
+
+msgid "Agree"
+msgstr "Συμφωνώ"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Διαβάστε την ειδοποίηση απορρήτου μέχρι το τέλος."
