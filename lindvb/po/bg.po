@@ -3564,3 +3564,7 @@ msgstr "Намиране на picon онлайн"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Изтеглете оттам набор за вашия сателит, кабел или антена и го разархивирайте в папката с лога."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Доставчик / Категория"

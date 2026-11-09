@@ -3564,3 +3564,7 @@ msgstr "البحث عن picon عبر الإنترنت"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "نزّل من هناك مجموعة لقمرك الصناعي أو الكابل أو الهوائي وفك ضغطها في مجلد الشعارات."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "المزوّد / الفئة"

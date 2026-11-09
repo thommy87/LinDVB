@@ -93,6 +93,15 @@ URL=https://example.org/live.m3u8
     assert web.is_iptv and web.radio and web.url.endswith(".m3u8")
 
 
+def test_dvbviewer_ini_diseqc_ports():
+    """DVBViewer's DiseqC 3..6 are DiSEqC 1.0 ports 1..4 (#79)."""
+    sections = "".join(
+        f"[Channel{i}]\nTunerType=1\nName=C{i}\nSID={100 + i}\nFrequency=11494\n"
+        f"Polarity=h\nSymbolrate=22000\nDiseqC={d}\n"
+        for i, d in enumerate((0, 1, 2, 3, 4, 5, 6)))
+    assert [c.diseqc for c in parse_dvbviewer_ini(sections)] == [-1, 0, 1, 0, 1, 2, 3]
+
+
 def test_m3u_and_csv():
     chans = parse_m3u('#EXTM3U\n#EXTINF:-1 group-title="News",News 24\nhttp://example.org/a.ts\n')
     assert chans[0].name == "News 24" and chans[0].category == "News" and chans[0].is_iptv

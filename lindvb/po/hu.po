@@ -3564,3 +3564,7 @@ msgstr "Piconok keresése az interneten"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Töltsön le ott egy készletet a műholdjához, kábeléhez vagy antennájához, és csomagolja ki a logómappába."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Szolgáltató / Kategória"

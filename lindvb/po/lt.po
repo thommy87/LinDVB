@@ -3564,3 +3564,7 @@ msgstr "Rasti picon internete"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Ten atsisiųskite rinkinį savo palydovui, kabeliui ar antenai ir išpakuokite jį į logotipų aplanką."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Teikėjas / Kategorija"

@@ -3834,3 +3834,7 @@ msgstr "Picons im Internet finden"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lade dort einen Satz für deinen Satelliten, dein Kabel oder deine Antenne herunter und entpacke ihn in den Logo-Ordner."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Anbieter / Kategorie"

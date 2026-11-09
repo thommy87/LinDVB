@@ -3564,3 +3564,7 @@ msgstr "Otsi picone veebist"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Laadi sealt alla komplekt oma satelliidi, kaabli või antenni jaoks ja paki see logode kausta lahti."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Pakkuja / Kategooria"
