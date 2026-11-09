@@ -36,3 +36,15 @@ def test_find_by_reference_then_name(tmp_path):
     # an unknown satellite position still finds the reference
     ard.root = ""
     assert "283D_3FB_1" in picons.find(ard, folders)
+
+
+def test_find_plain_file_names(tmp_path):
+    # logos named after the channel, as the settings text promises
+    for n in ("Bayern 3.png", "Radio_Bremen.svg", "arte.png", "arte HD.png"):
+        (tmp_path / n).write_bytes(b"x")
+    b3 = Channel("Bayern 3", delsys="dvb-s2", root="Astra 19.2°E", sid=1, tsid=2, onid=3)
+    rb = Channel("Radio Bremen", delsys="dvb-c")
+    arte = Channel("ARTE HD", delsys="dvb-s2", root="Astra 19.2°E")
+    assert picons.find(b3, [str(tmp_path)]).endswith("Bayern 3.png")
+    assert picons.find(rb, [str(tmp_path)]).endswith("Radio_Bremen.svg")
+    assert picons.find(arte, [str(tmp_path)]).endswith("arte HD.png")
