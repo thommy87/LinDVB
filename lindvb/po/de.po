@@ -2241,8 +2241,16 @@ msgid "Shared antenna cable"
 msgstr "Gemeinsames Antennenkabel"
 
 #: lindvb/ui/dialogs.py
-msgid "Give tuners on one cable the same name (loop-through or a splitter on one LNB output). They then only receive one band and polarisation at a time. Empty: own cable."
-msgstr "Tuner an einem Kabel bekommen denselben Namen (durchgeschleift oder Verteiler an einem LNB-Ausgang). Sie empfangen dann gleichzeitig nur ein Band und eine Polarisation. Leer: eigenes Kabel."
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "An für Tuner, die mit anderen Tunern an einem Kabel hängen (durchgeschleift oder Verteiler an einem LNB-Ausgang). Ohne Unicable empfangen sie dann gleichzeitig nur ein Band und eine Polarisation."
+
+#: lindvb/ui/dialogs.py
+msgid "Cable name"
+msgstr "Kabelname"
+
+#: lindvb/ui/dialogs.py
+msgid "Tuners with the same name share one cable."
+msgstr "Tuner mit demselben Namen teilen sich ein Kabel."
 
 #: lindvb/ui/dialogs.py
 msgid "For all tuners without an LNB of their own."
@@ -3352,8 +3360,8 @@ msgid "User band"
 msgstr "Userband"
 
 #: lindvb/ui/dialogs.py
-msgid "Each tuner on the cable needs a different user band. Give all tuners on the cable the same cable name above."
-msgstr "Jeder Tuner am Kabel braucht ein anderes Userband. Gib allen Tunern am Kabel oben denselben Kabelnamen."
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "Jeder Tuner am Kabel braucht ein anderes Userband. Schalte oben bei allen das gemeinsame Antennenkabel ein."
 
 #: lindvb/ui/dialogs.py
 msgid "User band frequency (MHz)"
