@@ -1,0 +1,3576 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fa\n"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "خطای تصویر: {n} بلوک قابل اصلاح نبود"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "دریافت ضعیف: فقط {db} دسی‌بل حاشیه"
+
+msgid "Signal lost"
+msgstr "سیگنال قطع شد"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "تیونر برای تماشا یا ضبط لازم بود."
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} بلوک غیرقابل اصلاح"
+
+msgid "Lock lost"
+msgstr "قفل از دست رفت"
+
+msgid "{n} continuity errors"
+msgstr "{n} خطای پیوستگی"
+
+msgid "PCR jump"
+msgstr "پرش PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "نسخهٔ جدید جدول (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "پرش بلندی صدا {lu} LU"
+
+msgid "Rebuffering"
+msgstr "بافر مجدد"
+
+msgid "Internet"
+msgstr "اینترنت"
+
+msgid "Channel analysis: {name}"
+msgstr "تحلیل کانال: {name}"
+
+msgid "Measured since {time}"
+msgstr "اندازه‌گیری از {time}"
+
+msgid "Delivery"
+msgstr "تحویل"
+
+msgid "Frame rate"
+msgstr "نرخ فریم"
+
+msgid "Resolution"
+msgstr "وضوح"
+
+msgid "Audio"
+msgstr "صدا"
+
+msgid "Average bit rate"
+msgstr "میانگین نرخ بیت"
+
+msgid "Video"
+msgstr "ویدیو"
+
+msgid "Peak bit rate"
+msgstr "بیشینهٔ نرخ بیت"
+
+msgid "Signal quality"
+msgstr "کیفیت سیگنال"
+
+msgid "Continuity errors"
+msgstr "خطاهای پیوستگی"
+
+msgid "Margin"
+msgstr "حاشیه"
+
+msgid "Loudness"
+msgstr "بلندی صدا"
+
+msgid "Bit rate"
+msgstr "نرخ بیت"
+
+msgid "Content"
+msgstr "محتوا"
+
+msgid "Events"
+msgstr "رویدادها"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "وارد کردن فهرست کانال (dvbv5، VDR، lamedb، M3U، CSV، DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "شروع با این کانال (نام یا شماره)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} در {time}"
+
+msgid "Watch"
+msgstr "تماشا"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "یادآوری: {title} در {channel} ساعت {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "ابتدا یک نشانی XMLTV در تنظیمات وارد کنید"
+
+msgid "Downloading XMLTV guide…"
+msgstr "در حال بارگیری راهنمای XMLTV…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr "، {unmatched} بدون راهنما (تنظیمات ▸ EPG ▸ تطبیق کانال‌های IPTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: در حال بارگیری فهرست خدمات…"
+
+msgid "Search the web"
+msgstr "جست‌وجو در وب"
+
+msgid "Contains code from"
+msgstr "شامل کدی از"
+
+msgid "Built with"
+msgstr "ساخته‌شده با"
+
+msgid "Visualisations"
+msgstr "نمایش‌های بصری"
+
+msgid "Broadcast (EIT)"
+msgstr "پخش (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG ارائه‌دهنده (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "راهنمای محتوای DVB-I"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV (اینترنت)"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "تله‌تکست (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "زیرنویس (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "داده‌های EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "همهٔ ترک‌های صدا"
+
+msgid "Preferred language only"
+msgstr "فقط زبان ترجیحی"
+
+msgid "First audio track only"
+msgstr "فقط نخستین ترک صدا"
+
+msgid "Record"
+msgstr "ضبط"
+
+msgid "Record and tune"
+msgstr "ضبط و تنظیم کانال"
+
+msgid "Tune only"
+msgstr "فقط تنظیم کانال"
+
+msgid "Hibernate"
+msgstr "خواب زمستانی"
+
+msgid "None"
+msgstr "هیچ"
+
+msgid "Power off"
+msgstr "خاموش کردن"
+
+msgid "Quit LinDVB"
+msgstr "خروج از LinDVB"
+
+msgid "Standby"
+msgstr "آماده‌به‌کار"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "جریان‌های اینترنتی تله‌تکست، زیرنویس یا داده‌های EPG ندارند."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 یک ترک صدا نگه می‌دارد (زبان ترجیحی، اگر پخش شود)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "فایل صوتی یک ترک نگه می‌دارد (زبان ترجیحی، اگر پخش شود)."
+
+msgid "Fr"
+msgstr "جم"
+
+msgid "Mo"
+msgstr "دو"
+
+msgid "Sa"
+msgstr "شن"
+
+msgid "Su"
+msgstr "یک"
+
+msgid "Th"
+msgstr "پن"
+
+msgid "Tu"
+msgstr "سه"
+
+msgid "We"
+msgstr "چه"
+
+msgid "Scheduled"
+msgstr "زمان‌بندی‌شده"
+
+msgid "Done"
+msgstr "انجام شد"
+
+msgid "Channel missing"
+msgstr "کانال پیدا نشد"
+
+msgid "Tuned"
+msgstr "تنظیم شد"
+
+msgid "Recording"
+msgstr "در حال ضبط"
+
+msgid "Failed"
+msgstr "ناموفق"
+
+msgid "Missed"
+msgstr "از دست رفت"
+
+msgid "After recording: {action}"
+msgstr "پس از ضبط: {action}"
+
+msgid "1 minute"
+msgstr "۱ دقیقه"
+
+msgid "15 minutes"
+msgstr "۱۵ دقیقه"
+
+msgid "5 minutes"
+msgstr "۵ دقیقه"
+
+msgid "audio description"
+msgstr "توصیف صوتی"
+
+msgid "Teletext"
+msgstr "تله‌تکست"
+
+msgid "DVB subtitles"
+msgstr "زیرنویس DVB"
+
+msgid "hard of hearing"
+msgstr "کم‌شنوایان"
+
+msgid "Data"
+msgstr "داده"
+
+msgid "Signal"
+msgstr "سیگنال"
+
+msgid "Level"
+msgstr "سطح"
+
+msgid "Carrier"
+msgstr "حامل"
+
+msgid "Uncorrectable blocks"
+msgstr "بلوک‌های غیرقابل اصلاح"
+
+msgid "Lock losses"
+msgstr "قطع‌های قفل"
+
+msgid "C/N history"
+msgstr "تاریخچهٔ C/N"
+
+msgid "Errors"
+msgstr "خطاها"
+
+msgid "Reception"
+msgstr "دریافت"
+
+msgid "Frequency"
+msgstr "بسامد"
+
+msgid "Symbol rate"
+msgstr "نرخ نماد"
+
+msgid "Modulation"
+msgstr "مدولاسیون"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / پایلوت‌ها"
+
+msgid "Transponder capacity"
+msgstr "ظرفیت ترنسپوندر"
+
+msgid "Protocol"
+msgstr "پروتکل"
+
+msgid "Response time"
+msgstr "زمان پاسخ"
+
+msgid "Server"
+msgstr "سرور"
+
+msgid "Bad"
+msgstr "بد"
+
+msgid "Fair"
+msgstr "متوسط"
+
+msgid "Good"
+msgstr "خوب"
+
+msgid "No signal"
+msgstr "بدون سیگنال"
+
+msgid "Poor"
+msgstr "ضعیف"
+
+msgid "Stream"
+msgstr "جریان"
+
+msgid "NO LOCK"
+msgstr "بدون قفل"
+
+msgid "Buffer"
+msgstr "بافر"
+
+msgid "Download"
+msgstr "بارگیری"
+
+msgid "Buffer history"
+msgstr "تاریخچهٔ بافر"
+
+msgid "(driver value)"
+msgstr "(مقدار درایور)"
+
+msgid "since start"
+msgstr "از آغاز"
+
+msgid "required"
+msgstr "لازم"
+
+msgid "Quality history"
+msgstr "تاریخچهٔ کیفیت"
+
+msgid "horizontal"
+msgstr "افقی"
+
+msgid "left"
+msgstr "چپ"
+
+msgid "vertical"
+msgstr "عمودی"
+
+msgid "right"
+msgstr "راست"
+
+msgid "Port {n}"
+msgstr "درگاه {n}"
+
+msgid "(theoretical)"
+msgstr "(نظری)"
+
+msgid "Overview"
+msgstr "نمای کلی"
+
+msgid "Bit rate of the channel"
+msgstr "نرخ بیت کانال"
+
+msgid "Average"
+msgstr "میانگین"
+
+msgid "Now"
+msgstr "اکنون"
+
+msgid "Peak"
+msgstr "بیشینه"
+
+msgid "Share of transponder"
+msgstr "سهم از ترنسپوندر"
+
+msgid "Codec"
+msgstr "کدک"
+
+msgid "Aspect ratio"
+msgstr "نسبت تصویر"
+
+msgid "Colour"
+msgstr "رنگ"
+
+msgid "Decoder"
+msgstr "رمزگشا"
+
+msgid "Dropped frames"
+msgstr "فریم‌های افتاده"
+
+msgid "Format"
+msgstr "قالب"
+
+msgid "Track"
+msgstr "ترک"
+
+msgid "Channels"
+msgstr "کانال‌ها"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Now & next"
+msgstr "اکنون و بعدی"
+
+msgid "Encryption"
+msgstr "رمزگذاری"
+
+msgid "Interactive"
+msgstr "تعاملی"
+
+msgid "Autostart"
+msgstr "شروع خودکار"
+
+msgid "Stream health"
+msgstr "سلامت جریان"
+
+msgid "Transport errors"
+msgstr "خطاهای انتقال"
+
+msgid "PCR arrival jitter"
+msgstr "لرزش رسیدن PCR"
+
+msgid "PCR interval"
+msgstr "فاصلهٔ PCR"
+
+msgid "PAT / PMT interval"
+msgstr "فاصلهٔ PAT / PMT"
+
+msgid "Timeshift buffer"
+msgstr "بافر جابه‌جایی زمانی"
+
+msgid "Teletext / subtitles / data"
+msgstr "تله‌تکست / زیرنویس / داده"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "interlaced"
+msgstr "درهم‌بافته"
+
+msgid "progressive"
+msgstr "پیش‌رونده"
+
+msgid "only for the channel on screen"
+msgstr "فقط برای کانال روی صفحه"
+
+msgid "Hardware"
+msgstr "سخت‌افزار"
+
+msgid "Software"
+msgstr "نرم‌افزار"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "{n} tracks"
+msgstr "{n} ترک"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "بلندی صدا (ترک فعلی): {lufs} · بیشینه {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "بلندی صدا: فقط برای کانال روی صفحه"
+
+msgid "No programme information"
+msgstr "اطلاعات برنامه موجود نیست"
+
+msgid "Encrypted"
+msgstr "رمزگذاری‌شده"
+
+msgid "scrambled packets"
+msgstr "بسته‌های درهم‌ریخته"
+
+msgid "Free-to-air"
+msgstr "رایگان"
+
+msgid "no CA descriptors in the PMT"
+msgstr "بدون توصیفگر CA در PMT"
+
+msgid "none"
+msgstr "هیچ"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} صفحه"
+
+msgid "Quality"
+msgstr "کیفیت"
+
+msgid "Carrier to noise ratio"
+msgstr "نسبت حامل به نویز"
+
+msgid "Signal level"
+msgstr "سطح سیگنال"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "نرخ خطای بیت (log₁₀)"
+
+msgid "Internet stream"
+msgstr "جریان اینترنتی"
+
+msgid "Address"
+msgstr "نشانی"
+
+msgid "HTTP status"
+msgstr "وضعیت HTTP"
+
+msgid "Content type"
+msgstr "نوع محتوا"
+
+msgid "Download speed"
+msgstr "سرعت بارگیری"
+
+msgid "Playlist"
+msgstr "فهرست پخش"
+
+msgid "Segments"
+msgstr "قطعه‌ها"
+
+msgid "Error"
+msgstr "خطا"
+
+msgid "Variants"
+msgstr "گونه‌ها"
+
+msgid "Codecs"
+msgstr "کدک‌ها"
+
+msgid "Error timeline"
+msgstr "خط زمانی خطاها"
+
+msgid "continuity errors"
+msgstr "خطاهای پیوستگی"
+
+msgid "uncorrectable blocks"
+msgstr "بلوک‌های غیرقابل اصلاح"
+
+msgid "lock lost"
+msgstr "قفل از دست رفت"
+
+msgid "rebuffering"
+msgstr "بافر مجدد"
+
+msgid "loudness jump"
+msgstr "پرش بلندی صدا"
+
+msgid "table version"
+msgstr "نسخهٔ جدول"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "پارامترهای تنظیم‌شده (از فرانت‌اند)"
+
+msgid "Delivery system"
+msgstr "سامانهٔ تحویل"
+
+msgid "Code rate"
+msgstr "نرخ کد"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "فاصلهٔ محافظ"
+
+msgid "Pilots"
+msgstr "پایلوت‌ها"
+
+msgid "Carriers"
+msgstr "حامل‌ها"
+
+msgid "Stream / PLP"
+msgstr "جریان / PLP"
+
+msgid "C/N needed"
+msgstr "C/N لازم"
+
+msgid "Source of the figures"
+msgstr "منبع ارقام"
+
+msgid "Dish alignment aid…"
+msgstr "کمک تنظیم دیش…"
+
+msgid "Logging and warnings"
+msgstr "گزارش‌ها و هشدارها"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "ثبت دریافت (هر دقیقه یک سطر، نگهداری ۳۱ روز)"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "هشدار روی صفحه وقتی دریافت ضعیف می‌شود"
+
+msgid "Warn below this margin (dB)"
+msgstr "هشدار زیر این حاشیه (dB)"
+
+msgid "Reception over the last days"
+msgstr "دریافت در روزهای اخیر"
+
+msgid "Open log folder"
+msgstr "باز کردن پوشهٔ گزارش"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · کمینه {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · بیشینه {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× نرخ جریان"
+
+msgid "Download and stream rate"
+msgstr "نرخ بارگیری و جریان"
+
+msgid "stream"
+msgstr "جریان"
+
+msgid "HLS with {n} variants"
+msgstr "HLS با {n} گونه"
+
+msgid "HLS media playlist"
+msgstr "فهرست پخش رسانهٔ HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "none (a plain stream)"
+msgstr "هیچ (یک جریان ساده)"
+
+msgid "live"
+msgstr "زنده"
+
+msgid "on demand"
+msgstr "درخواستی"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} قطعه با Ø {s} (هدف {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "فهرست گونه‌ها وجود ندارد: نشانی یک جریان منفرد است."
+
+msgid "No events so far."
+msgstr "هنوز رویدادی نیست."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} دقیقه برای این کانال ثبت شده است."
+
+msgid "Nothing logged for this channel yet."
+msgstr "هنوز چیزی برای این کانال ثبت نشده است."
+
+msgid "min {min} · max {max}"
+msgstr "کمینه {min} · بیشینه {max}"
+
+msgid "needs {db}"
+msgstr "{db} لازم است"
+
+msgid "relative (driver)"
+msgstr "نسبی (درایور)"
+
+msgid "post FEC {v}"
+msgstr "پس از FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "لازم برای تصویر تمیز"
+
+msgid "DVB API v5 statistics"
+msgstr "آمار DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (مقیاس درایور)"
+
+msgid "internet stream"
+msgstr "جریان اینترنتی"
+
+msgid "Transport Stream"
+msgstr "جریان انتقال"
+
+msgid "Elementary streams and PIDs"
+msgstr "جریان‌های پایه و PIDها"
+
+msgid "This channel only"
+msgstr "فقط این کانال"
+
+msgid "Whole stream"
+msgstr "کل جریان"
+
+msgid "Sort by PID"
+msgstr "مرتب‌سازی بر اساس PID"
+
+msgid "Sort by bit rate"
+msgstr "مرتب‌سازی بر اساس نرخ بیت"
+
+msgid "PID hex"
+msgstr "PID هگز"
+
+msgid "dec"
+msgstr "دهدهی"
+
+msgid "Type"
+msgstr "نوع"
+
+msgid "CC errors"
+msgstr "خطاهای CC"
+
+msgid "Scrambled"
+msgstr "درهم‌ریخته"
+
+msgid "Last 60 s"
+msgstr "۶۰ ثانیهٔ اخیر"
+
+msgid "Transponder"
+msgstr "ترنسپوندر"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "اندازه‌گیری کل ترنسپوندر (۱۰ ثانیه)"
+
+msgid "Packets"
+msgstr "بسته‌ها"
+
+msgid "Sync losses"
+msgstr "از دست رفتن همگامی"
+
+msgid "Null packets"
+msgstr "بسته‌های تهی"
+
+msgid "PCR jumps"
+msgstr "پرش‌های PCR"
+
+msgid "PID filter"
+msgstr "پالایهٔ PID"
+
+msgid "unknown"
+msgstr "ناشناخته"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "تهی"
+
+msgid "Other"
+msgstr "دیگر"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "مجموع ({n} PID): {rate} · {cc} خطای پیوستگی"
+
+msgid "Measuring…"
+msgstr "در حال اندازه‌گیری…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "آزاد / تهی"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} از {cap} استفاده‌شده · اندازه‌گیری {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "فقط PIDهای این کانال دریافت می‌شوند. برای دیدن کانال‌های دیگر آن، کل ترنسپوندر را اندازه بگیرید."
+
+msgid "Internet channels have no transponder."
+msgstr "کانال‌های اینترنتی ترنسپوندر ندارند."
+
+msgid "whole transponder"
+msgstr "کل ترنسپوندر"
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Video & Audio"
+msgstr "ویدیو و صدا"
+
+msgid "Profile / level"
+msgstr "پروفایل / سطح"
+
+msgid "Scan"
+msgstr "پویش"
+
+msgid "Black bars"
+msgstr "نوارهای سیاه"
+
+msgid "Film (3:2 pulldown)"
+msgstr "فیلم (pulldown 3:2)"
+
+msgid "Frames shown / dropped"
+msgstr "فریم‌های نمایش‌داده / افتاده"
+
+msgid "Measured bit rate"
+msgstr "نرخ بیت اندازه‌گیری‌شده"
+
+msgid "Nominal bit rate"
+msgstr "نرخ بیت اسمی"
+
+msgid "VBV buffer"
+msgstr "بافر VBV"
+
+msgid "Frame sizes"
+msgstr "اندازهٔ فریم‌ها"
+
+msgid "B frame"
+msgstr "فریم B"
+
+msgid "I frame"
+msgstr "فریم I"
+
+msgid "P frame"
+msgstr "فریم P"
+
+msgid "GOP length"
+msgstr "طول GOP"
+
+msgid "I frame average"
+msgstr "میانگین فریم I"
+
+msgid "P/B frame average"
+msgstr "میانگین فریم P/B"
+
+msgid "Audio tracks"
+msgstr "ترک‌های صدا"
+
+msgid "Language"
+msgstr "زبان"
+
+msgid "Nominal"
+msgstr "اسمی"
+
+msgid "Sample rate"
+msgstr "نرخ نمونه‌برداری"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "اندازه‌گیری‌شده"
+
+msgid "Notes"
+msgstr "یادداشت‌ها"
+
+msgid "Click a track to listen to it."
+msgstr "برای شنیدن یک ترک روی آن کلیک کنید."
+
+msgid "Loudness (EBU R 128)"
+msgstr "بلندی صدا (EBU R 128)"
+
+msgid "Momentary"
+msgstr "لحظه‌ای"
+
+msgid "Short term"
+msgstr "کوتاه‌مدت"
+
+msgid "Integrated"
+msgstr "یکپارچه"
+
+msgid "Loudness range"
+msgstr "گسترهٔ بلندی صدا"
+
+msgid "Sample peak"
+msgstr "بیشینهٔ نمونه"
+
+msgid "Teletext and subtitles"
+msgstr "تله‌تکست و زیرنویس"
+
+msgid "level {l}"
+msgstr "سطح {l}"
+
+msgid "tier {t}"
+msgstr "ردهٔ {t}"
+
+msgid "fields"
+msgstr "میدان‌ها"
+
+msgid "mixed"
+msgstr "ترکیبی"
+
+msgid "interlaced capable"
+msgstr "قابلیت درهم‌بافته"
+
+msgid "not sent"
+msgstr "ارسال نشده"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "لترباکس {pct} ٪ بالا و پایین"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "پیلاربوکس {pct} ٪ در کناره‌ها"
+
+msgid "picture {ratio}:1"
+msgstr "تصویر {ratio}:1"
+
+msgid "no"
+msgstr "خیر"
+
+msgid "yes, repeated fields"
+msgstr "بله، میدان‌های تکراری"
+
+msgid "mastering display data"
+msgstr "داده‌های نمایشگر مسترینگ"
+
+msgid "(maximum)"
+msgstr "(بیشینه)"
+
+msgid "not signalled (variable)"
+msgstr "اعلام نشده (متغیر)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "اکنون {now} · Ø {avg} · بیشینه {max}"
+
+msgid "{n} frames"
+msgstr "{n} فریم"
+
+msgid "clean audio"
+msgstr "صدای شفاف"
+
+msgid "EBU target −23 LUFS"
+msgstr "هدف EBU برابر −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "روی صدای رمزگشایی‌شدهٔ کانال روی صفحه، پیش از اکولایزر اندازه‌گیری می‌شود."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} پرش بلندی صدا به اندازهٔ ۶ LU یا بیشتر (برنامه ↔ آگهی)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "بلندی صدا فقط برای کانال روی صفحه اندازه‌گیری می‌شود."
+
+msgid "index"
+msgstr "فهرست"
+
+msgid "info"
+msgstr "اطلاعات"
+
+msgid "schedule"
+msgstr "جدول پخش"
+
+msgid "subtitles"
+msgstr "زیرنویس"
+
+msgid "subtitles (hard of hearing)"
+msgstr "زیرنویس (کم‌شنوایان)"
+
+msgid "Teletext PID {pid}:"
+msgstr "PID تله‌تکست {pid}:"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "PID زیرنویس DVB {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "این کانال تله‌تکست یا زیرنویس ندارد."
+
+msgid "Tables & EPG"
+msgstr "جدول‌ها و EPG"
+
+msgid "SI tables"
+msgstr "جدول‌های SI"
+
+msgid "Table"
+msgstr "جدول"
+
+msgid "Changes"
+msgstr "تغییرات"
+
+msgid "Version"
+msgstr "نسخه"
+
+msgid "Repetition"
+msgstr "تکرار"
+
+msgid "Sections"
+msgstr "بخش‌ها"
+
+msgid "Status"
+msgstr "وضعیت"
+
+msgid "Programme guide and clock"
+msgstr "راهنمای برنامه و ساعت"
+
+msgid "Events in the guide"
+msgstr "رویدادهای راهنما"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "EIT now/next"
+msgstr "EIT اکنون/بعدی"
+
+msgid "Guide reaches"
+msgstr "دامنهٔ راهنما"
+
+msgid "Clock of the channel"
+msgstr "ساعت کانال"
+
+msgid "EIT schedule"
+msgstr "جدول زمانی EIT"
+
+msgid "Difference to this computer"
+msgstr "اختلاف با این رایانه"
+
+msgid "Local time offset"
+msgstr "اختلاف زمان محلی"
+
+msgid "Network"
+msgstr "شبکه"
+
+msgid "Provider"
+msgstr "ارائه‌دهنده"
+
+msgid "Raw view"
+msgstr "نمای خام"
+
+msgid "Hex"
+msgstr "هگز"
+
+msgid "missing"
+msgstr "وجود ندارد"
+
+msgid "ok"
+msgstr "درست"
+
+msgid "slow"
+msgstr "کند"
+
+msgid "(all services)"
+msgstr "(همهٔ خدمات)"
+
+msgid "(other services)"
+msgstr "(خدمات دیگر)"
+
+msgid "not seen"
+msgstr "دیده نشده"
+
+msgid "seen {s} s ago"
+msgstr "{s} ثانیه پیش دیده شد"
+
+msgid "{n} sections"
+msgstr "{n} بخش"
+
+msgid "timers may start early or late"
+msgstr "تایمرها ممکن است زودتر یا دیرتر شروع شوند"
+
+msgid "no TDT/TOT"
+msgstr "بدون TDT/TOT"
+
+msgid "Descrambling"
+msgstr "رمزگشایی"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Descrambler state"
+msgstr "وضعیت رمزگشا"
+
+msgid "Scrambled packets"
+msgstr "بسته‌های درهم‌ریخته"
+
+msgid "Conditional access systems"
+msgstr "سامانه‌های دسترسی مشروط"
+
+msgid "CA system ID"
+msgstr "شناسهٔ سامانهٔ CA"
+
+msgid "System"
+msgstr "سامانه"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "For"
+msgstr "برای"
+
+msgid "ECM rate"
+msgstr "نرخ ECM"
+
+msgid "Scrambling per stream"
+msgstr "درهم‌ریختگی برای هر جریان"
+
+msgid "Key changes"
+msgstr "تغییر کلید"
+
+msgid "Crypto period"
+msgstr "دورهٔ رمز"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "تغییر کلید یعنی جابه‌جایی میان کلمهٔ کنترل زوج و فرد؛ دورهٔ رمز زمان میان دو تغییر است."
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "این کانال رمزگذاری‌شده است. LinDVB آن را فقط با کارت اشتراک خود شما (softcam یا ماژول CI) رمزگشایی می‌کند."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "در PMT دسترسی مشروط نیست و بستهٔ درهم‌ریخته‌ای وجود ندارد."
+
+msgid "free"
+msgstr "آزاد"
+
+msgid "scrambled"
+msgstr "درهم‌ریخته"
+
+msgid "all streams"
+msgstr "همهٔ جریان‌ها"
+
+msgid "not received"
+msgstr "دریافت نشده"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "هیچ CAT با جریان EMM دریافت نشد."
+
+msgid "Applications (AIT)"
+msgstr "برنامه‌ها (AIT)"
+
+msgid "Name"
+msgstr "نام"
+
+msgid "Organisation / app"
+msgstr "سازمان / برنامه"
+
+msgid "Control"
+msgstr "کنترل"
+
+msgid "Profile"
+msgstr "پروفایل"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "چرخه‌های داده (DSM-CC)"
+
+msgid "Component tag"
+msgstr "برچسب مؤلفه"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "نسخهٔ AIT {v} روی PID {pid}"
+
+msgid "test application"
+msgstr "برنامهٔ آزمایشی"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "کانال یک AIT روی PID {pid} اعلام می‌کند؛ هنوز نرسیده است."
+
+msgid "This channel has no HbbTV application."
+msgstr "این کانال برنامهٔ HbbTV ندارد."
+
+msgid "No object carousel in this channel."
+msgstr "در این کانال چرخهٔ شیء وجود ندارد."
+
+msgid "Channel Analysis – {name}"
+msgstr "تحلیل کانال – {name}"
+
+msgid "Freeze the measurement"
+msgstr "ثابت کردن اندازه‌گیری"
+
+msgid "Copy report as text"
+msgstr "کپی گزارش به‌صورت متن"
+
+msgid "Save report as text…"
+msgstr "ذخیرهٔ گزارش به‌صورت متن…"
+
+msgid "Save report as JSON…"
+msgstr "ذخیرهٔ گزارش به‌صورت JSON…"
+
+msgid "Save history as CSV…"
+msgstr "ذخیرهٔ تاریخچه به‌صورت CSV…"
+
+msgid "Save window as picture…"
+msgstr "ذخیرهٔ پنجره به‌صورت تصویر…"
+
+msgid "Save 30 s of the stream…"
+msgstr "ذخیرهٔ ۳۰ ثانیه از جریان…"
+
+msgid "Export"
+msgstr "برون‌بری"
+
+msgid "Compare with another channel…"
+msgstr "مقایسه با کانالی دیگر…"
+
+msgid "Analyse another channel…"
+msgstr "تحلیل کانالی دیگر…"
+
+msgid "Window: {w}"
+msgstr "پنجره: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "دنبال کردن کانال روی صفحه"
+
+msgid "Watch this channel"
+msgstr "تماشای این کانال"
+
+msgid "Try again"
+msgstr "تلاش دوباره"
+
+msgid "Copy as text"
+msgstr "کپی به‌صورت متن"
+
+msgid "Export report…"
+msgstr "برون‌بری گزارش…"
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Channel Analysis · {name}"
+msgstr "تحلیل کانال · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "زنده · اندازه‌گیری به مدت {t}"
+
+msgid "Paused"
+msgstr "مکث‌شده"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "هیچ تیونری برای این کانال آزاد نیست. آن را تماشا کنید یا وقتی تیونری آزاد شد دوباره امتحان کنید."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "تیونر این کانال به کانال دیگری تغییر داده شد."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "در پس‌زمینه روی تیونری جداگانه اندازه‌گیری می‌شود؛ تصویر، صدا و بلندی صدا فقط برای کانال روی صفحه اندازه‌گیری می‌شوند."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "این کانال اینترنتی بدون رمزگشایی در پس‌زمینه دریافت می‌شود؛ برای ارقام تصویر، صدا و بافر آن را تماشا کنید."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "منبع: آداپتور DVB {a}، فرانت‌اند {f}"
+
+msgid "dvbsrc statistics"
+msgstr "آمار dvbsrc"
+
+msgid "Source: background download"
+msgstr "منبع: بارگیری در پس‌زمینه"
+
+msgid "Source: the player's stream"
+msgstr "منبع: جریان پخش‌کننده"
+
+msgid "Source: none"
+msgstr "منبع: هیچ"
+
+msgid "updated every second"
+msgstr "هر ثانیه به‌روز می‌شود"
+
+msgid "Saved {path}"
+msgstr "{path} ذخیره شد"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "چیزی برای ذخیره نیست: کانال دریافت نمی‌شود."
+
+msgid "Recording the next 30 seconds…"
+msgstr "در حال ضبط ۳۰ ثانیهٔ بعدی…"
+
+msgid "Choose a channel"
+msgstr "یک کانال انتخاب کنید"
+
+msgid "Channel name"
+msgstr "نام کانال"
+
+msgid "Channel"
+msgstr "کانال"
+
+msgid "Compare channels"
+msgstr "مقایسهٔ کانال‌ها"
+
+msgid "Compare {name} with"
+msgstr "مقایسهٔ {name} با"
+
+msgid "Comparison"
+msgstr "مقایسه"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "ارقام در بازهٔ زمانی هر تحلیل؛ تصویر و بلندی صدا فقط برای کانال روی صفحه."
+
+msgid "Dish alignment aid"
+msgstr "کمک تنظیم دیش"
+
+msgid "Tone"
+msgstr "صدای راهنما"
+
+msgid "Reset best value"
+msgstr "بازنشانی بهترین مقدار"
+
+msgid "Close (Esc)"
+msgstr "بستن (Esc)"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "دیش را آهسته بچرخانید؛ با سیگنال بهتر، صدا زیرتر می‌شود."
+
+msgid "% quality"
+msgstr "٪ کیفیت"
+
+msgid "Best so far: {v}"
+msgstr "بهترین تا کنون: {v}"
+
+msgid "The module was removed or reset."
+msgstr "ماژول برداشته یا بازنشانی شد."
+
+msgid "CAM Menu"
+msgstr "منوی CAM"
+
+msgid "Cancel"
+msgstr "لغو"
+
+msgid "OK"
+msgstr "تأیید"
+
+msgid "Open CAM Menu"
+msgstr "باز کردن منوی CAM"
+
+msgid "Select"
+msgstr "انتخاب"
+
+msgid "Back"
+msgstr "بازگشت"
+
+msgid "Close Menu"
+msgstr "بستن منو"
+
+msgid "Device: {path} – {state}"
+msgstr "دستگاه: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "برای دیدن تنظیمات ماژول، اطلاعات کارت هوشمند و کنترل والدین، منوی CAM را باز کنید."
+
+msgid "The module has not finished starting yet."
+msgstr "راه‌اندازی ماژول هنوز تمام نشده است."
+
+msgid "Automatic (graphics card when possible)"
+msgstr "خودکار (کارت گرافیک در صورت امکان)"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (بردهای ARM)"
+
+msgid "Software (processor)"
+msgstr "نرم‌افزاری (پردازنده)"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "رمزگشاهای کارت گرافیک یافت‌شده: {list}"
+
+msgid "Switched off after an error: {list}"
+msgstr "پس از خطا خاموش شد: {list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "رمزگشایی فعلی: {decoder}"
+
+msgid "Custom colour"
+msgstr "رنگ دلخواه"
+
+msgid "LinDVB blue (default)"
+msgstr "آبی LinDVB (پیش‌فرض)"
+
+msgid "System accent colour"
+msgstr "رنگ تأکیدی سیستم"
+
+msgid "Preferences"
+msgstr "تنظیمات"
+
+msgid "Save"
+msgstr "ذخیره"
+
+msgid "Appearance"
+msgstr "ظاهر"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "پس از اجرای دوبارهٔ LinDVB اعمال می‌شود."
+
+msgid "Accent colour"
+msgstr "رنگ تأکیدی"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "برای برجسته‌سازی‌ها، انتخاب‌ها و دکمه‌ها در همهٔ پنجره‌ها استفاده می‌شود."
+
+msgid "On-screen display"
+msgstr "نمایش روی صفحه"
+
+msgid "OSD display time (s)"
+msgstr "مدت نمایش OSD (ثانیه)"
+
+msgid "Visualisation"
+msgstr "نمایش بصری"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "آنچه هنگام پخش کانال رادیویی یا فایل صوتی روی نمایش بصری رادیو نشان داده می‌شود. جزئیات آهنگ از RadioText رادیوی DVB، عنوان جریان رادیوی اینترنتی و برچسب‌های فایل‌های صوتی می‌آید."
+
+msgid "Overlay"
+msgstr "روکش"
+
+msgid "Station logo tile"
+msgstr "کاشی لوگوی ایستگاه"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "لوگوی کانال، یا کاشی‌ای با نام ایستگاه اگر لوگویی نباشد."
+
+msgid "Album cover"
+msgstr "جلد آلبوم"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "جلد آهنگ در حال پخش، از فایل یا با جست‌وجوی آنلاین."
+
+msgid "Song information"
+msgstr "اطلاعات آهنگ"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "هنرمند، آلبوم و سال، شمارهٔ ترک و عنوان. بدون جزئیات آهنگ، ایستگاه و برنامهٔ در حال پخش نشان داده می‌شود."
+
+msgid "Clock in the top right corner"
+msgstr "ساعت در گوشهٔ بالا سمت راست"
+
+msgid "Sources"
+msgstr "منابع"
+
+msgid "Look up covers online"
+msgstr "جست‌وجوی آنلاین جلدها"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "هنرمند و عنوان آهنگ در حال پخش را برای یافتن آلبوم، سال و جلد به iTunes Search API می‌فرستد."
+
+msgid "Station logo folder"
+msgstr "پوشهٔ لوگوی ایستگاه‌ها"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "فایل‌های تصویری (PNG، SVG، JPG) با نام کانال، مثلاً \"Bayern 3.png\". لوگوهایی که مانند DVBViewer با نام کانال ذخیره شده‌اند همان‌طور کار می‌کنند. خالی: {v0}"
+
+msgid "Playback"
+msgstr "پخش"
+
+msgid "Video decoding"
+msgstr "رمزگشایی ویدیو"
+
+msgid "Deinterlace video"
+msgstr "حذف درهم‌بافتگی ویدیو"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "تصاویر درهم‌بافتهٔ تلویزیون (بیشتر کانال‌های SD و 1080i). وقتی VA-API رمزگشایی می‌کند روی کارت گرافیک، وگرنه با پردازنده انجام می‌شود."
+
+msgid "Screenshot folder"
+msgstr "پوشهٔ عکس‌های صفحه"
+
+msgid "Timeshift"
+msgstr "جابه‌جایی زمانی"
+
+msgid "Timeshift folder"
+msgstr "پوشهٔ جابه‌جایی زمانی"
+
+msgid "Timeshift buffer (MB)"
+msgstr "بافر جابه‌جایی زمانی (MB)"
+
+msgid "Tuner and Channels"
+msgstr "تیونر و کانال‌ها"
+
+msgid "DVB hardware"
+msgstr "سخت‌افزار DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "شماره‌های آداپتوری که LinDVB می‌تواند استفاده کند، جداشده با ویرگول."
+
+msgid "DVB adapters"
+msgstr "آداپتورهای DVB"
+
+msgid "Frontend"
+msgstr "فرانت‌اند"
+
+msgid "Capture whole transponder"
+msgstr "دریافت کل ترنسپوندر"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "وقتی فهرست کانال فقط یک PID صدا می‌شناسد، برای همهٔ ترک‌های صدا لازم است."
+
+msgid "Satellite LNB"
+msgstr "LNB ماهواره"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF باند پایین (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF باند بالا (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "بسامد تغییر باند (kHz)"
+
+msgid "Channel Search…"
+msgstr "جست‌وجوی کانال…"
+
+msgid "Channel search"
+msgstr "جست‌وجوی کانال"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "آنتن، کابل یا ماهواره را برای کانال‌ها جست‌وجو کنید (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "ویرایشگر کانال / علاقه‌مندی‌ها"
+
+msgid "Channel editor"
+msgstr "ویرایشگر کانال"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "کانال‌ها را تغییر نام دهید، مرتب کنید، حذف و اضافه کنید و علاقه‌مندی‌ها را علامت بزنید (Shift+Ctrl+E)."
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "خدمات تعاملی (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "کتابخانه‌های رسانه، جانشینان تله‌تکست و موارد دیگر پشت دکمهٔ قرمز (F5)."
+
+msgid "Start automatically"
+msgstr "شروع خودکار"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "خاموش: برنامه فقط با دکمهٔ قرمز شروع می‌شود. برنامه‌های کانال‌ها داده‌های استفاده را برای پخش‌کننده می‌فرستند."
+
+msgid "Subtitles in media libraries"
+msgstr "زیرنویس در کتابخانه‌های رسانه"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "برنامه‌ها از ابتدا در ویدیوهایشان زیرنویس نشان می‌دهند."
+
+msgid "Audio description in media libraries"
+msgstr "توصیف صوتی در کتابخانه‌های رسانه"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "برنامه‌ها ترک صوتی‌ای را ترجیح می‌دهند که تصویر را توصیف می‌کند."
+
+msgid "Teletext from the interactive service"
+msgstr "تله‌تکست از خدمت تعاملی"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "دکمهٔ TXT در صورت وجود، تله‌تکست HbbTV کانال را باز می‌کند."
+
+msgid "Youth protection"
+msgstr "محافظت از کودکان"
+
+msgid "Off"
+msgstr "خاموش"
+
+msgid "Viewers from {age} years"
+msgstr "بینندگان از {age} سال"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "برنامه‌ها و ویدیوهایی که ردهٔ سنی‌شان بالاتر از این است، PIN لازم دارند."
+
+msgid "Current PIN"
+msgstr "PIN فعلی"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "برای تغییر محافظت از کودکان یا PIN لازم است."
+
+msgid "New PIN"
+msgstr "PIN جدید"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "برای نگه داشتن PIN فعلی خالی بگذارید."
+
+msgid "Companion screens on the network"
+msgstr "صفحه‌های همراه در شبکه"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "گوشی‌ها و تبلت‌های شبکهٔ شما می‌توانند LinDVB را بیابند، با برنامه‌ها گفت‌وگو کنند، تصویر را همگام دنبال کنند و شروع برنامه‌ها را درخواست کنند. خاموش: هیچ چیز به شبکه گوش نمی‌دهد."
+
+msgid "Allow third-party cookies"
+msgstr "اجازهٔ کوکی‌های شخص ثالث"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "شبکه‌های تبلیغاتی با آن‌ها شما را در میان کانال‌ها دنبال می‌کنند."
+
+msgid "Delete HbbTV Data"
+msgstr "حذف داده‌های HbbTV"
+
+msgid "Cookies and storage"
+msgstr "کوکی‌ها و حافظه"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "آنچه برنامه‌های HbbTV ذخیره کرده‌اند، مانند کوکی‌ها و تنظیمات، را پاک می‌کند."
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "فهرست‌های کانال از اینترنت: فهرست DVB-I منطقهٔ شما و فهرست‌های پخش IPTV. این تنظیمات بی‌درنگ اعمال می‌شوند."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "ضبط"
+
+msgid "Recording folder"
+msgstr "پوشهٔ ضبط"
+
+msgid "File naming scheme"
+msgstr "طرح نام‌گذاری فایل"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "جای‌نگهدارها: %year %date %time %end %station %name، / برای زیرپوشه‌ها"
+
+msgid "Timer padding"
+msgstr "حاشیهٔ تایمر"
+
+msgid "Start earlier by (min)"
+msgstr "شروع زودتر به اندازهٔ (دقیقه)"
+
+msgid "Stop later by (min)"
+msgstr "پایان دیرتر به اندازهٔ (دقیقه)"
+
+msgid "Timers"
+msgstr "تایمرها"
+
+msgid "Open the timer window after creating a timer"
+msgstr "باز کردن پنجرهٔ تایمر پس از ساختن تایمر"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "پس از «ضبط» در راهنمای برنامه، تایمر جدید را بی‌درنگ ویرایش کنید."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "راهنمای برنامه: EPG پخش، EPG اینترنتی (XMLTV) و EPG ارائه‌دهندگان دیگر."
+
+msgid "Conditional access"
+msgstr "دسترسی مشروط"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "رمزگشایی کانال‌های رمزگذاری‌شده‌ای که مشترک آن‌ها هستید، با کارت خودتان در softcam یا ماژول CI."
+
+msgid "None (leave scrambled)"
+msgstr "هیچ (درهم‌ریخته بماند)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "softcam خارجی (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "ماژول سخت‌افزاری CI / CI+"
+
+msgid "Descrambling via"
+msgstr "رمزگشایی از طریق"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "سوکت DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "مسیر سوکت یونیکس، یا host:port."
+
+msgid "CI module"
+msgstr "ماژول CI"
+
+msgid "CI adapter number"
+msgstr "شمارهٔ آداپتور CI"
+
+msgid "CA device number"
+msgstr "شمارهٔ دستگاه CA"
+
+msgid "Plugins"
+msgstr "افزونه‌ها"
+
+msgid "Load plugins at startup"
+msgstr "بارگذاری افزونه‌ها هنگام شروع"
+
+msgid "Manage Plugins…"
+msgstr "مدیریت افزونه‌ها…"
+
+msgid "Format and tracks"
+msgstr "قالب و ترک‌ها"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "پیش‌فرض‌ها برای تایمرهای جدید و دکمهٔ ضبط. هر تایمر و هر ضبطی که با «ضبط با گزینه‌ها…» شروع شود می‌تواند آن‌ها را تغییر دهد.\nTS: ویدیو، همهٔ ترک‌های صدا، زیرنویس، تله‌تکست و داده‌های EPG. MKV: ویدیو، چند ترک صدا و زیرنویس. MPG: ویدیو و چند ترک صدا. MP4: ویدیو و یک ترک صدا. جریان‌های اینترنتی تله‌تکست، زیرنویس یا داده‌های EPG ندارند؛ جریان‌های HLS و DASH با یک ترک صدا ضبط می‌شوند."
+
+msgid "TV format"
+msgstr "قالب تلویزیون"
+
+msgid "Radio format"
+msgstr "قالب رادیو"
+
+msgid "Preferred audio language"
+msgstr "زبان صدای ترجیحی"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "برای «فقط زبان ترجیحی» و برای MP4 که یک ترک نگه می‌دارد استفاده می‌شود. ترک‌های توصیف صوتی نادیده گرفته می‌شوند. اگر موردی پیدا نشود، نخستین ترک ضبط می‌شود."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} فقط در MPEG-TS نگه داشته می‌شود، پس ضبط‌ها به‌صورت TS ذخیره می‌شوند."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} فقط در TS یا MKV نگه داشته می‌شود، پس ضبط‌ها به‌صورت TS ذخیره می‌شوند."
+
+msgid " and "
+msgstr " و"
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "زبان صدای ترجیحی تنظیم نشده است، پس فقط نخستین ترک صدا ضبط می‌شود."
+
+msgid "Desktop accent: {found}"
+msgstr "رنگ تأکیدی میزکار: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "رنگ تأکیدی میزکار پیدا نشد، از آبی LinDVB استفاده می‌شود."
+
+msgid "Current accent: {color}"
+msgstr "رنگ تأکیدی فعلی: {color}"
+
+msgid "Youth protection not changed"
+msgstr "محافظت از کودکان تغییر نکرد"
+
+msgid "The current PIN is wrong."
+msgstr "PIN فعلی نادرست است."
+
+msgid "Youth protection needs a PIN"
+msgstr "محافظت از کودکان به PIN نیاز دارد"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "برای روشن کردن محافظت از کودکان یک PIN تعیین کنید."
+
+msgid "Channel Editor"
+msgstr "ویرایشگر کانال"
+
+msgid "Category"
+msgstr "دسته"
+
+msgid "Group"
+msgstr "گروه"
+
+msgid "Fav"
+msgstr "علاقه‌مندی"
+
+msgid "Filter channels"
+msgstr "پالایش کانال‌ها"
+
+msgid "General"
+msgstr "عمومی"
+
+msgid "Stream URL"
+msgstr "نشانی جریان"
+
+msgid "Favourite"
+msgstr "علاقه‌مندی"
+
+msgid "Radio"
+msgstr "رادیو"
+
+msgid "Tuning"
+msgstr "تنظیم"
+
+msgid "Polarity"
+msgstr "قطبش"
+
+msgid "Frequency (kHz)"
+msgstr "بسامد (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "نرخ نماد (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "پهنای باند (Hz)"
+
+msgid "Stream ID"
+msgstr "شناسهٔ جریان"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "درگاه DiSEqC (‎-1 هیچ)"
+
+msgid "Service and PIDs"
+msgstr "خدمت و PIDها"
+
+msgid "Service ID"
+msgstr "شناسهٔ خدمت"
+
+msgid "Transport ID"
+msgstr "شناسهٔ انتقال"
+
+msgid "Video PID"
+msgstr "PID ویدیو"
+
+msgid "Audio PIDs"
+msgstr "PIDهای صدا"
+
+msgid "Teletext PID"
+msgstr "PID تله‌تکست"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "اعمال تغییرات (Ctrl+S)"
+
+msgid "New channel"
+msgstr "کانال جدید"
+
+msgid "Delete channel"
+msgstr "حذف کانال"
+
+msgid "Move up"
+msgstr "بالا بردن"
+
+msgid "Move down"
+msgstr "پایین بردن"
+
+msgid "Sort by group and name"
+msgstr "مرتب‌سازی بر اساس گروه و نام"
+
+msgid "No channel selected"
+msgstr "کانالی انتخاب نشده است"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "برای ویرایش، یک کانال را در فهرست انتخاب کنید."
+
+msgid "Unnamed channel"
+msgstr "کانال بی‌نام"
+
+msgid "Recording and Device Statistics"
+msgstr "آمار ضبط و دستگاه"
+
+msgid "Active recordings:"
+msgstr "ضبط‌های فعال:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nتایمر بعدی: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "تله‌تکست – {name}"
+
+msgid "Find on page"
+msgstr "یافتن در صفحه"
+
+msgid "Copy page"
+msgstr "کپی صفحه"
+
+msgid "Save page"
+msgstr "ذخیرهٔ صفحه"
+
+msgid "Waiting for teletext…"
+msgstr "در انتظار تله‌تکست…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec وجود ندارد (gst-plugins-bad با libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "در حال جست‌وجوی صفحهٔ {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "رمزگشایی پیکربندی نشده است. کانال‌های رمزگذاری‌شده‌ای که حق تماشایشان را دارید با معرفی softcam یا ماژول CI خودتان در تنظیمات رمزگشایی می‌شوند."
+
+msgid "Provider '{v0}' is not available."
+msgstr "ارائه‌دهندهٔ '{v0}' در دسترس نیست."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "ارائه‌دهنده: ماژول CI – {status}\nماژول با کارت شما درون تیونر رمزگشایی می‌کند."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "ارائه‌دهنده: {name}\nLinDVB بخش‌های ECM را به کلاینت کارت خودتان می‌فرستد و کلمه‌های کنترل برگشتی را به کار می‌برد؛ خودش هیچ کلیدی نگه نمی‌دارد."
+
+msgid "Open CAM Menu…"
+msgstr "باز کردن منوی CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "بارگذاری ناموفق: {v0}"
+
+msgid "Switched off"
+msgstr "خاموش‌شده"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "تغییرات پس از اجرای دوبارهٔ LinDVB اعمال می‌شوند."
+
+msgid "No plugins installed."
+msgstr "هیچ افزونه‌ای نصب نشده است."
+
+msgid "Plugin actions"
+msgstr "کنش‌های افزونه"
+
+msgid "Plugin folder: {path}"
+msgstr "پوشهٔ افزونه: {path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "افزونه‌ها را در این پوشه کپی کنید: یک فایل پایتون (.py) یا پوشه‌ای که __init__.py دارد."
+
+msgid "Open Plugin Folder"
+msgstr "باز کردن پوشهٔ افزونه"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder} باز نمی‌شود: {message}"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I فهرست کانال‌های منطقهٔ شما را از اینترنت می‌گیرد: شماره‌گذاری، نام‌ها و لوگوها، و برای هر کانال راه‌های دریافت آن. LinDVB هر جا بتواند از کانال‌های آنتن، کابل یا ماهوارهٔ جست‌وجوی کانال شما استفاده می‌کند و در غیر این صورت از جریان اینترنتی."
+
+msgid "Privacy"
+msgstr "حریم خصوصی"
+
+msgid "I have read the privacy notice"
+msgstr "اطلاعیهٔ حریم خصوصی را خوانده‌ام"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "بارگیری راهنمای برنامه (EPG) کانال‌های DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "وقتی یک مسیر دریافت (اینترنت، آنتن، کابل، ماهواره) از کار افتاد به مسیر دیگری برو"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "تنظیم کانال‌های ماهواره‌ای فهرست بدون جست‌وجوی کانال (به کانال‌های ماهواره‌ای در فهرست شما نیاز دارد)"
+
+msgid "Service list"
+msgstr "فهرست خدمات"
+
+msgid "Load Lists from Registry"
+msgstr "بارگیری فهرست‌ها از رجیستری"
+
+msgid "In use: {current}"
+msgstr "در حال استفاده: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "هنوز هیچ فهرست DVB-I در حال استفاده نیست."
+
+msgid "Region"
+msgstr "منطقه"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "کد پستی شما کانال‌های منطقه‌ای و شماره‌گذاری آن‌ها را انتخاب می‌کند. فقط به سرور فهرست خدمات فرستاده می‌شود."
+
+msgid "Postcode"
+msgstr "کد پستی"
+
+msgid "No postcode: nationwide list"
+msgstr "بدون کد پستی: فهرست سراسری"
+
+msgid "Remove DVB-I Channels"
+msgstr "حذف کانال‌های DVB-I"
+
+msgid "Update Now"
+msgstr "اکنون به‌روز کن"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "فهرست انتخاب‌شده را دوباره بارگیری کن (روزانه هم بررسی می‌شود)"
+
+msgid "Install Channel List"
+msgstr "نصب فهرست کانال"
+
+msgid "Asking the service list registry…"
+msgstr "در حال پرسش از رجیستری فهرست خدمات…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "دسترسی به رجیستری ممکن نشد: {error}"
+
+msgid "Default"
+msgstr "پیش‌فرض"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} فهرست خدمات از {netloc}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "رجیستری هیچ فهرست خدماتی برای آلمان ندارد."
+
+msgid "Loading the service list…"
+msgstr "در حال بارگیری فهرست خدمات…"
+
+msgid "In use: {v0}"
+msgstr "در حال استفاده: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nمنطقهٔ خود را انتخاب کنید و دوباره «نصب» را بزنید."
+
+msgid "Enter Again"
+msgstr "ورود دوباره"
+
+msgid "The service list does not know this postcode."
+msgstr "فهرست خدمات این کد پستی را نمی‌شناسد."
+
+msgid "The service list server answered {code}."
+msgstr "سرور فهرست خدمات با {code} پاسخ داد."
+
+msgid "Try Again"
+msgstr "تلاش دوباره"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "می‌توانید دوباره امتحان کنید یا از فهرست سراسری بدون کد پستی استفاده کنید."
+
+msgid "Nationwide List"
+msgstr "فهرست سراسری"
+
+msgid "No DVB-I list is in use."
+msgstr "هیچ فهرست DVB-I در حال استفاده نیست."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "{removed} کانال DVB-I حذف شد"
+
+msgid "All programmes"
+msgstr "همهٔ برنامه‌ها"
+
+msgid "With audio description"
+msgstr "با توصیف صوتی"
+
+msgid "With subtitles"
+msgstr "با زیرنویس"
+
+msgid "Programme Guide"
+msgstr "راهنمای برنامه"
+
+msgid "Now / Next"
+msgstr "اکنون / بعدی"
+
+msgid "Per Channel"
+msgstr "برای هر کانال"
+
+msgid "TV Guide"
+msgstr "راهنمای تلویزیون"
+
+msgid "Search"
+msgstr "جست‌وجو"
+
+msgid "Record Series"
+msgstr "ضبط مجموعه"
+
+msgid "Remind Me"
+msgstr "یادآوری کن"
+
+msgid "Search Web"
+msgstr "جست‌وجو در وب"
+
+msgid "Export the guide as XMLTV"
+msgstr "برون‌بری راهنما به‌صورت XMLTV"
+
+msgid "Only favourites"
+msgstr "فقط علاقه‌مندی‌ها"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "ویژگی‌های دسترس‌پذیری (راهنمای برنامهٔ DVB-I)"
+
+msgid "Show:"
+msgstr "نمایش:"
+
+msgid "Start"
+msgstr "شروع"
+
+msgid "End"
+msgstr "پایان"
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "Genre"
+msgstr "ژانر"
+
+msgid "Day"
+msgstr "روز"
+
+msgid "Duration"
+msgstr "مدت"
+
+msgid "Subheading"
+msgstr "زیرعنوان"
+
+msgid "Title or description"
+msgstr "عنوان یا توضیح"
+
+msgid "Include description"
+msgstr "شامل توضیح"
+
+msgid "Case sensitive"
+msgstr "حساس به بزرگی و کوچکی حروف"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} دقیقه{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "ضبط مجموعه: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "یادآوری حذف شد: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} آغاز شده است"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "یادآوری تنظیم شد: {title}، {time}"
+
+msgid "Remove Reminder"
+msgstr "حذف یادآوری"
+
+msgid "Save EPG data"
+msgstr "ذخیرهٔ داده‌های EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "راهنما پس از بستن LinDVB روی دیسک می‌ماند."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "نمایش اطلاعات EPG هنگام تغییر کانال (ثانیه)"
+
+msgid "0 = do not show it."
+msgstr "۰ = نمایش نده."
+
+msgid "Remind before start (min)"
+msgstr "یادآوری پیش از شروع (دقیقه)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "یادآوری‌های تنظیم‌شده در راهنمای برنامه به این اندازه زودتر به شما اطلاع می‌دهند."
+
+msgid "Preferred language"
+msgstr "زبان ترجیحی"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "وقتی برنامه‌ای به چند زبان پخش می‌شود استفاده می‌شود."
+
+msgid "Time zone"
+msgstr "منطقهٔ زمانی"
+
+msgid "Set time zone automatically"
+msgstr "تنظیم خودکار منطقهٔ زمانی"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "خاموش: برای راهنما، تایمرها و ساعت از اختلاف ثابت با GMT استفاده کن."
+
+msgid "Offset to GMT"
+msgstr "اختلاف با GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG اینترنتی (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "منبع EPG اینترنتی، علاوه بر EPG پخش."
+
+msgid "Match IPTV Channels…"
+msgstr "تطبیق کانال‌های IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "بررسی یا اصلاح اینکه کدام کانال راهنما به کدام کانال M3U تعلق دارد."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "بسامدهای MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "وقتی کانال تنظیم‌شده روی یکی از این ترنسپوندرها باشد، LinDVB EPG آن ارائه‌دهنده را هم می‌خواند. تغییرات بار بعدی که کانالی تنظیم شود اعمال می‌شوند."
+
+msgid "Frequency (MHz)"
+msgstr "بسامد (MHz)"
+
+msgid "Add"
+msgstr "افزودن"
+
+msgid "Polarisation"
+msgstr "قطبش"
+
+msgid "Defaults"
+msgstr "پیش‌فرض‌ها"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "بسامد ترنسپوندر را به MHz وارد کنید."
+
+msgid "Advanced"
+msgstr "پیشرفته"
+
+msgid "Priority of the EPG sources"
+msgstr "اولویت منابع EPG"
+
+msgid "Automatic (recommended)"
+msgstr "خودکار (توصیه‌شده)"
+
+msgid "Custom order"
+msgstr "ترتیب دلخواه"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "خودکار: اکنون و بعدی از پخش می‌آیند، برای زمان‌های دورتر کامل‌ترین منبع برنده است و جاهای خالی از منابع دیگر پر می‌شوند. هیچ برنامه‌ای دو بار نشان داده نمی‌شود."
+
+msgid "Order of the EPG sources"
+msgstr "ترتیب منابع EPG"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "وقتی دو منبع ناهمخوان باشند، منبع بالایی برنده است؛ بقیه جاهای خالی را پر می‌کنند. کانالی که ترتیب خودش را دارد همیشه از آن استفاده می‌کند، مثلاً وقتی EPG پخش آن ضعیف است."
+
+msgid "Applies to"
+msgstr "اعمال برای"
+
+msgid "Remove Channel"
+msgstr "حذف کانال"
+
+msgid "Move Up"
+msgstr "بالا بردن"
+
+msgid "Move Down"
+msgstr "پایین بردن"
+
+msgid "Own Order for Channel"
+msgstr "ترتیب ویژه برای کانال"
+
+msgid "All channels"
+msgstr "همهٔ کانال‌ها"
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "به WebKitGTK 6 (gir1.2-webkit-6.0) نیاز دارد که نصب نیست."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "جعبهٔ شنی WebKit ممکن است اینجا فضای نام کاربر نسازد (محدودیت AppArmor در اوبونتو)، پس برنامه‌ها نمی‌توانند ایمن شروع شوند. docs/HBBTV.md را ببینید."
+
+msgid "HbbTV data deleted"
+msgstr "داده‌های HbbTV حذف شد"
+
+msgid "This interactive service is rated {age}+."
+msgstr "ردهٔ سنی این خدمت تعاملی {age}+ است."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "مسدود شده با محافظت از کودکان. در تنظیمات یک PIN تعیین کنید."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "PINهای نادرست زیاد. چند دقیقهٔ دیگر دوباره امتحان کنید."
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "باز کردن قفل"
+
+msgid "Wrong PIN."
+msgstr "PIN نادرست."
+
+msgid "This video is rated {age}+."
+msgstr "ردهٔ سنی این ویدیو {age}+ است."
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "این ویدیو با {drm} رمزگذاری شده است. LinDVB از DRM پشتیبانی نمی‌کند، پس پخش نمی‌شود."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "این ویدیو رمزگذاری شده است. LinDVB از DRM پشتیبانی نمی‌کند، پس پخش نمی‌شود."
+
+msgid "Start an application from another device?"
+msgstr "شروع برنامه از دستگاهی دیگر؟"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "دستگاهی در شبکهٔ شما می‌خواهد «{name}» ({url}) را شروع کند."
+
+msgid "an HbbTV application"
+msgstr "یک برنامهٔ HbbTV"
+
+msgid "Refuse"
+msgstr "رد کردن"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "برنامهٔ HbbTV بارگذاری نشد: {msg}"
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "فهرست‌های کانال IPTV (M3U، DVBViewer .ini، CSV)"
+
+msgid "All files"
+msgstr "همهٔ فایل‌ها"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "یک یا چند فهرست پخش M3U یا فهرست کانال دیگر با جریان‌های اینترنتی وارد کنید. کانال‌هایی که در فهرست شما هستند به‌روز و بقیه اضافه می‌شوند."
+
+msgid "Import Files…"
+msgstr "وارد کردن فایل‌ها…"
+
+msgid "From files"
+msgstr "از فایل‌ها"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8، DVBViewer .ini، CSV یا dvbv5. می‌توان چند فایل را با هم انتخاب کرد."
+
+msgid "Import"
+msgstr "وارد کردن"
+
+msgid "From a web address"
+msgstr "از یک نشانی وب"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "نشانی یک فهرست پخش M3U. برای به‌روزرسانی کانال‌ها دوباره واردش کنید."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "کانال‌های IPTV در فهرست کانال شما: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "وارد کردن فهرست‌های کانال IPTV"
+
+msgid "Downloading {url}…"
+msgstr "در حال بارگیری {url}…"
+
+msgid "Could not import {name}"
+msgstr "{name} وارد نشد"
+
+msgid "The address has no channels."
+msgstr "این نشانی کانالی ندارد."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "{total_a} کانال جدید و {total_u} کانال به‌روزشده وارد شد"
+
+msgid "Cover lookup failed: {e}"
+msgstr "جست‌وجوی جلد ناموفق بود: {e}"
+
+msgid "Swap with the main picture"
+msgstr "جابه‌جایی با تصویر اصلی"
+
+msgid "Close picture in picture"
+msgstr "بستن تصویر در تصویر"
+
+msgid "Picture in picture: {error}"
+msgstr "تصویر در تصویر: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "تصویر در تصویر با کانال‌های اینترنتی کار می‌کند؛ کانال‌های DVB به تیونر دوم نیاز دارند."
+
+msgid "Channel Mosaic"
+msgstr "موزاییک کانال‌ها"
+
+msgid "Previous channels"
+msgstr "کانال‌های قبلی"
+
+msgid "Next channels"
+msgstr "کانال‌های بعدی"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "موزاییک کانال‌های اینترنتی را نشان می‌دهد. فهرست در نمای فعلی هیچ‌کدام ندارد."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "صفحهٔ {page} از {pages} · {n} کانال اینترنتی"
+
+msgid "Click to watch {name}"
+msgstr "برای تماشای {name} کلیک کنید"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600، 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "گسترده"
+
+msgid "None / not satellite"
+msgstr "هیچ / غیرماهواره‌ای"
+
+msgid "Port 1 (A/A)"
+msgstr "درگاه ۱ (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "درگاه ۲ (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "درگاه ۳ (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "درگاه ۴ (B/B)"
+
+msgid "Initial letter"
+msgstr "حرف نخست"
+
+msgid "Channel Search"
+msgstr "جست‌وجوی کانال"
+
+msgid "Device"
+msgstr "دستگاه"
+
+msgid "(choose…)"
+msgstr "(انتخاب…)"
+
+msgid "Add folder…"
+msgstr "افزودن پوشه…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "پوشه‌ای با فهرست‌های ترنسپوندر (dtv-scan-tables یا .ini به سبک DVBViewer)"
+
+msgid "Transponder list"
+msgstr "فهرست ترنسپوندر"
+
+msgid "LNB type"
+msgstr "نوع LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "گروه مقصد"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "مثلاً Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "جست‌وجوی بسامدهای بیشتر (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "فقط افزودن کانال‌های رایگان"
+
+msgid "Only update existing channels"
+msgstr "فقط به‌روزرسانی کانال‌های موجود"
+
+msgid "Update channel names"
+msgstr "به‌روزرسانی نام کانال‌ها"
+
+msgid "Group by"
+msgstr "گروه‌بندی بر اساس"
+
+msgid "Start Search"
+msgstr "شروع جست‌وجو"
+
+msgid "Stop"
+msgstr "توقف"
+
+msgid "Folder with transponder lists"
+msgstr "پوشه‌ای با فهرست‌های ترنسپوندر"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "هیچ فهرست ترنسپوندری انتخاب نشده است. dtv-scan-tables را نصب کنید یا یک پوشه اضافه کنید.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nهیچ کانالی پیدا نشد.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nپایان: {added} کانال جدید، {updated} کانال به‌روزشده.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "تایمرهای ضبط"
+
+msgid "Search channels"
+msgstr "جست‌وجوی کانال‌ها"
+
+msgid "  (Radio)"
+msgstr "  (رادیو)"
+
+msgid "Date"
+msgstr "تاریخ"
+
+msgid "Repeat"
+msgstr "تکرار"
+
+msgid "Once"
+msgstr "یک‌بار"
+
+msgid "Series"
+msgstr "مجموعه"
+
+msgid "Action"
+msgstr "کنش"
+
+msgid "After"
+msgstr "پس از"
+
+msgid "Disabled"
+msgstr "غیرفعال"
+
+msgid "Repeat every {day}"
+msgstr "تکرار هر {day}"
+
+msgid "_Date"
+msgstr "_تاریخ"
+
+msgid "_Lead (min)"
+msgstr "_پیش‌زمان (دقیقه)"
+
+msgid "_End"
+msgstr "_پایان"
+
+msgid "_Start"
+msgstr "_شروع"
+
+msgid "Repeat on"
+msgstr "تکرار در"
+
+msgid "_Follow (min)"
+msgstr "_پس‌زمان (دقیقه)"
+
+msgid "Pick a channel on the left"
+msgstr "یک کانال از سمت چپ انتخاب کنید"
+
+msgid "_Name"
+msgstr "_نام"
+
+msgid "_Timer action"
+msgstr "_کنش تایمر"
+
+msgid "_After recording"
+msgstr "_پس از ضبط"
+
+msgid "T_V format"
+msgstr "قالب _تلویزیون"
+
+msgid "_Radio format"
+msgstr "قالب _رادیو"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "فقط زبان ترجیحی: ترک‌های زبان صدای تنظیمات، بدون توصیف صوتی. MP4 و فایل صوتی رادیو یک ترک نگه می‌دارند."
+
+msgid "Audi_o tracks"
+msgstr "ترک‌های _صدا"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "تله‌تکست فقط در MPEG-TS وجود دارد، پس از TS استفاده می‌شود."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "داده‌های EPG (EIT) فقط در MPEG-TS وجود دارد، پس از TS استفاده می‌شود."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS همهٔ جریان‌های زیرنویس را نگه می‌دارد. MKV صفحهٔ زیرنویس تله‌تکست را به‌صورت ترک متنی می‌گیرد؛ زیرنویس‌های تصویری DVB فقط در TS می‌مانند."
+
+msgid "Tracks"
+msgstr "ترک‌ها"
+
+msgid "File _naming scheme"
+msgstr "طرح _نام‌گذاری فایل"
+
+msgid "Folder…"
+msgstr "پوشه…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "استفاده از پوشهٔ ضبط تنظیمات"
+
+msgid "Placeholders"
+msgstr "جای‌نگهدارها"
+
+msgid "Folder: "
+msgstr "پوشه:"
+
+msgid "Clear the editor"
+msgstr "پاک کردن ویرایشگر"
+
+msgid "New"
+msgstr "جدید"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "افزودن تنظیمات ویرایشگر به‌عنوان تایمر جدید"
+
+msgid "Apply"
+msgstr "اعمال"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "ذخیرهٔ تنظیمات ویرایشگر در تایمر انتخاب‌شده"
+
+msgid "Delete the selected timer"
+msgstr "حذف تایمر انتخاب‌شده"
+
+msgid "Enable/Disable"
+msgstr "فعال/غیرفعال"
+
+msgid "Switch the selected timer on or off"
+msgstr "روشن یا خاموش کردن تایمر انتخاب‌شده"
+
+msgid "Save as default"
+msgstr "ذخیره به‌عنوان پیش‌فرض"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "استفاده از این قالب‌ها و جریان‌های اضافی برای تایمرهای جدید و ضبط‌های دستی"
+
+msgid "Series title"
+msgstr "عنوان مجموعه"
+
+msgid "Delete series rule"
+msgstr "حذف قاعدهٔ مجموعه"
+
+msgid "Series recordings"
+msgstr "ضبط‌های مجموعه"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "زیرنویس در TS یا MKV جا می‌گیرد."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "زبان صدای ترجیحی در تنظیمات نیست: نخستین ترک ضبط می‌شود."
+
+msgid "File: {v0}"
+msgstr "فایل: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "زمان شروع یا پایان نامعتبر"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "از HH:MM استفاده کنید، مثلاً 20:15."
+
+msgid "No channel"
+msgstr "بدون کانال"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "کانال ضبط را در فهرست سمت چپ انتخاب کنید."
+
+msgid "Recording defaults saved"
+msgstr "پیش‌فرض‌های ضبط ذخیره شد"
+
+msgid "Record with Options"
+msgstr "ضبط با گزینه‌ها"
+
+msgid "_Format"
+msgstr "_قالب"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "تله‌تکست و داده‌های EPG فقط در MPEG-TS نگه داشته می‌شوند، پس از TS استفاده می‌شود."
+
+msgid "Preferred audio language: {lang}."
+msgstr "زبان صدای ترجیحی: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "نمایش بصری '{v0}' ناموفق بود: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} خیلی قدیمی است"
+
+msgid "Playback error: "
+msgstr "خطای پخش:"
+
+msgid "Favourites (TV + Radio)"
+msgstr "علاقه‌مندی‌ها (تلویزیون + رادیو)"
+
+msgid "Free to air"
+msgstr "رایگان"
+
+msgid "Internet streams"
+msgstr "جریان‌های اینترنتی"
+
+msgid "Fill (crop)"
+msgstr "پر کردن (برش)"
+
+msgid "Fit"
+msgstr "جا دادن"
+
+msgid "Stretch"
+msgstr "کشیدن"
+
+msgid "Playback error: {m}"
+msgstr "خطای پخش: {m}"
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "رمزگشایی ویدیوی {name} ناموفق بود، با رمزگشای بعدی پخش می‌شود"
+
+msgid "Plugin action failed: {e}"
+msgstr "کنش افزونه ناموفق بود: {e}"
+
+msgid "Open Media File…"
+msgstr "باز کردن فایل رسانه…"
+
+msgid "Open URL…"
+msgstr "باز کردن نشانی…"
+
+msgid "Import Channel List…"
+msgstr "وارد کردن فهرست کانال…"
+
+msgid "Export Channel List…"
+msgstr "برون‌بری فهرست کانال…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "برون‌بری راهنمای برنامه (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "تغییر تلویزیون / رادیو"
+
+msgid "Recordings"
+msgstr "ضبط‌ها"
+
+msgid "Programme Guide (EPG)"
+msgstr "راهنمای برنامه (EPG)"
+
+msgid "Timer Recordings"
+msgstr "ضبط‌های تایمری"
+
+msgid "Record with Options…"
+msgstr "ضبط با گزینه‌ها…"
+
+msgid "Channel Analysis…"
+msgstr "تحلیل کانال…"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (دکمهٔ قرمز)"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "منوی CAM (ماژول CI)…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "به‌روزرسانی EPG اینترنتی (XMLTV)"
+
+msgid "Audio Track"
+msgstr "ترک صدا"
+
+msgid "Subtitles"
+msgstr "زیرنویس"
+
+msgid "Play Rate"
+msgstr "سرعت پخش"
+
+msgid "Back 10 s"
+msgstr "۱۰ ثانیه عقب"
+
+msgid "Forward 10 s"
+msgstr "۱۰ ثانیه جلو"
+
+msgid "Back 1 min"
+msgstr "۱ دقیقه عقب"
+
+msgid "Forward 1 min"
+msgstr "۱ دقیقه جلو"
+
+msgid "Back to Live"
+msgstr "بازگشت به زنده"
+
+msgid "Jump"
+msgstr "پرش"
+
+msgid "Previous"
+msgstr "قبلی"
+
+msgid "Random Order"
+msgstr "ترتیب تصادفی"
+
+msgid "Endless Playback"
+msgstr "پخش بی‌پایان"
+
+msgid "Keep Timeshift as Recording"
+msgstr "نگه داشتن جابه‌جایی زمانی به‌عنوان ضبط"
+
+msgid "Rebuild Playback"
+msgstr "بازسازی پخش"
+
+msgid "Video Off (audio only)"
+msgstr "خاموش کردن ویدیو (فقط صدا)"
+
+msgid "Show Selected Channel"
+msgstr "نمایش کانال انتخاب‌شده"
+
+msgid "Swap Pictures"
+msgstr "جابه‌جایی تصاویر"
+
+msgid "Picture in Picture"
+msgstr "تصویر در تصویر"
+
+msgid "Channel Mosaic…"
+msgstr "موزاییک کانال‌ها…"
+
+msgid "Stop in {mins} min"
+msgstr "توقف پس از {mins} دقیقه"
+
+msgid "Stop after current programme"
+msgstr "توقف پس از برنامهٔ فعلی"
+
+msgid "Sleep Timer"
+msgstr "زمان‌سنج خواب"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "صدا دیرتر (+{AUDIO_DELAY_STEP} ms، K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "صدا زودتر (−{AUDIO_DELAY_STEP} ms، J)"
+
+msgid "Reset"
+msgstr "بازنشانی"
+
+msgid "Audio Delay (this channel)"
+msgstr "تأخیر صدا (این کانال)"
+
+msgid "Full Screen"
+msgstr "تمام‌صفحه"
+
+msgid "Show/Hide Channel List"
+msgstr "نمایش/پنهان کردن فهرست کانال"
+
+msgid "Aspect / Zoom"
+msgstr "نسبت / بزرگ‌نمایی"
+
+msgid "Window Size"
+msgstr "اندازهٔ پنجره"
+
+msgid "Picture Settings…"
+msgstr "تنظیمات تصویر…"
+
+msgid "Equalizer…"
+msgstr "اکولایزر…"
+
+msgid "Radio Visualisation"
+msgstr "نمایش بصری رادیو"
+
+msgid "Screenshot"
+msgstr "عکس صفحه"
+
+msgid "Plugins…"
+msgstr "افزونه‌ها…"
+
+msgid "About LinDVB"
+msgstr "دربارهٔ LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "نمایش/پنهان کردن فهرست کانال (F9)"
+
+msgid "Main menu (F10)"
+msgstr "منوی اصلی (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "راهنمای برنامه (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "تله‌تکست (Ctrl+Shift+T)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "خدمت تعاملی کانال (دکمهٔ قرمز، F5)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "نمایش کانال‌های تلویزیون (Ctrl+M تغییر می‌دهد)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "نمایش ایستگاه‌های رادیو (Ctrl+M تغییر می‌دهد)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "نمایش ضبط‌های شما (دوبار کلیک یکی را پخش می‌کند)"
+
+msgid "Search name or number"
+msgstr "جست‌وجوی نام یا شماره"
+
+msgid "All groups"
+msgstr "همهٔ گروه‌ها"
+
+msgid "Previous channel (Page Down)"
+msgstr "کانال قبلی (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "مکث / جابه‌جایی زمانی (Space)"
+
+msgid "Stop (switch the channel off)"
+msgstr "توقف (خاموش کردن کانال)"
+
+msgid "Next channel (Page Up)"
+msgstr "کانال بعدی (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "ضبط کانال فعلی (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "انتخاب قالب و ترک‌ها برای این ضبط"
+
+msgid "Seek"
+msgstr "جابه‌جایی"
+
+msgid "LIVE"
+msgstr "زنده"
+
+msgid "Back to live (L)"
+msgstr "بازگشت به زنده (L)"
+
+msgid "Mute (M)"
+msgstr "بی‌صدا (M)"
+
+msgid "Volume"
+msgstr "حجم صدا"
+
+msgid "Audio track"
+msgstr "ترک صدا"
+
+msgid "Playback and picture settings"
+msgstr "تنظیمات پخش و تصویر"
+
+msgid "Full screen (F)"
+msgstr "تمام‌صفحه (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nاکنون: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} از {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{n} از {total} ضبط نمایش داده شده"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{n} از {total} علاقه‌مندی نمایش داده شده"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{n} از {total} ایستگاه رادیو نمایش داده شده"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{n} از {total} کانال تلویزیون نمایش داده شده"
+
+msgid "Add to Favourites"
+msgstr "افزودن به علاقه‌مندی‌ها"
+
+msgid "Remove from Favourites"
+msgstr "حذف از علاقه‌مندی‌ها"
+
+msgid "Edit…"
+msgstr "ویرایش…"
+
+msgid "Show as Picture in Picture"
+msgstr "نمایش به‌صورت تصویر در تصویر"
+
+msgid "Select a channel in the list first"
+msgstr "ابتدا یک کانال را در فهرست انتخاب کنید"
+
+msgid "Close the interactive service (Esc)"
+msgstr "بستن خدمت تعاملی (Esc)"
+
+msgid "By channel"
+msgstr "بر اساس کانال"
+
+msgid "By title"
+msgstr "بر اساس عنوان"
+
+msgid "Newest first"
+msgstr "جدیدترین اول"
+
+msgid "Oldest first"
+msgstr "قدیمی‌ترین اول"
+
+msgid "Largest first"
+msgstr "بزرگ‌ترین اول"
+
+msgid "Sort the recordings"
+msgstr "مرتب‌سازی ضبط‌ها"
+
+msgid "Open the recording folder"
+msgstr "باز کردن پوشهٔ ضبط"
+
+msgid "Look for new recordings"
+msgstr "جست‌وجوی ضبط‌های جدید"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "هنوز ضبطی نیست.\n\nضبط‌ها در این مسیر ذخیره می‌شوند:\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "در تنظیمات پوشهٔ ضبطی تعیین نشده است."
+
+msgid "Recording in progress"
+msgstr "ضبط در جریان است"
+
+msgid "Watched"
+msgstr "تماشا شده"
+
+msgid "Watched up to {pos}"
+msgstr "تماشا شده تا {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "ضبط پیدا نشد: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "ادامه از {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "پوشه پیدا نشد: {folder}"
+
+msgid "Play"
+msgstr "پخش"
+
+msgid "Play from the Beginning"
+msgstr "پخش از ابتدا"
+
+msgid "Details…"
+msgstr "جزئیات…"
+
+msgid "Mark as Unwatched"
+msgstr "علامت‌گذاری به‌عنوان تماشانشده"
+
+msgid "Mark as Watched"
+msgstr "علامت‌گذاری به‌عنوان تماشاشده"
+
+msgid "Show in Folder"
+msgstr "نمایش در پوشه"
+
+msgid "Delete…"
+msgstr "حذف…"
+
+msgid "Stop the recording before deleting it"
+msgstr "پیش از حذف، ضبط را متوقف کنید"
+
+msgid "Delete “{title}”?"
+msgstr "«{title}» حذف شود؟"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nفایل از دیسک پاک می‌شود."
+
+msgid "Deleted {name}"
+msgstr "{name} حذف شد"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name} حذف نمی‌شود: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "در حال تنظیم {name}…"
+
+msgid "Search recordings"
+msgstr "جست‌وجوی ضبط‌ها"
+
+msgid "No radio stations in the channel list"
+msgstr "هیچ ایستگاه رادیویی در فهرست کانال نیست"
+
+msgid "No TV channels in the channel list"
+msgstr "هیچ کانال تلویزیونی در فهرست کانال نیست"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – به {kind} تغییر یافت"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} اکنون روی آنتن نیست"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "تلویزیون زنده متوقف شد: تیونر برای ضبط تایمری لازم است"
+
+msgid "Stopped"
+msgstr "متوقف"
+
+msgid "Sound {ms} ms later"
+msgstr "صدا {ms} میلی‌ثانیه دیرتر"
+
+msgid "Sound {v0} ms earlier"
+msgstr "صدا {v0} میلی‌ثانیه زودتر"
+
+msgid "Audio delay off"
+msgstr "تأخیر صدا خاموش"
+
+msgid "Playing {item}"
+msgstr "در حال پخش {item}"
+
+msgid "Open media files"
+msgstr "باز کردن فایل‌های رسانه"
+
+msgid "Open URL"
+msgstr "باز کردن نشانی"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…، rtp://…، udp://…، rtsp://…"
+
+msgid "Open"
+msgstr "باز کردن"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "وارد کردن فهرست کانال (dvbv5، VDR، lamedb، M3U، CSV، DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "برون‌بری کانال‌ها (.conf = dvbv5، .m3u = IPTV، .csv)"
+
+msgid "Exported to {path}"
+msgstr "به {path} برون‌بری شد"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "برون‌بری راهنمای برنامه (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path} نوشته نمی‌شود: {error}"
+
+msgid "Nothing to record"
+msgstr "چیزی برای ضبط نیست"
+
+msgid "This channel is already being recorded"
+msgstr "این کانال هم‌اکنون در حال ضبط است"
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "تله‌تکست خدمت تعاملی کانال (Ctrl+Shift+T)"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "تله‌تکست: رمزگشا وجود ندارد (gst-plugins-bad با libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "تله‌تکست: در این کانال در دسترس نیست"
+
+msgid "Teletext needs a DVB channel"
+msgstr "تله‌تکست به یک کانال DVB نیاز دارد"
+
+msgid "Volume {v0}%"
+msgstr "حجم صدا {v0}%"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "زیرنویس بسته (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} زبان"
+
+msgid "{n} audio tracks"
+msgstr "{n} ترک صدا"
+
+msgid "Screenshot saved: {path}"
+msgstr "عکس صفحه ذخیره شد: {path}"
+
+msgid "Screenshot failed"
+msgstr "عکس صفحه ناموفق بود"
+
+msgid "Picture Settings"
+msgstr "تنظیمات تصویر"
+
+msgid "Restore Defaults"
+msgstr "بازگرداندن پیش‌فرض‌ها"
+
+msgid "Equalizer"
+msgstr "اکولایزر"
+
+msgid "Leave full screen (F)"
+msgstr "خروج از تمام‌صفحه (F)"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} شروع نشد ({m})، به‌جای آن {other} نشان داده می‌شود"
+
+msgid "All presets (shuffled)"
+msgstr "همهٔ پیش‌تنظیم‌ها (درهم)"
+
+msgid "All of {name}"
+msgstr "همهٔ {name}"
+
+msgid "Visualisation failed: {e}"
+msgstr "نمایش بصری ناموفق بود: {e}"
+
+msgid "Radio visualisation"
+msgstr "نمایش بصری رادیو"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "نمایش بصری رادیو (فقط برای رادیو و صدا)"
+
+msgid "Playback stops at {v0}"
+msgstr "پخش در {v0} متوقف می‌شود"
+
+msgid "No programme information for the sleep timer"
+msgstr "اطلاعات برنامه برای زمان‌سنج خواب موجود نیست"
+
+msgid "Sleep timer: playback stopped"
+msgstr "زمان‌سنج خواب: پخش متوقف شد"
+
+msgid "Next: {v0}  {title}"
+msgstr "بعدی: {v0}  {title}"
+
+msgid "Signal quality {v0}%"
+msgstr "کیفیت سیگنال {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "کیفیت جریان {v0}%"
+
+msgid "Signal {v0}%"
+msgstr "سیگنال {v0}%"
+
+msgid "● REC {n}"
+msgstr "● ضبط {n}"
+
+msgid "Live"
+msgstr "زنده"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "جابه‌جایی زمانی −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "تماشا و ضبط DVB-S/S2، DVB-C، DVB-T/T2، ATSC و تلویزیون اینترنتی با Linux DVB API و GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "تطبیق کانال‌های IPTV با XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "هنوز هیچ راهنمای XMLTV بارگذاری نشده است. نشانی XMLTV را در تنظیمات EPG وارد کنید و ابتدا راهنما را بارگیری کنید؛ تطبیق پس از بارگیری خودکار آغاز می‌شود."
+
+msgid "Download XMLTV guide now"
+msgstr "اکنون راهنمای XMLTV را بارگیری کن"
+
+msgid "Only channels without guide"
+msgstr "فقط کانال‌های بدون راهنما"
+
+msgid "Match"
+msgstr "تطبیق"
+
+msgid "Guide channel:"
+msgstr "کانال راهنما:"
+
+msgid "Assign"
+msgstr "اختصاص"
+
+msgid "Suggest"
+msgstr "پیشنهاد"
+
+msgid "Auto-match all"
+msgstr "تطبیق خودکار همه"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "تطبیق همهٔ کانال‌هایی که دستی اختصاص داده نشده‌اند"
+
+msgid "Reset to automatic"
+msgstr "بازگشت به خودکار"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "تصمیم دربارهٔ کانال انتخاب‌شده را دوباره به تطبیق خودکار بسپار"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} از {v1} کانال یک کانال راهنما دارند"
+
+msgid "No suggestion for {name}"
+msgstr "پیشنهادی برای {name} نیست"
+
+msgid "Germany"
+msgstr "آلمان"
+
+msgid "Italy"
+msgstr "ایتالیا"
+
+msgid "New Zealand"
+msgstr "نیوزیلند"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "منطقهٔ Freeview"
+
+msgid "Country"
+msgstr "کشور"
+
+msgid "Options"
+msgstr "گزینه‌ها"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "به همین ترتیب پرسیده می‌شوند، جداشده با فاصله. برای نگه داشتن تغییر Enter را بزنید؛ خالی، رجیستری‌های کشور را برمی‌گرداند."
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "وقتی کانالی هر دو را دارد، آنتن، کابل و ماهواره را بر جریان اینترنتی ترجیح بده"
+
+msgid "Registry address"
+msgstr "نشانی رجیستری"
+
+msgid "Region in the list"
+msgstr "منطقه در فهرست"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "منطقهٔ شما کانال‌های منطقه‌ای و شماره‌گذاری آن‌ها را انتخاب می‌کند."
+
+msgid "Settings follow: {profile}"
+msgstr "تنظیمات پیرو: {profile}"
+
+msgid "Choose…"
+msgstr "انتخاب…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "اختیاری. {label} شما فقط به سرور فهرست خدمات فرستاده می‌شود."
+
+msgid "e.g. {example}"
+msgstr "مثلاً {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "کانال‌های DVB-I کشور قبلی می‌مانند تا فهرستی برای {country} نصب کنید یا آن‌ها را حذف کنید."
+
+msgid "The registry offers no service list for {country}."
+msgstr "رجیستری هیچ فهرست خدماتی برای {country} ندارد."
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "لطفاً یک کد پستی {n} رقمی وارد کنید"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I فهرست کانال را از اینترنت بارگیری می‌کند. برای این کار LinDVB با رجیستری فهرست خدمات آلمان (csr.dvb-i-slr.de)، سرور فهرست خدماتی که انتخاب می‌کنید، سرورهایی که لوگوهای کانال را میزبانی می‌کنند و، اگر راهنمای برنامه روشن باشد، سرورهای راهنمای برنامهٔ پخش‌کنندگان تماس می‌گیرد. این سرورها نشانی IP شما و زمان درخواست را می‌بینند. اگر کد پستی وارد کنید، به سرور فهرست خدمات فرستاده می‌شود تا کانال‌های منطقهٔ شما را برگرداند. LinDVB هیچ دادهٔ شخصی دیگری نمی‌فرستد و فهرست و لوگوها را فقط روی این رایانه نگه می‌دارد. کانال‌های اینترنتی از سرورهای پخش‌کنندگان پخش می‌شوند که ممکن است درخواست‌های شما را طبق سیاست‌های حریم خصوصی خودشان ثبت کنند."
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "کانال‌های آنتن، ماهواره و اینترنت بدون تکرار در یک فهرست ادغام می‌شوند؛ کانالی که با آنتن یا دیش دریافت می‌کنید ابتدا از همان استفاده می‌کند."
+
+msgid "Update the channel list automatically (daily)"
+msgstr "به‌روزرسانی خودکار فهرست کانال (روزانه)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "هشدار! با خاموش بودن این گزینه، LinDVB دیگر نمی‌تواند فهرست کانال شما را با کانال‌های در حال پخش به‌روز نگه دارد."
+
+msgid "Package"
+msgstr "بسته"
+
+msgid "Free channels only"
+msgstr "فقط کانال‌های رایگان"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "برای استفاده از شماره‌های کانال این بسته، دوباره «نصب» را بزنید."
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "منطقه، جدول LCN ناحیهٔ شما را با کانال‌های محلی انتخاب می‌کند، همان‌گونه که جست‌وجوی کانال زمینی انجام می‌دهد. کانال‌های بدون شماره به ۸۵۰ تا ۹۹۹ می‌روند."
+
+msgid "No screen saver during playback"
+msgstr "بدون محافظ صفحه هنگام پخش"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "هنگام پخش تلویزیون، رادیو یا فایل صفحه را روشن نگه می‌دارد."
+
+msgid "Playing TV or radio"
+msgstr "در حال پخش تلویزیون یا رادیو"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: در این کانال در دسترس نیست"
+
+msgid "OSD and Visualisations"
+msgstr "OSD و نمایش‌های بصری"
+
+msgid "OSD size (%)"
+msgstr "اندازهٔ OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "اطلاعات برنامه روی تصویر و شمارهٔ کانال."
+
+msgid "Font"
+msgstr "قلم"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "زیرنویس‌های تله‌تکست و زیرنویس‌های متنی فایل‌ها و جریان‌ها."
+
+msgid "Size (%)"
+msgstr "اندازه (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "زیرنویس‌هایی که به‌صورت تصویر کشیده می‌شوند (زیرنویس DVB) همان اندازه‌ای را دارند که کانال می‌فرستد."
+
+msgid "Subtitle font"
+msgstr "قلم زیرنویس"
+
+msgid "Default font"
+msgstr "قلم پیش‌فرض"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "هنگام پخش رادیو یا صدا نشان داده می‌شود؛ همچنین در دکمهٔ نمایش بصری."
+
+msgid "Draw on the graphics card"
+msgstr "رسم روی کارت گرافیک"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL برای نمایش‌های بصری داخلی. پس از اجرای دوبارهٔ LinDVB اعمال می‌شود."
+
+msgid "Resolution of projectM"
+msgstr "وضوح projectM"
+
+msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
+msgstr "\"auto\" (صفحه) یا عرض x ارتفاع، مثلاً 1280x720. اندازه‌های کوچک‌تر سریع‌تر شروع می‌شوند و توان پردازشی کمتری می‌خواهند."
+
+msgid "projectM: seconds per preset"
+msgstr "projectM: ثانیه برای هر پیش‌تنظیم"
+
+msgid "projectM preset folder"
+msgstr "پوشهٔ پیش‌تنظیم‌های projectM"
+
+msgid "Empty: the usual folders of projectM."
+msgstr "خالی: پوشه‌های معمول projectM."
+
+msgid "Service list address"
+msgstr "نشانی فهرست خدمات"
+
+msgid "Use This List"
+msgstr "استفاده از این فهرست"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "این فهرست خدمات را مستقیم و بدون پرسش از رجیستری بارگیری می‌کند."
+
+msgid "Please enter a web address (https://…)."
+msgstr "لطفاً یک نشانی وب (https://…) وارد کنید."
+
+msgid "Please confirm the privacy notice first."
+msgstr "لطفاً ابتدا اطلاعیهٔ حریم خصوصی را تأیید کنید."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "نشانی یک رجیستری یا یک فهرست خدمات را وارد کنید."
+
+msgid "Pause / play"
+msgstr "مکث / پخش"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "۱۰ ثانیه عقب / جلو (جابه‌جایی زمانی، فایل‌ها)"
+
+msgid "Back to live"
+msgstr "بازگشت به زنده"
+
+msgid "Mute"
+msgstr "بی‌صدا"
+
+msgid "Volume up / down"
+msgstr "افزایش / کاهش حجم صدا"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "صدا زودتر / دیرتر (تأخیر صدای کانال)"
+
+msgid "Next radio visualisation"
+msgstr "نمایش بصری بعدی رادیو"
+
+msgid "Next / previous playlist entry"
+msgstr "مورد بعدی / قبلی فهرست پخش"
+
+msgid "Previous / next channel"
+msgstr "کانال قبلی / بعدی"
+
+msgid "Next / previous channel"
+msgstr "کانال بعدی / قبلی"
+
+msgid "Channel by number (type the digits)"
+msgstr "کانال با شماره (رقم‌ها را تایپ کنید)"
+
+msgid "Last channel"
+msgstr "آخرین کانال"
+
+msgid "Switch TV / radio"
+msgstr "تغییر تلویزیون / رادیو"
+
+msgid "Show / hide the channel list"
+msgstr "نمایش / پنهان کردن فهرست کانال"
+
+msgid "Programme guide and recording"
+msgstr "راهنمای برنامه و ضبط"
+
+msgid "Programme guide (EPG)"
+msgstr "راهنمای برنامه (EPG)"
+
+msgid "Timer recordings"
+msgstr "ضبط‌های تایمری"
+
+msgid "Programme info (OSD)"
+msgstr "اطلاعات برنامه (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "تله‌تکست و خدمات تعاملی"
+
+msgid "View"
+msgstr "نما"
+
+msgid "Full screen"
+msgstr "تمام‌صفحه"
+
+msgid "Leave full screen"
+msgstr "خروج از تمام‌صفحه"
+
+msgid "Application"
+msgstr "برنامه"
+
+msgid "Main menu"
+msgstr "منوی اصلی"
+
+msgid "Open media file"
+msgstr "باز کردن فایل رسانه"
+
+msgid "Keyboard shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+msgid "Keyboard Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+msgid "Time"
+msgstr "زمان"
+
+msgid "Programme"
+msgstr "برنامه"
+
+msgid "File"
+msgstr "فایل"
+
+msgid "Other (own registry or list)"
+msgstr "دیگر (رجیستری یا فهرست خودتان)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I فهرست کانال را از اینترنت بارگیری می‌کند. برای این کار LinDVB با رجیستری یا سرور فهرست خدماتی که نشانی‌اش را وارد می‌کنید، سرورهایی که لوگوهای کانال را میزبانی می‌کنند و، اگر راهنمای برنامه روشن باشد، سرورهای راهنمای برنامهٔ پخش‌کنندگان تماس می‌گیرد. این سرورها نشانی IP شما و زمان درخواست را می‌بینند. اگر کد پستی وارد کنید، به سرور فهرست خدمات فرستاده می‌شود."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "نشانی یک رجیستری فهرست خدمات، یا مستقیماً یک فهرست خدمات را در زیر وارد کنید."
+
+msgid "Preferred audio format"
+msgstr "قالب صدای ترجیحی"
+
+msgid "As broadcast"
+msgstr "همان‌طور که پخش می‌شود"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "استریو (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "وقتی کانال یا فایلی این صدا را به همان زبان دارد، ابتدا همان پخش می‌شود."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "شماره"
+
+msgid "Name A–Z"
+msgstr "نام الف–ی"
+
+msgid "Name Z–A"
+msgstr "نام ی–الف"
+
+msgid "Picture quality"
+msgstr "کیفیت تصویر"
+
+msgid "Sort by"
+msgstr "مرتب‌سازی بر اساس"
+
+msgid "All"
+msgstr "همه"
+
+msgid "General settings"
+msgstr "تنظیمات عمومی"
+
+msgid "For this recording"
+msgstr "برای این ضبط"
+
+msgid "Formats and _tracks"
+msgstr "قالب‌ها و _ترک‌ها"
+
+msgid "Whole series"
+msgstr "کل مجموعه"
+
+msgid "Next recording only"
+msgstr "فقط ضبط بعدی"
+
+msgid "_Apply to"
+msgstr "_اعمال برای"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "تنظیمات عمومی: قالب‌ها، ترک‌های صدا و جریان‌های اضافی هنگام شروع ضبط از تنظیمات گرفته می‌شوند."
+
+msgid "All streams of the channel (TS)"
+msgstr "همهٔ جریان‌های کانال (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "هر جریانی را که کانال اعلام می‌کند ضبط می‌کند، از جمله داده‌های HbbTV و ترک‌های صدای جدید، با جدول برنامه‌ای فقط برای این کانال. فقط MPEG-TS آن را نگه می‌دارد، پس از TS استفاده می‌شود."
+
+msgid "Web address"
+msgstr "نشانی وب"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "نشانی یک فهرست پخش M3U یا یک جریان HLS منفرد (.m3u8)."
+
+msgid "User name"
+msgstr "نام کاربری"
+
+msgid "Password"
+msgstr "گذرواژه"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "کانال‌های زندهٔ یک حساب Xtream Codes. گذرواژه در نشانی فهرست در تنظیمات LinDVB نگه داشته می‌شود."
+
+msgid "Your lists"
+msgstr "فهرست‌های شما"
+
+msgid "Source"
+msgstr "منبع"
+
+msgid "Updated"
+msgstr "به‌روزشده"
+
+msgid "Update"
+msgstr "به‌روزرسانی"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "فهرست را دوباره بارگیری کن: علاقه‌مندی‌ها، شماره‌های کانال و تطبیق‌های راهنما می‌مانند، کانال‌هایی که دیگر در فهرست نیستند حذف می‌شوند."
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Remove the list and its channels"
+msgstr "حذف فهرست و کانال‌های آن"
+
+msgid "{n} removed"
+msgstr "{n} حذف شد"
+
+msgid "The file has no channels."
+msgstr "این فایل کانالی ندارد."
+
+msgid "{n} channels removed"
+msgstr "{n} کانال حذف شد"
+
+msgid "Colour scheme"
+msgstr "طرح رنگ"
+
+msgid "Dark"
+msgstr "تیره"
+
+msgid "Light"
+msgstr "روشن"
+
+msgid "Same as the system"
+msgstr "مانند سیستم"
+
+msgid "The picture always keeps its dark frame."
+msgstr "تصویر همیشه قاب تیرهٔ خود را نگه می‌دارد."
