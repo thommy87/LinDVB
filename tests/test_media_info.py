@@ -83,3 +83,21 @@ def test_xmltv_country_and_year():
     (name, ev), = list(parse_xmltv(xml))
     assert name == "3sat" and ev.country == "Deutschland" and ev.year == 2026
     assert details_line(ev) == "Show, Deutschland 2026"
+
+
+def test_preferred_audio_track():
+    from lindvb.media_info import AudioTrack, preferred_track
+    de_mp2 = AudioTrack(language="deu", codec="MPEG-1 Layer 2 (MP2)", channels=2)
+    de_ac3 = AudioTrack(language="deu", codec="AC-3 (ATSC A/52)", channels=6)
+    de_eac3 = AudioTrack(language="deu", codec="E-AC-3", channels=6)
+    en_ac3 = AudioTrack(language="eng", codec="AC-3", channels=6)
+    tracks = [de_mp2, en_ac3, de_ac3, de_eac3]
+    assert preferred_track(tracks, "ac3", 0) == 2           # same language, AC-3
+    assert preferred_track(tracks, "eac3", 0) == 3
+    assert preferred_track(tracks, "stereo", 2) == 0
+    assert preferred_track(tracks, "ac3", 2) is None        # already playing
+    assert preferred_track(tracks, "off", 0) is None
+    assert preferred_track([de_mp2, en_ac3], "ac3", 0) is None   # not in this language
+    # E-AC-3 wanted but only AC-3 there: the other Dolby format
+    assert preferred_track([de_mp2, de_ac3], "eac3", 0) == 1
+    assert preferred_track([de_mp2], "ac3", 0) is None

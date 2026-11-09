@@ -3396,3 +3396,21 @@ msgstr "DVB-I lataa kanavaluettelon internetistä. Sitä varten LinDVB ottaa yht
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Anna alla palveluluettelorekisterin osoite tai suoraan palveluluettelon osoite."
+
+msgid "Preferred audio format"
+msgstr "Ensisijainen ääniformaatti"
+
+msgid "As broadcast"
+msgstr "Kuten lähetetään"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Kun kanavalla tai tiedostolla on tämä ääni samalla kielellä, se toistetaan ensin."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

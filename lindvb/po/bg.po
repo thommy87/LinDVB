@@ -3396,3 +3396,21 @@ msgstr "DVB-I зарежда списъка с канали от интерне�
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "По-долу въведете адреса на регистър на списъци с услуги или направо на списък с услуги."
+
+msgid "Preferred audio format"
+msgstr "Предпочитан аудио формат"
+
+msgid "As broadcast"
+msgstr "Както се излъчва"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Стерео (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Когато канал или файл има този звук на същия език, той се възпроизвежда първи."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

@@ -3396,3 +3396,21 @@ msgstr "A DVB-I az internetről tölti le a csatornalistát. Ehhez a LinDVB felv
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Alább adja meg egy szolgáltatáslista-regiszter címét, vagy közvetlenül egy szolgáltatáslistáét."
+
+msgid "Preferred audio format"
+msgstr "Előnyben részesített hangformátum"
+
+msgid "As broadcast"
+msgstr "Ahogy sugározzák"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Sztereó (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Ha egy csatorna vagy fájl ezt a hangot ugyanazon a nyelven kínálja, az szól elsőként."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

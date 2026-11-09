@@ -212,8 +212,10 @@ class HbbTV:
                 pass
         same = channel is not None and channel.key == self._channel_key
         self._channel_key = channel.key if channel is not None else None
-        if capture is not self.capture:
-            self._new_dsmcc(capture)
+        if capture is not self.capture or (self.dsmcc is not None and
+                                           getattr(self.dsmcc, "monitor", None) is not
+                                           getattr(capture, "ait_monitor", None)):
+            self._new_dsmcc(capture)       # another tuner, or another service on it
         self.capture, self._cap_handler = capture, None
         if self._sync_broadcast:
             self._follow_broadcast_timeline(True)

@@ -20,7 +20,7 @@ from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
 from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
-                         language_name)
+                         language_name, preferred_track)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import hwaccel  # noqa: E402
@@ -278,6 +278,7 @@ class Player(GObject.Object):
         self.video = VideoBin(picture)
         self.playbin = None
         self.video_off = False          # "Video Off (audio only)": kept across rebuilds
+        self._audio_pref_done = False   # preferred audio format applied for this stream
         self.feeder = None
         self.capture = None
         self.sid = 0
@@ -699,6 +700,7 @@ class Player(GObject.Object):
     # -- now playing --------------------------------------------------------
 
     def _reset_metadata(self):
+        self._audio_pref_done = False       # a new channel or file: choose again
         if self.metadata:
             self.metadata = {}
             self.emit("metadata", {})
@@ -1029,9 +1031,23 @@ class Player(GObject.Object):
 
             def fire():
                 self._tracks_pending = False
+                self._apply_audio_preference()
                 self.emit("tracks")
                 return False
             GLib.idle_add(fire)
+
+    def _apply_audio_preference(self):
+        """Once per channel or file: switch to the preferred audio format
+        (Preferences › Playback) as soon as the tracks' codecs are known."""
+        if self._audio_pref_done or not self.playbin:
+            return
+        tracks, cur = self.audio_track_info()
+        if not tracks or not any(t.codec for t in tracks):
+            return                          # the codecs come with later tags
+        self._audio_pref_done = True
+        idx = preferred_track(tracks, self.settings.get("audio_prefer", "off"), cur)
+        if idx is not None:
+            self.select_audio(idx)
 
     def _streams(self, stype):
         """playbin3: the streams of one type in the current collection."""

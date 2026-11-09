@@ -186,6 +186,14 @@ class PrefsWindow(Gtk.Window):
         switch(g, "deinterlace", _("Deinterlace video"),
                _("Interlaced TV pictures (most SD and 1080i channels). Done on the graphics "
                  "card when VA-API decodes, else by the processor."))
+        from ..media_info import AUDIO_PREFERENCES
+        self._aprefs = list(AUDIO_PREFERENCES)
+        cur = s.get("audio_prefer", "off")
+        self._apref_drop = _row(g, _("Preferred audio format"), dropdown(
+            [_("As broadcast"), _("Dolby Digital (AC-3)"), _("Dolby Digital Plus (E-AC-3)"),
+             _("Stereo (MPEG / AAC)")],
+            self._aprefs.index(cur) if cur in self._aprefs else 0),
+            _("When a channel or file has this sound in the same language, it plays first."))
         switch(g, "inhibit_screensaver", _("No screen saver during playback"),
                _("Keeps the screen on while TV, radio or a file plays."))
         entry(g, "screenshot_dir", _("Screenshot folder"))
@@ -641,6 +649,7 @@ class PrefsWindow(Gtk.Window):
         s.update(self._accent_settings())
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
+        s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
         vis_before = s.get("visualizer", "")
         if self._vis_drop is not None:
             chosen = self._vis_ids[self._vis_drop.get_selected()]

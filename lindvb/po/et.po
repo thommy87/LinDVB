@@ -3396,3 +3396,21 @@ msgstr "DVB-I laadib kanaliloendi internetist. Selleks võtab LinDVB ühendust r
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Sisestage allpool teenuseloendite registri aadress või otse teenuseloendi aadress."
+
+msgid "Preferred audio format"
+msgstr "Eelistatud helivorming"
+
+msgid "As broadcast"
+msgstr "Nagu edastatakse"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Kui kanalil või failil on see heli samas keeles, esitatakse see esimesena."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

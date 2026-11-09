@@ -196,3 +196,22 @@ def test_analysis_takes_only_free_tuners_and_gives_way():
     how = tp.choose(sat("C", 12500000), "rec", [s0, s1],
                     {0: live, 1: Cap(sat("B", 12187000), s1, {tp.ANALYSIS})}, SETTINGS)
     assert how[1] is s1 and how[2].users == {tp.ANALYSIS}
+
+
+def test_zap_on_transponder_only_for_clear_live_capture():
+    from types import SimpleNamespace
+    from lindvb.channels import Channel
+    from lindvb.tuner import Capture
+    a = Channel(name="A", delsys="DVBT2", frequency=506000000, sid=1, pmt_pid=100)
+    b = Channel(name="B", delsys="DVBT2", frequency=506000000, sid=2, pmt_pid=200)
+    other = Channel(name="C", delsys="DVBT2", frequency=514000000, sid=3, pmt_pid=300)
+    cap = SimpleNamespace(users={"live"}, ca=None, channel=a)
+    ok = lambda c: Capture.can_switch_to(cap, c)  # noqa: E731
+    assert ok(b)
+    assert not ok(a)                    # the same channel: nothing to do
+    assert not ok(other)                # another transponder: tune
+    cap.users = {"live", "rec"}
+    assert not ok(b)                    # a recording shares the tuner
+    cap.users = {"live"}
+    cap.ca = object()
+    assert not ok(b)                    # descrambling is bound to one service

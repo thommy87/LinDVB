@@ -109,6 +109,34 @@ def short_codec(codec):
     return c.split(" (")[0]
 
 
+# Preferences › Playback › "Preferred audio format"
+AUDIO_PREFERENCES = ("off", "ac3", "eac3", "stereo")
+_DOLBY = ("AC-3", "E-AC-3")
+
+
+def preferred_track(tracks, prefer, current=-1):
+    """Index of the track the "preferred audio format" asks for, or None to
+    keep the current one. The language of the current track stays: only its
+    tracks are looked at (all tracks when it has none). ``prefer``: "ac3"
+    (Dolby Digital, then Dolby Digital Plus), "eac3" (the other way round) or
+    "stereo" (the plain MPEG / AAC sound); "off" keeps what plays."""
+    if prefer not in ("ac3", "eac3", "stereo") or len(tracks) < 2:
+        return None
+    lang = tracks[current].language if 0 <= current < len(tracks) else ""
+    pool = [i for i, t in enumerate(tracks) if not lang or t.language == lang] or \
+        list(range(len(tracks)))
+    codecs = {i: short_codec(tracks[i].codec) for i in pool}
+    if prefer == "stereo":
+        order = [[i for i in pool if codecs[i] and codecs[i] not in _DOLBY]]
+    else:
+        first, second = ("AC-3", "E-AC-3") if prefer == "ac3" else ("E-AC-3", "AC-3")
+        order = [[i for i in pool if codecs[i] == first], [i for i in pool if codecs[i] == second]]
+    for group in order:
+        if group:
+            return None if current in group else group[0]
+    return None
+
+
 def _useless_title(title, track):
     t = (title or "").strip().lower()
     if not t:
