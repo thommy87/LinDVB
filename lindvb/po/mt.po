@@ -3459,3 +3459,48 @@ msgstr "Il-flussi kollha tal-istazzjon (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Jirreġistra kull fluss li jħabbar l-istazzjon, anke data HbbTV u binarji tal-awdjo ġodda, b'tabella tal-programmi għal dan l-istazzjon biss. MPEG-TS biss jista' jżommu, għalhekk jintuża TS."
+
+msgid "Web address"
+msgstr "Indirizz tal-web"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "L-indirizz ta' playlist M3U jew ta' fluss HLS wieħed (.m3u8)."
+
+msgid "User name"
+msgstr "Isem l-utent"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "L-istazzjonijiet diretti ta' kont Xtream Codes. Il-password tinżamm fl-indirizz tal-lista fis-settings ta' LinDVB."
+
+msgid "Your lists"
+msgstr "Il-listi tiegħek"
+
+msgid "Source"
+msgstr "Sors"
+
+msgid "Updated"
+msgstr "Aġġornata"
+
+msgid "Update"
+msgstr "Aġġorna"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Terġa' ttella' l-lista: il-favoriti, in-numri tal-istazzjonijiet u r-rabtiet tal-gwida jibqgħu, l-istazzjonijiet li m'għadhomx fil-lista jitneħħew."
+
+msgid "Remove"
+msgstr "Neħħi"
+
+msgid "Remove the list and its channels"
+msgstr "Neħħi l-lista u l-istazzjonijiet tagħha"
+
+msgid "{n} removed"
+msgstr "{n} imneħħija"
+
+msgid "The file has no channels."
+msgstr "Il-fajl m'għandux stazzjonijiet."
+
+msgid "{n} channels removed"
+msgstr "{n} stazzjonijiet imneħħija"

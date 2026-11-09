@@ -3459,3 +3459,48 @@ msgstr "Todos los flujos del canal (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Graba todos los flujos que anuncia el canal, también datos HbbTV y pistas de audio nuevas, con una tabla de programas solo para este canal. Solo MPEG-TS puede contenerlo, así que se usa TS."
+
+msgid "Web address"
+msgstr "Dirección web"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "La dirección de una lista M3U o de un solo flujo HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Nombre de usuario"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Los canales en directo de una cuenta Xtream Codes. La contraseña se guarda en la dirección de la lista, en los ajustes de LinDVB."
+
+msgid "Your lists"
+msgstr "Tus listas"
+
+msgid "Source"
+msgstr "Origen"
+
+msgid "Updated"
+msgstr "Actualizada"
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Vuelve a cargar la lista: se mantienen favoritos, números de canal y asignaciones de guía; los canales que ya no están en la lista se eliminan."
+
+msgid "Remove"
+msgstr "Quitar"
+
+msgid "Remove the list and its channels"
+msgstr "Quitar la lista y sus canales"
+
+msgid "{n} removed"
+msgstr "{n} eliminados"
+
+msgid "The file has no channels."
+msgstr "El archivo no tiene canales."
+
+msgid "{n} channels removed"
+msgstr "{n} canales eliminados"

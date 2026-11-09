@@ -87,6 +87,7 @@ DEFAULTS = {
     # group ("" = all groups) last chosen, shown again at the next start.
     "list_filter": 0,
     "list_group": "",
+    "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
     "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
     "list_sort_value": "",          # the provider / transponder / quality shown
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,

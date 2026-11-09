@@ -4831,3 +4831,48 @@ msgstr ""
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr ""
+
+msgid "Web address"
+msgstr ""
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr ""
+
+msgid "User name"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr ""
+
+msgid "Your lists"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Remove the list and its channels"
+msgstr ""
+
+msgid "{n} removed"
+msgstr ""
+
+msgid "The file has no channels."
+msgstr ""
+
+msgid "{n} channels removed"
+msgstr ""

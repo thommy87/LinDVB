@@ -3459,3 +3459,48 @@ msgstr "Alla kanalens strömmar (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Spelar in varje ström som kanalen annonserar, även HbbTV-data och nya ljudspår, med en programtabell bara för denna kanal. Bara MPEG-TS kan rymma det, så TS används."
+
+msgid "Web address"
+msgstr "Webbadress"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Adressen till en M3U-spellista eller till en enskild HLS-ström (.m3u8)."
+
+msgid "User name"
+msgstr "Användarnamn"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Livekanalerna från ett Xtream Codes-konto. Lösenordet sparas i listans adress i LinDVB-inställningarna."
+
+msgid "Your lists"
+msgstr "Dina listor"
+
+msgid "Source"
+msgstr "Källa"
+
+msgid "Updated"
+msgstr "Uppdaterad"
+
+msgid "Update"
+msgstr "Uppdatera"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Läser in listan igen: favoriter, kanalnummer och guidekopplingar behålls, kanaler som inte längre finns i listan tas bort."
+
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "Remove the list and its channels"
+msgstr "Ta bort listan och dess kanaler"
+
+msgid "{n} removed"
+msgstr "{n} borttagna"
+
+msgid "The file has no channels."
+msgstr "Filen har inga kanaler."
+
+msgid "{n} channels removed"
+msgstr "{n} kanaler borttagna"

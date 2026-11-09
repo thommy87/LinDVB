@@ -3459,3 +3459,48 @@ msgstr "Όλες οι ροές του καναλιού (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Εγγράφει κάθε ροή που ανακοινώνει το κανάλι, και δεδομένα HbbTV και νέα κομμάτια ήχου, με πίνακα προγραμμάτων μόνο για αυτό το κανάλι. Μόνο το MPEG-TS μπορεί να το περιέχει, γι' αυτό χρησιμοποιείται TS."
+
+msgid "Web address"
+msgstr "Διεύθυνση ιστού"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Η διεύθυνση μιας λίστας M3U ή μιας μεμονωμένης ροής HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Όνομα χρήστη"
+
+msgid "Password"
+msgstr "Κωδικός πρόσβασης"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Τα ζωντανά κανάλια ενός λογαριασμού Xtream Codes. Ο κωδικός φυλάσσεται στη διεύθυνση της λίστας στις ρυθμίσεις του LinDVB."
+
+msgid "Your lists"
+msgstr "Οι λίστες σας"
+
+msgid "Source"
+msgstr "Πηγή"
+
+msgid "Updated"
+msgstr "Ενημερώθηκε"
+
+msgid "Update"
+msgstr "Ενημέρωση"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Φορτώνει ξανά τη λίστα: τα αγαπημένα, οι αριθμοί καναλιών και οι αντιστοιχίσεις οδηγού μένουν, τα κανάλια που δεν υπάρχουν πια στη λίστα αφαιρούνται."
+
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+msgid "Remove the list and its channels"
+msgstr "Αφαίρεση της λίστας και των καναλιών της"
+
+msgid "{n} removed"
+msgstr "Αφαιρέθηκαν {n}"
+
+msgid "The file has no channels."
+msgstr "Το αρχείο δεν έχει κανάλια."
+
+msgid "{n} channels removed"
+msgstr "Αφαιρέθηκαν {n} κανάλια"

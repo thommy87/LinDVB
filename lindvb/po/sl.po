@@ -3459,3 +3459,48 @@ msgstr "Vsi tokovi kanala (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Posname vsak tok, ki ga kanal oznanja, tudi podatke HbbTV in nove zvočne sledi, s tabelo programov samo za ta kanal. Vsebuje ga lahko le MPEG-TS, zato se uporabi TS."
+
+msgid "Web address"
+msgstr "Spletni naslov"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Naslov seznama M3U ali posameznega toka HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Uporabniško ime"
+
+msgid "Password"
+msgstr "Geslo"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Kanali v živo računa Xtream Codes. Geslo je shranjeno v naslovu seznama v nastavitvah LinDVB."
+
+msgid "Your lists"
+msgstr "Vaši seznami"
+
+msgid "Source"
+msgstr "Vir"
+
+msgid "Updated"
+msgstr "Posodobljeno"
+
+msgid "Update"
+msgstr "Posodobi"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Ponovno naloži seznam: priljubljeni, številke kanalov in povezave vodiča ostanejo, kanali, ki jih ni več na seznamu, se odstranijo."
+
+msgid "Remove"
+msgstr "Odstrani"
+
+msgid "Remove the list and its channels"
+msgstr "Odstrani seznam in njegove kanale"
+
+msgid "{n} removed"
+msgstr "Odstranjeno: {n}"
+
+msgid "The file has no channels."
+msgstr "Datoteka nima kanalov."
+
+msgid "{n} channels removed"
+msgstr "Odstranjenih kanalov: {n}"

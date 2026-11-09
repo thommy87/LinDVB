@@ -3459,3 +3459,48 @@ msgstr "Gach sruth den chainéal (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Taifeadann sé gach sruth a fhógraíonn an cainéal, sonraí HbbTV agus rianta fuaime nua san áireamh, le tábla clár don chainéal seo amháin. Ní féidir ach le MPEG-TS é a choinneáil, mar sin úsáidtear TS."
+
+msgid "Web address"
+msgstr "Seoladh gréasáin"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Seoladh seinmliosta M3U nó srutha HLS aonair (.m3u8)."
+
+msgid "User name"
+msgstr "Ainm úsáideora"
+
+msgid "Password"
+msgstr "Pasfhocal"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Cainéil bheo cuntais Xtream Codes. Coinnítear an pasfhocal i seoladh an liosta i socruithe LinDVB."
+
+msgid "Your lists"
+msgstr "Do liostaí"
+
+msgid "Source"
+msgstr "Foinse"
+
+msgid "Updated"
+msgstr "Nuashonraithe"
+
+msgid "Update"
+msgstr "Nuashonraigh"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Lódáil an liosta arís: fanann ceanáin, uimhreacha cainéal agus naisc treoraí, baintear cainéil nach bhfuil sa liosta a thuilleadh."
+
+msgid "Remove"
+msgstr "Bain"
+
+msgid "Remove the list and its channels"
+msgstr "Bain an liosta agus a chainéil"
+
+msgid "{n} removed"
+msgstr "{n} bainte"
+
+msgid "The file has no channels."
+msgstr "Níl aon chainéal sa chomhad."
+
+msgid "{n} channels removed"
+msgstr "{n} cainéal bainte"

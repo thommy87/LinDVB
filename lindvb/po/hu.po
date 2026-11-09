@@ -3459,3 +3459,48 @@ msgstr "A csatorna összes adatfolyama (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Minden adatfolyamot rögzít, amelyet a csatorna bejelent, a HbbTV-adatokat és az új hangsávokat is, csak erre a csatornára szóló programtáblával. Csak az MPEG-TS tudja tárolni, ezért TS lesz használva."
+
+msgid "Web address"
+msgstr "Webcím"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Egy M3U lejátszási lista vagy egyetlen HLS adatfolyam (.m3u8) címe."
+
+msgid "User name"
+msgstr "Felhasználónév"
+
+msgid "Password"
+msgstr "Jelszó"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Egy Xtream Codes fiók élő csatornái. A jelszó a lista címében marad a LinDVB beállításaiban."
+
+msgid "Your lists"
+msgstr "Saját listák"
+
+msgid "Source"
+msgstr "Forrás"
+
+msgid "Updated"
+msgstr "Frissítve"
+
+msgid "Update"
+msgstr "Frissítés"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Újratölti a listát: a kedvencek, csatornaszámok és műsorújság-hozzárendelések megmaradnak, a listából eltűnt csatornák törlődnek."
+
+msgid "Remove"
+msgstr "Eltávolítás"
+
+msgid "Remove the list and its channels"
+msgstr "A lista és csatornáinak eltávolítása"
+
+msgid "{n} removed"
+msgstr "{n} eltávolítva"
+
+msgid "The file has no channels."
+msgstr "A fájlban nincs csatorna."
+
+msgid "{n} channels removed"
+msgstr "{n} csatorna eltávolítva"

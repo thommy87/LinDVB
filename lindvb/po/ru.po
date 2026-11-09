@@ -3459,3 +3459,48 @@ msgstr "Все потоки канала (TS)"
 
 msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
 msgstr "Записывает каждый поток, объявленный каналом, включая данные HbbTV и новые звуковые дорожки, с таблицей программ только для этого канала. Это вмещает только MPEG-TS, поэтому используется TS."
+
+msgid "Web address"
+msgstr "Веб-адрес"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Адрес списка M3U или одиночного потока HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Имя пользователя"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Прямые каналы учётной записи Xtream Codes. Пароль хранится в адресе списка в настройках LinDVB."
+
+msgid "Your lists"
+msgstr "Ваши списки"
+
+msgid "Source"
+msgstr "Источник"
+
+msgid "Updated"
+msgstr "Обновлено"
+
+msgid "Update"
+msgstr "Обновить"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Загружает список заново: избранное, номера каналов и привязки телегида сохраняются, каналы, которых больше нет в списке, удаляются."
+
+msgid "Remove"
+msgstr "Удалить"
+
+msgid "Remove the list and its channels"
+msgstr "Удалить список и его каналы"
+
+msgid "{n} removed"
+msgstr "Удалено: {n}"
+
+msgid "The file has no channels."
+msgstr "В файле нет каналов."
+
+msgid "{n} channels removed"
+msgstr "Удалено каналов: {n}"
