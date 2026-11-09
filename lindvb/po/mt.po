@@ -3556,14 +3556,26 @@ msgstr "It-tipi kollha ta' riċeviment tiegħu"
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr "Fajls tal-immaġni (PNG, SVG, JPG) imsemmija għall-kanal, eż. “Bayern 3.png”, jew sett ta’ picons kif jużawh Enigma2, Kodi u VDR (imsemmija skont ir-referenza tas-servizz jew l-isem SNP). Jidhru wkoll fil-lista tal-kanali. LinDVB ma jġibx logos miegħu, għax huma tax-xandara. Vojt: {v0}"
 
-msgid "Picon sets"
-msgstr "Settijiet ta’ picons"
+msgid "Picons for my channels"
+msgstr "Picons għall-kanali tiegħi"
 
-msgid "Find picons online"
-msgstr "Sib picons onlajn"
+msgid "Download Logos"
+msgstr "Niżżel il-Logos"
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
-msgstr "Niżżel hemm sett għas-satellita, il-kejbil jew l-antenna tiegħek u ftħu fil-folder tal-logos."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Iniżżel biss il-logos tal-kanali fil-lista tiegħek mill-proġett picons (github.com/picons/picons) fil-folder tal-logos. Il-kanali li diġà għandhom logo hemm jitħallew kif inhuma."
+
+msgid "Looking up…"
+msgstr "Qed infittex…"
+
+msgid "{done} of {total}"
+msgstr "{done} minn {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "{got} logos imniżżla, {have} diġà kienu hemm, {missing} mhumiex fis-sett tal-picons."
+
+msgid "Download failed: {error}"
+msgstr "It-tniżżil falla: {error}"
 
 #: lindvb/chansort.py
 msgid "Provider / category"

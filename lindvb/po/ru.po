@@ -3556,14 +3556,26 @@ msgstr "Все его типы приёма"
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr "Файлы изображений (PNG, SVG, JPG), названные по каналу, напр. «Bayern 3.png», или набор пиконов, как их используют Enigma2, Kodi и VDR (названные по ссылке на службу или имени SNP). Они показываются и в списке каналов. LinDVB не содержит логотипов, потому что они принадлежат вещателям. Пусто: {v0}"
 
-msgid "Picon sets"
-msgstr "Наборы пиконов"
+msgid "Picons for my channels"
+msgstr "Пиконы для моих каналов"
 
-msgid "Find picons online"
-msgstr "Найти пиконы в интернете"
+msgid "Download Logos"
+msgstr "Загрузить логотипы"
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
-msgstr "Скачайте там набор для вашего спутника, кабеля или антенны и распакуйте его в папку логотипов."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Загружает в папку логотипов только логотипы каналов из вашего списка из проекта picons (github.com/picons/picons). Каналы, у которых там уже есть логотип, не изменяются."
+
+msgid "Looking up…"
+msgstr "Поиск…"
+
+msgid "{done} of {total}"
+msgstr "{done} из {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "Загружено логотипов: {got}, уже было: {have}, нет в наборе пиконов: {missing}."
+
+msgid "Download failed: {error}"
+msgstr "Не удалось загрузить: {error}"
 
 #: lindvb/chansort.py
 msgid "Provider / category"
