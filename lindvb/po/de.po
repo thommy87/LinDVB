@@ -3789,3 +3789,48 @@ msgstr "Wie das System"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Das Bild behält immer seinen dunklen Rahmen."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Angezeigt werden nur die jetzt angeschlossenen Tuner; die Einstellungen der übrigen bleiben unter „Nicht angeschlossen“ erhalten."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Empfängt alles, was der Transponder sendet, statt nur der eigenen Datenströme des Senders. Das kostet bei USB-Tunern mehr Bandbreite, spielt und nimmt aber alle Tonspuren auf, auch wenn die Senderliste nur eine kennt. Gilt für Live-TV und Aufnahmen."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Ihr eigener Name für diesen Tuner. Leer: der Name des Geräts."
+
+msgid "Satellite"
+msgstr "Satellit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenne (terrestrisch)"
+
+msgid "Cable"
+msgstr "Kabel"
+
+msgid "Connected to"
+msgstr "Angeschlossen an"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Ein Kombi-Tuner empfängt immer nur eine Art, an der Buchse, an der er angeschlossen ist. LinDVB nutzt ihn dann nur für Sender dieser Art."
+
+msgid "No tuner is connected."
+msgstr "Kein Tuner ist angeschlossen."
+
+msgid "Not connected ({n})"
+msgstr "Nicht angeschlossen ({n})"
+
+msgid "All its reception types"
+msgstr "Alle seine Empfangsarten"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Bilddateien (PNG, SVG, JPG), benannt nach dem Sender, z. B. „Bayern 3.png“, oder ein Picon-Satz, wie ihn Enigma2, Kodi und VDR nutzen (benannt nach Service-Referenz oder SNP-Name). Sie erscheinen auch in der Senderliste. LinDVB liefert keine Logos mit, weil sie den Sendern gehören. Leer: {v0}"
+
+msgid "Picon sets"
+msgstr "Picon-Sätze"
+
+msgid "Find picons online"
+msgstr "Picons im Internet finden"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Lade dort einen Satz für deinen Satelliten, dein Kabel oder deine Antenne herunter und entpacke ihn in den Logo-Ordner."

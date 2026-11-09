@@ -3519,3 +3519,48 @@ msgstr "Όπως το σύστημα"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Η εικόνα κρατά πάντα το σκούρο πλαίσιό της."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Εμφανίζονται μόνο οι δέκτες που είναι συνδεδεμένοι τώρα· οι ρυθμίσεις των υπολοίπων διατηρούνται στο «Μη συνδεδεμένοι»."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Λαμβάνει ό,τι εκπέμπει ο αναμεταδότης αντί μόνο για τις ροές του καναλιού. Στους δέκτες USB απαιτεί περισσότερο εύρος ζώνης, αλλά αναπαράγει και εγγράφει όλα τα ηχητικά κομμάτια ακόμη κι όταν η λίστα καναλιών γνωρίζει μόνο ένα. Ισχύει για ζωντανή TV και εγγραφές."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Το δικό σας όνομα για αυτόν τον δέκτη. Κενό: το όνομα της συσκευής."
+
+msgid "Satellite"
+msgstr "Δορυφόρος"
+
+msgid "Antenna (terrestrial)"
+msgstr "Κεραία (επίγεια)"
+
+msgid "Cable"
+msgstr "Καλωδιακή"
+
+msgid "Connected to"
+msgstr "Συνδεδεμένος σε"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Ένας συνδυασμένος δέκτης λαμβάνει έναν τύπο κάθε φορά, από την υποδοχή στην οποία είναι συνδεδεμένος. Το LinDVB τον χρησιμοποιεί τότε μόνο για κανάλια αυτού του τύπου."
+
+msgid "No tuner is connected."
+msgstr "Κανένας δέκτης δεν είναι συνδεδεμένος."
+
+msgid "Not connected ({n})"
+msgstr "Μη συνδεδεμένοι ({n})"
+
+msgid "All its reception types"
+msgstr "Όλοι οι τύποι λήψης του"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Αρχεία εικόνας (PNG, SVG, JPG) με το όνομα του καναλιού, π.χ. «Bayern 3.png», ή ένα σύνολο picon όπως το χρησιμοποιούν τα Enigma2, Kodi και VDR (ονομασμένα κατά αναφορά υπηρεσίας ή όνομα SNP). Εμφανίζονται και στη λίστα καναλιών. Το LinDVB δεν περιλαμβάνει λογότυπα, επειδή ανήκουν στους σταθμούς. Κενό: {v0}"
+
+msgid "Picon sets"
+msgstr "Σύνολα picon"
+
+msgid "Find picons online"
+msgstr "Εύρεση picon στο διαδίκτυο"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφόρο, το καλωδιακό ή την κεραία σας και αποσυμπιέστε το στον φάκελο λογοτύπων."

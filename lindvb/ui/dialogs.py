@@ -66,6 +66,14 @@ def _row(group, label, widget, hint=None):
     return widget
 
 
+def _children(box):
+    out, w = [], box.get_first_child()
+    while w is not None:
+        out.append(w)
+        w = w.get_next_sibling()
+    return out
+
+
 class PrefsWindow(Gtk.Window):
     """Preferences, split into pages with a sidebar."""
 
@@ -178,7 +186,15 @@ class PrefsWindow(Gtk.Window):
                _("Sends artist and title of the song on air to the iTunes Search API to find "
                "the album, year and cover."))
         entry(g, "logo_dir", _("Station logo folder"),
-              _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}").format(v0=DATA_DIR / 'logos'))
+              _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or "
+                "a picon set as Enigma2, Kodi and VDR use it (named by service reference or "
+                "by SNP name). They are shown in the channel list too. LinDVB ships no "
+                "logos, because they belong to the broadcasters. Empty: {v0}"
+                ).format(v0=DATA_DIR / 'logos'))
+        _row(g, _("Picon sets"), Gtk.LinkButton(uri="https://github.com/picons/picons",
+                                                label=_("Find picons online")),
+             _("Download a set for your satellite, cable or antenna there and unpack it "
+               "into the logo folder."))
         self._build_visualisations(group(pg, _("Visualisations")), s, spin, entry, switch)
 
         # -- Playback
@@ -216,24 +232,23 @@ class PrefsWindow(Gtk.Window):
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
 
         # -- Tuner
-        pg = page("tuner", _("Tuner and Channels"))
-        pg.append(Gtk.Label(label=_("Tuners"), xalign=0, css_classes=["lv-section-title"],
-                            margin_top=4))
-        pg.append(Gtk.Label(label=_("LinDVB records and plays on several tuners at once and "
-                                    "uses the tuners with the highest priority first. Channels "
-                                    "on one transponder share a tuner."),
-                            xalign=0, wrap=True, css_classes=["lv-hint"]))
+        pg = page("tuner", _("Tuners"),
+                  _("LinDVB records and plays on several tuners at once and uses the tuners "
+                    "with the highest priority first. Channels on one transponder share a "
+                    "tuner.") + " " +
+                  _("Only the tuners connected now are listed; the settings of others are "
+                    "kept under \u201cNot connected\u201d."))
         self._build_tuners(pg, s)
-        g = group(pg, _("DVB hardware"))
+        g = group(pg, _("Reception"))
         switch(g, "full_transponder", _("Capture whole transponder"),
-               _("Needed for all audio tracks when the channel list knows only one audio PID."))
-        g = group(pg, _("Satellite LNB"))
-        g.append(Gtk.Label(label=_("For all tuners without an LNB of their own."), xalign=0,
-                           wrap=True, css_classes=["lv-hint"]))
-        spin(g, "lnb_lof1", _("LOF low band (kHz)"), 0, 20000000)
-        spin(g, "lnb_lof2", _("LOF high band (kHz)"), 0, 20000000)
-        spin(g, "lnb_slof", _("Switch frequency (kHz)"), 0, 20000000)
-        g = group(pg, _("Channels"))
+               _("Receives everything the transponder sends instead of only the channel's own "
+                 "streams. It costs more bandwidth on USB tuners, but plays and records all "
+                 "audio tracks even when the channel list knows only one. Applies to live TV "
+                 "and recordings."))
+
+        # -- Channels
+        pg = page("channels", _("Channels"))
+        g = group(pg)
         scan = Gtk.Button(label=_("Channel Search…"))
         scan.connect("clicked", lambda *_: app.show_scan())
         _row(g, _("Channel search"), scan,
@@ -242,7 +257,10 @@ class PrefsWindow(Gtk.Window):
         edit.connect("clicked", lambda *_: app.show_editor())
         _row(g, _("Channel editor"), edit,
              _("Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."))
-        g = group(pg, _("HbbTV"))
+
+        # -- HbbTV
+        pg = page("hbbtv", _("HbbTV"))
+        g = group(pg)
         from . import hbbtv as hbbtv_ui
         switch(g, "hbbtv_enabled", _("Interactive services (HbbTV)"),
                _("Media libraries, teletext successors and more behind the red button (F5).")
@@ -534,7 +552,8 @@ class PrefsWindow(Gtk.Window):
             s["hbbtv_pin"] = hb_core.hash_pin(pin, s["hbbtv_pin_salt"])
 
     def _build_tuners(self, pg, s):
-        """One block per tuner: on/off, priority, shared cable and its own LNB."""
+        """One block per tuner: name, on/off, priority, reception type, and for
+        satellite its cable, LNB and single cable settings."""
         from .. import tunerprofiles as tp
         legacy = None if s.get("tuners") else list(s.get("adapters") or [0])
         found = tp.merge_profiles(s.get("tuners") or [], tp.detect_tuners(), legacy)
@@ -542,35 +561,76 @@ class PrefsWindow(Gtk.Window):
             found = [dict(p, present=False) for p in tp.legacy_profiles(s)]
         self._tuner_rows = []
         glob = tp.tuner_lnb(None, s)
-        for prof in found:
+        missing = [p for p in found if not p.get("present", True)]
+        if len(missing) == len(found):
+            pg.append(Gtk.Label(label=_("No tuner is connected."), xalign=0,
+                                css_classes=["lv-hint"]))
+        away = None
+        if missing:
+            away = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
+            exp = Gtk.Expander(label=_("Not connected ({n})").format(n=len(missing)),
+                               child=away)
+        for prof in [p for p in found if p.get("present", True)] + missing:
             g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
-            pg.append(g)
-            head = f"{prof['name']}  (adapter{prof['adapter']}/frontend{prof['frontend']})"
-            info = tp.systems_label(prof.get("systems") or []) or _("Reception types unknown")
-            if not prof.get("present", True):
-                info += " · " + _("not connected")
-            on = _row(g, head, Gtk.Switch(active=bool(prof.get("enabled", True))), info)
-            prio = _row(g, _("Priority"), Gtk.SpinButton.new_with_range(0, 9, 1),
-                        _("Higher numbers are used first."))
-            prio.set_value(int(prof.get("priority", 0) or 0))
-            row = {"profile": prof, "on": on, "prio": prio, "group": None, "lnb": None,
-                   "uc": None}
-            sat = not prof.get("systems") or tp.supports(prof, "dvb-s")
-            if sat:
-                row["group"] = _row(g, _("Shared antenna cable"),
-                                    Gtk.Entry(text=prof.get("group", "")),
-                                    _("Give tuners on one cable the same name (loop-through or a "
-                                      "splitter on one LNB output). They then only receive one "
-                                      "band and polarisation at a time. Empty: own cable."))
-                own = list(prof.get("lnb") or glob)
-                row["lnb"] = []
-                for label, value in zip((_("LOF low band (kHz)"), _("LOF high band (kHz)"),
-                                         _("Switch frequency (kHz)")), own):
-                    sp = _row(g, label, Gtk.SpinButton.new_with_range(0, 20000000, 1))
-                    sp.set_value(value)
-                    row["lnb"].append(sp)
-                row["uc"] = self._single_cable_rows(g, prof)
-            self._tuner_rows.append(row)
+            (away if away is not None and not prof.get("present", True) else pg).append(g)
+            self._tuner_rows.append(self._tuner_block(g, prof, glob))
+        if away is not None:
+            pg.append(exp)
+
+    def _tuner_block(self, g, prof, glob):
+        from .. import tunerprofiles as tp
+        info = [tp.systems_label(prof.get("systems") or []) or _("Reception types unknown")]
+        if prof.get("label") and prof.get("name"):
+            info.append(prof["name"])
+        info.append(f"adapter{prof['adapter']}/frontend{prof['frontend']}")
+        if not prof.get("present", True):
+            info.append(_("not connected"))
+        on = _row(g, tp.display_name(prof), Gtk.Switch(active=bool(prof.get("enabled", True))),
+                  " · ".join(info))
+        label = _row(g, _("Name"), Gtk.Entry(text=prof.get("label", ""),
+                                             placeholder_text=prof.get("name", "")),
+                     _("Your own name for this tuner. Empty: the name of the device."))
+        prio = _row(g, _("Priority"), Gtk.SpinButton.new_with_range(0, 9, 1),
+                    _("Higher numbers are used first."))
+        prio.set_value(int(prof.get("priority", 0) or 0))
+        row = {"profile": prof, "on": on, "label": label, "prio": prio, "group": None,
+               "lnb": None, "uc": None, "use": None, "uses": []}
+        fams = tp.families(prof)
+        names = {"sat": _("Satellite"), "ter": _("Antenna (terrestrial)"), "cab": _("Cable")}
+        sat_rows = []
+        if len(fams) > 1:
+            row["uses"] = ["", *fams]
+            cur = prof.get("use") or ""
+            row["use"] = _row(g, _("Connected to"), dropdown(
+                [_("All its reception types")] + [names[f] for f in fams],
+                row["uses"].index(cur) if cur in row["uses"] else 0),
+                _("A combined tuner receives one type at a time, on the socket it is "
+                  "connected to. LinDVB then only uses it for channels of that type."))
+        sat = not prof.get("systems") or "sat" in fams
+        if sat:
+            first = len(_children(g))
+            row["group"] = _row(g, _("Shared antenna cable"),
+                                Gtk.Entry(text=prof.get("group", "")),
+                                _("Give tuners on one cable the same name (loop-through or a "
+                                  "splitter on one LNB output). They then only receive one "
+                                  "band and polarisation at a time. Empty: own cable."))
+            own = list(prof.get("lnb") or glob)
+            row["lnb"] = []
+            for lbl, value in zip((_("LOF low band (kHz)"), _("LOF high band (kHz)"),
+                                   _("Switch frequency (kHz)")), own):
+                sp = _row(g, lbl, Gtk.SpinButton.new_with_range(0, 20000000, 1))
+                sp.set_value(value)
+                row["lnb"].append(sp)
+            row["uc"] = self._single_cable_rows(g, prof)
+            sat_rows = _children(g)[first:]
+        if row["use"] is not None and sat_rows:
+            def show(dd, *_a):
+                use = row["uses"][dd.get_selected()]
+                for r in sat_rows:
+                    r.set_visible(use in ("", "sat"))
+            row["use"].connect("notify::selected", show)
+            show(row["use"])
+        return row
 
     def _single_cable_rows(self, g, prof):
         """Unicable / JESS: standard, user band, its frequency and PIN."""
@@ -624,6 +684,12 @@ class PrefsWindow(Gtk.Window):
         for row in self._tuner_rows:
             prof = {k: v for k, v in row["profile"].items() if k not in ("present", "lnb")}
             prof["enabled"] = row["on"].get_active()
+            prof["label"] = row["label"].get_text().strip()
+            if not prof["label"]:
+                del prof["label"]
+            prof.pop("use", None)
+            if row["use"] is not None and row["use"].get_selected() > 0:
+                prof["use"] = row["uses"][row["use"].get_selected()]
             prof["priority"] = int(row["prio"].get_value())
             if row["group"] is not None:
                 prof["group"] = row["group"].get_text().strip()

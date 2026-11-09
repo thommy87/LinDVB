@@ -3574,3 +3574,48 @@ msgstr "مانند سیستم"
 
 msgid "The picture always keeps its dark frame."
 msgstr "تصویر همیشه قاب تیرهٔ خود را نگه می‌دارد."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "فقط تیونرهایی که اکنون وصل هستند نمایش داده می‌شوند؛ تنظیمات بقیه زیر «وصل نیست» نگه داشته می‌شود."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "به‌جای فقط جریان‌های خود کانال، هر چه ترنسپوندر می‌فرستد را دریافت می‌کند. در تیونرهای USB پهنای باند بیشتری می‌گیرد، اما همهٔ ترک‌های صدا را پخش و ضبط می‌کند، حتی وقتی فهرست کانال فقط یکی را می‌شناسد. برای تلویزیون زنده و ضبط‌ها اعمال می‌شود."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "نام دلخواه شما برای این تیونر. خالی: نام دستگاه."
+
+msgid "Satellite"
+msgstr "ماهواره"
+
+msgid "Antenna (terrestrial)"
+msgstr "آنتن (زمینی)"
+
+msgid "Cable"
+msgstr "کابل"
+
+msgid "Connected to"
+msgstr "وصل به"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "تیونر ترکیبی هر بار فقط یک نوع را از درگاهی که به آن وصل است دریافت می‌کند. LinDVB سپس فقط برای کانال‌های همان نوع از آن استفاده می‌کند."
+
+msgid "No tuner is connected."
+msgstr "هیچ تیونری وصل نیست."
+
+msgid "Not connected ({n})"
+msgstr "وصل نیست ({n})"
+
+msgid "All its reception types"
+msgstr "همهٔ انواع دریافت آن"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "فایل‌های تصویری (PNG، SVG، JPG) به نام کانال، مثلاً «Bayern 3.png»، یا مجموعهٔ پیکونی که Enigma2، Kodi و VDR به کار می‌برند (نام‌گذاری‌شده با ارجاع سرویس یا نام SNP). در فهرست کانال هم نمایش داده می‌شوند. LinDVB هیچ لوگویی همراه ندارد، چون لوگوها متعلق به پخش‌کنندگان‌اند. خالی: {v0}"
+
+msgid "Picon sets"
+msgstr "مجموعه‌های پیکون"
+
+msgid "Find picons online"
+msgstr "یافتن پیکون در اینترنت"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "از آنجا مجموعه‌ای برای ماهواره، کابل یا آنتن خود بارگیری کنید و آن را در پوشهٔ لوگو باز کنید."

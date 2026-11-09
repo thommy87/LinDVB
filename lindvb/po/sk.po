@@ -3519,3 +3519,48 @@ msgstr "Podľa systému"
 
 msgid "The picture always keeps its dark frame."
 msgstr "Obraz si vždy zachová tmavý rámik."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Zobrazujú sa len tunery pripojené teraz; nastavenia ostatných zostávajú v časti „Nepripojené“."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Prijíma všetko, čo transpondér vysiela, nie len vlastné prúdy kanála. Pri tuneroch USB to stojí viac šírky pásma, ale prehráva a nahráva všetky zvukové stopy, aj keď zoznam kanálov pozná len jednu. Platí pre živé vysielanie aj nahrávky."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Váš vlastný názov tohto tunera. Prázdne: názov zariadenia."
+
+msgid "Satellite"
+msgstr "Satelit"
+
+msgid "Antenna (terrestrial)"
+msgstr "Anténa (pozemná)"
+
+msgid "Cable"
+msgstr "Kábel"
+
+msgid "Connected to"
+msgstr "Pripojené k"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Kombinovaný tuner prijíma vždy len jeden typ, zo zásuvky, ku ktorej je pripojený. LinDVB ho potom používa len pre kanály tohto typu."
+
+msgid "No tuner is connected."
+msgstr "Nie je pripojený žiadny tuner."
+
+msgid "Not connected ({n})"
+msgstr "Nepripojené ({n})"
+
+msgid "All its reception types"
+msgstr "Všetky jeho typy príjmu"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Obrázky (PNG, SVG, JPG) pomenované podľa kanála, napr. „Bayern 3.png“, alebo sada piconov, akú používajú Enigma2, Kodi a VDR (pomenované podľa referencie služby alebo mena SNP). Zobrazujú sa aj v zozname kanálov. LinDVB nedodáva žiadne logá, pretože patria vysielateľom. Prázdne: {v0}"
+
+msgid "Picon sets"
+msgstr "Sady piconov"
+
+msgid "Find picons online"
+msgstr "Nájsť picony na internete"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Stiahnite si tam sadu pre svoj satelit, kábel alebo anténu a rozbaľte ju do priečinka s logami."
