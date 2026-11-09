@@ -3873,3 +3873,103 @@ msgstr "Zustimmen"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Zum Zustimmen den Datenschutzhinweis bis zum Ende lesen."
+
+#: lindvb/favourites.py
+msgid "Favourites"
+msgstr "Favoriten"
+
+#: lindvb/ui/dialogs.py
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "Favoritenlisten anlegen, umbenennen, löschen und sortieren."
+
+#: lindvb/ui/favourites.py
+msgid "Delete list"
+msgstr "Liste löschen"
+
+#: lindvb/ui/favourites.py
+msgid "Delete the list “{name}”?"
+msgstr "Die Liste „{name}“ löschen?"
+
+#: lindvb/ui/favourites.py
+msgid "Favourites Lists"
+msgstr "Favoritenlisten"
+
+#: lindvb/ui/window.py
+msgid "Favourites Lists…"
+msgstr "Favoritenlisten…"
+
+#: lindvb/ui/window.py
+msgid "Favourites lists"
+msgstr "Favoritenlisten"
+
+#: lindvb/ui/window.py
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "Filter; die Favoritenlisten zeigen TV und Radio"
+
+#: lindvb/ui/dialogs.py
+msgid "In no favourites list"
+msgstr "In keiner Favoritenliste"
+
+#: lindvb/ui/window.py
+msgid "Manage favourites lists"
+msgstr "Favoritenlisten verwalten"
+
+#: lindvb/ui/window.py
+msgid "Manage favourites lists…"
+msgstr "Favoritenlisten verwalten…"
+
+#: lindvb/ui/window.py
+msgid "Move to the bottom"
+msgstr "Ganz nach unten"
+
+#: lindvb/ui/window.py
+msgid "Move to the top"
+msgstr "Ganz nach oben"
+
+#: lindvb/ui/favourites.py
+msgid "Name of the favourites list"
+msgstr "Name der Favoritenliste"
+
+#: lindvb/ui/favourites.py
+msgid "New Favourites List"
+msgstr "Neue Favoritenliste"
+
+#: lindvb/ui/favourites.py
+msgid "New list"
+msgstr "Neue Liste"
+
+#: lindvb/ui/window.py
+msgid "New list…"
+msgstr "Neue Liste…"
+
+#: lindvb/ui/epg.py
+msgid "Only the channels of a favourites list"
+msgstr "Nur die Sender einer Favoritenliste"
+
+#: lindvb/ui/window.py
+msgid "Order in this list"
+msgstr "Reihenfolge in dieser Liste"
+
+#: lindvb/ui/window.py
+msgid "Remove from “{name}”"
+msgstr "Aus „{name}“ entfernen"
+
+#: lindvb/ui/favourites.py
+msgid "Rename Favourites List"
+msgstr "Favoritenliste umbenennen"
+
+#: lindvb/ui/favourites.py
+msgid "Rename"
+msgstr "Umbenennen"
+
+#: lindvb/ui/favourites.py
+msgid "The channels stay in the channel list."
+msgstr "Die Sender bleiben in der Senderliste."
+
+#: lindvb/ui/favourites.py
+msgid "{n} channels"
+msgstr "{n} Sender"
+
+#: lindvb/ui/favourites.py
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "Jede Liste hat ihre eigene Reihenfolge. Sortiert werden die Sender einer Liste in der Senderliste: Liste auswählen, dann die Sender ziehen oder das Rechtsklickmenü nutzen."

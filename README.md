@@ -58,9 +58,10 @@ them.
 ### Watching and listening
 
 * Separate TV and radio: a TV/Radio switch (Ctrl+M) above the channel list, which
-  shows one kind at a time; favourites mix both. LinDVB remembers the last channel
+  shows one kind at a time; favourites lists mix both. LinDVB remembers the last channel
   of each kind and tunes the last one again at start
-* Channel list with search, favourites/FTA/encrypted/HD/internet filters and
+* Channel list with search, several freely sorted favourites lists,
+  FTA/encrypted/HD/internet filters and
   groups; channel number entry, last channel, channel and favourite zapping
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
