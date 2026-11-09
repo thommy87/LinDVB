@@ -3564,3 +3564,18 @@ msgstr "Caută picon-uri online"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Descărcați acolo un set pentru satelitul, cablul sau antena dvs. și dezarhivați-l în dosarul de logo-uri."
+
+msgid "Extra streams"
+msgstr "Fluxuri suplimentare"
+
+msgid "New timer"
+msgstr "Temporizator nou"
+
+msgid "Edit timer"
+msgstr "Editare temporizator"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (din preferințe)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} pot fi păstrate doar în MPEG-TS, așa că se folosește TS."

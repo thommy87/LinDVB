@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Timer recordings window (one-off, repeating and series timers).
 
-Laid out like a classic recorder programming dialog: channel list with search on
-the left, the timers on the top right and the editor for the selected timer
-below it (date, lead/follow time, start/end, weekdays, channel, name, timer
-action, action after recording, container format, extra streams, file naming
-scheme and folder).
+Channel list with search on the left. On the right the timers and series
+rules as tabs on top, below them the editor in the order programme, time,
+recording and file, and the editor's buttons along the bottom edge.
 """
 
 import time

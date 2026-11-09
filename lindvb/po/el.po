@@ -3564,3 +3564,18 @@ msgstr "Εύρεση picon στο διαδίκτυο"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφόρο, το καλωδιακό ή την κεραία σας και αποσυμπιέστε το στον φάκελο λογοτύπων."
+
+msgid "Extra streams"
+msgstr "Πρόσθετες ροές"
+
+msgid "New timer"
+msgstr "Νέο χρονόμετρο"
+
+msgid "Edit timer"
+msgstr "Επεξεργασία χρονομέτρου"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (από τις προτιμήσεις)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} μπορούν να διατηρηθούν μόνο σε MPEG-TS, οπότε χρησιμοποιείται TS."

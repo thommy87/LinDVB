@@ -3564,3 +3564,18 @@ msgstr "Hitta picons på nätet"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Hämta där en uppsättning för din satellit, ditt kabelnät eller din antenn och packa upp den i logotypmappen."
+
+msgid "Extra streams"
+msgstr "Extra strömmar"
+
+msgid "New timer"
+msgstr "Ny timer"
+
+msgid "Edit timer"
+msgstr "Redigera timer"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (från inställningarna)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} kan bara behållas i MPEG-TS, så TS används."

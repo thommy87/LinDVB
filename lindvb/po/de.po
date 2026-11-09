@@ -3834,3 +3834,18 @@ msgstr "Picons im Internet finden"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Lade dort einen Satz für deinen Satelliten, dein Kabel oder deine Antenne herunter und entpacke ihn in den Logo-Ordner."
+
+msgid "Extra streams"
+msgstr "Zusatzströme"
+
+msgid "New timer"
+msgstr "Neuer Timer"
+
+msgid "Edit timer"
+msgstr "Timer bearbeiten"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (aus den Einstellungen)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} können nur in MPEG-TS erhalten bleiben, daher wird TS verwendet."

@@ -3619,3 +3619,18 @@ msgstr "یافتن پیکون در اینترنت"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "از آنجا مجموعه‌ای برای ماهواره، کابل یا آنتن خود بارگیری کنید و آن را در پوشهٔ لوگو باز کنید."
+
+msgid "Extra streams"
+msgstr "جریان‌های اضافی"
+
+msgid "New timer"
+msgstr "زمان‌سنج جدید"
+
+msgid "Edit timer"
+msgstr "ویرایش زمان‌سنج"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (از تنظیمات)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} فقط در MPEG-TS حفظ می‌شوند، بنابراین از TS استفاده می‌شود."

@@ -3564,3 +3564,18 @@ msgstr "Nájsť picony na internete"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Stiahnite si tam sadu pre svoj satelit, kábel alebo anténu a rozbaľte ju do priečinka s logami."
+
+msgid "Extra streams"
+msgstr "Ďalšie streamy"
+
+msgid "New timer"
+msgstr "Nový časovač"
+
+msgid "Edit timer"
+msgstr "Upraviť časovač"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (z predvolieb)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} sa dajú zachovať iba v MPEG-TS, preto sa použije TS."

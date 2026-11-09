@@ -3564,3 +3564,18 @@ msgstr "Aimsigh picons ar líne"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Íoslódáil tacar do do shatailít, do chábla nó d’aeróg ansin agus díphacáil é san fhillteán lógónna."
+
+msgid "Extra streams"
+msgstr "Sruthanna breise"
+
+msgid "New timer"
+msgstr "Amadóir nua"
+
+msgid "Edit timer"
+msgstr "Cuir an t-amadóir in eagar"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (ó na roghanna)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "Ní féidir {items} a choinneáil ach in MPEG-TS, mar sin úsáidtear TS."
