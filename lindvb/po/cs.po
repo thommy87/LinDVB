@@ -3568,3 +3568,18 @@ msgstr "Stáhněte si tam sadu pro svůj satelit, kabel nebo anténu a rozbalte 
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Poskytovatel / Kategorie"
+
+msgid "Extra streams"
+msgstr "Další streamy"
+
+msgid "New timer"
+msgstr "Nový časovač"
+
+msgid "Edit timer"
+msgstr "Upravit časovač"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (z předvoleb)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} lze zachovat pouze v MPEG-TS, proto se použije TS."

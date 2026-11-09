@@ -3568,3 +3568,18 @@ msgstr "Ten atsisiųskite rinkinį savo palydovui, kabeliui ar antenai ir išpak
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Teikėjas / Kategorija"
+
+msgid "Extra streams"
+msgstr "Papildomi srautai"
+
+msgid "New timer"
+msgstr "Naujas laikmatis"
+
+msgid "Edit timer"
+msgstr "Redaguoti laikmatį"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (iš nuostatų)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} galima išsaugoti tik MPEG-TS, todėl naudojamas TS."

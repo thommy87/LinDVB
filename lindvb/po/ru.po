@@ -3568,3 +3568,18 @@ msgstr "Скачайте там набор для вашего спутника,
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Провайдер / Категория"
+
+msgid "Extra streams"
+msgstr "Дополнительные потоки"
+
+msgid "New timer"
+msgstr "Новый таймер"
+
+msgid "Edit timer"
+msgstr "Изменить таймер"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (из настроек)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} можно сохранить только в MPEG-TS, поэтому используется TS."

@@ -3568,3 +3568,18 @@ msgstr "Laadi sealt alla komplekt oma satelliidi, kaabli või antenni jaoks ja p
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Pakkuja / Kategooria"
+
+msgid "Extra streams"
+msgstr "Lisavood"
+
+msgid "New timer"
+msgstr "Uus taimer"
+
+msgid "Edit timer"
+msgstr "Muuda taimerit"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (eelistustest)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} saab säilitada ainult MPEG-TS-is, seega kasutatakse TS-i."

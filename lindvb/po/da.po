@@ -3568,3 +3568,18 @@ msgstr "Hent et sæt til din satellit, dit kabel eller din antenne der, og pak d
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Udbyder / Kategori"
+
+msgid "Extra streams"
+msgstr "Ekstra streams"
+
+msgid "New timer"
+msgstr "Ny timer"
+
+msgid "Edit timer"
+msgstr "Rediger timer"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (fra indstillingerne)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} kan kun bevares i MPEG-TS, så TS bruges."

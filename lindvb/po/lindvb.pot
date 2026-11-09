@@ -5021,3 +5021,23 @@ msgstr ""
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "Extra streams"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "New timer"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "Edit timer"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "{folder} (from the preferences)"
+msgstr ""
+
+#: lindvb/ui/timers.py
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr ""

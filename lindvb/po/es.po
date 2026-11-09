@@ -3568,3 +3568,18 @@ msgstr "Descargue allí un conjunto para su satélite, cable o antena y descompr
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Proveedor / Categoría"
+
+msgid "Extra streams"
+msgstr "Flujos adicionales"
+
+msgid "New timer"
+msgstr "Nuevo temporizador"
+
+msgid "Edit timer"
+msgstr "Editar temporizador"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (de las preferencias)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} solo se pueden conservar en MPEG-TS, por eso se usa TS."

@@ -3568,3 +3568,18 @@ msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφ
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Πάροχος / Κατηγορία"
+
+msgid "Extra streams"
+msgstr "Πρόσθετες ροές"
+
+msgid "New timer"
+msgstr "Νέο χρονόμετρο"
+
+msgid "Edit timer"
+msgstr "Επεξεργασία χρονομέτρου"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (από τις προτιμήσεις)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} μπορούν να διατηρηθούν μόνο σε MPEG-TS, οπότε χρησιμοποιείται TS."

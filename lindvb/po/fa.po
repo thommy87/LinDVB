@@ -3623,3 +3623,18 @@ msgstr "از آنجا مجموعه‌ای برای ماهواره، کابل ی�
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "ارائه‌دهنده / دسته"
+
+msgid "Extra streams"
+msgstr "جریان‌های اضافی"
+
+msgid "New timer"
+msgstr "زمان‌سنج جدید"
+
+msgid "Edit timer"
+msgstr "ویرایش زمان‌سنج"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (از تنظیمات)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} فقط در MPEG-TS حفظ می‌شوند، بنابراین از TS استفاده می‌شود."

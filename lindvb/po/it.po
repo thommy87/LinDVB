@@ -3652,3 +3652,18 @@ msgstr "Scarica lì un set per il tuo satellite, cavo o antenna e scompattalo ne
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Fornitore / Categoria"
+
+msgid "Extra streams"
+msgstr "Flussi aggiuntivi"
+
+msgid "New timer"
+msgstr "Nuovo timer"
+
+msgid "Edit timer"
+msgstr "Modifica timer"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (dalle preferenze)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} possono essere conservati solo in MPEG-TS, quindi si usa TS."

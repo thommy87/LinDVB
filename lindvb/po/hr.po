@@ -3568,3 +3568,18 @@ msgstr "Ondje preuzmite skup za svoj satelit, kabel ili antenu i raspakirajte ga
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Pružatelj / Kategorija"
+
+msgid "Extra streams"
+msgstr "Dodatni tokovi"
+
+msgid "New timer"
+msgstr "Novi mjerač vremena"
+
+msgid "Edit timer"
+msgstr "Uredi mjerač vremena"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (iz postavki)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} mogu se zadržati samo u MPEG-TS-u, pa se koristi TS."

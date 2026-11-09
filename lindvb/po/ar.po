@@ -3568,3 +3568,18 @@ msgstr "نزّل من هناك مجموعة لقمرك الصناعي أو ال�
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "المزوّد / الفئة"
+
+msgid "Extra streams"
+msgstr "تدفقات إضافية"
+
+msgid "New timer"
+msgstr "مؤقت جديد"
+
+msgid "Edit timer"
+msgstr "تحرير المؤقت"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (من التفضيلات)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "لا يمكن الاحتفاظ بـ {items} إلا في MPEG-TS، لذا يُستخدم TS."

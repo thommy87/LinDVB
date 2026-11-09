@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Timer recordings window (one-off, repeating and series timers).
 
-Laid out like a classic recorder programming dialog: channel list with search on
-the left, the timers on the top right and the editor for the selected timer
-below it (date, lead/follow time, start/end, weekdays, channel, name, timer
-action, action after recording, container format, extra streams, file naming
-scheme and folder).
+Channel list with search on the left. On the right the timers and series
+rules as tabs on top, below them the editor in the order programme, time,
+recording and file, and the editor's buttons along the bottom edge.
 """
 
 import time
@@ -115,7 +113,7 @@ class FormatChooser:
 class TimersWindow(Gtk.Window):
     def __init__(self, app, parent):
         super().__init__(title=_("Recording Timers"), transient_for=parent,
-                         default_width=1240, default_height=760)
+                         default_width=1240, default_height=820)
         self.app = app
         self.channel = None
         self.date = date.today()
@@ -127,12 +125,12 @@ class TimersWindow(Gtk.Window):
         self.cview, self.cstore, self.csel = make_column_view(
             [(_("Channel"), lambda c: c.name + (_("  (Radio)") if c.radio else ""), True)])
         self.csel.connect("notify::selected-item", lambda *_: self._pick_channel(selected(self.csel)))
-        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_start=8,
-                       margin_top=8, margin_bottom=8)
+        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=12,
+                       margin_end=12, margin_top=12, margin_bottom=12)
         left.append(self.search)
-        left.append(scrolled(self.cview))
+        left.append(Gtk.Frame(child=scrolled(self.cview)))
 
-        # -- timer list (top right) ---------------------------------------------
+        # -- timers and series rules (top right) --------------------------------
         cols = [(_("Channel"), lambda t: t.channel_name, False),
                 (_("Date"), lambda t: day(t.start), False),
                 (_("Start"), lambda t: hm(t.start), False), (_("End"), lambda t: hm(t.end), False),
@@ -149,18 +147,40 @@ class TimersWindow(Gtk.Window):
         self.sel.set_can_unselect(True)
         self.sel.connect("notify::selected-item", lambda *_: self._load(selected(self.sel)))
 
-        right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_end=8,
-                        margin_top=8, margin_bottom=8)
-        sw = scrolled(self.view)
-        sw.set_size_request(-1, 200)
-        right.append(sw)
-        right.append(self._editor())
-        right.append(self._buttons())
-        right.append(self._series())
+        self.lists = Gtk.Stack(vexpand=True)
+        self.lists.add_titled(Gtk.Frame(child=scrolled(self.view)), "timers", _("Timers"))
+        self.lists.add_titled(self._series(), "series", _("Series recordings"))
+        head = Gtk.Box(spacing=6)
+        head.append(Gtk.StackSwitcher(stack=self.lists))
+        head.append(Gtk.Box(hexpand=True))
+        self.list_btns = self._list_buttons()
+        head.append(self.list_btns)
+        self.lists.connect("notify::visible-child-name", lambda *_: self.list_btns.set_visible(
+            self.lists.get_visible_child_name() == "timers"))
+        top = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=16,
+                      margin_end=16, margin_top=12, margin_bottom=12)
+        top.append(head)
+        top.append(self.lists)
 
-        paned = Gtk.Paned(position=260, shrink_start_child=False)
+        # -- editor (bottom right), its buttons always visible below it ---------
+        editor = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, margin_start=16,
+                         margin_end=16, margin_top=12, margin_bottom=12)
+        self.ed_title = Gtk.Label(xalign=0, css_classes=["lv-page-title"])
+        editor.append(self.ed_title)
+        editor.append(self._editor())
+        split = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL, position=230, wide_handle=True,
+                          shrink_start_child=False, shrink_end_child=False)
+        split.set_start_child(top)
+        split.set_end_child(scrolled(editor))
+        right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-dialog-pane"])
+        right.append(split)
+        right.append(Gtk.Separator())
+        right.append(self._buttons())
+
+        paned = Gtk.Paned(position=280, wide_handle=True, shrink_start_child=False,
+                          shrink_end_child=False)
         paned.set_start_child(left)
-        paned.set_end_child(scrolled(right))
+        paned.set_end_child(right)
         self.set_child(paned)
 
         self._fill_channels()
@@ -171,22 +191,39 @@ class TimersWindow(Gtk.Window):
 
     # -- editor ---------------------------------------------------------------
     def _editor(self):
-        """The editor in titled groups, laid out like the preferences."""
+        """The editor in titled groups, laid out like the preferences: what, when,
+        how and where to record. Labels sit left of their fields."""
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         def section(title):
             box.append(Gtk.Label(label=title, xalign=0, css_classes=["lv-section-title"],
-                                 margin_top=6))
-            grid = Gtk.Grid(row_spacing=4, column_spacing=10, margin_top=8, margin_bottom=10)
+                                 margin_top=10))
+            grid = Gtk.Grid(row_spacing=10, column_spacing=12, margin_top=10, margin_bottom=10)
             frame = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
             frame.append(grid)
             box.append(frame)
             return grid
 
-        g = section(_("Time"))
+        def field(grid, col, row, text, widget, width=1, label_for=None):
+            lbl = _label(text, label_for or widget)
+            lbl.add_css_class("lv-field-label")
+            grid.attach(lbl, col, row, 1, 1)
+            grid.attach(widget, col + 1, row, width, 1)
+            return lbl
+
         s = self.app.settings
 
-        # Row 1: date, lead, start, end, follow, weekdays
+        # channel and name
+        g = section(_("Programme"))
+        self.ch_e = Gtk.Entry(editable=False, can_focus=False, width_chars=24,
+                              placeholder_text=_("Pick a channel on the left"))
+        self.title_e = Gtk.Entry(hexpand=True)
+        self.title_e.connect("changed", lambda *_: self._update_preview())
+        field(g, 0, 0, _("Channel"), self.ch_e)
+        field(g, 2, 0, _("_Name"), self.title_e)
+
+        # date, start, end, lead, follow, weekdays
+        g = section(_("Time"))
         self.cal = Gtk.Calendar()
         self.cal.connect("day-selected", self._on_day_selected)
         pop = Gtk.Popover(child=self.cal)
@@ -195,33 +232,30 @@ class TimersWindow(Gtk.Window):
         self.start_e = _time_entry()
         self.end_e = _time_entry()
         self.follow = Gtk.SpinButton.new_with_range(0, 360, 1)
-        days = Gtk.Box(spacing=2)
+        days = Gtk.Box(spacing=4)
         self.day_btns = []
         for d in WEEKDAYS:
             b = Gtk.ToggleButton(label=_(d))
             b.set_tooltip_text(_("Repeat every {day}").format(day=_(d)))
             days.append(b)
             self.day_btns.append(b)
-        for col, (text, w) in enumerate(((_("_Date"), self.date_btn), (_("_Lead (min)"), self.lead),
-                                         (_("_Start"), self.start_e), (_("_End"), self.end_e),
-                                         (_("_Follow (min)"), self.follow), (_("Repeat on"), days))):
-            g.attach(_label(text, w), col, 0, 1, 1)
-            g.attach(w, col, 1, 1, 1)
+        field(g, 0, 0, _("_Date"), self.date_btn)
+        field(g, 2, 0, _("_Start"), self.start_e)
+        field(g, 4, 0, _("_End"), self.end_e)
+        field(g, 0, 1, _("_Lead (min)"), self.lead)
+        field(g, 2, 1, _("_Follow (min)"), self.follow)
+        field(g, 0, 2, _("Repeat on"), days, width=5)
 
-        # channel and name
-        g = section(_("Programme"))
-        self.ch_e = Gtk.Entry(editable=False, can_focus=False, width_chars=26,
-                              placeholder_text=_("Pick a channel on the left"))
-        self.title_e = Gtk.Entry(hexpand=True)
-        self.title_e.connect("changed", lambda *_: self._update_preview())
-        g.attach(_label(_("Channel")), 0, 0, 2, 1)
-        g.attach(self.ch_e, 0, 1, 2, 1)
-        g.attach(_label(_("_Name"), self.title_e), 2, 0, 4, 1)
-        g.attach(self.title_e, 2, 1, 4, 1)
-
-        # actions and formats, tracks on the right
+        # what the timer does, then formats and tracks
         g = section(C_("preferences page", "Recording"))
-        g.set_column_homogeneous(True)
+        self.action = dropdown([_(a) for a in TIMER_ACTIONS])
+        self.after = dropdown([_(a) for a in AFTER_ACTIONS])
+        self.action.connect("notify::selected", lambda *_: self._sync_action())
+        for w in (self.action, self.after):
+            w.set_hexpand(True)
+        field(g, 0, 0, _("_Timer action"), self.action)
+        field(g, 2, 0, _("_After recording"), self.after)
+        g.attach(Gtk.Separator(margin_top=2, margin_bottom=2), 0, 1, 4, 1)
         # formats and tracks: from the preferences, or chosen for this timer;
         # for a series timer also: the whole series or this recording only
         self.opt_mode = dropdown([_("General settings"), _("For this recording")])
@@ -229,42 +263,28 @@ class TimersWindow(Gtk.Window):
             _("General settings: formats, audio tracks and extra streams come from the "
               "preferences when the recording starts."))
         self.opt_mode.connect("notify::selected", lambda *_: self._on_opt_mode())
-        g.attach(_label(_("Formats and _tracks"), self.opt_mode), 0, -2, 2, 1)
-        g.attach(self.opt_mode, 0, -1, 2, 1)
+        field(g, 0, 2, _("Formats and _tracks"), self.opt_mode)
         self.scope = dropdown([_("Whole series"), _("Next recording only")])
-        self.scope_lbl = _label(_("_Apply to"), self.scope)
-        g.attach(self.scope_lbl, 2, -2, 2, 1)
-        g.attach(self.scope, 2, -1, 2, 1)
+        self.scope_lbl = field(g, 2, 2, _("_Apply to"), self.scope)
         self._show_scope(False)
-        self.action = dropdown([_(a) for a in TIMER_ACTIONS])
-        self.after = dropdown([_(a) for a in AFTER_ACTIONS])
         self.tv_fmt = FormatChooser(TV_FORMATS, radio=False)
         self.radio_fmt = FormatChooser(RADIO_FORMATS, radio=True)
         for w in (self.tv_fmt.widget, self.radio_fmt.widget):
             w.connect("notify::selected", lambda *_: self._format_changed())
-        self.action.connect("notify::selected", lambda *_: self._sync_action())
-        g.attach(_label(_("_Timer action"), self.action), 0, 0, 2, 1)
-        g.attach(self.action, 0, 1, 2, 1)
-        g.attach(_label(_("_After recording"), self.after), 0, 2, 2, 1)
-        g.attach(self.after, 0, 3, 2, 1)
-        g.attach(_label(_("T_V format"), self.tv_fmt.widget), 2, 0, 2, 1)
-        g.attach(self.tv_fmt.widget, 2, 1, 2, 1)
-        g.attach(_label(_("_Radio format"), self.radio_fmt.widget), 2, 2, 2, 1)
-        g.attach(self.radio_fmt.widget, 2, 3, 2, 1)
-
-        ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, valign=Gtk.Align.START)
+        field(g, 0, 3, _("T_V format"), self.tv_fmt.widget)
+        field(g, 2, 3, _("_Radio format"), self.radio_fmt.widget)
         self.audio = dropdown([AUDIO_MODE_LABELS[m] for m in AUDIO_MODES])
         self.audio.set_tooltip_text(
             _("Preferred language only: the tracks in the audio language from the preferences, "
             "without audio description. MP4 and the radio audio file keep one track."))
         self.audio.connect("notify::selected", lambda *_: self._sync_formats())
-        ebox.append(_label(_("Audi_o tracks"), self.audio))
-        ebox.append(self.audio)
+        field(g, 0, 4, _("Audi_o tracks"), self.audio)
+        extras = Gtk.Grid(row_spacing=4, column_spacing=24)
         self.extra_btns = {}
-        for e in EXTRAS:
+        for i, e in enumerate(EXTRAS):
             b = Gtk.CheckButton(label=EXTRA_LABELS[e])
             b.connect("toggled", lambda *_: self._sync_formats())
-            ebox.append(b)
+            extras.attach(b, i % 2, i // 2, 1, 1)
             self.extra_btns[e] = b
         self.extra_btns["teletext"].set_tooltip_text(_("Teletext only exists in MPEG-TS, so TS is used."))
         self.extra_btns["epg_data"].set_tooltip_text(_("EPG data (EIT) only exists in MPEG-TS, so TS is used."))
@@ -272,20 +292,22 @@ class TimersWindow(Gtk.Window):
         self.extra_btns["subtitles"].set_tooltip_text(
             _("TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; "
             "DVB bitmap subtitles are kept in TS only."))
-        g.attach(ebox, 4, 0, 2, 4)
+        lbl = field(g, 0, 5, _("Extra streams"), extras, width=3)
+        lbl.set_valign(Gtk.Align.START)
         self.fmt_hint = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"])
-        g.attach(self.fmt_hint, 0, 4, 6, 1)
+        g.attach(self.fmt_hint, 0, 6, 4, 1)
 
         # file naming scheme, placeholders, folder
         g = section(_("File"))
         self.scheme_e = Gtk.Entry(hexpand=True)
         self.scheme_e.connect("changed", lambda *_: self._update_preview())
-        g.attach(_label(_("File _naming scheme"), self.scheme_e), 0, 0, 4, 1)
-        g.attach(self.scheme_e, 0, 1, 4, 1)
-        g.attach(self._placeholder_button(), 4, 1, 1, 1)
         folder_btn = Gtk.Button(label=_("Folder…"))
         folder_btn.connect("clicked", lambda *_: self._choose_folder())
-        g.attach(folder_btn, 5, 1, 1, 1)
+        sbox = Gtk.Box(spacing=6)
+        sbox.append(self.scheme_e)
+        sbox.append(self._placeholder_button())
+        sbox.append(folder_btn)
+        field(g, 0, 0, _("File _naming scheme"), sbox, label_for=self.scheme_e)
         self.folder_lbl = Gtk.Label(xalign=0, ellipsize=1, hexpand=True, css_classes=["lv-hint"])
         reset = Gtk.Button(icon_name="edit-undo-symbolic", css_classes=["flat"],
                            tooltip_text=_("Use the recording folder from the preferences"))
@@ -293,9 +315,9 @@ class TimersWindow(Gtk.Window):
         fbox = Gtk.Box(spacing=4)
         fbox.append(self.folder_lbl)
         fbox.append(reset)
-        g.attach(fbox, 0, 2, 6, 1)
+        g.attach(fbox, 0, 1, 2, 1)
         self.preview = Gtk.Label(xalign=0, ellipsize=1, selectable=True, css_classes=["lv-hint"])
-        g.attach(self.preview, 0, 3, 6, 1)
+        g.attach(self.preview, 0, 2, 2, 1)
         self.scheme_e.set_tooltip_text(", ".join(p for p, _unused in PLACEHOLDERS))
         self._default_scheme = s["name_scheme"]
         return box
@@ -336,26 +358,42 @@ class TimersWindow(Gtk.Window):
 
     def _set_folder(self, folder):
         self.folder = folder
-        shown = folder or f"{self.app.settings['recording_dir']} (from the preferences)"
+        shown = folder or _("{folder} (from the preferences)").format(
+            folder=self.app.settings["recording_dir"])
         self.folder_lbl.set_text(_("Folder: ") + shown)
         self._update_preview()
 
-    def _buttons(self):
+    def _list_buttons(self):
+        """Buttons that act on the timer selected in the list."""
         box = Gtk.Box(spacing=6)
         for label, fn, tip in (
                 (_("New"), self.on_new, _("Clear the editor")),
-                (_("Add"), self.on_add, _("Add the editor's settings as a new timer")),
-                (_("Apply"), self.on_apply, _("Save the editor's settings to the selected timer")),
-                (_("Delete"), self.on_delete, _("Delete the selected timer")),
                 (_("Enable/Disable"), self.on_toggle, _("Switch the selected timer on or off")),
-                (_("Save as default"), self.on_save_defaults,
-                 _("Use these formats and extra streams for new timers and manual recordings"))):
+                (_("Delete"), self.on_delete, _("Delete the selected timer"))):
             b = Gtk.Button(label=label, tooltip_text=tip)
             b.connect("clicked", lambda _b, fn=fn: fn())
             box.append(b)
-        close = Gtk.Button(label=_("Close"), hexpand=True, halign=Gtk.Align.END)
-        close.connect("clicked", lambda *_: self.close())
-        box.append(close)
+        return box
+
+    def _buttons(self):
+        """The editor's buttons, at the bottom of the window."""
+        box = Gtk.Box(spacing=6, margin_start=16, margin_end=16, margin_top=10, margin_bottom=10)
+        defaults = Gtk.Button(label=_("Save as default"), tooltip_text=_(
+            "Use these formats and extra streams for new timers and manual recordings"))
+        defaults.connect("clicked", lambda *_: self.on_save_defaults())
+        box.append(defaults)
+        box.append(Gtk.Box(hexpand=True))
+        for label, fn, tip, cls in (
+                (_("Close"), self.close, None, None),
+                (_("Apply"), self.on_apply, _("Save the editor's settings to the selected timer"),
+                 None),
+                (_("Add"), self.on_add, _("Add the editor's settings as a new timer"),
+                 "suggested-action")):
+            b = Gtk.Button(label=label, tooltip_text=tip)
+            if cls:
+                b.add_css_class(cls)
+            b.connect("clicked", lambda _b, fn=fn: fn())
+            box.append(b)
         return box
 
     def _series(self):
@@ -363,14 +401,12 @@ class TimersWindow(Gtk.Window):
                  (_("Channel"), lambda r: (self.app.db.by_key(r.channel_key).name
                                         if self.app.db.by_key(r.channel_key) else "Any"), False)]
         self.rview, self.rstore, self.rsel = make_column_view(rcols)
-        rdel = Gtk.Button(label=_("Delete series rule"), halign=Gtk.Align.START)
+        rdel = Gtk.Button(label=_("Delete series rule"), halign=Gtk.Align.END)
         rdel.connect("clicked", lambda *_: self.on_delete_rule())
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        sw = scrolled(self.rview)
-        sw.set_size_request(-1, 110)
-        box.append(sw)
+        box.append(Gtk.Frame(child=scrolled(self.rview)))
         box.append(rdel)
-        return Gtk.Expander(label=_("Series recordings"), child=box)
+        return box
 
     # -- state ----------------------------------------------------------------
     def select(self, timer):
@@ -443,7 +479,8 @@ class TimersWindow(Gtk.Window):
         if iptv:
             notes.append(IPTV_EXTRAS_NOTE)
         if why:
-            notes.append(f"{' and '.join(why)} can only be kept in MPEG-TS, so TS is used.")
+            notes.append(_("{items} can only be kept in MPEG-TS, so TS is used.").format(
+                items=", ".join(why)))
         elif "subtitles" in extras:
             notes.append(_("Subtitles fit into TS or MKV."))
         note = audio_note(fmt, self._audio_mode(), iptv)
@@ -524,6 +561,7 @@ class TimersWindow(Gtk.Window):
     def _load(self, t):
         if not t:
             return
+        self.ed_title.set_text(_("Edit timer"))
         c = self.app.db.by_key(t.channel_key)
         self.channel = c
         self.ch_e.set_text(c.name if c else t.channel_name)
@@ -554,6 +592,7 @@ class TimersWindow(Gtk.Window):
         s = self.app.settings
         now = time.time()
         self.sel.set_selected(Gtk.INVALID_LIST_POSITION)
+        self.ed_title.set_text(_("New timer"))
         self.title_e.set_text("")
         self._set_date(datetime.fromtimestamp(now + 300).date())
         self.start_e.set_text(hm(now + 300))

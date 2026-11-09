@@ -3568,3 +3568,18 @@ msgstr "Lataa sieltä sarja satelliitillesi, kaapelillesi tai antennillesi ja pu
 #: lindvb/chansort.py
 msgid "Provider / category"
 msgstr "Palveluntarjoaja / Luokka"
+
+msgid "Extra streams"
+msgstr "Lisävirrat"
+
+msgid "New timer"
+msgstr "Uusi ajastin"
+
+msgid "Edit timer"
+msgstr "Muokkaa ajastinta"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (asetuksista)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} voidaan säilyttää vain MPEG-TS:ssä, joten käytetään TS:ää."
