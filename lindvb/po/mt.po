@@ -3552,3 +3552,15 @@ msgstr "Mhux imqabbdin ({n})"
 
 msgid "All its reception types"
 msgstr "It-tipi kollha ta' riċeviment tiegħu"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Fajls tal-immaġni (PNG, SVG, JPG) imsemmija għall-kanal, eż. “Bayern 3.png”, jew sett ta’ picons kif jużawh Enigma2, Kodi u VDR (imsemmija skont ir-referenza tas-servizz jew l-isem SNP). Jidhru wkoll fil-lista tal-kanali. LinDVB ma jġibx logos miegħu, għax huma tax-xandara. Vojt: {v0}"
+
+msgid "Picon sets"
+msgstr "Settijiet ta’ picons"
+
+msgid "Find picons online"
+msgstr "Sib picons onlajn"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Niżżel hemm sett għas-satellita, il-kejbil jew l-antenna tiegħek u ftħu fil-folder tal-logos."

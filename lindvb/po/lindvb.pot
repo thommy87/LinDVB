@@ -4924,3 +4924,96 @@ msgstr ""
 
 msgid "All its reception types"
 msgstr ""
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr ""
+
+msgid "Picon sets"
+msgstr ""
+
+msgid "Find picons online"
+msgstr ""
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr ""
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr ""
+
+msgid "margin"
+msgstr ""
+
+msgid "pixel"
+msgstr ""
+
+msgid "Tuners"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "Higher numbers are used first."
+msgstr ""
+
+msgid "Single cable (Unicable)"
+msgstr ""
+
+msgid "All tuners hang on one cable and each has a user band of its own. Give them the same cable name above."
+msgstr ""
+
+msgid "User band"
+msgstr ""
+
+msgid "Each tuner on the cable needs a different user band."
+msgstr ""
+
+msgid "User band frequency (MHz)"
+msgstr ""
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr ""
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr ""
+
+msgid "Fill in from"
+msgstr ""
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr ""
+
+msgid "Reception types unknown"
+msgstr ""
+
+msgid "not connected"
+msgstr ""
+
+msgid "Shared antenna cable"
+msgstr ""
+
+msgid "Give tuners on one cable the same name (loop-through or a splitter on one LNB output). They then only receive one band and polarisation at a time. Empty: own cable."
+msgstr ""
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr ""
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr ""
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr ""
+
+msgid "Unicable I (EN 50494)"
+msgstr ""
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr ""
+
+msgid "Apply the changes to {n} channels?"
+msgstr ""

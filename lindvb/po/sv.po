@@ -3552,3 +3552,15 @@ msgstr "Inte anslutna ({n})"
 
 msgid "All its reception types"
 msgstr "Alla dess mottagningstyper"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Bildfiler (PNG, SVG, JPG) namngivna efter kanalen, t.ex. ”Bayern 3.png”, eller en piconuppsättning som Enigma2, Kodi och VDR använder (namngiven efter tjänstereferens eller SNP-namn). De visas även i kanallistan. LinDVB levererar inga logotyper, eftersom de tillhör kanalerna. Tomt: {v0}"
+
+msgid "Picon sets"
+msgstr "Piconuppsättningar"
+
+msgid "Find picons online"
+msgstr "Hitta picons på nätet"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Hämta där en uppsättning för din satellit, ditt kabelnät eller din antenn och packa upp den i logotypmappen."

@@ -186,7 +186,15 @@ class PrefsWindow(Gtk.Window):
                _("Sends artist and title of the song on air to the iTunes Search API to find "
                "the album, year and cover."))
         entry(g, "logo_dir", _("Station logo folder"),
-              _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}").format(v0=DATA_DIR / 'logos'))
+              _("Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or "
+                "a picon set as Enigma2, Kodi and VDR use it (named by service reference or "
+                "by SNP name). They are shown in the channel list too. LinDVB ships no "
+                "logos, because they belong to the broadcasters. Empty: {v0}"
+                ).format(v0=DATA_DIR / 'logos'))
+        _row(g, _("Picon sets"), Gtk.LinkButton(uri="https://github.com/picons/picons",
+                                                label=_("Find picons online")),
+             _("Download a set for your satellite, cable or antenna there and unpack it "
+               "into the logo folder."))
         self._build_visualisations(group(pg, _("Visualisations")), s, spin, entry, switch)
 
         # -- Playback

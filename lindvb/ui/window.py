@@ -749,7 +749,8 @@ class MainWindow(Gtk.ApplicationWindow):
         c = li.get_item().data
         num, icon, lbl, extra = list(_children(li.get_child()))
         num.set_text(c.vchannel or str(c.number))
-        logo = self._logo_texture(c.logo) if c.logo else None
+        path = self._channel_logo(c)
+        logo = self._logo_texture(path) if path else None
         if logo is not None:
             icon.set_from_paintable(logo)
             icon.set_pixel_size(32)
@@ -767,6 +768,14 @@ class MainWindow(Gtk.ApplicationWindow):
             extra.add_css_class("lv-fav")
         else:
             extra.remove_css_class("lv-fav")
+
+    def _channel_logo(self, c):
+        """The channel's logo file: a picon or logo from the logo folder, else
+        the DVB-I logo, else ""."""
+        from .. import picons
+        from .nowplaying import DEFAULT_LOGO_DIR
+        folders = [self.settings.get("logo_dir") or str(DEFAULT_LOGO_DIR), str(DEFAULT_LOGO_DIR)]
+        return picons.find(c, dict.fromkeys(folders)) or c.logo or ""
 
     def _logo_texture(self, path):
         """Channel logo (DVB-I) for the list, loaded once, with its plain
@@ -2225,7 +2234,7 @@ class MainWindow(Gtk.ApplicationWindow):
             np.set_accent(resolve_accent(self.settings))
             np.set_station(self.player.metadata.get("organization") or name
                            if self.current is None else name, programme,
-                           logo=self.current.logo if self.current is not None else "")
+                           logo=self._channel_logo(self.current) if self.current is not None else "")
             np.tick()
         np.set_visible(show)
 
@@ -2391,7 +2400,7 @@ class MainWindow(Gtk.ApplicationWindow):
             state["title"] = self.current.name
             state["artist"] = meta.get("title") and " – ".join(
                 x for x in (meta.get("artist"), meta.get("title")) if x) or (now.title if now else "")
-            logo = self.current.logo
+            logo = self._channel_logo(self.current)
             state["art"] = Path(logo).as_uri() if logo and Path(logo).is_absolute() else ""
         elif 0 <= self.playlist_pos < len(self.playlist):
             item = self.playlist[self.playlist_pos]

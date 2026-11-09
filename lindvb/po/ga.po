@@ -3552,3 +3552,15 @@ msgstr "Gan cheangal ({n})"
 
 msgid "All its reception types"
 msgstr "A chineálacha glactha go léir"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Comhaid íomhá (PNG, SVG, JPG) ainmnithe as an gcainéal, m.sh. “Bayern 3.png”, nó tacar picon mar a úsáideann Enigma2, Kodi agus VDR é (ainmnithe de réir tagairt seirbhíse nó ainm SNP). Taispeántar sa liosta cainéal iad freisin. Ní sholáthraíonn LinDVB lógónna, mar is leis na craoltóirí iad. Folamh: {v0}"
+
+msgid "Picon sets"
+msgstr "Tacair picon"
+
+msgid "Find picons online"
+msgstr "Aimsigh picons ar líne"
+
+msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgstr "Íoslódáil tacar do do shatailít, do chábla nó d’aeróg ansin agus díphacáil é san fhillteán lógónna."
