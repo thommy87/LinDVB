@@ -9,9 +9,11 @@ GOOM (from gst-plugins-good) and LinDVB's own visualisations stay available.
 The preset folder can be set as "projectm_preset_dir" in settings.json.
 
 GStreamer visualisers render at 320x240 unless told otherwise, which looks
-blocky in full screen. projectM draws with OpenGL, so it is asked for the
-screen's resolution (at most 2560x1440, or "visualizer_resolution" in
-settings.json). The original GOOM runs on the CPU and slows down a lot at
+blocky in full screen. projectM draws with OpenGL; "auto" renders at the
+screen's shape at most 1280x720, which starts fast and keeps up on most
+graphics cards ("visualizer_resolution", Preferences › OSD and
+Visualisations, sets more). A leaky queue in front of the visualiser drops
+audio for the picture when it cannot keep up, so the sound never waits for it. The original GOOM runs on the CPU and slows down a lot at
 high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
 LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
@@ -22,7 +24,7 @@ import sys
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.3"
+VERSION = "1.4"
 
 # the AppImage brings its own collection under its prefix (sys.prefix/share)
 PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
@@ -30,8 +32,9 @@ PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/pro
                "~/.local/share/projectM/presets"]
 TEXTURE_DIRS = [str(Path(sys.prefix) / "share/projectM/textures"), "/usr/share/projectM/textures", "/usr/local/share/projectM/textures",
                 "~/.local/share/projectM/textures"]
-MAX_SIZE = (2560, 1440)
-DEFAULT_SIZE = (1920, 1080)
+MAX_SIZE = (2560, 1440)           # largest size "WIDTHxHEIGHT" may ask for
+AUTO_SIZE = (1280, 720)           # "auto": the screen's shape, at most this
+DEFAULT_SIZE = (1280, 720)
 GOOM_SIZE = (640, 360)
 FRAMERATE = 30
 
@@ -103,6 +106,13 @@ def screen_size(limit=MAX_SIZE, default=DEFAULT_SIZE):
     if not best:
         return default
     w, h = best
+    f = min(1.0, limit[0] / w, limit[1] / h)
+    return int(w * f) & ~1, int(h * f) & ~1
+
+
+def fit(size, limit):
+    """``size`` scaled down to fit ``limit``, shape kept, even sizes."""
+    w, h = size
     f = min(1.0, limit[0] / w, limit[1] / h)
     return int(w * f) & ~1, int(h * f) & ~1
 
@@ -195,10 +205,20 @@ def sized(Gst, element, size, any_memory=False, isolate_gl=False):
     feature = "(ANY)" if any_memory else ""
     caps.set_property("caps", Gst.Caps.from_string(
         f"video/x-raw{feature},width={w},height={h},framerate={FRAMERATE}/1"))
-    bin_.add(element)
-    bin_.add(caps)
+    # playbin feeds the visualiser from the audio tee: when it draws slower
+    # than real time it would hold the sound back until playback stalls. This
+    # queue drops the oldest audio for the picture instead.
+    queue = Gst.ElementFactory.make("queue")
+    queue.set_property("leaky", 2)                     # downstream: drop old buffers
+    queue.set_property("max-size-buffers", 8)
+    queue.set_property("max-size-bytes", 0)
+    queue.set_property("max-size-time", 0)
+    queue.set_property("silent", True)
+    for e in (queue, element, caps):
+        bin_.add(e)
+    queue.link(element)
     element.link(caps)
-    bin_.add_pad(Gst.GhostPad.new("sink", element.get_static_pad("sink")))
+    bin_.add_pad(Gst.GhostPad.new("sink", queue.get_static_pad("sink")))
     bin_.add_pad(Gst.GhostPad.new("src", caps.get_static_pad("src")))
     return bin_
 
@@ -234,7 +254,8 @@ def register(api):
             _set(el, "enable-playlist", True)
             _set(el, "shuffle-presets", True)
             res = s.get("visualizer_resolution", "auto")
-            size = screen_size() if res in (None, "", "auto") else parse_size(res, DEFAULT_SIZE)
+            size = screen_size(AUTO_SIZE) if res in (None, "", "auto") else \
+                fit(parse_size(res, DEFAULT_SIZE), MAX_SIZE)
             return sized(Gst, el, size, any_memory=True, isolate_gl=True)
         api.add_visualizer("projectM (MilkDrop)", element=make_projectm,
                            choices=lambda: preset_folders(preset_root()))

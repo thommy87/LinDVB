@@ -3396,3 +3396,21 @@ msgstr "DVB-I laadt de zenderlijst van internet. Daarvoor neemt LinDVB contact o
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Voer hieronder het adres in van een register van servicelijsten, of direct van een servicelijst."
+
+msgid "Preferred audio format"
+msgstr "Voorkeursaudioformaat"
+
+msgid "As broadcast"
+msgstr "Zoals uitgezonden"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Als een zender of bestand dit geluid in dezelfde taal heeft, wordt het eerst afgespeeld."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

@@ -1247,6 +1247,8 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         if self.current and self.current.key != c.key:
             self.previous = self.current
+        if self._switch_on_transponder(c):
+            return
         self._release_capture()
         self.current = c
         self.stopped = None
@@ -1282,6 +1284,41 @@ class MainWindow(Gtk.ApplicationWindow):
             self.show_osd(secs)
         self._update_transport()
         self._update_visualizer()
+
+    def _switch_on_transponder(self, c):
+        """Zap within the transponder of the live tuner without retuning:
+        the capture keeps running, only the service changes."""
+        cap = self.capture
+        if cap is None or c.is_iptv or c.dvbi_periods or self.stopped is not None or \
+                not hasattr(cap, "can_switch_to") or not cap.can_switch_to(c):
+            return False
+        cap.switch_service(c)
+        self.current = c
+        self.playlist = []
+        self.set_title(f"{c.name} – {APP_NAME}")
+        self._show_picture(True)
+        self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
+        self._tuned = c
+        self._tried = {_tuning_sig(c)}
+        self.oos.set_visible(False)
+        self.quality.reset("dvb")
+        self._update_quality_bar()
+        self.hbbtv.channel_changed(c, cap)
+        self.app.plugins.emit("channel-tuned", c, cap)
+        self.player.play_capture(cap, c.sid, offset=None)
+        self._update_teletext()
+        self._remember(c)
+        if self.tab != "recordings" and (self.mode == "radio") != c.radio:
+            self.set_mode("radio" if c.radio else "tv", tune=False)
+        elif self.tab == "recordings":
+            self.mode = "radio" if c.radio else "tv"
+        self._select_in_list(c)
+        secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
+        if secs > 0:
+            self.show_osd(secs)
+        self._update_transport()
+        self._update_visualizer()
+        return True
 
     def _remember(self, c):
         """Last channel overall (tuned at start) and per kind (for the TV/Radio switch)."""

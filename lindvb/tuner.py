@@ -423,6 +423,25 @@ class Capture(GObject.Object):
         if want != have:
             self._set_pids(":".join(map(str, sorted(want))))
 
+    def can_switch_to(self, channel):
+        """True if live TV may move this capture to *channel* without
+        retuning: same transponder, clear, no descrambler, only live TV."""
+        return (self.users == {"live"} and self.ca is None and not channel.encrypted
+                and channel.key != self.channel.key
+                and tunerprofiles.same_transponder(self.channel, channel))
+
+    def switch_service(self, channel):
+        """Make *channel* (on this transponder) the service of the capture
+        (main loop): its PIDs join the filter, HbbTV follows its AIT."""
+        self.add_channel(channel)
+        self.channel = channel
+        self._pmt_pid = channel.pmt_pid
+        self.ait = None
+        if self.ait_monitor is not None and channel.sid:
+            from .ait import AitMonitor
+            self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait,
+                                          self._on_ait_pids)
+
     def _on_ait_pids(self, pids):
         def deliver():
             pid = pids[0] if pids else 0

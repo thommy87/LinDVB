@@ -3666,3 +3666,21 @@ msgstr "DVB-I lädt die Senderliste aus dem Internet. Dazu kontaktiert LinDVB di
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Geben Sie unten die Adresse einer Service-List-Registry oder direkt einer Service-Liste ein."
+
+msgid "Preferred audio format"
+msgstr "Bevorzugtes Tonformat"
+
+msgid "As broadcast"
+msgstr "Wie gesendet"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Hat ein Sender oder eine Datei diesen Ton in derselben Sprache, wird er zuerst abgespielt."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

@@ -4768,3 +4768,21 @@ msgstr ""
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr ""
+
+msgid "Preferred audio format"
+msgstr ""
+
+msgid "As broadcast"
+msgstr ""
+
+msgid "Stereo (MPEG / AAC)"
+msgstr ""
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr ""
+
+msgid "Dolby Digital (AC-3)"
+msgstr ""
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr ""

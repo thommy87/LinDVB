@@ -158,6 +158,10 @@ DEFAULTS = {
     # Keep the screen saver and screen blanking away while TV, radio or a
     # file plays (Preferences › Playback).
     "inhibit_screensaver": True,
+    # Preferred audio format when a channel or file has several tracks in one
+    # language: "off", "ac3" (Dolby Digital first), "eac3" (Dolby Digital Plus
+    # first) or "stereo" (the MPEG / AAC sound).
+    "audio_prefer": "off",
     # Video decoder (lindvb.hwaccel): "auto" (VA-API, NVDEC, V4L2, then
     # software), one interface ("vaapi", "nvdec", "vulkan", "v4l2") or
     # "software". A GPU decoder that fails falls back to the next one.

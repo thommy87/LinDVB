@@ -3396,3 +3396,21 @@ msgstr "Lódálann DVB-I liosta na gcainéal ón idirlíon. Chuige sin, déanann
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Cuir isteach thíos seoladh clárlainne liostaí seirbhísí, nó seoladh liosta seirbhísí go díreach."
+
+msgid "Preferred audio format"
+msgstr "Formáid fuaime is fearr leat"
+
+msgid "As broadcast"
+msgstr "Mar a chraoltar"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Steiréo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Nuair atá an fhuaim seo ag cainéal nó comhad sa teanga chéanna, seinntear ar dtús í."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

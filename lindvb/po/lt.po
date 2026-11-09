@@ -3396,3 +3396,21 @@ msgstr "DVB-I kanalų sąrašą įkelia iš interneto. Tam LinDVB susisiekia su 
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "Žemiau įveskite paslaugų sąrašų registro adresą arba tiesiogiai paslaugų sąrašo adresą."
+
+msgid "Preferred audio format"
+msgstr "Pageidaujamas garso formatas"
+
+msgid "As broadcast"
+msgstr "Kaip transliuojama"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Kai kanalas ar failas turi šį garsą ta pačia kalba, jis grojamas pirmas."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"

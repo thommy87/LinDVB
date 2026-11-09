@@ -62,6 +62,7 @@ class EPGWindow(Gtk.Window):
         det.set_size_request(-1, 130)
         bar = Gtk.Box(spacing=6)
         for label, fn in ((_("Watch"), self.on_watch), (_("Record"), self.on_record),
+                          (_("Record with Options…"), self.on_record_options),
                           (_("Record Series"), self.on_series), (_("Remind Me"), self.on_remind),
                           (_("Search Web"), self.on_web)):
             b = Gtk.Button(label=label)
@@ -362,6 +363,14 @@ class EPGWindow(Gtk.Window):
         if self.selected_event:
             c, e = self.selected_event
             self.app.timers.add_from_event(c, e)
+
+    def on_record_options(self):
+        """A timer for the programme, opened in the timer window to change the
+        lead and follow time, formats and tracks before it records."""
+        if self.selected_event:
+            c, e = self.selected_event
+            t = self.app.timers.add_from_event(c, e, edit=False)
+            self.app.show_timers(t)
 
     def on_series(self):
         if self.selected_event:

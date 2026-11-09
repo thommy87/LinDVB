@@ -294,10 +294,10 @@ class TimerManager(GObject.Object):
         self.save()
         return timer
 
-    def add_from_event(self, channel, ev, series=False):
+    def add_from_event(self, channel, ev, series=False, edit=True):
         t = self.add(self.new_timer(channel, ev.title, ev.start, ev.end, series=series))
         self.emit("message", f"Timer set: {ev.title}")
-        if not series and self.app.settings.get("timer_edit_after_create") \
+        if edit and not series and self.app.settings.get("timer_edit_after_create") \
                 and hasattr(self.app, "show_timers"):
             GLib.idle_add(lambda: (self.app.show_timers(t), False)[1])
         return t

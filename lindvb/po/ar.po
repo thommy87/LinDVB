@@ -3396,3 +3396,21 @@ msgstr "يحمّل DVB-I قائمة القنوات من الإنترنت. وله
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "أدخل أدناه عنوان سجل لقوائم الخدمات، أو عنوان قائمة خدمات مباشرة."
+
+msgid "Preferred audio format"
+msgstr "تنسيق الصوت المفضل"
+
+msgid "As broadcast"
+msgstr "كما يُبث"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "ستيريو (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "عندما تتوفر هذه الصيغة الصوتية بنفس اللغة في قناة أو ملف، تُشغَّل أولاً."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
