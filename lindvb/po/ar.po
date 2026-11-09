@@ -3556,14 +3556,26 @@ msgstr "كل أنواع الاستقبال لديه"
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr "ملفات صور (PNG وSVG وJPG) مسماة باسم القناة، مثل «Bayern 3.png»، أو مجموعة picon كما يستخدمها Enigma2 وKodi وVDR (مسماة بمرجع الخدمة أو باسم SNP). تظهر أيضاً في قائمة القنوات. لا يتضمن LinDVB أي شعارات لأنها ملك للقنوات. فارغ: {v0}"
 
-msgid "Picon sets"
-msgstr "مجموعات picon"
+msgid "Picons for my channels"
+msgstr "شعارات Picon لقنواتي"
 
-msgid "Find picons online"
-msgstr "البحث عن picon عبر الإنترنت"
+msgid "Download Logos"
+msgstr "تنزيل الشعارات"
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
-msgstr "نزّل من هناك مجموعة لقمرك الصناعي أو الكابل أو الهوائي وفك ضغطها في مجلد الشعارات."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "ينزّل إلى مجلد الشعارات شعارات القنوات الموجودة في قائمتك فقط من مشروع picons ‏(github.com/picons/picons). تبقى القنوات التي لها شعار هناك بالفعل دون تغيير."
+
+msgid "Looking up…"
+msgstr "جارٍ البحث…"
+
+msgid "{done} of {total}"
+msgstr "{done} من {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "تم تنزيل {got} شعارًا، و{have} موجودة مسبقًا، و{missing} غير موجودة في مجموعة picons."
+
+msgid "Download failed: {error}"
+msgstr "فشل التنزيل: {error}"
 
 #: lindvb/chansort.py
 msgid "Provider / category"

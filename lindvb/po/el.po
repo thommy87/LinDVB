@@ -3556,14 +3556,26 @@ msgstr "Όλοι οι τύποι λήψης του"
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr "Αρχεία εικόνας (PNG, SVG, JPG) με το όνομα του καναλιού, π.χ. «Bayern 3.png», ή ένα σύνολο picon όπως το χρησιμοποιούν τα Enigma2, Kodi και VDR (ονομασμένα κατά αναφορά υπηρεσίας ή όνομα SNP). Εμφανίζονται και στη λίστα καναλιών. Το LinDVB δεν περιλαμβάνει λογότυπα, επειδή ανήκουν στους σταθμούς. Κενό: {v0}"
 
-msgid "Picon sets"
-msgstr "Σύνολα picon"
+msgid "Picons for my channels"
+msgstr "Picons για τα κανάλια μου"
 
-msgid "Find picons online"
-msgstr "Εύρεση picon στο διαδίκτυο"
+msgid "Download Logos"
+msgstr "Λήψη λογοτύπων"
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
-msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφόρο, το καλωδιακό ή την κεραία σας και αποσυμπιέστε το στον φάκελο λογοτύπων."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Κατεβάζει στον φάκελο λογοτύπων μόνο τα λογότυπα των καναλιών της λίστας σας από το έργο picons (github.com/picons/picons). Τα κανάλια που έχουν ήδη λογότυπο εκεί μένουν ως έχουν."
+
+msgid "Looking up…"
+msgstr "Αναζήτηση…"
+
+msgid "{done} of {total}"
+msgstr "{done} από {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "Λήφθηκαν {got} λογότυπα, {have} υπήρχαν ήδη, {missing} δεν υπάρχουν στο σετ picons."
+
+msgid "Download failed: {error}"
+msgstr "Η λήψη απέτυχε: {error}"
 
 #: lindvb/chansort.py
 msgid "Provider / category"

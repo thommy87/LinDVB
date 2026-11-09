@@ -4928,13 +4928,25 @@ msgstr ""
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr ""
 
-msgid "Picon sets"
+msgid "Picons for my channels"
 msgstr ""
 
-msgid "Find picons online"
+msgid "Download Logos"
 msgstr ""
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr ""
+
+msgid "Looking up…"
+msgstr ""
+
+msgid "{done} of {total}"
+msgstr ""
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr ""
+
+msgid "Download failed: {error}"
 msgstr ""
 
 msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."

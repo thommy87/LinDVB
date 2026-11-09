@@ -19,6 +19,8 @@ import os
 import re
 import unicodedata
 
+from .nowplaying import logo_names
+
 EXTS = (".png", ".svg", ".jpg", ".jpeg", ".webp", ".gif")
 NS_CABLE = 0xFFFF
 NS_TERRESTRIAL = 0xEEEE
@@ -86,7 +88,11 @@ class Index:
             e = self.refs.get((*key, ns)) if ns is not None else self.refs_any.get(key)
             if e:
                 return os.path.join(self.folder, e)
-        for stem in (snp_name(channel.name), snp_name(channel.tvg_name)):
+        # SNP first, then plain file names such as "Bayern 3.png" (the way
+        # the radio overlay looks them up)
+        stems = [snp_name(channel.name), snp_name(channel.tvg_name),
+                 *logo_names(channel.name), *logo_names(channel.tvg_name)]
+        for stem in stems:
             e = self.names.get(stem) if stem else None
             if e:
                 return os.path.join(self.folder, e)

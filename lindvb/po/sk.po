@@ -3556,14 +3556,26 @@ msgstr "Všetky jeho typy príjmu"
 msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
 msgstr "Obrázky (PNG, SVG, JPG) pomenované podľa kanála, napr. „Bayern 3.png“, alebo sada piconov, akú používajú Enigma2, Kodi a VDR (pomenované podľa referencie služby alebo mena SNP). Zobrazujú sa aj v zozname kanálov. LinDVB nedodáva žiadne logá, pretože patria vysielateľom. Prázdne: {v0}"
 
-msgid "Picon sets"
-msgstr "Sady piconov"
+msgid "Picons for my channels"
+msgstr "Picony pre moje kanály"
 
-msgid "Find picons online"
-msgstr "Nájsť picony na internete"
+msgid "Download Logos"
+msgstr "Stiahnuť logá"
 
-msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
-msgstr "Stiahnite si tam sadu pre svoj satelit, kábel alebo anténu a rozbaľte ju do priečinka s logami."
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Stiahne do priečinka s logami len logá kanálov z vášho zoznamu z projektu picons (github.com/picons/picons). Kanály, ktoré tam už logo majú, zostanú nezmenené."
+
+msgid "Looking up…"
+msgstr "Vyhľadávanie…"
+
+msgid "{done} of {total}"
+msgstr "{done} z {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "Stiahnuté logá: {got}, už existujúce: {have}, chýbajú v sade piconov: {missing}."
+
+msgid "Download failed: {error}"
+msgstr "Sťahovanie zlyhalo: {error}"
 
 #: lindvb/chansort.py
 msgid "Provider / category"
