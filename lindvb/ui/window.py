@@ -6,14 +6,13 @@ import random
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, GdkPixbuf, Gio, GLib, Gst, Gtk, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, dvbi
+from .. import chansort, dvbi, logothumbs
 from ..channels import import_file, write_csv, write_dvbv5, write_m3u
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
 from ..media_info import audio_summary
-from ..nowplaying import content_box
 from ..player import EQ_BANDS, Player
 from ..library import Positions, delete_info
 from ..recordings import find_recordings, sort_recordings
@@ -69,6 +68,13 @@ def _vis_item(label, vis_id):
     item = Gio.MenuItem.new(_menu_label(label), None)
     item.set_action_and_target_value("win.vis", GLib.Variant.new_string(vis_id))
     return item
+
+class _ChannelRow(Row):
+    """A channel in the list, with its place in the chosen sort order. GTK
+    sorts by that number itself, which is much faster than asking Python for
+    every comparison."""
+    rank = GObject.Property(type=int, default=0)
+
 
 class MainWindow(Gtk.ApplicationWindow):
     mpris = None
@@ -126,6 +132,15 @@ class MainWindow(Gtk.ApplicationWindow):
         apply_accent(self.settings)
         apply_display(self.settings)
 
+        # channel list: logos made in the background and kept on disk, the
+        # rows showing them, the logo path per channel, DVB-I channels off air
+        self._logos = logothumbs.Loader(CACHE_DIR / "list-logos",
+                                        Gdk.Texture.new_from_filename, self._on_logo_ready)
+        self._row_icons = {}
+        self._row_labels = {}
+        self._logo_paths = {}
+        self._off_air = set()
+        self._fstate = None
         self._build_actions()
         self._build_ui()
         self.player = Player(self.picture, self.settings)
@@ -514,7 +529,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.store = Gio.ListStore(item_type=Row)
         self.filter = Gtk.CustomFilter.new(self._filter_func)
         self._filter_model = Gtk.FilterListModel(model=self.store, filter=self.filter)
-        self.sorter = Gtk.CustomSorter.new(self._sort_func)
         self.filtered = Gtk.SortListModel(model=self._filter_model)
         self.sort_dd.connect("notify::selected", lambda *_: self._on_list_sort())
         self.value_dd.connect("notify::selected", lambda *_: self._on_list_value())
@@ -522,6 +536,7 @@ class MainWindow(Gtk.ApplicationWindow):
         fac = Gtk.SignalListItemFactory()
         fac.connect("setup", self._row_setup)
         fac.connect("bind", self._row_bind)
+        fac.connect("unbind", self._row_unbind)
         self.listview = Gtk.ListView(model=self.selection, factory=fac)
         self.listview.set_single_click_activate(False)
         self.listview.connect("activate", lambda _l, pos: self.zap(self.filtered.get_item(pos).data))
@@ -739,7 +754,10 @@ class MainWindow(Gtk.ApplicationWindow):
         b = Gtk.Box(spacing=10)
         num = Gtk.Label(width_chars=4, xalign=1, css_classes=["lv-num"])
         icon = Gtk.Image(css_classes=["lv-chan-icon"])
-        lbl = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END)
+        lbl = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END,
+                        has_tooltip=True)
+        # the tooltip (with the programme on air) is made only when it is shown
+        lbl.connect("query-tooltip", self._row_tooltip)
         extra = Gtk.Image(css_classes=["lv-badge"])
         for w in (num, icon, lbl, extra):
             b.append(w)
@@ -749,8 +767,31 @@ class MainWindow(Gtk.ApplicationWindow):
         c = li.get_item().data
         num, icon, lbl, extra = list(_children(li.get_child()))
         num.set_text(c.vchannel or str(c.number))
-        path = self._channel_logo(c)
-        logo = self._logo_texture(path) if path else None
+        path = self._list_logo(c)
+        self._row_icons[icon] = (c, path)
+        logo, pending = None, False
+        if path:
+            known, logo = self._logos.get(path)     # not ready yet: comes in later
+            pending = not known
+        self._set_row_icon(icon, c, logo, pending)
+        self._row_labels[lbl] = c
+        lbl.set_text(c.name)
+        extra.set_from_icon_name("starred-symbolic" if c.favourite else
+                                 "channel-secure-symbolic" if c.encrypted else None)
+        if c.favourite:
+            extra.add_css_class("lv-fav")
+        else:
+            extra.remove_css_class("lv-fav")
+
+    def _row_unbind(self, _f, li):
+        _num, icon, lbl, _extra = list(_children(li.get_child()))
+        self._row_icons.pop(icon, None)
+        self._row_labels.pop(lbl, None)
+
+    def _set_row_icon(self, icon, c, logo, pending=False):
+        # while a logo is on its way the row already takes the logo's height,
+        # so it does not jump when the logo comes in
+        icon.set_size_request(*((32, 32) if pending else (-1, -1)))
         if logo is not None:
             icon.set_from_paintable(logo)
             icon.set_pixel_size(32)
@@ -759,15 +800,32 @@ class MainWindow(Gtk.ApplicationWindow):
             icon.set_from_icon_name("audio-x-generic-symbolic" if c.radio else
                                     "network-wireless-symbolic" if c.is_iptv else
                                     "video-display-symbolic")
+
+    def _on_logo_ready(self, path, tex):
+        """A logo came in from the background: show it in the rows that want it."""
+        for icon, (c, p) in self._row_icons.items():
+            if p == path:
+                self._set_row_icon(icon, c, tex)
+
+    def _row_tooltip(self, lbl, _x, _y, _kb, tooltip):
+        c = self._row_labels.get(lbl)
+        if c is None:
+            return False
         now, _unused = self.app.epg.now_next(c.epg_key)
-        lbl.set_text(c.name)
-        lbl.set_tooltip_text(f"{c.root} / {c.category}" + (_("\nNow: {title}").format(title=now.title) if now else ""))
-        extra.set_from_icon_name("starred-symbolic" if c.favourite else
-                                 "channel-secure-symbolic" if c.encrypted else None)
-        if c.favourite:
-            extra.add_css_class("lv-fav")
-        else:
-            extra.remove_css_class("lv-fav")
+        tooltip.set_text(f"{c.root} / {c.category}" +
+                         (_("\nNow: {title}").format(title=now.title) if now else ""))
+        return True
+
+    def _list_logo(self, c):
+        """_channel_logo, remembered per channel for the list (the picon folder
+        is looked at again after half a minute, or when the list is reloaded)."""
+        stamp = (self.settings.get("logo_dir") or "", c.logo, int(time.monotonic()) // 30)
+        hit = self._logo_paths.get(id(c))
+        if hit is not None and hit[0] == stamp:
+            return hit[1]
+        path = self._channel_logo(c)
+        self._logo_paths[id(c)] = (stamp, path)
+        return path
 
     def _channel_logo(self, c):
         """The channel's logo file: a picon or logo from the logo folder, else
@@ -777,34 +835,27 @@ class MainWindow(Gtk.ApplicationWindow):
         folders = [self.settings.get("logo_dir") or str(DEFAULT_LOGO_DIR), str(DEFAULT_LOGO_DIR)]
         return picons.find(c, dict.fromkeys(folders)) or c.logo or ""
 
-    def _logo_texture(self, path):
-        """Channel logo (DVB-I) for the list, loaded once, with its plain
-        border cut away so the logo itself fills the row."""
-        cache = self.__dict__.setdefault("_logos", {})
-        if path not in cache:
-            try:
-                pb = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, 320, 180, True)
-                x, y, w, h = content_box(pb.get_pixels(), pb.get_width(), pb.get_height(),
-                                         pb.get_rowstride(), pb.get_n_channels())
-                if (w, h) != (pb.get_width(), pb.get_height()):
-                    pb = pb.new_subpixbuf(x, y, w, h).copy()
-                cache[path] = Gdk.Texture.new_for_pixbuf(pb)
-            except GLib.Error:
-                cache[path] = None
-        return cache[path]
+    def _filter_state(self):
+        """What the list is filtered by, read from the widgets."""
+        g, v = self.group_dd.get_selected(), self.value_dd.get_selected()
+        raw = self.search.get_text().strip()
+        return (raw, raw.lower(), self.filter_dd.get_selected(), self.mode == "radio",
+                self._groups[g] if g > 0 else None,
+                self._values[v] if 0 < v < len(self._values) else None, self._sort())
 
     def _filter_func(self, item):
+        # _refilter reads the widgets once for the whole list, GTK asking for
+        # single new rows reads them here
+        raw, q, f, radio, group, value, srt = self._fstate or self._filter_state()
         c = item.data
-        if not c.visible or c.dvbi_periods and not dvbi.available(c.dvbi_periods):
+        if not c.visible or c.dvbi_periods and id(c) in self._off_air:
             # DVB-I: hidden services and pop-up channels off air (IT-4), still
             # tunable by number
-            q = self.search.get_text().strip()
-            return bool(q) and q.isdigit() and str(c.number) == q
-        f = self.filter_dd.get_selected()
+            return bool(raw) and raw.isdigit() and str(c.number) == raw
         if f == F_FAV:
             if not c.favourite:
                 return False
-        elif c.radio != (self.mode == "radio"):
+        elif c.radio != radio:
             return False
         if f == F_FTA and c.encrypted:
             return False
@@ -814,14 +865,10 @@ class MainWindow(Gtk.ApplicationWindow):
             return False
         if f == F_IPTV and not c.is_iptv:
             return False
-        g = self.group_dd.get_selected()
-        if g > 0 and self._groups[g] != c.root:
+        if group is not None and group != c.root:
             return False
-        v = self.value_dd.get_selected()
-        if 0 < v < len(self._values) and \
-                chansort.group_value(c, self._sort()) != self._values[v]:
+        if value is not None and chansort.group_value(c, srt) != value:
             return False
-        q = self.search.get_text().strip().lower()
         if q:
             if q.isdigit():
                 return str(c.number).startswith(q)
@@ -833,8 +880,10 @@ class MainWindow(Gtk.ApplicationWindow):
     def reload_channels(self):
         chans = self.app.db.channels
         self.app.epg.relink()
+        self._logo_paths.clear()
+        self._off_air = self._channels_off_air()
         self.store.remove_all()
-        self.store.splice(0, 0, [Row(c) for c in chans])
+        self.store.splice(0, 0, [_ChannelRow(c) for c in chans])
         self._groups = [_("All groups")] + self.app.db.roots()
         self._group_sync = True
         self.group_dd.set_model(Gtk.StringList.new(self._groups))
@@ -850,19 +899,23 @@ class MainWindow(Gtk.ApplicationWindow):
         i = self.sort_dd.get_selected()
         return self._sorts[i] if 0 <= i < len(self._sorts) else "number"
 
-    def _sort_func(self, a, b, _data=None):
-        srt = self._sort()
-        ka, kb = chansort.sort_key(a.data, srt), chansort.sort_key(b.data, srt)
-        if srt == "za":
-            ka, kb = kb, ka
-        return (ka > kb) - (ka < kb)
+    def _rank_rows(self, srt):
+        """Number the rows in the order of *srt* for the sorter."""
+        rows = [self.store.get_item(i) for i in range(self.store.get_n_items())]
+        rows.sort(key=lambda r: chansort.sort_key(r.data, srt), reverse=srt == "za")
+        for i, r in enumerate(rows):
+            r.rank = i
 
     def _update_sort(self):
         """Apply the sort order and offer the values of a grouping order."""
         srt = self._sort()
-        self.filtered.set_sorter(None if srt == "number" else self.sorter)
+        sorter = None
         if srt != "number":
-            self.sorter.changed(Gtk.SorterChange.DIFFERENT)
+            self._rank_rows(srt)
+            # a new sorter each time: GTK keeps the numbers of a sorter it knows
+            sorter = Gtk.NumericSorter.new(
+                Gtk.PropertyExpression.new(_ChannelRow.__gtype__, None, "rank"))
+        self.filtered.set_sorter(sorter)
         grouped = srt in chansort.GROUPED
         keep = self.settings.get("list_sort_value", "")
         self._values = [""] + (chansort.values(self.app.db.channels, srt) if grouped else [])
@@ -897,7 +950,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self._refilter()
 
     def _refilter(self):
-        self.filter.changed(Gtk.FilterChange.DIFFERENT)
+        self._fstate = self._filter_state()
+        try:
+            self.filter.changed(Gtk.FilterChange.DIFFERENT)
+        finally:
+            self._fstate = None
         if self.tab == "recordings":
             self.rec_filter.changed(Gtk.FilterChange.DIFFERENT)
             n, total = self.rec_filtered.get_n_items(), self.rec_store.get_n_items()
@@ -1547,9 +1604,17 @@ class MainWindow(Gtk.ApplicationWindow):
             return True
         return False
 
+    def _channels_off_air(self):
+        """ids of the DVB-I channels outside their availability right now (IT-4)."""
+        return {id(c) for c in self.app.db.channels
+                if c.dvbi_periods and not dvbi.available(c.dvbi_periods)}
+
     def _availability_tick(self):
         if any(c.dvbi_periods for c in self.app.db.channels):
-            self._refilter()
+            off = self._channels_off_air()
+            if off != self._off_air:         # filter again only when something changed
+                self._off_air = off
+                self._refilter()
             c = self.current
             if c is not None and c.dvbi_periods and self.oos.get_visible() and \
                     dvbi.available(c.dvbi_periods):
