@@ -3607,3 +3607,243 @@ msgstr "Съгласен съм"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Моля, прочетете известието за поверителност докрай."
+
+msgid "Andorra"
+msgstr "Андора"
+
+msgid "Argentina"
+msgstr "Аржентина"
+
+msgid "Austria"
+msgstr "Австрия"
+
+msgid "Australia"
+msgstr "Австралия"
+
+msgid "Åland Islands"
+msgstr "Оландски острови"
+
+msgid "Belgium"
+msgstr "Белгия"
+
+msgid "Bulgaria"
+msgstr "България"
+
+msgid "Brazil"
+msgstr "Бразилия"
+
+msgid "Canada"
+msgstr "Канада"
+
+msgid "Switzerland"
+msgstr "Швейцария"
+
+msgid "China"
+msgstr "Китай"
+
+msgid "Colombia"
+msgstr "Колумбия"
+
+msgid "Czechia"
+msgstr "Чехия"
+
+msgid "Germany"
+msgstr "Германия"
+
+msgid "Denmark"
+msgstr "Дания"
+
+msgid "Estonia"
+msgstr "Естония"
+
+msgid "Spain"
+msgstr "Испания"
+
+msgid "Finland"
+msgstr "Финландия"
+
+msgid "France"
+msgstr "Франция"
+
+msgid "Greece"
+msgstr "Гърция"
+
+msgid "Hong Kong"
+msgstr "Хонконг"
+
+msgid "Croatia"
+msgstr "Хърватия"
+
+msgid "Hungary"
+msgstr "Унгария"
+
+msgid "Ireland"
+msgstr "Ирландия"
+
+msgid "Israel"
+msgstr "Израел"
+
+msgid "Iran"
+msgstr "Иран"
+
+msgid "Iceland"
+msgstr "Исландия"
+
+msgid "Italy"
+msgstr "Италия"
+
+msgid "Kenya"
+msgstr "Кения"
+
+msgid "South Korea"
+msgstr "Южна Корея"
+
+msgid "Liechtenstein"
+msgstr "Лихтенщайн"
+
+msgid "Lithuania"
+msgstr "Литва"
+
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+msgid "Latvia"
+msgstr "Латвия"
+
+msgid "Netherlands"
+msgstr "Нидерландия"
+
+msgid "Norway"
+msgstr "Норвегия"
+
+msgid "New Zealand"
+msgstr "Нова Зеландия"
+
+msgid "Poland"
+msgstr "Полша"
+
+msgid "Portugal"
+msgstr "Португалия"
+
+msgid "Romania"
+msgstr "Румъния"
+
+msgid "Russia"
+msgstr "Русия"
+
+msgid "Sweden"
+msgstr "Швеция"
+
+msgid "Slovenia"
+msgstr "Словения"
+
+msgid "Slovakia"
+msgstr "Словакия"
+
+msgid "Taiwan"
+msgstr "Тайван"
+
+msgid "Ukraine"
+msgstr "Украйна"
+
+msgid "Uganda"
+msgstr "Уганда"
+
+msgid "United Kingdom"
+msgstr "Обединено кралство"
+
+msgid "United States"
+msgstr "Съединени щати"
+
+msgid "Vietnam"
+msgstr "Виетнам"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Всички честоти, 7/8 MHz (Европа, Африка, Азия)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Всички честоти, 7 MHz (Австралия)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Всички честоти, 6 MHz (Америка)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Всички честоти, 6 MHz (Тайван)"
+
+msgid "Whole country"
+msgstr "Цялата страна"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Виртуален тунер (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Друга страна (без списък)"
+
+msgid "Own lists"
+msgstr "Собствени списъци"
+
+msgid "All frequencies (blind scan)"
+msgstr "Всички честоти (сляпо търсене)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Всички честоти, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Всички честоти (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Всички честоти, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Ефирен"
+
+msgid "Satellites"
+msgstr "Сателити"
+
+msgid "Add satellite"
+msgstr "Добавяне на сателит"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Търсене наведнъж на няколко позиции на антената зад DiSEqC превключвател"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "More options"
+msgstr "Още настройки"
+
+msgid "Receives: {systems}"
+msgstr "Приема: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Тунерът не съобщава какво приема, затова се предлагат всички списъци."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Едно-кабелна настройка на този тунер: {setup}"
+
+msgid "(no lists found)"
+msgstr "(няма намерени списъци)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC порт"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Всеки сателит се нуждае от собствен DiSEqC порт."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} транспондера от списъците на тези позиции; търсенето добавя обявените от мрежата (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Сляпо търсене: опитва {n} честоти, около {minutes} мин."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} честоти от списъка."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Този списък с транспондери няма сателитни транспондери.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Тунерът е зает (запис или анализ на канал).\n"
+
+msgid "Transponder lists"
+msgstr "Списъци с транспондери"

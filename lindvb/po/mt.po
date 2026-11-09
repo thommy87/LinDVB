@@ -3607,3 +3607,243 @@ msgstr "Naqbel"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Jekk jogħġbok aqra l-avviż ta’ privatezza sal-aħħar."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "l-Arġentina"
+
+msgid "Austria"
+msgstr "l-Awstrija"
+
+msgid "Australia"
+msgstr "l-Awstralja"
+
+msgid "Åland Islands"
+msgstr "il-Gżejjer Aland"
+
+msgid "Belgium"
+msgstr "il-Belġju"
+
+msgid "Bulgaria"
+msgstr "il-Bulgarija"
+
+msgid "Brazil"
+msgstr "il-Brażil"
+
+msgid "Canada"
+msgstr "il-Kanada"
+
+msgid "Switzerland"
+msgstr "l-Iżvizzera"
+
+msgid "China"
+msgstr "iċ-Ċina"
+
+msgid "Colombia"
+msgstr "il-Kolombja"
+
+msgid "Czechia"
+msgstr "iċ-Ċekja"
+
+msgid "Germany"
+msgstr "il-Ġermanja"
+
+msgid "Denmark"
+msgstr "id-Danimarka"
+
+msgid "Estonia"
+msgstr "l-Estonja"
+
+msgid "Spain"
+msgstr "Spanja"
+
+msgid "Finland"
+msgstr "il-Finlandja"
+
+msgid "France"
+msgstr "Franza"
+
+msgid "Greece"
+msgstr "il-Greċja"
+
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+msgid "Croatia"
+msgstr "il-Kroazja"
+
+msgid "Hungary"
+msgstr "l-Ungerija"
+
+msgid "Ireland"
+msgstr "l-Irlanda"
+
+msgid "Israel"
+msgstr "Iżrael"
+
+msgid "Iran"
+msgstr "l-Iran"
+
+msgid "Iceland"
+msgstr "l-Iżlanda"
+
+msgid "Italy"
+msgstr "l-Italja"
+
+msgid "Kenya"
+msgstr "il-Kenja"
+
+msgid "South Korea"
+msgstr "il-Korea t'Isfel"
+
+msgid "Liechtenstein"
+msgstr "il-Liechtenstein"
+
+msgid "Lithuania"
+msgstr "il-Litwanja"
+
+msgid "Luxembourg"
+msgstr "il-Lussemburgu"
+
+msgid "Latvia"
+msgstr "il-Latvja"
+
+msgid "Netherlands"
+msgstr "in-Netherlands"
+
+msgid "Norway"
+msgstr "in-Norveġja"
+
+msgid "New Zealand"
+msgstr "New Zealand"
+
+msgid "Poland"
+msgstr "il-Polonja"
+
+msgid "Portugal"
+msgstr "il-Portugall"
+
+msgid "Romania"
+msgstr "ir-Rumanija"
+
+msgid "Russia"
+msgstr "ir-Russja"
+
+msgid "Sweden"
+msgstr "l-Iżvezja"
+
+msgid "Slovenia"
+msgstr "is-Slovenja"
+
+msgid "Slovakia"
+msgstr "is-Slovakkja"
+
+msgid "Taiwan"
+msgstr "it-Tajwan"
+
+msgid "Ukraine"
+msgstr "l-Ukrajna"
+
+msgid "Uganda"
+msgstr "l-Uganda"
+
+msgid "United Kingdom"
+msgstr "ir-Renju Unit"
+
+msgid "United States"
+msgstr "l-Istati Uniti"
+
+msgid "Vietnam"
+msgstr "il-Vjetnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Il-frekwenzi kollha, 7/8 MHz (Ewropa, Afrika, Asja)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Il-frekwenzi kollha, 7 MHz (Awstralja)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Il-frekwenzi kollha, 6 MHz (Amerika)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Il-frekwenzi kollha, 6 MHz (Tajwan)"
+
+msgid "Whole country"
+msgstr "Il-pajjiż kollu"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Tuner virtwali (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Pajjiż ieħor (l-ebda lista)"
+
+msgid "Own lists"
+msgstr "Listi proprji"
+
+msgid "All frequencies (blind scan)"
+msgstr "Il-frekwenzi kollha (tfittxija għamja)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Il-frekwenzi kollha, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Il-frekwenzi kollha (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Il-frekwenzi kollha, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Terrestri"
+
+msgid "Satellites"
+msgstr "Satelliti"
+
+msgid "Add satellite"
+msgstr "Żid satellita"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Fittex diversi pożizzjonijiet tad-dixx wara swiċċ DiSEqC f'daqqa"
+
+msgid "Country"
+msgstr "Pajjiż"
+
+msgid "More options"
+msgstr "Aktar għażliet"
+
+msgid "Receives: {systems}"
+msgstr "Jirċievi: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "It-tuner ma jgħidx x'jirċievi, għalhekk jiġu offruti l-listi kollha."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Konfigurazzjoni b'kejbil wieħed ta' dan it-tuner: {setup}"
+
+msgid "(no lists found)"
+msgstr "(ma nstabet l-ebda lista)"
+
+msgid "DiSEqC port"
+msgstr "Port DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Kull satellita teħtieġ il-port DiSEqC tagħha."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transponders mil-listi ta' dawn il-pożizzjonijiet; it-tfittxija żżid dawk li jħabbar in-netwerk (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Tfittxija għamja: tipprova {n} frekwenzi, madwar {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frekwenzi mil-lista."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Din il-lista ta' transponders m'għandha l-ebda transponder tas-satellita.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "It-tuner huwa okkupat (reġistrazzjoni jew analiżi tal-kanal).\n"
+
+msgid "Transponder lists"
+msgstr "Listi ta' transponders"

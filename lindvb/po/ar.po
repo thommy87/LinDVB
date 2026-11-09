@@ -3607,3 +3607,243 @@ msgstr "موافق"
 
 msgid "Please read the privacy notice to the end."
 msgstr "يرجى قراءة إشعار الخصوصية حتى النهاية."
+
+msgid "Andorra"
+msgstr "أندورا"
+
+msgid "Argentina"
+msgstr "الأرجنتين"
+
+msgid "Austria"
+msgstr "النمسا"
+
+msgid "Australia"
+msgstr "أستراليا"
+
+msgid "Åland Islands"
+msgstr "جزر أولاند"
+
+msgid "Belgium"
+msgstr "بلجيكا"
+
+msgid "Bulgaria"
+msgstr "بلغاريا"
+
+msgid "Brazil"
+msgstr "البرازيل"
+
+msgid "Canada"
+msgstr "كندا"
+
+msgid "Switzerland"
+msgstr "سويسرا"
+
+msgid "China"
+msgstr "الصين"
+
+msgid "Colombia"
+msgstr "كولومبيا"
+
+msgid "Czechia"
+msgstr "التشيك"
+
+msgid "Germany"
+msgstr "ألمانيا"
+
+msgid "Denmark"
+msgstr "الدنمارك"
+
+msgid "Estonia"
+msgstr "إستونيا"
+
+msgid "Spain"
+msgstr "إسبانيا"
+
+msgid "Finland"
+msgstr "فنلندا"
+
+msgid "France"
+msgstr "فرنسا"
+
+msgid "Greece"
+msgstr "اليونان"
+
+msgid "Hong Kong"
+msgstr "هونغ كونغ"
+
+msgid "Croatia"
+msgstr "كرواتيا"
+
+msgid "Hungary"
+msgstr "المجر"
+
+msgid "Ireland"
+msgstr "أيرلندا"
+
+msgid "Israel"
+msgstr "إسرائيل"
+
+msgid "Iran"
+msgstr "إيران"
+
+msgid "Iceland"
+msgstr "آيسلندا"
+
+msgid "Italy"
+msgstr "إيطاليا"
+
+msgid "Kenya"
+msgstr "كينيا"
+
+msgid "South Korea"
+msgstr "كوريا الجنوبية"
+
+msgid "Liechtenstein"
+msgstr "ليختنشتاين"
+
+msgid "Lithuania"
+msgstr "ليتوانيا"
+
+msgid "Luxembourg"
+msgstr "لوكسمبورغ"
+
+msgid "Latvia"
+msgstr "لاتفيا"
+
+msgid "Netherlands"
+msgstr "هولندا"
+
+msgid "Norway"
+msgstr "النرويج"
+
+msgid "New Zealand"
+msgstr "نيوزيلندا"
+
+msgid "Poland"
+msgstr "بولندا"
+
+msgid "Portugal"
+msgstr "البرتغال"
+
+msgid "Romania"
+msgstr "رومانيا"
+
+msgid "Russia"
+msgstr "روسيا"
+
+msgid "Sweden"
+msgstr "السويد"
+
+msgid "Slovenia"
+msgstr "سلوفينيا"
+
+msgid "Slovakia"
+msgstr "سلوفاكيا"
+
+msgid "Taiwan"
+msgstr "تايوان"
+
+msgid "Ukraine"
+msgstr "أوكرانيا"
+
+msgid "Uganda"
+msgstr "أوغندا"
+
+msgid "United Kingdom"
+msgstr "المملكة المتحدة"
+
+msgid "United States"
+msgstr "الولايات المتحدة"
+
+msgid "Vietnam"
+msgstr "فيتنام"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "كل الترددات، 7/8 ميغاهرتز (أوروبا، أفريقيا، آسيا)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "كل الترددات، 7 ميغاهرتز (أستراليا)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "كل الترددات، 6 ميغاهرتز (الأمريكتان)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "كل الترددات، 6 ميغاهرتز (تايوان)"
+
+msgid "Whole country"
+msgstr "البلد كله"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "موالف افتراضي (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "بلد آخر (بلا قائمة)"
+
+msgid "Own lists"
+msgstr "قوائم خاصة"
+
+msgid "All frequencies (blind scan)"
+msgstr "كل الترددات (بحث أعمى)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "كل الترددات، 6 ميغاهرتز (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "كل الترددات (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "كل الترددات، 8 ميغاهرتز (DTMB)"
+
+msgid "Terrestrial"
+msgstr "أرضي"
+
+msgid "Satellites"
+msgstr "الأقمار الصناعية"
+
+msgid "Add satellite"
+msgstr "إضافة قمر صناعي"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "البحث في عدة مواضع للصحن خلف مبدّل DiSEqC دفعة واحدة"
+
+msgid "Country"
+msgstr "البلد"
+
+msgid "More options"
+msgstr "خيارات أخرى"
+
+msgid "Receives: {systems}"
+msgstr "يستقبل: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "لا يذكر الموالف ما يستقبله، لذلك تُعرض كل القوائم."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "إعداد الكابل الواحد لهذا الموالف: {setup}"
+
+msgid "(no lists found)"
+msgstr "(لم يُعثر على قوائم)"
+
+msgid "DiSEqC port"
+msgstr "منفذ DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "يحتاج كل قمر صناعي إلى منفذ DiSEqC خاص به."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} من أجهزة الإرسال من قوائم هذه المواضع؛ ويضيف البحث ما تعلنه الشبكة (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "بحث أعمى: يجرّب {n} ترددًا، نحو {minutes} دقيقة."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} ترددًا من القائمة."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "لا تحتوي قائمة أجهزة الإرسال هذه على أجهزة إرسال فضائية.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "الموالف مشغول (تسجيل أو تحليل قناة).\n"
+
+msgid "Transponder lists"
+msgstr "قوائم أجهزة الإرسال"

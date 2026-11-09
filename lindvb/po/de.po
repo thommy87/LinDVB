@@ -3885,3 +3885,225 @@ msgstr "Zustimmen"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Zum Zustimmen den Datenschutzhinweis bis zum Ende lesen."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentinien"
+
+msgid "Austria"
+msgstr "Österreich"
+
+msgid "Australia"
+msgstr "Australien"
+
+msgid "Åland Islands"
+msgstr "Ålandinseln"
+
+msgid "Belgium"
+msgstr "Belgien"
+
+msgid "Bulgaria"
+msgstr "Bulgarien"
+
+msgid "Brazil"
+msgstr "Brasilien"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Switzerland"
+msgstr "Schweiz"
+
+msgid "China"
+msgstr "China"
+
+msgid "Colombia"
+msgstr "Kolumbien"
+
+msgid "Czechia"
+msgstr "Tschechien"
+
+msgid "Denmark"
+msgstr "Dänemark"
+
+msgid "Estonia"
+msgstr "Estland"
+
+msgid "Spain"
+msgstr "Spanien"
+
+msgid "Finland"
+msgstr "Finnland"
+
+msgid "France"
+msgstr "Frankreich"
+
+msgid "Greece"
+msgstr "Griechenland"
+
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+msgid "Croatia"
+msgstr "Kroatien"
+
+msgid "Hungary"
+msgstr "Ungarn"
+
+msgid "Ireland"
+msgstr "Irland"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Iran"
+msgstr "Iran"
+
+msgid "Iceland"
+msgstr "Island"
+
+msgid "Kenya"
+msgstr "Kenia"
+
+msgid "South Korea"
+msgstr "Südkorea"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Litauen"
+
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+msgid "Latvia"
+msgstr "Lettland"
+
+msgid "Netherlands"
+msgstr "Niederlande"
+
+msgid "Norway"
+msgstr "Norwegen"
+
+msgid "Poland"
+msgstr "Polen"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+msgid "Romania"
+msgstr "Rumänien"
+
+msgid "Russia"
+msgstr "Russland"
+
+msgid "Sweden"
+msgstr "Schweden"
+
+msgid "Slovenia"
+msgstr "Slowenien"
+
+msgid "Slovakia"
+msgstr "Slowakei"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ukraine"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Vereinigtes Königreich"
+
+msgid "United States"
+msgstr "Vereinigte Staaten"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Alle Frequenzen, 7/8 MHz (Europa, Afrika, Asien)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Alle Frequenzen, 7 MHz (Australien)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Alle Frequenzen, 6 MHz (Amerika)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Alle Frequenzen, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Ganzes Land"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Virtueller Tuner (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Anderes Land (keine Liste)"
+
+msgid "Own lists"
+msgstr "Eigene Listen"
+
+msgid "All frequencies (blind scan)"
+msgstr "Alle Frequenzen (Blindsuche)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Alle Frequenzen, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Alle Frequenzen (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Alle Frequenzen, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Terrestrisch"
+
+msgid "Satellites"
+msgstr "Satelliten"
+
+msgid "Add satellite"
+msgstr "Satellit hinzufügen"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Mehrere Schüsselpositionen hinter einem DiSEqC-Schalter in einem Durchgang durchsuchen"
+
+msgid "More options"
+msgstr "Weitere Optionen"
+
+msgid "Receives: {systems}"
+msgstr "Empfängt: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Der Tuner meldet nicht, was er empfängt, daher werden alle Listen angeboten."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Einkabel-Einrichtung dieses Tuners: {setup}"
+
+msgid "(no lists found)"
+msgstr "(keine Listen gefunden)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC-Port"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Jeder Satellit braucht einen eigenen DiSEqC-Port."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} Transponder aus den Listen dieser Positionen; der Suchlauf ergänzt die, die das Netz meldet (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Blindsuche: probiert {n} Frequenzen, etwa {minutes} Min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} Frequenzen aus der Liste."
+
+msgid "Transponder lists"
+msgstr "Transponderlisten"

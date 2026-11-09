@@ -5074,3 +5074,237 @@ msgstr ""
 #: lindvb/ui/dvbi.py
 msgid "Please read the privacy notice to the end."
 msgstr ""
+
+msgid "Andorra"
+msgstr ""
+
+msgid "Argentina"
+msgstr ""
+
+msgid "Austria"
+msgstr ""
+
+msgid "Australia"
+msgstr ""
+
+msgid "Åland Islands"
+msgstr ""
+
+msgid "Belgium"
+msgstr ""
+
+msgid "Bulgaria"
+msgstr ""
+
+msgid "Brazil"
+msgstr ""
+
+msgid "Canada"
+msgstr ""
+
+msgid "Switzerland"
+msgstr ""
+
+msgid "China"
+msgstr ""
+
+msgid "Colombia"
+msgstr ""
+
+msgid "Czechia"
+msgstr ""
+
+msgid "Denmark"
+msgstr ""
+
+msgid "Estonia"
+msgstr ""
+
+msgid "Spain"
+msgstr ""
+
+msgid "Finland"
+msgstr ""
+
+msgid "France"
+msgstr ""
+
+msgid "Greece"
+msgstr ""
+
+msgid "Hong Kong"
+msgstr ""
+
+msgid "Croatia"
+msgstr ""
+
+msgid "Hungary"
+msgstr ""
+
+msgid "Ireland"
+msgstr ""
+
+msgid "Israel"
+msgstr ""
+
+msgid "Iran"
+msgstr ""
+
+msgid "Iceland"
+msgstr ""
+
+msgid "Kenya"
+msgstr ""
+
+msgid "South Korea"
+msgstr ""
+
+msgid "Liechtenstein"
+msgstr ""
+
+msgid "Lithuania"
+msgstr ""
+
+msgid "Luxembourg"
+msgstr ""
+
+msgid "Latvia"
+msgstr ""
+
+msgid "Netherlands"
+msgstr ""
+
+msgid "Norway"
+msgstr ""
+
+msgid "Poland"
+msgstr ""
+
+msgid "Portugal"
+msgstr ""
+
+msgid "Romania"
+msgstr ""
+
+msgid "Russia"
+msgstr ""
+
+msgid "Sweden"
+msgstr ""
+
+msgid "Slovenia"
+msgstr ""
+
+msgid "Slovakia"
+msgstr ""
+
+msgid "Taiwan"
+msgstr ""
+
+msgid "Ukraine"
+msgstr ""
+
+msgid "Uganda"
+msgstr ""
+
+msgid "United Kingdom"
+msgstr ""
+
+msgid "United States"
+msgstr ""
+
+msgid "Vietnam"
+msgstr ""
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr ""
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr ""
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr ""
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr ""
+
+msgid "Whole country"
+msgstr ""
+
+msgid "Virtual tuner (vidtv)"
+msgstr ""
+
+msgid "Other country (no list)"
+msgstr ""
+
+msgid "Own lists"
+msgstr ""
+
+msgid "All frequencies (blind scan)"
+msgstr ""
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr ""
+
+msgid "All frequencies (ATSC)"
+msgstr ""
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr ""
+
+msgid "Terrestrial"
+msgstr ""
+
+msgid "Satellites"
+msgstr ""
+
+msgid "Add satellite"
+msgstr ""
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr ""
+
+msgid "More options"
+msgstr ""
+
+msgid "Receives: {systems}"
+msgstr ""
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr ""
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr ""
+
+msgid "(no lists found)"
+msgstr ""
+
+msgid "DiSEqC port"
+msgstr ""
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr ""
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr ""
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr ""
+
+msgid "{n} frequencies from the list."
+msgstr ""
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr ""
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr ""
+
+msgid "\nNo channels found.\n"
+msgstr ""
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr ""
+
+msgid "Transponder lists"
+msgstr ""

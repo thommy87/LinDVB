@@ -3607,3 +3607,243 @@ msgstr "Aceitar"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Leia o aviso de privacidade até ao fim."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentina"
+
+msgid "Austria"
+msgstr "Áustria"
+
+msgid "Australia"
+msgstr "Austrália"
+
+msgid "Åland Islands"
+msgstr "Ilhas Åland"
+
+msgid "Belgium"
+msgstr "Bélgica"
+
+msgid "Bulgaria"
+msgstr "Bulgária"
+
+msgid "Brazil"
+msgstr "Brasil"
+
+msgid "Canada"
+msgstr "Canadá"
+
+msgid "Switzerland"
+msgstr "Suíça"
+
+msgid "China"
+msgstr "China"
+
+msgid "Colombia"
+msgstr "Colômbia"
+
+msgid "Czechia"
+msgstr "Chéquia"
+
+msgid "Germany"
+msgstr "Alemanha"
+
+msgid "Denmark"
+msgstr "Dinamarca"
+
+msgid "Estonia"
+msgstr "Estónia"
+
+msgid "Spain"
+msgstr "Espanha"
+
+msgid "Finland"
+msgstr "Finlândia"
+
+msgid "France"
+msgstr "França"
+
+msgid "Greece"
+msgstr "Grécia"
+
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+msgid "Croatia"
+msgstr "Croácia"
+
+msgid "Hungary"
+msgstr "Hungria"
+
+msgid "Ireland"
+msgstr "Irlanda"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Iran"
+msgstr "Irão"
+
+msgid "Iceland"
+msgstr "Islândia"
+
+msgid "Italy"
+msgstr "Itália"
+
+msgid "Kenya"
+msgstr "Quénia"
+
+msgid "South Korea"
+msgstr "Coreia do Sul"
+
+msgid "Liechtenstein"
+msgstr "Listenstaine"
+
+msgid "Lithuania"
+msgstr "Lituânia"
+
+msgid "Luxembourg"
+msgstr "Luxemburgo"
+
+msgid "Latvia"
+msgstr "Letónia"
+
+msgid "Netherlands"
+msgstr "Países Baixos"
+
+msgid "Norway"
+msgstr "Noruega"
+
+msgid "New Zealand"
+msgstr "Nova Zelândia"
+
+msgid "Poland"
+msgstr "Polónia"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+msgid "Romania"
+msgstr "Roménia"
+
+msgid "Russia"
+msgstr "Rússia"
+
+msgid "Sweden"
+msgstr "Suécia"
+
+msgid "Slovenia"
+msgstr "Eslovénia"
+
+msgid "Slovakia"
+msgstr "Eslováquia"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ucrânia"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Reino Unido"
+
+msgid "United States"
+msgstr "Estados Unidos"
+
+msgid "Vietnam"
+msgstr "Vietname"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Todas as frequências, 7/8 MHz (Europa, África, Ásia)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Todas as frequências, 7 MHz (Austrália)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Todas as frequências, 6 MHz (Américas)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Todas as frequências, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Todo o país"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Sintonizador virtual (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Outro país (sem lista)"
+
+msgid "Own lists"
+msgstr "Listas próprias"
+
+msgid "All frequencies (blind scan)"
+msgstr "Todas as frequências (pesquisa cega)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Todas as frequências, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Todas as frequências (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Todas as frequências, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Terrestre"
+
+msgid "Satellites"
+msgstr "Satélites"
+
+msgid "Add satellite"
+msgstr "Adicionar satélite"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Pesquisar de uma vez várias posições da antena atrás de um comutador DiSEqC"
+
+msgid "Country"
+msgstr "País"
+
+msgid "More options"
+msgstr "Mais opções"
+
+msgid "Receives: {systems}"
+msgstr "Recebe: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "O sintonizador não indica o que recebe, por isso são oferecidas todas as listas."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Instalação de cabo único deste sintonizador: {setup}"
+
+msgid "(no lists found)"
+msgstr "(nenhuma lista encontrada)"
+
+msgid "DiSEqC port"
+msgstr "Porta DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Cada satélite precisa da sua própria porta DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transponders das listas destas posições; a pesquisa acrescenta os que a rede anuncia (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Pesquisa cega: experimenta {n} frequências, cerca de {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frequências da lista."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Esta lista de transponders não tem transponders de satélite.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "O sintonizador está ocupado (gravação ou análise de canal).\n"
+
+msgid "Transponder lists"
+msgstr "Listas de transponders"

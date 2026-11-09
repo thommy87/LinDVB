@@ -37,15 +37,15 @@ belong to their owners.
 | [libzvbi](https://github.com/zapping-vbi/zvbi) | mostly LGPL-2.0-or-later, some parts GPL-2.0-or-later and BSD | teletext |
 | [libdvbcsa](https://www.videolan.org/developers/libdvbcsa.html) | GPL-2.0-or-later | software descrambling (optional) |
 | [v4l-utils](https://git.linuxtv.org/v4l-utils.git) (`dvbv5-scan`, `dvbv5-zap`, libdvbv5) | programs GPL-2.0, libdvbv5 LGPL-2.1 | channel search (separate programs) |
-| [dtv-scan-tables](https://git.linuxtv.org/dtv-scan-tables.git) | GPL-2.0 and LGPL-2.1 | transponder lists |
 | [libprojectM](https://github.com/projectM-visualizer/projectm) 4 and [gst-projectm](https://github.com/projectM-visualizer/gst-projectm) | LGPL-2.1 | projectM visualisation (optional) |
 
-## Data and artwork in the AppImage
+## Data and artwork in LinDVB and the AppImage
 
 | Content | From | Licence |
 |---|---|---|
 | MilkDrop presets "Cream of the Crop" | Curated by ISOSCELES from presets by many MilkDrop authors, as [packaged by projectM](https://github.com/projectM-visualizer/presets-cream-of-the-crop) | no licence stated; redistributed as projectM does |
 | MilkDrop texture pack | The textures of MilkDrop (Ryan Geiss, Nullsoft) and others, as [packaged by projectM](https://github.com/projectM-visualizer/presets-milkdrop-texture-pack) | no licence stated; redistributed as projectM does |
+| `lindvb/scantables/dtv-scan-tables.json.gz` (the channel search's transponder lists) | [dtv-scan-tables](https://git.linuxtv.org/dtv-scan-tables.git) by the LinuxTV community, commit 97129f50c9b0 (2025-06-06), packed into one file by `tools/update_scantables.py`; the lists of the system's dtv-scan-tables package are used besides them | GPL-2.0 and LGPL-2.1 ([GPL](lindvb/scantables/dtv-scan-tables-COPYING), [LGPL](lindvb/scantables/dtv-scan-tables-COPYING.LGPL)) |
 | Adwaita and hicolor icon themes | [GNOME](https://gitlab.gnome.org/GNOME/adwaita-icon-theme) | LGPL-3.0-or-later or CC-BY-SA-3.0 |
 
 LinDVB's own icon, screenshots, test media and translations were made for

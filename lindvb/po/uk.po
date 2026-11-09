@@ -3607,3 +3607,243 @@ msgstr "Погоджуюся"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Прочитайте повідомлення про конфіденційність до кінця."
+
+msgid "Andorra"
+msgstr "Андорра"
+
+msgid "Argentina"
+msgstr "Аргентина"
+
+msgid "Austria"
+msgstr "Австрія"
+
+msgid "Australia"
+msgstr "Австралія"
+
+msgid "Åland Islands"
+msgstr "Аландські острови"
+
+msgid "Belgium"
+msgstr "Бельгія"
+
+msgid "Bulgaria"
+msgstr "Болгарія"
+
+msgid "Brazil"
+msgstr "Бразилія"
+
+msgid "Canada"
+msgstr "Канада"
+
+msgid "Switzerland"
+msgstr "Швейцарія"
+
+msgid "China"
+msgstr "Китай"
+
+msgid "Colombia"
+msgstr "Колумбія"
+
+msgid "Czechia"
+msgstr "Чехія"
+
+msgid "Germany"
+msgstr "Німеччина"
+
+msgid "Denmark"
+msgstr "Данія"
+
+msgid "Estonia"
+msgstr "Естонія"
+
+msgid "Spain"
+msgstr "Іспанія"
+
+msgid "Finland"
+msgstr "Фінляндія"
+
+msgid "France"
+msgstr "Франція"
+
+msgid "Greece"
+msgstr "Греція"
+
+msgid "Hong Kong"
+msgstr "Гонконг"
+
+msgid "Croatia"
+msgstr "Хорватія"
+
+msgid "Hungary"
+msgstr "Угорщина"
+
+msgid "Ireland"
+msgstr "Ірландія"
+
+msgid "Israel"
+msgstr "Ізраїль"
+
+msgid "Iran"
+msgstr "Іран"
+
+msgid "Iceland"
+msgstr "Ісландія"
+
+msgid "Italy"
+msgstr "Італія"
+
+msgid "Kenya"
+msgstr "Кенія"
+
+msgid "South Korea"
+msgstr "Південна Корея"
+
+msgid "Liechtenstein"
+msgstr "Ліхтенштейн"
+
+msgid "Lithuania"
+msgstr "Литва"
+
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+msgid "Latvia"
+msgstr "Латвія"
+
+msgid "Netherlands"
+msgstr "Нідерланди"
+
+msgid "Norway"
+msgstr "Норвегія"
+
+msgid "New Zealand"
+msgstr "Нова Зеландія"
+
+msgid "Poland"
+msgstr "Польща"
+
+msgid "Portugal"
+msgstr "Португалія"
+
+msgid "Romania"
+msgstr "Румунія"
+
+msgid "Russia"
+msgstr "Росія"
+
+msgid "Sweden"
+msgstr "Швеція"
+
+msgid "Slovenia"
+msgstr "Словенія"
+
+msgid "Slovakia"
+msgstr "Словаччина"
+
+msgid "Taiwan"
+msgstr "Тайвань"
+
+msgid "Ukraine"
+msgstr "Україна"
+
+msgid "Uganda"
+msgstr "Уганда"
+
+msgid "United Kingdom"
+msgstr "Велика Британія"
+
+msgid "United States"
+msgstr "США"
+
+msgid "Vietnam"
+msgstr "Вʼєтнам"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Усі частоти, 7/8 МГц (Європа, Африка, Азія)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Усі частоти, 7 МГц (Австралія)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Усі частоти, 6 МГц (Америка)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Усі частоти, 6 МГц (Тайвань)"
+
+msgid "Whole country"
+msgstr "Уся країна"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Віртуальний тюнер (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Інша країна (немає списку)"
+
+msgid "Own lists"
+msgstr "Власні списки"
+
+msgid "All frequencies (blind scan)"
+msgstr "Усі частоти (сліпий пошук)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Усі частоти, 6 МГц (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Усі частоти (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Усі частоти, 8 МГц (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Ефірне"
+
+msgid "Satellites"
+msgstr "Супутники"
+
+msgid "Add satellite"
+msgstr "Додати супутник"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Шукати одразу кілька позицій антени за перемикачем DiSEqC"
+
+msgid "Country"
+msgstr "Країна"
+
+msgid "More options"
+msgstr "Інші параметри"
+
+msgid "Receives: {systems}"
+msgstr "Приймає: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Тюнер не повідомляє, що він приймає, тому пропонуються всі списки."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Однокабельне налаштування цього тюнера: {setup}"
+
+msgid "(no lists found)"
+msgstr "(списків не знайдено)"
+
+msgid "DiSEqC port"
+msgstr "Порт DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Кожному супутнику потрібен власний порт DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} транспондерів зі списків цих позицій; пошук додасть ті, про які повідомляє мережа (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Сліпий пошук: перевіряє {n} частот, близько {minutes} хв."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} частот зі списку."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "У цьому списку транспондерів немає супутникових транспондерів.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Тюнер зайнятий (запис або аналіз каналу).\n"
+
+msgid "Transponder lists"
+msgstr "Списки транспондерів"

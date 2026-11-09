@@ -3607,3 +3607,243 @@ msgstr "Hyväksy"
 
 msgid "Please read the privacy notice to the end."
 msgstr "Lue tietosuojailmoitus loppuun asti."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argentiina"
+
+msgid "Austria"
+msgstr "Itävalta"
+
+msgid "Australia"
+msgstr "Australia"
+
+msgid "Åland Islands"
+msgstr "Ahvenanmaa"
+
+msgid "Belgium"
+msgstr "Belgia"
+
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+msgid "Brazil"
+msgstr "Brasilia"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Switzerland"
+msgstr "Sveitsi"
+
+msgid "China"
+msgstr "Kiina"
+
+msgid "Colombia"
+msgstr "Kolumbia"
+
+msgid "Czechia"
+msgstr "Tšekki"
+
+msgid "Germany"
+msgstr "Saksa"
+
+msgid "Denmark"
+msgstr "Tanska"
+
+msgid "Estonia"
+msgstr "Viro"
+
+msgid "Spain"
+msgstr "Espanja"
+
+msgid "Finland"
+msgstr "Suomi"
+
+msgid "France"
+msgstr "Ranska"
+
+msgid "Greece"
+msgstr "Kreikka"
+
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+msgid "Croatia"
+msgstr "Kroatia"
+
+msgid "Hungary"
+msgstr "Unkari"
+
+msgid "Ireland"
+msgstr "Irlanti"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Iran"
+msgstr "Iran"
+
+msgid "Iceland"
+msgstr "Islanti"
+
+msgid "Italy"
+msgstr "Italia"
+
+msgid "Kenya"
+msgstr "Kenia"
+
+msgid "South Korea"
+msgstr "Etelä-Korea"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Liettua"
+
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+msgid "Latvia"
+msgstr "Latvia"
+
+msgid "Netherlands"
+msgstr "Alankomaat"
+
+msgid "Norway"
+msgstr "Norja"
+
+msgid "New Zealand"
+msgstr "Uusi-Seelanti"
+
+msgid "Poland"
+msgstr "Puola"
+
+msgid "Portugal"
+msgstr "Portugali"
+
+msgid "Romania"
+msgstr "Romania"
+
+msgid "Russia"
+msgstr "Venäjä"
+
+msgid "Sweden"
+msgstr "Ruotsi"
+
+msgid "Slovenia"
+msgstr "Slovenia"
+
+msgid "Slovakia"
+msgstr "Slovakia"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Ukraine"
+msgstr "Ukraina"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Yhdistynyt kuningaskunta"
+
+msgid "United States"
+msgstr "Yhdysvallat"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Kaikki taajuudet, 7/8 MHz (Eurooppa, Afrikka, Aasia)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Kaikki taajuudet, 7 MHz (Australia)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Kaikki taajuudet, 6 MHz (Amerikka)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Kaikki taajuudet, 6 MHz (Taiwan)"
+
+msgid "Whole country"
+msgstr "Koko maa"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Virtuaalinen viritin (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Muu maa (ei listaa)"
+
+msgid "Own lists"
+msgstr "Omat listat"
+
+msgid "All frequencies (blind scan)"
+msgstr "Kaikki taajuudet (sokkohaku)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Kaikki taajuudet, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Kaikki taajuudet (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Kaikki taajuudet, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Maanpäällinen"
+
+msgid "Satellites"
+msgstr "Satelliitit"
+
+msgid "Add satellite"
+msgstr "Lisää satelliitti"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Hae kerralla useita lautasen asentoja DiSEqC-kytkimen takana"
+
+msgid "Country"
+msgstr "Maa"
+
+msgid "More options"
+msgstr "Lisää valintoja"
+
+msgid "Receives: {systems}"
+msgstr "Vastaanottaa: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Viritin ei kerro, mitä se vastaanottaa, joten kaikki listat tarjotaan."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Tämän virittimen yhden kaapelin asetus: {setup}"
+
+msgid "(no lists found)"
+msgstr "(listoja ei löytynyt)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC-portti"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Jokainen satelliitti tarvitsee oman DiSEqC-portin."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transponderia näiden asentojen listoista; haku lisää ne, jotka verkko ilmoittaa (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Sokkohaku: kokeilee {n} taajuutta, noin {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} taajuutta listasta."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Tässä transponderilistassa ei ole satelliittitranspondereita.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Viritin on varattu (tallennus tai kanava-analyysi).\n"
+
+msgid "Transponder lists"
+msgstr "Transponderilistat"

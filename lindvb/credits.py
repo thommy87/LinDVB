@@ -24,9 +24,12 @@ CREDITS = (
         "WebKitGTK https://webkitgtk.org",
         "libzvbi https://github.com/zapping-vbi/zvbi",
         "v4l-utils / libdvbv5 https://git.linuxtv.org/v4l-utils.git",
-        "dtv-scan-tables https://git.linuxtv.org/dtv-scan-tables.git",
         "libdvbcsa https://www.videolan.org/developers/libdvbcsa.html",
         "FFmpeg https://ffmpeg.org",
+    )),
+    (N_("Transponder lists"), (
+        "dtv-scan-tables (the LinuxTV community), GPL-2.0 / LGPL-2.1, commit 97129f5 "
+        "https://git.linuxtv.org/dtv-scan-tables.git",
     )),
     (N_("Visualisations"), (
         "projectM and gst-projectm https://github.com/projectM-visualizer",
