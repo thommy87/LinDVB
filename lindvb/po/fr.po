@@ -3564,3 +3564,7 @@ msgstr "Trouver des picons en ligne"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Téléchargez-y un jeu pour votre satellite, câble ou antenne et décompressez-le dans le dossier des logos."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Fournisseur / Catégorie"

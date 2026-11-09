@@ -5017,3 +5017,7 @@ msgstr ""
 
 msgid "Apply the changes to {n} channels?"
 msgstr ""
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr ""

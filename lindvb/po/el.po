@@ -3564,3 +3564,7 @@ msgstr "Εύρεση picon στο διαδίκτυο"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Κατεβάστε εκεί ένα σύνολο για τον δορυφόρο, το καλωδιακό ή την κεραία σας και αποσυμπιέστε το στον φάκελο λογοτύπων."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Πάροχος / Κατηγορία"

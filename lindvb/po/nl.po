@@ -3564,3 +3564,7 @@ msgstr "Picons online zoeken"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Download daar een set voor uw satelliet, kabel of antenne en pak die uit in de logomap."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Aanbieder / Categorie"

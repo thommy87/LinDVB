@@ -3564,3 +3564,7 @@ msgstr "Pronađi picone na internetu"
 
 msgid "Download a set for your satellite, cable or antenna there and unpack it into the logo folder."
 msgstr "Ondje preuzmite skup za svoj satelit, kabel ili antenu i raspakirajte ga u mapu s logotipima."
+
+#: lindvb/chansort.py
+msgid "Provider / category"
+msgstr "Pružatelj / Kategorija"
