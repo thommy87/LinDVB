@@ -561,6 +561,12 @@ class PrefsWindow(Gtk.Window):
             found = [dict(p, present=False) for p in tp.legacy_profiles(s)]
         self._tuner_rows = []
         glob = tp.tuner_lnb(None, s)
+        sats = [p for p in found if not p.get("systems") or "sat" in tp.families(p)]
+        cables = {(p.get("group") or "").strip() for p in sats} - {""}
+        # with up to two satellite tuners a switch says enough; the cable name
+        # only shows when there can be more than one shared cable
+        self._cable_names = len(sats) > 2 or len(cables) > 1
+        self._default_cable = cables.pop() if len(cables) == 1 else tp.DEFAULT_GROUP
         missing = [p for p in found if not p.get("present", True)]
         if len(missing) == len(found):
             pg.append(Gtk.Label(label=_("No tuner is connected."), xalign=0,
@@ -609,11 +615,17 @@ class PrefsWindow(Gtk.Window):
         sat = not prof.get("systems") or "sat" in fams
         if sat:
             first = len(_children(g))
-            row["group"] = _row(g, _("Shared antenna cable"),
-                                Gtk.Entry(text=prof.get("group", "")),
-                                _("Give tuners on one cable the same name (loop-through or a "
-                                  "splitter on one LNB output). They then only receive one "
-                                  "band and polarisation at a time. Empty: own cable."))
+            group = (prof.get("group") or "").strip()
+            row["group"] = _row(g, _("Shared antenna cable"), Gtk.Switch(active=bool(group)),
+                                _("On for tuners that hang on one cable with other tuners "
+                                  "(loop-through or a splitter on one LNB output). Without "
+                                  "Unicable they then only receive one band and polarisation "
+                                  "at a time."))
+            row["cable"] = None
+            if self._cable_names:
+                row["cable"] = _row(g, _("Cable name"), Gtk.Entry(
+                    text=group, placeholder_text=self._default_cable),
+                    _("Tuners with the same name share one cable."))
             own = list(prof.get("lnb") or glob)
             row["lnb"] = []
             for lbl, value in zip((_("LOF low band (kHz)"), _("LOF high band (kHz)"),
@@ -623,17 +635,23 @@ class PrefsWindow(Gtk.Window):
                 row["lnb"].append(sp)
             row["uc"] = self._single_cable_rows(g, prof)
             sat_rows = _children(g)[first:]
-        if row["use"] is not None and sat_rows:
-            uc_rows = row["uc"]["rows"]
+        if not sat_rows:
+            return row
+        cable_row = row["cable"].get_parent() if row["cable"] is not None else None
+        uc_rows = row["uc"]["rows"]
 
-            def show(dd, *_a):
-                use = row["uses"][dd.get_selected()]
-                for r in sat_rows:
-                    if r not in uc_rows:
-                        r.set_visible(use in ("", "sat"))
-                row["uc"]["show"](use in ("", "sat"))
+        def show(*_a):
+            on = row["use"] is None or row["uses"][row["use"].get_selected()] in ("", "sat")
+            for r in sat_rows:
+                if r not in uc_rows and r is not cable_row:
+                    r.set_visible(on)
+            if cable_row is not None:
+                cable_row.set_visible(on and row["group"].get_active())
+            row["uc"]["show"](on)
+        if row["use"] is not None:
             row["use"].connect("notify::selected", show)
-            show(row["use"])
+        row["group"].connect("notify::active", show)
+        show()
         return row
 
     def _single_cable_rows(self, g, prof):
@@ -646,8 +664,8 @@ class PrefsWindow(Gtk.Window):
             [_("No Unicable"), _("Unicable I (EN 50494)"), _("Unicable II / JESS (EN 50607)")],
             kinds.index(uc.get("standard")) if uc.get("standard") in kinds else 0))
         slot = _row(g, _("User band"), Gtk.SpinButton.new_with_range(1, 32, 1),
-                    _("Each tuner on the cable needs a different user band. Give all "
-                      "tuners on the cable the same cable name above."))
+                    _("Each tuner on the cable needs a different user band. Switch on "
+                      "the shared antenna cable above for all of them."))
         slot.set_value(int(uc.get("slot", 0)) + 1)
         freq = _row(g, _("User band frequency (MHz)"),
                     Gtk.SpinButton.new_with_range(950, 2150, 1),
@@ -705,7 +723,10 @@ class PrefsWindow(Gtk.Window):
                 prof["use"] = row["uses"][row["use"].get_selected()]
             prof["priority"] = int(row["prio"].get_value())
             if row["group"] is not None:
-                prof["group"] = row["group"].get_text().strip()
+                prof["group"] = ""
+                if row["group"].get_active():
+                    name = row["cable"].get_text().strip() if row["cable"] is not None else ""
+                    prof["group"] = name or self._default_cable
             if row["lnb"]:
                 lnb = tuple(int(sp.get_value()) for sp in row["lnb"])
                 if lnb != glob and all(lnb):

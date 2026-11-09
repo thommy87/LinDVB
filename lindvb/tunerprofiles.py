@@ -27,6 +27,9 @@ import os
 
 from .channels import SAT_SYSTEMS
 
+# the cable name of tuners switched to "shared antenna cable" without a name of their own
+DEFAULT_GROUP = "1"
+
 # enum fe_delivery_system (linux/dvb/frontend.h) -> dvbsrc nick
 DELSYS_NAMES = {
     1: "dvb-c-a", 2: "dvb-c-b", 3: "dvb-t", 4: "dss", 5: "dvb-s", 6: "dvb-s2", 7: "dvb-h",

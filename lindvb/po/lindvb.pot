@@ -4964,7 +4964,7 @@ msgstr ""
 msgid "User band"
 msgstr ""
 
-msgid "Each tuner on the cable needs a different user band. Give all tuners on the cable the same cable name above."
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
 msgstr ""
 
 msgid "User band frequency (MHz)"
@@ -4991,7 +4991,13 @@ msgstr ""
 msgid "Shared antenna cable"
 msgstr ""
 
-msgid "Give tuners on one cable the same name (loop-through or a splitter on one LNB output). They then only receive one band and polarisation at a time. Empty: own cable."
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr ""
+
+msgid "Cable name"
+msgstr ""
+
+msgid "Tuners with the same name share one cable."
 msgstr ""
 
 msgid "Apply the changes of all edited channels (Ctrl+S)"

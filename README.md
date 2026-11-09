@@ -299,8 +299,9 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
    dtv-scan-tables, or add a folder with `.ini` transponder lists), LNB and
    DiSEqC port, then start. Or **Menu → Import Channel List** to load an existing list.
 2. Several tuners: **Preferences → Tuner and Channels → Tuners** lists every tuner found,
-   with its reception types. Switch tuners on or off, set a priority, give tuners on one
-   antenna cable (loop-through, splitter) the same cable name, and set an LNB per tuner.
+   with its reception types. Switch tuners on or off, set a priority, switch on "Shared
+   antenna cable" for tuners on one cable (loop-through, splitter; with more than two
+   satellite tuners also give them a cable name), and set an LNB per tuner.
    For a single-cable system (Unicable I / EN 50494, Unicable II / JESS / EN 50607) set
    the type, user band and its frequency per tuner; the channel search works on it too.
    LinDVB picks a tuner that can receive the channel, lets channels of one transponder
