@@ -145,6 +145,9 @@ DEFAULTS = {
     "epg_priority_order": ["eit", "provider", "dvbi", "xmltv"],
     "epg_priority_channels": {},
     "deinterlace": True,
+    # Keep the screen saver and screen blanking away while TV, radio or a
+    # file plays (Preferences › Playback).
+    "inhibit_screensaver": True,
     # Video decoder (lindvb.hwaccel): "auto" (VA-API, NVDEC, V4L2, then
     # software), one interface ("vaapi", "nvdec", "vulkan", "v4l2") or
     # "software". A GPU decoder that fails falls back to the next one.

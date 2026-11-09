@@ -49,6 +49,23 @@ BARS_EVERY = 3.0
 IPTV_PROBE_EVERY = 120.0
 
 
+def stream_rate(buf, tag_bps=None):
+    """Bit rate of an internet stream (bit/s) for the bit rate figures, or None.
+
+    The bit rate the stream announces comes first (internet radio). Else what
+    the network buffer hands on to playback: what it takes in is the download,
+    which runs far above the stream's rate while the buffer fills up.
+    """
+    if tag_bps:
+        return tag_bps
+    buf = buf or {}
+    for key in ("out", "in"):
+        v = buf.get(key, -1)
+        if v is not None and v > 0:
+            return v * 8
+    return None
+
+
 def _fmt_rate(bps):
     if bps is None:
         return "–"
@@ -581,8 +598,11 @@ class AnalysisSession(GObject.Object):
                 buf = iptv["buffer"]
                 if buf:
                     sample["buffer"] = buf.get("percent")
-                    if not sample.get("total") and buf.get("in", -1) > 0:
-                        sample["total"] = buf["in"] * 8
+                if not sample.get("total"):
+                    total = stream_rate(buf, player.audio_bitrate()
+                                        if player.is_audio_only() else None)
+                    if total:
+                        sample["total"] = total
                 frags = [f for f in iptv["fragments"] if f["seconds"] > 0]
                 if frags:
                     recent = frags[-5:]

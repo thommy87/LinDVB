@@ -3216,3 +3216,15 @@ msgstr "Zamknij (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Analiza kanału…"
+
+msgid "No screen saver during playback"
+msgstr "Bez wygaszacza ekranu podczas odtwarzania"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Utrzymuje włączony ekran podczas odtwarzania telewizji, radia lub pliku."
+
+msgid "Playing TV or radio"
+msgstr "Odtwarzanie TV lub radia"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: niedostępne na tym kanale"

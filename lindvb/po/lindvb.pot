@@ -4584,3 +4584,19 @@ msgstr ""
 #: lindvb/ui/dvbi.py
 msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
 msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "No screen saver during playback"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Playing TV or radio"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "HbbTV: not available on this channel"
+msgstr ""

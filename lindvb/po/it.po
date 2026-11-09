@@ -3300,3 +3300,15 @@ msgstr "Premi di nuovo Installa per usare la numerazione di questo pacchetto."
 
 msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
 msgstr "La regione seleziona la tabella LCN della tua zona, con le emittenti locali, come fa la ricerca dei canali del digitale terrestre. I canali senza numero vanno da 850 a 999."
+
+msgid "No screen saver during playback"
+msgstr "Nessun salvaschermo durante la riproduzione"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Mantiene acceso lo schermo durante la riproduzione di TV, radio o file."
+
+msgid "Playing TV or radio"
+msgstr "Riproduzione TV o radio"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: non disponibile su questo canale"

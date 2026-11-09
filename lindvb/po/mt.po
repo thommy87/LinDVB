@@ -3216,3 +3216,15 @@ msgstr "Agħlaq (Esc)"
 
 msgid "Channel Analysis…"
 msgstr "Analiżi tal-istazzjon…"
+
+msgid "No screen saver during playback"
+msgstr "L-ebda screen saver waqt id-daqq"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Iżomm l-iskrin mixgħul waqt li tindaqq it-TV, ir-radju jew fajl."
+
+msgid "Playing TV or radio"
+msgstr "Qed tindaqq it-TV jew ir-radju"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: mhux disponibbli fuq dan l-istazzjon"
