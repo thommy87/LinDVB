@@ -63,6 +63,8 @@ class LinDVBApp(Gtk.Application):
             added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
+        from .favourites import FavouriteLists
+        self.favs = FavouriteLists(self.db)
         self._start_channel = opts.get("channel")
         return -1
 
@@ -396,6 +398,33 @@ class LinDVBApp(Gtk.Application):
     def show_editor(self, channel=None):
         from .ui.dialogs import EditorWindow
         EditorWindow(self, self.window, channel).present()
+
+    def show_favourites(self):
+        """The window to create, rename, delete and reorder favourites lists."""
+        from .ui.favourites import FavouritesWindow
+        FavouritesWindow(self, self.window).present()
+
+    def favourites_changed(self, remap=None):
+        """Save the favourites lists and show the change in the channel list.
+        *remap* maps old list indexes to new ones (None: deleted) after lists
+        were moved or deleted, so the list chosen stays chosen."""
+        if remap:
+            from .favourites import fav_index, filter_setting
+            i = fav_index(filter_setting(self.settings.get("list_filter")))
+            if i in remap:
+                new = remap[i]
+                self.settings["list_filter"] = "all" if new is None else f"fav:{new}"
+            last = self.settings.get("fav_last", 0)
+            if last in remap:
+                self.settings["fav_last"] = remap[last] or 0
+        self.favs.sync()
+        try:
+            self.favs.save()
+        except OSError as e:
+            if self.window:
+                self.window.set_status(str(e))
+        if self.window:
+            self.window.favourites_changed()
 
     def show_analysis(self, channel=None):
         """The channel analysis window (right click on a channel)."""

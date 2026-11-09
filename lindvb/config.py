@@ -83,10 +83,12 @@ DEFAULTS = {
     "last_tv_channel": None,
     "last_radio_channel": None,
     "mode": "tv",                    # channel list shows "tv" or "radio"
-    # Channel list filter (index into the filter list, 1 = favourites) and
-    # group ("" = all groups) last chosen, shown again at the next start.
-    "list_filter": 0,
+    # Channel list filter ("all", "fta", "enc", "hd", "iptv" or "fav:<n>" for
+    # favourites list n; see lindvb.favourites) and group ("" = all groups)
+    # last chosen, shown again at the next start.
+    "list_filter": "all",
     "list_group": "",
+    "fav_last": 0,                   # favourites list used last (favourite zapping)
     "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
     "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
     "list_sort_value": "",          # the provider / transponder / quality shown

@@ -270,6 +270,10 @@ class PrefsWindow(Gtk.Window):
         edit.connect("clicked", lambda *_: app.show_editor())
         _row(g, _("Channel editor"), edit,
              _("Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."))
+        favs = Gtk.Button(label=_("Favourites Lists…"))
+        favs.connect("clicked", lambda *_: app.show_favourites())
+        _row(g, _("Favourites lists"), favs,
+             _("Create, rename, delete and reorder your favourites lists."))
 
         # -- HbbTV
         pg = page("hbbtv", _("HbbTV"))
@@ -851,8 +855,8 @@ class EditorWindow(Gtk.Window):
     """Channel editor: rename, reorder, favourites, tuning data, delete.
 
     Edits are kept as drafts per channel while moving through the list (the
-    favourite switches in the list included) and written all at once with
-    Apply; closing the window with drafts left asks what to do with them."""
+    favourites lists picked in the list included) and written all at once
+    with Apply; closing the window with drafts left asks what to do with them."""
 
     SECTIONS = ("general", "tuning", "pids")
 
@@ -862,12 +866,14 @@ class EditorWindow(Gtk.Window):
         self.app = app
         self.current = None
         self.drafts = {}             # id(channel) -> (channel, edited copy)
+        self.fav_drafts = {}         # id(channel) -> (channel, favourites list indexes)
         self._filling = False        # set while the list is rebuilt
         self._close_ok = False
         sh = self._shown
 
         def name(c):
-            return sh(c).name + ("  ✎" if id(c) in self.drafts else "")
+            edited = id(c) in self.drafts or id(c) in self.fav_drafts
+            return sh(c).name + ("  ✎" if edited else "")
         cols = [("#", lambda c: str(c.number), False), (_("Name"), name, True),
                 (_("Group"), lambda c: sh(c).root, False),
                 (_("Category"), lambda c: sh(c).category, False),
@@ -1020,26 +1026,52 @@ class EditorWindow(Gtk.Window):
                 return
 
     def _update_title(self):
-        n = len(self.drafts)
+        n = len(set(self.drafts) | set(self.fav_drafts))
         self.set_title(_("Channel Editor") if not n else
                        _("Channel Editor – {n} channels not applied yet").format(n=n))
 
+    def _favs_of(self, c):
+        """The favourites lists of *c* as the editor shows them (draft or saved)."""
+        hit = self.fav_drafts.get(id(c))
+        return hit[1] if hit else frozenset(self.app.favs.member_of(c))
+
+    def _set_favs(self, c, lists):
+        lists = frozenset(lists)
+        if lists == frozenset(self.app.favs.member_of(c)):
+            self.fav_drafts.pop(id(c), None)
+        else:
+            self.fav_drafts[id(c)] = (c, lists)
+        self._update_title()
+        if c is self.current:
+            self._stash()                      # keep what was typed in the form
+        GLib.idle_add(lambda: (self._redraw(c), False)[1])
+
     def _fav_column(self):
-        """Favourite switch in every row: a draft like any other edit."""
+        """A star in every row: a menu to put the channel into favourites lists,
+        a draft like any other edit."""
         fac = Gtk.SignalListItemFactory()
 
         def setup(_f, li):
-            sw = Gtk.Switch(halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
-            sw.update_property([Gtk.AccessibleProperty.LABEL], [_("Favourite")])
-            sw.chan = None
-            sw.connect("notify::active", self._on_fav_switch)
-            li.set_child(sw)
+            btn = Gtk.MenuButton(halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                                 css_classes=["flat"])
+            btn.update_property([Gtk.AccessibleProperty.LABEL], [_("Favourites lists")])
+            btn.chan = None
+            btn.set_create_popup_func(self._fav_popup)
+            li.set_child(btn)
 
         def bind(_f, li):
-            sw = li.get_child()
-            sw.chan = None                     # no draft while the switch is set up
-            sw.set_active(self._shown(li.get_item().data).favourite)
-            sw.chan = li.get_item().data
+            btn = li.get_child()
+            c = li.get_item().data
+            btn.chan = c
+            lists = self._favs_of(c)
+            names = self.app.favs.names()
+            btn.set_icon_name("starred-symbolic" if lists else "non-starred-symbolic")
+            if lists:
+                btn.add_css_class("lv-fav")
+            else:
+                btn.remove_css_class("lv-fav")
+            btn.set_tooltip_text(", ".join(names[i] for i in sorted(lists) if i < len(names))
+                                 or _("In no favourites list"))
 
         def unbind(_f, li):
             li.get_child().chan = None
@@ -1047,18 +1079,48 @@ class EditorWindow(Gtk.Window):
         fac.connect("setup", setup)
         fac.connect("bind", bind)
         fac.connect("unbind", unbind)
-        return Gtk.ColumnViewColumn(title=_("Favourite"), factory=fac)
+        return Gtk.ColumnViewColumn(title=_("Favourites"), factory=fac)
 
-    def _on_fav_switch(self, sw, _pspec):
-        c = sw.chan
-        if c is None or self._shown(c).favourite == sw.get_active():
+    def _fav_popup(self, btn):
+        """The lists to tick for the channel of *btn*, made when it opens."""
+        c = btn.chan
+        if c is None:
             return
-        if c is self.current:
-            self._stash()                      # keep what was typed in the form
-        d = dataclasses.replace(self._shown(c))
-        d.favourite = sw.get_active()
-        if self._set_draft(c, d):
-            GLib.idle_add(lambda: (self._redraw(c), False)[1])
+        favs = self.app.favs
+        if not len(favs):
+            favs.ensure_one()
+            self.app.favourites_changed()
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, margin_start=4,
+                      margin_end=4, margin_top=4, margin_bottom=4)
+        lists = self._favs_of(c)
+        for i, name in enumerate(favs.names()):
+            chk = Gtk.CheckButton(label=name, active=i in lists)
+
+            def toggled(b, i=i):
+                cur = set(self._favs_of(c))
+                if b.get_active():
+                    cur.add(i)
+                else:
+                    cur.discard(i)
+                self._set_favs(c, cur)
+            chk.connect("toggled", toggled)
+            box.append(chk)
+        box.append(Gtk.Separator(margin_top=4, margin_bottom=4))
+        new = Gtk.Button(label=_("New list…"), css_classes=["flat"])
+        pop = Gtk.Popover(child=box)
+
+        def make_list(*_a):
+            from .favourites import ask_name
+            pop.popdown()
+
+            def done(name):
+                i = favs.create(name)
+                self.app.favourites_changed()
+                self._set_favs(c, set(self._favs_of(c)) | {i})
+            ask_name(self, _("New Favourites List"), _("New list"), done)
+        new.connect("clicked", make_list)
+        box.append(new)
+        btn.set_popover(pop)
 
     def _on_select(self):
         if self._filling:
@@ -1070,9 +1132,9 @@ class EditorWindow(Gtk.Window):
         if self._close_ok:
             return False
         self._stash()
-        if not self.drafts:
+        if not self.drafts and not self.fav_drafts:
             return False
-        n = len(self.drafts)
+        n = len(set(self.drafts) | set(self.fav_drafts))
         dlg = Gtk.AlertDialog(
             message=_("Apply the changes to {n} channels?").format(n=n),
             detail=_("The edits were not applied yet. Without applying they are lost."),
@@ -1088,6 +1150,7 @@ class EditorWindow(Gtk.Window):
             if choice == 2:
                 self.on_apply()
             self.drafts.clear()
+            self.fav_drafts.clear()
             self._close_ok = True
             self.close()
 
@@ -1180,12 +1243,21 @@ class EditorWindow(Gtk.Window):
     def on_apply(self):
         """Write the drafts of all edited channels and save the list once."""
         self._stash()
+        favs = self.app.favs
         for c, d in self.drafts.values():
             if self._in_db(c):
+                old = c.key
                 for f in dataclasses.fields(Channel):
                     setattr(c, f.name, getattr(d, f.name))
+                favs.rekey(old, c.key)         # new tuning data: keep its favourites
+        for c, lists in self.fav_drafts.values():
+            if self._in_db(c):
+                for i in range(len(favs)):
+                    favs.set_member(i, c, i in lists)
         self.drafts.clear()
+        self.fav_drafts.clear()
         self._update_title()
+        self.app.favourites_changed()
         self._commit()
         self._load(self.current)
 
@@ -1201,6 +1273,7 @@ class EditorWindow(Gtk.Window):
         c = selected(self.sel)
         if c:
             self.drafts.pop(id(c), None)
+            self.fav_drafts.pop(id(c), None)
             self._update_title()
             self.app.db.channels.remove(c)
             self.current = None

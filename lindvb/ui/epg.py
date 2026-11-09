@@ -95,8 +95,17 @@ class EPGWindow(Gtk.Window):
         top = Gtk.Box(spacing=6, margin_start=6, margin_top=6)
         self.at_dd = dropdown([_("Now"), _("Next"), "20:15", "22:00"])
         self.at_dd.connect("notify::selected", lambda *_: self.refresh())
-        self.only_fav = Gtk.CheckButton(label=_("Only favourites"))
-        self.only_fav.connect("toggled", lambda *_: self.refresh())
+        # all channels or one favourites list (the one shown in the channel
+        # list, else the one used last)
+        favs = self.app.favs
+        self.only_fav = dropdown([_("All channels")] + ["★ " + n for n in favs.names()])
+        self.only_fav.set_tooltip_text(_("Only the channels of a favourites list"))
+        win = self.app.window
+        i = win.current_fav_list() if win is not None and hasattr(win, "current_fav_list") \
+            else None
+        if i is not None and getattr(win, "_list_fav", None) is not None:
+            self.only_fav.set_selected(i + 1)
+        self.only_fav.connect("notify::selected", lambda *_: self.refresh())
         self.access_dd = dropdown([label for label, _a in ACCESS_FILTERS])
         self.access_dd.set_tooltip_text(_("Accessibility features (DVB-I programme guide)"))
         self.access_dd.connect("notify::selected", lambda *_: self.refresh())
@@ -167,8 +176,10 @@ class EPGWindow(Gtk.Window):
 
     # -- data -------------------------------------------------------------------
     def _visible_channels(self):
-        if self.only_fav.get_active():
-            return [c for c in self.chans if c.favourite]
+        i = self.only_fav.get_selected() - 1
+        if self.app.favs.valid(i):
+            keys = {c.key for c in self.chans}
+            return [c for c in self.app.favs.channels(i) if c.key in keys]
         return self.chans
 
     def refresh(self):
