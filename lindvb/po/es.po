@@ -3432,3 +3432,24 @@ msgstr "Ordenar por"
 
 msgid "All"
 msgstr "Todos"
+
+msgid "General settings"
+msgstr "Ajustes generales"
+
+msgid "For this recording"
+msgstr "Para esta grabación"
+
+msgid "Formats and _tracks"
+msgstr "Formatos y _pistas"
+
+msgid "Whole series"
+msgstr "Toda la serie"
+
+msgid "Next recording only"
+msgstr "Solo la próxima grabación"
+
+msgid "_Apply to"
+msgstr "_Aplicar a"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Ajustes generales: los formatos, las pistas de audio y los flujos extra se toman de las preferencias al empezar la grabación."

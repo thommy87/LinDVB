@@ -4804,3 +4804,24 @@ msgstr ""
 
 msgid "All"
 msgstr ""
+
+msgid "General settings"
+msgstr ""
+
+msgid "For this recording"
+msgstr ""
+
+msgid "Formats and _tracks"
+msgstr ""
+
+msgid "Whole series"
+msgstr ""
+
+msgid "Next recording only"
+msgstr ""
+
+msgid "_Apply to"
+msgstr ""
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr ""

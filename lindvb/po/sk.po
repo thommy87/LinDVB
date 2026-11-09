@@ -3432,3 +3432,24 @@ msgstr "Zoradiť podľa"
 
 msgid "All"
 msgstr "Všetko"
+
+msgid "General settings"
+msgstr "Všeobecné nastavenia"
+
+msgid "For this recording"
+msgstr "Pre tento záznam"
+
+msgid "Formats and _tracks"
+msgstr "Formáty a _stopy"
+
+msgid "Whole series"
+msgstr "Celý seriál"
+
+msgid "Next recording only"
+msgstr "Len ďalší záznam"
+
+msgid "_Apply to"
+msgstr "_Použiť na"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Všeobecné nastavenia: formáty, zvukové stopy a ďalšie prúdy sa pri spustení záznamu prevezmú z predvolieb."

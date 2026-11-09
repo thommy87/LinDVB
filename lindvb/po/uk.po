@@ -3432,3 +3432,24 @@ msgstr "Сортувати за"
 
 msgid "All"
 msgstr "Усі"
+
+msgid "General settings"
+msgstr "Загальні налаштування"
+
+msgid "For this recording"
+msgstr "Для цього запису"
+
+msgid "Formats and _tracks"
+msgstr "Формати та _доріжки"
+
+msgid "Whole series"
+msgstr "Увесь серіал"
+
+msgid "Next recording only"
+msgstr "Лише наступний запис"
+
+msgid "_Apply to"
+msgstr "_Застосувати до"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Загальні налаштування: формати, звукові доріжки та додаткові потоки беруться з параметрів на початку запису."

@@ -3432,3 +3432,24 @@ msgstr "Lajitteluperuste"
 
 msgid "All"
 msgstr "Kaikki"
+
+msgid "General settings"
+msgstr "Yleiset asetukset"
+
+msgid "For this recording"
+msgstr "Tälle tallenteelle"
+
+msgid "Formats and _tracks"
+msgstr "Muodot ja _raidat"
+
+msgid "Whole series"
+msgstr "Koko sarja"
+
+msgid "Next recording only"
+msgstr "Vain seuraava tallenne"
+
+msgid "_Apply to"
+msgstr "_Käytä kohteeseen"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Yleiset asetukset: muodot, ääniraidat ja lisävirrat otetaan asetuksista tallennuksen alkaessa."

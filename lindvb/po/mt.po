@@ -3432,3 +3432,24 @@ msgstr "Issortja skont"
 
 msgid "All"
 msgstr "Kollha"
+
+msgid "General settings"
+msgstr "Settings ġenerali"
+
+msgid "For this recording"
+msgstr "Għal din ir-reġistrazzjoni"
+
+msgid "Formats and _tracks"
+msgstr "Formati u _binarji"
+
+msgid "Whole series"
+msgstr "Is-serje kollha"
+
+msgid "Next recording only"
+msgstr "Ir-reġistrazzjoni li jmiss biss"
+
+msgid "_Apply to"
+msgstr "_Applika għal"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Settings ġenerali: il-formati, il-binarji tal-awdjo u l-flussi żejda jittieħdu mill-preferenzi meta tibda r-reġistrazzjoni."

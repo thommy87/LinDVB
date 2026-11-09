@@ -3432,3 +3432,24 @@ msgstr "Sorteeri"
 
 msgid "All"
 msgstr "Kõik"
+
+msgid "General settings"
+msgstr "Üldseaded"
+
+msgid "For this recording"
+msgstr "Selle salvestuse jaoks"
+
+msgid "Formats and _tracks"
+msgstr "Vormingud ja _rajad"
+
+msgid "Whole series"
+msgstr "Kogu sari"
+
+msgid "Next recording only"
+msgstr "Ainult järgmine salvestus"
+
+msgid "_Apply to"
+msgstr "_Rakenda"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Üldseaded: vormingud, helirajad ja lisavood võetakse salvestuse algul eelistustest."

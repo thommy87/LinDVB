@@ -3432,3 +3432,24 @@ msgstr "Rendezés"
 
 msgid "All"
 msgstr "Mind"
+
+msgid "General settings"
+msgstr "Általános beállítások"
+
+msgid "For this recording"
+msgstr "Ehhez a felvételhez"
+
+msgid "Formats and _tracks"
+msgstr "Formátumok és _sávok"
+
+msgid "Whole series"
+msgstr "Teljes sorozat"
+
+msgid "Next recording only"
+msgstr "Csak a következő felvétel"
+
+msgid "_Apply to"
+msgstr "_Alkalmazás"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Általános beállítások: a formátumok, hangsávok és extra adatfolyamok a felvétel indulásakor a beállításokból jönnek."

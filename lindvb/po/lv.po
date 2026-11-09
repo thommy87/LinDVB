@@ -3432,3 +3432,24 @@ msgstr "Kārtot pēc"
 
 msgid "All"
 msgstr "Visi"
+
+msgid "General settings"
+msgstr "Vispārīgie iestatījumi"
+
+msgid "For this recording"
+msgstr "Šim ierakstam"
+
+msgid "Formats and _tracks"
+msgstr "Formāti un _celiņi"
+
+msgid "Whole series"
+msgstr "Visa sērija"
+
+msgid "Next recording only"
+msgstr "Tikai nākamais ieraksts"
+
+msgid "_Apply to"
+msgstr "_Lietot"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Vispārīgie iestatījumi: formāti, audio celiņi un papildu straumes tiek ņemti no iestatījumiem ieraksta sākumā."

@@ -3432,3 +3432,24 @@ msgstr "Ταξινόμηση κατά"
 
 msgid "All"
 msgstr "Όλα"
+
+msgid "General settings"
+msgstr "Γενικές ρυθμίσεις"
+
+msgid "For this recording"
+msgstr "Για αυτή την εγγραφή"
+
+msgid "Formats and _tracks"
+msgstr "Μορφές και _κομμάτια"
+
+msgid "Whole series"
+msgstr "Ολόκληρη η σειρά"
+
+msgid "Next recording only"
+msgstr "Μόνο η επόμενη εγγραφή"
+
+msgid "_Apply to"
+msgstr "_Εφαρμογή σε"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Γενικές ρυθμίσεις: οι μορφές, τα κομμάτια ήχου και οι πρόσθετες ροές λαμβάνονται από τις προτιμήσεις όταν ξεκινά η εγγραφή."

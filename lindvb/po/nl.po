@@ -3432,3 +3432,24 @@ msgstr "Sorteren op"
 
 msgid "All"
 msgstr "Alle"
+
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+msgid "For this recording"
+msgstr "Voor deze opname"
+
+msgid "Formats and _tracks"
+msgstr "Formaten en _sporen"
+
+msgid "Whole series"
+msgstr "Hele serie"
+
+msgid "Next recording only"
+msgstr "Alleen volgende opname"
+
+msgid "_Apply to"
+msgstr "_Toepassen op"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Algemene instellingen: formaten, audiosporen en extra streams komen bij de start van de opname uit de voorkeuren."

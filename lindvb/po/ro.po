@@ -3432,3 +3432,24 @@ msgstr "Sortează după"
 
 msgid "All"
 msgstr "Toate"
+
+msgid "General settings"
+msgstr "Setări generale"
+
+msgid "For this recording"
+msgstr "Pentru această înregistrare"
+
+msgid "Formats and _tracks"
+msgstr "Formate și _piste"
+
+msgid "Whole series"
+msgstr "Întreaga serie"
+
+msgid "Next recording only"
+msgstr "Doar următoarea înregistrare"
+
+msgid "_Apply to"
+msgstr "_Aplică la"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Setări generale: formatele, pistele audio și fluxurile suplimentare se iau din preferințe la începutul înregistrării."

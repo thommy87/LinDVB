@@ -3432,3 +3432,24 @@ msgstr "Подреждане по"
 
 msgid "All"
 msgstr "Всички"
+
+msgid "General settings"
+msgstr "Общи настройки"
+
+msgid "For this recording"
+msgstr "За този запис"
+
+msgid "Formats and _tracks"
+msgstr "Формати и _писти"
+
+msgid "Whole series"
+msgstr "Цялата поредица"
+
+msgid "Next recording only"
+msgstr "Само следващия запис"
+
+msgid "_Apply to"
+msgstr "_Приложи за"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Общи настройки: форматите, аудио пистите и допълнителните потоци се вземат от настройките при старта на записа."

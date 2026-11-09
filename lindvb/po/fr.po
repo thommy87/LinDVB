@@ -3432,3 +3432,24 @@ msgstr "Trier par"
 
 msgid "All"
 msgstr "Tous"
+
+msgid "General settings"
+msgstr "Réglages généraux"
+
+msgid "For this recording"
+msgstr "Pour cet enregistrement"
+
+msgid "Formats and _tracks"
+msgstr "Formats et _pistes"
+
+msgid "Whole series"
+msgstr "Toute la série"
+
+msgid "Next recording only"
+msgstr "Prochain enregistrement seulement"
+
+msgid "_Apply to"
+msgstr "_Appliquer à"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Réglages généraux : les formats, pistes audio et flux supplémentaires sont pris dans les préférences au début de l'enregistrement."

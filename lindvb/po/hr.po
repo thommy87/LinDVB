@@ -3432,3 +3432,24 @@ msgstr "Poredaj po"
 
 msgid "All"
 msgstr "Sve"
+
+msgid "General settings"
+msgstr "Opće postavke"
+
+msgid "For this recording"
+msgstr "Za ovu snimku"
+
+msgid "Formats and _tracks"
+msgstr "Formati i _zapisi"
+
+msgid "Whole series"
+msgstr "Cijela serija"
+
+msgid "Next recording only"
+msgstr "Samo sljedeća snimka"
+
+msgid "_Apply to"
+msgstr "_Primijeni na"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Opće postavke: formati, audiozapisi i dodatni tokovi uzimaju se iz postavki pri početku snimanja."

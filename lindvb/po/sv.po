@@ -3432,3 +3432,24 @@ msgstr "Sortera efter"
 
 msgid "All"
 msgstr "Alla"
+
+msgid "General settings"
+msgstr "Allmänna inställningar"
+
+msgid "For this recording"
+msgstr "För denna inspelning"
+
+msgid "Formats and _tracks"
+msgstr "Format och _spår"
+
+msgid "Whole series"
+msgstr "Hela serien"
+
+msgid "Next recording only"
+msgstr "Endast nästa inspelning"
+
+msgid "_Apply to"
+msgstr "_Tillämpa på"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Allmänna inställningar: format, ljudspår och extra strömmar hämtas från inställningarna när inspelningen startar."

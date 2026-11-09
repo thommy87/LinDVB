@@ -3432,3 +3432,24 @@ msgstr "Rikiuoti pagal"
 
 msgid "All"
 msgstr "Visi"
+
+msgid "General settings"
+msgstr "Bendrieji nustatymai"
+
+msgid "For this recording"
+msgstr "Šiam įrašui"
+
+msgid "Formats and _tracks"
+msgstr "Formatai ir _takeliai"
+
+msgid "Whole series"
+msgstr "Visa serija"
+
+msgid "Next recording only"
+msgstr "Tik kitas įrašas"
+
+msgid "_Apply to"
+msgstr "_Taikyti"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Bendrieji nustatymai: formatai, garso takeliai ir papildomi srautai imami iš nuostatų, kai prasideda įrašymas."

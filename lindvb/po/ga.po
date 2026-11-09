@@ -3432,3 +3432,24 @@ msgstr "Sórtáil de réir"
 
 msgid "All"
 msgstr "Gach"
+
+msgid "General settings"
+msgstr "Socruithe ginearálta"
+
+msgid "For this recording"
+msgstr "Don taifeadadh seo"
+
+msgid "Formats and _tracks"
+msgstr "Formáidí agus _rianta"
+
+msgid "Whole series"
+msgstr "An tsraith ar fad"
+
+msgid "Next recording only"
+msgstr "An chéad taifeadadh eile amháin"
+
+msgid "_Apply to"
+msgstr "_Cuir i bhfeidhm ar"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Socruithe ginearálta: tógtar formáidí, rianta fuaime agus sruthanna breise ó na sainroghanna nuair a thosaíonn an taifeadadh."
