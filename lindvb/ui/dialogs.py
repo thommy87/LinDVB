@@ -191,10 +191,17 @@ class PrefsWindow(Gtk.Window):
                 "by SNP name). They are shown in the channel list too. LinDVB ships no "
                 "logos, because they belong to the broadcasters. Empty: {v0}"
                 ).format(v0=DATA_DIR / 'logos'))
-        _row(g, _("Picon sets"), Gtk.LinkButton(uri="https://github.com/picons/picons",
-                                                label=_("Find picons online")),
-             _("Download a set for your satellite, cable or antenna there and unpack it "
-               "into the logo folder."))
+        self._picon_btn = _row(g, _("Picons for my channels"),
+                               Gtk.Button(label=_("Download Logos")),
+                               _("Fetches only the logos of the channels in your list from "
+                                 "the picons project (github.com/picons/picons) into the "
+                                 "logo folder. Channels that already have a logo there are "
+                                 "left alone."))
+        self._picon_btn.connect("clicked", lambda *_: self._download_picons())
+        self._picon_status = Gtk.Label(xalign=0, wrap=True, visible=False,
+                                       css_classes=["lv-hint"], margin_start=12,
+                                       margin_end=12, margin_bottom=8)
+        g.append(self._picon_status)
         self._build_visualisations(group(pg, _("Visualisations")), s, spin, entry, switch)
 
         # -- Playback
@@ -727,6 +734,41 @@ class PrefsWindow(Gtk.Window):
         # the older settings, still read by the channel search
         s["adapters"] = sorted({p["adapter"] for p in on}) or [0]
         s["frontend"] = on[0]["frontend"] if on else 0
+
+    def _download_picons(self):
+        """Fetch picons for the channel list on a background thread."""
+        import threading
+        from .. import picondl
+        from .nowplaying import DEFAULT_LOGO_DIR
+        btn = self._picon_btn
+        folder = self.w["logo_dir"][0].get_text().strip() or str(DEFAULT_LOGO_DIR)
+        channels = list(self.app.db.channels)
+        btn.set_sensitive(False)
+        btn.set_label(_("Looking up…"))
+
+        def progress(done, total):
+            GLib.idle_add(btn.set_label, _("{done} of {total}").format(done=done, total=total))
+
+        def finished(text):
+            btn.set_label(_("Download Logos"))
+            btn.set_sensitive(True)
+            self._picon_status.set_text(text)
+            self._picon_status.set_visible(True)
+            win = getattr(self.app, "window", None)
+            if win is not None:
+                win.reload_channels()
+            return False
+
+        def work():
+            try:
+                got, have, missing = picondl.download(channels, folder, progress=progress)
+                text = _("{got} logos downloaded, {have} already there, {missing} not in "
+                         "the picon set.").format(got=got, have=have, missing=missing)
+            except (picondl.Error, OSError) as e:
+                text = _("Download failed: {error}").format(error=e)
+            GLib.idle_add(finished, text)
+
+        threading.Thread(target=work, daemon=True).start()
 
     def on_save(self):
         s = self.app.settings
