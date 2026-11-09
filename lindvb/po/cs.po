@@ -3504,3 +3504,18 @@ msgstr "Soubor neobsahuje žádné kanály."
 
 msgid "{n} channels removed"
 msgstr "Odstraněno kanálů: {n}"
+
+msgid "Colour scheme"
+msgstr "Barevné schéma"
+
+msgid "Dark"
+msgstr "Tmavé"
+
+msgid "Light"
+msgstr "Světlé"
+
+msgid "Same as the system"
+msgstr "Podle systému"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Obraz si vždy ponechá tmavý rámeček."

@@ -3504,3 +3504,18 @@ msgstr "الملف لا يحتوي على قنوات."
 
 msgid "{n} channels removed"
 msgstr "أُزيلت {n} قناة"
+
+msgid "Colour scheme"
+msgstr "نظام الألوان"
+
+msgid "Dark"
+msgstr "داكن"
+
+msgid "Light"
+msgstr "فاتح"
+
+msgid "Same as the system"
+msgstr "مثل النظام"
+
+msgid "The picture always keeps its dark frame."
+msgstr "تحتفظ الصورة دائماً بإطارها الداكن."

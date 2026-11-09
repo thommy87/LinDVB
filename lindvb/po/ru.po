@@ -3504,3 +3504,18 @@ msgstr "В файле нет каналов."
 
 msgid "{n} channels removed"
 msgstr "Удалено каналов: {n}"
+
+msgid "Colour scheme"
+msgstr "Цветовая схема"
+
+msgid "Dark"
+msgstr "Тёмная"
+
+msgid "Light"
+msgstr "Светлая"
+
+msgid "Same as the system"
+msgstr "Как в системе"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Изображение всегда остаётся в тёмной рамке."

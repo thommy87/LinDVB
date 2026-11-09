@@ -3504,3 +3504,18 @@ msgstr "Tiedostossa ei ole kanavia."
 
 msgid "{n} channels removed"
 msgstr "{n} kanavaa poistettu"
+
+msgid "Colour scheme"
+msgstr "Väriteema"
+
+msgid "Dark"
+msgstr "Tumma"
+
+msgid "Light"
+msgstr "Vaalea"
+
+msgid "Same as the system"
+msgstr "Kuten järjestelmä"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Kuva säilyttää aina tumman kehyksensä."

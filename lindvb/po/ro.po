@@ -3504,3 +3504,18 @@ msgstr "Fișierul nu are canale."
 
 msgid "{n} channels removed"
 msgstr "{n} canale eliminate"
+
+msgid "Colour scheme"
+msgstr "Schemă de culori"
+
+msgid "Dark"
+msgstr "Întunecată"
+
+msgid "Light"
+msgstr "Luminoasă"
+
+msgid "Same as the system"
+msgstr "Ca sistemul"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Imaginea își păstrează mereu chenarul întunecat."

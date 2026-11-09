@@ -51,3 +51,13 @@ def test_display_css_and_subtitle_font():
     assert subtitle_font_desc({}) is None
     assert subtitle_font_desc({"subtitle_scale": 150}) == "Sans 27"
     assert subtitle_font_desc({"subtitle_font": "DejaVu Serif"}) == "DejaVu Serif 18"
+
+
+def test_light_and_dark_schemes():
+    from lindvb.ui.theme import CSS, resolve_scheme, theme_css
+    dark, light = theme_css("dark"), theme_css("light")
+    assert CSS == dark and "@define-color lv_bg #0A0A0C;" in dark
+    assert "@define-color lv_bg #F4F4F7;" in light and "@define-color lv_line black;" in light
+    assert "alpha(white," not in dark.split(".osd")[0]       # lines follow the scheme
+    assert ".osd, .osd-num { background: alpha(#121215" in light   # the OSD stays dark
+    assert resolve_scheme({}) == "dark" and resolve_scheme({"theme": "light"}) == "light"

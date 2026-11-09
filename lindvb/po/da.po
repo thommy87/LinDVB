@@ -3504,3 +3504,18 @@ msgstr "Filen indeholder ingen kanaler."
 
 msgid "{n} channels removed"
 msgstr "{n} kanaler fjernet"
+
+msgid "Colour scheme"
+msgstr "Farveskema"
+
+msgid "Dark"
+msgstr "Mørkt"
+
+msgid "Light"
+msgstr "Lyst"
+
+msgid "Same as the system"
+msgstr "Som systemet"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Billedet beholder altid sin mørke ramme."

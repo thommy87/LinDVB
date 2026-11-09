@@ -182,6 +182,7 @@ DEFAULTS = {
     # "custom" (accent_custom, "#RRGGBB").
     # user interface language ("" follows the desktop); see lindvb/i18n.py
     "language": "",
+    "theme": "dark",                # dark, light or system (lindvb.ui.theme.SCHEMES)
     "accent_mode": "default",
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.

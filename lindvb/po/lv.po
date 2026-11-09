@@ -3504,3 +3504,18 @@ msgstr "Failā nav kanālu."
 
 msgid "{n} channels removed"
 msgstr "Noņemti kanāli: {n}"
+
+msgid "Colour scheme"
+msgstr "Krāsu shēma"
+
+msgid "Dark"
+msgstr "Tumša"
+
+msgid "Light"
+msgstr "Gaiša"
+
+msgid "Same as the system"
+msgstr "Kā sistēmā"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Attēls vienmēr saglabā tumšo rāmi."

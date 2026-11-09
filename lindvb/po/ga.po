@@ -3504,3 +3504,18 @@ msgstr "Níl aon chainéal sa chomhad."
 
 msgid "{n} channels removed"
 msgstr "{n} cainéal bainte"
+
+msgid "Colour scheme"
+msgstr "Scéim dathanna"
+
+msgid "Dark"
+msgstr "Dorcha"
+
+msgid "Light"
+msgstr "Geal"
+
+msgid "Same as the system"
+msgstr "Mar an gcóras"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Coinníonn an pictiúr a fhráma dorcha i gcónaí."

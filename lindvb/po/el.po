@@ -3504,3 +3504,18 @@ msgstr "Το αρχείο δεν έχει κανάλια."
 
 msgid "{n} channels removed"
 msgstr "Αφαιρέθηκαν {n} κανάλια"
+
+msgid "Colour scheme"
+msgstr "Συνδυασμός χρωμάτων"
+
+msgid "Dark"
+msgstr "Σκούρο"
+
+msgid "Light"
+msgstr "Φωτεινό"
+
+msgid "Same as the system"
+msgstr "Όπως το σύστημα"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Η εικόνα κρατά πάντα το σκούρο πλαίσιό της."

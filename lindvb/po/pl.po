@@ -3504,3 +3504,18 @@ msgstr "Plik nie zawiera kanałów."
 
 msgid "{n} channels removed"
 msgstr "Usunięto kanałów: {n}"
+
+msgid "Colour scheme"
+msgstr "Schemat kolorów"
+
+msgid "Dark"
+msgstr "Ciemny"
+
+msgid "Light"
+msgstr "Jasny"
+
+msgid "Same as the system"
+msgstr "Jak w systemie"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Obraz zawsze zachowuje ciemną ramkę."

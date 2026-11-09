@@ -3504,3 +3504,18 @@ msgstr "Datoteka nema kanala."
 
 msgid "{n} channels removed"
 msgstr "Uklonjeno kanala: {n}"
+
+msgid "Colour scheme"
+msgstr "Shema boja"
+
+msgid "Dark"
+msgstr "Tamna"
+
+msgid "Light"
+msgstr "Svijetla"
+
+msgid "Same as the system"
+msgstr "Kao sustav"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Slika uvijek zadržava svoj tamni okvir."

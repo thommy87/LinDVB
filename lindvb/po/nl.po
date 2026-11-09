@@ -3504,3 +3504,18 @@ msgstr "Het bestand bevat geen zenders."
 
 msgid "{n} channels removed"
 msgstr "{n} zenders verwijderd"
+
+msgid "Colour scheme"
+msgstr "Kleurenschema"
+
+msgid "Dark"
+msgstr "Donker"
+
+msgid "Light"
+msgstr "Licht"
+
+msgid "Same as the system"
+msgstr "Zoals het systeem"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Het beeld houdt altijd zijn donkere rand."
