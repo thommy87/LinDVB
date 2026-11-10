@@ -13,18 +13,22 @@ blocky in full screen. projectM draws with OpenGL; "auto" renders at the
 screen's shape at most 1280x720, which starts fast and keeps up on most
 graphics cards ("visualizer_resolution", Preferences › OSD and
 Visualisations, sets more). A leaky queue in front of the visualiser drops
-audio for the picture when it cannot keep up, so the sound never waits for it. The original GOOM runs on the CPU and slows down a lot at
-high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
+audio for the picture when it cannot keep up, so the sound never waits for it.
+projectM gets an OpenGL context of its own whose hidden window has the
+visualisation's size (see _isolated_bin_class). The original GOOM runs on
+the CPU and slows down a lot at high resolutions, so it uses "goom_resolution" (default 640x360, 16:9);
 LinDVB's own "Goom HD (GPU)" renders goom's effects at full resolution.
 """
 
 import os
 import re
 import sys
+import threading
+import time
 from pathlib import Path
 
 NAME = "GStreamer visualisations (projectM, GOOM)"
-VERSION = "1.4"
+VERSION = "1.5"
 
 # the AppImage brings its own collection under its prefix (sys.prefix/share)
 PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/projectM/presets", "/usr/local/share/projectM/presets",
@@ -128,7 +132,15 @@ def _isolated_bin_class(Gst):
     On Wayland GTK draws with OpenGL ES, and projectM needs desktop OpenGL: with
     GTK's context it fails ("Subclass failed to initialize"). projectM hands out
     ordinary video frames, so it does not need to share: this bin answers no GL
-    context query or request, and projectM creates its own context."""
+    context query or request, and projectM gets a context of its own.
+
+    That context is made here too, because of where projectM draws: libprojectM
+    4.1 renders each finished picture into the context's window (framebuffer 0)
+    and gst-projectm reads it back from there. GStreamer gives a context it makes
+    itself a hidden helper window of 320x240 (Wayland) or 1x1 pixels (X11), so
+    only a corner of the picture was real and the rest undefined: a fragment top
+    left, nothing, or garbage, depending on driver and preset. Our context gets
+    a helper window of the visualisation's size."""
     cls = _ISOLATED.get("cls")
     if cls is not None:
         return cls
@@ -143,9 +155,29 @@ def _isolated_bin_class(Gst):
     except (ImportError, ValueError):
         GstGL = None
 
+    def make_context(display, size):
+        """A desktop OpenGL context whose (hidden) window is ``size`` pixels."""
+        w, h = size
+        context = GstGL.GLContext.new(display)
+        window = GstGL.GLWindow.new(display)
+        context.set_window(window)
+        # Wayland makes the surface when the context is created, at the
+        # preferred size. set_preferred_size() stores the size right away but
+        # then waits for the window's GL thread, which only runs once create()
+        # has finished: so it is called from a helper thread just before.
+        threading.Thread(target=window.set_preferred_size, args=(w, h),
+                         daemon=True).start()
+        time.sleep(0.05)
+        if not context.create(None):
+            return None
+        # X11 makes its window 1x1 and only sizes it to a render rectangle
+        window.set_render_rectangle(0, 0, w, h)
+        return context
+
     class IsolatedGLBin(Gst.Bin):
         __gtype_name__ = "LinDVBIsolatedGLBin"
         display = None
+        size = None                 # (width, height) projectM renders at
 
         def _display_context(self):
             """A GL display of our own that only offers desktop OpenGL (projectM
@@ -155,10 +187,19 @@ def _isolated_bin_class(Gst):
             if self.display is None:
                 display = GstGL.GLDisplay.new()
                 display.filter_gl_api(GstGL.GLAPI.OPENGL3 | GstGL.GLAPI.OPENGL)
+                if self.size:
+                    display.connect("create-context", self._create_context)
                 self.display = display
             context = Gst.Context.new("gst.gl.GLDisplay", True)
             GstGL.context_set_gl_display(context, self.display)
             return context
+
+        def _create_context(self, display, _other):
+            try:
+                return make_context(display, self.size)
+            except Exception as e:      # GStreamer then makes its own, as before
+                print(f"projectM: no GL context of {self.size}: {e}")
+                return None
 
         def do_handle_message(self, message):
             if message.type == Gst.MessageType.NEED_CONTEXT:
@@ -199,6 +240,7 @@ def sized(Gst, element, size, any_memory=False, isolate_gl=False):
     w, h = size
     if isolate_gl:
         bin_ = _isolated_bin_class(Gst)()
+        bin_.size = (w, h)
         _block_gl_queries(Gst, element)
     else:
         bin_ = Gst.Bin.new(None)
