@@ -27,18 +27,18 @@ them.
 
 
 | **Live TV** | **Timeshift** | 
-| ![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png) | ![Timeshift](docs/screenshots/08-timeshift.png) | 
+| ![Live TV with the on-screen programme info](docs/screenshots/01_TV_OSD.png) | ![Timeshift](docs/screenshots/08-timeshift.png) | 
 | --- | --- | 
 | **File playback** | **Programme guide** | 
-| ![File playback](docs/screenshots/02-file-playback.png) | ![EPG now/next](docs/screenshots/dark_EPG_Now.png) | 
+| ![File playback](docs/screenshots/11_recording.png) | ![EPG now/next](docs/screenshots/10_EPG.png) | 
 | **TV guide timeline** | **Timer recordings** | 
-| ![TV guide](docs/screenshots/dark_EPG_all_stations.png) | ![Timers](docs/screenshots/05-timers.png) | 
+| ![TV guide](docs/screenshots/dark_EPG_all_stations.png) | ![Timers](docs/screenshots/08_Recording_Timer.png) | 
 | **Channel search** | **HbbTV** | 
-| ![Channel search](docs/screenshots/06-channel-search.png) | ![HbbTV](docs/screenshots/dark_hbbtv.png) | 
+| ![Channel search](docs/screenshots/04_ChannelScan.png) | ![HbbTV](docs/screenshots/12_Station_hbbtv.png) | 
 | **Teletext** | **Radio** | 
-| ![Teletext](docs/screenshots/dark_teletext_hbbtv.png) | ![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png) | 
+| ![Teletext](docs/screenshots/07_videotext.png) | ![Radio with Album Cover](docs/screenshots/03_Radio_Album_logo.png) | 
 | **Preferences** |  | 
-| ![Teletext](docs/screenshots/dark_preferences.png) |  |
+| ![Preferences](docs/screenshots/06_preferences.png) |  |
 
 
 ## Features
