@@ -3320,21 +3320,6 @@ msgstr "رسم روی کارت گرافیک"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL برای نمایش‌های بصری داخلی. پس از اجرای دوبارهٔ LinDVB اعمال می‌شود."
 
-msgid "Resolution of projectM"
-msgstr "وضوح projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "\"auto\" (صفحه) یا عرض x ارتفاع، مثلاً 1280x720. اندازه‌های کوچک‌تر سریع‌تر شروع می‌شوند و توان پردازشی کمتری می‌خواهند."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: ثانیه برای هر پیش‌تنظیم"
-
-msgid "projectM preset folder"
-msgstr "پوشهٔ پیش‌تنظیم‌های projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "خالی: پوشه‌های معمول projectM."
-
 msgid "Service list address"
 msgstr "نشانی فهرست خدمات"
 

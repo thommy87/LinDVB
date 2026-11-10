@@ -3265,21 +3265,6 @@ msgstr "Piešti vaizdo plokšte"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL įtaisytosioms vizualizacijoms. Įsigalioja iš naujo paleidus LinDVB."
 
-msgid "Resolution of projectM"
-msgstr "projectM raiška"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "„auto“ (ekranas) arba plotis x aukštis, pvz., 1280x720. Mažesni dydžiai paleidžiami greičiau ir reikalauja mažiau skaičiavimo galios."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekundės vienam presetui"
-
-msgid "projectM preset folder"
-msgstr "projectM presetų aplankas"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Tuščia: įprasti projectM aplankai."
-
 msgid "Service list address"
 msgstr "Paslaugų sąrašo adresas"
 

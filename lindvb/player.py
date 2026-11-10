@@ -1421,7 +1421,7 @@ class Player(GObject.Object):
         if t == Gst.MessageType.ERROR:
             err, _dbg = msg.parse_error()
             if self._from_visualizer(msg.src):
-                # the visualiser (e.g. projectM without a usable OpenGL) must not
+                # the visualiser (e.g. one without a usable OpenGL) must not
                 # stop the radio: drop it and play on
                 if self._vis_error_token != self._token:
                     self._vis_error_token = self._token

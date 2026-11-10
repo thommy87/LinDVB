@@ -112,8 +112,8 @@ class PluginAPI:
                     (spectrum bands, levels, waveform, beat). Called anew each
                     time the user picks the visualisation.
         ``element`` ``element() -> Gst.Element``: a GStreamer audio
-                    visualiser (audio in, video out, e.g. ``projectm`` or
-                    ``goom``) that playbin renders into the video area.
+                    visualiser (audio in, video out, e.g. ``goom`` or
+                    ``monoscope``) that playbin renders into the video area.
 
         ``name`` is shown in the View → Visualisation menu.
 

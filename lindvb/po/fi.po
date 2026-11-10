@@ -3265,21 +3265,6 @@ msgstr "Piirrä näytönohjaimella"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL sisäänrakennetuille visualisoinneille. Tulee voimaan, kun LinDVB käynnistetään uudelleen."
 
-msgid "Resolution of projectM"
-msgstr "projectM:n resoluutio"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "\"auto\" (näyttö) tai leveys x korkeus, esim. 1280x720. Pienemmät koot käynnistyvät nopeammin ja vaativat vähemmän laskentatehoa."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekuntia per preset"
-
-msgid "projectM preset folder"
-msgstr "projectM:n preset-kansio"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Tyhjä: projectM:n tavalliset kansiot."
-
 msgid "Service list address"
 msgstr "Palveluluettelon osoite"
 

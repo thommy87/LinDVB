@@ -3265,21 +3265,6 @@ msgstr "Rajzolás a videokártyával"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL a beépített vizualizációkhoz. A LinDVB újraindítása után lép életbe."
 
-msgid "Resolution of projectM"
-msgstr "A projectM felbontása"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "„auto” (a képernyő) vagy szélesség x magasság, pl. 1280x720. A kisebb méretek gyorsabban indulnak és kevesebb számítást igényelnek."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: másodperc presetenként"
-
-msgid "projectM preset folder"
-msgstr "projectM preset-mappa"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Üres: a projectM szokásos mappái."
-
 msgid "Service list address"
 msgstr "A szolgáltatáslista címe"
 

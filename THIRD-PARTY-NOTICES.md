@@ -37,14 +37,11 @@ belong to their owners.
 | [libzvbi](https://github.com/zapping-vbi/zvbi) | mostly LGPL-2.0-or-later, some parts GPL-2.0-or-later and BSD | teletext |
 | [libdvbcsa](https://www.videolan.org/developers/libdvbcsa.html) | GPL-2.0-or-later | software descrambling (optional) |
 | [v4l-utils](https://git.linuxtv.org/v4l-utils.git) (`dvbv5-scan`, `dvbv5-zap`, libdvbv5) | programs GPL-2.0, libdvbv5 LGPL-2.1 | channel search (separate programs) |
-| [libprojectM](https://github.com/projectM-visualizer/projectm) 4 and [gst-projectm](https://github.com/projectM-visualizer/gst-projectm) | LGPL-2.1 | projectM visualisation (optional) |
 
 ## Data and artwork in LinDVB and the AppImage
 
 | Content | From | Licence |
 |---|---|---|
-| MilkDrop presets "Cream of the Crop" | Curated by ISOSCELES from presets by many MilkDrop authors, as [packaged by projectM](https://github.com/projectM-visualizer/presets-cream-of-the-crop) | no licence stated; redistributed as projectM does |
-| MilkDrop texture pack | The textures of MilkDrop (Ryan Geiss, Nullsoft) and others, as [packaged by projectM](https://github.com/projectM-visualizer/presets-milkdrop-texture-pack) | no licence stated; redistributed as projectM does |
 | `lindvb/scantables/dtv-scan-tables.json.gz` (the channel search's transponder lists) | [dtv-scan-tables](https://git.linuxtv.org/dtv-scan-tables.git) by the LinuxTV community, as kept up to date in [Tvheadend's copy](https://github.com/tvheadend/dtv-scan-tables) (branch `tvheadend`, which contains every LinuxTV commit), packed into one file by `tools/update_scantables.py`; the file names the commit it was made from, and a monthly workflow proposes updates; the lists of the system's dtv-scan-tables package are used besides them | GPL-2.0 and LGPL-2.1 ([GPL](lindvb/scantables/dtv-scan-tables-COPYING), [LGPL](lindvb/scantables/dtv-scan-tables-COPYING.LGPL)) |
 | Adwaita and hicolor icon themes | [GNOME](https://gitlab.gnome.org/GNOME/adwaita-icon-theme) | LGPL-3.0-or-later or CC-BY-SA-3.0 |
 
@@ -53,18 +50,19 @@ LinDVB and are under its licence. The AppStream metadata is CC0-1.0.
 
 ## Packages
 
-The **AppImage** contains the libraries above from Ubuntu 24.04 and projectM
-built from source. Their licence and copyright files are in
+The **AppImage** contains the libraries above from Ubuntu 24.04. Their
+licence and copyright files are in
 `usr/share/doc/<package>/` inside the AppImage, and
 `usr/share/doc/LinDVB/PACKAGES.txt` lists every bundled Ubuntu package with
 its source package and version. The source code of those packages is
 available from Ubuntu (`apt-get source <package>=<version>`, or
-<https://launchpad.net/ubuntu/+source/>), the projectM sources from the
-commits pinned in `packaging/build-projectm.sh`. If you cannot get a source
+<https://launchpad.net/ubuntu/+source/>). AppImages and Flatpaks up to
+version 0.14 also contained libprojectM and gst-projectm (LGPL-2.1) with the
+MilkDrop presets and textures; their sources are the commits pinned in
+`packaging/build-projectm.sh` of those release tags. If you cannot get a source
 this way, ask in the issue tracker and it will be provided for three years
 after the release that contained it.
 
 The **Snap** uses packages of the Ubuntu archive, the **Flatpak** the GNOME
-runtime from Flathub plus libzvbi, GStreamer, v4l-utils and projectM (with the
-presets and textures above) built from the
+runtime from Flathub plus libzvbi, GStreamer and v4l-utils built from the
 tagged sources in `flatpak/io.github.thommy87.LinDVB.yml`.

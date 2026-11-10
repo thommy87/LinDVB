@@ -33,11 +33,4 @@ CREDITS = (
         "dtv-scan-tables as kept up to date by the Tvheadend community "
         "https://github.com/tvheadend/dtv-scan-tables",
     )),
-    (N_("Visualisations"), (
-        "projectM and gst-projectm https://github.com/projectM-visualizer",
-        "MilkDrop presets \"Cream of the Crop\", curated by ISOSCELES, "
-        "and their authors https://github.com/projectM-visualizer/presets-cream-of-the-crop",
-        "MilkDrop by Ryan Geiss and the MilkDrop texture pack "
-        "https://github.com/projectM-visualizer/presets-milkdrop-texture-pack",
-    )),
 )

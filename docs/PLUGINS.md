@@ -15,7 +15,7 @@ plugin directory:
 
 LinDVB creates `~/.local/share/lindvb/plugins/` at startup, and
 *Plugins → Manage Plugins…* has an *Open Plugin Folder* button for it. The add-ons
-that ship with LinDVB (such as the projectM/GOOM visualisations) live inside the
+that ship with LinDVB (such as the GOOM visualisation) live inside the
 application and need nothing copied there.
 
 Plugins are not Enigma2 packages: an `.ipk` (for example an OSCam build for a
@@ -89,38 +89,24 @@ style is drawn with cairo as before. A plugin can add two kinds:
   plugin styles are drawn with cairo.
 * **GStreamer element** — `api.add_visualizer("My vis", element=factory)`.
   `factory()` returns an audio visualiser element (audio in, video out) that
-  playbin renders into the video area, like `goom`, `monoscope` or `projectm`.
+  playbin renders into the video area, like `goom` or `monoscope`.
   With `choices=fn` the entry gets a submenu: `fn()` returns a list of variants
   (a "/" nests one under its parent, e.g. `"Dancer"`, `"Dancer/Aurora"`) and the
-  picked one is passed as `factory(choice)`; "all" calls `factory()`. projectM
-  uses this for its preset folders.
+  picked one is passed as `factory(choice)`; "all" calls `factory()`.
 
-### projectM
+### GOOM
 
-LinDVB ships the add-on *GStreamer visualisations (projectM, GOOM)*
-(`lindvb/addons/gst_visualizers.py`). It offers **projectM** — the open-source
-MilkDrop, with thousands of presets — when the
-[gst-projectm](https://github.com/projectM-visualizer/gst-projectm) GStreamer
-plugin (element `projectm`, built on libprojectM 4) is installed, and **GOOM**
-from gst-plugins-good. Presets are taken from `projectm_preset_dir` in
-`settings.json`, or else from the usual folders such as
-`/usr/share/projectM/presets`; `projectm_preset_seconds` sets how long each
-preset runs (default 20). GStreamer visualisers render at 320x200 unless told
-otherwise, so the add-on asks projectM (OpenGL) for the screen's resolution, at
-most 2560x1440, or `visualizer_resolution` (`"1920x1080"`, default `"auto"`),
-and the original GOOM, which runs on the CPU and gets slow at high resolutions,
-for `goom_resolution` (default `"640x360"`). For a sharp GOOM in full screen
-use the built-in *Goom HD*. Without gst-projectm the entry is simply not offered
-and the plugin list says why.
+LinDVB ships the add-on *GStreamer visualisation (GOOM)*
+(`lindvb/addons/gst_visualizers.py`), which offers the original **GOOM** from
+gst-plugins-good. GStreamer visualisers render at 320x240 unless told
+otherwise; GOOM runs on the CPU and gets slow at high resolutions, so it
+renders at `goom_resolution` (default `"640x360"`). For a sharp GOOM in full
+screen use the built-in *Goom HD*. Like any plugin, the add-on can be switched
+off under **☰ → Plugins…**.
 
-The **AppImage includes projectM**: `packaging/build-projectm.sh` builds
-libprojectM 4 and gst-projectm (both LGPL) and adds the *Cream of the Crop*
-collection (about 9,800 presets) and the MilkDrop texture pack, so
-*projectM (MilkDrop)* appears in the visualisation picker without installing
-anything. Your own presets can still be used with `projectm_preset_dir`. With a
-distribution package, install gst-projectm from your distribution (or build it
-with that script) and a preset collection. Like any plugin, the add-on can be switched off
-under **☰ → Plugins…**.
+projectM (MilkDrop) was offered up to version 0.14 and has been taken out:
+with libprojectM 4.1 and gst-projectm it stayed black, showed only fragments
+or froze on many systems. It can come back once those projects have fixed it.
 
 ## Conditional access (descrambling your own channels)
 

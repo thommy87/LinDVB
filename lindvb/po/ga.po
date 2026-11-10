@@ -3265,21 +3265,6 @@ msgstr "Tarraing leis an gcárta grafaice"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL do na léirshamhlú ionsuite. Tagann sé i bhfeidhm nuair a thosaítear LinDVB arís."
 
-msgid "Resolution of projectM"
-msgstr "Taifeach projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "\"auto\" (an scáileán) nó leithead x airde, m.sh. 1280x720. Tosaíonn méideanna níos lú níos tapúla agus teastaíonn níos lú cumhachta ríomhaireachta uathu."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: soicindí in aghaidh an réamhshocraithe"
-
-msgid "projectM preset folder"
-msgstr "Fillteán réamhshocruithe projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Folamh: gnáthfhillteáin projectM."
-
 msgid "Service list address"
 msgstr "Seoladh an liosta seirbhísí"
 

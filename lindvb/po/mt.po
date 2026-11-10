@@ -3265,21 +3265,6 @@ msgstr "Pinġi bil-karta grafika"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL għall-viżwalizzazzjonijiet inklużi. Tidħol fis-seħħ meta LinDVB jerġa' jinfetaħ."
 
-msgid "Resolution of projectM"
-msgstr "Riżoluzzjoni ta' projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "\"auto\" (l-iskrin) jew wisa' x għoli, eż. 1280x720. Daqsijiet iżgħar jibdew aktar malajr u jeħtieġu inqas qawwa tal-ipproċessar."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekondi għal kull preset"
-
-msgid "projectM preset folder"
-msgstr "Folder tal-presets ta' projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Vojt: il-folders tas-soltu ta' projectM."
-
 msgid "Service list address"
 msgstr "Indirizz tal-lista tas-servizzi"
 
