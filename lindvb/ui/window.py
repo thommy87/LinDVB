@@ -268,6 +268,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self._vis_choices[vid] = choices
             for c in choices:
                 self.visualizers[f"{vid}|{c}"] = (f"{name}: {c}", kind, functools.partial(factory, c))
+        if self.settings.get("visualizer") == "plugin:GOOM" and "plugin:GOOM" not in self.visualizers:
+            self.settings["visualizer"] = "goomhd"      # the plain GOOM add-on was taken out
         if self.settings.get("visualizer") not in self.visualizers:
             self.settings["visualizer"] = DEFAULT_STYLE
         a = Gio.SimpleAction.new_stateful("vis", GLib.VariantType.new("s"),
