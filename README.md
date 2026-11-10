@@ -209,6 +209,23 @@ and how to point LinDVB at your softcam or CI module, and
 
 ## Install
 
+### Which package for my distribution?
+
+| Distribution | Best choice | Also works |
+| --- | --- | --- |
+| Ubuntu 24.04 and newer, Linux Mint 22, Pop!_OS, Zorin OS | Flatpak or Snap | .deb, AppImage |
+| Debian 13 | .deb | Flatpak, AppImage |
+| Fedora 40 and newer, Bazzite, Silverblue | Flatpak | AppImage, from source |
+| Arch, Manjaro, EndeavourOS, CachyOS | AppImage | Flatpak, from source |
+| openSUSE Tumbleweed | AppImage | Flatpak, from source |
+| Older systems: Debian 12, Ubuntu 22.04, Linux Mint 21, RHEL/Alma/Rocky 9, openSUSE Leap 15 | Flatpak | – |
+| SteamOS and other immutable systems | Flatpak | – |
+
+The Flatpak runs on every distribution that has Flatpak, including older ones. The
+AppImage needs glibc 2.39 or newer; on older systems it stops with a message that
+points here. The .deb and running from source need GTK 4.10 or newer from the
+distribution.
+
 ### AppImage
 
 Download `LinDVB-…-x86_64.AppImage` from the
@@ -231,12 +248,13 @@ Download `LinDVB-…-x86_64.flatpak` from the
 [releases](https://github.com/thommy87/LinDVB/releases), then:
 
 ```sh
-flatpak install --user LinDVB-*-x86_64.flatpak     # pulls the GNOME 48 runtime from Flathub
+flatpak install --user LinDVB-*-x86_64.flatpak     # pulls the GNOME 51 runtime from Flathub
 flatpak run io.github.thommy87.LinDVB
 ```
 
 The Flatpak has access to all devices (for `/dev/dvb`), the network, and your Videos
-and Pictures folders. To build it yourself:
+and Pictures folders. It includes the projectM visualisations; H.264, HEVC and AC-3
+decoding comes from the runtime's codecs extension, which Flatpak installs with it. To build it yourself:
 `flatpak-builder --user --install build-flatpak flatpak/io.github.thommy87.LinDVB.yml`.
 
 ### Snap

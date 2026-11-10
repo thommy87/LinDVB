@@ -81,6 +81,18 @@ jobs:
           chmod +x squashfs-root/AppRunPython
           xvfb-run -a squashfs-root/AppRunPython "$PWD/tools/appimage-webkit-check.py"
 
+      - name: Older systems get a clear message
+        # Debian 12 has glibc 2.36: AppRun must stop with a hint to the Flatpak
+        # rather than fail inside the dynamic loader.
+        run: |
+          set +e
+          out="$(docker run --rm -e LINDVB_NO_GUI_ERROR=1 -v "$PWD/squashfs-root:/lindvb:ro" \
+                   debian:12 /lindvb/AppRun --help 2>&1)"
+          rc=$?
+          set -e
+          echo "$out"
+          [ "$rc" -eq 1 ] && grep -q "needs a Linux system with glibc" <<<"$out"
+
       # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
       # Release builds upload straight to the release instead.
       - uses: actions/upload-artifact@v4
