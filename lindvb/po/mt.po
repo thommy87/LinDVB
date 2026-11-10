@@ -3934,3 +3934,6 @@ msgstr "L-istazzjonijiet kollha jew waħda mil-listi tal-favoriti tiegħek."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Jintgħażel f'kull bidu, ikun liema jkun l-istazzjon li rajt l-aħħar."
+
+msgid "No channel (black screen)"
+msgstr "L-ebda stazzjon (skrin iswed)"

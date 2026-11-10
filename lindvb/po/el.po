@@ -3934,3 +3934,6 @@ msgstr "Όλα τα κανάλια ή μία από τις λίστες αγαπ
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Συντονίζεται σε κάθε εκκίνηση, όποιο κανάλι κι αν παρακολουθήσατε τελευταίο."
+
+msgid "No channel (black screen)"
+msgstr "Κανένα κανάλι (μαύρη οθόνη)"

@@ -3934,3 +3934,6 @@ msgstr "Toutes les chaînes ou l'une de vos listes de favoris."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Réglée à chaque démarrage, quelle que soit la dernière chaîne regardée."
+
+msgid "No channel (black screen)"
+msgstr "Aucune chaîne (écran noir)"

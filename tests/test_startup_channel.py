@@ -32,3 +32,10 @@ def test_chosen_channel(tmp_path, monkeypatch):
     assert startup_channel(s, db, db.channels[0]) is db.channels[1]
     s["startup_channel_key"] = "gone"
     assert startup_channel(s, db, db.channels[0]) is None
+
+
+def test_no_channel(tmp_path, monkeypatch):
+    db = _db(tmp_path, monkeypatch)
+    s = {"startup_channel": "none", "last_channel": db.channels[2].key,
+         "startup_channel_key": db.channels[1].key}
+    assert startup_channel(s, db, db.channels[0]) is None

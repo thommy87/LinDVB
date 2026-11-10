@@ -3934,3 +3934,6 @@ msgstr "Gach cainéal nó ceann de do liostaí ceanán."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Tiúnáiltear é ag gach tosú, is cuma cén cainéal ar bhreathnaigh tú air go deireanach."
+
+msgid "No channel (black screen)"
+msgstr "Gan chainéal (scáileán dubh)"

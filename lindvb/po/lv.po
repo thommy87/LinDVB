@@ -3934,3 +3934,6 @@ msgstr "Visi kanāli vai viens no jūsu izlases sarakstiem."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Tiek noskaņots katrā palaišanā neatkarīgi no tā, kuru kanālu skatījāties pēdējo."
+
+msgid "No channel (black screen)"
+msgstr "Bez kanāla (melns ekrāns)"

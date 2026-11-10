@@ -3934,3 +3934,6 @@ msgstr "Alle zenders of een van uw favorietenlijsten."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Wordt bij elke start afgestemd, welke zender u ook het laatst bekeek."
+
+msgid "No channel (black screen)"
+msgstr "Geen zender (zwart beeld)"

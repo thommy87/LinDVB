@@ -3977,3 +3977,6 @@ msgstr "همه کانال‌ها یا یکی از فهرست‌های علاقه
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "در هر بار شروع تنظیم می‌شود، فارغ از اینکه آخرین بار کدام کانال را تماشا کرده‌اید."
+
+msgid "No channel (black screen)"
+msgstr "بدون کانال (صفحهٔ سیاه)"

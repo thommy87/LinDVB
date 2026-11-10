@@ -3934,3 +3934,6 @@ msgstr "Všechny kanály nebo jeden z vašich seznamů oblíbených."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Naladí se při každém spuštění bez ohledu na to, který kanál jste sledovali naposledy."
+
+msgid "No channel (black screen)"
+msgstr "Žádný kanál (černá obrazovka)"

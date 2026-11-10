@@ -3934,3 +3934,6 @@ msgstr "Todos os canais ou uma das suas listas de favoritos."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Sintonizado em cada início, seja qual for o último canal que viu."
+
+msgid "No channel (black screen)"
+msgstr "Nenhum canal (ecrã preto)"

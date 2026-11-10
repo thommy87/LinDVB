@@ -3934,3 +3934,6 @@ msgstr "Усі канали або один із ваших списків об�
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Вмикається під час кожного запуску, незалежно від того, який канал ви дивилися останнім."
+
+msgid "No channel (black screen)"
+msgstr "Без каналу (чорний екран)"

@@ -3934,3 +3934,6 @@ msgstr "Az összes csatorna vagy az egyik kedvenclistája."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Minden indításkor ez lesz behangolva, bármelyik csatornát nézte utoljára."
+
+msgid "No channel (black screen)"
+msgstr "Nincs csatorna (fekete képernyő)"

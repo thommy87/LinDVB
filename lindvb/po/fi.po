@@ -3934,3 +3934,6 @@ msgstr "Kaikki kanavat tai jokin suosikkiluetteloistasi."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Viritetään joka käynnistyksessä riippumatta siitä, mitä kanavaa katsoit viimeksi."
+
+msgid "No channel (black screen)"
+msgstr "Ei kanavaa (musta ruutu)"

@@ -3934,3 +3934,6 @@ msgstr "Toate canalele sau una dintre listele dvs. de favorite."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Acordat la fiecare pornire, indiferent de canalul urmărit ultima dată."
+
+msgid "No channel (black screen)"
+msgstr "Niciun canal (ecran negru)"

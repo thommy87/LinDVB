@@ -3934,3 +3934,6 @@ msgstr "Visi kanalai arba vienas iš jūsų mėgstamųjų sąrašų."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Įjungiamas kiekvieną kartą paleidus, nesvarbu, kurį kanalą žiūrėjote paskutinį."
+
+msgid "No channel (black screen)"
+msgstr "Jokio kanalo (juodas ekranas)"

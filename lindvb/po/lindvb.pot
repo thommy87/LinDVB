@@ -5445,3 +5445,7 @@ msgstr ""
 #: lindvb/ui/dialogs.py
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "No channel (black screen)"
+msgstr ""

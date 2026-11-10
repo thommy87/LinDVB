@@ -397,7 +397,7 @@ class PrefsWindow(Gtk.Window):
         mode = s.get("startup_channel", "last")
         self._start_drop = _row(g, _("Channel at start"), dropdown(
             [_("Last channel watched"), _("First channel of the current list"),
-             _("A chosen channel")],
+             _("A chosen channel"), _("No channel (black screen)")],
             STARTUP_CHOICES.index(mode) if mode in STARTUP_CHOICES else 0),
             _("The current list is the channel list as you left it: TV or radio, "
               "filter, group and sort order."))

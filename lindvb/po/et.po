@@ -3934,3 +3934,6 @@ msgstr "Kõik kanalid või üks sinu lemmikute loenditest."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Häälestatakse igal käivitamisel, olenemata sellest, millist kanalit viimati vaatasid."
+
+msgid "No channel (black screen)"
+msgstr "Kanalit pole (must ekraan)"

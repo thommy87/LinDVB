@@ -3934,3 +3934,6 @@ msgstr "Alle kanaler eller en af dine favoritlister."
 
 msgid "Tuned at every start, whichever channel you watched last."
 msgstr "Stilles ind ved hver start, uanset hvilken kanal du så sidst."
+
+msgid "No channel (black screen)"
+msgstr "Ingen kanal (sort skærm)"
