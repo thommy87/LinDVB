@@ -4217,6 +4217,94 @@ msgstr "Nordmazedonien"
 msgid "South Africa"
 msgstr "Südafrika"
 
+#: lindvb/ui/scan.py
+msgid "(no tuner)"
+msgstr "(kein Tuner)"
+
+#: lindvb/ui/dialogs.py
+msgid "1 tuner"
+msgstr "1 Tuner"
+
+#: lindvb/ui/dialogs.py
+msgid "{n} tuners"
+msgstr "{n} Tuner"
+
+#: lindvb/ui/dialogs.py
+msgid "Add Server"
+msgstr "Server hinzufügen"
+
+#: lindvb/ui/dialogs.py
+msgid "Add by address"
+msgstr "Über die Adresse hinzufügen"
+
+#: lindvb/ui/dialogs.py
+msgid "Find SAT>IP servers"
+msgstr "SAT>IP-Server finden"
+
+#: lindvb/ui/dialogs.py
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Für einen Server, den die Suche nicht findet (anderes Netz oder kein Multicast)."
+
+#: lindvb/ui/dialogs.py
+msgid "No SAT>IP server added."
+msgstr "Kein SAT>IP-Server hinzugefügt."
+
+#: lindvb/ui/dialogs.py
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Kein SAT>IP-Server hat geantwortet. Unten über seine Adresse hinzufügen."
+
+#: lindvb/ui/dialogs.py
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP-Boxen und -LNBs, minisatip, FRITZ!Box Cable und andere DVB-over-IP-Server im lokalen Netz. Ihre Tuner erscheinen in der Liste, sobald die Einstellungen gespeichert und erneut geöffnet wurden."
+
+#: lindvb/ui/dialogs.py
+msgid "SAT>IP servers"
+msgstr "SAT>IP-Server"
+
+#: lindvb/ui/dialogs.py
+msgid "Search Network"
+msgstr "Netzwerk durchsuchen"
+
+#: lindvb/ui/dialogs.py
+msgid "Searching…"
+msgstr "Suche läuft…"
+
+#: lindvb/ui/dialogs.py
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (in der RTSP-Verbindung)"
+
+#: lindvb/ui/dialogs.py
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP funktioniert auch durch Firewalls, die den UDP-Stream sperren."
+
+#: lindvb/ui/dialogs.py
+msgid "UDP"
+msgstr "UDP"
+
+#: lindvb/ui/dialogs.py
+msgid "{n} servers found, {new} new."
+msgstr "{n} Server gefunden, {new} neu."
+
+#: lindvb/ui/analysis.py
+msgid "Source: SAT>IP server {host}"
+msgstr "Quelle: SAT>IP-Server {host}"
+
+#: lindvb/ui/analysis.py
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP-Signalmeldung (RTCP)"
+
+#: lindvb/ui/scan.py
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: Die Suche nutzt die Frequenzen der Liste (keine NIT-Suche)."
+
+#: lindvb/ui/scan.py
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "Der SAT>IP-Server steuert LNB und DiSEqC-Schalter; der DiSEqC-Port wählt seine Quelle (1 bis 4)."
+
+#: lindvb/ui/scan.py
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Diese Transponderliste hat keine Transponder für diesen Tuner.\n"
+
 #: lindvb/compat.py
 msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
 msgstr "LinDVB findet diese GStreamer-Elemente nicht: {elements}. Live-TV oder einige Sender lassen sich dann eventuell nicht abspielen."

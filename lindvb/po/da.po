@@ -3856,3 +3856,69 @@ msgstr "Nordmakedonien"
 
 msgid "South Africa"
 msgstr "Sydafrika"
+
+msgid "(no tuner)"
+msgstr "(ingen tuner)"
+
+msgid "1 tuner"
+msgstr "1 tuner"
+
+msgid "{n} tuners"
+msgstr "{n} tunere"
+
+msgid "Add Server"
+msgstr "Tilføj server"
+
+msgid "Add by address"
+msgstr "Tilføj via adresse"
+
+msgid "Find SAT>IP servers"
+msgstr "Find SAT>IP-servere"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Til en server, som søgningen ikke finder (andet netværk eller ingen multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "Ingen SAT>IP-server tilføjet."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Ingen SAT>IP-server svarede. Tilføj den via dens adresse nedenfor."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP-bokse og -LNB’er, minisatip, FRITZ!Box Cable og andre DVB over IP-servere i det lokale netværk. Deres tunere vises i listen, når indstillingerne er gemt og åbnet igen."
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP-servere"
+
+msgid "Search Network"
+msgstr "Søg i netværket"
+
+msgid "Searching…"
+msgstr "Søger…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (i RTSP-forbindelsen)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP virker gennem firewalls, der blokerer UDP-strømmen."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "{n} servere fundet, {new} nye."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Kilde: SAT>IP-server {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP-signalrapport (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: søgningen bruger listens frekvenser (ingen NIT-søgning)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP-serveren styrer LNB’en og DiSEqC-omskifteren; DiSEqC-porten vælger dens kilde (1 til 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Denne transponderliste har ingen transpondere til denne tuner.\n"

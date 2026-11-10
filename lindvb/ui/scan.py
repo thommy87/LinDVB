@@ -59,10 +59,21 @@ class ScanWindow(Gtk.Window):
 
         g = Gtk.Grid(row_spacing=6, column_spacing=8, margin_start=12, margin_end=12, margin_top=12)
         adapters = find_adapters()
-        self.adapters = adapters or [(a, app.settings["frontend"], f"Adapter {a}")
-                                     for a in app.settings["adapters"]]
-        self.adapter = labeled(g, 0, _("Device"), dropdown([f"{n} (adapter{a}/frontend{f})"
-                                                         for a, f, n in self.adapters]))
+        # SAT>IP: one entry per server (the server picks a free tuner)
+        from .. import satip, tunerprofiles
+        self.satip_profiles = {}
+        for p in tunerprofiles.configured_profiles(app.settings):
+            if satip.is_satip(p) and p.get("enabled", True) and \
+                    p.get("server") not in {q.get("server") for q in self.satip_profiles.values()}:
+                self.satip_profiles[p["adapter"]] = p
+        net = [(a, 0, f"SAT>IP {p.get('server_label') or p['host']}")
+               for a, p in self.satip_profiles.items()]
+        local = adapters or ([] if net else [(a, app.settings["frontend"], f"Adapter {a}")
+                                             for a in app.settings["adapters"]])
+        self.adapters = local + net
+        self.adapter = labeled(g, 0, _("Device"), dropdown(
+            [n if a in self.satip_profiles else f"{n} (adapter{a}/frontend{f})"
+             for a, f, n in self.adapters] or [_("(no tuner)")]))
         self.systems_label = Gtk.Label(xalign=0, css_classes=["dim-label"])
         g.attach(self.systems_label, 1, 1, 1, 1)
         self.recep_label = Gtk.Label(label=_("Reception"), xalign=0)
@@ -162,10 +173,14 @@ class ScanWindow(Gtk.Window):
     # -- the tuner and what it receives ------------------------------------------------
 
     def _current_adapter(self):
+        if not self.adapters:
+            return (0, 0)
         return self.adapters[self.adapter.get_selected()][:2]
 
     def _profile(self, adapter, frontend):
         from .. import tunerprofiles
+        if adapter in self.satip_profiles:
+            return self.satip_profiles[adapter]
         for p in tunerprofiles.configured_profiles(self.app.settings):
             if p["adapter"] == adapter and p.get("frontend", 0) == frontend:
                 return p
@@ -194,7 +209,8 @@ class ScanWindow(Gtk.Window):
         self.recep.set_visible(many)
         self.recep_label.set_visible(many)
         # satellite: the tuner's own reception path wins over asking again
-        self.unicable = unicable.config(prof) if prof else None
+        self.satip = prof if a in self.satip_profiles else None
+        self.unicable = unicable.config(prof) if prof and self.satip is None else None
         own_lnb = (prof or {}).get("lnb")
         lof = tuple(own_lnb) if own_lnb and len(own_lnb) == 3 and all(own_lnb) else \
             tunerprofiles.tuner_lnb(None, self.app.settings)
@@ -202,10 +218,14 @@ class ScanWindow(Gtk.Window):
             if LNB_LOF[code] == lof:
                 self.lnb.set_selected(i)
                 break
-        self.lnb.set_visible(self.unicable is None)
-        self.lnb_label.set_visible(self.unicable is None)
-        self.uc_label.set_visible(self.unicable is not None)
-        if self.unicable is not None:
+        local = self.unicable is None and self.satip is None
+        self.lnb.set_visible(local)
+        self.lnb_label.set_visible(local)
+        self.uc_label.set_visible(not local)
+        if self.satip is not None:
+            self.uc_label.set_text(_("The SAT>IP server controls the LNB and the DiSEqC switch; "
+                                     "the DiSEqC port chooses its source (1 to 4)."))
+        elif self.unicable is not None:
             self.uc_label.set_text(_("Single-cable setup of this tuner: {setup}").format(
                 setup=unicable.describe(self.unicable)))
         self._family_changed()
@@ -468,6 +488,9 @@ class ScanWindow(Gtk.Window):
         win = self.app.window
         if win.capture and win.capture.adapter == a:
             win.stop_playback()
+        if self.satip is not None:
+            self._start_satip(jobs)
+            return
         if self.family == sl.SAT and self.unicable is not None:
             self._start_single_cable(jobs, a, f)
             return
@@ -552,6 +575,58 @@ class ScanWindow(Gtk.Window):
             GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
 
         threading.Thread(target=run, daemon=True, name="single-cable-scan").start()
+
+    def _start_satip(self, jobs):
+        """SAT>IP: LinDVB asks the server for each transponder (lindvb.satip)."""
+        import threading
+        from .. import satip, scscan
+        work = []
+        for j in jobs:
+            if j["tpl"] is not None:
+                tps = scscan.transponders(j["tpl"])
+            else:
+                try:
+                    tps = satip.entry_transponders(parse_dvbv5(j["file"].read_text()))
+                except OSError:
+                    tps = []
+            if tps:
+                work.append((tps, j))
+        if not work:
+            self.log_line(_("This transponder list has no transponders for this tuner.\n"))
+            return
+        prof = self.satip
+        self.total, self.done = sum(len(tps) for tps, _j in work), 0
+        self._cancel = False
+        self.log_line(f"SAT>IP {prof.get('server_label') or prof['host']}\n")
+        if self.nit.get_active():
+            self.log_line(_("SAT>IP: the search uses the frequencies of the list "
+                            "(no NIT search).") + "\n")
+        self.start_btn.set_sensitive(False)
+        self.stop_btn.set_sensitive(True)
+        log = self._thread_log
+
+        def run():
+            chans = []
+            for tps, job in work:
+                if self._cancel:
+                    break
+                log(f"== {job['root']} ==")
+                chans += satip.scan(prof, tps, job["diseqc"], job["root"], log,
+                                    cancelled=lambda: self._cancel)
+            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
+
+        threading.Thread(target=run, daemon=True, name="satip-scan").start()
+
+    def _thread_log(self, text):
+        """A log line from a search thread; counts the frequencies for the progress."""
+        def show():
+            self.log_line(text + "\n")
+            if text.startswith("Scanning frequency"):
+                self.done += 1
+                self.progress.set_fraction(min(1, self.done / max(1, self.total)))
+                self.progress.set_text(f"{self.done} / {self.total}")
+            return False
+        GLib.idle_add(show)
 
     def _single_cable_done(self, chans):
         self.start_btn.set_sensitive(True)

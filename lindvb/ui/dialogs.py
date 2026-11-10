@@ -575,9 +575,10 @@ class PrefsWindow(Gtk.Window):
     def _build_tuners(self, pg, s):
         """One block per tuner: name, on/off, priority, reception type, and for
         satellite its cable, LNB and single cable settings."""
-        from .. import tunerprofiles as tp
+        from .. import satip, tunerprofiles as tp
         legacy = None if s.get("tuners") else list(s.get("adapters") or [0])
         found = tp.merge_profiles(s.get("tuners") or [], tp.detect_tuners(), legacy)
+        found = satip.merge_profiles(found, s)
         if not found:
             found = [dict(p, present=False) for p in tp.legacy_profiles(s)]
         self._tuner_rows = []
@@ -603,13 +604,142 @@ class PrefsWindow(Gtk.Window):
             self._tuner_rows.append(self._tuner_block(g, prof, glob))
         if away is not None:
             pg.append(exp)
+        self._build_satip(pg, s)
+
+    def _build_satip(self, pg, s):
+        """The SAT>IP servers: found on the network or added by hand."""
+        from .. import satip
+        pg.append(Gtk.Label(label=_("SAT>IP servers"), xalign=0,
+                            css_classes=["lv-section-title"], margin_top=4))
+        self._satip_servers = [dict(x) for x in s.get("satip_servers") or []]
+        self._satip_group = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
+                                    css_classes=["lv-group"])
+        pg.append(self._satip_group)
+        self._satip_transport = {}
+        self._satip_status = Gtk.Label(xalign=0, wrap=True, css_classes=["lv-hint"],
+                                       visible=False)
+        self._fill_satip()
+
+        g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+        pg.append(g)
+        search = Gtk.Button(label=_("Search Network"))
+        search.connect("clicked", lambda *_a: self._search_satip(search))
+        _row(g, _("Find SAT>IP servers"), search,
+             _("SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP "
+               "servers in the local network. Their tuners are listed below once the "
+               "preferences are saved and opened again."))
+        g.append(self._satip_status)
+        host = _row(g, _("Add by address"), Gtk.Entry(placeholder_text="192.168.178.1"),
+                    _("For a server the search does not find (another network, or no "
+                      "multicast)."))
+        kinds = list(satip.MANUAL_CAPS)
+        kind = _row(g, _("Reception"), dropdown([_("Satellite"), _("Cable"),
+                                                 _("Antenna (terrestrial)")]))
+        count = _row(g, _("Tuners"), Gtk.SpinButton.new_with_range(1, satip.TUNERS_PER_SERVER, 1))
+        count.set_value(2)
+        add = Gtk.Button(label=_("Add Server"), halign=Gtk.Align.END)
+        g.append(add)
+
+        def do_add(*_a):
+            text = host.get_text().strip()
+            if not text:
+                return
+            name, _sep, port = text.rpartition(":") if text.count(":") == 1 else (text, "", "")
+            self._add_satip({"host": name or text, "port": int(port) if port.isdigit()
+                             else satip.DEFAULT_PORT, "name": "", "uuid": "",
+                             "caps": f"{kinds[kind.get_selected()]}-{int(count.get_value())}",
+                             "transport": "udp"})
+            host.set_text("")
+        add.connect("clicked", do_add)
+        host.connect("activate", do_add)
+
+    def _fill_satip(self):
+        from .. import satip, tunerprofiles as tp
+        g = self._satip_group
+        for w in _children(g):
+            g.remove(w)
+        self._satip_transport = {}
+        if not self._satip_servers:
+            g.append(Gtk.Label(label=_("No SAT>IP server added."), xalign=0,
+                               css_classes=["lv-hint"]))
+            return
+        for srv in self._satip_servers:
+            box = Gtk.Box(spacing=8)
+            trans = dropdown([_("UDP"), _("TCP (in the RTSP connection)")],
+                             1 if srv.get("transport") == "tcp" else 0)
+            trans.set_tooltip_text(_("TCP works through firewalls that block the UDP stream."))
+            rm = Gtk.Button(icon_name="list-remove-symbolic", tooltip_text=_("Remove"))
+            rm.connect("clicked", lambda *_a, x=srv: self._remove_satip(x))
+            box.append(trans)
+            box.append(rm)
+            n = satip.tuner_count(srv.get("caps"))
+            info = [tp.systems_label(satip.server_systems(srv.get("caps")))
+                    or _("Reception types unknown"),
+                    _("{n} tuners").format(n=n) if n > 1 else _("1 tuner")]
+            _row(g, satip.server_label(srv), box, " · ".join(info))
+            self._satip_transport[id(srv)] = trans
+
+    def _add_satip(self, srv):
+        from .. import satip
+        for old in self._satip_servers:
+            if (srv.get("uuid") and old.get("uuid") == srv["uuid"]) or \
+                    (old.get("host") == srv["host"] and
+                     int(old.get("port") or 554) == int(srv.get("port") or 554)):
+                old.update({k: v for k, v in srv.items() if v and k not in ("id", "transport")})
+                self._fill_satip()
+                return False
+        srv = dict(srv, id=satip.next_server_id(self._satip_servers))
+        self._satip_servers.append(srv)
+        self._fill_satip()
+        return True
+
+    def _remove_satip(self, srv):
+        self._satip_servers = [x for x in self._satip_servers if x is not srv]
+        self._fill_satip()
+
+    def _search_satip(self, btn):
+        import threading
+        from .. import satip
+        btn.set_sensitive(False)
+        self._satip_status.set_text(_("Searching…"))
+        self._satip_status.set_visible(True)
+
+        def done(found):
+            btn.set_sensitive(True)
+            new = sum(1 for srv in found if self._add_satip(srv))
+            if not found:
+                text = _("No SAT>IP server answered. Add it by its address below.")
+            else:
+                text = _("{n} servers found, {new} new.").format(n=len(found), new=new)
+            self._satip_status.set_text(text)
+            return False
+
+        def work():
+            try:
+                found = satip.discover()
+            except Exception:                # noqa: BLE001 - no network
+                found = []
+            GLib.idle_add(done, found)
+        threading.Thread(target=work, daemon=True, name="satip-discover").start()
+
+    def _save_satip(self, s):
+        servers = []
+        for srv in self._satip_servers:
+            trans = self._satip_transport.get(id(srv))
+            if trans is not None:
+                srv = dict(srv, transport="tcp" if trans.get_selected() == 1 else "udp")
+            servers.append(srv)
+        s["satip_servers"] = servers
 
     def _tuner_block(self, g, prof, glob):
-        from .. import tunerprofiles as tp
+        from .. import satip, tunerprofiles as tp
         info = [tp.systems_label(prof.get("systems") or []) or _("Reception types unknown")]
         if prof.get("label") and prof.get("name"):
             info.append(prof["name"])
-        info.append(f"adapter{prof['adapter']}/frontend{prof['frontend']}")
+        if satip.is_satip(prof):
+            info.append(f"SAT>IP {prof.get('host', '')}:{prof.get('port', satip.DEFAULT_PORT)}")
+        else:
+            info.append(f"adapter{prof['adapter']}/frontend{prof['frontend']}")
         if not prof.get("present", True):
             info.append(_("not connected"))
         on = _row(g, tp.display_name(prof), Gtk.Switch(active=bool(prof.get("enabled", True))),
@@ -625,6 +755,9 @@ class PrefsWindow(Gtk.Window):
         fams = tp.families(prof)
         names = {"sat": _("Satellite"), "ter": _("Antenna (terrestrial)"), "cab": _("Cable")}
         sat_rows = []
+        if satip.is_satip(prof):
+            # the server sets up its own reception (LNB, DiSEqC, single cable)
+            return row
         if len(fams) > 1:
             row["uses"] = ["", *fams]
             cur = prof.get("use") or ""
@@ -765,8 +898,8 @@ class PrefsWindow(Gtk.Window):
                     "pin": int(pin) & 0xFF if pin.isdigit() else None}
             tuners.append(prof)
         s["tuners"] = tuners
-        on = [p for p in tuners if p["enabled"]]
-        # the older settings, still read by the channel search
+        on = [p for p in tuners if p["enabled"] and p.get("type") != "satip"]
+        # the older settings, still read by the channel search (local tuners only)
         s["adapters"] = sorted({p["adapter"] for p in on}) or [0]
         s["frontend"] = on[0]["frontend"] if on else 0
 
@@ -829,6 +962,7 @@ class PrefsWindow(Gtk.Window):
                 s[k] = int(w.get_value())
             else:
                 s[k] = w.get_text()
+        self._save_satip(s)
         self._save_tuners(s)
         self._epg.save(s)
         s.save()

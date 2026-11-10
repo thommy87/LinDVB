@@ -3856,3 +3856,69 @@ msgstr "Põhja-Makedoonia"
 
 msgid "South Africa"
 msgstr "Lõuna-Aafrika Vabariik"
+
+msgid "(no tuner)"
+msgstr "(tuunerit pole)"
+
+msgid "1 tuner"
+msgstr "1 tuuner"
+
+msgid "{n} tuners"
+msgstr "{n} tuunerit"
+
+msgid "Add Server"
+msgstr "Lisa server"
+
+msgid "Add by address"
+msgstr "Lisa aadressi järgi"
+
+msgid "Find SAT>IP servers"
+msgstr "Leia SAT>IP-serverid"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Serverile, mida otsing ei leia (teine võrk või multicast puudub)."
+
+msgid "No SAT>IP server added."
+msgstr "Ühtegi SAT>IP-serverit pole lisatud."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Ükski SAT>IP-server ei vastanud. Lisa see allpool aadressi järgi."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP-boksid ja -LNB-d, minisatip, FRITZ!Box Cable ja muud DVB over IP serverid kohtvõrgus. Nende tuunerid ilmuvad loendisse, kui eelistused on salvestatud ja uuesti avatud."
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP-serverid"
+
+msgid "Search Network"
+msgstr "Otsi võrgust"
+
+msgid "Searching…"
+msgstr "Otsimine…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (RTSP-ühenduses)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP töötab läbi tulemüüride, mis blokeerivad UDP-voo."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Leiti {n} serverit, {new} uut."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Allikas: SAT>IP-server {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP signaaliaruanne (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: otsing kasutab loendi sagedusi (NIT-otsinguta)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP-server juhib LNB-d ja DiSEqC-lülitit; DiSEqC-port valib selle allika (1 kuni 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Selles transponderiloendis pole selle tuuneri jaoks transpondereid.\n"

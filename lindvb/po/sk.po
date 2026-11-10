@@ -3856,3 +3856,69 @@ msgstr "Severné Macedónsko"
 
 msgid "South Africa"
 msgstr "Južná Afrika"
+
+msgid "(no tuner)"
+msgstr "(žiadny tuner)"
+
+msgid "1 tuner"
+msgstr "1 tuner"
+
+msgid "{n} tuners"
+msgstr "{n} tunerov"
+
+msgid "Add Server"
+msgstr "Pridať server"
+
+msgid "Add by address"
+msgstr "Pridať podľa adresy"
+
+msgid "Find SAT>IP servers"
+msgstr "Nájsť servery SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Pre server, ktorý hľadanie nenájde (iná sieť alebo bez multicastu)."
+
+msgid "No SAT>IP server added."
+msgstr "Nie je pridaný žiadny server SAT>IP."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Žiadny server SAT>IP neodpovedal. Pridajte ho podľa adresy nižšie."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "Prijímače a LNB SAT>IP, minisatip, FRITZ!Box Cable a ďalšie servery DVB over IP v miestnej sieti. Ich tunery sa zobrazia v zozname po uložení a opätovnom otvorení nastavení."
+
+msgid "SAT>IP servers"
+msgstr "Servery SAT>IP"
+
+msgid "Search Network"
+msgstr "Prehľadať sieť"
+
+msgid "Searching…"
+msgstr "Hľadá sa…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (v spojení RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP prejde cez firewally, ktoré blokujú prúd UDP."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Nájdené servery: {n}, nové: {new}."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Zdroj: server SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "Hlásenie signálu SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: hľadanie používa frekvencie zo zoznamu (bez hľadania NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "Server SAT>IP ovláda LNB a prepínač DiSEqC; port DiSEqC volí jeho zdroj (1 až 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Tento zoznam transpondérov nemá pre tento tuner žiadne transpondéry.\n"

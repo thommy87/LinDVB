@@ -26,6 +26,9 @@ DEFAULTS = {
     # systems, on/off, priority, shared antenna cable and an LNB of their own.
     # Empty: the older settings below are used.
     "tuners": [],
+    # SAT>IP servers on the network (see lindvb/satip.py); each of their tuners
+    # becomes a tuner profile
+    "satip_servers": [],
     # Older settings: adapter numbers LinDVB may use and one frontend for all.
     "adapters": [0],
     "frontend": 0,

@@ -1999,9 +1999,15 @@ class AnalysisWindow(Gtk.Window):
             self.banner.set_visible(False)
         cap = s.capture
         if cap is not None:
-            src = _("Source: DVB adapter {a}, frontend {f}").format(a=cap.adapter, f=self.app.settings.get("frontend", 0))
-            src += " · " + (_("DVB API v5 statistics") if (st.get("frontend") or {}).get("cnr_db") is not None
-                            else _("dvbsrc statistics"))
+            from .. import satip
+            if satip.is_satip(getattr(cap, "tuner", None)):
+                src = _("Source: SAT>IP server {host}").format(host=cap.tuner.get("host", ""))
+                src += " · " + _("SAT>IP signal report (RTCP)")
+            else:
+                src = _("Source: DVB adapter {a}, frontend {f}").format(a=cap.adapter, f=self.app.settings.get("frontend", 0))
+                src += " · " + (_("DVB API v5 statistics")
+                                if (st.get("frontend") or {}).get("cnr_db") is not None
+                                else _("dvbsrc statistics"))
         elif s.kind == "iptv":
             src = _("Source: the player's stream") if st.get("on_screen") else _("Source: background download")
         else:

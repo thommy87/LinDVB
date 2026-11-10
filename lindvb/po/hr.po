@@ -3856,3 +3856,69 @@ msgstr "Sjeverna Makedonija"
 
 msgid "South Africa"
 msgstr "Južnoafrička Republika"
+
+msgid "(no tuner)"
+msgstr "(nema prijamnika)"
+
+msgid "1 tuner"
+msgstr "1 prijamnik"
+
+msgid "{n} tuners"
+msgstr "Prijamnika: {n}"
+
+msgid "Add Server"
+msgstr "Dodaj poslužitelj"
+
+msgid "Add by address"
+msgstr "Dodaj po adresi"
+
+msgid "Find SAT>IP servers"
+msgstr "Pronađi SAT>IP poslužitelje"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Za poslužitelj koji pretraga ne pronalazi (druga mreža ili bez multicasta)."
+
+msgid "No SAT>IP server added."
+msgstr "Nije dodan nijedan SAT>IP poslužitelj."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Nijedan SAT>IP poslužitelj nije odgovorio. Dodajte ga po adresi ispod."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP uređaji i LNB-ovi, minisatip, FRITZ!Box Cable i drugi DVB over IP poslužitelji u lokalnoj mreži. Njihovi prijamnici pojavljuju se na popisu nakon spremanja i ponovnog otvaranja postavki."
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP poslužitelji"
+
+msgid "Search Network"
+msgstr "Pretraži mrežu"
+
+msgid "Searching…"
+msgstr "Pretraživanje…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (u RTSP vezi)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP prolazi kroz vatrozide koji blokiraju UDP tok."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Pronađeno poslužitelja: {n}, novih: {new}."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Izvor: SAT>IP poslužitelj {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP izvješće o signalu (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: pretraga koristi frekvencije s popisa (bez NIT pretrage)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP poslužitelj upravlja LNB-om i DiSEqC sklopkom; DiSEqC priključak bira njegov izvor (1 do 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Ovaj popis transpondera nema transpondera za ovaj prijamnik.\n"

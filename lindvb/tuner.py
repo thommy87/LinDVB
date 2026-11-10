@@ -20,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import directtune, tunerprofiles, unicable  # noqa: E402
+from . import directtune, satip, tunerprofiles, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -239,6 +239,10 @@ class Capture(GObject.Object):
         # Unicable / JESS: LinDVB tunes the frontend itself (lindvb.directtune)
         # and reads the stream from the DVR device instead of dvbsrc.
         self._uc = unicable.config(self.tuner) if channel.is_sat else None
+        # SAT>IP: a server on the network tunes; the stream comes over RTP
+        self._satip = None
+        if satip.is_satip(self.tuner):
+            self._uc = None
         self._lnb = tunerprofiles.tuner_lnb(self.tuner, settings)
         self._direct = None
         self._uc_tries = 0
@@ -275,14 +279,15 @@ class Capture(GObject.Object):
                 '! clocksync sync-to-first=true', True)
         else:
             props = dvbsrc_properties(channel, settings, adapter, frontend, self._lnb)
-            if self._uc is not None:
+            if satip.is_satip(self.tuner):
+                src = self._appsrc()
+                self._satip = satip.Session(self.tuner["host"], self.tuner.get("port"),
+                                            self.tuner.get("transport", "udp"),
+                                            on_data=self._push_direct,
+                                            on_status=self._on_satip_status)
+            elif self._uc is not None:
                 # the DVR device is read by a thread (see _start_direct)
-                src = Gst.ElementFactory.make("appsrc", "src")
-                src.set_property("caps", Gst.Caps.from_string(
-                    "video/mpegts,systemstream=true,packetsize=188"))
-                Gst.util_set_object_arg(src, "format", "bytes")
-                src.set_property("is-live", True)
-                src.set_property("do-timestamp", True)
+                src = self._appsrc()
                 self._direct = directtune.DirectTuner(adapter, frontend)
             else:
                 src = Gst.ElementFactory.make("dvbsrc", "src")
@@ -343,6 +348,24 @@ class Capture(GObject.Object):
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
+
+    @staticmethod
+    def _appsrc():
+        """The source for a stream LinDVB reads itself (single cable, SAT>IP)."""
+        src = Gst.ElementFactory.make("appsrc", "src")
+        src.set_property("caps", Gst.Caps.from_string(
+            "video/mpegts,systemstream=true,packetsize=188"))
+        Gst.util_set_object_arg(src, "format", "bytes")
+        src.set_property("is-live", True)
+        src.set_property("do-timestamp", True)
+        return src
+
+    @property
+    def source_label(self):
+        """Where the stream comes from, for the user."""
+        if satip.is_satip(self.tuner):
+            return f"SAT>IP {self.tuner.get('host', '')}"
+        return f"adapter{self.adapter}/frontend{self.frontend}"
 
     # -- channel analysis ---------------------------------------------------
     def add_tap(self, fn):
@@ -435,7 +458,9 @@ class Capture(GObject.Object):
 
     def _set_pids(self, pids):
         self._pids = pids
-        if self._direct is not None:
+        if self._satip is not None:
+            self._satip.set_pids(pids)
+        elif self._direct is not None:
             if self._direct.fe is not None:
                 try:
                     self._direct.set_pids([int(x) for x in pids.split(":") if x.isdigit()])
@@ -507,7 +532,9 @@ class Capture(GObject.Object):
         GLib.idle_add(lambda: (self.emit("provider-epg", key, events), False)[1])
 
     def start(self):
-        if self._direct is not None and not self._start_direct():
+        if self._satip is not None:
+            self._start_satip()
+        elif self._direct is not None and not self._start_direct():
             return
         if self.pipeline.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
             self.emit("error", f"Could not open DVB adapter {self.adapter}.")
@@ -531,6 +558,53 @@ class Capture(GObject.Object):
         self._fe_stats = Frontend(self.adapter, self.frontend)
         GLib.timeout_add_seconds(1, self._poll_direct)
         return True
+
+    def _start_satip(self):
+        """SAT>IP: SETUP and PLAY on the server, in a thread (network)."""
+        import threading
+        pids = self._pids
+        try:
+            query = satip.tuning_query(self.channel, pids or "all")
+        except satip.SatipError as e:
+            msg = str(e)
+            GLib.idle_add(lambda: (self.emit("error", msg), False)[1])
+            return
+        sess = self._satip
+
+        def run():
+            try:
+                sess.open(query)
+            except satip.SatipError as e:
+                msg = str(e)
+                if not self.store.finished:
+                    GLib.idle_add(lambda: (self.emit("error", msg), False)[1])
+                return
+            if self.store.finished:
+                sess.close()
+                return
+            if self._pids != pids:           # the filter changed meanwhile
+                sess.set_pids(self._pids)
+            GLib.timeout_add_seconds(2, self._watch_satip)
+        threading.Thread(target=run, daemon=True, name=f"satip{self.adapter}").start()
+
+    def _watch_satip(self):
+        """Report a lost connection to the SAT>IP server."""
+        if self.store.finished or self._satip is None:
+            return False
+        if self._satip.dead:
+            self.emit("error", f"SAT>IP {self._satip.host}: "
+                      f"{self._satip.error or 'the connection was lost'}")
+            return False
+        return True
+
+    def _on_satip_status(self, st):
+        """Receiving thread: the signal figures from RTCP."""
+        def deliver():
+            if not self.store.finished:
+                self.stats = st
+                self.emit("stats", st)
+            return False
+        GLib.idle_add(deliver)
 
     def _push_direct(self, data):
         """Reader thread: hand a chunk of the DVR stream to the pipeline."""
@@ -622,6 +696,8 @@ class Capture(GObject.Object):
         self.store.finished = True
         if self._direct is not None:
             self._direct.close()
+        if self._satip is not None:
+            self._satip.close()
 
     def destroy(self):
         self.stop()
@@ -709,7 +785,7 @@ def free_tuners(manager):
     for p in profiles:
         a = p["adapter"]
         if a not in manager.captures and a not in out and \
-                (test or os.path.exists(f"/dev/dvb/adapter{a}")):
+                (test or satip.is_satip(p) or os.path.exists(f"/dev/dvb/adapter{a}")):
             out.append(a)
     return out
 

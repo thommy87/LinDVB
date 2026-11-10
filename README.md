@@ -12,6 +12,8 @@ application written in Python on top of the standard Linux media stack:
 
 * **Linux DVB API v5** for tuning (DVB-S/S2, DVB-C, DVB-T/T2, ATSC, ISDB-T, DTMB),
   through GStreamer's `dvbsrc`, or driven directly for single-cable (Unicable / JESS) tuners
+* **SAT>IP** (RTSP/RTP) for tuners on the network: SAT>IP boxes and LNBs, minisatip,
+  FRITZ!Box Cable, Octopus NET
 * **libdvbv5** (`dvbv5-scan` from v4l-utils) for channel search
 * **GStreamer** for playback, recording and remuxing, `GstMpegts` for the programme guide
   and `teletextdec` (libzvbi) for teletext
@@ -130,6 +132,11 @@ them.
   polarisation, and each tuner can have an LNB of its own
 * Single cable: Unicable I (EN 50494) and Unicable II / JESS (EN 50607) with a user
   band per tuner, optional PIN and templates of common devices
+* SAT>IP (DVB over IP): servers in the network found by a search (SSDP) or added by
+  address; each of their tuners is a tuner like a local one, for live TV, timeshift,
+  recordings, programme guide and HbbTV. The stream comes over UDP or, through
+  firewalls, in the RTSP connection (TCP); level, lock and quality come from the
+  server. Channel search on the server too (satellite, cable, terrestrial)
 * Channel search with dvbv5-scan and the current transponder lists of dtv-scan-tables
   built in: the dialog shows what the tuner receives (satellite: orbital positions with a
   DiSEqC port each and the LNB; cable: country and provider; terrestrial, ATSC, ISDB-T:
@@ -327,6 +334,9 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
    satellite tuners also give them a cable name), and set an LNB per tuner.
    For a single-cable system (Unicable I / EN 50494, Unicable II / JESS / EN 50607) set
    the type, user band and its frequency per tuner; the channel search works on it too.
+   SAT>IP servers (FRITZ!Box Cable, minisatip, SAT>IP boxes) are added on the same page
+   with **Search Network** or by address; their tuners then show up in the list and in
+   the channel search.
    LinDVB picks a tuner that can receive the channel, lets channels of one transponder
    share a tuner, and takes the live tuner only for a recording.
 3. Double-click a channel to watch it. Press Space to pause (timeshift), ←/→ to jump.

@@ -3856,3 +3856,69 @@ msgstr "il-Maċedonja ta' Fuq"
 
 msgid "South Africa"
 msgstr "l-Afrika t'Isfel"
+
+msgid "(no tuner)"
+msgstr "(l-ebda tuner)"
+
+msgid "1 tuner"
+msgstr "tuner wieħed"
+
+msgid "{n} tuners"
+msgstr "{n} tuners"
+
+msgid "Add Server"
+msgstr "Żid server"
+
+msgid "Add by address"
+msgstr "Żid bl-indirizz"
+
+msgid "Find SAT>IP servers"
+msgstr "Sib servers SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Għal server li t-tfittxija ma ssibx (netwerk ieħor, jew bla multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "L-ebda server SAT>IP miżjud."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "L-ebda server SAT>IP ma wieġeb. Żidu bl-indirizz tiegħu hawn taħt."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "Kaxxi u LNBs SAT>IP, minisatip, FRITZ!Box Cable u servers oħra DVB over IP fin-netwerk lokali. It-tuners tagħhom jidhru fil-lista ladarba l-preferenzi jiġu ssejvjati u miftuħa mill-ġdid."
+
+msgid "SAT>IP servers"
+msgstr "Servers SAT>IP"
+
+msgid "Search Network"
+msgstr "Fittex fin-Netwerk"
+
+msgid "Searching…"
+msgstr "Qed infittex…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (fil-konnessjoni RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP jaħdem minn firewalls li jimblokkaw il-fluss UDP."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Instabu {n} servers, {new} ġodda."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Sors: server SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "Rapport tas-sinjal SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: it-tfittxija tuża l-frekwenzi tal-lista (bla tfittxija NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "Is-server SAT>IP jikkontrolla l-LNB u s-swiċċ DiSEqC; il-port DiSEqC jagħżel is-sors tiegħu (1 sa 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Din il-lista ta’ transponders m’għandhiex transponders għal dan it-tuner.\n"

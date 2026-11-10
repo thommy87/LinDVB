@@ -3856,3 +3856,69 @@ msgstr "Macedonia del Norte"
 
 msgid "South Africa"
 msgstr "Sudáfrica"
+
+msgid "(no tuner)"
+msgstr "(sin sintonizador)"
+
+msgid "1 tuner"
+msgstr "1 sintonizador"
+
+msgid "{n} tuners"
+msgstr "{n} sintonizadores"
+
+msgid "Add Server"
+msgstr "Añadir servidor"
+
+msgid "Add by address"
+msgstr "Añadir por dirección"
+
+msgid "Find SAT>IP servers"
+msgstr "Buscar servidores SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Para un servidor que la búsqueda no encuentra (otra red o sin multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "No se ha añadido ningún servidor SAT>IP."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Ningún servidor SAT>IP ha respondido. Añádalo por su dirección abajo."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "Cajas y LNB SAT>IP, minisatip, FRITZ!Box Cable y otros servidores DVB over IP de la red local. Sus sintonizadores aparecen en la lista cuando las preferencias se guardan y se vuelven a abrir."
+
+msgid "SAT>IP servers"
+msgstr "Servidores SAT>IP"
+
+msgid "Search Network"
+msgstr "Buscar en la red"
+
+msgid "Searching…"
+msgstr "Buscando…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (en la conexión RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP atraviesa cortafuegos que bloquean el flujo UDP."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "{n} servidores encontrados, {new} nuevos."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Fuente: servidor SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "Informe de señal SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: la búsqueda usa las frecuencias de la lista (sin búsqueda NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "El servidor SAT>IP controla el LNB y el conmutador DiSEqC; el puerto DiSEqC elige su fuente (1 a 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Esta lista de transpondedores no tiene transpondedores para este sintonizador.\n"
