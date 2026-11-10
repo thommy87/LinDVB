@@ -86,6 +86,31 @@ def test_styles_draw():
         assert style.id and style.label
 
 
+@pytest.mark.parametrize("style_id", ["supernova", "sunset", "aurora"])
+def test_scenes_follow_the_music_without_opengl(style_id):
+    """With "Draw on the graphics card" off the scenes are drawn with cairo:
+    they must move with the music, not stand still as in silence."""
+    cairo = pytest.importorskip("cairo")
+    from lindvb.visuals import style_by_id
+
+    def picture(loud):
+        an, sm, style = AudioAnalysis(), Smoother(), style_by_id(style_id)()
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, 160, 90)
+        for k in range(90):                     # three seconds at 30 fps
+            now = 1000.0 + k / 30
+            if loud:
+                amp = 0.8 if k % 8 < 2 else 0.3
+                an.feed_buffer(struct.pack("<2048f", *_sine(freq=80, amp=amp)), "F32LE", 2, 48000)
+                an.feed_spectrum([(-10.0 if k % 8 < 2 else -25.0) - j * 0.1 for j in range(256)])
+                an.stamp = now
+            style.draw(cairo.Context(surf), 160, 90, sm.update(an, now=now))
+        return bytes(surf.get_data())
+
+    music, silence = picture(True), picture(False)
+    diff = sum(abs(x - y) for x, y in zip(music, silence)) / len(music)
+    assert diff > 5, diff
+
+
 def test_every_builtin_style_has_a_gpu_renderer():
     pytest.importorskip("cairo")
     from lindvb.ui.gpuvisuals import renderer_class
@@ -165,14 +190,6 @@ def test_pcm_block():
     assert left[10] == pytest.approx(0.01) and right[10] == pytest.approx(-0.01)
     left, right = pcm_block(struct.pack("<4h", 16384, -16384, 0, 0), "S16LE", 2)
     assert left[0] == pytest.approx(0.5) and right[0] == pytest.approx(-0.5)
-
-
-def test_visualiser_sizes():
-    from lindvb.addons.gst_visualizers import parse_size
-    assert parse_size("2560x1440", None) == (2560, 1440)
-    assert parse_size(" 1279 X 721 ", None) == (1278, 720)
-    assert parse_size("auto", (640, 360)) == (640, 360)
-    assert parse_size(None, (640, 360)) == (640, 360)
 
 
 def _frames(n, amp, spectrum_db):

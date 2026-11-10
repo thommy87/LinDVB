@@ -96,13 +96,10 @@ style is drawn with cairo as before. A plugin can add two kinds:
 
 ### GOOM
 
-LinDVB ships the add-on *GStreamer visualisation (GOOM)*
-(`lindvb/addons/gst_visualizers.py`), which offers the original **GOOM** from
-gst-plugins-good. GStreamer visualisers render at 320x240 unless told
-otherwise; GOOM runs on the CPU and gets slow at high resolutions, so it
-renders at `goom_resolution` (default `"640x360"`). For a sharp GOOM in full
-screen use the built-in *Goom HD*. Like any plugin, the add-on can be switched
-off under **☰ → Plugins…**.
+The original **GOOM** from gst-plugins-good, offered by a bundled add-on up to
+version 0.15, has been taken out: the built-in *Goom HD* runs the same logic
+and draws it sharply at full resolution. A plugin can still offer it with
+`element=lambda: Gst.ElementFactory.make("goom")`.
 
 projectM (MilkDrop) was offered up to version 0.14 and has been taken out:
 with libprojectM 4.1 and gst-projectm it stayed black, showed only fragments

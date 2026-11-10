@@ -813,7 +813,8 @@ class _Scene(Style):
             self.presence = max(0.0, self.presence - f.dt / self.FADE_OUT)
         return self.clock, bass, mid, treble, self.pulse, level
 
-    # -- without OpenGL: a simple painted sketch of the scene -------------------------
+    # -- without OpenGL: a simpler version of the scene, drawn with cairo, that
+    # follows the music like the shader (veils, rays, clouds, band, mountains) --
     def draw(self, cr, w, h, f):
         p = self.params(f)
         self.sketch(cr, w, h, *p)
@@ -830,6 +831,19 @@ def _glow(cr, x, y, r, stops):
     cr.set_source(g)
     cr.arc(x, y, max(1.0, r), 0, TAU)
     cr.fill()
+
+
+def _stars(cr, w, h, t, count, seed=0, alpha=1.0):
+    """Stars at fixed places that light up and fade with the clock ``t``."""
+    rnd = random.Random(seed)
+    for _ in range(count):
+        x, y = rnd.random() * w, rnd.random() * h
+        ph, sp = rnd.random() * TAU, 0.5 + rnd.random()
+        a = alpha * max(0.0, math.sin(t * sp + ph)) ** 2
+        if a > 0.02:
+            cr.set_source_rgba(1, 1, 1, 0.8 * a)
+            cr.arc(x, y, 1.0 + rnd.random(), 0, TAU)
+            cr.fill()
 
 
 class Supernova(_Scene):
@@ -881,17 +895,61 @@ class Supernova(_Scene):
                 self.hues[k] = self.tone
         return p
 
+    WARM = ((1.0, 0.55, 0.15), (1.0, 0.85, 0.3), (0.75, 0.3, 0.9))
+    COOL = ((1.0, 0.35, 0.65), (0.3, 0.5, 1.0), (0.2, 0.9, 0.85))
+
+    def _veil_colour(self, k, tone):
+        a, b = self.WARM[k % 3], self.COOL[k % 3]
+        return _mix(a, b, tone)
+
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
         cr.set_source_rgb(0.0, 0.0, 0.01)
         cr.paint()
         cx, cy, s = w / 2, h / 2, min(w, h)
-        r0 = s * 0.33 * (1 + 0.06 * bass)
+        pr = self.presence
+        # stars that light up and go out with the music's own clock
+        _stars(cr, w, h, self.motion, 40, seed=11)
         cr.set_operator(cairo.OPERATOR_ADD)
-        _glow(cr, cx, cy, r0 * 1.25, ((0, (0.2, 0.5, 1.0), 0.0), (0.75, (0.15, 0.45, 1.0), 0.35),
-                                      (1, (0.1, 0.2, 0.8), 0.0)))
-        _glow(cr, cx, cy, r0, ((0, (1.0, 0.95, 0.85), 0.9), (0.4, (1.0, 0.6, 0.2), 0.45),
-                               (1, (0.9, 0.2, 0.3), 0.0)))
-        _glow(cr, cx, cy, r0 * (0.25 + 0.1 * pulse), ((0, (1, 1, 1), 1.0), (1, (1, 0.9, 0.7), 0.0)))
+        r0 = s * 0.30 * (0.35 + 0.65 * pr) * (1 + 0.15 * bass + 0.1 * pulse)
+        # veils: born in the core with the music of their birth, they drift
+        # outwards and fade while new ones follow
+        for k in range(self.VEILS):
+            age = (self.flow + k / self.VEILS) % 1.0
+            gen = self.born[k] or 0
+            rnd = random.Random(gen * 31 + k)
+            ang = rnd.random() * TAU
+            off = r0 * 0.35 * rnd.random() * (0.3 + age)
+            x, y = cx + math.cos(ang) * off, cy + math.sin(ang) * off
+            r = r0 * (0.35 + 1.6 * age)
+            a = min(1.0, self.veils[k]) * (1.0 - age) * (0.25 + 0.75 * min(1.0, age * 5)) * pr
+            if a < 0.01:
+                continue
+            col = self._veil_colour(k, self.hues[k])
+            _glow(cr, x, y, r, ((0, col, 0.0), (0.55, col, 0.35 * a), (0.85, col, 0.55 * a),
+                                (1, col, 0.0)))
+        # the spectrum around the star: bass at the top, treble at the bottom
+        n = 24
+        for i in range(n):
+            m = i / (n - 1)
+            v = self.spectrum.at(m)
+            if v < 0.03:
+                continue
+            for side in (-1, 1):
+                ang = -TAU / 4 + side * m * TAU / 2
+                d = r0 * (0.9 + 0.5 * v)
+                col = _mix((1.0, 0.6, 0.2), (0.4, 0.6, 1.0), m)
+                _glow(cr, cx + math.cos(ang) * d, cy + math.sin(ang) * d, r0 * (0.12 + 0.25 * v),
+                      ((0, col, 0.5 * v * pr), (1, col, 0.0)))
+        # the white-hot core flares on the beat
+        _glow(cr, cx, cy, r0 * (0.9 + 0.3 * level), ((0, (1.0, 0.95, 0.85), 0.8 * pr),
+                                                     (0.4, (1.0, 0.6, 0.2), 0.4 * pr),
+                                                     (1, (0.9, 0.2, 0.3), 0.0)))
+        _glow(cr, cx, cy, r0 * (0.2 + 0.35 * pulse), ((0, (1, 1, 1), 0.3 + 0.7 * pr),
+                                                     (1, (1, 0.9, 0.7), 0.0)))
+        # in silence: a single star twinkles where the supernova was
+        if pr < 1.0:
+            tw = 0.6 + 0.4 * math.sin(self.motion * 3 + 1.3 * (1 - pr) * 10)
+            _glow(cr, cx, cy, s * 0.02 * (1 + tw), ((0, (1, 1, 1), (1 - pr) * tw), (1, (0.7, 0.8, 1), 0.0)))
         cr.set_operator(cairo.OPERATOR_OVER)
 
 
@@ -950,19 +1008,72 @@ class OccasusSolis(_Scene):
         return self.SUN[0], self.SUN[1] + self.SET * (1.0 - pr * pr * (3 - 2 * pr))
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        pr = self.presence
         g = cairo.LinearGradient(0, 0, 0, h)
-        g.add_color_stop_rgb(0, 0.42, 0.33, 0.45)
-        g.add_color_stop_rgb(0.45, 0.93, 0.55, 0.32)
-        g.add_color_stop_rgb(0.8, 1.0, 0.45, 0.12)
-        g.add_color_stop_rgb(1, 0.85, 0.2, 0.08)
+        g.add_color_stop_rgb(0, *_mix((0.10, 0.10, 0.22), (0.42, 0.33, 0.45), pr))
+        g.add_color_stop_rgb(0.45, *_mix((0.35, 0.22, 0.30), (0.93, 0.55, 0.32), pr))
+        g.add_color_stop_rgb(0.8, *_mix((0.55, 0.25, 0.15), (1.0, 0.45, 0.12), pr))
+        g.add_color_stop_rgb(1, *_mix((0.40, 0.12, 0.08), (0.85, 0.2, 0.08), pr))
         cr.set_source(g)
         cr.paint()
-        sx, sy = w * self.SUN[0], h * self.SUN[1]
+        ux, uy = self.sun
+        sx, sy = w * ux, h * uy
         cr.set_operator(cairo.OPERATOR_ADD)
-        _glow(cr, sx, sy, h * (0.55 + 0.1 * bass), ((0, (1.0, 0.8, 0.4), 0.55), (1, (1.0, 0.4, 0.1), 0.0)))
+        # the fan of rays turning around the sun: bass on the left, treble on the right
+        rays = 18
+        cr.save()
+        cr.translate(sx, sy)
+        for i in range(rays):
+            ang = TAU / 2 + (i + 0.5) / rays * TAU / 2 + 0.25 * math.sin(clock * 2.0 + i)
+            m = (math.cos(ang) + 1) / 2
+            v = self.spectrum.at(1.0 - m)
+            a = (0.05 + 0.4 * v) * pr
+            if a < 0.01:
+                continue
+            length = h * (0.5 + 0.9 * v)
+            spread = 0.035 + 0.03 * v
+            g = cairo.LinearGradient(0, 0, math.cos(ang) * length, math.sin(ang) * length)
+            g.add_color_stop_rgba(0, 1.0, 0.85, 0.5, a)
+            g.add_color_stop_rgba(1, 1.0, 0.6, 0.3, 0.0)
+            cr.set_source(g)
+            cr.move_to(0, 0)
+            cr.arc(0, 0, length, ang - spread, ang + spread)
+            cr.close_path()
+            cr.fill()
+        cr.restore()
+        _glow(cr, sx, sy, h * (0.4 + 0.25 * bass + 0.1 * pulse),
+              ((0, (1.0, 0.8, 0.4), 0.3 + 0.35 * pr), (1, (1.0, 0.4, 0.1), 0.0)))
         cr.set_operator(cairo.OPERATOR_OVER)
-        _glow(cr, sx, sy, h * 0.03, ((0, (1, 1, 0.95), 1.0), (0.8, (1, 0.95, 0.75), 1.0),
-                                     (1, (1, 0.85, 0.5), 0.0)))
+        _glow(cr, sx, sy, h * (0.03 + 0.01 * pulse), ((0, (1, 1, 0.95), 1.0), (0.8, (1, 0.95, 0.75), 1.0),
+                                                      (1, (1, 0.85, 0.5), 0.0)))
+        # clouds lit gold from below, drifting from left to right
+        col_w = w / self.COLUMNS
+        for i, c in enumerate(self.clouds):
+            x = (i - 4 + self.cfrac) * col_w
+            if x < -col_w * 3 or x > w + col_w * 3:
+                continue
+            v = self.spectrum.at(min(1.0, max(0.0, x / w)))
+            dens = c * (0.5 + 0.7 * v + 0.3 * mid)
+            if dens < 0.05:
+                continue
+            rnd = random.Random(int(self.drift * self.COLUMNS) - i)
+            y = h * (0.18 + 0.25 * rnd.random()) + h * 0.02 * math.sin(clock * 3 + i * 0.7) * mid
+            rx, ry = col_w * (1.4 + 1.5 * dens), h * (0.025 + 0.05 * dens)
+            g = cairo.LinearGradient(0, y - ry, 0, y + ry)
+            g.add_color_stop_rgba(0, 0.45, 0.30, 0.38, 0.0)
+            g.add_color_stop_rgba(0.5, 0.55, 0.32, 0.36, 0.7 * dens)
+            g.add_color_stop_rgba(1, 1.0, 0.75, 0.35, 0.8 * dens)
+            cr.save()
+            cr.translate(x, y)
+            cr.scale(rx, ry)
+            cr.arc(0, 0, 1, 0, TAU)
+            cr.restore()
+            cr.set_source(g)
+            cr.fill()
+        # the horizon
+        cr.set_source_rgb(0.12, 0.05, 0.06)
+        cr.rectangle(0, h * 0.93, w, h * 0.07)
+        cr.fill()
 
 
 class AuroraBorealis(_Scene):
@@ -1021,28 +1132,64 @@ class AuroraBorealis(_Scene):
         return p
 
     def sketch(self, cr, w, h, clock, bass, mid, treble, pulse, level):
+        pr = self.presence
         g = cairo.LinearGradient(0, 0, 0, h)
-        g.add_color_stop_rgb(0, 0.02, 0.12, 0.32)
-        g.add_color_stop_rgb(1, 0.05, 0.25, 0.55)
+        g.add_color_stop_rgb(0, 0.01, 0.03, 0.12)
+        g.add_color_stop_rgb(1, *_mix((0.02, 0.06, 0.20), (0.05, 0.22, 0.30), pr))
         cr.set_source(g)
         cr.paint()
+        _stars(cr, w, h * 0.7, self.motion, 50, seed=5, alpha=0.4 + 0.6 * pr)
         cr.set_operator(cairo.OPERATOR_ADD)
-        for k in range(3):
-            x = w * (0.3 + 0.25 * k + 0.05 * math.sin(clock * 3 + k))
-            g = cairo.LinearGradient(0, h * 0.1, 0, h * 0.85)
-            g.add_color_stop_rgba(0, 0.6, 0.2, 0.8, 0.0)
-            g.add_color_stop_rgba(0.5, 0.6, 0.2, 0.8, 0.25 + 0.2 * level)
-            g.add_color_stop_rgba(1, 0.5, 1.0, 0.4, 0.55 + 0.3 * level)
+        # the band of light: a free curve as its lower edge, rays reaching up;
+        # each part brightens with its part of the spectrum
+        strips = 40
+        sw = w / strips
+        for i in range(strips):
+            m = (i + 0.5) / strips
+            v = self.spectrum.at(m)
+            a = (0.1 + 0.8 * v + 0.3 * pulse) * pr
+            if a < 0.01:
+                continue
+            x, x1 = round(i * sw), round((i + 1) * sw)
+            base = h * (0.48 + 0.10 * math.sin(m * 4.0 + clock * 2.5)
+                        + 0.05 * math.sin(m * 9.0 - clock * 4.0))
+            ray = h * (0.12 + 0.30 * bass + 0.15 * v)
+            if m < 0.5:
+                col = _mix((0.55, 1.0, 0.35), (0.2, 0.95, 0.8), m * 2)
+            else:
+                col = _mix((0.2, 0.95, 0.8), (0.85, 0.3, 0.85), (m - 0.5) * 2)
+            g = cairo.LinearGradient(0, base - ray, 0, base)
+            g.add_color_stop_rgba(0, *col, 0.0)
+            g.add_color_stop_rgba(0.8, *col, 0.45 * min(1.0, a))
+            g.add_color_stop_rgba(1, *col, 0.0)
             cr.set_source(g)
-            cr.rectangle(x - w * 0.06, h * 0.1, w * 0.12, h * 0.75)
+            cr.set_antialias(cairo.ANTIALIAS_NONE)   # no seams between the strips
+            cr.rectangle(x, base - ray, x1 - x, ray)
             cr.fill()
+            cr.set_antialias(cairo.ANTIALIAS_DEFAULT)
+        # the glow behind the mountains
+        g = cairo.LinearGradient(0, h * 0.55, 0, h)
+        g.add_color_stop_rgba(0, 0.5, 1.0, 0.3, 0.0)
+        g.add_color_stop_rgba(1, 0.5, 1.0, 0.3, 0.25 * pr * (0.5 + level))
+        cr.set_source(g)
+        cr.rectangle(0, h * 0.55, w, h * 0.45)
+        cr.fill()
         cr.set_operator(cairo.OPERATOR_OVER)
-        cr.set_source_rgb(0.75, 0.82, 0.9)
-        cr.move_to(w * 0.5, h)
-        cr.line_to(w * 0.75, h * 0.82)
-        cr.line_to(w, h * 0.77)
+        # the mountains move from right to left and sink when the music stops
+        sink = h * 0.3 * (1.0 - pr)
+        step = w / (self.VISIBLE - 1)
+        cr.move_to(0, h)
+        for i, r in enumerate(self.ridge):
+            x = (i - self.scroll) * step
+            cr.line_to(x, h - r * h * 1.4 + sink)
+            if x > w:
+                break
         cr.line_to(w, h)
         cr.close_path()
+        g = cairo.LinearGradient(0, h * 0.6, 0, h)
+        g.add_color_stop_rgb(0, 0.75, 0.82, 0.92)
+        g.add_color_stop_rgb(1, 0.20, 0.28, 0.42)
+        cr.set_source(g)
         cr.fill()
 
 

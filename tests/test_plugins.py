@@ -151,9 +151,9 @@ def test_bundled_addon_loads(tmp_path, monkeypatch):
     monkeypatch.setenv("LINDVB_PLUGIN_PATH", str(tmp_path))
     mgr = PluginManager({}, log=lambda m: None)
     names = [n for n, _p in mgr.discover()]
-    assert "gst_visualizers" in names
-    mgr.load_all()                      # with or without GStreamer, it must not fail
-    assert "gst_visualizers" not in mgr.failed
+    assert "gst_visualizers" not in names   # the plain GOOM add-on was taken out
+    mgr.load_all()                      # the bundled add-ons must load without failing
+    assert not mgr.failed
 
 
 def test_user_dirs_leave_out_bundled_addons(tmp_path, monkeypatch):

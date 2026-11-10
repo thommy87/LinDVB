@@ -89,8 +89,8 @@ them.
   colour flames with spokes, orbits and star dust), supernova (a white-hot core
   in a shell of glowing filaments), occasus solis (a sunset with rays between
   drifting clouds), aurora borealis (northern lights over snowy mountains) and Goom HD (the original GOOM logic, drawn by
-  shaders natively up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
-  and the original GOOM through the bundled GStreamer add-on; plugins can add their own.
+  shaders natively up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic);
+  plugins can add their own.
   A button at the bottom right of the control bar picks the visualisation; it
   is only active while radio or audio plays
 * Now playing over the radio visualisation, each part switchable in

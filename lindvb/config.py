@@ -107,8 +107,6 @@ DEFAULTS = {
     # Draw the built-in visualisations on the graphics card (OpenGL); cairo
     # on the CPU is used when this is off or OpenGL is not available.
     "visualizer_gpu": True,
-    # Size the original GOOM (GStreamer, on the CPU) renders at.
-    "goom_resolution": "640x360",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
