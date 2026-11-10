@@ -4018,3 +4018,12 @@ msgstr "{n} transponders; fejn huma mmarkati biss xi wħud, jitfittxu biss dawk.
 
 msgid "Own transponder list: {positions}."
 msgstr "Lista tat-transponders tiegħek: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Il-format tal-istream li jibgħat is-server. Agħżel HLS jekk il-kanali ma jindaqqux bħala MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Agħti lil-lista isem tagħha (huwa wkoll l-isem tal-grupp tal-kanali tagħha)"
+
+msgid "List renamed to {name}"
+msgstr "Il-lista ngħatat l-isem {name}"

@@ -4061,3 +4061,12 @@ msgstr "{n} ترانسپوندر؛ جایی که فقط برخی علامت خو
 
 msgid "Own transponder list: {positions}."
 msgstr "فهرست ترانسپوندر خودتان: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "قالب جریانی که سرور ارسال می‌کند. اگر کانال‌ها به صورت MPEG-TS پخش نمی‌شوند، HLS را انتخاب کنید."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "به فهرست نامی اختصاصی بدهید (نام گروه کانال‌های آن نیز هست)"
+
+msgid "List renamed to {name}"
+msgstr "نام فهرست به {name} تغییر کرد"

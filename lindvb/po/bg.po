@@ -4018,3 +4018,12 @@ msgstr "{n} транспондера; където са отметнати са�
 
 msgid "Own transponder list: {positions}."
 msgstr "Собствен списък с транспондери: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Форматът на потока, който сървърът доставя. Изберете HLS, ако каналите не се възпроизвеждат като MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Дайте собствено име на списъка (също името на групата му канали)"
+
+msgid "List renamed to {name}"
+msgstr "Списъкът е преименуван на {name}"

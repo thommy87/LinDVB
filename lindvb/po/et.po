@@ -4018,3 +4018,12 @@ msgstr "{n} transponderit; kus on märgitud ainult mõned, otsitakse ainult neil
 
 msgid "Own transponder list: {positions}."
 msgstr "Oma transponderite loend: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Voo vorming, mida server edastab. Valige HLS, kui kanalid MPEG-TS-ina ei mängi."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Andke loendile oma nimi (see on ka selle kanalirühma nimi)"
+
+msgid "List renamed to {name}"
+msgstr "Loend nimetati ümber: {name}"

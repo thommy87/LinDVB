@@ -4018,3 +4018,12 @@ msgstr "{n} transponders; waar maar enkele zijn aangevinkt, worden alleen die do
 
 msgid "Own transponder list: {positions}."
 msgstr "Eigen transponderlijst: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Het streamformaat dat de server levert. Kies HLS als de zenders niet als MPEG-TS afspelen."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Geef de lijst een eigen naam (ook de naam van haar zendergroep)"
+
+msgid "List renamed to {name}"
+msgstr "Lijst hernoemd naar {name}"

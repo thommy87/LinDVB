@@ -13,10 +13,12 @@ from gi.repository import Gio, GLib, Gtk
 from .. import iptvsources
 from ..channels import download_name, import_data, import_file
 from ..config import CACHE_DIR
-from .common import fill, make_column_view, message, selected
+from .common import dropdown, fill, make_column_view, message, selected
+from .favourites import ask_name
 from ..i18n import _
 
-PATTERNS = ("*.m3u", "*.m3u8", "*.ini", "*.csv", "*.conf")
+PATTERNS = ("*.m3u", "*.m3u8", "*.m3uplus", "*.m3u8plus", "*.m3u_plus", "*.m3u8_plus",
+            "*.ini", "*.csv", "*.conf")
 KINDS = {"file": _("File"), "url": _("Web address"), "xtream": "Xtream Codes"}
 
 
@@ -70,9 +72,13 @@ class IPTVPanel(Gtk.Box):
         self.xt_user = Gtk.Entry(placeholder_text=_("User name"), width_chars=10)
         self.xt_pass = Gtk.PasswordEntry(placeholder_text=_("Password"), show_peek_icon=True)
         self.xt_pass.set_size_request(110, -1)
+        self.xt_output = dropdown(["MPEG-TS", "HLS (m3u8)"])
+        self.xt_output.set_tooltip_text(
+            _("The stream format the server delivers. Choose HLS when the channels "
+              "do not play as MPEG-TS."))
         self.xt_btn = Gtk.Button(label=_("Import"))
         self.xt_btn.connect("clicked", lambda *_: self._xtream())
-        for w in (self.xt_server, self.xt_user, self.xt_pass, self.xt_btn):
+        for w in (self.xt_server, self.xt_user, self.xt_pass, self.xt_output, self.xt_btn):
             xt.append(w)
         row(self, "Xtream Codes", xt,
             _("The live channels of an Xtream Codes account. The password is kept in the "
@@ -98,10 +104,15 @@ class IPTVPanel(Gtk.Box):
             _("Load the list again: favourites, channel numbers and guide matches stay, "
               "channels no longer in the list are removed."))
         self.update_btn.connect("clicked", lambda *_: self._update())
+        rename = Gtk.Button(label=_("Rename"))
+        rename.set_tooltip_text(_("Give the list its own name (also the name of its "
+                                  "channel group)"))
+        rename.connect("clicked", lambda *_: self._rename())
         remove = Gtk.Button(label=_("Remove"))
         remove.set_tooltip_text(_("Remove the list and its channels"))
         remove.connect("clicked", lambda *_: self._remove())
         btns.append(self.update_btn)
+        btns.append(rename)
         btns.append(remove)
         self.append(btns)
 
@@ -140,13 +151,19 @@ class IPTVPanel(Gtk.Box):
     def _apply(self, kind, location, chans, replace=False):
         """Merge a loaded list, remember it and show the result."""
         db = self.app.db
-        root = chans[0].root
+        sources = self._sources()
+        old = iptvsources.find(sources, location)
+        root = old.get("root", "") if old else ""
+        root = root or iptvsources.unique_name(
+            sources, iptvsources.default_name(kind, location, chans[0].root), location)
+        for c in chans:
+            c.root = root
         if replace:
             a, u, gone = iptvsources.replace(db, root, chans)
         else:
             (a, u), gone = db.merge(chans), 0
         db.save()
-        self._set_sources(iptvsources.remember(self._sources(), kind, location, root,
+        self._set_sources(iptvsources.remember(sources, kind, location, root,
                                                len(chans)))
         text = _("Imported {total_a} new and {total_u} updated channels").format(
             total_a=a, total_u=u)
@@ -217,7 +234,9 @@ class IPTVPanel(Gtk.Box):
         server, user = self.xt_server.get_text().strip(), self.xt_user.get_text().strip()
         if not server or not user:
             return
-        self._load_url("xtream", iptvsources.xtream_url(server, user, self.xt_pass.get_text()))
+        output = iptvsources.XTREAM_OUTPUTS[self.xt_output.get_selected()]
+        self._load_url("xtream", iptvsources.xtream_url(server, user, self.xt_pass.get_text(),
+                                                        output))
 
     def _load_url(self, kind, url, replace=False):
         shown = iptvsources.display_location({"kind": kind, "location": url})
@@ -232,6 +251,8 @@ class IPTVPanel(Gtk.Box):
 
     def _downloaded(self, kind, url, chans, error, replace):
         self._busy(False)
+        if chans and kind == "xtream":
+            chans = iptvsources.live_only(chans)       # no films and series
         if error or not chans:
             self._count()
             shown = iptvsources.display_location({"kind": kind, "location": url})
@@ -258,6 +279,22 @@ class IPTVPanel(Gtk.Box):
                 self._pick_files()          # the file moved: choose it again
         else:
             self._load_url(src.get("kind", "url"), loc, replace=True)
+
+    def _rename(self):
+        src = selected(self.sel)
+        if not src:
+            return
+
+        def done(name):
+            sources, used = iptvsources.rename(self.app.db, self._sources(),
+                                               src.get("location"), name)
+            self.app.db.save()
+            self._set_sources(sources)
+            if self.app.window is not None:
+                self.app.window.reload_channels()
+            self._count(_("List renamed to {name}").format(name=used))
+
+        ask_name(self.get_root(), _("Rename"), src.get("root", ""), done, label=_("Name"))
 
     def _remove(self):
         src = selected(self.sel)

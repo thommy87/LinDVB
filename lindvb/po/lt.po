@@ -4018,3 +4018,12 @@ msgstr "Siųstuvų: {n}; kur pažymėti tik kai kurie, ieškoma tik juose."
 
 msgid "Own transponder list: {positions}."
 msgstr "Savas siųstuvų sąrašas: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Srauto formatas, kurį tiekia serveris. Pasirinkite HLS, jei kanalai neatkuriami kaip MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Suteikite sąrašui savo pavadinimą (tai ir jo kanalų grupės pavadinimas)"
+
+msgid "List renamed to {name}"
+msgstr "Sąrašas pervadintas į {name}"

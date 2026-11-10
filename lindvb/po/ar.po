@@ -4018,3 +4018,12 @@ msgstr "{n} مرسلًا مستجيبًا؛ حيث يُحدَّد بعضها ف�
 
 msgid "Own transponder list: {positions}."
 msgstr "قائمة مرسلات مستجيبة خاصة: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "صيغة البث التي يرسلها الخادم. اختر HLS إذا لم تعمل القنوات بصيغة MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "امنح القائمة اسمًا خاصًا بها (وهو أيضًا اسم مجموعة قنواتها)"
+
+msgid "List renamed to {name}"
+msgstr "تمت إعادة تسمية القائمة إلى {name}"

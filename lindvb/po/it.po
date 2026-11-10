@@ -4090,3 +4090,12 @@ msgstr "{n} transponder; dove solo alcuni sono spuntati, si cerca solo su quelli
 
 msgid "Own transponder list: {positions}."
 msgstr "Elenco di transponder personale: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Il formato di stream fornito dal server. Scegli HLS se i canali non si riproducono come MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Dai alla lista un nome proprio (anche il nome del suo gruppo di canali)"
+
+msgid "List renamed to {name}"
+msgstr "Lista rinominata in {name}"

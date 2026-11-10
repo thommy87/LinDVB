@@ -5556,3 +5556,15 @@ msgstr ""
 #: lindvb/ui/transponders.py
 msgid "Own transponder list: {positions}."
 msgstr ""
+
+#: lindvb/ui/iptv.py
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr ""
+
+#: lindvb/ui/iptv.py
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr ""
+
+#: lindvb/ui/iptv.py
+msgid "List renamed to {name}"
+msgstr ""

@@ -6,7 +6,7 @@ from gi.repository import GLib, Gtk
 from ..i18n import _
 
 
-def ask_name(parent, title, initial, done):
+def ask_name(parent, title, initial, done, label=None):
     """A small window asking for a list name; calls ``done(name)`` on OK."""
     win = Gtk.Window(title=title, transient_for=parent, modal=True, resizable=False,
                      default_width=360)
@@ -14,7 +14,7 @@ def ask_name(parent, title, initial, done):
                   margin_end=16, margin_top=16, margin_bottom=16)
     entry = Gtk.Entry(text=initial, activates_default=True)
     entry.update_property([Gtk.AccessibleProperty.LABEL], [_("Name")])
-    box.append(Gtk.Label(label=_("Name of the favourites list"), xalign=0))
+    box.append(Gtk.Label(label=label or _("Name of the favourites list"), xalign=0))
     box.append(entry)
     buttons = Gtk.Box(spacing=8, halign=Gtk.Align.END)
     cancel = Gtk.Button(label=_("Cancel"))

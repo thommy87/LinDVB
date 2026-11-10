@@ -4018,3 +4018,12 @@ msgstr "{n} trasfhreagróir; nuair nach bhfuil tic ach le roinnt, ní chuardaít
 
 msgid "Own transponder list: {positions}."
 msgstr "Do liosta trasfhreagróirí féin: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "An formáid srutha a sheolann an freastalaí. Roghnaigh HLS mura seinntear na cainéil mar MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Tabhair a hainm féin don liosta (ainm a ghrúpa cainéal freisin)"
+
+msgid "List renamed to {name}"
+msgstr "Athainmníodh an liosta go {name}"
