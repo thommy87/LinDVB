@@ -1,0 +1,35 @@
+# Maintainer: thommy87 <https://github.com/thommy87/LinDVB>
+# The AUR package "lindvb" is published from this file by .github/workflows/aur.yml
+# after each release: it sets pkgver and the checksum of the release's source package.
+pkgname=lindvb
+pkgver=0.14.0
+pkgrel=1
+pkgdesc="Digital TV and radio app for GNOME: watch and record DVB and internet TV and radio"
+arch=('any')
+url="https://github.com/thommy87/LinDVB"
+license=('GPL-2.0-or-later')
+depends=(
+  'python' 'python-gobject' 'python-cairo' 'gtk4'
+  'gstreamer' 'gst-plugins-base' 'gst-plugins-good' 'gst-plugins-bad' 'gst-libav'
+  'v4l-utils'
+)
+optdepends=(
+  'webkitgtk-6.0: HbbTV (red button)'
+  'gst-plugin-gtk4: faster video output'
+  'gst-plugins-ugly: more audio and video formats'
+  'gst-plugin-pipewire: audio output through PipeWire'
+)
+makedepends=('python-build' 'python-installer' 'python-setuptools' 'python-wheel')
+source=("https://github.com/thommy87/LinDVB/releases/download/v${pkgver}/lindvb-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "lindvb-${pkgver}"
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "lindvb-${pkgver}"
+  python -m installer --destdir="$pkgdir" dist/*.whl
+  install -Dm644 THIRD-PARTY-NOTICES.md -t "$pkgdir/usr/share/doc/$pkgname"
+}

@@ -1,7 +1,8 @@
 name: Release
 
 # Builds the AppImage, Flatpak, Snap, .deb and source package and publishes them together as a
-# GitHub release. Start it from the Actions tab ("Run workflow").
+# GitHub release, then updates the AUR package and the Snap Store (once their logins are
+# stored as secrets, see docs/STORES.md). Start it from the Actions tab ("Run workflow").
 #
 # The packages go straight into a draft release rather than through workflow
 # artifacts, so a full Actions storage quota can't block a release. The draft
@@ -59,6 +60,8 @@ jobs:
     with:
       release_id: ${{ needs.draft.outputs.id }}
       release_tag: ${{ inputs.version }}
+    secrets:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
 
   packages:
     needs: draft
@@ -76,3 +79,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ID: ${{ needs.draft.outputs.id }}
         run: gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$ID" -F draft=false -F make_latest=true --jq .html_url
+
+  # The AUR package downloads the source package from the published release.
+  aur:
+    needs: publish
+    uses: ./.github/workflows/aur.yml
+    with:
+      release_tag: ${{ inputs.version }}
+    secrets:
+      AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}

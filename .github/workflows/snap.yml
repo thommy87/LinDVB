@@ -15,6 +15,9 @@ on:
       release_tag:
         type: string
         default: ""
+    secrets:
+      SNAPCRAFT_STORE_CREDENTIALS:
+        required: false
 
 permissions:
   contents: write
@@ -22,6 +25,8 @@ permissions:
 jobs:
   snap:
     runs-on: ubuntu-24.04
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v4
 
@@ -51,3 +56,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$GITHUB_REF_NAME" "${{ steps.build.outputs.snap }}" --clobber
+
+      # Snap Store: only for releases, and only once the store login is stored
+      # as the SNAPCRAFT_STORE_CREDENTIALS secret (see docs/STORES.md).
+      - name: Publish to the Snap Store
+        if: inputs.release_id != '' && env.SNAPCRAFT_STORE_CREDENTIALS != ''
+        # a store review must not hold back the GitHub release
+        continue-on-error: true
+        uses: snapcore/action-publish@v1
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: stable
