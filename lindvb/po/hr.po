@@ -3907,3 +3907,30 @@ msgstr "SAT>IP poslužitelj upravlja LNB-om i DiSEqC sklopkom; DiSEqC priključa
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ovaj popis transpondera nema transpondera za ovaj prijamnik.\n"
+
+msgid "At start"
+msgstr "Pri pokretanju"
+
+msgid "Channel at start"
+msgstr "Kanal pri pokretanju"
+
+msgid "Last channel watched"
+msgstr "Posljednji gledani kanal"
+
+msgid "First channel of the current list"
+msgstr "Prvi kanal trenutnog popisa"
+
+msgid "A chosen channel"
+msgstr "Odabrani kanal"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Trenutni popis je popis kanala kakav ste ga ostavili: TV ili radio, filtar, grupa i redoslijed."
+
+msgid "Channel list"
+msgstr "Popis kanala"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Svi kanali ili jedan od vaših popisa omiljenih."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Ugađa se pri svakom pokretanju, bez obzira na to koji ste kanal posljednji gledali."

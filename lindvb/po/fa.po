@@ -3950,3 +3950,30 @@ msgstr "سرور SAT>IP، LNB و کلید DiSEqC را کنترل می‌کند؛
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "این فهرست ترنسپاندر هیچ ترنسپاندری برای این گیرنده ندارد.\n"
+
+msgid "At start"
+msgstr "هنگام شروع"
+
+msgid "Channel at start"
+msgstr "کانال هنگام شروع"
+
+msgid "Last channel watched"
+msgstr "آخرین کانال تماشا‌شده"
+
+msgid "First channel of the current list"
+msgstr "نخستین کانال فهرست کنونی"
+
+msgid "A chosen channel"
+msgstr "یک کانال انتخاب‌شده"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "فهرست کنونی همان فهرست کانال‌هاست به همان شکلی که آن را رها کردید: تلویزیون یا رادیو، فیلتر، گروه و ترتیب."
+
+msgid "Channel list"
+msgstr "فهرست کانال‌ها"
+
+msgid "All channels or one of your favourites lists."
+msgstr "همه کانال‌ها یا یکی از فهرست‌های علاقه‌مندی شما."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "در هر بار شروع تنظیم می‌شود، فارغ از اینکه آخرین بار کدام کانال را تماشا کرده‌اید."

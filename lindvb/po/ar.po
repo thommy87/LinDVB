@@ -3907,3 +3907,30 @@ msgstr "يتحكم خادم SAT>IP في LNB ومفتاح DiSEqC؛ ويختار �
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "لا تحتوي قائمة المرسلات المستجيبة هذه على مرسلات لهذا الموالف.\n"
+
+msgid "At start"
+msgstr "عند البدء"
+
+msgid "Channel at start"
+msgstr "القناة عند البدء"
+
+msgid "Last channel watched"
+msgstr "آخر قناة تمت مشاهدتها"
+
+msgid "First channel of the current list"
+msgstr "أول قناة في القائمة الحالية"
+
+msgid "A chosen channel"
+msgstr "قناة مختارة"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "القائمة الحالية هي قائمة القنوات كما تركتها: تلفاز أو راديو، والمرشح، والمجموعة، وترتيب الفرز."
+
+msgid "Channel list"
+msgstr "قائمة القنوات"
+
+msgid "All channels or one of your favourites lists."
+msgstr "كل القنوات أو إحدى قوائم المفضلة لديك."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "يتم ضبطها عند كل بدء، أيًا كانت القناة التي شاهدتها آخر مرة."

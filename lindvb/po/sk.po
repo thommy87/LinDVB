@@ -3907,3 +3907,30 @@ msgstr "Server SAT>IP ovláda LNB a prepínač DiSEqC; port DiSEqC volí jeho zd
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Tento zoznam transpondérov nemá pre tento tuner žiadne transpondéry.\n"
+
+msgid "At start"
+msgstr "Pri spustení"
+
+msgid "Channel at start"
+msgstr "Kanál pri spustení"
+
+msgid "Last channel watched"
+msgstr "Naposledy sledovaný kanál"
+
+msgid "First channel of the current list"
+msgstr "Prvý kanál aktuálneho zoznamu"
+
+msgid "A chosen channel"
+msgstr "Vybraný kanál"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Aktuálny zoznam je zoznam kanálov tak, ako ste ho opustili: TV alebo rádio, filter, skupina a zoradenie."
+
+msgid "Channel list"
+msgstr "Zoznam kanálov"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Všetky kanály alebo jeden z vašich zoznamov obľúbených."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Naladí sa pri každom spustení bez ohľadu na to, ktorý kanál ste sledovali naposledy."

@@ -83,6 +83,12 @@ DEFAULTS = {
     # Last tuned channel (TV or radio, tuned again at start) and the last
     # channel of each kind, tuned when switching between TV and radio.
     "last_channel": None,
+    # Channel tuned when LinDVB starts (Preferences › Channels): "last" (the
+    # last channel watched), "first" (the first channel of the channel list as
+    # it was left: TV or radio, filter, group and order) or "fixed" (the
+    # channel in startup_channel_key).
+    "startup_channel": "last",
+    "startup_channel_key": None,
     "last_tv_channel": None,
     "last_radio_channel": None,
     "mode": "tv",                    # channel list shows "tv" or "radio"

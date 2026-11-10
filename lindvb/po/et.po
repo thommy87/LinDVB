@@ -3907,3 +3907,30 @@ msgstr "SAT>IP-server juhib LNB-d ja DiSEqC-lülitit; DiSEqC-port valib selle al
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Selles transponderiloendis pole selle tuuneri jaoks transpondereid.\n"
+
+msgid "At start"
+msgstr "Käivitamisel"
+
+msgid "Channel at start"
+msgstr "Kanal käivitamisel"
+
+msgid "Last channel watched"
+msgstr "Viimati vaadatud kanal"
+
+msgid "First channel of the current list"
+msgstr "Praeguse loendi esimene kanal"
+
+msgid "A chosen channel"
+msgstr "Valitud kanal"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Praegune loend on kanalite loend sellisena, nagu selle jätsid: TV või raadio, filter, rühm ja järjestus."
+
+msgid "Channel list"
+msgstr "Kanalite loend"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Kõik kanalid või üks sinu lemmikute loenditest."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Häälestatakse igal käivitamisel, olenemata sellest, millist kanalit viimati vaatasid."

@@ -3907,3 +3907,30 @@ msgstr "SAT>IP serveris valdo LNB ir DiSEqC jungiklį; DiSEqC prievadas pasirenk
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šiame transponderių sąraše nėra transponderių šiam imtuvui.\n"
+
+msgid "At start"
+msgstr "Paleidžiant"
+
+msgid "Channel at start"
+msgstr "Kanalas paleidžiant"
+
+msgid "Last channel watched"
+msgstr "Paskutinis žiūrėtas kanalas"
+
+msgid "First channel of the current list"
+msgstr "Pirmasis dabartinio sąrašo kanalas"
+
+msgid "A chosen channel"
+msgstr "Pasirinktas kanalas"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Dabartinis sąrašas yra kanalų sąrašas toks, kokį jį palikote: TV ar radijas, filtras, grupė ir rikiavimas."
+
+msgid "Channel list"
+msgstr "Kanalų sąrašas"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Visi kanalai arba vienas iš jūsų mėgstamųjų sąrašų."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Įjungiamas kiekvieną kartą paleidus, nesvarbu, kurį kanalą žiūrėjote paskutinį."
