@@ -167,9 +167,10 @@ them.
   two channels side by side and exports text, JSON, CSV, a picture of the window or
   30 s of the stream
 * Channel editor and favourites
-* Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U, CSV and
-  `*.ini` channel lists; IPTV playlists also from a web address
-  (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
+* Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U (also
+  m3u_plus / m3u8_plus), CSV and `*.ini` channel lists; IPTV playlists also from a
+  web address or an Xtream Codes login (MPEG-TS or HLS, live channels only), each
+  list with its own name (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
 * Conditional access for your own encrypted channels: an external softcam
   (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
   module supplies the control words from your subscription card; CAM menu for

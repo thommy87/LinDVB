@@ -467,25 +467,56 @@ def parse_lamedb(text, root="Enigma2"):
 # M3U
 # --------------------------------------------------------------------------
 
+M3U_EXTENSIONS = (".m3u", ".m3u8", ".m3uplus", ".m3u8plus", ".m3u_plus", ".m3u8_plus")
+_M3U_ATTR = re.compile(r'([\w-]+)\s*=\s*"([^"]*)"')
+
+
+def _extinf(line):
+    """The attributes and the title of an ``#EXTINF`` line. The title is
+    what follows the first comma after the attributes, so attribute values
+    and titles may contain commas (m3u_plus lists)."""
+    body = line.split(":", 1)[1] if ":" in line else ""
+    attrs = {k.lower(): v for k, v in _M3U_ATTR.findall(body)}
+    last = None
+    for last in _M3U_ATTR.finditer(body):
+        pass
+    tail = body[last.end():] if last else body
+    title = tail.split(",", 1)[1].strip() if "," in tail else ""
+    return attrs, title
+
+
+def is_m3u(text, name=""):
+    """True when *text* (called *name*) is an M3U / m3u_plus channel list."""
+    if name.lower().endswith(M3U_EXTENSIONS):
+        return True
+    head = text.lstrip()
+    return head.startswith("#EXTM3U") or head.startswith("#EXTINF")
+
+
 def parse_m3u(text, root="IPTV"):
-    out, info = [], {}
+    out, info, group = [], {}, ""
     for line in text.splitlines():
-        line = line.strip()
-        if line.startswith("#EXTINF"):
-            attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', line))
-            info = {"name": line.rsplit(",", 1)[-1].strip(),
-                    "category": attrs.get("group-title", ""),
-                    "radio": attrs.get("radio", "") == "true",
+        line = line.strip().lstrip("\ufeff")
+        if line.upper().startswith("#EXTINF"):
+            attrs, title = _extinf(line)
+            info = {"name": title or attrs.get("tvg-name", "").strip(),
+                    "category": attrs.get("group-title", "").strip(),
+                    "radio": attrs.get("radio", "").lower() == "true",
                     "tvg_id": attrs.get("tvg-id", "").strip(),
                     "tvg_name": attrs.get("tvg-name", "").strip(),
                     "logo_url": attrs.get("tvg-logo", "").strip()}
+            group = ""
+        elif line.upper().startswith("#EXTGRP:"):
+            group = line.split(":", 1)[1].strip()
         elif line and not line.startswith("#"):
-            out.append(Channel(name=info.get("name") or line, delsys="iptv", url=line,
-                               root=root, category=info.get("category", ""),
+            # Kodi style "url|User-Agent=…": the player gets the plain address
+            url = line.split("|", 1)[0].strip() if "://" in line else line
+            out.append(Channel(name=info.get("name") or url, delsys="iptv", url=url,
+                               root=root, category=info.get("category") or group,
                                radio=info.get("radio", False),
                                tvg_id=info.get("tvg_id", ""), tvg_name=info.get("tvg_name", ""),
                                logo_url=info.get("logo_url", "")))
-            info = {}
+            info, group = {}, ""
     return out
 
 
@@ -613,7 +644,7 @@ def parse_dvbviewer_ini(text):
 
 
 def decode_text(raw: bytes):
-    for enc in ("utf-8", "cp1252"):
+    for enc in ("utf-8-sig", "cp1252"):
         try:
             return raw.decode(enc)
         except UnicodeDecodeError:
@@ -655,7 +686,7 @@ def import_data(raw, name, source=""):
         url = source if "://" in source else "file://" + urllib.parse.quote(
             os.path.abspath(source))
         return [Channel(name=stem or "Stream", delsys="iptv", url=url, root=stem or "IPTV")]
-    if low.endswith((".m3u", ".m3u8")) or text.lstrip().startswith("#EXTM3U"):
+    if is_m3u(text, low):
         return parse_m3u(text, root=stem)
     if low.endswith(".csv"):
         return parse_csv(text, root=stem)

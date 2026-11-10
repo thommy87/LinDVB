@@ -4018,3 +4018,12 @@ msgstr "{n} transzponder; ahol csak néhány van bejelölve, csak azokon keres."
 
 msgid "Own transponder list: {positions}."
 msgstr "Saját transzponderlista: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "A szerver által küldött streamformátum. Válassza a HLS-t, ha a csatornák MPEG-TS-ként nem játszhatók le."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Saját név adása a listának (ez a csatornacsoportjának neve is)"
+
+msgid "List renamed to {name}"
+msgstr "A lista új neve: {name}"

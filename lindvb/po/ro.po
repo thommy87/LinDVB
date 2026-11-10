@@ -4018,3 +4018,12 @@ msgstr "{n} transpondere; unde doar unele sunt bifate, se caută doar pe acestea
 
 msgid "Own transponder list: {positions}."
 msgstr "Listă proprie de transpondere: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Formatul fluxului livrat de server. Alegeți HLS dacă posturile nu redau ca MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Dați listei un nume propriu (și numele grupului ei de posturi)"
+
+msgid "List renamed to {name}"
+msgstr "Lista a fost redenumită în {name}"

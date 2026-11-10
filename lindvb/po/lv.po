@@ -4018,3 +4018,12 @@ msgstr "{n} transponderi; kur atzīmēti tikai daži, meklē tikai tajos."
 
 msgid "Own transponder list: {positions}."
 msgstr "Savs transponderu saraksts: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Straumes formāts, ko piegādā serveris. Izvēlieties HLS, ja kanāli netiek atskaņoti kā MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Piešķirt sarakstam savu nosaukumu (tas ir arī tā kanālu grupas nosaukums)"
+
+msgid "List renamed to {name}"
+msgstr "Saraksts pārdēvēts par {name}"

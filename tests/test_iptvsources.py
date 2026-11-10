@@ -55,3 +55,46 @@ def test_update_keeps_favourites_and_drops_vanished(monkeypatch):
     srcs = iptvsources.remember(srcs, "url", "http://l", "list", 3, now=9)
     assert srcs == [{"kind": "url", "location": "http://l", "root": "list", "count": 3, "date": 9}]
     assert iptvsources.forget(srcs, "http://l") == []
+
+
+PLUS = ('﻿#EXTM3U x-tvg-url="http://h/xmltv.php"\r\n'
+        '#EXTINF:-1 tvg-id="ard.de" tvg-name="DE: Das Erste, HD" tvg-logo="" '
+        'group-title="DE | Vollprogramm",DE: Das Erste, HD\r\n'
+        'http://h:80/u/p/1.ts|User-Agent=VLC\r\n'
+        '#EXTINF:-1 tvg-name="Film" group-title="Filme",Film\r\n'
+        'http://h:80/movie/u/p/2.mkv\r\n'
+        '#EXTINF:-1,Radio\r\n#EXTGRP:Radio\r\nhttp://h:80/u/p/3.ts\r\n').encode("utf-8")
+
+
+def test_m3u_plus_with_bom_from_get_php():
+    """Xtream m3u_plus lists come as "get.php" and often start with a BOM."""
+    url = iptvsources.xtream_url("h:80", "u", "p", "m3u8")
+    assert url.endswith("type=m3u_plus&output=m3u8")
+    chans = import_data(PLUS, "get.php", source=url)
+    assert [c.name for c in chans] == ["DE: Das Erste, HD", "Film", "Radio"]
+    assert chans[0].url == "http://h:80/u/p/1.ts" and chans[0].tvg_id == "ard.de"
+    assert chans[0].category == "DE | Vollprogramm" and chans[2].category == "Radio"
+    assert [c.name for c in iptvsources.live_only(chans)] == ["DE: Das Erste, HD", "Radio"]
+
+
+@pytest.mark.parametrize("name", ["tv.m3uplus", "tv.m3u8plus", "tv.m3u_plus", "TV.M3U8_PLUS"])
+def test_m3u_plus_file_names(name):
+    raw = b'#EXTINF:-1 group-title="A",One\nhttp://s/1\n'      # no #EXTM3U header
+    (one,) = import_data(raw, name)
+    assert one.name == "One" and one.root.lower() == "tv"
+
+
+def test_list_names_and_rename():
+    xt = iptvsources.xtream_url("tv.example:8080", "me", "pw")
+    assert iptvsources.default_name("xtream", xt, "get") == "tv.example:8080 (me)"
+    assert iptvsources.default_name("url", "https://cdn.example/live/index.m3u8",
+                                    "index") == "cdn.example"
+    assert iptvsources.default_name("url", "https://x/de.m3u", "de") == "de"
+    srcs = iptvsources.remember([], "url", "http://a/index.m3u", "a", 1, now=1)
+    assert iptvsources.unique_name(srcs, "a", "http://b/index.m3u") == "a 2"
+    assert iptvsources.unique_name(srcs, "a", "http://a/index.m3u") == "a"
+    db = ChannelDB.__new__(ChannelDB)
+    db.channels = []
+    db.merge([Channel(name="A", delsys="iptv", url="http://s/a", root="a")])
+    srcs, used = iptvsources.rename(db, srcs, "http://a/index.m3u", " My TV ")
+    assert used == "My TV" and srcs[0]["root"] == "My TV" and db.channels[0].root == "My TV"

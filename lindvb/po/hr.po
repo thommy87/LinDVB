@@ -4018,3 +4018,12 @@ msgstr "Transpondera: {n}; gdje su označeni samo neki, pretražuju se samo oni.
 
 msgid "Own transponder list: {positions}."
 msgstr "Vlastiti popis transpondera: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Format streama koji poslužitelj isporučuje. Odaberite HLS ako se kanali ne reproduciraju kao MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Dajte popisu vlastiti naziv (to je i naziv njegove grupe kanala)"
+
+msgid "List renamed to {name}"
+msgstr "Popis preimenovan u {name}"

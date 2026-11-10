@@ -4018,3 +4018,12 @@ msgstr "{n} αναμεταδότες· όπου είναι επιλεγμένο�
 
 msgid "Own transponder list: {positions}."
 msgstr "Δική σας λίστα αναμεταδοτών: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Η μορφή ροής που παρέχει ο διακομιστής. Επιλέξτε HLS αν τα κανάλια δεν παίζουν ως MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Δώστε στη λίστα δικό της όνομα (είναι και το όνομα της ομάδας καναλιών της)"
+
+msgid "List renamed to {name}"
+msgstr "Η λίστα μετονομάστηκε σε {name}"

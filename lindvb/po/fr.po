@@ -4018,3 +4018,12 @@ msgstr "{n} transpondeurs ; là où seuls certains sont cochés, seuls ceux-ci s
 
 msgid "Own transponder list: {positions}."
 msgstr "Liste de transpondeurs personnelle : {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Le format de flux fourni par le serveur. Choisissez HLS si les chaînes ne se lisent pas en MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Donner un nom propre à la liste (c’est aussi le nom de son groupe de chaînes)"
+
+msgid "List renamed to {name}"
+msgstr "Liste renommée en {name}"

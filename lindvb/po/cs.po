@@ -4018,3 +4018,12 @@ msgstr "Transpondérů: {n}; kde jsou zaškrtnuté jen některé, prohledají se
 
 msgid "Own transponder list: {positions}."
 msgstr "Vlastní seznam transpondérů: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Formát streamu, který server dodává. Zvolte HLS, pokud se kanály jako MPEG-TS nepřehrávají."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Pojmenujte seznam vlastním názvem (je to i název jeho skupiny kanálů)"
+
+msgid "List renamed to {name}"
+msgstr "Seznam přejmenován na {name}"
