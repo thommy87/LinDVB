@@ -257,6 +257,27 @@ DVBV5_MOD = {
 DVBV5_MOD_REV = {v: k for k, v in DVBV5_MOD.items() if k != "AUTO"}
 
 
+STARTUP_CHOICES = ("last", "first", "fixed", "none")
+
+
+def startup_channel(settings, db, first=None):
+    """The channel to tune when LinDVB starts, after the "startup_channel"
+    setting: the last channel watched, *first* (the first channel of the list
+    shown, given by the window), the chosen channel or none. None: tune
+    nothing (a black screen), also when the chosen channel is no longer in
+    the list."""
+    mode = settings.get("startup_channel", "last")
+    if mode == "none":
+        return None
+    if mode == "first":
+        return first
+    if mode == "fixed":
+        key = settings.get("startup_channel_key")
+        return db.by_key(key) if key else None
+    key = settings.get("last_channel")
+    return db.by_key(key) if key else None
+
+
 def _ints(s):
     return [int(x) for x in s.split() if x.isdigit()]
 

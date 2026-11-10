@@ -3907,3 +3907,33 @@ msgstr "O servidor SAT>IP controla o LNB e o comutador DiSEqC; a porta DiSEqC es
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Esta lista de transponders não tem transponders para este sintonizador.\n"
+
+msgid "At start"
+msgstr "Ao iniciar"
+
+msgid "Channel at start"
+msgstr "Canal ao iniciar"
+
+msgid "Last channel watched"
+msgstr "Último canal visto"
+
+msgid "First channel of the current list"
+msgstr "Primeiro canal da lista atual"
+
+msgid "A chosen channel"
+msgstr "Um canal escolhido"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "A lista atual é a lista de canais tal como a deixou: TV ou rádio, filtro, grupo e ordenação."
+
+msgid "Channel list"
+msgstr "Lista de canais"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Todos os canais ou uma das suas listas de favoritos."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Sintonizado em cada início, seja qual for o último canal que viu."
+
+msgid "No channel (black screen)"
+msgstr "Nenhum canal (ecrã preto)"

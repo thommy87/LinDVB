@@ -25,7 +25,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 
 | Feature | LinDVB |
 |---|---|
-| Live TV and radio playback | **Yes**: TV/Radio switch that tunes the last channel of each kind; the last channel is tuned again at start |
+| Live TV and radio playback | **Yes**: TV/Radio switch that tunes the last channel of each kind; at start the last channel, the first of the list, a chosen channel or none (Preferences › Channels) |
 | Visualisation for radio | **Yes**: glow waves, nebula particles, light ribbons, pulsar, supernova, occasus solis, aurora borealis, Goom HD, LED spectrum analyser, VU meters, oscilloscope, drawn with OpenGL at full resolution; the original GOOM via the bundled GStreamer add-on; more through plugins; picker button in the control bar (active for radio/audio only) |
 | Timeshift (pause live TV, jump, keep the buffer) | **Yes**: rolling TS buffer on disk, pause, ±10 s/±60 s, back to live, keep the buffer as a recording |
 | Radio text and now-playing info in the radio window | **Yes**: RDS RadioText from the MPEG audio of DVB radio, ICY titles of internet radio and audio file tags, shown with station logo, album cover (from the file or iTunes Search) and a clock over the visualisation; Preferences › OSD and Visualisations |

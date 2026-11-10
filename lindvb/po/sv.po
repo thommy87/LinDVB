@@ -3907,3 +3907,33 @@ msgstr "SAT>IP-servern styr LNB:n och DiSEqC-switchen; DiSEqC-porten väljer des
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Den här transponderlistan har inga transpondrar för den här mottagaren.\n"
+
+msgid "At start"
+msgstr "Vid start"
+
+msgid "Channel at start"
+msgstr "Kanal vid start"
+
+msgid "Last channel watched"
+msgstr "Senast sedda kanal"
+
+msgid "First channel of the current list"
+msgstr "Första kanalen i den aktuella listan"
+
+msgid "A chosen channel"
+msgstr "En vald kanal"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Den aktuella listan är kanallistan som du lämnade den: TV eller radio, filter, grupp och sortering."
+
+msgid "Channel list"
+msgstr "Kanallista"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Alla kanaler eller en av dina favoritlistor."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Ställs in vid varje start, oavsett vilken kanal du såg senast."
+
+msgid "No channel (black screen)"
+msgstr "Ingen kanal (svart skärm)"

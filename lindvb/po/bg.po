@@ -3907,3 +3907,33 @@ msgstr "SAT>IP сървърът управлява LNB и DiSEqC превклю�
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Този списък с транспондери няма транспондери за този тунер.\n"
+
+msgid "At start"
+msgstr "При стартиране"
+
+msgid "Channel at start"
+msgstr "Канал при стартиране"
+
+msgid "Last channel watched"
+msgstr "Последно гледан канал"
+
+msgid "First channel of the current list"
+msgstr "Първият канал от текущия списък"
+
+msgid "A chosen channel"
+msgstr "Избран канал"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Текущият списък е списъкът с канали, както сте го оставили: ТВ или радио, филтър, група и подредба."
+
+msgid "Channel list"
+msgstr "Списък с канали"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Всички канали или един от вашите списъци с любими."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Настройва се при всяко стартиране, независимо кой канал сте гледали последно."
+
+msgid "No channel (black screen)"
+msgstr "Без канал (черен екран)"

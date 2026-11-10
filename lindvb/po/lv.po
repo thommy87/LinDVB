@@ -3907,3 +3907,33 @@ msgstr "SAT>IP serveris vada LNB un DiSEqC slēdzi; DiSEqC ports izvēlas tā av
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šajā transponderu sarakstā nav transponderu šim uztvērējam.\n"
+
+msgid "At start"
+msgstr "Palaižot"
+
+msgid "Channel at start"
+msgstr "Kanāls palaižot"
+
+msgid "Last channel watched"
+msgstr "Pēdējais skatītais kanāls"
+
+msgid "First channel of the current list"
+msgstr "Pašreizējā saraksta pirmais kanāls"
+
+msgid "A chosen channel"
+msgstr "Izvēlēts kanāls"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Pašreizējais saraksts ir kanālu saraksts tāds, kādu to atstājāt: TV vai radio, filtrs, grupa un kārtošana."
+
+msgid "Channel list"
+msgstr "Kanālu saraksts"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Visi kanāli vai viens no jūsu izlases sarakstiem."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Tiek noskaņots katrā palaišanā neatkarīgi no tā, kuru kanālu skatījāties pēdējo."
+
+msgid "No channel (black screen)"
+msgstr "Bez kanāla (melns ekrāns)"

@@ -3907,3 +3907,33 @@ msgstr "A SAT>IP szerver vezérli az LNB-t és a DiSEqC kapcsolót; a DiSEqC por
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ebben a transzponderlistában nincs transzponder ehhez a tunerhez.\n"
+
+msgid "At start"
+msgstr "Indításkor"
+
+msgid "Channel at start"
+msgstr "Csatorna indításkor"
+
+msgid "Last channel watched"
+msgstr "Utoljára nézett csatorna"
+
+msgid "First channel of the current list"
+msgstr "Az aktuális lista első csatornája"
+
+msgid "A chosen channel"
+msgstr "Egy kiválasztott csatorna"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Az aktuális lista a csatornalista úgy, ahogy hagyta: TV vagy rádió, szűrő, csoport és rendezés."
+
+msgid "Channel list"
+msgstr "Csatornalista"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Az összes csatorna vagy az egyik kedvenclistája."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Minden indításkor ez lesz behangolva, bármelyik csatornát nézte utoljára."
+
+msgid "No channel (black screen)"
+msgstr "Nincs csatorna (fekete képernyő)"

@@ -274,6 +274,7 @@ class PrefsWindow(Gtk.Window):
         favs.connect("clicked", lambda *_: app.show_favourites())
         _row(g, _("Favourites lists"), favs,
              _("Create, rename, delete and reorder your favourites lists."))
+        self._build_startup(group(pg, _("At start")), s)
 
         # -- HbbTV
         pg = page("hbbtv", _("HbbTV"))
@@ -387,6 +388,73 @@ class PrefsWindow(Gtk.Window):
         self.connect("close-request", self._on_close)
         if page_name and self.stack.get_child_by_name(page_name) is not None:
             self.stack.set_visible_child_name(page_name)
+
+    # channel at start -------------------------------------------------------
+    def _build_startup(self, g, s):
+        """Which channel LinDVB tunes when it starts: the last one, the first of
+        the list or one chosen from any channel list."""
+        from ..channels import STARTUP_CHOICES
+        mode = s.get("startup_channel", "last")
+        self._start_drop = _row(g, _("Channel at start"), dropdown(
+            [_("Last channel watched"), _("First channel of the current list"),
+             _("A chosen channel"), _("No channel (black screen)")],
+            STARTUP_CHOICES.index(mode) if mode in STARTUP_CHOICES else 0),
+            _("The current list is the channel list as you left it: TV or radio, "
+              "filter, group and sort order."))
+        favs = self.app.favs
+        self._start_lists = [None] + list(range(len(favs)))
+        self._start_list_drop = _row(g, _("Channel list"), dropdown(
+            [_("All channels")] + ["★ " + n for n in favs.names()]),
+            _("All channels or one of your favourites lists."))
+        self._start_chan_drop = _row(g, _("Channel"), dropdown([]),
+                                     _("Tuned at every start, whichever channel you "
+                                       "watched last."))
+        self._start_chan_drop.set_enable_search(True)
+        self._start_chan_drop.set_expression(
+            Gtk.PropertyExpression.new(Gtk.StringObject.__gtype__, None, "string"))
+        self._start_chans = []
+        self._start_key = s.get("startup_channel_key")
+        self._start_list_drop.connect("notify::selected", lambda *_: self._fill_startup())
+        self._start_chan_drop.connect("notify::selected", lambda *_: self._startup_picked())
+        self._start_drop.connect("notify::selected", lambda *_: self._startup_sensitive())
+        self._fill_startup()
+        self._startup_sensitive()
+
+    def _fill_startup(self):
+        i = self._start_lists[self._start_list_drop.get_selected()]
+        favs = self.app.favs
+        chans = favs.channels(i) if i is not None and favs.valid(i) else self.app.db.channels
+
+        def label(c):
+            text = f"{c.number}  {c.name}" if c.number else c.name
+            return f"{text} ({c.root})" if c.root else text
+        self._start_chans = list(chans)
+        keys = [c.key for c in self._start_chans]
+        key = self._start_key
+        self._start_filling = True
+        self._start_chan_drop.set_model(Gtk.StringList.new([label(c) for c in chans]))
+        self._start_chan_drop.set_selected(keys.index(key) if key in keys
+                                           else Gtk.INVALID_LIST_POSITION)
+        self._start_filling = False
+
+    def _startup_picked(self):
+        if getattr(self, "_start_filling", False):
+            return
+        n = self._start_chan_drop.get_selected()
+        if 0 <= n < len(self._start_chans):
+            self._start_key = self._start_chans[n].key
+
+    def _startup_sensitive(self):
+        fixed = self._start_drop.get_selected() == 2
+        for w in (self._start_list_drop, self._start_chan_drop):
+            w.get_parent().set_sensitive(fixed)
+
+    def _startup_values(self):
+        from ..channels import STARTUP_CHOICES
+        mode = STARTUP_CHOICES[self._start_drop.get_selected()]
+        if mode == "fixed" and not self._start_key:
+            mode = "last"          # nothing chosen: keep the usual behaviour
+        return {"startup_channel": mode, "startup_channel_key": self._start_key}
 
     def _page_shown(self):
         # every page opens at its top, not where it was scrolled to before
@@ -944,6 +1012,7 @@ class PrefsWindow(Gtk.Window):
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
         s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
+        s.update(self._startup_values())
         vis_before = s.get("visualizer", "")
         if self._vis_drop is not None:
             chosen = self._vis_ids[self._vis_drop.get_selected()]

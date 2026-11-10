@@ -3907,3 +3907,33 @@ msgstr "Rialaíonn an freastalaí SAT>IP an LNB agus an lasc DiSEqC; roghnaíonn
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Níl aon trasfhreagróir don tiúnóir seo sa liosta trasfhreagróirí seo.\n"
+
+msgid "At start"
+msgstr "Ag an tosú"
+
+msgid "Channel at start"
+msgstr "Cainéal ag an tosú"
+
+msgid "Last channel watched"
+msgstr "An cainéal deireanach a breathnaíodh"
+
+msgid "First channel of the current list"
+msgstr "An chéad chainéal sa liosta reatha"
+
+msgid "A chosen channel"
+msgstr "Cainéal roghnaithe"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Is é an liosta reatha liosta na gcainéal mar a d'fhág tú é: teilifís nó raidió, scagaire, grúpa agus ord sórtála."
+
+msgid "Channel list"
+msgstr "Liosta cainéal"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Gach cainéal nó ceann de do liostaí ceanán."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Tiúnáiltear é ag gach tosú, is cuma cén cainéal ar bhreathnaigh tú air go deireanach."
+
+msgid "No channel (black screen)"
+msgstr "Gan chainéal (scáileán dubh)"

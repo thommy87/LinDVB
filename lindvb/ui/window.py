@@ -1631,6 +1631,13 @@ class MainWindow(Gtk.ApplicationWindow):
         except Exception:          # noqa: BLE001 - no GNOME settings
             pass
 
+    def first_in_list(self):
+        """The first channel of the channel list as shown (TV or radio, filter,
+        group and order), or None when the list is empty."""
+        if self.filtered.get_n_items():
+            return self.filtered.get_item(0).data
+        return None
+
     def _remember(self, c):
         """Last channel overall (tuned at start) and per kind (for the TV/Radio switch)."""
         self.settings["last_channel"] = c.key

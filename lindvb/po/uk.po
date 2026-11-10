@@ -3907,3 +3907,33 @@ msgstr "Сервер SAT>IP керує конвертером і перемик�
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "У цьому списку транспондерів немає транспондерів для цього тюнера.\n"
+
+msgid "At start"
+msgstr "Під час запуску"
+
+msgid "Channel at start"
+msgstr "Канал під час запуску"
+
+msgid "Last channel watched"
+msgstr "Останній переглянутий канал"
+
+msgid "First channel of the current list"
+msgstr "Перший канал поточного списку"
+
+msgid "A chosen channel"
+msgstr "Вибраний канал"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Поточний список — це список каналів у тому вигляді, в якому ви його залишили: ТБ або радіо, фільтр, група та сортування."
+
+msgid "Channel list"
+msgstr "Список каналів"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Усі канали або один із ваших списків обраного."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Вмикається під час кожного запуску, незалежно від того, який канал ви дивилися останнім."
+
+msgid "No channel (black screen)"
+msgstr "Без каналу (чорний екран)"
