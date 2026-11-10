@@ -28,8 +28,10 @@ them.
 
 | **Live TV** | **Timeshift** |
 | ![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png) | ![Timeshift](docs/screenshots/08-timeshift.png) |
+| --- | --- |
 | **File playback** | **Programme guide** |
 | ![File playback](docs/screenshots/02-file-playback.png) | ![EPG now/next](docs/screenshots/dark_EPG_Now.png) |
+| --- | --- |
 | **TV guide timeline** | **Timer recordings** |
 | ![TV guide](docs/screenshots/dark_EPG_all_stations.png) | ![Timers](docs/screenshots/05-timers.png) |
 | --- | --- |
