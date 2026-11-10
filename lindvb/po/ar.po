@@ -3907,3 +3907,12 @@ msgstr "يتحكم خادم SAT>IP في LNB ومفتاح DiSEqC؛ ويختار �
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "لا تحتوي قائمة المرسلات المستجيبة هذه على مرسلات لهذا الموالف.\n"
+
+msgid "Lock"
+msgstr "قفل"
+
+msgid "Search this satellite"
+msgstr "البحث في هذا القمر الصناعي"
+
+msgid "Tick the satellites to search."
+msgstr "حدّد الأقمار الصناعية المراد البحث فيها."

@@ -3907,3 +3907,12 @@ msgstr "Rialaíonn an freastalaí SAT>IP an LNB agus an lasc DiSEqC; roghnaíonn
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Níl aon trasfhreagróir don tiúnóir seo sa liosta trasfhreagróirí seo.\n"
+
+msgid "Lock"
+msgstr "Glas"
+
+msgid "Search this satellite"
+msgstr "Cuardaigh an satailít seo"
+
+msgid "Tick the satellites to search."
+msgstr "Cuir tic leis na satailítí le cuardach."

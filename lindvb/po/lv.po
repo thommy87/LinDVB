@@ -3907,3 +3907,12 @@ msgstr "SAT>IP serveris vada LNB un DiSEqC slēdzi; DiSEqC ports izvēlas tā av
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šajā transponderu sarakstā nav transponderu šim uztvērējam.\n"
+
+msgid "Lock"
+msgstr "Fiksēts"
+
+msgid "Search this satellite"
+msgstr "Meklēt šajā satelītā"
+
+msgid "Tick the satellites to search."
+msgstr "Atzīmējiet satelītus, kuros meklēt."

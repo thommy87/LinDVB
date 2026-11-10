@@ -9,7 +9,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 |---|---|
 | Satellite, cable, terrestrial, ATSC, DTMB, ISDB reception | **Yes**: GStreamer `dvbsrc` (Linux DVB API v5) with DVB-S/S2, DVB-C, DVB-T/T2, ATSC, ISDB-T, DTMB delivery systems |
 | Internet TV / radio streams (HLS, DASH, RTP multicast IPTV) | **Yes**: playbin for http(s)/HLS/DASH/RTSP; HLS with separate audio renditions on playbin3 (hlsdemux2 keeps them in sync by timestamp); `rtp://src@group:port` source-specific multicast mapped to `udpsrc` |
-| Channel search with transponder lists | **Yes**: runs `dvbv5-scan` (libdvbv5) with the built-in dtv-scan-tables (by country, region, provider or orbital position), blind scans, or own `.ini` and dvbv5 lists |
+| Channel search with transponder lists | **Yes**: runs `dvbv5-scan` (libdvbv5) with the built-in dtv-scan-tables (by country, region, provider or orbital position), blind scans, or own `.ini` and dvbv5 lists; satellites behind a DiSEqC switch searched one by one or together; lock, signal level and quality shown while searching |
 | Scan options: NIT search, update only, FTA only, update names, group by provider/frequency/letter | **Yes** (FTA filter applies to lists that carry CA info; dvbv5 output does not) |
 | LNB types and LOFs | **Yes**: LNB type for the scan, LOF1/LOF2/switch frequency in Preferences |
 | DiSEqC switches, positioner | **Partly**: committed DiSEqC ports 1–4; no motor/positioner control |

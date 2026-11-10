@@ -3907,3 +3907,12 @@ msgstr "Ο διακομιστής SAT>IP ελέγχει το LNB και τον �
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Αυτή η λίστα αναμεταδοτών δεν έχει αναμεταδότες για αυτόν τον δέκτη.\n"
+
+msgid "Lock"
+msgstr "Κλείδωμα"
+
+msgid "Search this satellite"
+msgstr "Αναζήτηση σε αυτόν τον δορυφόρο"
+
+msgid "Tick the satellites to search."
+msgstr "Επιλέξτε τους δορυφόρους για αναζήτηση."

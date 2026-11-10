@@ -3950,3 +3950,12 @@ msgstr "سرور SAT>IP، LNB و کلید DiSEqC را کنترل می‌کند؛
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "این فهرست ترنسپاندر هیچ ترنسپاندری برای این گیرنده ندارد.\n"
+
+msgid "Lock"
+msgstr "قفل"
+
+msgid "Search this satellite"
+msgstr "جستجو در این ماهواره"
+
+msgid "Tick the satellites to search."
+msgstr "ماهواره‌هایی را که باید جستجو شوند علامت بزنید."

@@ -3907,3 +3907,12 @@ msgstr "SAT>IP serveris valdo LNB ir DiSEqC jungiklį; DiSEqC prievadas pasirenk
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šiame transponderių sąraše nėra transponderių šiam imtuvui.\n"
+
+msgid "Lock"
+msgstr "Užrakinta"
+
+msgid "Search this satellite"
+msgstr "Ieškoti šiame palydove"
+
+msgid "Tick the satellites to search."
+msgstr "Pažymėkite palydovus, kuriuose ieškoti."

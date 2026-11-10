@@ -317,10 +317,12 @@ def test_scan_without_signal():
     s = FakeServer(lock=False)
     try:
         prof = {"host": "127.0.0.1", "port": s.port}
-        lines = []
+        lines, reports = [], []
         tps = [satip.ScanTp(Channel("C", delsys="dvb-c-a", frequency=330000, symbol_rate=6900))]
-        assert satip.scan(prof, tps, log=lines.append, lock_wait=0.5) == []
+        assert satip.scan(prof, tps, log=lines.append, lock_wait=0.5,
+                          on_status=reports.append) == []
         assert lines[-1] == "  no signal"
+        assert reports and reports[-1] == {"signal": 0, "lock": False, "snr": 0}
     finally:
         s.close()
 

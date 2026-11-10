@@ -3907,3 +3907,12 @@ msgstr "SAT>IP poslužitelj upravlja LNB-om i DiSEqC sklopkom; DiSEqC priključa
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ovaj popis transpondera nema transpondera za ovaj prijamnik.\n"
+
+msgid "Lock"
+msgstr "Zaključano"
+
+msgid "Search this satellite"
+msgstr "Pretraži ovaj satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Označite satelite za pretraživanje."

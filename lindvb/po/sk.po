@@ -3907,3 +3907,12 @@ msgstr "Server SAT>IP ovláda LNB a prepínač DiSEqC; port DiSEqC volí jeho zd
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Tento zoznam transpondérov nemá pre tento tuner žiadne transpondéry.\n"
+
+msgid "Lock"
+msgstr "Zámok"
+
+msgid "Search this satellite"
+msgstr "Prehľadať tento satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Začiarknite satelity, ktoré sa majú prehľadať."

@@ -3907,3 +3907,12 @@ msgstr "Сервер SAT>IP управляет конвертером и пер�
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "В этом списке транспондеров нет транспондеров для этого тюнера.\n"
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Искать на этом спутнике"
+
+msgid "Tick the satellites to search."
+msgstr "Отметьте спутники для поиска."

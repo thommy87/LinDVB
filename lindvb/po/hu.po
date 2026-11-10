@@ -3907,3 +3907,12 @@ msgstr "A SAT>IP szerver vezérli az LNB-t és a DiSEqC kapcsolót; a DiSEqC por
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ebben a transzponderlistában nincs transzponder ehhez a tunerhez.\n"
+
+msgid "Lock"
+msgstr "Szinkron"
+
+msgid "Search this satellite"
+msgstr "Keresés ezen a műholdon"
+
+msgid "Tick the satellites to search."
+msgstr "Jelölje be a keresendő műholdakat."

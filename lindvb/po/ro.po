@@ -3907,3 +3907,12 @@ msgstr "Serverul SAT>IP controlează LNB-ul și comutatorul DiSEqC; portul DiSEq
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Această listă de transpondere nu are transpondere pentru acest tuner.\n"
+
+msgid "Lock"
+msgstr "Blocat"
+
+msgid "Search this satellite"
+msgstr "Caută pe acest satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Bifați sateliții de căutat."

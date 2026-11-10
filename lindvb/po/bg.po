@@ -3907,3 +3907,12 @@ msgstr "SAT>IP сървърът управлява LNB и DiSEqC превклю�
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Този списък с транспондери няма транспондери за този тунер.\n"
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Търсене в този сателит"
+
+msgid "Tick the satellites to search."
+msgstr "Отметнете сателитите за търсене."

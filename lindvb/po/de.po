@@ -4309,3 +4309,12 @@ msgstr "Installieren Sie die GStreamer-Plugins base, bad und libav aus Ihrer Dis
 #: lindvb/compat.py
 msgid "GStreamer plugins are missing"
 msgstr "GStreamer-Plugins fehlen"
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Diesen Satelliten durchsuchen"
+
+msgid "Tick the satellites to search."
+msgstr "Haken Sie die Satelliten an, die durchsucht werden sollen."

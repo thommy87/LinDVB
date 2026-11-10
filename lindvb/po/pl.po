@@ -3907,3 +3907,12 @@ msgstr "Serwer SAT>IP steruje konwerterem LNB i przełącznikiem DiSEqC; port Di
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ta lista transponderów nie ma transponderów dla tego tunera.\n"
+
+msgid "Lock"
+msgstr "Synchronizacja"
+
+msgid "Search this satellite"
+msgstr "Przeszukaj tego satelitę"
+
+msgid "Tick the satellites to search."
+msgstr "Zaznacz satelity do przeszukania."

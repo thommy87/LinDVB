@@ -3907,3 +3907,12 @@ msgstr "Is-server SAT>IP jikkontrolla l-LNB u s-swiċċ DiSEqC; il-port DiSEqC j
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Din il-lista ta’ transponders m’għandhiex transponders għal dan it-tuner.\n"
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Fittex f’dan is-satellita"
+
+msgid "Tick the satellites to search."
+msgstr "Immarka s-satelliti biex tfittex."

@@ -3907,3 +3907,12 @@ msgstr "SAT>IP-serveren styrer LNB’en og DiSEqC-omskifteren; DiSEqC-porten væ
 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Denne transponderliste har ingen transpondere til denne tuner.\n"
+
+msgid "Lock"
+msgstr "Lås"
+
+msgid "Search this satellite"
+msgstr "Søg på denne satellit"
+
+msgid "Tick the satellites to search."
+msgstr "Sæt flueben ved de satellitter, der skal søges på."
