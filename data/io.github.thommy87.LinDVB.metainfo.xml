@@ -23,6 +23,18 @@
       <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/04-epg-tv-guide.png</image>
       <caption>TV guide</caption>
     </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/05-timers.png</image>
+      <caption>Timer and series recordings</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/06-channel-search.png</image>
+      <caption>Channel search</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/thommy87/LinDVB/main/docs/screenshots/08-timeshift.png</image>
+      <caption>Timeshift</caption>
+    </screenshot>
   </screenshots>
   <categories>
     <category>AudioVideo</category>
@@ -30,6 +42,22 @@
   </categories>
   <launchable type="desktop-id">io.github.thommy87.LinDVB.desktop</launchable>
   <url type="homepage">https://github.com/thommy87/LinDVB</url>
+  <url type="bugtracker">https://github.com/thommy87/LinDVB/issues</url>
+  <url type="vcs-browser">https://github.com/thommy87/LinDVB</url>
+  <provides>
+    <binary>lindvb</binary>
+  </provides>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  <branding>
+    <color type="primary" scheme_preference="light">#a9d3e6</color>
+    <color type="primary" scheme_preference="dark">#0f2d39</color>
+  </branding>
   <content_rating type="oars-1.1"/>
   <releases>
     <release version="0.13.0" date="2026-11-09"/>

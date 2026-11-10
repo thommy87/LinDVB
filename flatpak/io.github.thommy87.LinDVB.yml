@@ -1,6 +1,6 @@
 app-id: io.github.thommy87.LinDVB
 runtime: org.gnome.Platform
-runtime-version: '48'
+runtime-version: '51'
 sdk: org.gnome.Sdk
 command: lindvb
 rename-icon: lindvb
@@ -14,19 +14,9 @@ finish-args:
   - --filesystem=xdg-videos    # recordings (~/Videos/LinDVB)
   - --filesystem=xdg-pictures  # screenshots
   - --system-talk-name=org.freedesktop.login1   # standby/power off after recording
-  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/app/lib/ffmpeg/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:/usr/lib/aarch64-linux-gnu/gstreamer-1.0
-
-add-extensions:
-  # Full FFmpeg for MPEG-2, H.264, HEVC, AC-3 and AAC broadcast decoding
-  org.freedesktop.Platform.ffmpeg-full:
-    directory: lib/ffmpeg
-    version: '24.08'
-    add-ld-path: .
-    no-autodownload: false
-    autodelete: false
-
-cleanup-commands:
-  - mkdir -p /app/lib/ffmpeg
+  # The runtime's codecs-extra extension (installed with it) brings the full
+  # FFmpeg for MPEG-2, H.264, HEVC, AC-3 and AAC broadcast decoding.
+  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/codecs-extra/lib/gstreamer-1.0:/usr/lib/aarch64-linux-gnu/codecs-extra/lib/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:/usr/lib/aarch64-linux-gnu/gstreamer-1.0
 
 cleanup:
   - /include
@@ -106,6 +96,56 @@ modules:
         url: https://github.com/gjasny/v4l-utils.git
         tag: v4l-utils-1.28.1
         commit: fc15e229d9d337e46d730f00647821adbbd58548
+
+  # projectM visualisations for radio (as in the AppImage, packaging/build-projectm.sh):
+  # libprojectM 4.1, the gst-projectm plugin and a preset and texture collection
+  - name: libprojectM
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=ON
+      - -DENABLE_PLAYLIST=ON
+      - -DBUILD_TESTING=OFF
+      - -DENABLE_SDL_UI=OFF
+    cleanup:
+      - /lib/cmake
+    sources:
+      - type: git
+        url: https://github.com/projectM-visualizer/projectm.git
+        tag: v4.1.8
+        commit: 4967dc003e5206d7df3ff447287f7609c47d2343
+
+  - name: gst-projectm
+    buildsystem: simple
+    build-commands:
+      # projectm_set_frame_time() only exists in libprojectM 4.2; 4.1 times frames itself
+      - sed -i '/projectm_set_frame_time(/d' src/plugin.c
+      - cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${FLATPAK_DEST}
+        -DCMAKE_C_FLAGS="-include stdbool.h"
+      - cmake --build build
+      - install -Dm755 $(find build -name libgstprojectm.so) -t ${FLATPAK_DEST}/lib/gstreamer-1.0
+      - install -Dm644 LICENSE ${FLATPAK_DEST}/share/projectM/LICENSE.gst-projectm
+    sources:
+      - type: git
+        url: https://github.com/projectM-visualizer/gst-projectm.git
+        commit: 54c481c0b063065406cfeedffe0aecfa13a43f0e
+
+  - name: projectm-presets
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/share/projectM/presets ${FLATPAK_DEST}/share/projectM/textures
+      - tar -C presets --exclude=.git -cf - . | tar -C ${FLATPAK_DEST}/share/projectM/presets -xf -
+      - find textures -type f \( -iname '*.jpg' -o -iname '*.png' -o -iname '*.tga' -o -iname '*.bmp'
+        -o -iname '*.dds' \) -exec cp {} ${FLATPAK_DEST}/share/projectM/textures/ \;
+    sources:
+      - type: git
+        url: https://github.com/projectM-visualizer/presets-cream-of-the-crop.git
+        commit: 0180df21f5e0bd39b9060cc5de420ed2f1f9e509
+        dest: presets
+      - type: git
+        url: https://github.com/projectM-visualizer/presets-milkdrop-texture-pack.git
+        commit: 6368812f27bc747b517218fbf89d21d59afce4d9
+        dest: textures
 
   - name: lindvb
     buildsystem: simple

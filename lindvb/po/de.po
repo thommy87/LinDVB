@@ -4216,3 +4216,23 @@ msgstr "Nordmazedonien"
 
 msgid "South Africa"
 msgstr "Südafrika"
+
+#: lindvb/compat.py
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB findet diese GStreamer-Elemente nicht: {elements}. Live-TV oder einige Sender lassen sich dann eventuell nicht abspielen."
+
+#: lindvb/compat.py
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "Das {package} sollte sie mitbringen. Bitte melden Sie das als Fehler."
+
+#: lindvb/compat.py
+msgid "Install them with:"
+msgstr "Installieren mit:"
+
+#: lindvb/compat.py
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "Installieren Sie die GStreamer-Plugins base, bad und libav aus Ihrer Distribution."
+
+#: lindvb/compat.py
+msgid "GStreamer plugins are missing"
+msgstr "GStreamer-Plugins fehlen"
