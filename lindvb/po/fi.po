@@ -3847,3 +3847,12 @@ msgstr "Viritin on varattu (tallennus tai kanava-analyysi).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderilistat"
+
+msgid "Indonesia"
+msgstr "Indonesia"
+
+msgid "North Macedonia"
+msgstr "Pohjois-Makedonia"
+
+msgid "South Africa"
+msgstr "Etelä-Afrikka"

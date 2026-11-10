@@ -3847,3 +3847,12 @@ msgstr "O sintonizador está ocupado (gravação ou análise de canal).\n"
 
 msgid "Transponder lists"
 msgstr "Listas de transponders"
+
+msgid "Indonesia"
+msgstr "Indonésia"
+
+msgid "North Macedonia"
+msgstr "Macedónia do Norte"
+
+msgid "South Africa"
+msgstr "África do Sul"

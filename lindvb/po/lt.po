@@ -3847,3 +3847,12 @@ msgstr "Imtuvas užimtas (įrašymas arba kanalo analizė).\n"
 
 msgid "Transponder lists"
 msgstr "Siųstuvų sąrašai"
+
+msgid "Indonesia"
+msgstr "Indonezija"
+
+msgid "North Macedonia"
+msgstr "Šiaurės Makedonija"
+
+msgid "South Africa"
+msgstr "Pietų Afrika"

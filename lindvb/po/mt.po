@@ -3847,3 +3847,12 @@ msgstr "It-tuner huwa okkupat (reġistrazzjoni jew analiżi tal-kanal).\n"
 
 msgid "Transponder lists"
 msgstr "Listi ta' transponders"
+
+msgid "Indonesia"
+msgstr "l-Indoneżja"
+
+msgid "North Macedonia"
+msgstr "il-Maċedonja ta' Fuq"
+
+msgid "South Africa"
+msgstr "l-Afrika t'Isfel"

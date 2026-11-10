@@ -5308,3 +5308,12 @@ msgstr ""
 
 msgid "Transponder lists"
 msgstr ""
+
+msgid "Indonesia"
+msgstr ""
+
+msgid "North Macedonia"
+msgstr ""
+
+msgid "South Africa"
+msgstr ""

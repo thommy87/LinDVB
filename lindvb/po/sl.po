@@ -3847,3 +3847,12 @@ msgstr "Sprejemnik je zaseden (snemanje ali analiza kanala).\n"
 
 msgid "Transponder lists"
 msgstr "Seznami transponderjev"
+
+msgid "Indonesia"
+msgstr "Indonezija"
+
+msgid "North Macedonia"
+msgstr "Severna Makedonija"
+
+msgid "South Africa"
+msgstr "Južna Afrika"

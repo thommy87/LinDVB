@@ -3847,3 +3847,12 @@ msgstr "Uztvērējs ir aizņemts (ierakstīšana vai kanāla analīze).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderu saraksti"
+
+msgid "Indonesia"
+msgstr "Indonēzija"
+
+msgid "North Macedonia"
+msgstr "Ziemeļmaķedonija"
+
+msgid "South Africa"
+msgstr "Dienvidāfrika"

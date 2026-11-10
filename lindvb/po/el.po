@@ -3847,3 +3847,12 @@ msgstr "Ο δέκτης είναι απασχολημένος (εγγραφή ή
 
 msgid "Transponder lists"
 msgstr "Λίστες αναμεταδοτών"
+
+msgid "Indonesia"
+msgstr "Ινδονησία"
+
+msgid "North Macedonia"
+msgstr "Βόρεια Μακεδονία"
+
+msgid "South Africa"
+msgstr "Νότια Αφρική"

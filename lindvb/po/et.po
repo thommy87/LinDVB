@@ -3847,3 +3847,12 @@ msgstr "Tuuner on hõivatud (salvestus või kanali analüüs).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderite loendid"
+
+msgid "Indonesia"
+msgstr "Indoneesia"
+
+msgid "North Macedonia"
+msgstr "Põhja-Makedoonia"
+
+msgid "South Africa"
+msgstr "Lõuna-Aafrika Vabariik"

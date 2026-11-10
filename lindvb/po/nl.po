@@ -3847,3 +3847,12 @@ msgstr "De tuner is bezet (opname of kanaalanalyse).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderlijsten"
+
+msgid "Indonesia"
+msgstr "Indonesië"
+
+msgid "North Macedonia"
+msgstr "Noord-Macedonië"
+
+msgid "South Africa"
+msgstr "Zuid-Afrika"
