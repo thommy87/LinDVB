@@ -3946,3 +3946,75 @@ msgstr "Deze satelliet doorzoeken"
 
 msgid "Tick the satellites to search."
 msgstr "Vink de satellieten aan die doorzocht moeten worden."
+
+msgid "Horizontal"
+msgstr "Horizontaal"
+
+msgid "Vertical"
+msgstr "Verticaal"
+
+msgid "Left (circular)"
+msgstr "Links (circulair)"
+
+msgid "Right (circular)"
+msgstr "Rechts (circulair)"
+
+msgid "Auto"
+msgstr "Automatisch"
+
+msgid "Add…"
+msgstr "Toevoegen…"
+
+msgid "Tick all"
+msgstr "Alles aanvinken"
+
+msgid "Tick none"
+msgstr "Niets aanvinken"
+
+msgid "Back to the lists"
+msgstr "Terug naar de lijsten"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "De wijzigingen voor deze positie vergeten en weer de transponderlijsten gebruiken"
+
+msgid "The changed list is kept for this position."
+msgstr "De gewijzigde lijst wordt voor deze positie bewaard."
+
+msgid "This transponder is already in the list."
+msgstr "Deze transponder staat al in de lijst."
+
+msgid "Tick the transponders to search."
+msgstr "Vink de transponders aan die doorzocht moeten worden."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S gebruikt alleen QPSK; kies DVB-S2 voor 8PSK, 16APSK en 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Deze transponder is ongeldig."
+
+msgid "All {n} transponders are searched."
+msgstr "Alle {n} transponders worden doorzocht."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "{on} van {n} transponders worden doorzocht. Een zoekopdracht naar losse transponders voegt de door het netwerk aangekondigde (NIT) niet toe."
+
+msgid "Edit transponder"
+msgstr "Transponder bewerken"
+
+msgid "Add transponder"
+msgstr "Transponder toevoegen"
+
+msgid "Transponders of {position}"
+msgstr "Transponders van {position}"
+
+msgid "The list could not be saved."
+msgstr "De lijst kon niet worden opgeslagen."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponders: losse doorzoeken, toevoegen, wijzigen of verwijderen"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponders; waar maar enkele zijn aangevinkt, worden alleen die doorzocht."
+
+msgid "Own transponder list: {positions}."
+msgstr "Eigen transponderlijst: {positions}."

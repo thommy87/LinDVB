@@ -3946,3 +3946,75 @@ msgstr "Pesquisar neste satélite"
 
 msgid "Tick the satellites to search."
 msgstr "Marque os satélites a pesquisar."
+
+msgid "Horizontal"
+msgstr "Horizontal"
+
+msgid "Vertical"
+msgstr "Vertical"
+
+msgid "Left (circular)"
+msgstr "Esquerda (circular)"
+
+msgid "Right (circular)"
+msgstr "Direita (circular)"
+
+msgid "Auto"
+msgstr "Automático"
+
+msgid "Add…"
+msgstr "Adicionar…"
+
+msgid "Tick all"
+msgstr "Marcar todos"
+
+msgid "Tick none"
+msgstr "Desmarcar todos"
+
+msgid "Back to the lists"
+msgstr "Voltar às listas"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Esquecer as alterações desta posição e voltar a usar as listas de transponders"
+
+msgid "The changed list is kept for this position."
+msgstr "A lista alterada é guardada para esta posição."
+
+msgid "This transponder is already in the list."
+msgstr "Este transponder já está na lista."
+
+msgid "Tick the transponders to search."
+msgstr "Marque os transponders a pesquisar."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "O DVB-S só usa QPSK; escolha DVB-S2 para 8PSK, 16APSK e 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Este transponder não é válido."
+
+msgid "All {n} transponders are searched."
+msgstr "São pesquisados os {n} transponders."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "São pesquisados {on} de {n} transponders. Uma pesquisa de transponders isolados não acrescenta os anunciados pela rede (NIT)."
+
+msgid "Edit transponder"
+msgstr "Editar transponder"
+
+msgid "Add transponder"
+msgstr "Adicionar transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transponders de {position}"
+
+msgid "The list could not be saved."
+msgstr "Não foi possível guardar a lista."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponders: pesquisar alguns, adicionar, alterar ou remover"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponders; onde só alguns estão marcados, só esses são pesquisados."
+
+msgid "Own transponder list: {positions}."
+msgstr "Lista de transponders própria: {positions}."

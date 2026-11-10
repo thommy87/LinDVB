@@ -3946,3 +3946,75 @@ msgstr "Sök på den här satelliten"
 
 msgid "Tick the satellites to search."
 msgstr "Markera satelliterna som ska sökas."
+
+msgid "Horizontal"
+msgstr "Horisontell"
+
+msgid "Vertical"
+msgstr "Vertikal"
+
+msgid "Left (circular)"
+msgstr "Vänster (cirkulär)"
+
+msgid "Right (circular)"
+msgstr "Höger (cirkulär)"
+
+msgid "Auto"
+msgstr "Automatisk"
+
+msgid "Add…"
+msgstr "Lägg till…"
+
+msgid "Tick all"
+msgstr "Markera alla"
+
+msgid "Tick none"
+msgstr "Markera ingen"
+
+msgid "Back to the lists"
+msgstr "Tillbaka till listorna"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Glöm ändringarna för den här positionen och använd transponderlistorna igen"
+
+msgid "The changed list is kept for this position."
+msgstr "Den ändrade listan sparas för den här positionen."
+
+msgid "This transponder is already in the list."
+msgstr "Den här transpondern finns redan i listan."
+
+msgid "Tick the transponders to search."
+msgstr "Markera transpondrarna som ska sökas."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S använder bara QPSK; välj DVB-S2 för 8PSK, 16APSK och 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Den här transpondern är ogiltig."
+
+msgid "All {n} transponders are searched."
+msgstr "Alla {n} transpondrar söks."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "{on} av {n} transpondrar söks. En sökning på enstaka transpondrar lägger inte till dem som nätet annonserar (NIT)."
+
+msgid "Edit transponder"
+msgstr "Redigera transponder"
+
+msgid "Add transponder"
+msgstr "Lägg till transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transpondrar för {position}"
+
+msgid "The list could not be saved."
+msgstr "Listan kunde inte sparas."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transpondrar: sök på enstaka, lägg till, ändra eller ta bort"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transpondrar; där bara några är markerade söks bara de."
+
+msgid "Own transponder list: {positions}."
+msgstr "Egen transponderlista: {positions}."

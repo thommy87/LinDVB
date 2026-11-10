@@ -3946,3 +3946,75 @@ msgstr "Keresés ezen a műholdon"
 
 msgid "Tick the satellites to search."
 msgstr "Jelölje be a keresendő műholdakat."
+
+msgid "Horizontal"
+msgstr "Vízszintes"
+
+msgid "Vertical"
+msgstr "Függőleges"
+
+msgid "Left (circular)"
+msgstr "Bal (cirkuláris)"
+
+msgid "Right (circular)"
+msgstr "Jobb (cirkuláris)"
+
+msgid "Auto"
+msgstr "Automatikus"
+
+msgid "Add…"
+msgstr "Hozzáadás…"
+
+msgid "Tick all"
+msgstr "Mind bejelölése"
+
+msgid "Tick none"
+msgstr "Egyik sem"
+
+msgid "Back to the lists"
+msgstr "Vissza a listákhoz"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "A pozíció módosításainak elvetése és a transzponderlisták ismételt használata"
+
+msgid "The changed list is kept for this position."
+msgstr "A módosított lista megmarad ehhez a pozícióhoz."
+
+msgid "This transponder is already in the list."
+msgstr "Ez a transzponder már a listában van."
+
+msgid "Tick the transponders to search."
+msgstr "Jelölje be a keresendő transzpondereket."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "A DVB-S csak QPSK-t használ; 8PSK, 16APSK és 32APSK esetén válassza a DVB-S2-t."
+
+msgid "This transponder is not valid."
+msgstr "Ez a transzponder érvénytelen."
+
+msgid "All {n} transponders are searched."
+msgstr "Mind a(z) {n} transzponderen keres."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "{on} / {n} transzponderen keres. Egyes transzponderek keresése nem veszi fel a hálózat által bejelentetteket (NIT)."
+
+msgid "Edit transponder"
+msgstr "Transzponder szerkesztése"
+
+msgid "Add transponder"
+msgstr "Transzponder hozzáadása"
+
+msgid "Transponders of {position}"
+msgstr "{position} transzponderei"
+
+msgid "The list could not be saved."
+msgstr "A listát nem sikerült menteni."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transzponderek: egyesek keresése, hozzáadás, módosítás vagy eltávolítás"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transzponder; ahol csak néhány van bejelölve, csak azokon keres."
+
+msgid "Own transponder list: {positions}."
+msgstr "Saját transzponderlista: {positions}."

@@ -29,8 +29,8 @@ from pathlib import Path
 
 from .channels import DVBV5_DELSYS, DVBV5_MOD, decode_text
 from .i18n import N_, _
-from .scan import (BUNDLED_TABLES, SCAN_TABLE_DIRS, Transponder, TransponderList,
-                   parse_transponder_ini)
+from .scan import (BUNDLED_TABLES, POLARIZATIONS, SCAN_TABLE_DIRS, Transponder,
+                   TransponderList, parse_transponder_ini)
 
 BUNDLED_INDEX = BUNDLED_TABLES / "dtv-scan-tables.json.gz"
 
@@ -165,7 +165,7 @@ def _transponder_entry(t):
     e = {"DELIVERY_SYSTEM": DVBV5_DELSYS_REV.get(t.delsys, "DVBT")}
     if t.delsys in ("dvb-s", "dvb-s2"):
         e["FREQUENCY"] = str(t.frequency)
-        e["POLARIZATION"] = "HORIZONTAL" if t.polarity == "h" else "VERTICAL"
+        e["POLARIZATION"] = POLARIZATIONS.get(t.polarity, "VERTICAL")
     else:
         e["FREQUENCY"] = str(t.frequency * 1000)
     if t.symbol_rate:

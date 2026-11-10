@@ -3946,3 +3946,75 @@ msgstr "البحث في هذا القمر الصناعي"
 
 msgid "Tick the satellites to search."
 msgstr "حدّد الأقمار الصناعية المراد البحث فيها."
+
+msgid "Horizontal"
+msgstr "أفقي"
+
+msgid "Vertical"
+msgstr "عمودي"
+
+msgid "Left (circular)"
+msgstr "يسار (دائري)"
+
+msgid "Right (circular)"
+msgstr "يمين (دائري)"
+
+msgid "Auto"
+msgstr "تلقائي"
+
+msgid "Add…"
+msgstr "إضافة…"
+
+msgid "Tick all"
+msgstr "تحديد الكل"
+
+msgid "Tick none"
+msgstr "إلغاء تحديد الكل"
+
+msgid "Back to the lists"
+msgstr "العودة إلى القوائم"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "تجاهل تغييرات هذا الموقع واستخدام قوائم المرسلات المستجيبة مجددًا"
+
+msgid "The changed list is kept for this position."
+msgstr "تُحفظ القائمة المعدلة لهذا الموقع."
+
+msgid "This transponder is already in the list."
+msgstr "هذا المرسل المستجيب موجود في القائمة بالفعل."
+
+msgid "Tick the transponders to search."
+msgstr "حدّد المرسلات المستجيبة المراد البحث فيها."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "يستخدم DVB-S تعديل QPSK فقط؛ اختر DVB-S2 لـ 8PSK و16APSK و32APSK."
+
+msgid "This transponder is not valid."
+msgstr "هذا المرسل المستجيب غير صالح."
+
+msgid "All {n} transponders are searched."
+msgstr "يجري البحث في كل المرسلات المستجيبة ({n})."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "يجري البحث في {on} من {n} مرسلًا مستجيبًا. البحث في مرسلات مستجيبة منفردة لا يضيف ما تعلنه الشبكة (NIT)."
+
+msgid "Edit transponder"
+msgstr "تحرير المرسل المستجيب"
+
+msgid "Add transponder"
+msgstr "إضافة مرسل مستجيب"
+
+msgid "Transponders of {position}"
+msgstr "المرسلات المستجيبة للموقع {position}"
+
+msgid "The list could not be saved."
+msgstr "تعذّر حفظ القائمة."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "المرسلات المستجيبة: البحث في بعضها، أو إضافتها أو تغييرها أو إزالتها"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} مرسلًا مستجيبًا؛ حيث يُحدَّد بعضها فقط، يجري البحث فيها وحدها."
+
+msgid "Own transponder list: {positions}."
+msgstr "قائمة مرسلات مستجيبة خاصة: {positions}."

@@ -139,7 +139,8 @@ them.
   server. Channel search on the server too (satellite, cable, terrestrial)
 * Channel search with dvbv5-scan and the current transponder lists of dtv-scan-tables
   built in: the dialog shows what the tuner receives (satellite: orbital positions with a
-  DiSEqC port each and the LNB, ticked to search one satellite or several; cable: country
+  DiSEqC port each and the LNB, ticked to search one satellite or several, and a transponder
+  editor per position to search single transponders or add, change and remove them; cable: country
   and provider; terrestrial, ATSC, ISDB-T: country and region), a blind scan over all
   frequencies where there is no list, NIT search, LinDVB's own search on single-cable
   tuners, and lock, signal level and quality shown while searching

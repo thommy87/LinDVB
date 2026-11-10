@@ -9,6 +9,9 @@ from pathlib import Path
 
 from .channels import DVBV5_DELSYS_REV, DVBV5_MOD_REV, CABLE_QAM, decode_text, dvbviewer_sat_flags
 
+# dvbv5 names of the polarisations (circular: LEFT is sent as 18 V, RIGHT as 13 V)
+POLARIZATIONS = {"h": "HORIZONTAL", "v": "VERTICAL", "l": "LEFT", "r": "RIGHT"}
+
 FEC_CODES = {"12": "1/2", "23": "2/3", "34": "3/4", "35": "3/5", "45": "4/5",
              "56": "5/6", "78": "7/8", "89": "8/9", "910": "9/10"}
 
@@ -100,7 +103,7 @@ def write_scan_file(tplist, diseqc=-1):
         out.append(f"\tDELIVERY_SYSTEM = {DVBV5_DELSYS_REV.get(t.delsys, 'DVBT')}")
         if tplist.kind == "sat":
             out.append(f"\tFREQUENCY = {t.frequency}")
-            out.append(f"\tPOLARIZATION = {'HORIZONTAL' if t.polarity == 'h' else 'VERTICAL'}")
+            out.append(f"\tPOLARIZATION = {POLARIZATIONS.get(t.polarity, 'VERTICAL')}")
         else:
             out.append(f"\tFREQUENCY = {t.frequency * 1000}")
         if t.symbol_rate:

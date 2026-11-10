@@ -12,6 +12,7 @@ from pathlib import Path
 
 from gi.repository import Gio, GLib, Gtk
 
+from .. import satedit
 from .. import scanlists as sl
 from ..channels import parse_dvbv5
 from ..scan import (find_adapters, is_virtual_adapter, scan_command, signal_meter,
@@ -305,15 +306,54 @@ class ScanWindow(Gtk.Window):
         i = sl.find_position(self.position_choices, pos)
         dd_pos.set_selected(max(i, 0))
         rm = Gtk.Button(icon_name="list-remove-symbolic", tooltip_text=_("Remove"))
-        entry = (row, dd_port, dd_pos, rm, check)
+        tps = Gtk.Button(icon_name="view-list-symbolic",
+                         tooltip_text=_("Transponders: search single ones, add, change "
+                                        "or remove them"))
+        # "only": the transponders (lindvb.satedit.key) to search, None: all
+        entry = (row, dd_port, dd_pos, rm, check, {"only": None})
         rm.connect("clicked", lambda *_a: self._remove_sat_row(entry))
+        tps.connect("clicked", lambda *_a: self._open_transponders(entry))
         dd_port.connect("notify::selected", lambda *_a: self._show_info())
-        dd_pos.connect("notify::selected", lambda *_a: self._show_info())
-        for w in (check, dd_port, dd_pos, rm):
+        dd_pos.connect("notify::selected", lambda *_a: self._pos_changed(entry))
+        for w in (check, dd_port, dd_pos, tps, rm):
             row.append(w)
         self.sat_box.append(row)
         self.sat_rows.append(entry)
         self._update_sat_rows()
+
+    def _pos_changed(self, entry):
+        entry[5]["only"] = None          # a choice of transponders belongs to its position
+        self._show_info()
+
+    def _row_choice(self, entry):
+        i = entry[2].get_selected()
+        return self.position_choices[i] if i < len(self.position_choices) else None
+
+    def _row_list(self, entry, systems=None):
+        """The transponders the row searches: the position's (edited) list, or the ticked ones."""
+        choice = self._row_choice(entry)
+        if choice is None:
+            return None
+        tpl = satedit.satellite_list(choice, self.systems if systems is None else systems)
+        only = entry[5]["only"]
+        return satedit.only(tpl, only) if only is not None else tpl
+
+    def _open_transponders(self, entry):
+        from .transponders import TransponderWindow
+        choice = self._row_choice(entry)
+        if choice is None or choice.position is None:
+            return
+        # the whole list, also the DVB-S2 transponders a DVB-S tuner leaves out
+        whole = satedit.satellite_list(choice, ())
+
+        def done(edited, only):
+            if edited == "reset":
+                satedit.reset(choice.position)
+                only = None
+            entry[5]["only"] = only
+            self._show_info()
+        TransponderWindow(self, choice.position, sl.format_position(choice.position), whole,
+                          entry[5]["only"], satedit.is_edited(choice.position), done).present()
 
     def _remove_sat_row(self, entry, keep_one=True):
         if keep_one and len(self.sat_rows) <= 1:
@@ -378,16 +418,17 @@ class ScanWindow(Gtk.Window):
         """(position choice, DiSEqC port) of every satellite row, or of the ticked ones."""
         jobs = []
         single = len(self.sat_rows) == 1
-        for _row, dd_port, dd_pos, _rm, check in self.sat_rows:
+        for entry in self.sat_rows:
+            _row, dd_port, dd_pos, _rm, check, _state = entry
             if searched_only and not (single or check.get_active()):
                 continue
             i = dd_pos.get_selected()
             if i < len(self.position_choices):
-                jobs.append((self.position_choices[i], dd_port.get_selected() - 1))
+                jobs.append((self.position_choices[i], dd_port.get_selected() - 1, entry))
         return jobs
 
     def _ports_clash(self):
-        ports = [p for _c, p in self._sat_jobs()]
+        ports = [p for _c, p, _e in self._sat_jobs()]
         return len(ports) > 1 and (-1 in ports or len(set(ports)) < len(ports))
 
     def _region_choice(self):
@@ -403,9 +444,18 @@ class ScanWindow(Gtk.Window):
             elif not jobs and self.sat_rows:
                 text = _("Tick the satellites to search.")
             elif jobs:
-                n = sum(len(sl.satellite_list(c, self.systems).transponders) for c, _p in jobs)
-                text = _("{n} transponders from the lists of these positions; "
-                         "the search adds the ones the network announces (NIT).").format(n=n)
+                n = sum(len(self._row_list(e).transponders) for _c, _p, e in jobs)
+                if any(e[5]["only"] is not None for _c, _p, e in jobs):
+                    text = _("{n} transponders; where only some are ticked, just those "
+                             "are searched.").format(n=n)
+                else:
+                    text = _("{n} transponders from the lists of these positions; "
+                             "the search adds the ones the network announces (NIT).").format(n=n)
+                edited = [sl.format_position(c.position) for c, _p, _e in jobs
+                          if satedit.is_edited(c.position)]
+                if edited:
+                    text += " " + _("Own transponder list: {positions}.").format(
+                        positions=", ".join(edited))
         else:
             c = self._region_choice()
             if c is not None:
@@ -436,7 +486,7 @@ class ScanWindow(Gtk.Window):
             return
         if self.family == sl.SAT:
             mem[sl.SAT] = []
-            for _row, dd_port, dd_pos, _rm, check in self.sat_rows:
+            for _row, dd_port, dd_pos, _rm, check, _state in self.sat_rows:
                 i = dd_pos.get_selected()
                 if i < len(self.position_choices):
                     mem[sl.SAT].append([dd_port.get_selected() - 1,
@@ -502,16 +552,18 @@ class ScanWindow(Gtk.Window):
             if not sat_jobs:
                 self.log_line(_("Tick the satellites to search.") + "\n")
                 return
-            for n, (choice, port) in enumerate(sat_jobs):
-                tpl = sl.satellite_list(choice, self.systems)
+            for n, (choice, port, entry) in enumerate(sat_jobs):
+                tpl = self._row_list(entry)
                 if not tpl.transponders:
                     continue
                 path = tmp / f"initial-{n}.conf"
                 path.write_text(write_scan_file(tpl))
                 target = root if root and len(sat_jobs) == 1 else \
                     (f"{root} {tpl.name}".strip() if root else tpl.name)
+                # single transponders: only these, not the ones the network announces
                 jobs.append({"file": path, "total": len(tpl.transponders), "diseqc": port,
-                             "root": target, "tpl": tpl, "out": tmp / f"channels-{n}.conf"})
+                             "root": target, "tpl": tpl, "out": tmp / f"channels-{n}.conf",
+                             "nit": self.nit.get_active() and entry[5]["only"] is None})
         else:
             choice = self._region_choice()
             entries = sl.scan_entries(choice, self.systems) if choice else []
@@ -522,7 +574,7 @@ class ScanWindow(Gtk.Window):
             path.write_text(sl.write_entries(entries))
             jobs.append({"file": path, "total": len(entries), "diseqc": -1,
                          "root": root or self._default_target(), "tpl": None,
-                         "out": tmp / "channels.conf"})
+                         "out": tmp / "channels.conf", "nit": self.nit.get_active()})
         if not jobs:
             self.log_line(_("This transponder list has no satellite transponders.\n"))
             return
@@ -553,7 +605,7 @@ class ScanWindow(Gtk.Window):
         lnb = LNB_TYPES[self.lnb.get_selected()][1] if self.family == sl.SAT else ""
         try:
             cmd = scan_command(a, f, str(job["file"]), str(job["out"]), lnb, job["diseqc"],
-                               self.nit.get_active())
+                               job["nit"])
         except FileNotFoundError as e:
             self.log_line(f"{e}\n")
             self.jobs = []

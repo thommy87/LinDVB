@@ -3946,3 +3946,75 @@ msgstr "Ieškoti šiame palydove"
 
 msgid "Tick the satellites to search."
 msgstr "Pažymėkite palydovus, kuriuose ieškoti."
+
+msgid "Horizontal"
+msgstr "Horizontali"
+
+msgid "Vertical"
+msgstr "Vertikali"
+
+msgid "Left (circular)"
+msgstr "Kairinė (apskritiminė)"
+
+msgid "Right (circular)"
+msgstr "Dešininė (apskritiminė)"
+
+msgid "Auto"
+msgstr "Automatiškai"
+
+msgid "Add…"
+msgstr "Pridėti…"
+
+msgid "Tick all"
+msgstr "Pažymėti visus"
+
+msgid "Tick none"
+msgstr "Nepažymėti nė vieno"
+
+msgid "Back to the lists"
+msgstr "Atgal į sąrašus"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Pamiršti šios pozicijos pakeitimus ir vėl naudoti siųstuvų sąrašus"
+
+msgid "The changed list is kept for this position."
+msgstr "Pakeistas sąrašas išsaugomas šiai pozicijai."
+
+msgid "This transponder is already in the list."
+msgstr "Šis siųstuvas jau yra sąraše."
+
+msgid "Tick the transponders to search."
+msgstr "Pažymėkite siųstuvus, kuriuose ieškoti."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S naudoja tik QPSK; 8PSK, 16APSK ir 32APSK pasirinkite DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "Šis siųstuvas netinkamas."
+
+msgid "All {n} transponders are searched."
+msgstr "Ieškoma visuose {n} siųstuvuose."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Ieškoma {on} iš {n} siųstuvų. Paieška atskiruose siųstuvuose neprideda tinklo skelbiamų (NIT)."
+
+msgid "Edit transponder"
+msgstr "Redaguoti siųstuvą"
+
+msgid "Add transponder"
+msgstr "Pridėti siųstuvą"
+
+msgid "Transponders of {position}"
+msgstr "Pozicijos {position} siųstuvai"
+
+msgid "The list could not be saved."
+msgstr "Sąrašo išsaugoti nepavyko."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Siųstuvai: ieškoti atskiruose, pridėti, keisti arba pašalinti"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "Siųstuvų: {n}; kur pažymėti tik kai kurie, ieškoma tik juose."
+
+msgid "Own transponder list: {positions}."
+msgstr "Savas siųstuvų sąrašas: {positions}."

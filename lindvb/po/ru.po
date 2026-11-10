@@ -3946,3 +3946,75 @@ msgstr "Искать на этом спутнике"
 
 msgid "Tick the satellites to search."
 msgstr "Отметьте спутники для поиска."
+
+msgid "Horizontal"
+msgstr "Горизонтальная"
+
+msgid "Vertical"
+msgstr "Вертикальная"
+
+msgid "Left (circular)"
+msgstr "Левая (круговая)"
+
+msgid "Right (circular)"
+msgstr "Правая (круговая)"
+
+msgid "Auto"
+msgstr "Авто"
+
+msgid "Add…"
+msgstr "Добавить…"
+
+msgid "Tick all"
+msgstr "Отметить все"
+
+msgid "Tick none"
+msgstr "Снять все"
+
+msgid "Back to the lists"
+msgstr "Вернуться к спискам"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Забыть изменения этой позиции и снова использовать списки транспондеров"
+
+msgid "The changed list is kept for this position."
+msgstr "Изменённый список сохраняется для этой позиции."
+
+msgid "This transponder is already in the list."
+msgstr "Этот транспондер уже есть в списке."
+
+msgid "Tick the transponders to search."
+msgstr "Отметьте транспондеры для поиска."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S использует только QPSK; для 8PSK, 16APSK и 32APSK выберите DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "Этот транспондер недопустим."
+
+msgid "All {n} transponders are searched."
+msgstr "Поиск по всем транспондерам ({n})."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Поиск по {on} из {n} транспондеров. Поиск по отдельным транспондерам не добавляет объявленные сетью (NIT)."
+
+msgid "Edit transponder"
+msgstr "Изменить транспондер"
+
+msgid "Add transponder"
+msgstr "Добавить транспондер"
+
+msgid "Transponders of {position}"
+msgstr "Транспондеры позиции {position}"
+
+msgid "The list could not be saved."
+msgstr "Не удалось сохранить список."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Транспондеры: искать по отдельным, добавить, изменить или удалить"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "Транспондеров: {n}; где отмечены лишь некоторые, ищется только по ним."
+
+msgid "Own transponder list: {positions}."
+msgstr "Собственный список транспондеров: {positions}."

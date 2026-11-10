@@ -3946,3 +3946,75 @@ msgstr "Hae tästä satelliitista"
 
 msgid "Tick the satellites to search."
 msgstr "Valitse satelliitit, joista haetaan."
+
+msgid "Horizontal"
+msgstr "Vaaka"
+
+msgid "Vertical"
+msgstr "Pysty"
+
+msgid "Left (circular)"
+msgstr "Vasen (ympyrä)"
+
+msgid "Right (circular)"
+msgstr "Oikea (ympyrä)"
+
+msgid "Auto"
+msgstr "Automaattinen"
+
+msgid "Add…"
+msgstr "Lisää…"
+
+msgid "Tick all"
+msgstr "Valitse kaikki"
+
+msgid "Tick none"
+msgstr "Poista valinnat"
+
+msgid "Back to the lists"
+msgstr "Takaisin listoihin"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Unohda tämän sijainnin muutokset ja käytä taas transponderilistoja"
+
+msgid "The changed list is kept for this position."
+msgstr "Muutettu lista säilytetään tälle sijainnille."
+
+msgid "This transponder is already in the list."
+msgstr "Tämä transponderi on jo listassa."
+
+msgid "Tick the transponders to search."
+msgstr "Valitse haettavat transponderit."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S käyttää vain QPSK:ta; valitse DVB-S2 8PSK:lle, 16APSK:lle ja 32APSK:lle."
+
+msgid "This transponder is not valid."
+msgstr "Tämä transponderi ei kelpaa."
+
+msgid "All {n} transponders are searched."
+msgstr "Kaikista {n} transponderista haetaan."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Haetaan {on}/{n} transponderista. Yksittäisten transponderien haku ei lisää verkon ilmoittamia (NIT)."
+
+msgid "Edit transponder"
+msgstr "Muokkaa transponderia"
+
+msgid "Add transponder"
+msgstr "Lisää transponderi"
+
+msgid "Transponders of {position}"
+msgstr "Sijainnin {position} transponderit"
+
+msgid "The list could not be saved."
+msgstr "Listaa ei voitu tallentaa."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponderit: hae yksittäisistä, lisää, muuta tai poista"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponderia; missä vain osa on valittu, haetaan vain niistä."
+
+msgid "Own transponder list: {positions}."
+msgstr "Oma transponderilista: {positions}."

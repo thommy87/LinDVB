@@ -3946,3 +3946,75 @@ msgstr "Cuardaigh an satailít seo"
 
 msgid "Tick the satellites to search."
 msgstr "Cuir tic leis na satailítí le cuardach."
+
+msgid "Horizontal"
+msgstr "Cothrománach"
+
+msgid "Vertical"
+msgstr "Ingearach"
+
+msgid "Left (circular)"
+msgstr "Clé (ciorclach)"
+
+msgid "Right (circular)"
+msgstr "Deas (ciorclach)"
+
+msgid "Auto"
+msgstr "Uathoibríoch"
+
+msgid "Add…"
+msgstr "Cuir leis…"
+
+msgid "Tick all"
+msgstr "Cuir tic le gach ceann"
+
+msgid "Tick none"
+msgstr "Ná cuir tic le haon cheann"
+
+msgid "Back to the lists"
+msgstr "Ar ais chuig na liostaí"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Déan dearmad ar na hathruithe don suíomh seo agus úsáid liostaí na dtrasfhreagróirí arís"
+
+msgid "The changed list is kept for this position."
+msgstr "Coinnítear an liosta athraithe don suíomh seo."
+
+msgid "This transponder is already in the list."
+msgstr "Tá an trasfhreagróir seo sa liosta cheana."
+
+msgid "Tick the transponders to search."
+msgstr "Cuir tic leis na trasfhreagróirí le cuardach."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "Ní úsáideann DVB-S ach QPSK; roghnaigh DVB-S2 do 8PSK, 16APSK agus 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Níl an trasfhreagróir seo bailí."
+
+msgid "All {n} transponders are searched."
+msgstr "Cuardaítear na {n} trasfhreagróir go léir."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Cuardaítear {on} as {n} trasfhreagróir. Ní chuireann cuardach trasfhreagróirí aonair leis na cinn a fhógraíonn an líonra (NIT)."
+
+msgid "Edit transponder"
+msgstr "Cuir an trasfhreagróir in eagar"
+
+msgid "Add transponder"
+msgstr "Cuir trasfhreagróir leis"
+
+msgid "Transponders of {position}"
+msgstr "Trasfhreagróirí {position}"
+
+msgid "The list could not be saved."
+msgstr "Níorbh fhéidir an liosta a shábháil."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Trasfhreagróirí: cuardaigh cinn aonair, cuir leo, athraigh nó bain iad"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} trasfhreagróir; nuair nach bhfuil tic ach le roinnt, ní chuardaítear ach iad sin."
+
+msgid "Own transponder list: {positions}."
+msgstr "Do liosta trasfhreagróirí féin: {positions}."

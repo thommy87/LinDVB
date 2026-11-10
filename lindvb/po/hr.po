@@ -3946,3 +3946,75 @@ msgstr "Pretraži ovaj satelit"
 
 msgid "Tick the satellites to search."
 msgstr "Označite satelite za pretraživanje."
+
+msgid "Horizontal"
+msgstr "Vodoravna"
+
+msgid "Vertical"
+msgstr "Okomita"
+
+msgid "Left (circular)"
+msgstr "Lijeva (kružna)"
+
+msgid "Right (circular)"
+msgstr "Desna (kružna)"
+
+msgid "Auto"
+msgstr "Automatski"
+
+msgid "Add…"
+msgstr "Dodaj…"
+
+msgid "Tick all"
+msgstr "Označi sve"
+
+msgid "Tick none"
+msgstr "Ne označi ništa"
+
+msgid "Back to the lists"
+msgstr "Natrag na popise"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Zaboravi promjene ovog položaja i ponovno koristi popise transpondera"
+
+msgid "The changed list is kept for this position."
+msgstr "Promijenjeni popis zadržava se za ovaj položaj."
+
+msgid "This transponder is already in the list."
+msgstr "Ovaj transponder već je na popisu."
+
+msgid "Tick the transponders to search."
+msgstr "Označite transpondere za pretraživanje."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S koristi samo QPSK; za 8PSK, 16APSK i 32APSK odaberite DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "Ovaj transponder nije valjan."
+
+msgid "All {n} transponders are searched."
+msgstr "Pretražuju se svi transponderi ({n})."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Pretražuje se {on} od {n} transpondera. Pretraživanje pojedinih transpondera ne dodaje one koje mreža najavljuje (NIT)."
+
+msgid "Edit transponder"
+msgstr "Uredi transponder"
+
+msgid "Add transponder"
+msgstr "Dodaj transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transponderi položaja {position}"
+
+msgid "The list could not be saved."
+msgstr "Popis nije moguće spremiti."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponderi: pretraži pojedine, dodaj, promijeni ili ukloni"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "Transpondera: {n}; gdje su označeni samo neki, pretražuju se samo oni."
+
+msgid "Own transponder list: {positions}."
+msgstr "Vlastiti popis transpondera: {positions}."

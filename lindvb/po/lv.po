@@ -3946,3 +3946,75 @@ msgstr "Meklēt šajā satelītā"
 
 msgid "Tick the satellites to search."
 msgstr "Atzīmējiet satelītus, kuros meklēt."
+
+msgid "Horizontal"
+msgstr "Horizontāla"
+
+msgid "Vertical"
+msgstr "Vertikāla"
+
+msgid "Left (circular)"
+msgstr "Kreisā (apļveida)"
+
+msgid "Right (circular)"
+msgstr "Labā (apļveida)"
+
+msgid "Auto"
+msgstr "Automātiski"
+
+msgid "Add…"
+msgstr "Pievienot…"
+
+msgid "Tick all"
+msgstr "Atzīmēt visus"
+
+msgid "Tick none"
+msgstr "Neatzīmēt nevienu"
+
+msgid "Back to the lists"
+msgstr "Atpakaļ pie sarakstiem"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Aizmirst šīs pozīcijas izmaiņas un atkal izmantot transponderu sarakstus"
+
+msgid "The changed list is kept for this position."
+msgstr "Mainītais saraksts tiek saglabāts šai pozīcijai."
+
+msgid "This transponder is already in the list."
+msgstr "Šis transponders jau ir sarakstā."
+
+msgid "Tick the transponders to search."
+msgstr "Atzīmējiet transponderus, kuros meklēt."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S izmanto tikai QPSK; 8PSK, 16APSK un 32APSK izvēlieties DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "Šis transponders nav derīgs."
+
+msgid "All {n} transponders are searched."
+msgstr "Meklē visos {n} transponderos."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Meklē {on} no {n} transponderiem. Meklēšana atsevišķos transponderos nepievieno tīkla paziņotos (NIT)."
+
+msgid "Edit transponder"
+msgstr "Rediģēt transponderu"
+
+msgid "Add transponder"
+msgstr "Pievienot transponderu"
+
+msgid "Transponders of {position}"
+msgstr "Pozīcijas {position} transponderi"
+
+msgid "The list could not be saved."
+msgstr "Sarakstu neizdevās saglabāt."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponderi: meklēt atsevišķos, pievienot, mainīt vai noņemt"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponderi; kur atzīmēti tikai daži, meklē tikai tajos."
+
+msgid "Own transponder list: {positions}."
+msgstr "Savs transponderu saraksts: {positions}."
