@@ -4027,3 +4027,60 @@ msgstr "Geef de lijst een eigen naam (ook de naam van haar zendergroep)"
 
 msgid "List renamed to {name}"
 msgstr "Lijst hernoemd naar {name}"
+
+msgid "Add Channels…"
+msgstr "Zenders toevoegen…"
+
+msgid "Add channels"
+msgstr "Zenders toevoegen"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Eén frequentie met de hand instellen en de zenders ervan vergelijken met de zenderlijst: nieuwe toevoegen, gewijzigde bijwerken, oude verwijderen."
+
+msgid "Unchanged"
+msgstr "Ongewijzigd"
+
+msgid "Changed"
+msgstr "Gewijzigd"
+
+msgid "No longer broadcast"
+msgstr "Niet meer uitgezonden"
+
+msgid "Bandwidth"
+msgstr "Bandbreedte"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "Add Channels"
+msgstr "Zenders toevoegen"
+
+msgid "Tune Channel"
+msgstr "Zender instellen"
+
+msgid "No tuner found."
+msgstr "Geen tuner gevonden."
+
+msgid "Log"
+msgstr "Logboek"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "De PLP van een DVB-T2-multiplex die er meerdere uitzendt; bij -1 kiest de tuner zelf"
+
+msgid "Enter by hand"
+msgstr "Met de hand invoeren"
+
+msgid "Tuning…"
+msgstr "Bezig met afstemmen…"
+
+msgid "The tuner could not be used."
+msgstr "De tuner kon niet worden gebruikt."
+
+msgid "No channels found on this frequency."
+msgstr "Geen zenders gevonden op deze frequentie."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} ongewijzigd, {changed} gewijzigd, {new} nieuw, {gone} niet meer uitgezonden."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Opgeslagen: {added} toegevoegd, {updated} bijgewerkt, {removed} verwijderd."

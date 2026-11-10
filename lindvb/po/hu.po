@@ -4027,3 +4027,60 @@ msgstr "Saját név adása a listának (ez a csatornacsoportjának neve is)"
 
 msgid "List renamed to {name}"
 msgstr "A lista új neve: {name}"
+
+msgid "Add Channels…"
+msgstr "Csatornák hozzáadása…"
+
+msgid "Add channels"
+msgstr "Csatornák hozzáadása"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Egyetlen frekvencia kézi behangolása és csatornáinak összevetése a csatornalistával: az újak hozzáadása, a megváltozottak frissítése, a régiek eltávolítása."
+
+msgid "Unchanged"
+msgstr "Változatlan"
+
+msgid "Changed"
+msgstr "Megváltozott"
+
+msgid "No longer broadcast"
+msgstr "Már nem sugározzák"
+
+msgid "Bandwidth"
+msgstr "Sávszélesség"
+
+msgid "yes"
+msgstr "igen"
+
+msgid "Add Channels"
+msgstr "Csatornák hozzáadása"
+
+msgid "Tune Channel"
+msgstr "Hangolás"
+
+msgid "No tuner found."
+msgstr "Nem található tuner."
+
+msgid "Log"
+msgstr "Napló"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "Több PLP-t sugárzó DVB-T2 multiplex PLP-je; -1 esetén a tuner választ"
+
+msgid "Enter by hand"
+msgstr "Kézi megadás"
+
+msgid "Tuning…"
+msgstr "Hangolás…"
+
+msgid "The tuner could not be used."
+msgstr "A tunert nem lehetett használni."
+
+msgid "No channels found on this frequency."
+msgstr "Ezen a frekvencián nem található csatorna."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} változatlan, {changed} megváltozott, {new} új, {gone} már nem sugárzott."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Mentve: {added} hozzáadva, {updated} frissítve, {removed} eltávolítva."

@@ -4027,3 +4027,60 @@ msgstr "Tabhair a hainm féin don liosta (ainm a ghrúpa cainéal freisin)"
 
 msgid "List renamed to {name}"
 msgstr "Athainmníodh an liosta go {name}"
+
+msgid "Add Channels…"
+msgstr "Cuir stáisiúin leis…"
+
+msgid "Add channels"
+msgstr "Cuir stáisiúin leis"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Tiúin minicíocht amháin de láimh agus cuir a stáisiúin i gcomparáid leis an liosta cainéal: cuir na cinn nua leis, nuashonraigh na cinn athraithe, bain na seanchinn."
+
+msgid "Unchanged"
+msgstr "Gan athrú"
+
+msgid "Changed"
+msgstr "Athraithe"
+
+msgid "No longer broadcast"
+msgstr "Ní chraoltar a thuilleadh"
+
+msgid "Bandwidth"
+msgstr "Leithead banda"
+
+msgid "yes"
+msgstr "tá"
+
+msgid "Add Channels"
+msgstr "Cuir stáisiúin leis"
+
+msgid "Tune Channel"
+msgstr "Tiúin an mhinicíocht"
+
+msgid "No tuner found."
+msgstr "Níor aimsíodh tiúnóir."
+
+msgid "Log"
+msgstr "Loga"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP ilphléacs DVB-T2 a sheolann roinnt díobh; le -1 roghnaíonn an tiúnóir"
+
+msgid "Enter by hand"
+msgstr "Iontráil de láimh"
+
+msgid "Tuning…"
+msgstr "Ag tiúnadh…"
+
+msgid "The tuner could not be used."
+msgstr "Níorbh fhéidir an tiúnóir a úsáid."
+
+msgid "No channels found on this frequency."
+msgstr "Níor aimsíodh stáisiúin ar an minicíocht seo."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Gan athrú: {same}, athraithe: {changed}, nua: {new}, ní chraoltar a thuilleadh: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Sábháilte: curtha leis {added}, nuashonraithe {updated}, bainte {removed}."

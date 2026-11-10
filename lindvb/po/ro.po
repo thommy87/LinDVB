@@ -4027,3 +4027,60 @@ msgstr "Dați listei un nume propriu (și numele grupului ei de posturi)"
 
 msgid "List renamed to {name}"
 msgstr "Lista a fost redenumită în {name}"
+
+msgid "Add Channels…"
+msgstr "Adaugă canale…"
+
+msgid "Add channels"
+msgstr "Adăugare canale"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Acordează manual o singură frecvență și compară canalele ei cu lista de canale: adaugă cele noi, actualizează cele modificate, elimină cele vechi."
+
+msgid "Unchanged"
+msgstr "Neschimbat"
+
+msgid "Changed"
+msgstr "Modificat"
+
+msgid "No longer broadcast"
+msgstr "Nu se mai difuzează"
+
+msgid "Bandwidth"
+msgstr "Lățime de bandă"
+
+msgid "yes"
+msgstr "da"
+
+msgid "Add Channels"
+msgstr "Adaugă canale"
+
+msgid "Tune Channel"
+msgstr "Acordează"
+
+msgid "No tuner found."
+msgstr "Nu s-a găsit niciun tuner."
+
+msgid "Log"
+msgstr "Jurnal"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP-ul unui multiplex DVB-T2 care transmite mai multe; la -1 alege tunerul"
+
+msgid "Enter by hand"
+msgstr "Introducere manuală"
+
+msgid "Tuning…"
+msgstr "Se acordează…"
+
+msgid "The tuner could not be used."
+msgstr "Tunerul nu a putut fi folosit."
+
+msgid "No channels found on this frequency."
+msgstr "Nu s-au găsit canale pe această frecvență."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} neschimbate, {changed} modificate, {new} noi, {gone} nu se mai difuzează."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Salvat: {added} adăugate, {updated} actualizate, {removed} eliminate."

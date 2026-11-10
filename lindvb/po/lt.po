@@ -4027,3 +4027,60 @@ msgstr "Suteikite sąrašui savo pavadinimą (tai ir jo kanalų grupės pavadini
 
 msgid "List renamed to {name}"
 msgstr "Sąrašas pervadintas į {name}"
+
+msgid "Add Channels…"
+msgstr "Pridėti kanalų…"
+
+msgid "Add channels"
+msgstr "Kanalų pridėjimas"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Rankiniu būdu nustatyti vieną dažnį ir palyginti jo kanalus su kanalų sąrašu: pridėti naujus, atnaujinti pasikeitusius, pašalinti senus."
+
+msgid "Unchanged"
+msgstr "Nepakitęs"
+
+msgid "Changed"
+msgstr "Pakitęs"
+
+msgid "No longer broadcast"
+msgstr "Nebetransliuojamas"
+
+msgid "Bandwidth"
+msgstr "Pralaidumas"
+
+msgid "yes"
+msgstr "taip"
+
+msgid "Add Channels"
+msgstr "Pridėti kanalų"
+
+msgid "Tune Channel"
+msgstr "Nustatyti dažnį"
+
+msgid "No tuner found."
+msgstr "Imtuvas nerastas."
+
+msgid "Log"
+msgstr "Žurnalas"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "DVB-T2 multiplekso, siunčiančio kelis PLP, PLP; esant -1 parenka imtuvas"
+
+msgid "Enter by hand"
+msgstr "Įvesti ranka"
+
+msgid "Tuning…"
+msgstr "Derinama…"
+
+msgid "The tuner could not be used."
+msgstr "Imtuvo nepavyko naudoti."
+
+msgid "No channels found on this frequency."
+msgstr "Šiame dažnyje kanalų nerasta."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Nepakitę: {same}, pakitę: {changed}, nauji: {new}, nebetransliuojami: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Įrašyta: pridėta {added}, atnaujinta {updated}, pašalinta {removed}."

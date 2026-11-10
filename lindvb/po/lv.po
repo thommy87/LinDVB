@@ -4027,3 +4027,60 @@ msgstr "Piešķirt sarakstam savu nosaukumu (tas ir arī tā kanālu grupas nosa
 
 msgid "List renamed to {name}"
 msgstr "Saraksts pārdēvēts par {name}"
+
+msgid "Add Channels…"
+msgstr "Pievienot kanālus…"
+
+msgid "Add channels"
+msgstr "Kanālu pievienošana"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Manuāli noskaņot vienu frekvenci un salīdzināt tās kanālus ar kanālu sarakstu: pievienot jaunos, atjaunināt mainītos, noņemt vecos."
+
+msgid "Unchanged"
+msgstr "Bez izmaiņām"
+
+msgid "Changed"
+msgstr "Mainīts"
+
+msgid "No longer broadcast"
+msgstr "Vairs netiek raidīts"
+
+msgid "Bandwidth"
+msgstr "Joslas platums"
+
+msgid "yes"
+msgstr "jā"
+
+msgid "Add Channels"
+msgstr "Pievienot kanālus"
+
+msgid "Tune Channel"
+msgstr "Noskaņot"
+
+msgid "No tuner found."
+msgstr "Uztvērējs nav atrasts."
+
+msgid "Log"
+msgstr "Žurnāls"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "DVB-T2 multipleksa PLP, ja tas raida vairākus; ar -1 izvēlas uztvērējs"
+
+msgid "Enter by hand"
+msgstr "Ievadīt ar roku"
+
+msgid "Tuning…"
+msgstr "Notiek noskaņošana…"
+
+msgid "The tuner could not be used."
+msgstr "Uztvērēju neizdevās izmantot."
+
+msgid "No channels found on this frequency."
+msgstr "Šajā frekvencē kanāli nav atrasti."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Bez izmaiņām: {same}, mainīti: {changed}, jauni: {new}, vairs netiek raidīti: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Saglabāts: pievienoti {added}, atjaunināti {updated}, noņemti {removed}."

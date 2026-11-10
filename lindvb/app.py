@@ -400,6 +400,10 @@ class LinDVBApp(Gtk.Application):
         from .ui.scan import ScanWindow
         ScanWindow(self, self.window).present()
 
+    def show_tune(self):
+        from .ui.tune import TuneWindow
+        TuneWindow(self, self.window).present()
+
     def show_xmltv_match(self):
         from .ui.xmltvmatch import XMLTVMatchWindow
         XMLTVMatchWindow(self, self.window).present()

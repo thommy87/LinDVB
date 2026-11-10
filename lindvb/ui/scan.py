@@ -44,7 +44,390 @@ def _search_dropdown(strings):
     return d
 
 
-class ScanWindow(Gtk.Window):
+class ScanEngine:
+    """What the channel search and the tuning of a single frequency (lindvb.ui.tune)
+    share: the tuners to choose from, the three ways to search (dvbv5-scan, a
+    single-cable tuner, SAT>IP), the log and the signal meter.
+
+    The window provides the widgets ``adapter``, ``systems_label``, ``recep``,
+    ``recep_label``, ``lnb``, ``lnb_label``, ``uc_label``, ``start_btn``, ``stop_btn``,
+    ``progress`` and ``log``, the methods ``_family_changed()`` and
+    ``_search_done(channels)``, and calls ``_begin(jobs, adapter, frontend)``."""
+
+    def _list_adapters(self, configured=True):
+        """Fill ``adapters`` [(adapter, frontend, name)] and ``satip_profiles``: the
+        tuners found and one entry per SAT>IP server (the server picks a free tuner).
+        *configured*: without any tuner, offer the adapters of the settings."""
+        from .. import satip, tunerprofiles
+        app = self.app
+        adapters = find_adapters()
+        self.satip_profiles = {}
+        for p in tunerprofiles.configured_profiles(app.settings):
+            if satip.is_satip(p) and p.get("enabled", True) and \
+                    p.get("server") not in {q.get("server") for q in self.satip_profiles.values()}:
+                self.satip_profiles[p["adapter"]] = p
+        net = [(a, 0, f"SAT>IP {p.get('server_label') or p['host']}")
+               for a, p in self.satip_profiles.items()]
+        local = adapters
+        if not adapters and not net and configured:
+            local = [(a, app.settings["frontend"], f"Adapter {a}")
+                     for a in app.settings["adapters"]]
+        self.adapters = local + net
+        return [n if a in self.satip_profiles else f"{n} (adapter{a}/frontend{f})"
+                for a, f, n in self.adapters]
+
+    def _build_meter(self):
+        """The signal of the transponder being searched (shown while searching)."""
+        self.meter = Gtk.Box(spacing=8, margin_start=12, margin_end=12, visible=False)
+        self.lock_label = Gtk.Label(xalign=0, width_chars=12)
+        self.meter.append(self.lock_label)
+        self.meter_bars = {}
+        for key, title in (("level", _("Signal")), ("quality", _("Signal quality"))):
+            self.meter.append(Gtk.Label(label=title, css_classes=["dim-label"]))
+            meter_bar = Bar(height=8)
+            meter_bar.set_valign(Gtk.Align.CENTER)
+            value = Gtk.Label(xalign=1, width_chars=10)
+            self.meter.append(meter_bar)
+            self.meter.append(value)
+            self.meter_bars[key] = (meter_bar, value)
+        self._meter_source = None
+        self._meter_fe = None
+        self._meter_timer = 0
+        return self.meter
+
+    def _begin(self, jobs, a, f):
+        """Search *jobs* on the tuner: dicts with "file" (the initial tuning file),
+        "out", "total", "diseqc", "root", "tpl" (satellite: the TransponderList),
+        "nit" and "file_only" (only the frequencies of the file)."""
+        # Live TV on the same adapter would block the frontend.
+        win = self.app.window
+        if win.capture and win.capture.adapter == a:
+            win.stop_playback()
+        if self.satip is not None:
+            self._start_satip(jobs)
+            return
+        self._meter_start_frontend(a, f)
+        if self.family == sl.SAT and self.unicable is not None:
+            self._start_single_cable(jobs, a, f)
+            return
+        self.jobs = jobs
+        self.total = sum(j["total"] for j in jobs)
+        self.done = 0
+        self.found = []
+        self._run_next()
+
+    def _current_adapter(self):
+        if not self.adapters:
+            return (0, 0)
+        return self.adapters[self.adapter.get_selected()][:2]
+
+    def _profile(self, adapter, frontend):
+        from .. import tunerprofiles
+        if adapter in self.satip_profiles:
+            return self.satip_profiles[adapter]
+        for p in tunerprofiles.configured_profiles(self.app.settings):
+            if p["adapter"] == adapter and p.get("frontend", 0) == frontend:
+                return p
+        return None
+
+    def _tuner_changed(self):
+        from .. import tunerprofiles, unicable
+        a, f = self._current_adapter()
+        prof = self._profile(a, f)
+        systems = list((prof or {}).get("systems") or [])
+        if not systems:
+            systems = tunerprofiles.probe_delivery_systems(a, f)
+        self.systems = systems
+        self.virtual = is_virtual_adapter(a, f)
+        self.systems_label.set_text(_("Receives: {systems}").format(
+            systems=tunerprofiles.systems_label(systems)) if systems else
+            _("The tuner does not say what it receives, so every list is offered."))
+        fams = sl.families_for(systems)
+        use = (prof or {}).get("use") or ""
+        if use in fams and len(fams) > 1:
+            fams = [use] + [x for x in fams if x != use]
+        self.recep_families = fams
+        self.recep.set_model(Gtk.StringList.new([FAMILY_LABELS[x] for x in fams]))
+        self.recep.set_selected(0)
+        many = len(fams) > 1
+        self.recep.set_visible(many)
+        self.recep_label.set_visible(many)
+        # satellite: the tuner's own reception path wins over asking again
+        self.satip = prof if a in self.satip_profiles else None
+        self.unicable = unicable.config(prof) if prof and self.satip is None else None
+        own_lnb = (prof or {}).get("lnb")
+        lof = tuple(own_lnb) if own_lnb and len(own_lnb) == 3 and all(own_lnb) else \
+            tunerprofiles.tuner_lnb(None, self.app.settings)
+        for i, (_n, code) in enumerate(LNB_TYPES):
+            if LNB_LOF[code] == lof:
+                self.lnb.set_selected(i)
+                break
+        local = self.unicable is None and self.satip is None
+        self.lnb.set_visible(local)
+        self.lnb_label.set_visible(local)
+        self.uc_label.set_visible(not local)
+        if self.satip is not None:
+            self.uc_label.set_text(_("The SAT>IP server controls the LNB and the DiSEqC switch; "
+                                     "the DiSEqC port chooses its source (1 to 4)."))
+        elif self.unicable is not None:
+            self.uc_label.set_text(_("Single-cable setup of this tuner: {setup}").format(
+                setup=unicable.describe(self.unicable)))
+        self._family_changed()
+
+    def _usable(self):
+        """The lists for this tuner; the vidtv test lists only for the virtual tuner."""
+        return [x for x in self.lists if self.virtual or x.country != sl.VIRTUAL]
+
+    def _stop(self):
+        self._cancel = True                  # single-cable search (thread)
+        self.jobs = []
+        if self.proc:
+            self.proc.force_exit()
+
+    def _reload_lists(self):
+        self.lists = sl.all_lists(self.app.settings.get("transponder_dirs", []))
+
+    def log_line(self, text):
+        buf = self.log.get_buffer()
+        buf.insert(buf.get_end_iter(), text)
+        self.log.scroll_to_iter(buf.get_end_iter(), 0, False, 0, 0)
+
+    def _run_next(self):
+        if not self.jobs:
+            self._all_done()
+            return
+        job = self.jobs[0]
+        a, f = self._current_adapter()
+        lnb = LNB_TYPES[self.lnb.get_selected()][1] if self.family == sl.SAT else ""
+        try:
+            cmd = scan_command(a, f, str(job["file"]), str(job["out"]), lnb, job["diseqc"],
+                               job["nit"], job.get("file_only", False))
+        except FileNotFoundError as e:
+            self.log_line(f"{e}\n")
+            self.jobs = []
+            self._meter_stop()
+            return
+        if job["tpl"] is not None:
+            self.log_line(f"\n== {job['root']} ==\n")
+        self.log_line("$ " + " ".join(cmd) + "\n")
+        self.proc = Gio.Subprocess.new(cmd, Gio.SubprocessFlags.STDOUT_PIPE |
+                                       Gio.SubprocessFlags.STDERR_MERGE)
+        self.stream = Gio.DataInputStream.new(self.proc.get_stdout_pipe())
+        self.stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
+        self.start_btn.set_sensitive(False)
+        self.stop_btn.set_sensitive(True)
+
+    def _start_single_cable(self, jobs, a, f):
+        """Unicable / JESS: LinDVB tunes each transponder itself (lindvb.scscan)."""
+        import threading
+        from .. import directtune, scscan, tunerprofiles, unicable
+        from ..festats import Frontend
+        work = [(scscan.transponders(j["tpl"]), j) for j in jobs]
+        work = [(tps, j) for tps, j in work if tps]
+        if not work:
+            self._meter_stop()
+            self.log_line(_("This transponder list has no satellite transponders.\n"))
+            return
+        if a in self.app.tuners.captures:
+            self._meter_stop()
+            self.log_line(_("The tuner is busy (recording or channel analysis).\n"))
+            return
+        uc = self.unicable
+        self.total, self.done = sum(len(tps) for tps, _j in work), 0
+        self._cancel = False
+        self.log_line(unicable.describe(uc) + "\n")
+        lnb = tunerprofiles.tuner_lnb(self._profile(a, f), self.app.settings)
+        self.start_btn.set_sensitive(False)
+        self.stop_btn.set_sensitive(True)
+
+        def log(text):
+            def show():
+                self.log_line(text + "\n")
+                if text.startswith("Scanning frequency"):
+                    self.done += 1
+                    self.progress.set_fraction(min(1, self.done / self.total))
+                    self.progress.set_text(f"{self.done} / {self.total}")
+                return False
+            GLib.idle_add(show)
+
+        def run():
+            tuner = directtune.DirectTuner(a, f)
+            fe = Frontend(a, f)
+            chans = []
+            try:
+                tuner.open()
+                for tps, job in work:
+                    if self._cancel:
+                        break
+                    log(f"== {job['root']} ==")
+                    chans += scscan.scan(tuner, fe.status, uc, lnb, tps, max(job["diseqc"], 0),
+                                         job["root"], log, cancelled=lambda: self._cancel)
+            except OSError as e:
+                log(f"Could not open the tuner: {e.strerror}")
+            finally:
+                fe.close()
+                tuner.close()
+            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
+
+        threading.Thread(target=run, daemon=True, name="single-cable-scan").start()
+
+    def _start_satip(self, jobs):
+        """SAT>IP: LinDVB asks the server for each transponder (lindvb.satip)."""
+        import threading
+        from .. import satip, scscan
+        work = []
+        for j in jobs:
+            if j["tpl"] is not None:
+                tps = scscan.transponders(j["tpl"])
+            else:
+                try:
+                    tps = satip.entry_transponders(parse_dvbv5(j["file"].read_text()))
+                except OSError:
+                    tps = []
+            if tps:
+                work.append((tps, j))
+        if not work:
+            self.log_line(_("This transponder list has no transponders for this tuner.\n"))
+            return
+        prof = self.satip
+        self._satip_status = {}
+        self._meter_start(lambda: self._satip_status)
+        self.total, self.done = sum(len(tps) for tps, _j in work), 0
+        self._cancel = False
+        self.log_line(f"SAT>IP {prof.get('server_label') or prof['host']}\n")
+        if any(j["nit"] for j in jobs):
+            self.log_line(_("SAT>IP: the search uses the frequencies of the list "
+                            "(no NIT search).") + "\n")
+        self.start_btn.set_sensitive(False)
+        self.stop_btn.set_sensitive(True)
+        log = self._thread_log
+
+        def run():
+            chans = []
+            for tps, job in work:
+                if self._cancel:
+                    break
+                log(f"== {job['root']} ==")
+                chans += satip.scan(prof, tps, job["diseqc"], job["root"], log,
+                                    cancelled=lambda: self._cancel,
+                                    on_status=lambda st: setattr(self, "_satip_status", st))
+            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
+
+        threading.Thread(target=run, daemon=True, name="satip-scan").start()
+
+    def _thread_log(self, text):
+        """A log line from a search thread; counts the frequencies for the progress."""
+        def show():
+            self.log_line(text + "\n")
+            if text.startswith("Scanning frequency"):
+                self.done += 1
+                self.progress.set_fraction(min(1, self.done / max(1, self.total)))
+                self.progress.set_text(f"{self.done} / {self.total}")
+            return False
+        GLib.idle_add(show)
+
+    def _meter_start_frontend(self, adapter, frontend):
+        """Read the signal of a local tuner; read-only, so the search keeps the frontend."""
+        from ..festats import Frontend
+        self._meter_stop()
+        fe = Frontend(adapter, frontend)
+        if not fe.available:
+            return
+        self._meter_fe = fe
+        self._meter_start(fe.read)
+
+    def _meter_start(self, source):
+        if self._meter_timer:
+            GLib.source_remove(self._meter_timer)
+        self._meter_source = source
+        self._meter_show({})
+        self.meter.set_visible(True)
+        self._meter_timer = GLib.timeout_add(250, self._meter_tick)
+
+    def _meter_tick(self):
+        if self._meter_source is None:
+            self._meter_timer = 0
+            return False
+        try:
+            stats = self._meter_source()
+        except OSError:
+            stats = {}
+        self._meter_show(stats)
+        return True
+
+    def _meter_show(self, stats):
+        m = signal_meter(stats)
+        lock = m["lock"]
+        if lock is None:
+            colour, text = OTHER, "–"
+        elif lock:
+            colour, text = GOOD, _("Lock")
+        else:
+            colour, text = BAD, _("No signal")
+        self.lock_label.set_markup(f'<span foreground="{colour}">\u25cf</span> '
+                                   f'{GLib.markup_escape_text(text)}')
+        for key, (meter_bar, value) in self.meter_bars.items():
+            fraction, label = m[key] or (0.0, "–")
+            if key == "quality":
+                colour = level_colour(fraction) if lock is not False else OTHER
+            else:
+                colour = "#119CFF" if lock is not False else OTHER
+            meter_bar.set_value(fraction, colour)
+            value.set_text(label)
+
+    def _meter_stop(self):
+        """Stop reading the signal; the last values stay on screen."""
+        self._meter_source = None
+        if self._meter_timer:
+            GLib.source_remove(self._meter_timer)
+            self._meter_timer = 0
+        if self._meter_fe is not None:
+            self._meter_fe.close()
+            self._meter_fe = None
+
+    def _single_cable_done(self, chans):
+        self._meter_stop()
+        self.start_btn.set_sensitive(True)
+        self.stop_btn.set_sensitive(False)
+        self._search_done(chans)
+
+    def _on_line(self, stream, res):
+        try:
+            line, _len = stream.read_line_finish_utf8(res)
+        except GLib.Error:
+            line = None
+        if line is None:
+            self.proc.wait_async(None, self._finished)
+            return
+        self.log_line(line + "\n")
+        if line.lstrip().startswith(("Scanning frequency", "Scanning")):
+            self.done += 1
+            if self.total:
+                self.progress.set_fraction(min(1, self.done / self.total))
+                self.progress.set_text(f"{min(self.done, self.total)} / {self.total}")
+        stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
+
+    def _finished(self, proc, res):
+        self.proc = None
+        if self.jobs:
+            job = self.jobs.pop(0)
+            try:
+                text = job["out"].read_text(errors="replace")
+            except OSError:
+                text = ""
+            if text:
+                self.found += parse_dvbv5(text, root=job["root"])
+        self._run_next()
+
+    def _all_done(self):
+        self._meter_stop()
+        self.start_btn.set_sensitive(True)
+        self.stop_btn.set_sensitive(False)
+        found, self.found = getattr(self, "found", []), []
+        self._search_done(found)
+
+
+class ScanWindow(ScanEngine, Gtk.Window):
     def __init__(self, app, parent):
         super().__init__(title=_("Channel Search"), transient_for=parent,
                          default_width=720, default_height=600)
@@ -61,22 +444,8 @@ class ScanWindow(Gtk.Window):
         self.memory = dict(app.settings.get("scan_choice") or {})
 
         g = Gtk.Grid(row_spacing=6, column_spacing=8, margin_start=12, margin_end=12, margin_top=12)
-        adapters = find_adapters()
-        # SAT>IP: one entry per server (the server picks a free tuner)
-        from .. import satip, tunerprofiles
-        self.satip_profiles = {}
-        for p in tunerprofiles.configured_profiles(app.settings):
-            if satip.is_satip(p) and p.get("enabled", True) and \
-                    p.get("server") not in {q.get("server") for q in self.satip_profiles.values()}:
-                self.satip_profiles[p["adapter"]] = p
-        net = [(a, 0, f"SAT>IP {p.get('server_label') or p['host']}")
-               for a, p in self.satip_profiles.items()]
-        local = adapters or ([] if net else [(a, app.settings["frontend"], f"Adapter {a}")
-                                             for a in app.settings["adapters"]])
-        self.adapters = local + net
         self.adapter = labeled(g, 0, _("Device"), dropdown(
-            [n if a in self.satip_profiles else f"{n} (adapter{a}/frontend{f})"
-             for a, f, n in self.adapters] or [_("(no tuner)")]))
+            self._list_adapters() or [_("(no tuner)")]))
         self.systems_label = Gtk.Label(xalign=0, css_classes=["dim-label"])
         g.attach(self.systems_label, 1, 1, 1, 1)
         self.recep_label = Gtk.Label(label=_("Reception"), xalign=0)
@@ -149,22 +518,7 @@ class ScanWindow(Gtk.Window):
         for w in (self.start_btn, self.stop_btn, self.progress):
             bar.append(w)
 
-        # signal of the transponder being searched (shown while searching)
-        self.meter = Gtk.Box(spacing=8, margin_start=12, margin_end=12, visible=False)
-        self.lock_label = Gtk.Label(xalign=0, width_chars=12)
-        self.meter.append(self.lock_label)
-        self.meter_bars = {}
-        for key, title in (("level", _("Signal")), ("quality", _("Signal quality"))):
-            self.meter.append(Gtk.Label(label=title, css_classes=["dim-label"]))
-            meter_bar = Bar(height=8)
-            meter_bar.set_valign(Gtk.Align.CENTER)
-            value = Gtk.Label(xalign=1, width_chars=10)
-            self.meter.append(meter_bar)
-            self.meter.append(value)
-            self.meter_bars[key] = (meter_bar, value)
-        self._meter_source = None
-        self._meter_fe = None
-        self._meter_timer = 0
+        self._build_meter()
         self.connect("close-request", lambda *_a: self._meter_stop() or False)
 
         self.log = Gtk.TextView(editable=False, monospace=True, cursor_visible=False)
@@ -194,64 +548,6 @@ class ScanWindow(Gtk.Window):
 
     # -- the tuner and what it receives ------------------------------------------------
 
-    def _current_adapter(self):
-        if not self.adapters:
-            return (0, 0)
-        return self.adapters[self.adapter.get_selected()][:2]
-
-    def _profile(self, adapter, frontend):
-        from .. import tunerprofiles
-        if adapter in self.satip_profiles:
-            return self.satip_profiles[adapter]
-        for p in tunerprofiles.configured_profiles(self.app.settings):
-            if p["adapter"] == adapter and p.get("frontend", 0) == frontend:
-                return p
-        return None
-
-    def _tuner_changed(self):
-        from .. import tunerprofiles, unicable
-        a, f = self._current_adapter()
-        prof = self._profile(a, f)
-        systems = list((prof or {}).get("systems") or [])
-        if not systems:
-            systems = tunerprofiles.probe_delivery_systems(a, f)
-        self.systems = systems
-        self.virtual = is_virtual_adapter(a, f)
-        self.systems_label.set_text(_("Receives: {systems}").format(
-            systems=tunerprofiles.systems_label(systems)) if systems else
-            _("The tuner does not say what it receives, so every list is offered."))
-        fams = sl.families_for(systems)
-        use = (prof or {}).get("use") or ""
-        if use in fams and len(fams) > 1:
-            fams = [use] + [x for x in fams if x != use]
-        self.recep_families = fams
-        self.recep.set_model(Gtk.StringList.new([FAMILY_LABELS[x] for x in fams]))
-        self.recep.set_selected(0)
-        many = len(fams) > 1
-        self.recep.set_visible(many)
-        self.recep_label.set_visible(many)
-        # satellite: the tuner's own reception path wins over asking again
-        self.satip = prof if a in self.satip_profiles else None
-        self.unicable = unicable.config(prof) if prof and self.satip is None else None
-        own_lnb = (prof or {}).get("lnb")
-        lof = tuple(own_lnb) if own_lnb and len(own_lnb) == 3 and all(own_lnb) else \
-            tunerprofiles.tuner_lnb(None, self.app.settings)
-        for i, (_n, code) in enumerate(LNB_TYPES):
-            if LNB_LOF[code] == lof:
-                self.lnb.set_selected(i)
-                break
-        local = self.unicable is None and self.satip is None
-        self.lnb.set_visible(local)
-        self.lnb_label.set_visible(local)
-        self.uc_label.set_visible(not local)
-        if self.satip is not None:
-            self.uc_label.set_text(_("The SAT>IP server controls the LNB and the DiSEqC switch; "
-                                     "the DiSEqC port chooses its source (1 to 4)."))
-        elif self.unicable is not None:
-            self.uc_label.set_text(_("Single-cable setup of this tuner: {setup}").format(
-                setup=unicable.describe(self.unicable)))
-        self._family_changed()
-
     def _family_changed(self):
         i = self.recep.get_selected()
         if not self.recep_families:
@@ -263,10 +559,6 @@ class ScanWindow(Gtk.Window):
         else:
             self._fill_countries(self.family)
         self._show_info()
-
-    def _usable(self):
-        """The lists for this tuner; the vidtv test lists only for the virtual tuner."""
-        return [x for x in self.lists if self.virtual or x.country != sl.VIRTUAL]
 
     # -- satellites -------------------------------------------------------------------
 
@@ -503,15 +795,6 @@ class ScanWindow(Gtk.Window):
 
     # -- lists ------------------------------------------------------------------------
 
-    def _stop(self):
-        self._cancel = True                  # single-cable search (thread)
-        self.jobs = []
-        if self.proc:
-            self.proc.force_exit()
-
-    def _reload_lists(self):
-        self.lists = sl.all_lists(self.app.settings.get("transponder_dirs", []))
-
     def on_add_folder(self):
         dlg = Gtk.FileDialog(title=_("Folder with transponder lists"))
         dlg.select_folder(self, None, self._folder_chosen)
@@ -528,11 +811,6 @@ class ScanWindow(Gtk.Window):
         self.app.settings.save()
         self._reload_lists()
         self._family_changed()
-
-    def log_line(self, text):
-        buf = self.log.get_buffer()
-        buf.insert(buf.get_end_iter(), text)
-        self.log.scroll_to_iter(buf.get_end_iter(), 0, False, 0, 0)
 
     # -- searching --------------------------------------------------------------------
 
@@ -563,7 +841,8 @@ class ScanWindow(Gtk.Window):
                 # single transponders: only these, not the ones the network announces
                 jobs.append({"file": path, "total": len(tpl.transponders), "diseqc": port,
                              "root": target, "tpl": tpl, "out": tmp / f"channels-{n}.conf",
-                             "nit": self.nit.get_active() and entry[5]["only"] is None})
+                             "nit": self.nit.get_active() and entry[5]["only"] is None,
+                             "file_only": entry[5]["only"] is not None})
         else:
             choice = self._region_choice()
             entries = sl.scan_entries(choice, self.systems) if choice else []
@@ -579,264 +858,13 @@ class ScanWindow(Gtk.Window):
             self.log_line(_("This transponder list has no satellite transponders.\n"))
             return
         self._remember()
-        # Live TV on the same adapter would block the frontend.
-        win = self.app.window
-        if win.capture and win.capture.adapter == a:
-            win.stop_playback()
-        if self.satip is not None:
-            self._start_satip(jobs)
-            return
-        self._meter_start_frontend(a, f)
-        if self.family == sl.SAT and self.unicable is not None:
-            self._start_single_cable(jobs, a, f)
-            return
-        self.jobs = jobs
-        self.total = sum(j["total"] for j in jobs)
-        self.done = 0
-        self.found = []
-        self._run_next()
+        self._begin(jobs, a, f)
 
-    def _run_next(self):
-        if not self.jobs:
-            self._all_done()
-            return
-        job = self.jobs[0]
-        a, f = self._current_adapter()
-        lnb = LNB_TYPES[self.lnb.get_selected()][1] if self.family == sl.SAT else ""
-        try:
-            cmd = scan_command(a, f, str(job["file"]), str(job["out"]), lnb, job["diseqc"],
-                               job["nit"])
-        except FileNotFoundError as e:
-            self.log_line(f"{e}\n")
-            self.jobs = []
-            self._meter_stop()
-            return
-        if job["tpl"] is not None:
-            self.log_line(f"\n== {job['root']} ==\n")
-        self.log_line("$ " + " ".join(cmd) + "\n")
-        self.proc = Gio.Subprocess.new(cmd, Gio.SubprocessFlags.STDOUT_PIPE |
-                                       Gio.SubprocessFlags.STDERR_MERGE)
-        self.stream = Gio.DataInputStream.new(self.proc.get_stdout_pipe())
-        self.stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
-        self.start_btn.set_sensitive(False)
-        self.stop_btn.set_sensitive(True)
-
-    def _start_single_cable(self, jobs, a, f):
-        """Unicable / JESS: LinDVB tunes each transponder itself (lindvb.scscan)."""
-        import threading
-        from .. import directtune, scscan, tunerprofiles, unicable
-        from ..festats import Frontend
-        work = [(scscan.transponders(j["tpl"]), j) for j in jobs]
-        work = [(tps, j) for tps, j in work if tps]
-        if not work:
-            self._meter_stop()
-            self.log_line(_("This transponder list has no satellite transponders.\n"))
-            return
-        if a in self.app.tuners.captures:
-            self._meter_stop()
-            self.log_line(_("The tuner is busy (recording or channel analysis).\n"))
-            return
-        uc = self.unicable
-        self.total, self.done = sum(len(tps) for tps, _j in work), 0
-        self._cancel = False
-        self.log_line(unicable.describe(uc) + "\n")
-        lnb = tunerprofiles.tuner_lnb(self._profile(a, f), self.app.settings)
-        self.start_btn.set_sensitive(False)
-        self.stop_btn.set_sensitive(True)
-
-        def log(text):
-            def show():
-                self.log_line(text + "\n")
-                if text.startswith("Scanning frequency"):
-                    self.done += 1
-                    self.progress.set_fraction(min(1, self.done / self.total))
-                    self.progress.set_text(f"{self.done} / {self.total}")
-                return False
-            GLib.idle_add(show)
-
-        def run():
-            tuner = directtune.DirectTuner(a, f)
-            fe = Frontend(a, f)
-            chans = []
-            try:
-                tuner.open()
-                for tps, job in work:
-                    if self._cancel:
-                        break
-                    log(f"== {job['root']} ==")
-                    chans += scscan.scan(tuner, fe.status, uc, lnb, tps, max(job["diseqc"], 0),
-                                         job["root"], log, cancelled=lambda: self._cancel)
-            except OSError as e:
-                log(f"Could not open the tuner: {e.strerror}")
-            finally:
-                fe.close()
-                tuner.close()
-            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
-
-        threading.Thread(target=run, daemon=True, name="single-cable-scan").start()
-
-    def _start_satip(self, jobs):
-        """SAT>IP: LinDVB asks the server for each transponder (lindvb.satip)."""
-        import threading
-        from .. import satip, scscan
-        work = []
-        for j in jobs:
-            if j["tpl"] is not None:
-                tps = scscan.transponders(j["tpl"])
-            else:
-                try:
-                    tps = satip.entry_transponders(parse_dvbv5(j["file"].read_text()))
-                except OSError:
-                    tps = []
-            if tps:
-                work.append((tps, j))
-        if not work:
-            self.log_line(_("This transponder list has no transponders for this tuner.\n"))
-            return
-        prof = self.satip
-        self._satip_status = {}
-        self._meter_start(lambda: self._satip_status)
-        self.total, self.done = sum(len(tps) for tps, _j in work), 0
-        self._cancel = False
-        self.log_line(f"SAT>IP {prof.get('server_label') or prof['host']}\n")
-        if self.nit.get_active():
-            self.log_line(_("SAT>IP: the search uses the frequencies of the list "
-                            "(no NIT search).") + "\n")
-        self.start_btn.set_sensitive(False)
-        self.stop_btn.set_sensitive(True)
-        log = self._thread_log
-
-        def run():
-            chans = []
-            for tps, job in work:
-                if self._cancel:
-                    break
-                log(f"== {job['root']} ==")
-                chans += satip.scan(prof, tps, job["diseqc"], job["root"], log,
-                                    cancelled=lambda: self._cancel,
-                                    on_status=lambda st: setattr(self, "_satip_status", st))
-            GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
-
-        threading.Thread(target=run, daemon=True, name="satip-scan").start()
-
-    def _thread_log(self, text):
-        """A log line from a search thread; counts the frequencies for the progress."""
-        def show():
-            self.log_line(text + "\n")
-            if text.startswith("Scanning frequency"):
-                self.done += 1
-                self.progress.set_fraction(min(1, self.done / max(1, self.total)))
-                self.progress.set_text(f"{self.done} / {self.total}")
-            return False
-        GLib.idle_add(show)
-
-    # -- signal meter -----------------------------------------------------------------
-
-    def _meter_start_frontend(self, adapter, frontend):
-        """Read the signal of a local tuner; read-only, so the search keeps the frontend."""
-        from ..festats import Frontend
-        self._meter_stop()
-        fe = Frontend(adapter, frontend)
-        if not fe.available:
-            return
-        self._meter_fe = fe
-        self._meter_start(fe.read)
-
-    def _meter_start(self, source):
-        if self._meter_timer:
-            GLib.source_remove(self._meter_timer)
-        self._meter_source = source
-        self._meter_show({})
-        self.meter.set_visible(True)
-        self._meter_timer = GLib.timeout_add(250, self._meter_tick)
-
-    def _meter_tick(self):
-        if self._meter_source is None:
-            self._meter_timer = 0
-            return False
-        try:
-            stats = self._meter_source()
-        except OSError:
-            stats = {}
-        self._meter_show(stats)
-        return True
-
-    def _meter_show(self, stats):
-        m = signal_meter(stats)
-        lock = m["lock"]
-        if lock is None:
-            colour, text = OTHER, "–"
-        elif lock:
-            colour, text = GOOD, _("Lock")
-        else:
-            colour, text = BAD, _("No signal")
-        self.lock_label.set_markup(f'<span foreground="{colour}">\u25cf</span> '
-                                   f'{GLib.markup_escape_text(text)}')
-        for key, (meter_bar, value) in self.meter_bars.items():
-            fraction, label = m[key] or (0.0, "–")
-            if key == "quality":
-                colour = level_colour(fraction) if lock is not False else OTHER
-            else:
-                colour = "#119CFF" if lock is not False else OTHER
-            meter_bar.set_value(fraction, colour)
-            value.set_text(label)
-
-    def _meter_stop(self):
-        """Stop reading the signal; the last values stay on screen."""
-        self._meter_source = None
-        if self._meter_timer:
-            GLib.source_remove(self._meter_timer)
-            self._meter_timer = 0
-        if self._meter_fe is not None:
-            self._meter_fe.close()
-            self._meter_fe = None
-
-    def _single_cable_done(self, chans):
-        self._meter_stop()
-        self.start_btn.set_sensitive(True)
-        self.stop_btn.set_sensitive(False)
+    def _search_done(self, chans):
         if not chans:
             self.log_line(_("\nNo channels found.\n"))
             return
         self._merge(chans)
-
-    def _on_line(self, stream, res):
-        try:
-            line, _len = stream.read_line_finish_utf8(res)
-        except GLib.Error:
-            line = None
-        if line is None:
-            self.proc.wait_async(None, self._finished)
-            return
-        self.log_line(line + "\n")
-        if line.lstrip().startswith(("Scanning frequency", "Scanning")):
-            self.done += 1
-            if self.total:
-                self.progress.set_fraction(min(1, self.done / self.total))
-                self.progress.set_text(f"{min(self.done, self.total)} / {self.total}")
-        stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
-
-    def _finished(self, proc, res):
-        self.proc = None
-        if self.jobs:
-            job = self.jobs.pop(0)
-            try:
-                text = job["out"].read_text(errors="replace")
-            except OSError:
-                text = ""
-            if text:
-                self.found += parse_dvbv5(text, root=job["root"])
-        self._run_next()
-
-    def _all_done(self):
-        self._meter_stop()
-        self.start_btn.set_sensitive(True)
-        self.stop_btn.set_sensitive(False)
-        found, self.found = getattr(self, "found", []), []
-        if not found:
-            self.log_line(_("\nNo channels found.\n"))
-            return
-        self._merge(found)
 
     def _merge(self, chans):
         grp = self.group_by.get_selected()

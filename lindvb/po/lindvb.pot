@@ -5568,3 +5568,79 @@ msgstr ""
 #: lindvb/ui/iptv.py
 msgid "List renamed to {name}"
 msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Add Channels…"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Add channels"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Unchanged"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Changed"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "No longer broadcast"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Bandwidth"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "yes"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Add Channels"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Tune Channel"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "No tuner found."
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Log"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Enter by hand"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Tuning…"
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "The tuner could not be used."
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "No channels found on this frequency."
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr ""
+
+#: lindvb/ui/tune.py
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr ""

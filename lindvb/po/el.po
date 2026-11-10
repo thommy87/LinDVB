@@ -4027,3 +4027,60 @@ msgstr "Δώστε στη λίστα δικό της όνομα (είναι κα
 
 msgid "List renamed to {name}"
 msgstr "Η λίστα μετονομάστηκε σε {name}"
+
+msgid "Add Channels…"
+msgstr "Προσθήκη καναλιών…"
+
+msgid "Add channels"
+msgstr "Προσθήκη καναλιών"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Χειροκίνητος συντονισμός μίας συχνότητας και σύγκριση των καναλιών της με τη λίστα καναλιών: προσθήκη των νέων, ενημέρωση όσων άλλαξαν, αφαίρεση των παλιών."
+
+msgid "Unchanged"
+msgstr "Αμετάβλητο"
+
+msgid "Changed"
+msgstr "Άλλαξε"
+
+msgid "No longer broadcast"
+msgstr "Δεν εκπέμπεται πλέον"
+
+msgid "Bandwidth"
+msgstr "Εύρος ζώνης"
+
+msgid "yes"
+msgstr "ναι"
+
+msgid "Add Channels"
+msgstr "Προσθήκη καναλιών"
+
+msgid "Tune Channel"
+msgstr "Συντονισμός"
+
+msgid "No tuner found."
+msgstr "Δεν βρέθηκε δέκτης."
+
+msgid "Log"
+msgstr "Καταγραφή"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "Το PLP ενός πολυπλέκτη DVB-T2 που εκπέμπει περισσότερα· με -1 επιλέγει ο δέκτης"
+
+msgid "Enter by hand"
+msgstr "Χειροκίνητη εισαγωγή"
+
+msgid "Tuning…"
+msgstr "Συντονισμός…"
+
+msgid "The tuner could not be used."
+msgstr "Ο δέκτης δεν μπόρεσε να χρησιμοποιηθεί."
+
+msgid "No channels found on this frequency."
+msgstr "Δεν βρέθηκαν κανάλια σε αυτή τη συχνότητα."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Αμετάβλητα: {same}, άλλαξαν: {changed}, νέα: {new}, δεν εκπέμπονται πλέον: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Αποθηκεύτηκε: προστέθηκαν {added}, ενημερώθηκαν {updated}, αφαιρέθηκαν {removed}."

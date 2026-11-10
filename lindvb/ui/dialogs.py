@@ -266,6 +266,11 @@ class PrefsWindow(Gtk.Window):
         scan.connect("clicked", lambda *_: app.show_scan())
         _row(g, _("Channel search"), scan,
              _("Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."))
+        tune = Gtk.Button(label=_("Add Channels…"))
+        tune.connect("clicked", lambda *_: app.show_tune())
+        _row(g, _("Add channels"), tune,
+             _("Tune a single frequency by hand and compare its channels with the "
+               "channel list: add new ones, update changed ones, remove old ones."))
         edit = Gtk.Button(label=_("Channel Editor / Favourites"))
         edit.connect("clicked", lambda *_: app.show_editor())
         _row(g, _("Channel editor"), edit,

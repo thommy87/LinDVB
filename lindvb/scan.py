@@ -142,7 +142,9 @@ def load_transponder_list(path):
 
 
 def scan_command(adapter, frontend, scan_file, out_file, lnb="UNIVERSAL",
-                 diseqc=-1, nit=False):
+                 diseqc=-1, nit=False, file_only=False):
+    """The dvbv5-scan call. *file_only*: search only the frequencies of *scan_file*,
+    not the ones the network announces on top."""
     tool = shutil.which("dvbv5-scan")
     if not tool:
         raise FileNotFoundError("dvbv5-scan not found. Install v4l-utils / dvb-tools.")
@@ -153,6 +155,8 @@ def scan_command(adapter, frontend, scan_file, out_file, lnb="UNIVERSAL",
         cmd += ["-S", str(diseqc)]
     if nit:
         cmd += ["-N"]
+    if file_only:
+        cmd += ["-F"]
     cmd.append(scan_file)
     return cmd
 

@@ -4027,3 +4027,60 @@ msgstr "امنح القائمة اسمًا خاصًا بها (وهو أيضًا 
 
 msgid "List renamed to {name}"
 msgstr "تمت إعادة تسمية القائمة إلى {name}"
+
+msgid "Add Channels…"
+msgstr "إضافة قنوات…"
+
+msgid "Add channels"
+msgstr "إضافة قنوات"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "ضبط تردد واحد يدويًا ومقارنة قنواته بقائمة القنوات: إضافة الجديدة وتحديث المتغيرة وإزالة القديمة."
+
+msgid "Unchanged"
+msgstr "بلا تغيير"
+
+msgid "Changed"
+msgstr "تغيّرت"
+
+msgid "No longer broadcast"
+msgstr "لم تعد تُبث"
+
+msgid "Bandwidth"
+msgstr "عرض النطاق"
+
+msgid "yes"
+msgstr "نعم"
+
+msgid "Add Channels"
+msgstr "إضافة قنوات"
+
+msgid "Tune Channel"
+msgstr "ضبط التردد"
+
+msgid "No tuner found."
+msgstr "لم يُعثر على موالف."
+
+msgid "Log"
+msgstr "السجل"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "‏PLP لمضاعِف DVB-T2 يرسل عدة منها؛ عند -1 يختار الموالف"
+
+msgid "Enter by hand"
+msgstr "إدخال يدوي"
+
+msgid "Tuning…"
+msgstr "جارٍ الضبط…"
+
+msgid "The tuner could not be used."
+msgstr "تعذّر استخدام الموالف."
+
+msgid "No channels found on this frequency."
+msgstr "لم يُعثر على قنوات على هذا التردد."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "بلا تغيير: {same}، تغيّرت: {changed}، جديدة: {new}، لم تعد تُبث: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "تم الحفظ: أُضيفت {added}، حُدّثت {updated}، أُزيلت {removed}."

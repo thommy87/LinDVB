@@ -214,6 +214,11 @@ expander.lv-section > title:hover { background: alpha(@lv_line, 0.05); }
 .lv-section-body { margin: 2px 6px 10px 22px; }
 .lv-field-label { color: @lv_text_dim; }
 .lv-hint { color: @lv_text_dim; font-size: 0.85em; }
+/* add channels: the channels of the frequency against the channel list */
+columnview.tune-result cell.tune-same { background-color: alpha(#b4b4b4, 0.30); }
+columnview.tune-result cell.tune-new { background-color: alpha(#2ec27e, 0.32); }
+columnview.tune-result cell.tune-changed { background-color: alpha(#ff8c1a, 0.36); }
+columnview.tune-result cell.tune-gone { background-color: alpha(#e01b24, 0.32); }
 .lv-toolstrip {
   background: alpha(@lv_line, 0.03); border-left: 1px solid alpha(@lv_line, 0.06);
   padding: 8px 6px;

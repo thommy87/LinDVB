@@ -4070,3 +4070,60 @@ msgstr "به فهرست نامی اختصاصی بدهید (نام گروه کا
 
 msgid "List renamed to {name}"
 msgstr "نام فهرست به {name} تغییر کرد"
+
+msgid "Add Channels…"
+msgstr "افزودن کانال…"
+
+msgid "Add channels"
+msgstr "افزودن کانال"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "تنظیم دستی یک بسامد و مقایسهٔ کانال‌های آن با فهرست کانال‌ها: افزودن کانال‌های تازه، به‌روزرسانی کانال‌های تغییرکرده و حذف کانال‌های قدیمی."
+
+msgid "Unchanged"
+msgstr "بدون تغییر"
+
+msgid "Changed"
+msgstr "تغییرکرده"
+
+msgid "No longer broadcast"
+msgstr "دیگر پخش نمی‌شود"
+
+msgid "Bandwidth"
+msgstr "پهنای باند"
+
+msgid "yes"
+msgstr "بله"
+
+msgid "Add Channels"
+msgstr "افزودن کانال"
+
+msgid "Tune Channel"
+msgstr "تنظیم بسامد"
+
+msgid "No tuner found."
+msgstr "گیرنده‌ای پیدا نشد."
+
+msgid "Log"
+msgstr "گزارش"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "‏PLP یک مالتی‌پلکس DVB-T2 که چند PLP می‌فرستد؛ با -1 گیرنده انتخاب می‌کند"
+
+msgid "Enter by hand"
+msgstr "ورود دستی"
+
+msgid "Tuning…"
+msgstr "در حال تنظیم…"
+
+msgid "The tuner could not be used."
+msgstr "استفاده از گیرنده ممکن نشد."
+
+msgid "No channels found on this frequency."
+msgstr "در این بسامد کانالی پیدا نشد."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "بدون تغییر: {same}، تغییرکرده: {changed}، تازه: {new}، دیگر پخش نمی‌شود: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "ذخیره شد: افزوده {added}، به‌روز {updated}، حذف {removed}."
