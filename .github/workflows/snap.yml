@@ -6,6 +6,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      store_tag:
+        description: "Released tag to build and publish to the Snap Store, e.g. v0.14.0 (empty: just build)"
+        type: string
+        default: ""
   workflow_call:
     inputs:
       release_id:
@@ -29,6 +34,8 @@ jobs:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.store_tag || '' }}
 
       - uses: snapcore/action-build@v1
         id: build
@@ -57,12 +64,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$GITHUB_REF_NAME" "${{ steps.build.outputs.snap }}" --clobber
 
-      # Snap Store: only for releases, and only once the store login is stored
-      # as the SNAPCRAFT_STORE_CREDENTIALS secret (see docs/STORES.md).
+      # Snap Store: only for releases (or a released tag given by hand), and only
+      # once the store login is stored as the SNAPCRAFT_STORE_CREDENTIALS secret
+      # (see docs/STORES.md).
       - name: Publish to the Snap Store
-        if: inputs.release_id != '' && env.SNAPCRAFT_STORE_CREDENTIALS != ''
+        if: (inputs.release_id != '' || inputs.store_tag != '') && env.SNAPCRAFT_STORE_CREDENTIALS != ''
         # a store review must not hold back the GitHub release
-        continue-on-error: true
+        continue-on-error: ${{ inputs.release_id != '' }}
         uses: snapcore/action-publish@v1
         with:
           snap: ${{ steps.build.outputs.snap }}
