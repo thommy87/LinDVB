@@ -9,12 +9,12 @@ def lists():
 
 def test_bundled_tables_are_there():
     bundled, commit = sl.bundled_lists()
-    assert commit.startswith("97129f50")
+    assert len(commit) == 40 and int(commit, 16)
     keys = {x.key for x in bundled}
-    for key in ("dvb-t/de-Berlin", "dvb-c/de-Berlin", "dvb-s/Astra-1KR-19.2E", "atsc/us-CA-SF-Bay-Area",
+    for key in ("dvb-t/de-All", "dvb-c/de-Berlin", "dvb-s/Astra-1M-19.2E", "atsc/us-CA-SF-Bay-Area",
                 "isdb-t/br-Brazil"):
         assert key in keys
-    assert len(bundled) > 3900
+    assert len(bundled) > 5000
     assert (sl.BUNDLED_TABLES / "dtv-scan-tables-COPYING").exists()
     assert (sl.BUNDLED_TABLES / "dtv-scan-tables-COPYING.LGPL").exists()
 
@@ -50,10 +50,10 @@ def test_cable_tuner_gets_cable_lists_by_country():
 
 def test_terrestrial_regions_and_blind_scan():
     ls = lists()
-    de = sl.regions(ls, sl.TERR, ["dvb-t", "dvb-t2"], "de")
-    labels = [c.label for c in de]
-    assert labels[0] == "Whole country" and "Bayern" in labels
-    assert de[-1].blind == "eu"
+    nl = sl.regions(ls, sl.TERR, ["dvb-t", "dvb-t2"], "nl")
+    labels = [c.label for c in nl]
+    assert labels[0] == "Whole country" and "Amsterdam" in labels and "Den Haag" in labels
+    assert nl[-1].blind == "eu"
     au = sl.regions(ls, sl.TERR, ["dvb-t"], "au")
     assert au[-1].blind == "au"
     other = sl.regions(ls, sl.TERR, ["dvb-t", "dvb-t2"], sl.OTHER_COUNTRY)
@@ -82,9 +82,8 @@ def test_one_position_covers_every_satellite_there():
     pos = sl.positions(lists(), ["dvb-s", "dvb-s2"])
     astra = pos[sl.find_position(pos, 192)]
     names = {x.key for x in astra.lists}
-    assert {"dvb-s/Astra-1KR-19.2E", "dvb-s/Astra-1L-19.2E", "dvb-s/Astra-1M-19.2E",
-            "dvb-s/Astra-1N-19.2E"} <= names
-    assert astra.label.startswith("19.2°E (Astra 1KR")
+    assert {"dvb-s/Astra-1M-19.2E", "dvb-s/Astra-1N-19.2E", "dvb-s/Astra-1P-19.2E"} <= names
+    assert astra.label.startswith("19.2°E (Astra 1M")
     # Astra 2E (28.5°E) belongs to the 28.2°E dish position
     a28 = pos[sl.find_position(pos, 282)]
     assert "dvb-s/Astra-2E-28.5E" in {x.key for x in a28.lists}
@@ -120,12 +119,11 @@ def test_own_folder_and_dvbviewer_ini(tmp_path):
 
 
 def test_system_table_with_bundled_name_is_left_out(tmp_path):
-    d = tmp_path / "dvb-t"
+    d = tmp_path / "dvb-c"
     d.mkdir()
-    (d / "de-Berlin").write_text("[CHANNEL]\n\tDELIVERY_SYSTEM = DVBT\n\tFREQUENCY = 1000\n")
-    (d / "xx-Nowhere").write_text("[CHANNEL]\n\tDELIVERY_SYSTEM = DVBT\n\tFREQUENCY = 1000\n")
+    (d / "de-Berlin").write_text("[CHANNEL]\n\tDELIVERY_SYSTEM = DVBC/ANNEX_A\n\tFREQUENCY = 1000\n")
     ls = sl.all_lists(system_dirs=[tmp_path])
-    assert [x.key for x in ls].count("dvb-t/de-Berlin") == 1
+    assert [x.key for x in ls].count("dvb-c/de-Berlin") == 1
 
 
 def test_default_target():

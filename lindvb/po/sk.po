@@ -3847,3 +3847,12 @@ msgstr "Tuner je obsadený (nahrávanie alebo analýza kanála).\n"
 
 msgid "Transponder lists"
 msgstr "Zoznamy transpondérov"
+
+msgid "Indonesia"
+msgstr "Indonézia"
+
+msgid "North Macedonia"
+msgstr "Severné Macedónsko"
+
+msgid "South Africa"
+msgstr "Južná Afrika"

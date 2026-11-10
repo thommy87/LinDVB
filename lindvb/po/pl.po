@@ -3847,3 +3847,12 @@ msgstr "Tuner jest zajęty (nagrywanie lub analiza kanału).\n"
 
 msgid "Transponder lists"
 msgstr "Listy transponderów"
+
+msgid "Indonesia"
+msgstr "Indonezja"
+
+msgid "North Macedonia"
+msgstr "Macedonia Północna"
+
+msgid "South Africa"
+msgstr "Republika Południowej Afryki"

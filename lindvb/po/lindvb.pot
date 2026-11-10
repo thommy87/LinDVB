@@ -5309,6 +5309,15 @@ msgstr ""
 msgid "Transponder lists"
 msgstr ""
 
+msgid "Indonesia"
+msgstr ""
+
+msgid "North Macedonia"
+msgstr ""
+
+msgid "South Africa"
+msgstr ""
+
 #: lindvb/compat.py
 msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
 msgstr ""

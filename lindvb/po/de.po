@@ -4208,6 +4208,15 @@ msgstr "{n} Sender"
 msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
 msgstr "Jede Liste hat ihre eigene Reihenfolge. Sortiert werden die Sender einer Liste in der Senderliste: Liste auswählen, dann die Sender ziehen oder das Rechtsklickmenü nutzen."
 
+msgid "Indonesia"
+msgstr "Indonesien"
+
+msgid "North Macedonia"
+msgstr "Nordmazedonien"
+
+msgid "South Africa"
+msgstr "Südafrika"
+
 #: lindvb/compat.py
 msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
 msgstr "LinDVB findet diese GStreamer-Elemente nicht: {elements}. Live-TV oder einige Sender lassen sich dann eventuell nicht abspielen."

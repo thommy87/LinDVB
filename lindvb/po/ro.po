@@ -3847,3 +3847,12 @@ msgstr "Tunerul este ocupat (înregistrare sau analiză de canal).\n"
 
 msgid "Transponder lists"
 msgstr "Liste de transpondere"
+
+msgid "Indonesia"
+msgstr "Indonezia"
+
+msgid "North Macedonia"
+msgstr "Macedonia de Nord"
+
+msgid "South Africa"
+msgstr "Africa de Sud"

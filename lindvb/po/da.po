@@ -3847,3 +3847,12 @@ msgstr "Tuneren er optaget (optagelse eller kanalanalyse).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderlister"
+
+msgid "Indonesia"
+msgstr "Indonesien"
+
+msgid "North Macedonia"
+msgstr "Nordmakedonien"
+
+msgid "South Africa"
+msgstr "Sydafrika"

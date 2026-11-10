@@ -3890,3 +3890,12 @@ msgstr "تیونر مشغول است (ضبط یا تحلیل کانال).\n"
 
 msgid "Transponder lists"
 msgstr "فهرست‌های ترنسپاندر"
+
+msgid "Indonesia"
+msgstr "اندونزی"
+
+msgid "North Macedonia"
+msgstr "مقدونیه شمالی"
+
+msgid "South Africa"
+msgstr "آفریقای جنوبی"
