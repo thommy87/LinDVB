@@ -3937,3 +3937,12 @@ msgstr "Naladí sa pri každom spustení bez ohľadu na to, ktorý kanál ste sl
 
 msgid "No channel (black screen)"
 msgstr "Žiadny kanál (čierna obrazovka)"
+
+msgid "Lock"
+msgstr "Zámok"
+
+msgid "Search this satellite"
+msgstr "Prehľadať tento satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Začiarknite satelity, ktoré sa majú prehľadať."

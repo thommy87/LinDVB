@@ -3937,3 +3937,12 @@ msgstr "Jintgħażel f'kull bidu, ikun liema jkun l-istazzjon li rajt l-aħħar.
 
 msgid "No channel (black screen)"
 msgstr "L-ebda stazzjon (skrin iswed)"
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Fittex f’dan is-satellita"
+
+msgid "Tick the satellites to search."
+msgstr "Immarka s-satelliti biex tfittex."

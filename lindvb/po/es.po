@@ -3937,3 +3937,12 @@ msgstr "Se sintoniza en cada inicio, sea cual sea el último canal que vio."
 
 msgid "No channel (black screen)"
 msgstr "Ningún canal (pantalla negra)"
+
+msgid "Lock"
+msgstr "Enganche"
+
+msgid "Search this satellite"
+msgstr "Buscar en este satélite"
+
+msgid "Tick the satellites to search."
+msgstr "Marque los satélites en los que buscar."

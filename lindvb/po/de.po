@@ -4339,3 +4339,12 @@ msgstr "Wird bei jedem Start eingeschaltet, egal welchen Sender Sie zuletzt gese
 
 msgid "No channel (black screen)"
 msgstr "Kein Sender (schwarzes Bild)"
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Diesen Satelliten durchsuchen"
+
+msgid "Tick the satellites to search."
+msgstr "Haken Sie die Satelliten an, die durchsucht werden sollen."

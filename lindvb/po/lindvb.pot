@@ -5448,4 +5448,15 @@ msgstr ""
 
 #: lindvb/ui/dialogs.py
 msgid "No channel (black screen)"
+
+#: lindvb/ui/scan.py
+msgid "Lock"
+msgstr ""
+
+#: lindvb/ui/scan.py
+msgid "Search this satellite"
+msgstr ""
+
+#: lindvb/ui/scan.py
+msgid "Tick the satellites to search."
 msgstr ""

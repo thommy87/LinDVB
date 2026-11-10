@@ -3937,3 +3937,12 @@ msgstr "Ugađa se pri svakom pokretanju, bez obzira na to koji ste kanal posljed
 
 msgid "No channel (black screen)"
 msgstr "Bez kanala (crni zaslon)"
+
+msgid "Lock"
+msgstr "Zaključano"
+
+msgid "Search this satellite"
+msgstr "Pretraži ovaj satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Označite satelite za pretraživanje."

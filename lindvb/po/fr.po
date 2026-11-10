@@ -3937,3 +3937,12 @@ msgstr "Réglée à chaque démarrage, quelle que soit la dernière chaîne rega
 
 msgid "No channel (black screen)"
 msgstr "Aucune chaîne (écran noir)"
+
+msgid "Lock"
+msgstr "Verrouillé"
+
+msgid "Search this satellite"
+msgstr "Rechercher sur ce satellite"
+
+msgid "Tick the satellites to search."
+msgstr "Cochez les satellites à rechercher."

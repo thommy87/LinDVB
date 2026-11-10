@@ -14,7 +14,9 @@ from gi.repository import Gio, GLib, Gtk
 
 from .. import scanlists as sl
 from ..channels import parse_dvbv5
-from ..scan import find_adapters, is_virtual_adapter, scan_command, write_scan_file
+from ..scan import (find_adapters, is_virtual_adapter, scan_command, signal_meter,
+                    write_scan_file)
+from .charts import BAD, GOOD, OTHER, Bar, level_colour
 from .common import dropdown, labeled, scrolled
 from ..i18n import _
 
@@ -146,10 +148,29 @@ class ScanWindow(Gtk.Window):
         for w in (self.start_btn, self.stop_btn, self.progress):
             bar.append(w)
 
+        # signal of the transponder being searched (shown while searching)
+        self.meter = Gtk.Box(spacing=8, margin_start=12, margin_end=12, visible=False)
+        self.lock_label = Gtk.Label(xalign=0, width_chars=12)
+        self.meter.append(self.lock_label)
+        self.meter_bars = {}
+        for key, title in (("level", _("Signal")), ("quality", _("Signal quality"))):
+            self.meter.append(Gtk.Label(label=title, css_classes=["dim-label"]))
+            meter_bar = Bar(height=8)
+            meter_bar.set_valign(Gtk.Align.CENTER)
+            value = Gtk.Label(xalign=1, width_chars=10)
+            self.meter.append(meter_bar)
+            self.meter.append(value)
+            self.meter_bars[key] = (meter_bar, value)
+        self._meter_source = None
+        self._meter_fe = None
+        self._meter_timer = 0
+        self.connect("close-request", lambda *_a: self._meter_stop() or False)
+
         self.log = Gtk.TextView(editable=False, monospace=True, cursor_visible=False)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         box.append(g)
         box.append(bar)
+        box.append(self.meter)
         sw = scrolled(self.log)
         sw.set_margin_start(12); sw.set_margin_end(12); sw.set_margin_bottom(12)
         sw.set_size_request(-1, 140)
@@ -256,13 +277,16 @@ class ScanWindow(Gtk.Window):
         saved = self.memory.get(sl.SAT) or [[-1, DEFAULT_POSITION]]
         if self.virtual:
             saved = [[-1, DEFAULT_POSITION]]
-        for port, pos in saved:
-            self._add_sat_row(port, pos, labels)
+        for item in saved:          # [port, position] or [port, position, searched]
+            self._add_sat_row(item[0], item[1], labels, bool(item[2]) if len(item) > 2 else True)
 
-    def _add_sat_row(self, port=None, pos=None, labels=None):
+    def _add_sat_row(self, port=None, pos=None, labels=None, active=True):
         if labels is None:
             labels = [c.label for c in self.position_choices] or [_("(no lists found)")]
         row = Gtk.Box(spacing=6)
+        check = Gtk.CheckButton(active=active, valign=Gtk.Align.CENTER,
+                                tooltip_text=_("Search this satellite"))
+        check.connect("toggled", lambda *_a: self._show_info())
         dd_port = dropdown(DISEQC)
         dd_port.set_tooltip_text(_("DiSEqC port"))
         if port is None:                 # a new row: the next free port
@@ -281,10 +305,11 @@ class ScanWindow(Gtk.Window):
         i = sl.find_position(self.position_choices, pos)
         dd_pos.set_selected(max(i, 0))
         rm = Gtk.Button(icon_name="list-remove-symbolic", tooltip_text=_("Remove"))
-        entry = (row, dd_port, dd_pos, rm)
+        entry = (row, dd_port, dd_pos, rm, check)
         rm.connect("clicked", lambda *_a: self._remove_sat_row(entry))
+        dd_port.connect("notify::selected", lambda *_a: self._show_info())
         dd_pos.connect("notify::selected", lambda *_a: self._show_info())
-        for w in (dd_port, dd_pos, rm):
+        for w in (check, dd_port, dd_pos, rm):
             row.append(w)
         self.sat_box.append(row)
         self.sat_rows.append(entry)
@@ -298,8 +323,10 @@ class ScanWindow(Gtk.Window):
         self._update_sat_rows()
 
     def _update_sat_rows(self):
+        many = len(self.sat_rows) > 1
         for r in self.sat_rows:
-            r[3].set_visible(len(self.sat_rows) > 1)
+            r[3].set_visible(many)
+            r[4].set_visible(many)      # with one satellite there is nothing to choose
         self._show_info()
 
     # -- cable and terrestrial ----------------------------------------------------------
@@ -347,13 +374,21 @@ class ScanWindow(Gtk.Window):
 
     # -- what will be searched --------------------------------------------------------
 
-    def _sat_jobs(self):
+    def _sat_jobs(self, searched_only=False):
+        """(position choice, DiSEqC port) of every satellite row, or of the ticked ones."""
         jobs = []
-        for _row, dd_port, dd_pos, _rm in self.sat_rows:
+        single = len(self.sat_rows) == 1
+        for _row, dd_port, dd_pos, _rm, check in self.sat_rows:
+            if searched_only and not (single or check.get_active()):
+                continue
             i = dd_pos.get_selected()
             if i < len(self.position_choices):
                 jobs.append((self.position_choices[i], dd_port.get_selected() - 1))
         return jobs
+
+    def _ports_clash(self):
+        ports = [p for _c, p in self._sat_jobs()]
+        return len(ports) > 1 and (-1 in ports or len(set(ports)) < len(ports))
 
     def _region_choice(self):
         i = self.region_dd[self.family].get_selected()
@@ -362,10 +397,11 @@ class ScanWindow(Gtk.Window):
     def _show_info(self):
         text = ""
         if self.family == sl.SAT:
-            jobs = self._sat_jobs()
-            ports = [p for _c, p in jobs]
-            if len(jobs) > 1 and (-1 in ports or len(set(ports)) < len(ports)):
+            jobs = self._sat_jobs(searched_only=True)
+            if self._ports_clash():
                 text = _("Each satellite needs a DiSEqC port of its own.")
+            elif not jobs and self.sat_rows:
+                text = _("Tick the satellites to search.")
             elif jobs:
                 n = sum(len(sl.satellite_list(c, self.systems).transponders) for c, _p in jobs)
                 text = _("{n} transponders from the lists of these positions; "
@@ -389,7 +425,7 @@ class ScanWindow(Gtk.Window):
 
     def _default_target(self):
         if self.family == sl.SAT:
-            jobs = self._sat_jobs()
+            jobs = self._sat_jobs(searched_only=True)
             return sl.default_target(jobs[0][0], sl.SAT) if len(jobs) == 1 else ""
         c = self._region_choice()
         return sl.default_target(c, self.family) if c else ""
@@ -399,7 +435,12 @@ class ScanWindow(Gtk.Window):
         if self.virtual:
             return
         if self.family == sl.SAT:
-            mem[sl.SAT] = [[p, c.position] for c, p in self._sat_jobs()]
+            mem[sl.SAT] = []
+            for _row, dd_port, dd_pos, _rm, check in self.sat_rows:
+                i = dd_pos.get_selected()
+                if i < len(self.position_choices):
+                    mem[sl.SAT].append([dd_port.get_selected() - 1,
+                                        self.position_choices[i].position, check.get_active()])
         else:
             codes = getattr(self, "country_codes", [])
             i = self.country_dd[self.family].get_selected()
@@ -451,13 +492,15 @@ class ScanWindow(Gtk.Window):
         root = self.root.get_text().strip()
         jobs = []
         if self.family == sl.SAT:
-            sat_jobs = self._sat_jobs()
-            ports = [p for _c, p in sat_jobs]
-            if not sat_jobs:
+            if not self._sat_jobs():
                 self.log_line(_("No transponder list selected. Install dtv-scan-tables or add a folder.\n"))
                 return
-            if len(sat_jobs) > 1 and (-1 in ports or len(set(ports)) < len(ports)):
+            if self._ports_clash():
                 self.log_line(_("Each satellite needs a DiSEqC port of its own.") + "\n")
+                return
+            sat_jobs = self._sat_jobs(searched_only=True)
+            if not sat_jobs:
+                self.log_line(_("Tick the satellites to search.") + "\n")
                 return
             for n, (choice, port) in enumerate(sat_jobs):
                 tpl = sl.satellite_list(choice, self.systems)
@@ -491,6 +534,7 @@ class ScanWindow(Gtk.Window):
         if self.satip is not None:
             self._start_satip(jobs)
             return
+        self._meter_start_frontend(a, f)
         if self.family == sl.SAT and self.unicable is not None:
             self._start_single_cable(jobs, a, f)
             return
@@ -513,6 +557,7 @@ class ScanWindow(Gtk.Window):
         except FileNotFoundError as e:
             self.log_line(f"{e}\n")
             self.jobs = []
+            self._meter_stop()
             return
         if job["tpl"] is not None:
             self.log_line(f"\n== {job['root']} ==\n")
@@ -532,9 +577,11 @@ class ScanWindow(Gtk.Window):
         work = [(scscan.transponders(j["tpl"]), j) for j in jobs]
         work = [(tps, j) for tps, j in work if tps]
         if not work:
+            self._meter_stop()
             self.log_line(_("This transponder list has no satellite transponders.\n"))
             return
         if a in self.app.tuners.captures:
+            self._meter_stop()
             self.log_line(_("The tuner is busy (recording or channel analysis).\n"))
             return
         uc = self.unicable
@@ -595,6 +642,8 @@ class ScanWindow(Gtk.Window):
             self.log_line(_("This transponder list has no transponders for this tuner.\n"))
             return
         prof = self.satip
+        self._satip_status = {}
+        self._meter_start(lambda: self._satip_status)
         self.total, self.done = sum(len(tps) for tps, _j in work), 0
         self._cancel = False
         self.log_line(f"SAT>IP {prof.get('server_label') or prof['host']}\n")
@@ -612,7 +661,8 @@ class ScanWindow(Gtk.Window):
                     break
                 log(f"== {job['root']} ==")
                 chans += satip.scan(prof, tps, job["diseqc"], job["root"], log,
-                                    cancelled=lambda: self._cancel)
+                                    cancelled=lambda: self._cancel,
+                                    on_status=lambda st: setattr(self, "_satip_status", st))
             GLib.idle_add(lambda: (self._single_cable_done(chans), False)[1])
 
         threading.Thread(target=run, daemon=True, name="satip-scan").start()
@@ -628,7 +678,69 @@ class ScanWindow(Gtk.Window):
             return False
         GLib.idle_add(show)
 
+    # -- signal meter -----------------------------------------------------------------
+
+    def _meter_start_frontend(self, adapter, frontend):
+        """Read the signal of a local tuner; read-only, so the search keeps the frontend."""
+        from ..festats import Frontend
+        self._meter_stop()
+        fe = Frontend(adapter, frontend)
+        if not fe.available:
+            return
+        self._meter_fe = fe
+        self._meter_start(fe.read)
+
+    def _meter_start(self, source):
+        if self._meter_timer:
+            GLib.source_remove(self._meter_timer)
+        self._meter_source = source
+        self._meter_show({})
+        self.meter.set_visible(True)
+        self._meter_timer = GLib.timeout_add(250, self._meter_tick)
+
+    def _meter_tick(self):
+        if self._meter_source is None:
+            self._meter_timer = 0
+            return False
+        try:
+            stats = self._meter_source()
+        except OSError:
+            stats = {}
+        self._meter_show(stats)
+        return True
+
+    def _meter_show(self, stats):
+        m = signal_meter(stats)
+        lock = m["lock"]
+        if lock is None:
+            colour, text = OTHER, "–"
+        elif lock:
+            colour, text = GOOD, _("Lock")
+        else:
+            colour, text = BAD, _("No signal")
+        self.lock_label.set_markup(f'<span foreground="{colour}">\u25cf</span> '
+                                   f'{GLib.markup_escape_text(text)}')
+        for key, (meter_bar, value) in self.meter_bars.items():
+            fraction, label = m[key] or (0.0, "–")
+            if key == "quality":
+                colour = level_colour(fraction) if lock is not False else OTHER
+            else:
+                colour = "#119CFF" if lock is not False else OTHER
+            meter_bar.set_value(fraction, colour)
+            value.set_text(label)
+
+    def _meter_stop(self):
+        """Stop reading the signal; the last values stay on screen."""
+        self._meter_source = None
+        if self._meter_timer:
+            GLib.source_remove(self._meter_timer)
+            self._meter_timer = 0
+        if self._meter_fe is not None:
+            self._meter_fe.close()
+            self._meter_fe = None
+
     def _single_cable_done(self, chans):
+        self._meter_stop()
         self.start_btn.set_sensitive(True)
         self.stop_btn.set_sensitive(False)
         if not chans:
@@ -665,6 +777,7 @@ class ScanWindow(Gtk.Window):
         self._run_next()
 
     def _all_done(self):
+        self._meter_stop()
         self.start_btn.set_sensitive(True)
         self.stop_btn.set_sensitive(False)
         found, self.found = getattr(self, "found", []), []

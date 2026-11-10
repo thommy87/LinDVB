@@ -3937,3 +3937,12 @@ msgstr "Häälestatakse igal käivitamisel, olenemata sellest, millist kanalit v
 
 msgid "No channel (black screen)"
 msgstr "Kanalit pole (must ekraan)"
+
+msgid "Lock"
+msgstr "Lukustus"
+
+msgid "Search this satellite"
+msgstr "Otsi sellelt satelliidilt"
+
+msgid "Tick the satellites to search."
+msgstr "Märkige satelliidid, millelt otsida."

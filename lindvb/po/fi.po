@@ -3937,3 +3937,12 @@ msgstr "Viritetään joka käynnistyksessä riippumatta siitä, mitä kanavaa ka
 
 msgid "No channel (black screen)"
 msgstr "Ei kanavaa (musta ruutu)"
+
+msgid "Lock"
+msgstr "Lukitus"
+
+msgid "Search this satellite"
+msgstr "Hae tästä satelliitista"
+
+msgid "Tick the satellites to search."
+msgstr "Valitse satelliitit, joista haetaan."

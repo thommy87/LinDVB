@@ -3937,3 +3937,12 @@ msgstr "Acordat la fiecare pornire, indiferent de canalul urmărit ultima dată.
 
 msgid "No channel (black screen)"
 msgstr "Niciun canal (ecran negru)"
+
+msgid "Lock"
+msgstr "Blocat"
+
+msgid "Search this satellite"
+msgstr "Caută pe acest satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Bifați sateliții de căutat."

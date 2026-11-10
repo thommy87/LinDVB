@@ -4009,3 +4009,12 @@ msgstr "Sintonizzato a ogni avvio, qualunque sia l'ultimo canale guardato."
 
 msgid "No channel (black screen)"
 msgstr "Nessun canale (schermo nero)"
+
+msgid "Lock"
+msgstr "Aggancio"
+
+msgid "Search this satellite"
+msgstr "Cerca su questo satellite"
+
+msgid "Tick the satellites to search."
+msgstr "Spunta i satelliti su cui cercare."

@@ -181,3 +181,41 @@ def is_virtual_adapter(adapter, frontend=0):
         return "vidtv" in (dev / "modalias").read_text()
     except OSError:
         return False
+
+
+def signal_meter(stats):
+    """What the search shows of the signal: {"lock": bool or None,
+    "level": (fraction, text) or None, "quality": (fraction, text) or None}.
+
+    *stats* is either lindvb.festats.Frontend.read() (signal_dbm / signal_rel,
+    cnr_db / cnr_rel, status) or a SAT>IP status (signal, snr 0..65535, lock).
+    """
+    stats = stats or {}
+    out = {"lock": None, "level": None, "quality": None}
+    status = stats.get("status")
+    if status is not None:
+        out["lock"] = bool(status.get("lock"))
+    elif "lock" in stats:
+        out["lock"] = bool(stats["lock"])
+
+    def clamp(v):
+        return max(0.0, min(1.0, v))
+    if stats.get("signal_dbm") is not None:          # -90 dBm (none) .. -20 dBm (strong)
+        dbm = stats["signal_dbm"]
+        out["level"] = (clamp((dbm + 90) / 70), f"{dbm:.1f} dBm")
+    elif stats.get("signal_rel") is not None:
+        r = clamp(stats["signal_rel"])
+        out["level"] = (r, f"{round(r * 100)} %")
+    elif stats.get("signal") is not None:
+        r = clamp(stats["signal"] / 65535)
+        out["level"] = (r, f"{round(r * 100)} %")
+    if stats.get("cnr_db") is not None:              # 15 dB C/N counts as excellent
+        cnr = stats["cnr_db"]
+        out["quality"] = (clamp(cnr / 15), f"{cnr:.1f} dB")
+    elif stats.get("cnr_rel") is not None:
+        r = clamp(stats["cnr_rel"])
+        out["quality"] = (r, f"{round(r * 100)} %")
+    elif stats.get("snr") is not None:
+        r = clamp(stats["snr"] / 65535)
+        out["quality"] = (r, f"{round(r * 100)} %")
+    return out

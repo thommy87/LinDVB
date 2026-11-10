@@ -3937,3 +3937,12 @@ msgstr "Ställs in vid varje start, oavsett vilken kanal du såg senast."
 
 msgid "No channel (black screen)"
 msgstr "Ingen kanal (svart skärm)"
+
+msgid "Lock"
+msgstr "Låst"
+
+msgid "Search this satellite"
+msgstr "Sök på den här satelliten"
+
+msgid "Tick the satellites to search."
+msgstr "Markera satelliterna som ska sökas."

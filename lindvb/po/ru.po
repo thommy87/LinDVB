@@ -3937,3 +3937,12 @@ msgstr "Включается при каждом запуске, независ�
 
 msgid "No channel (black screen)"
 msgstr "Без канала (чёрный экран)"
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Искать на этом спутнике"
+
+msgid "Tick the satellites to search."
+msgstr "Отметьте спутники для поиска."

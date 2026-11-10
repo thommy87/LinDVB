@@ -3937,3 +3937,12 @@ msgstr "Włączany przy każdym uruchomieniu, niezależnie od ostatnio oglądane
 
 msgid "No channel (black screen)"
 msgstr "Brak kanału (czarny ekran)"
+
+msgid "Lock"
+msgstr "Synchronizacja"
+
+msgid "Search this satellite"
+msgstr "Przeszukaj tego satelitę"
+
+msgid "Tick the satellites to search."
+msgstr "Zaznacz satelity do przeszukania."

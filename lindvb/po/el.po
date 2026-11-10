@@ -3937,3 +3937,12 @@ msgstr "Συντονίζεται σε κάθε εκκίνηση, όποιο κα
 
 msgid "No channel (black screen)"
 msgstr "Κανένα κανάλι (μαύρη οθόνη)"
+
+msgid "Lock"
+msgstr "Κλείδωμα"
+
+msgid "Search this satellite"
+msgstr "Αναζήτηση σε αυτόν τον δορυφόρο"
+
+msgid "Tick the satellites to search."
+msgstr "Επιλέξτε τους δορυφόρους για αναζήτηση."

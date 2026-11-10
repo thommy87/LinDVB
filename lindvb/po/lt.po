@@ -3937,3 +3937,12 @@ msgstr "Įjungiamas kiekvieną kartą paleidus, nesvarbu, kurį kanalą žiūrė
 
 msgid "No channel (black screen)"
 msgstr "Jokio kanalo (juodas ekranas)"
+
+msgid "Lock"
+msgstr "Užrakinta"
+
+msgid "Search this satellite"
+msgstr "Ieškoti šiame palydove"
+
+msgid "Tick the satellites to search."
+msgstr "Pažymėkite palydovus, kuriuose ieškoti."

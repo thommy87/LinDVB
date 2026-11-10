@@ -3980,3 +3980,12 @@ msgstr "در هر بار شروع تنظیم می‌شود، فارغ از ای�
 
 msgid "No channel (black screen)"
 msgstr "بدون کانال (صفحهٔ سیاه)"
+
+msgid "Lock"
+msgstr "قفل"
+
+msgid "Search this satellite"
+msgstr "جستجو در این ماهواره"
+
+msgid "Tick the satellites to search."
+msgstr "ماهواره‌هایی را که باید جستجو شوند علامت بزنید."

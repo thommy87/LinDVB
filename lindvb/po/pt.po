@@ -3937,3 +3937,12 @@ msgstr "Sintonizado em cada início, seja qual for o último canal que viu."
 
 msgid "No channel (black screen)"
 msgstr "Nenhum canal (ecrã preto)"
+
+msgid "Lock"
+msgstr "Sincronizado"
+
+msgid "Search this satellite"
+msgstr "Pesquisar neste satélite"
+
+msgid "Tick the satellites to search."
+msgstr "Marque os satélites a pesquisar."

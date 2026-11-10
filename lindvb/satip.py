@@ -632,9 +632,10 @@ def _fetch(url):
 # -- channel search ----------------------------------------------------------------
 
 def scan(profile, tps, diseqc=-1, root="", log=print, cancelled=lambda: False,
-         lock_wait=4.0, read_wait=8.0, session_factory=None):
+         lock_wait=4.0, read_wait=8.0, session_factory=None, on_status=None):
     """Search the transponders *tps* (lindvb.scscan._Tp like objects) on a SAT>IP tuner.
 
+    *on_status(dict)* gets the server's signal reports (see :func:`parse_status`).
     Returns the channels found (lindvb.channels.Channel).
     """
     from .scscan import TransponderScan
@@ -660,7 +661,8 @@ def scan(profile, tps, diseqc=-1, root="", log=print, cancelled=lambda: False,
                     state["new"] = True
 
         sess = make(profile["host"], profile.get("port", DEFAULT_PORT),
-                    profile.get("transport", "udp"), on_data=data)
+                    profile.get("transport", "udp"), on_data=data,
+                    **({"on_status": on_status} if on_status else {}))
         try:
             sess.open(tuning_query(tp, sorted(ts.wanted_pids())))
         except SatipError as e:

@@ -3937,3 +3937,12 @@ msgstr "Wordt bij elke start afgestemd, welke zender u ook het laatst bekeek."
 
 msgid "No channel (black screen)"
 msgstr "Geen zender (zwart beeld)"
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Deze satelliet doorzoeken"
+
+msgid "Tick the satellites to search."
+msgstr "Vink de satellieten aan die doorzocht moeten worden."

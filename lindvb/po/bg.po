@@ -3937,3 +3937,12 @@ msgstr "Настройва се при всяко стартиране, неза
 
 msgid "No channel (black screen)"
 msgstr "Без канал (черен екран)"
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Търсене в този сателит"
+
+msgid "Tick the satellites to search."
+msgstr "Отметнете сателитите за търсене."

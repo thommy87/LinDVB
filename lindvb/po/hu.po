@@ -3937,3 +3937,12 @@ msgstr "Minden indításkor ez lesz behangolva, bármelyik csatornát nézte uto
 
 msgid "No channel (black screen)"
 msgstr "Nincs csatorna (fekete képernyő)"
+
+msgid "Lock"
+msgstr "Szinkron"
+
+msgid "Search this satellite"
+msgstr "Keresés ezen a műholdon"
+
+msgid "Tick the satellites to search."
+msgstr "Jelölje be a keresendő műholdakat."

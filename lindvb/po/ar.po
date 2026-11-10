@@ -3937,3 +3937,12 @@ msgstr "يتم ضبطها عند كل بدء، أيًا كانت القناة ا
 
 msgid "No channel (black screen)"
 msgstr "بلا قناة (شاشة سوداء)"
+
+msgid "Lock"
+msgstr "قفل"
+
+msgid "Search this satellite"
+msgstr "البحث في هذا القمر الصناعي"
+
+msgid "Tick the satellites to search."
+msgstr "حدّد الأقمار الصناعية المراد البحث فيها."

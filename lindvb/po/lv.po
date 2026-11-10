@@ -3937,3 +3937,12 @@ msgstr "Tiek noskaņots katrā palaišanā neatkarīgi no tā, kuru kanālu skat
 
 msgid "No channel (black screen)"
 msgstr "Bez kanāla (melns ekrāns)"
+
+msgid "Lock"
+msgstr "Fiksēts"
+
+msgid "Search this satellite"
+msgstr "Meklēt šajā satelītā"
+
+msgid "Tick the satellites to search."
+msgstr "Atzīmējiet satelītus, kuros meklēt."
