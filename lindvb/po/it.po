@@ -3980,6 +3980,7 @@ msgstr "Il server SAT>IP controlla l’LNB e il commutatore DiSEqC; la porta DiS
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Questo elenco di transponder non ha transponder per questo sintonizzatore.\n"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Aggancio"
 
@@ -3988,3 +3989,34 @@ msgstr "Cerca su questo satellite"
 
 msgid "Tick the satellites to search."
 msgstr "Spunta i satelliti su cui cercare."
+=======
+msgid "At start"
+msgstr "All'avvio"
+
+msgid "Channel at start"
+msgstr "Canale all'avvio"
+
+msgid "Last channel watched"
+msgstr "Ultimo canale guardato"
+
+msgid "First channel of the current list"
+msgstr "Primo canale dell'elenco attuale"
+
+msgid "A chosen channel"
+msgstr "Un canale scelto"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "L'elenco attuale è l'elenco dei canali come l'hai lasciato: TV o radio, filtro, gruppo e ordinamento."
+
+msgid "Channel list"
+msgstr "Elenco canali"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Tutti i canali o uno dei tuoi elenchi di preferiti."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Sintonizzato a ogni avvio, qualunque sia l'ultimo canale guardato."
+
+msgid "No channel (black screen)"
+msgstr "Nessun canale (schermo nero)"
+>>>>>>> origin/main

@@ -132,7 +132,8 @@ class LinDVBApp(Gtk.Application):
         if not self.window:
             self.window = MainWindow(self)
         self.window.present()
-        if not self._plugins_checked:
+        first_start = not self._plugins_checked
+        if first_start:
             self._plugins_checked = True
             self._report_missing_plugins()
         target = None
@@ -140,8 +141,12 @@ class LinDVBApp(Gtk.Application):
             s = self._start_channel
             target = next((c for c in self.db.channels if c.name.lower() == s.lower() or
                            str(c.number) == s), None)
-        elif self.settings.get("last_channel"):
-            target = self.db.by_key(self.settings["last_channel"])
+        elif first_start:
+            # Preferences › Channels › At start: the last channel, the first of
+            # the list or a chosen one; only at the start, not when LinDVB is
+            # started again while it runs
+            from .channels import startup_channel
+            target = startup_channel(self.settings, self.db, self.window.first_in_list())
         if target:
             self.window.zap(target)
 

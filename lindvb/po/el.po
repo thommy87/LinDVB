@@ -3908,6 +3908,7 @@ msgstr "Ο διακομιστής SAT>IP ελέγχει το LNB και τον �
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Αυτή η λίστα αναμεταδοτών δεν έχει αναμεταδότες για αυτόν τον δέκτη.\n"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Κλείδωμα"
 
@@ -3916,3 +3917,34 @@ msgstr "Αναζήτηση σε αυτόν τον δορυφόρο"
 
 msgid "Tick the satellites to search."
 msgstr "Επιλέξτε τους δορυφόρους για αναζήτηση."
+=======
+msgid "At start"
+msgstr "Κατά την εκκίνηση"
+
+msgid "Channel at start"
+msgstr "Κανάλι κατά την εκκίνηση"
+
+msgid "Last channel watched"
+msgstr "Τελευταίο κανάλι που παρακολουθήσατε"
+
+msgid "First channel of the current list"
+msgstr "Πρώτο κανάλι της τρέχουσας λίστας"
+
+msgid "A chosen channel"
+msgstr "Ένα επιλεγμένο κανάλι"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Η τρέχουσα λίστα είναι η λίστα καναλιών όπως την αφήσατε: TV ή ραδιόφωνο, φίλτρο, ομάδα και ταξινόμηση."
+
+msgid "Channel list"
+msgstr "Λίστα καναλιών"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Όλα τα κανάλια ή μία από τις λίστες αγαπημένων σας."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Συντονίζεται σε κάθε εκκίνηση, όποιο κανάλι κι αν παρακολουθήσατε τελευταίο."
+
+msgid "No channel (black screen)"
+msgstr "Κανένα κανάλι (μαύρη οθόνη)"
+>>>>>>> origin/main

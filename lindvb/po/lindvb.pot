@@ -5410,6 +5410,7 @@ msgstr ""
 msgid "GStreamer plugins are missing"
 msgstr ""
 
+<<<<<<< HEAD
 #: lindvb/ui/scan.py
 msgid "Lock"
 msgstr ""
@@ -5420,4 +5421,44 @@ msgstr ""
 
 #: lindvb/ui/scan.py
 msgid "Tick the satellites to search."
+=======
+#: lindvb/ui/dialogs.py
+msgid "At start"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Channel at start"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Last channel watched"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "First channel of the current list"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "A chosen channel"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Channel list"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "All channels or one of your favourites lists."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "No channel (black screen)"
+>>>>>>> origin/main
 msgstr ""

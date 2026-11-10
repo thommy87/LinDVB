@@ -3908,6 +3908,7 @@ msgstr "SAT>IP-serveren styrer LNB’en og DiSEqC-omskifteren; DiSEqC-porten væ
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Denne transponderliste har ingen transpondere til denne tuner.\n"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Lås"
 
@@ -3916,3 +3917,34 @@ msgstr "Søg på denne satellit"
 
 msgid "Tick the satellites to search."
 msgstr "Sæt flueben ved de satellitter, der skal søges på."
+=======
+msgid "At start"
+msgstr "Ved start"
+
+msgid "Channel at start"
+msgstr "Kanal ved start"
+
+msgid "Last channel watched"
+msgstr "Senest sete kanal"
+
+msgid "First channel of the current list"
+msgstr "Første kanal i den aktuelle liste"
+
+msgid "A chosen channel"
+msgstr "En valgt kanal"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Den aktuelle liste er kanallisten, som du forlod den: TV eller radio, filter, gruppe og sortering."
+
+msgid "Channel list"
+msgstr "Kanalliste"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Alle kanaler eller en af dine favoritlister."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Stilles ind ved hver start, uanset hvilken kanal du så sidst."
+
+msgid "No channel (black screen)"
+msgstr "Ingen kanal (sort skærm)"
+>>>>>>> origin/main

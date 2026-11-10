@@ -3908,6 +3908,7 @@ msgstr "Serverul SAT>IP controlează LNB-ul și comutatorul DiSEqC; portul DiSEq
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Această listă de transpondere nu are transpondere pentru acest tuner.\n"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Blocat"
 
@@ -3916,3 +3917,34 @@ msgstr "Caută pe acest satelit"
 
 msgid "Tick the satellites to search."
 msgstr "Bifați sateliții de căutat."
+=======
+msgid "At start"
+msgstr "La pornire"
+
+msgid "Channel at start"
+msgstr "Canal la pornire"
+
+msgid "Last channel watched"
+msgstr "Ultimul canal urmărit"
+
+msgid "First channel of the current list"
+msgstr "Primul canal din lista curentă"
+
+msgid "A chosen channel"
+msgstr "Un canal ales"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Lista curentă este lista de canale așa cum ați lăsat-o: TV sau radio, filtru, grup și ordine de sortare."
+
+msgid "Channel list"
+msgstr "Listă de canale"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Toate canalele sau una dintre listele dvs. de favorite."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Acordat la fiecare pornire, indiferent de canalul urmărit ultima dată."
+
+msgid "No channel (black screen)"
+msgstr "Niciun canal (ecran negru)"
+>>>>>>> origin/main

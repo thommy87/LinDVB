@@ -3908,6 +3908,7 @@ msgstr "SAT>IP-palvelin ohjaa LNB:tä ja DiSEqC-kytkintä; DiSEqC-portti valitse
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Tässä transponderiluettelossa ei ole transpondereita tälle virittimelle.\n"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Lukitus"
 
@@ -3916,3 +3917,34 @@ msgstr "Hae tästä satelliitista"
 
 msgid "Tick the satellites to search."
 msgstr "Valitse satelliitit, joista haetaan."
+=======
+msgid "At start"
+msgstr "Käynnistettäessä"
+
+msgid "Channel at start"
+msgstr "Kanava käynnistettäessä"
+
+msgid "Last channel watched"
+msgstr "Viimeksi katsottu kanava"
+
+msgid "First channel of the current list"
+msgstr "Nykyisen luettelon ensimmäinen kanava"
+
+msgid "A chosen channel"
+msgstr "Valittu kanava"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Nykyinen luettelo on kanavaluettelo sellaisena kuin jätit sen: TV tai radio, suodatin, ryhmä ja järjestys."
+
+msgid "Channel list"
+msgstr "Kanavaluettelo"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Kaikki kanavat tai jokin suosikkiluetteloistasi."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Viritetään joka käynnistyksessä riippumatta siitä, mitä kanavaa katsoit viimeksi."
+
+msgid "No channel (black screen)"
+msgstr "Ei kanavaa (musta ruutu)"
+>>>>>>> origin/main

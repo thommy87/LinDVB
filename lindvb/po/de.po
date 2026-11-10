@@ -4310,6 +4310,7 @@ msgstr "Installieren Sie die GStreamer-Plugins base, bad und libav aus Ihrer Dis
 msgid "GStreamer plugins are missing"
 msgstr "GStreamer-Plugins fehlen"
 
+<<<<<<< HEAD
 msgid "Lock"
 msgstr "Lock"
 
@@ -4318,3 +4319,34 @@ msgstr "Diesen Satelliten durchsuchen"
 
 msgid "Tick the satellites to search."
 msgstr "Haken Sie die Satelliten an, die durchsucht werden sollen."
+=======
+msgid "At start"
+msgstr "Beim Start"
+
+msgid "Channel at start"
+msgstr "Sender beim Start"
+
+msgid "Last channel watched"
+msgstr "Zuletzt gesehener Sender"
+
+msgid "First channel of the current list"
+msgstr "Erster Sender der aktuellen Liste"
+
+msgid "A chosen channel"
+msgstr "Ein ausgewählter Sender"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Die aktuelle Liste ist die Senderliste, wie Sie sie verlassen haben: TV oder Radio, Filter, Gruppe und Sortierung."
+
+msgid "Channel list"
+msgstr "Senderliste"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Alle Sender oder eine Ihrer Favoritenlisten."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Wird bei jedem Start eingeschaltet, egal welchen Sender Sie zuletzt gesehen haben."
+
+msgid "No channel (black screen)"
+msgstr "Kein Sender (schwarzes Bild)"
+>>>>>>> origin/main
