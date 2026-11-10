@@ -3946,3 +3946,75 @@ msgstr "Prehľadať tento satelit"
 
 msgid "Tick the satellites to search."
 msgstr "Začiarknite satelity, ktoré sa majú prehľadať."
+
+msgid "Horizontal"
+msgstr "Horizontálna"
+
+msgid "Vertical"
+msgstr "Vertikálna"
+
+msgid "Left (circular)"
+msgstr "Ľavá (kruhová)"
+
+msgid "Right (circular)"
+msgstr "Pravá (kruhová)"
+
+msgid "Auto"
+msgstr "Automaticky"
+
+msgid "Add…"
+msgstr "Pridať…"
+
+msgid "Tick all"
+msgstr "Začiarknuť všetko"
+
+msgid "Tick none"
+msgstr "Nič nezačiarknuť"
+
+msgid "Back to the lists"
+msgstr "Späť k zoznamom"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Zabudnúť zmeny tejto pozície a znova použiť zoznamy transpondérov"
+
+msgid "The changed list is kept for this position."
+msgstr "Zmenený zoznam sa pre túto pozíciu uchová."
+
+msgid "This transponder is already in the list."
+msgstr "Tento transpondér už je v zozname."
+
+msgid "Tick the transponders to search."
+msgstr "Začiarknite transpondéry, ktoré sa majú prehľadať."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S používa len QPSK; pre 8PSK, 16APSK a 32APSK zvoľte DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "Tento transpondér nie je platný."
+
+msgid "All {n} transponders are searched."
+msgstr "Prehľadávajú sa všetky transpondéry ({n})."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Prehľadáva sa {on} z {n} transpondérov. Hľadanie jednotlivých transpondérov nepridá tie, ktoré ohlasuje sieť (NIT)."
+
+msgid "Edit transponder"
+msgstr "Upraviť transpondér"
+
+msgid "Add transponder"
+msgstr "Pridať transpondér"
+
+msgid "Transponders of {position}"
+msgstr "Transpondéry pozície {position}"
+
+msgid "The list could not be saved."
+msgstr "Zoznam sa nepodarilo uložiť."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transpondéry: prehľadať jednotlivé, pridať, zmeniť alebo odstrániť"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "Transpondérov: {n}; kde sú začiarknuté len niektoré, prehľadajú sa len tie."
+
+msgid "Own transponder list: {positions}."
+msgstr "Vlastný zoznam transpondérov: {positions}."

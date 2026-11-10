@@ -3946,3 +3946,75 @@ msgstr "Otsi sellelt satelliidilt"
 
 msgid "Tick the satellites to search."
 msgstr "Märkige satelliidid, millelt otsida."
+
+msgid "Horizontal"
+msgstr "Horisontaalne"
+
+msgid "Vertical"
+msgstr "Vertikaalne"
+
+msgid "Left (circular)"
+msgstr "Vasak (ringpolarisatsioon)"
+
+msgid "Right (circular)"
+msgstr "Parem (ringpolarisatsioon)"
+
+msgid "Auto"
+msgstr "Automaatne"
+
+msgid "Add…"
+msgstr "Lisa…"
+
+msgid "Tick all"
+msgstr "Märgi kõik"
+
+msgid "Tick none"
+msgstr "Ära märgi ühtegi"
+
+msgid "Back to the lists"
+msgstr "Tagasi loendite juurde"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Unusta selle positsiooni muudatused ja kasuta jälle transponderite loendeid"
+
+msgid "The changed list is kept for this position."
+msgstr "Muudetud loend jäetakse selle positsiooni jaoks alles."
+
+msgid "This transponder is already in the list."
+msgstr "See transponder on juba loendis."
+
+msgid "Tick the transponders to search."
+msgstr "Märkige transponderid, millelt otsida."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S kasutab ainult QPSK-d; 8PSK, 16APSK ja 32APSK jaoks valige DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "See transponder ei sobi."
+
+msgid "All {n} transponders are searched."
+msgstr "Otsitakse kõigilt {n} transponderilt."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Otsitakse {on} transponderilt {n}-st. Üksikute transponderite otsing ei lisa võrgu teatatud transpondereid (NIT)."
+
+msgid "Edit transponder"
+msgstr "Muuda transponderit"
+
+msgid "Add transponder"
+msgstr "Lisa transponder"
+
+msgid "Transponders of {position}"
+msgstr "Positsiooni {position} transponderid"
+
+msgid "The list could not be saved."
+msgstr "Loendit ei õnnestunud salvestada."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponderid: otsi üksikutelt, lisa, muuda või eemalda"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponderit; kus on märgitud ainult mõned, otsitakse ainult neilt."
+
+msgid "Own transponder list: {positions}."
+msgstr "Oma transponderite loend: {positions}."

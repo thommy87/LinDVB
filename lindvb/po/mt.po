@@ -3946,3 +3946,75 @@ msgstr "Fittex f’dan is-satellita"
 
 msgid "Tick the satellites to search."
 msgstr "Immarka s-satelliti biex tfittex."
+
+msgid "Horizontal"
+msgstr "Orizzontali"
+
+msgid "Vertical"
+msgstr "Vertikali"
+
+msgid "Left (circular)"
+msgstr "Xellug (ċirkolari)"
+
+msgid "Right (circular)"
+msgstr "Lemin (ċirkolari)"
+
+msgid "Auto"
+msgstr "Awtomatiku"
+
+msgid "Add…"
+msgstr "Żid…"
+
+msgid "Tick all"
+msgstr "Immarka kollox"
+
+msgid "Tick none"
+msgstr "Tmarka xejn"
+
+msgid "Back to the lists"
+msgstr "Lura għal-listi"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Insa l-bidliet ta’ din il-pożizzjoni u erġa’ uża l-listi tat-transponders"
+
+msgid "The changed list is kept for this position."
+msgstr "Il-lista mibdula tinżamm għal din il-pożizzjoni."
+
+msgid "This transponder is already in the list."
+msgstr "Dan it-transponder diġà jinsab fil-lista."
+
+msgid "Tick the transponders to search."
+msgstr "Immarka t-transponders biex tfittex."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "Id-DVB-S juża biss QPSK; agħżel DVB-S2 għal 8PSK, 16APSK u 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Dan it-transponder mhuwiex validu."
+
+msgid "All {n} transponders are searched."
+msgstr "Qed jitfittxu l-{n} transponders kollha."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Qed jitfittxu {on} minn {n} transponders. Tfittxija ta’ transponders waħedhom ma żżidx dawk li jħabbar in-netwerk (NIT)."
+
+msgid "Edit transponder"
+msgstr "Editja t-transponder"
+
+msgid "Add transponder"
+msgstr "Żid transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transponders ta’ {position}"
+
+msgid "The list could not be saved."
+msgstr "Il-lista ma setgħetx tiġi ssejvjata."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponders: fittex f’xi wħud, żid, ibdel jew neħħi"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transponders; fejn huma mmarkati biss xi wħud, jitfittxu biss dawk."
+
+msgid "Own transponder list: {positions}."
+msgstr "Lista tat-transponders tiegħek: {positions}."

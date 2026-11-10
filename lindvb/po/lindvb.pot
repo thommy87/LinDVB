@@ -5460,3 +5460,99 @@ msgstr ""
 #: lindvb/ui/scan.py
 msgid "Tick the satellites to search."
 msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Horizontal"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Vertical"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Left (circular)"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Right (circular)"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Auto"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Add…"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Tick all"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Tick none"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Back to the lists"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "The changed list is kept for this position."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "This transponder is already in the list."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Tick the transponders to search."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "This transponder is not valid."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "All {n} transponders are searched."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Edit transponder"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Add transponder"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Transponders of {position}"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "The list could not be saved."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr ""
+
+#: lindvb/ui/transponders.py
+msgid "Own transponder list: {positions}."
+msgstr ""

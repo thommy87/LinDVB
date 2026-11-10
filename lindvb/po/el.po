@@ -3946,3 +3946,75 @@ msgstr "Αναζήτηση σε αυτόν τον δορυφόρο"
 
 msgid "Tick the satellites to search."
 msgstr "Επιλέξτε τους δορυφόρους για αναζήτηση."
+
+msgid "Horizontal"
+msgstr "Οριζόντια"
+
+msgid "Vertical"
+msgstr "Κάθετη"
+
+msgid "Left (circular)"
+msgstr "Αριστερή (κυκλική)"
+
+msgid "Right (circular)"
+msgstr "Δεξιά (κυκλική)"
+
+msgid "Auto"
+msgstr "Αυτόματα"
+
+msgid "Add…"
+msgstr "Προσθήκη…"
+
+msgid "Tick all"
+msgstr "Επιλογή όλων"
+
+msgid "Tick none"
+msgstr "Καμία επιλογή"
+
+msgid "Back to the lists"
+msgstr "Πίσω στις λίστες"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Απόρριψη των αλλαγών αυτής της θέσης και χρήση ξανά των λιστών αναμεταδοτών"
+
+msgid "The changed list is kept for this position."
+msgstr "Η αλλαγμένη λίστα διατηρείται για αυτή τη θέση."
+
+msgid "This transponder is already in the list."
+msgstr "Αυτός ο αναμεταδότης είναι ήδη στη λίστα."
+
+msgid "Tick the transponders to search."
+msgstr "Επιλέξτε τους αναμεταδότες για αναζήτηση."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "Το DVB-S χρησιμοποιεί μόνο QPSK· επιλέξτε DVB-S2 για 8PSK, 16APSK και 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Αυτός ο αναμεταδότης δεν είναι έγκυρος."
+
+msgid "All {n} transponders are searched."
+msgstr "Αναζήτηση σε όλους τους {n} αναμεταδότες."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Αναζήτηση σε {on} από {n} αναμεταδότες. Η αναζήτηση μεμονωμένων αναμεταδοτών δεν προσθέτει όσους ανακοινώνει το δίκτυο (NIT)."
+
+msgid "Edit transponder"
+msgstr "Επεξεργασία αναμεταδότη"
+
+msgid "Add transponder"
+msgstr "Προσθήκη αναμεταδότη"
+
+msgid "Transponders of {position}"
+msgstr "Αναμεταδότες της θέσης {position}"
+
+msgid "The list could not be saved."
+msgstr "Η λίστα δεν αποθηκεύτηκε."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Αναμεταδότες: αναζήτηση μεμονωμένων, προσθήκη, αλλαγή ή αφαίρεση"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} αναμεταδότες· όπου είναι επιλεγμένοι μόνο κάποιοι, αναζητούνται μόνο αυτοί."
+
+msgid "Own transponder list: {positions}."
+msgstr "Δική σας λίστα αναμεταδοτών: {positions}."

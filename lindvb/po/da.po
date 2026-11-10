@@ -3946,3 +3946,75 @@ msgstr "Søg på denne satellit"
 
 msgid "Tick the satellites to search."
 msgstr "Sæt flueben ved de satellitter, der skal søges på."
+
+msgid "Horizontal"
+msgstr "Vandret"
+
+msgid "Vertical"
+msgstr "Lodret"
+
+msgid "Left (circular)"
+msgstr "Venstre (cirkulær)"
+
+msgid "Right (circular)"
+msgstr "Højre (cirkulær)"
+
+msgid "Auto"
+msgstr "Automatisk"
+
+msgid "Add…"
+msgstr "Tilføj…"
+
+msgid "Tick all"
+msgstr "Markér alle"
+
+msgid "Tick none"
+msgstr "Markér ingen"
+
+msgid "Back to the lists"
+msgstr "Tilbage til listerne"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Glem ændringerne for denne position og brug transponderlisterne igen"
+
+msgid "The changed list is kept for this position."
+msgstr "Den ændrede liste gemmes for denne position."
+
+msgid "This transponder is already in the list."
+msgstr "Denne transponder er allerede på listen."
+
+msgid "Tick the transponders to search."
+msgstr "Markér de transpondere, der skal søges på."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S bruger kun QPSK; vælg DVB-S2 til 8PSK, 16APSK og 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Denne transponder er ugyldig."
+
+msgid "All {n} transponders are searched."
+msgstr "Der søges på alle {n} transpondere."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Der søges på {on} af {n} transpondere. En søgning på enkelte transpondere tilføjer ikke dem, netværket annoncerer (NIT)."
+
+msgid "Edit transponder"
+msgstr "Redigér transponder"
+
+msgid "Add transponder"
+msgstr "Tilføj transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transpondere for {position}"
+
+msgid "The list could not be saved."
+msgstr "Listen kunne ikke gemmes."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transpondere: søg på enkelte, tilføj, ændr eller fjern dem"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transpondere; hvor kun nogle er markeret, søges der kun på dem."
+
+msgid "Own transponder list: {positions}."
+msgstr "Egen transponderliste: {positions}."

@@ -3946,3 +3946,75 @@ msgstr "Caută pe acest satelit"
 
 msgid "Tick the satellites to search."
 msgstr "Bifați sateliții de căutat."
+
+msgid "Horizontal"
+msgstr "Orizontală"
+
+msgid "Vertical"
+msgstr "Verticală"
+
+msgid "Left (circular)"
+msgstr "Stânga (circulară)"
+
+msgid "Right (circular)"
+msgstr "Dreapta (circulară)"
+
+msgid "Auto"
+msgstr "Automat"
+
+msgid "Add…"
+msgstr "Adăugați…"
+
+msgid "Tick all"
+msgstr "Bifați tot"
+
+msgid "Tick none"
+msgstr "Nu bifați nimic"
+
+msgid "Back to the lists"
+msgstr "Înapoi la liste"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Uitați modificările acestei poziții și folosiți din nou listele de transpondere"
+
+msgid "The changed list is kept for this position."
+msgstr "Lista modificată este păstrată pentru această poziție."
+
+msgid "This transponder is already in the list."
+msgstr "Acest transponder este deja în listă."
+
+msgid "Tick the transponders to search."
+msgstr "Bifați transponderele de căutat."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S folosește doar QPSK; alegeți DVB-S2 pentru 8PSK, 16APSK și 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Acest transponder nu este valid."
+
+msgid "All {n} transponders are searched."
+msgstr "Se caută pe toate cele {n} transpondere."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Se caută pe {on} din {n} transpondere. O căutare pe transpondere separate nu adaugă pe cele anunțate de rețea (NIT)."
+
+msgid "Edit transponder"
+msgstr "Editați transponderul"
+
+msgid "Add transponder"
+msgstr "Adăugați un transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transponderele poziției {position}"
+
+msgid "The list could not be saved."
+msgstr "Lista nu a putut fi salvată."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transpondere: căutați pe unele, adăugați, modificați sau eliminați"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transpondere; unde doar unele sunt bifate, se caută doar pe acestea."
+
+msgid "Own transponder list: {positions}."
+msgstr "Listă proprie de transpondere: {positions}."

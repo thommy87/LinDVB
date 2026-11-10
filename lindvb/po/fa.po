@@ -3989,3 +3989,75 @@ msgstr "جستجو در این ماهواره"
 
 msgid "Tick the satellites to search."
 msgstr "ماهواره‌هایی را که باید جستجو شوند علامت بزنید."
+
+msgid "Horizontal"
+msgstr "افقی"
+
+msgid "Vertical"
+msgstr "عمودی"
+
+msgid "Left (circular)"
+msgstr "چپ (دایره‌ای)"
+
+msgid "Right (circular)"
+msgstr "راست (دایره‌ای)"
+
+msgid "Auto"
+msgstr "خودکار"
+
+msgid "Add…"
+msgstr "افزودن…"
+
+msgid "Tick all"
+msgstr "علامت زدن همه"
+
+msgid "Tick none"
+msgstr "برداشتن همه"
+
+msgid "Back to the lists"
+msgstr "بازگشت به فهرست‌ها"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "فراموش کردن تغییرات این موقعیت و استفاده دوباره از فهرست‌های ترانسپوندر"
+
+msgid "The changed list is kept for this position."
+msgstr "فهرست تغییریافته برای این موقعیت نگه داشته می‌شود."
+
+msgid "This transponder is already in the list."
+msgstr "این ترانسپوندر از قبل در فهرست است."
+
+msgid "Tick the transponders to search."
+msgstr "ترانسپوندرهایی را که باید جستجو شوند علامت بزنید."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S فقط از QPSK استفاده می‌کند؛ برای 8PSK، 16APSK و 32APSK گزینهٔ DVB-S2 را انتخاب کنید."
+
+msgid "This transponder is not valid."
+msgstr "این ترانسپوندر معتبر نیست."
+
+msgid "All {n} transponders are searched."
+msgstr "همهٔ {n} ترانسپوندر جستجو می‌شوند."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "{on} از {n} ترانسپوندر جستجو می‌شوند. جستجوی ترانسپوندرهای جداگانه ترانسپوندرهایی را که شبکه اعلام می‌کند (NIT) اضافه نمی‌کند."
+
+msgid "Edit transponder"
+msgstr "ویرایش ترانسپوندر"
+
+msgid "Add transponder"
+msgstr "افزودن ترانسپوندر"
+
+msgid "Transponders of {position}"
+msgstr "ترانسپوندرهای {position}"
+
+msgid "The list could not be saved."
+msgstr "فهرست ذخیره نشد."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "ترانسپوندرها: جستجوی برخی، افزودن، تغییر یا حذف"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} ترانسپوندر؛ جایی که فقط برخی علامت خورده‌اند، فقط همان‌ها جستجو می‌شوند."
+
+msgid "Own transponder list: {positions}."
+msgstr "فهرست ترانسپوندر خودتان: {positions}."
