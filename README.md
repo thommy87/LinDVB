@@ -25,11 +25,10 @@ application written in Python on top of the standard Linux media stack:
 [docs/FEATURES.md](docs/FEATURES.md) lists the features and whether LinDVB has
 them.
 
-|---|---|
-
+| --- | --- |
 | **Live TV** | **Timeshift** |
 | ![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png) | ![Timeshift](docs/screenshots/08-timeshift.png) |
-|---|---|
+| --- | --- |
 
 **File playback** 
 ![File playback](docs/screenshots/02-file-playback.png) 
