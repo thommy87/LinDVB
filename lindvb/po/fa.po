@@ -3899,3 +3899,69 @@ msgstr "مقدونیه شمالی"
 
 msgid "South Africa"
 msgstr "آفریقای جنوبی"
+
+msgid "(no tuner)"
+msgstr "(بدون گیرنده)"
+
+msgid "1 tuner"
+msgstr "۱ گیرنده"
+
+msgid "{n} tuners"
+msgstr "{n} گیرنده"
+
+msgid "Add Server"
+msgstr "افزودن سرور"
+
+msgid "Add by address"
+msgstr "افزودن با نشانی"
+
+msgid "Find SAT>IP servers"
+msgstr "یافتن سرورهای SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "برای سروری که جستجو آن را پیدا نمی‌کند (شبکهٔ دیگر یا بدون multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "هیچ سرور SAT>IP افزوده نشده است."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "هیچ سرور SAT>IP پاسخ نداد. آن را با نشانی‌اش در پایین بیفزایید."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "جعبه‌ها و LNBهای SAT>IP، minisatip، FRITZ!Box Cable و دیگر سرورهای DVB over IP در شبکهٔ محلی. گیرنده‌های آن‌ها پس از ذخیره و بازکردن دوبارهٔ ترجیحات در فهرست نمایش داده می‌شوند."
+
+msgid "SAT>IP servers"
+msgstr "سرورهای SAT>IP"
+
+msgid "Search Network"
+msgstr "جستجو در شبکه"
+
+msgid "Searching…"
+msgstr "در حال جستجو…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (درون اتصال RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP از دیواره‌های آتشی که جریان UDP را مسدود می‌کنند عبور می‌کند."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "{n} سرور پیدا شد، {new} مورد جدید."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "منبع: سرور SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "گزارش سیگنال SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: جستجو از فرکانس‌های فهرست استفاده می‌کند (بدون جستجوی NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "سرور SAT>IP، LNB و کلید DiSEqC را کنترل می‌کند؛ درگاه DiSEqC منبع آن را انتخاب می‌کند (۱ تا ۴)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "این فهرست ترنسپاندر هیچ ترنسپاندری برای این گیرنده ندارد.\n"

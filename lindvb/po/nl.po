@@ -3856,3 +3856,69 @@ msgstr "Noord-Macedonië"
 
 msgid "South Africa"
 msgstr "Zuid-Afrika"
+
+msgid "(no tuner)"
+msgstr "(geen tuner)"
+
+msgid "1 tuner"
+msgstr "1 tuner"
+
+msgid "{n} tuners"
+msgstr "{n} tuners"
+
+msgid "Add Server"
+msgstr "Server toevoegen"
+
+msgid "Add by address"
+msgstr "Toevoegen via adres"
+
+msgid "Find SAT>IP servers"
+msgstr "SAT>IP-servers zoeken"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Voor een server die het zoeken niet vindt (ander netwerk of geen multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "Geen SAT>IP-server toegevoegd."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Geen SAT>IP-server heeft geantwoord. Voeg hem hieronder toe via zijn adres."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP-boxen en -LNB’s, minisatip, FRITZ!Box Cable en andere DVB over IP-servers in het lokale netwerk. Hun tuners verschijnen in de lijst zodra de voorkeuren zijn opgeslagen en opnieuw geopend."
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP-servers"
+
+msgid "Search Network"
+msgstr "Netwerk doorzoeken"
+
+msgid "Searching…"
+msgstr "Zoeken…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (in de RTSP-verbinding)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP werkt door firewalls die de UDP-stream blokkeren."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "{n} servers gevonden, {new} nieuw."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Bron: SAT>IP-server {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP-signaalrapport (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: het zoeken gebruikt de frequenties van de lijst (geen NIT-zoeken)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "De SAT>IP-server bestuurt de LNB en de DiSEqC-schakelaar; de DiSEqC-poort kiest zijn bron (1 tot 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Deze transponderlijst heeft geen transponders voor deze tuner.\n"

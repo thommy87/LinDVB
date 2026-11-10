@@ -3856,3 +3856,69 @@ msgstr "Βόρεια Μακεδονία"
 
 msgid "South Africa"
 msgstr "Νότια Αφρική"
+
+msgid "(no tuner)"
+msgstr "(κανένας δέκτης)"
+
+msgid "1 tuner"
+msgstr "1 δέκτης"
+
+msgid "{n} tuners"
+msgstr "{n} δέκτες"
+
+msgid "Add Server"
+msgstr "Προσθήκη διακομιστή"
+
+msgid "Add by address"
+msgstr "Προσθήκη με διεύθυνση"
+
+msgid "Find SAT>IP servers"
+msgstr "Εύρεση διακομιστών SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Για διακομιστή που δεν βρίσκει η αναζήτηση (άλλο δίκτυο ή χωρίς multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "Δεν έχει προστεθεί διακομιστής SAT>IP."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Κανένας διακομιστής SAT>IP δεν απάντησε. Προσθέστε τον με τη διεύθυνσή του παρακάτω."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "Συσκευές και LNB SAT>IP, minisatip, FRITZ!Box Cable και άλλοι διακομιστές DVB over IP στο τοπικό δίκτυο. Οι δέκτες τους εμφανίζονται στη λίστα αφού αποθηκευτούν και ανοιχτούν ξανά οι προτιμήσεις."
+
+msgid "SAT>IP servers"
+msgstr "Διακομιστές SAT>IP"
+
+msgid "Search Network"
+msgstr "Αναζήτηση στο δίκτυο"
+
+msgid "Searching…"
+msgstr "Αναζήτηση…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (στη σύνδεση RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "Το TCP περνά από τείχη προστασίας που μπλοκάρουν τη ροή UDP."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Βρέθηκαν {n} διακομιστές, {new} νέοι."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Πηγή: διακομιστής SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "Αναφορά σήματος SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: η αναζήτηση χρησιμοποιεί τις συχνότητες της λίστας (χωρίς αναζήτηση NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "Ο διακομιστής SAT>IP ελέγχει το LNB και τον διακόπτη DiSEqC· η θύρα DiSEqC επιλέγει την πηγή του (1 έως 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Αυτή η λίστα αναμεταδοτών δεν έχει αναμεταδότες για αυτόν τον δέκτη.\n"

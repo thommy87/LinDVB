@@ -16,6 +16,9 @@ A profile describes one DVB frontend LinDVB may use::
 * ``unicable``: the single-cable setup (see lindvb.unicable), or missing.
 * ``lnb``: the tuner's own LNB oscillators (low, high, switch frequency in kHz),
   or missing for the global LNB settings.
+* ``type``: ``"satip"`` for a tuner of a SAT>IP server on the network
+  (lindvb.satip), with ``host``, ``port`` and ``transport``; missing for a
+  local DVB frontend.
 
 The module has no GStreamer dependency so the tuner choice can be tested
 without hardware. :class:`lindvb.tuner.TunerManager` applies it.
@@ -155,6 +158,10 @@ def merge_profiles(saved, detected, legacy_adapters=None):
     found = {(p["adapter"], p["frontend"]): p for p in detected}
     for p in saved:
         q = dict(p)
+        if q.get("type") == "satip":         # a network tuner (lindvb.satip)
+            q["present"] = True
+            out.append(q)
+            continue
         d = found.pop((q["adapter"], q["frontend"]), None)
         q["present"] = d is not None
         if d is not None:
@@ -181,15 +188,17 @@ def configured_profiles(settings, detect=None):
 
     With the untouched older setting, *detect()* (the tuners present) is used
     when it finds any, so a second tuner works without setting anything up.
+    The tuners of the SAT>IP servers (lindvb.satip) are always included.
     """
+    from . import satip
     tuners = settings.get("tuners") or []
     if tuners:
-        return [dict(p) for p in tuners]
+        return satip.merge_profiles([dict(p) for p in tuners], settings)
     if detect is not None and uses_default_adapters(settings.get("adapters")):
         found = detect()
-        if found:
-            return found
-    return legacy_profiles(settings)
+        if found or settings.get("satip_servers"):
+            return satip.merge_profiles(found, settings)
+    return satip.merge_profiles(legacy_profiles(settings), settings)
 
 
 def active_profiles(settings, systems_for=None, detect=None):
