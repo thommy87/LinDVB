@@ -8,11 +8,9 @@ import time
 import urllib.parse
 import urllib.request
 
-import gi
+from . import compat
 
-gi.require_version("Gtk", "4.0")
-gi.require_version("Gst", "1.0")
-gi.require_version("GstVideo", "1.0")
+compat.require_gi()   # GTK 4 (>= compat.MIN_GTK) and GStreamer, or exit with a hint
 from gi.repository import Gio, GLib, Gst, Gtk  # noqa: E402
 
 from . import channels as channels_mod  # noqa: E402
@@ -40,6 +38,7 @@ class LinDVBApp(Gtk.Application):
                              _("Start with this channel (name or number)"), "NAME")
         self._start_channel = None
         self._epg_dirty = False
+        self._plugins_checked = False
 
     def do_handle_local_options(self, options):
         opts = options.end().unpack()
@@ -121,11 +120,21 @@ class LinDVBApp(Gtk.Application):
             self.plugins.emit("reminder", r)
         return True
 
+    def _report_missing_plugins(self):
+        report = compat.plugin_report(compat.missing_plugins())
+        if report:
+            sys.stderr.write("LinDVB: {}\n{}\n".format(*report))
+            from .ui.common import message
+            message(self.window, *report)
+
     def do_activate(self):
         from .ui.window import MainWindow
         if not self.window:
             self.window = MainWindow(self)
         self.window.present()
+        if not self._plugins_checked:
+            self._plugins_checked = True
+            self._report_missing_plugins()
         target = None
         if self._start_channel:
             s = self._start_channel

@@ -31,6 +31,7 @@ PRESET_DIRS = [str(Path(sys.prefix) / "share/projectM/presets"), "/usr/share/pro
                "/usr/share/projectm-presets", "/app/share/projectM/presets",
                "~/.local/share/projectM/presets"]
 TEXTURE_DIRS = [str(Path(sys.prefix) / "share/projectM/textures"), "/usr/share/projectM/textures", "/usr/local/share/projectM/textures",
+                "/app/share/projectM/textures",
                 "~/.local/share/projectM/textures"]
 MAX_SIZE = (2560, 1440)           # largest size "WIDTHxHEIGHT" may ask for
 AUTO_SIZE = (1280, 720)           # "auto": the screen's shape, at most this

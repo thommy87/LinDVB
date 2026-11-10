@@ -65,5 +65,6 @@ this way, ask in the issue tracker and it will be provided for three years
 after the release that contained it.
 
 The **Snap** uses packages of the Ubuntu archive, the **Flatpak** the GNOME
-runtime from Flathub plus libzvbi, GStreamer and v4l-utils built from the
+runtime from Flathub plus libzvbi, GStreamer, v4l-utils and projectM (with the
+presets and textures above) built from the
 tagged sources in `flatpak/io.github.thommy87.LinDVB.yml`.

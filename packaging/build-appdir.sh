@@ -203,9 +203,30 @@ mkdir -p "$APPDIR/usr/share/metainfo"
 cp "$SRC/data/io.github.thommy87.LinDVB.metainfo.xml" "$APPDIR/usr/share/metainfo/"
 cp "$SRC/LICENSE" "$APPDIR/usr/share/LICENSE.LinDVB"
 
+# The oldest C library the bundled programs and libraries run on: the build system's.
+MIN_GLIBC="$(getconf GNU_LIBC_VERSION | awk '{print $2}')"
+[ -n "$MIN_GLIBC" ]
 cat > "$APPDIR/AppRun" <<EOF
 #!/bin/bash
 HERE="\$(dirname "\$(readlink -f "\$0")")"
+# Built on glibc $MIN_GLIBC: on an older (or a non-glibc) system the bundled
+# libraries fail with a loader error, so say so plainly and point to Flathub.
+MIN_GLIBC=$MIN_GLIBC
+HOST_GLIBC="\$(getconf GNU_LIBC_VERSION 2>/dev/null | awk '{print \$2}')"
+[ -n "\$HOST_GLIBC" ] || HOST_GLIBC="\$(ldd --version 2>&1 | head -n1 | grep -oE '[0-9]+\\.[0-9]+\$')"
+if [ -z "\$HOST_GLIBC" ] || [ "\$(printf '%s\\n' "\$MIN_GLIBC" "\$HOST_GLIBC" | sort -V | head -n1)" != "\$MIN_GLIBC" ]; then
+    msg="This LinDVB AppImage needs a Linux system with glibc \$MIN_GLIBC or newer (this system: \${HOST_GLIBC:-no glibc}).
+Older systems such as Debian 12, Ubuntu 22.04 or RHEL 9 can use the Flatpak instead:
+https://github.com/thommy87/LinDVB#install"
+    echo "\$msg" >&2
+    if [ -z "\${LINDVB_NO_GUI_ERROR:-}" ] && { [ -n "\${DISPLAY:-}" ] || [ -n "\${WAYLAND_DISPLAY:-}" ]; }; then
+        if command -v zenity >/dev/null; then zenity --error --title=LinDVB --text="\$msg" 2>/dev/null
+        elif command -v kdialog >/dev/null; then kdialog --title LinDVB --error "\$msg" 2>/dev/null
+        elif command -v notify-send >/dev/null; then notify-send LinDVB "\$msg" 2>/dev/null
+        fi
+    fi
+    exit 1
+fi
 # WebKit finds its helper processes relative to the working directory (see
 # build-appdir.sh); LinDVB resolves relative file arguments against the old one.
 export LINDVB_ORIG_CWD="\$PWD"
