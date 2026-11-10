@@ -26,17 +26,17 @@ application written in Python on top of the standard Linux media stack:
 them.
 
 
-| **Live TV** | **Timeshift** |
-| ![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png) | ![Timeshift](docs/screenshots/08-timeshift.png) |
-| **File playback** | **Programme guide** |
-| ![File playback](docs/screenshots/02-file-playback.png) | ![EPG now/next](docs/screenshots/dark_EPG_Now.png) |
-| **TV guide timeline** | **Timer recordings** |
-| ![TV guide](docs/screenshots/dark_EPG_all_stations.png) | ![Timers](docs/screenshots/05-timers.png) |
-| **Channel search** | **HbbTV** |
-| ![Channel search](docs/screenshots/06-channel-search.png) | ![HbbTV](docs/screenshots/dark_hbbtv.png) |
-| **Teletext** | **Radio** |
-| ![Teletext](docs/screenshots/dark_teletext_hbbtv.png) | ![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png) |
-| **Preferences** |  |
+| **Live TV** | **Timeshift** | 
+| ![Live TV with the on-screen programme info](docs/screenshots/dark_TV_Station.png) | ![Timeshift](docs/screenshots/08-timeshift.png) | 
+| **File playback** | **Programme guide** | 
+| ![File playback](docs/screenshots/02-file-playback.png) | ![EPG now/next](docs/screenshots/dark_EPG_Now.png) | 
+| **TV guide timeline** | **Timer recordings** | 
+| ![TV guide](docs/screenshots/dark_EPG_all_stations.png) | ![Timers](docs/screenshots/05-timers.png) | 
+| **Channel search** | **HbbTV** | 
+| ![Channel search](docs/screenshots/06-channel-search.png) | ![HbbTV](docs/screenshots/dark_hbbtv.png) | 
+| **Teletext** | **Radio** | 
+| ![Teletext](docs/screenshots/dark_teletext_hbbtv.png) | ![Radio with Album Cover](docs/screenshots/dark_Radio_with_Album_Cover_2.png) | 
+| **Preferences** |  | 
 | ![Teletext](docs/screenshots/dark_preferences.png) |  |
 
 
