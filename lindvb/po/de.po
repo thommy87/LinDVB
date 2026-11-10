@@ -4310,16 +4310,6 @@ msgstr "Installieren Sie die GStreamer-Plugins base, bad und libav aus Ihrer Dis
 msgid "GStreamer plugins are missing"
 msgstr "GStreamer-Plugins fehlen"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Lock"
-
-msgid "Search this satellite"
-msgstr "Diesen Satelliten durchsuchen"
-
-msgid "Tick the satellites to search."
-msgstr "Haken Sie die Satelliten an, die durchsucht werden sollen."
-=======
 msgid "At start"
 msgstr "Beim Start"
 
@@ -4349,4 +4339,12 @@ msgstr "Wird bei jedem Start eingeschaltet, egal welchen Sender Sie zuletzt gese
 
 msgid "No channel (black screen)"
 msgstr "Kein Sender (schwarzes Bild)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Diesen Satelliten durchsuchen"
+
+msgid "Tick the satellites to search."
+msgstr "Haken Sie die Satelliten an, die durchsucht werden sollen."

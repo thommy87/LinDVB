@@ -3908,16 +3908,6 @@ msgstr "Server SAT>IP ovládá LNB a přepínač DiSEqC; port DiSEqC volí jeho 
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Tento seznam transpondérů nemá pro tento tuner žádné transpondéry.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Zámek"
-
-msgid "Search this satellite"
-msgstr "Prohledat tento satelit"
-
-msgid "Tick the satellites to search."
-msgstr "Zaškrtněte satelity, které se mají prohledat."
-=======
 msgid "At start"
 msgstr "Při spuštění"
 
@@ -3947,4 +3937,12 @@ msgstr "Naladí se při každém spuštění bez ohledu na to, který kanál jst
 
 msgid "No channel (black screen)"
 msgstr "Žádný kanál (černá obrazovka)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Zámek"
+
+msgid "Search this satellite"
+msgstr "Prohledat tento satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Zaškrtněte satelity, které se mají prohledat."

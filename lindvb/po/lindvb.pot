@@ -5410,18 +5410,6 @@ msgstr ""
 msgid "GStreamer plugins are missing"
 msgstr ""
 
-<<<<<<< HEAD
-#: lindvb/ui/scan.py
-msgid "Lock"
-msgstr ""
-
-#: lindvb/ui/scan.py
-msgid "Search this satellite"
-msgstr ""
-
-#: lindvb/ui/scan.py
-msgid "Tick the satellites to search."
-=======
 #: lindvb/ui/dialogs.py
 msgid "At start"
 msgstr ""
@@ -5460,5 +5448,15 @@ msgstr ""
 
 #: lindvb/ui/dialogs.py
 msgid "No channel (black screen)"
->>>>>>> origin/main
+
+#: lindvb/ui/scan.py
+msgid "Lock"
+msgstr ""
+
+#: lindvb/ui/scan.py
+msgid "Search this satellite"
+msgstr ""
+
+#: lindvb/ui/scan.py
+msgid "Tick the satellites to search."
 msgstr ""

@@ -3908,16 +3908,6 @@ msgstr "Rialaíonn an freastalaí SAT>IP an LNB agus an lasc DiSEqC; roghnaíonn
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Níl aon trasfhreagróir don tiúnóir seo sa liosta trasfhreagróirí seo.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Glas"
-
-msgid "Search this satellite"
-msgstr "Cuardaigh an satailít seo"
-
-msgid "Tick the satellites to search."
-msgstr "Cuir tic leis na satailítí le cuardach."
-=======
 msgid "At start"
 msgstr "Ag an tosú"
 
@@ -3947,4 +3937,12 @@ msgstr "Tiúnáiltear é ag gach tosú, is cuma cén cainéal ar bhreathnaigh t�
 
 msgid "No channel (black screen)"
 msgstr "Gan chainéal (scáileán dubh)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Glas"
+
+msgid "Search this satellite"
+msgstr "Cuardaigh an satailít seo"
+
+msgid "Tick the satellites to search."
+msgstr "Cuir tic leis na satailítí le cuardach."

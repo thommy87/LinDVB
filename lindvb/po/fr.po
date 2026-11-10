@@ -3908,16 +3908,6 @@ msgstr "Le serveur SAT>IP commande le LNB et le commutateur DiSEqC ; le port DiS
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Cette liste de transpondeurs n’a pas de transpondeur pour ce tuner.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Verrouillé"
-
-msgid "Search this satellite"
-msgstr "Rechercher sur ce satellite"
-
-msgid "Tick the satellites to search."
-msgstr "Cochez les satellites à rechercher."
-=======
 msgid "At start"
 msgstr "Au démarrage"
 
@@ -3947,4 +3937,12 @@ msgstr "Réglée à chaque démarrage, quelle que soit la dernière chaîne rega
 
 msgid "No channel (black screen)"
 msgstr "Aucune chaîne (écran noir)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Verrouillé"
+
+msgid "Search this satellite"
+msgstr "Rechercher sur ce satellite"
+
+msgid "Tick the satellites to search."
+msgstr "Cochez les satellites à rechercher."

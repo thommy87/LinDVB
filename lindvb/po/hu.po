@@ -3908,16 +3908,6 @@ msgstr "A SAT>IP szerver vezérli az LNB-t és a DiSEqC kapcsolót; a DiSEqC por
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ebben a transzponderlistában nincs transzponder ehhez a tunerhez.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Szinkron"
-
-msgid "Search this satellite"
-msgstr "Keresés ezen a műholdon"
-
-msgid "Tick the satellites to search."
-msgstr "Jelölje be a keresendő műholdakat."
-=======
 msgid "At start"
 msgstr "Indításkor"
 
@@ -3947,4 +3937,12 @@ msgstr "Minden indításkor ez lesz behangolva, bármelyik csatornát nézte uto
 
 msgid "No channel (black screen)"
 msgstr "Nincs csatorna (fekete képernyő)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Szinkron"
+
+msgid "Search this satellite"
+msgstr "Keresés ezen a műholdon"
+
+msgid "Tick the satellites to search."
+msgstr "Jelölje be a keresendő műholdakat."

@@ -3908,16 +3908,6 @@ msgstr "Strežnik SAT>IP upravlja LNB in stikalo DiSEqC; vrata DiSEqC izberejo n
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Ta seznam transponderjev nima transponderjev za ta sprejemnik.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Zaklenjeno"
-
-msgid "Search this satellite"
-msgstr "Išči na tem satelitu"
-
-msgid "Tick the satellites to search."
-msgstr "Označite satelite za iskanje."
-=======
 msgid "At start"
 msgstr "Ob zagonu"
 
@@ -3947,4 +3937,12 @@ msgstr "Nastavi se ob vsakem zagonu, ne glede na to, kateri kanal ste gledali na
 
 msgid "No channel (black screen)"
 msgstr "Brez kanala (črn zaslon)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Zaklenjeno"
+
+msgid "Search this satellite"
+msgstr "Išči na tem satelitu"
+
+msgid "Tick the satellites to search."
+msgstr "Označite satelite za iskanje."

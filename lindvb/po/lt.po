@@ -3908,16 +3908,6 @@ msgstr "SAT>IP serveris valdo LNB ir DiSEqC jungiklį; DiSEqC prievadas pasirenk
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šiame transponderių sąraše nėra transponderių šiam imtuvui.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Užrakinta"
-
-msgid "Search this satellite"
-msgstr "Ieškoti šiame palydove"
-
-msgid "Tick the satellites to search."
-msgstr "Pažymėkite palydovus, kuriuose ieškoti."
-=======
 msgid "At start"
 msgstr "Paleidžiant"
 
@@ -3947,4 +3937,12 @@ msgstr "Įjungiamas kiekvieną kartą paleidus, nesvarbu, kurį kanalą žiūrė
 
 msgid "No channel (black screen)"
 msgstr "Jokio kanalo (juodas ekranas)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Užrakinta"
+
+msgid "Search this satellite"
+msgstr "Ieškoti šiame palydove"
+
+msgid "Tick the satellites to search."
+msgstr "Pažymėkite palydovus, kuriuose ieškoti."

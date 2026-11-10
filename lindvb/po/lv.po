@@ -3908,16 +3908,6 @@ msgstr "SAT>IP serveris vada LNB un DiSEqC slēdzi; DiSEqC ports izvēlas tā av
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Šajā transponderu sarakstā nav transponderu šim uztvērējam.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Fiksēts"
-
-msgid "Search this satellite"
-msgstr "Meklēt šajā satelītā"
-
-msgid "Tick the satellites to search."
-msgstr "Atzīmējiet satelītus, kuros meklēt."
-=======
 msgid "At start"
 msgstr "Palaižot"
 
@@ -3947,4 +3937,12 @@ msgstr "Tiek noskaņots katrā palaišanā neatkarīgi no tā, kuru kanālu skat
 
 msgid "No channel (black screen)"
 msgstr "Bez kanāla (melns ekrāns)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Fiksēts"
+
+msgid "Search this satellite"
+msgstr "Meklēt šajā satelītā"
+
+msgid "Tick the satellites to search."
+msgstr "Atzīmējiet satelītus, kuros meklēt."

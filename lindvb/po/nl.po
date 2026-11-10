@@ -3908,16 +3908,6 @@ msgstr "De SAT>IP-server bestuurt de LNB en de DiSEqC-schakelaar; de DiSEqC-poor
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Deze transponderlijst heeft geen transponders voor deze tuner.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Lock"
-
-msgid "Search this satellite"
-msgstr "Deze satelliet doorzoeken"
-
-msgid "Tick the satellites to search."
-msgstr "Vink de satellieten aan die doorzocht moeten worden."
-=======
 msgid "At start"
 msgstr "Bij het starten"
 
@@ -3947,4 +3937,12 @@ msgstr "Wordt bij elke start afgestemd, welke zender u ook het laatst bekeek."
 
 msgid "No channel (black screen)"
 msgstr "Geen zender (zwart beeld)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Lock"
+
+msgid "Search this satellite"
+msgstr "Deze satelliet doorzoeken"
+
+msgid "Tick the satellites to search."
+msgstr "Vink de satellieten aan die doorzocht moeten worden."

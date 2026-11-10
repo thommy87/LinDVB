@@ -3908,16 +3908,6 @@ msgstr "SAT>IP-servern styr LNB:n och DiSEqC-switchen; DiSEqC-porten väljer des
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Den här transponderlistan har inga transpondrar för den här mottagaren.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Låst"
-
-msgid "Search this satellite"
-msgstr "Sök på den här satelliten"
-
-msgid "Tick the satellites to search."
-msgstr "Markera satelliterna som ska sökas."
-=======
 msgid "At start"
 msgstr "Vid start"
 
@@ -3947,4 +3937,12 @@ msgstr "Ställs in vid varje start, oavsett vilken kanal du såg senast."
 
 msgid "No channel (black screen)"
 msgstr "Ingen kanal (svart skärm)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Låst"
+
+msgid "Search this satellite"
+msgstr "Sök på den här satelliten"
+
+msgid "Tick the satellites to search."
+msgstr "Markera satelliterna som ska sökas."

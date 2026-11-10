@@ -3951,16 +3951,6 @@ msgstr "سرور SAT>IP، LNB و کلید DiSEqC را کنترل می‌کند؛
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "این فهرست ترنسپاندر هیچ ترنسپاندری برای این گیرنده ندارد.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "قفل"
-
-msgid "Search this satellite"
-msgstr "جستجو در این ماهواره"
-
-msgid "Tick the satellites to search."
-msgstr "ماهواره‌هایی را که باید جستجو شوند علامت بزنید."
-=======
 msgid "At start"
 msgstr "هنگام شروع"
 
@@ -3990,4 +3980,12 @@ msgstr "در هر بار شروع تنظیم می‌شود، فارغ از ای�
 
 msgid "No channel (black screen)"
 msgstr "بدون کانال (صفحهٔ سیاه)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "قفل"
+
+msgid "Search this satellite"
+msgstr "جستجو در این ماهواره"
+
+msgid "Tick the satellites to search."
+msgstr "ماهواره‌هایی را که باید جستجو شوند علامت بزنید."

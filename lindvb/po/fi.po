@@ -3908,16 +3908,6 @@ msgstr "SAT>IP-palvelin ohjaa LNB:tä ja DiSEqC-kytkintä; DiSEqC-portti valitse
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Tässä transponderiluettelossa ei ole transpondereita tälle virittimelle.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Lukitus"
-
-msgid "Search this satellite"
-msgstr "Hae tästä satelliitista"
-
-msgid "Tick the satellites to search."
-msgstr "Valitse satelliitit, joista haetaan."
-=======
 msgid "At start"
 msgstr "Käynnistettäessä"
 
@@ -3947,4 +3937,12 @@ msgstr "Viritetään joka käynnistyksessä riippumatta siitä, mitä kanavaa ka
 
 msgid "No channel (black screen)"
 msgstr "Ei kanavaa (musta ruutu)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Lukitus"
+
+msgid "Search this satellite"
+msgstr "Hae tästä satelliitista"
+
+msgid "Tick the satellites to search."
+msgstr "Valitse satelliitit, joista haetaan."

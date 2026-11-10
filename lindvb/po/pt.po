@@ -3908,16 +3908,6 @@ msgstr "O servidor SAT>IP controla o LNB e o comutador DiSEqC; a porta DiSEqC es
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Esta lista de transponders não tem transponders para este sintonizador.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Sincronizado"
-
-msgid "Search this satellite"
-msgstr "Pesquisar neste satélite"
-
-msgid "Tick the satellites to search."
-msgstr "Marque os satélites a pesquisar."
-=======
 msgid "At start"
 msgstr "Ao iniciar"
 
@@ -3947,4 +3937,12 @@ msgstr "Sintonizado em cada início, seja qual for o último canal que viu."
 
 msgid "No channel (black screen)"
 msgstr "Nenhum canal (ecrã preto)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Sincronizado"
+
+msgid "Search this satellite"
+msgstr "Pesquisar neste satélite"
+
+msgid "Tick the satellites to search."
+msgstr "Marque os satélites a pesquisar."

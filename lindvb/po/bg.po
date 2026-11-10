@@ -3908,16 +3908,6 @@ msgstr "SAT>IP сървърът управлява LNB и DiSEqC превклю�
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "Този списък с транспондери няма транспондери за този тунер.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Захват"
-
-msgid "Search this satellite"
-msgstr "Търсене в този сателит"
-
-msgid "Tick the satellites to search."
-msgstr "Отметнете сателитите за търсене."
-=======
 msgid "At start"
 msgstr "При стартиране"
 
@@ -3947,4 +3937,12 @@ msgstr "Настройва се при всяко стартиране, неза
 
 msgid "No channel (black screen)"
 msgstr "Без канал (черен екран)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Търсене в този сателит"
+
+msgid "Tick the satellites to search."
+msgstr "Отметнете сателитите за търсене."

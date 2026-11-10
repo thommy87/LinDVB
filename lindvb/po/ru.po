@@ -3908,16 +3908,6 @@ msgstr "Сервер SAT>IP управляет конвертером и пер�
 msgid "This transponder list has no transponders for this tuner.\n"
 msgstr "В этом списке транспондеров нет транспондеров для этого тюнера.\n"
 
-<<<<<<< HEAD
-msgid "Lock"
-msgstr "Захват"
-
-msgid "Search this satellite"
-msgstr "Искать на этом спутнике"
-
-msgid "Tick the satellites to search."
-msgstr "Отметьте спутники для поиска."
-=======
 msgid "At start"
 msgstr "При запуске"
 
@@ -3947,4 +3937,12 @@ msgstr "Включается при каждом запуске, независ�
 
 msgid "No channel (black screen)"
 msgstr "Без канала (чёрный экран)"
->>>>>>> origin/main
+
+msgid "Lock"
+msgstr "Захват"
+
+msgid "Search this satellite"
+msgstr "Искать на этом спутнике"
+
+msgid "Tick the satellites to search."
+msgstr "Отметьте спутники для поиска."
