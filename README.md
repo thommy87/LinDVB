@@ -4,6 +4,10 @@
 
 <h1 align="center">LinDVB</h1>
 
+<p align="center">
+  <a href="https://snapcraft.io/lindvb"><img alt="LinDVB in the Snap Store" src="https://snapcraft.io/lindvb/badge.svg"></a>
+</p>
+
 **Digital TV and Radio App for the GNOME desktop.**
 
 LinDVB watches and records TV and radio from satellite, cable and terrestrial tuners,
@@ -266,18 +270,18 @@ decoding comes from the runtime's codecs extension, which Flatpak installs with 
 
 ### Snap
 
-Download `lindvb_…_amd64.snap` from the [releases](https://github.com/thommy87/LinDVB/releases), then:
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/lindvb)
 
 ```sh
-sudo snap install --dangerous ./lindvb_*_amd64.snap
+sudo snap install lindvb
 sudo snap connect lindvb:dvb          # access to /dev/dvb tuners
 sudo snap connect lindvb:shutdown     # optional: standby/power off after recordings
 lindvb
 ```
 
-The snap is not signed by the Snap Store, so double-clicking it in the software centre fails
-with "cannot find signatures with metadata for snap"; install it with `--dangerous` as above.
-To build it yourself: `snapcraft` in the source tree.
+The snap comes from the [Snap Store](https://snapcraft.io/lindvb), for amd64 and arm64, and
+updates itself. `sudo snap install --channel=edge lindvb` installs the current development
+state instead. To build it yourself: `snapcraft` in the source tree.
 
 ### Debian package (Ubuntu 24.04 LTS and newer, Debian 13)
 

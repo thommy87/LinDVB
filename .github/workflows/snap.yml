@@ -1,77 +1,112 @@
-name: Build Snap
+name: Snap Store
 
-# Only built for releases (the Release workflow, or a pushed v* tag) and on
-# demand; normal pushes and pull requests build only the AppImage.
+# Canonical builds the snap: snapcraft.io is connected to this repository, so
+# every push to main is built on Canonical's build farm for the architectures
+# under "platforms" in snap/snapcraft.yaml and released to the "edge" channel
+# (see the Builds tab of https://snapcraft.io/lindvb).
+#
+# This workflow moves a released version from "edge" to "stable", so that
+# "snap install lindvb" gives it to everyone. The Release workflow calls it
+# once the release is published; it can also be run by hand for any tag whose
+# build is in the store. Nothing is built here, so a slow store cannot hold
+# back a release (see docs/STORES.md).
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
     inputs:
-      store_tag:
-        description: "Released tag to build and publish to the Snap Store, e.g. v0.14.0 (empty: just build)"
+      tag:
+        description: "Released tag to put into the stable channel, e.g. v0.16.0"
+        required: true
         type: string
-        default: ""
   workflow_call:
     inputs:
-      release_id:
-        description: "Draft release to upload the package to (set by the Release workflow)"
-        type: string
-        default: ""
       release_tag:
         type: string
-        default: ""
+        required: true
     secrets:
       SNAPCRAFT_STORE_CREDENTIALS:
         required: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  snap:
+  stable:
     runs-on: ubuntu-24.04
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      SNAP_NAME: lindvb
+      TAG: ${{ inputs.tag || inputs.release_tag }}
+      # Canonical's builds start on the push to main and take a while; the
+      # release is tagged from that same commit.
+      WAIT_MINUTES: "60"
     steps:
+      - name: No store login
+        if: env.SNAPCRAFT_STORE_CREDENTIALS == ''
+        run: |
+          echo "::notice title=Snap Store::SNAPCRAFT_STORE_CREDENTIALS is not set, so ${TAG} was not released to the stable channel (see docs/STORES.md)."
+
       - uses: actions/checkout@v4
+        if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
         with:
-          ref: ${{ inputs.store_tag || '' }}
+          ref: ${{ env.TAG }}
 
-      - uses: snapcore/action-build@v1
-        id: build
-
-      - name: Check the snap
+      - name: What to release
+        if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
+        id: what
         run: |
-          unsquashfs -l "${{ steps.build.outputs.snap }}" | grep -E 'lib/lindvb/lindvb/app.py|bin/dvbv5-scan|libgstdvb.so|libgstteletext.so'
+          set -euo pipefail
+          # The snap takes its version from pyproject.toml (craftctl set version)
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml)"
+          if [ "$version" != "${TAG#v}" ]; then
+            echo "::error title=Snap Store::Tag $TAG carries version $version; refusing to guess which to release."
+            exit 1
+          fi
+          # the architectures Canonical builds, from snap/snapcraft.yaml
+          arches="$(sed -n '/^platforms:/,/^[^[:space:]#]/ s/^[[:space:]]\{1,\}\([A-Za-z0-9_-]\{1,\}\):.*/\1/p' snap/snapcraft.yaml | tr '\n' ' ')"
+          if [ -z "${arches// /}" ]; then
+            echo "::error title=Snap Store::No platforms found in snap/snapcraft.yaml."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "arches=$arches" >> "$GITHUB_OUTPUT"
+          echo "Releasing $SNAP_NAME $version for: $arches"
 
-      - name: Upload to the draft release
-        if: inputs.release_id != ''
+      - name: Install snapcraft
+        if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
+        run: sudo snap install snapcraft --classic
+
+      - name: Release to the stable channel
+        if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
         env:
-          GH_TOKEN: ${{ github.token }}
-          ID: ${{ inputs.release_id }}
-          TAG: ${{ inputs.release_tag }}
+          VERSION: ${{ steps.what.outputs.version }}
+          ARCHES: ${{ steps.what.outputs.arches }}
         run: |
-          f="$(ls ${{ steps.build.outputs.snap }} | head -1)"
-          name="lindvb_${TAG#v}_amd64.snap"
-          curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Content-Type: application/octet-stream" --data-binary "@$f" \
-            "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$ID/assets?name=$name" >/dev/null
-          echo "Uploaded $f as $name"
-
-      - name: Attach to release
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release upload "$GITHUB_REF_NAME" "${{ steps.build.outputs.snap }}" --clobber
-
-      # Snap Store: only for releases (or a released tag given by hand), and only
-      # once the store login is stored as the SNAPCRAFT_STORE_CREDENTIALS secret
-      # (see docs/STORES.md).
-      - name: Publish to the Snap Store
-        if: (inputs.release_id != '' || inputs.store_tag != '') && env.SNAPCRAFT_STORE_CREDENTIALS != ''
-        # a store review must not hold back the GitHub release
-        continue-on-error: ${{ inputs.release_id != '' }}
-        uses: snapcore/action-publish@v1
-        with:
-          snap: ${{ steps.build.outputs.snap }}
-          release: stable
+          set -uo pipefail
+          # Wait until Canonical's build of this version is in the store, then
+          # release that revision (one per architecture) to stable.
+          deadline=$((SECONDS + WAIT_MINUTES * 60))
+          while :; do
+            out="$(snapcraft list-revisions "$SNAP_NAME" 2>&1)"
+            if [ -z "${shown:-}" ]; then printf '%s\n' "$out"; shown=1; fi
+            revisions=""; missing=""
+            for arch in $ARCHES; do
+              # Rev. | Uploaded | Arch | Version | Channels
+              # several pushes can carry the same version; take the newest revision
+              rev="$(printf '%s\n' "$out" | awk -v a="$arch" -v v="$VERSION" '$3 == a && $4 == v { print $1 }' | sort -n | tail -1)"
+              if [ -n "$rev" ]; then revisions="$revisions $arch:$rev"; else missing="$missing $arch"; fi
+            done
+            [ -z "$missing" ] && break
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              printf '%s\n' "$out"
+              echo "::error title=Snap Store::No $VERSION build in the store for:$missing. Check the Builds tab of https://snapcraft.io/$SNAP_NAME."
+              exit 1
+            fi
+            echo "waiting for $VERSION ($missing) ..."
+            sleep 60
+          done
+          set -e
+          for pair in $revisions; do
+            echo "== revision ${pair##*:} (${pair%%:*})"
+            snapcraft release "$SNAP_NAME" "${pair##*:}" stable
+          done
+          snapcraft status "$SNAP_NAME" || true

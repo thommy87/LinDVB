@@ -10,12 +10,10 @@
 `pip install` and distribution packagers; it needs PyGObject, GTK 4 and GStreamer from the
 system.
 
-**Snap**: this snap is not from the Snap Store, so it has no store signature. Opening it in
-the software centre fails with "cannot find signatures with metadata for snap". Install it
-in a terminal instead:
+**Snap** (amd64 and arm64), from the [Snap Store](https://snapcraft.io/lindvb):
 
 ```sh
-sudo snap install --dangerous ./lindvb_*_amd64.snap
+sudo snap install lindvb
 sudo snap connect lindvb:dvb          # access to /dev/dvb tuners
 sudo snap connect lindvb:shutdown     # optional: standby/power off after recordings
 ```

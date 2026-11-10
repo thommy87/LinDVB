@@ -1,8 +1,9 @@
 name: Release
 
-# Builds the AppImage, Flatpak, Snap, .deb and source package and publishes them together as a
+# Builds the AppImage, Flatpak, .deb and source package and publishes them together as a
 # GitHub release, then updates the AUR package and the Snap Store (once their logins are
-# stored as secrets, see docs/STORES.md). Start it from the Actions tab ("Run workflow").
+# stored as secrets, see docs/STORES.md). The snap itself is built by Canonical.
+# Start it from the Actions tab ("Run workflow").
 #
 # The packages go straight into a draft release rather than through workflow
 # artifacts, so a full Actions storage quota can't block a release. The draft
@@ -54,14 +55,6 @@ jobs:
     with:
       release_id: ${{ needs.draft.outputs.id }}
       release_tag: ${{ inputs.version }}
-  snap:
-    needs: draft
-    uses: ./.github/workflows/snap.yml
-    with:
-      release_id: ${{ needs.draft.outputs.id }}
-      release_tag: ${{ inputs.version }}
-    secrets:
-      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
 
   packages:
     needs: draft
@@ -71,7 +64,7 @@ jobs:
       release_tag: ${{ inputs.version }}
 
   publish:
-    needs: [draft, appimage, flatpak, snap, packages]
+    needs: [draft, appimage, flatpak, packages]
     runs-on: ubuntu-24.04
     steps:
       - name: Publish the release
@@ -79,6 +72,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ID: ${{ needs.draft.outputs.id }}
         run: gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$ID" -F draft=false -F make_latest=true --jq .html_url
+
+  # Canonical has built the snap already (see .github/workflows/snap.yml); this
+  # only moves it into the stable channel, so it cannot hold back the release.
+  snap:
+    needs: publish
+    uses: ./.github/workflows/snap.yml
+    with:
+      release_tag: ${{ inputs.version }}
+    secrets:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
 
   # The AUR package downloads the source package from the published release.
   aur:

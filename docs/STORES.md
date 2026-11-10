@@ -5,12 +5,31 @@ logins are stored as repository secrets, to the Snap Store and the AUR. All
 three accounts are free. Each secret is set once under
 **Settings → Secrets and variables → Actions → New repository secret**.
 
-## Snap Store (`SNAPCRAFT_STORE_CREDENTIALS`)
+The snap is built by Canonical rather than by GitHub Actions, so the GitHub
+release no longer carries a `.snap` file; it comes from the store instead.
 
-1. Sign in at <https://snapcraft.io/account> with an Ubuntu One account
-   (create one there if needed).
-2. Register the name: <https://snapcraft.io/register-snap>, name `lindvb`.
-3. On a Linux computer, create a login for GitHub that may only upload LinDVB:
+## Snap Store
+
+The snap is **built by Canonical**, not by GitHub Actions: snapcraft.io is
+connected to this repository, so every push to `main` is built on Canonical's
+build farm for the architectures under `platforms` in `snap/snapcraft.yaml`
+(amd64 and arm64) and released to the `edge` channel. The builds are listed
+under <https://snapcraft.io/lindvb/builds>.
+
+That connection was made once at <https://snapcraft.io/lindvb/builds> ("Set up
+build"), after registering the name at <https://snapcraft.io/register-snap>
+with a free Ubuntu One account.
+
+### Moving a release into `stable` (`SNAPCRAFT_STORE_CREDENTIALS`)
+
+`edge` is the development channel; `snap install lindvb` installs from
+`stable`. The **Snap Store** workflow moves a released version from `edge` to
+`stable`, which takes seconds because nothing is built. The Release workflow
+calls it after publishing the release, so a slow store cannot hold it back.
+
+The store login is needed for that one step:
+
+1. On a Linux computer, create a login that may only release LinDVB:
 
    ```sh
    sudo snap install snapcraft --classic
@@ -19,17 +38,17 @@ three accounts are free. Each secret is set once under
    ```
 
    It asks for the Ubuntu One e-mail and password and prints a long text.
-4. Store that text as the secret `SNAPCRAFT_STORE_CREDENTIALS`.
+2. Store that text as the secret `SNAPCRAFT_STORE_CREDENTIALS`.
 
-Each release then goes to the `stable` channel. The first upload, or one that
-needs new permissions, can wait for a manual store review; the GitHub release
-is published either way. Ask for the `dvb` interface to connect automatically
-in the [Snapcraft forum](https://forum.snapcraft.io/c/store-requests/19), so
-users need not run `snap connect lindvb:dvb`.
+Without the secret the workflow only says so and does nothing. To move an
+earlier release into `stable`, run **Actions → Snap Store → Run workflow**
+with that release's tag.
 
-To publish an earlier release (for example one made before the secret was
-set), run **Actions → Build Snap → Run workflow** with that release's tag in
-"store_tag".
+The first release into `stable`, or one that needs new permissions, can wait
+for a manual store review. Ask for the `dvb` interface to connect
+automatically in the
+[Snapcraft forum](https://forum.snapcraft.io/c/store-requests/19), so users
+need not run `snap connect lindvb:dvb`.
 
 ## AUR (`AUR_SSH_PRIVATE_KEY`)
 
