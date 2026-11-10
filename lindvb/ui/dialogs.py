@@ -541,12 +541,6 @@ class PrefsWindow(Gtk.Window):
                 _("Shown while radio or audio plays; also in the visualisation button."))
         switch(g, "visualizer_gpu", _("Draw on the graphics card"),
                _("OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."))
-        entry(g, "visualizer_resolution", _("Resolution of projectM"),
-              _("\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start "
-                "faster and need less processing power."))
-        spin(g, "projectm_preset_seconds", _("projectM: seconds per preset"), 5, 600)
-        entry(g, "projectm_preset_dir", _("projectM preset folder"),
-              _("Empty: the usual folders of projectM."))
 
     def _save_youth_protection(self, s):
         """Age limit and PIN; with a PIN set, only after the current PIN."""

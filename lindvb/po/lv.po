@@ -3265,21 +3265,6 @@ msgstr "Zīmēt ar grafisko karti"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL iebūvētajām vizualizācijām. Stājas spēkā pēc LinDVB restartēšanas."
 
-msgid "Resolution of projectM"
-msgstr "projectM izšķirtspēja"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "“auto” (ekrāns) vai platums x augstums, piem., 1280x720. Mazāki izmēri startē ātrāk un prasa mazāk skaitļošanas jaudas."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekundes uz presetu"
-
-msgid "projectM preset folder"
-msgstr "projectM presetu mape"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Tukšs: projectM parastās mapes."
-
 msgid "Service list address"
 msgstr "Pakalpojumu saraksta adrese"
 

@@ -89,8 +89,7 @@ them.
   in a shell of glowing filaments), occasus solis (a sunset with rays between
   drifting clouds), aurora borealis (northern lights over snowy mountains) and Goom HD (the original GOOM logic, drawn by
   shaders natively up to 4K), LED spectrum analyser, VU meters and oscilloscope (classic),
-  and projectM (MilkDrop presets) or the original GOOM through the bundled
-  GStreamer add-on; plugins can add their own.
+  and the original GOOM through the bundled GStreamer add-on; plugins can add their own.
   A button at the bottom right of the control bar picks the visualisation; it
   is only active while radio or audio plays
 * Now playing over the radio visualisation, each part switchable in
@@ -253,7 +252,7 @@ flatpak run io.github.thommy87.LinDVB
 ```
 
 The Flatpak has access to all devices (for `/dev/dvb`), the network, and your Videos
-and Pictures folders. It includes the projectM visualisations; H.264, HEVC and AC-3
+and Pictures folders. H.264, HEVC and AC-3
 decoding comes from the runtime's codecs extension, which Flatpak installs with it. To build it yourself:
 `flatpak-builder --user --install build-flatpak flatpak/io.github.thommy87.LinDVB.yml`.
 

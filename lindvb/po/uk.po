@@ -3265,21 +3265,6 @@ msgstr "Малювати відеокартою"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL для вбудованих візуалізацій. Набуде чинності після перезапуску LinDVB."
 
-msgid "Resolution of projectM"
-msgstr "Роздільність projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "«auto» (екран) або ширина x висота, наприклад 1280x720. Менші розміри запускаються швидше й потребують менше обчислювальної потужності."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: секунд на пресет"
-
-msgid "projectM preset folder"
-msgstr "Тека пресетів projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Порожньо: звичайні теки projectM."
-
 msgid "Service list address"
 msgstr "Адреса списку послуг"
 

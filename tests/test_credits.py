@@ -17,7 +17,7 @@ def test_version_matches_pyproject():
 
 def test_credits_name_the_code_lindvb_contains():
     text = " ".join(p for _, people in CREDITS for p in people)
-    for name in ("VDR EEPG", "GOOM", "dash.js", "GStreamer", "GTK", "WebKitGTK", "projectM"):
+    for name in ("VDR EEPG", "GOOM", "dash.js", "GStreamer", "GTK", "WebKitGTK"):
         assert name in text, name
     notices = (ROOT / "THIRD-PARTY-NOTICES.md").read_text(encoding="utf-8")
     for path in ("lindvb/epgsources.py", "lindvb/freesat_tables.py", "lindvb/goom.py",

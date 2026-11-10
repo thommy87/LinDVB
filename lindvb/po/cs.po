@@ -3265,21 +3265,6 @@ msgstr "Kreslit grafickou kartou"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL pro vestavěné vizualizace. Projeví se po novém spuštění LinDVB."
 
-msgid "Resolution of projectM"
-msgstr "Rozlišení projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "„auto“ (obrazovka) nebo šířka x výška, např. 1280x720. Menší velikosti startují rychleji a potřebují méně výkonu."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekundy na preset"
-
-msgid "projectM preset folder"
-msgstr "Složka presetů projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Prázdné: obvyklé složky projectM."
-
 msgid "Service list address"
 msgstr "Adresa seznamu služeb"
 

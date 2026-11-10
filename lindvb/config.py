@@ -101,15 +101,8 @@ DEFAULTS = {
     # Draw the built-in visualisations on the graphics card (OpenGL); cairo
     # on the CPU is used when this is off or OpenGL is not available.
     "visualizer_gpu": True,
-    # Size the GStreamer visualisations render at: "auto" (the screen, at most
-    # 2560x1440, for projectM) or "WIDTHxHEIGHT". The original GOOM runs on
-    # the CPU and uses "goom_resolution" (default 640x360).
-    "visualizer_resolution": "auto",
+    # Size the original GOOM (GStreamer, on the CPU) renders at.
     "goom_resolution": "640x360",
-    # projectM (add-on gst_visualizers): seconds per preset and the preset
-    # folder ("" = the usual system folders).
-    "projectm_preset_seconds": 20,
-    "projectm_preset_dir": "",
     "xmltv_url": "",
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],

@@ -3543,21 +3543,6 @@ msgstr "Mit der Grafikkarte zeichnen"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL für die eingebauten Visualisierungen. Wirkt nach einem Neustart von LinDVB."
 
-msgid "Resolution of projectM"
-msgstr "Auflösung von projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "„auto“ (der Bildschirm) oder Breite x Höhe, z. B. 1280x720. Kleinere Größen starten schneller und brauchen weniger Rechenleistung."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: Sekunden pro Preset"
-
-msgid "projectM preset folder"
-msgstr "projectM-Preset-Ordner"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Leer: die üblichen Ordner von projectM."
-
 msgid "Service list address"
 msgstr "Adresse der Service-Liste"
 

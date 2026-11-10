@@ -252,7 +252,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.add_action(a)
         # radio visualisations: built-in styles and those plugins registered
         self.visualizers = {s.id: (_(s.label), "draw", s) for s in STYLES}
-        # a plugin's choices (projectM's preset folders) get ids "plugin:name|choice"
+        # a plugin's choices (e.g. preset folders) get ids "plugin:name|choice"
         self._vis_choices = {}
         choice_fns = getattr(self.app.plugins, "visualizer_choices", {})
         for _plugin, name, kind, factory in self.app.plugins.visualizers:

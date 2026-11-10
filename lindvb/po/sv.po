@@ -3265,21 +3265,6 @@ msgstr "Rita med grafikkortet"
 msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
 msgstr "OpenGL för de inbyggda visualiseringarna. Gäller när LinDVB startas igen."
 
-msgid "Resolution of projectM"
-msgstr "Upplösning för projectM"
-
-msgid "\"auto\" (the screen) or width x height, e.g. 1280x720. Smaller sizes start faster and need less processing power."
-msgstr "\"auto\" (skärmen) eller bredd x höjd, t.ex. 1280x720. Mindre storlekar startar snabbare och kräver mindre beräkningskraft."
-
-msgid "projectM: seconds per preset"
-msgstr "projectM: sekunder per preset"
-
-msgid "projectM preset folder"
-msgstr "Presetmapp för projectM"
-
-msgid "Empty: the usual folders of projectM."
-msgstr "Tom: projectMs vanliga mappar."
-
 msgid "Service list address"
 msgstr "Adress till tjänstelistan"
 
