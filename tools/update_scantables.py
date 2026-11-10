@@ -2,8 +2,15 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Pack a checkout or archive of dtv-scan-tables into lindvb/scantables.
 
-    python3 tools/update_scantables.py dtv-scan-tables-<commit>.tar.gz <commit> <date>
-    python3 tools/update_scantables.py path/to/dtv-scan-tables <commit> <date>
+    python3 tools/update_scantables.py path/to/dtv-scan-tables <commit> <date> [<source url>]
+    python3 tools/update_scantables.py dtv-scan-tables-<commit>.tar.gz <commit> <date> [<source url>]
+
+LinDVB takes the tables from Tvheadend's copy of dtv-scan-tables
+(https://github.com/tvheadend/dtv-scan-tables, branch "tvheadend"): it holds
+every commit of the LinuxTV repository (https://git.linuxtv.org/dtv-scan-tables.git)
+and the newer lists people send to Tvheadend. The monthly workflow
+.github/workflows/scantables.yml runs this script and opens a pull request
+when the tables changed.
 
 The tables (atsc, dvb-c, dvb-s, dvb-t, isdb-t; several thousand small files)
 are read and written as one compressed index, ``dtv-scan-tables.json.gz``,
@@ -20,6 +27,7 @@ import sys
 import tarfile
 from pathlib import Path
 
+SOURCE = "https://github.com/tvheadend/dtv-scan-tables"
 FAMILIES = ("atsc", "dvb-c", "dvb-s", "dvb-t", "isdb-t")
 OUT = Path(__file__).resolve().parent.parent / "lindvb" / "scantables"
 
@@ -66,7 +74,7 @@ def files(src):
                 yield parts[-2], parts[-1], tar.extractfile(m).read()
 
 
-def main(src, commit, date):
+def main(src, commit, date, source=SOURCE):
     tables = []
     for fam, name, data in files(src):
         if not fam:
@@ -75,7 +83,7 @@ def main(src, commit, date):
         title, blocks = parse(data.decode("utf-8", errors="replace"))
         if blocks:
             tables.append({"family": fam, "name": name, "title": title, "channels": blocks})
-    index = {"source": "https://git.linuxtv.org/dtv-scan-tables.git",
+    index = {"source": source,
              "commit": commit, "date": date, "tables": tables}
     buf = io.BytesIO()
     with gzip.GzipFile(fileobj=buf, mode="wb", mtime=0, compresslevel=9) as gz:
@@ -86,6 +94,6 @@ def main(src, commit, date):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) not in (4, 5):
         sys.exit(__doc__)
     main(*sys.argv[1:])

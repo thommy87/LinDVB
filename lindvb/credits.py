@@ -28,8 +28,10 @@ CREDITS = (
         "FFmpeg https://ffmpeg.org",
     )),
     (N_("Transponder lists"), (
-        "dtv-scan-tables (the LinuxTV community), GPL-2.0 / LGPL-2.1, commit 97129f5 "
+        "dtv-scan-tables (the LinuxTV community), GPL-2.0 / LGPL-2.1 "
         "https://git.linuxtv.org/dtv-scan-tables.git",
+        "dtv-scan-tables as kept up to date by the Tvheadend community "
+        "https://github.com/tvheadend/dtv-scan-tables",
     )),
     (N_("Visualisations"), (
         "projectM and gst-projectm https://github.com/projectM-visualizer",

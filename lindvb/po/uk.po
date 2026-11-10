@@ -3847,3 +3847,12 @@ msgstr "Тюнер зайнятий (запис або аналіз каналу
 
 msgid "Transponder lists"
 msgstr "Списки транспондерів"
+
+msgid "Indonesia"
+msgstr "Індонезія"
+
+msgid "North Macedonia"
+msgstr "Північна Македонія"
+
+msgid "South Africa"
+msgstr "Південна Африка"

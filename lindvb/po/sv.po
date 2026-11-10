@@ -3847,3 +3847,12 @@ msgstr "Mottagaren är upptagen (inspelning eller kanalanalys).\n"
 
 msgid "Transponder lists"
 msgstr "Transponderlistor"
+
+msgid "Indonesia"
+msgstr "Indonesien"
+
+msgid "North Macedonia"
+msgstr "Nordmakedonien"
+
+msgid "South Africa"
+msgstr "Sydafrika"

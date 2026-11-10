@@ -3847,3 +3847,12 @@ msgstr "A tuner foglalt (felvétel vagy csatornaelemzés).\n"
 
 msgid "Transponder lists"
 msgstr "Transzponderlisták"
+
+msgid "Indonesia"
+msgstr "Indonézia"
+
+msgid "North Macedonia"
+msgstr "Észak-Macedónia"
+
+msgid "South Africa"
+msgstr "Dél-afrikai Köztársaság"

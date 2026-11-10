@@ -3919,3 +3919,12 @@ msgstr "Il sintonizzatore è occupato (registrazione o analisi del canale).\n"
 
 msgid "Transponder lists"
 msgstr "Liste dei transponder"
+
+msgid "Indonesia"
+msgstr "Indonesia"
+
+msgid "North Macedonia"
+msgstr "Macedonia del Nord"
+
+msgid "South Africa"
+msgstr "Sudafrica"

@@ -1,0 +1,75 @@
+name: Scan tables
+
+# Once a month: pack the newest dtv-scan-tables (Tvheadend's copy, which holds
+# every LinuxTV commit and the newer lists sent to Tvheadend) with
+# tools/update_scantables.py and open a pull request when the tables changed.
+# Nothing is released; the update goes out with the next release.
+#
+# Needs "Allow GitHub Actions to create and approve pull requests" under
+# Settings > Actions > General. Pull requests opened with the workflow token do
+# not start the other workflows; close and reopen the pull request, or push to
+# its branch, to run the tests on it.
+on:
+  schedule:
+    - cron: "17 4 3 * *"        # the 3rd of every month, 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch dtv-scan-tables
+        run: |
+          git clone --filter=blob:none -b tvheadend https://github.com/tvheadend/dtv-scan-tables.git "$RUNNER_TEMP/dtv"
+          echo "COMMIT=$(git -C "$RUNNER_TEMP/dtv" log -1 --format=%H)" >> "$GITHUB_ENV"
+          echo "DATE=$(git -C "$RUNNER_TEMP/dtv" log -1 --format=%cs)" >> "$GITHUB_ENV"
+
+      - name: Pack the tables
+        run: python3 tools/update_scantables.py "$RUNNER_TEMP/dtv" "$COMMIT" "$DATE"
+
+      - name: Test the new tables
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends python3-pytest
+          python3 -m pytest -q -p no:cacheprovider tests/test_scanlists.py
+
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- lindvb/scantables; then
+            echo "The scan tables are up to date."
+            exit 0
+          fi
+          old=$(git show HEAD:lindvb/scantables/dtv-scan-tables.json.gz | gunzip | python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"])')
+          short=${COMMIT:0:7}
+          branch="scantables/$short"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+            echo "A pull request for $short exists already."
+            exit 0
+          fi
+          {
+            echo "Updates the built-in transponder lists to dtv-scan-tables $short ($DATE),"
+            echo "from https://github.com/tvheadend/dtv-scan-tables (branch tvheadend)."
+            echo
+            echo "### Changes since ${old:0:7}"
+            echo
+            git -C "$RUNNER_TEMP/dtv" log -n 100 --format='- %cs %s (%an)' "$old..$COMMIT" 2>/dev/null \
+              || echo "- (the list of commits could not be read)"
+            echo
+            echo "Opened by the monthly Scan tables workflow. Nothing is released until a release is approved."
+          } > body.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add lindvb/scantables
+          git commit -m "Scan tables: update to dtv-scan-tables $short ($DATE)"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "Scan tables: update to dtv-scan-tables $short ($DATE)" --body-file body.md

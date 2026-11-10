@@ -2,6 +2,7 @@
 """The transponder lists the channel search offers, sorted the way people pick them.
 
 LinDVB ships the tables of `dtv-scan-tables <https://git.linuxtv.org/dtv-scan-tables.git>`_
+as kept up to date in Tvheadend's copy (https://github.com/tvheadend/dtv-scan-tables)
 (GPL-2.0 / LGPL-2.1, packed by ``tools/update_scantables.py`` into
 ``scantables/dtv-scan-tables.json.gz``). Lists installed on the system, in
 folders the user added and DVBViewer style ``.ini`` lists are added to them.
@@ -59,14 +60,15 @@ COUNTRIES = {
     "cz": N_("Czechia"), "de": N_("Germany"), "dk": N_("Denmark"), "ee": N_("Estonia"),
     "es": N_("Spain"), "fi": N_("Finland"), "fr": N_("France"), "gr": N_("Greece"),
     "hk": N_("Hong Kong"), "hr": N_("Croatia"), "hu": N_("Hungary"), "ie": N_("Ireland"),
-    "il": N_("Israel"), "ir": N_("Iran"), "is": N_("Iceland"), "it": N_("Italy"),
+    "id": N_("Indonesia"), "il": N_("Israel"), "ir": N_("Iran"), "is": N_("Iceland"), "it": N_("Italy"),
     "ke": N_("Kenya"), "kr": N_("South Korea"), "li": N_("Liechtenstein"),
     "lt": N_("Lithuania"), "lu": N_("Luxembourg"), "lv": N_("Latvia"),
+    "mk": N_("North Macedonia"),
     "nl": N_("Netherlands"), "no": N_("Norway"), "nz": N_("New Zealand"), "pl": N_("Poland"),
     "pt": N_("Portugal"), "ro": N_("Romania"), "ru": N_("Russia"), "se": N_("Sweden"),
     "si": N_("Slovenia"), "sk": N_("Slovakia"), "tw": N_("Taiwan"), "ua": N_("Ukraine"),
     "ug": N_("Uganda"), "uk": N_("United Kingdom"), "us": N_("United States"),
-    "vn": N_("Vietnam"),
+    "vn": N_("Vietnam"), "za": N_("South Africa"),
 }
 # DVBViewer names its lists after the country in English (DVB-T2_Germany.ini)
 _COUNTRY_BY_NAME = {v.lower(): k for k, v in COUNTRIES.items()}

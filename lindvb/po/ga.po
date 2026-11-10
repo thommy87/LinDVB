@@ -3847,3 +3847,12 @@ msgstr "Tá an tiúnóir gnóthach (taifeadadh nó anailís cainéil).\n"
 
 msgid "Transponder lists"
 msgstr "Liostaí trasfhreagróirí"
+
+msgid "Indonesia"
+msgstr "An Indinéis"
+
+msgid "North Macedonia"
+msgstr "An Mhacadóin Thuaidh"
+
+msgid "South Africa"
+msgstr "An Afraic Theas"

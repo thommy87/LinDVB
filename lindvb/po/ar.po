@@ -3847,3 +3847,12 @@ msgstr "الموالف مشغول (تسجيل أو تحليل قناة).\n"
 
 msgid "Transponder lists"
 msgstr "قوائم أجهزة الإرسال"
+
+msgid "Indonesia"
+msgstr "إندونيسيا"
+
+msgid "North Macedonia"
+msgstr "مقدونيا الشمالية"
+
+msgid "South Africa"
+msgstr "جنوب أفريقيا"
