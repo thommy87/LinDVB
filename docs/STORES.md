@@ -27,6 +27,10 @@ is published either way. Ask for the `dvb` interface to connect automatically
 in the [Snapcraft forum](https://forum.snapcraft.io/c/store-requests/19), so
 users need not run `snap connect lindvb:dvb`.
 
+To publish an earlier release (for example one made before the secret was
+set), run **Actions → Build Snap → Run workflow** with that release's tag in
+"store_tag".
+
 ## AUR (`AUR_SSH_PRIVATE_KEY`)
 
 1. Create a key pair on a Linux computer, without a passphrase:
