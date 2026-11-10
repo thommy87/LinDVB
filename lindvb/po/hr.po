@@ -4027,3 +4027,60 @@ msgstr "Dajte popisu vlastiti naziv (to je i naziv njegove grupe kanala)"
 
 msgid "List renamed to {name}"
 msgstr "Popis preimenovan u {name}"
+
+msgid "Add Channels…"
+msgstr "Dodaj kanale…"
+
+msgid "Add channels"
+msgstr "Dodavanje kanala"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Ručno ugodi jednu frekvenciju i usporedi njezine kanale s popisom kanala: dodaj nove, ažuriraj promijenjene, ukloni stare."
+
+msgid "Unchanged"
+msgstr "Nepromijenjeno"
+
+msgid "Changed"
+msgstr "Promijenjeno"
+
+msgid "No longer broadcast"
+msgstr "Više se ne emitira"
+
+msgid "Bandwidth"
+msgstr "Širina pojasa"
+
+msgid "yes"
+msgstr "da"
+
+msgid "Add Channels"
+msgstr "Dodaj kanale"
+
+msgid "Tune Channel"
+msgstr "Ugodi"
+
+msgid "No tuner found."
+msgstr "Prijamnik nije pronađen."
+
+msgid "Log"
+msgstr "Zapisnik"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP DVB-T2 multipleksa koji ih emitira više; uz -1 bira prijamnik"
+
+msgid "Enter by hand"
+msgstr "Unesi ručno"
+
+msgid "Tuning…"
+msgstr "Ugađanje…"
+
+msgid "The tuner could not be used."
+msgstr "Prijamnik se nije mogao upotrijebiti."
+
+msgid "No channels found on this frequency."
+msgstr "Na ovoj frekvenciji nisu pronađeni kanali."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Nepromijenjeno: {same}, promijenjeno: {changed}, novo: {new}, više se ne emitira: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Spremljeno: dodano {added}, ažurirano {updated}, uklonjeno {removed}."

@@ -4027,3 +4027,60 @@ msgstr "Anna luettelolle oma nimi (myös sen kanavaryhmän nimi)"
 
 msgid "List renamed to {name}"
 msgstr "Luettelo nimettiin uudelleen: {name}"
+
+msgid "Add Channels…"
+msgstr "Lisää kanavia…"
+
+msgid "Add channels"
+msgstr "Lisää kanavia"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Viritä yksittäinen taajuus käsin ja vertaa sen kanavia kanavaluetteloon: lisää uudet, päivitä muuttuneet, poista vanhat."
+
+msgid "Unchanged"
+msgstr "Ennallaan"
+
+msgid "Changed"
+msgstr "Muuttunut"
+
+msgid "No longer broadcast"
+msgstr "Ei enää lähetetä"
+
+msgid "Bandwidth"
+msgstr "Kaistanleveys"
+
+msgid "yes"
+msgstr "kyllä"
+
+msgid "Add Channels"
+msgstr "Lisää kanavia"
+
+msgid "Tune Channel"
+msgstr "Viritä"
+
+msgid "No tuner found."
+msgstr "Viritintä ei löytynyt."
+
+msgid "Log"
+msgstr "Loki"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "Useita PLP:itä lähettävän DVB-T2-kanavanipun PLP; arvolla -1 viritin valitsee itse"
+
+msgid "Enter by hand"
+msgstr "Syötä käsin"
+
+msgid "Tuning…"
+msgstr "Viritetään…"
+
+msgid "The tuner could not be used."
+msgstr "Viritintä ei voitu käyttää."
+
+msgid "No channels found on this frequency."
+msgstr "Tältä taajuudelta ei löytynyt kanavia."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} ennallaan, {changed} muuttunut, {new} uutta, {gone} ei enää lähetetä."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Tallennettu: {added} lisätty, {updated} päivitetty, {removed} poistettu."

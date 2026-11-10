@@ -4027,3 +4027,60 @@ msgstr "Nadaj liście własną nazwę (to także nazwa jej grupy kanałów)"
 
 msgid "List renamed to {name}"
 msgstr "Zmieniono nazwę listy na {name}"
+
+msgid "Add Channels…"
+msgstr "Dodaj kanały…"
+
+msgid "Add channels"
+msgstr "Dodawanie kanałów"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Ręczne dostrojenie pojedynczej częstotliwości i porównanie jej kanałów z listą kanałów: dodanie nowych, aktualizacja zmienionych, usunięcie starych."
+
+msgid "Unchanged"
+msgstr "Bez zmian"
+
+msgid "Changed"
+msgstr "Zmieniony"
+
+msgid "No longer broadcast"
+msgstr "Już nie nadaje"
+
+msgid "Bandwidth"
+msgstr "Szerokość pasma"
+
+msgid "yes"
+msgstr "tak"
+
+msgid "Add Channels"
+msgstr "Dodaj kanały"
+
+msgid "Tune Channel"
+msgstr "Dostrój"
+
+msgid "No tuner found."
+msgstr "Nie znaleziono tunera."
+
+msgid "Log"
+msgstr "Dziennik"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP multipleksu DVB-T2, który nadaje ich kilka; przy -1 wybiera tuner"
+
+msgid "Enter by hand"
+msgstr "Wpisz ręcznie"
+
+msgid "Tuning…"
+msgstr "Dostrajanie…"
+
+msgid "The tuner could not be used."
+msgstr "Nie można użyć tunera."
+
+msgid "No channels found on this frequency."
+msgstr "Na tej częstotliwości nie znaleziono kanałów."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} bez zmian, {changed} zmienionych, {new} nowych, {gone} już nie nadaje."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Zapisano: dodano {added}, zaktualizowano {updated}, usunięto {removed}."

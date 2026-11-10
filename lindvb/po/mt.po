@@ -4027,3 +4027,60 @@ msgstr "Agħti lil-lista isem tagħha (huwa wkoll l-isem tal-grupp tal-kanali ta
 
 msgid "List renamed to {name}"
 msgstr "Il-lista ngħatat l-isem {name}"
+
+msgid "Add Channels…"
+msgstr "Żid stazzjonijiet…"
+
+msgid "Add channels"
+msgstr "Żid stazzjonijiet"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Issintonizza frekwenza waħda bl-idejn u qabbel l-istazzjonijiet tagħha mal-lista tal-istazzjonijiet: żid il-ġodda, aġġorna dawk mibdula, neħħi l-qodma."
+
+msgid "Unchanged"
+msgstr "Mhux mibdul"
+
+msgid "Changed"
+msgstr "Mibdul"
+
+msgid "No longer broadcast"
+msgstr "M'għadux jixxandar"
+
+msgid "Bandwidth"
+msgstr "Wisa' tal-banda"
+
+msgid "yes"
+msgstr "iva"
+
+msgid "Add Channels"
+msgstr "Żid stazzjonijiet"
+
+msgid "Tune Channel"
+msgstr "Issintonizza"
+
+msgid "No tuner found."
+msgstr "Ma nstab l-ebda tuner."
+
+msgid "Log"
+msgstr "Reġistru"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "Il-PLP ta' multiplex DVB-T2 li jibgħat diversi; b'-1 jagħżel it-tuner"
+
+msgid "Enter by hand"
+msgstr "Daħħal bl-idejn"
+
+msgid "Tuning…"
+msgstr "Qed jissintonizza…"
+
+msgid "The tuner could not be used."
+msgstr "It-tuner ma setax jintuża."
+
+msgid "No channels found on this frequency."
+msgstr "Ma nstabu l-ebda stazzjonijiet fuq din il-frekwenza."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Mhux mibdula: {same}, mibdula: {changed}, ġodda: {new}, m'għadhomx jixxandru: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Issejvjat: miżjuda {added}, aġġornati {updated}, imneħħija {removed}."

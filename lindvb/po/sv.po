@@ -4027,3 +4027,60 @@ msgstr "Ge listan ett eget namn (även namnet på dess kanalgrupp)"
 
 msgid "List renamed to {name}"
 msgstr "Listan har bytt namn till {name}"
+
+msgid "Add Channels…"
+msgstr "Lägg till kanaler…"
+
+msgid "Add channels"
+msgstr "Lägg till kanaler"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Ställ in en enskild frekvens för hand och jämför dess kanaler med kanallistan: lägg till nya, uppdatera ändrade, ta bort gamla."
+
+msgid "Unchanged"
+msgstr "Oförändrad"
+
+msgid "Changed"
+msgstr "Ändrad"
+
+msgid "No longer broadcast"
+msgstr "Sänds inte längre"
+
+msgid "Bandwidth"
+msgstr "Bandbredd"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "Add Channels"
+msgstr "Lägg till kanaler"
+
+msgid "Tune Channel"
+msgstr "Ställ in frekvens"
+
+msgid "No tuner found."
+msgstr "Ingen mottagare hittades."
+
+msgid "Log"
+msgstr "Logg"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP för en DVB-T2-multiplex som sänder flera; vid -1 väljer mottagaren själv"
+
+msgid "Enter by hand"
+msgstr "Ange för hand"
+
+msgid "Tuning…"
+msgstr "Ställer in…"
+
+msgid "The tuner could not be used."
+msgstr "Mottagaren kunde inte användas."
+
+msgid "No channels found on this frequency."
+msgstr "Inga kanaler hittades på den här frekvensen."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} oförändrade, {changed} ändrade, {new} nya, {gone} sänds inte längre."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Sparat: {added} tillagda, {updated} uppdaterade, {removed} borttagna."

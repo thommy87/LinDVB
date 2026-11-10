@@ -4027,3 +4027,60 @@ msgstr "Дать списку собственное имя (это также �
 
 msgid "List renamed to {name}"
 msgstr "Список переименован в {name}"
+
+msgid "Add Channels…"
+msgstr "Добавить каналы…"
+
+msgid "Add channels"
+msgstr "Добавление каналов"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Настроить одну частоту вручную и сравнить её каналы со списком каналов: добавить новые, обновить изменённые, удалить старые."
+
+msgid "Unchanged"
+msgstr "Без изменений"
+
+msgid "Changed"
+msgstr "Изменён"
+
+msgid "No longer broadcast"
+msgstr "Больше не вещает"
+
+msgid "Bandwidth"
+msgstr "Полоса"
+
+msgid "yes"
+msgstr "да"
+
+msgid "Add Channels"
+msgstr "Добавить каналы"
+
+msgid "Tune Channel"
+msgstr "Настроить частоту"
+
+msgid "No tuner found."
+msgstr "Тюнер не найден."
+
+msgid "Log"
+msgstr "Журнал"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP мультиплекса DVB-T2, который передаёт несколько; при -1 выбирает тюнер"
+
+msgid "Enter by hand"
+msgstr "Ввести вручную"
+
+msgid "Tuning…"
+msgstr "Настройка…"
+
+msgid "The tuner could not be used."
+msgstr "Не удалось использовать тюнер."
+
+msgid "No channels found on this frequency."
+msgstr "На этой частоте каналы не найдены."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Без изменений: {same}, изменено: {changed}, новых: {new}, больше не вещает: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Сохранено: добавлено {added}, обновлено {updated}, удалено {removed}."

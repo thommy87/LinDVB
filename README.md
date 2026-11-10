@@ -144,6 +144,10 @@ them.
   and provider; terrestrial, ATSC, ISDB-T: country and region), a blind scan over all
   frequencies where there is no list, NIT search, LinDVB's own search on single-cable
   tuners, and lock, signal level and quality shown while searching
+* Add channels from a single frequency entered by hand (Preferences ▸ Channels ▸ Add
+  Channels): the channels found are compared with the channel list of that transponder
+  (unchanged, changed, new, no longer broadcast, each in its colour and with a tick), and
+  Save adds, updates and removes the ticked ones
 * ATSC (USA, Canada, Mexico, South Korea): virtual channel numbers like 7.1 in the
   channel list (searchable as "7.1" or "7-1") and the programme guide from PSIP
   (channel table, EIT and extended texts, GPS time)

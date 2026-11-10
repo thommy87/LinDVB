@@ -4027,3 +4027,60 @@ msgstr "Donner un nom propre à la liste (c’est aussi le nom de son groupe de 
 
 msgid "List renamed to {name}"
 msgstr "Liste renommée en {name}"
+
+msgid "Add Channels…"
+msgstr "Ajouter des chaînes…"
+
+msgid "Add channels"
+msgstr "Ajouter des chaînes"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Régler une seule fréquence à la main et comparer ses chaînes avec la liste des chaînes : ajouter les nouvelles, mettre à jour celles qui ont changé, supprimer les anciennes."
+
+msgid "Unchanged"
+msgstr "Inchangée"
+
+msgid "Changed"
+msgstr "Modifiée"
+
+msgid "No longer broadcast"
+msgstr "N’est plus diffusée"
+
+msgid "Bandwidth"
+msgstr "Largeur de bande"
+
+msgid "yes"
+msgstr "oui"
+
+msgid "Add Channels"
+msgstr "Ajouter des chaînes"
+
+msgid "Tune Channel"
+msgstr "Régler la fréquence"
+
+msgid "No tuner found."
+msgstr "Aucun tuner trouvé."
+
+msgid "Log"
+msgstr "Journal"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "Le PLP d’un multiplex DVB-T2 qui en diffuse plusieurs ; -1 laisse le choix au tuner"
+
+msgid "Enter by hand"
+msgstr "Saisie manuelle"
+
+msgid "Tuning…"
+msgstr "Réglage en cours…"
+
+msgid "The tuner could not be used."
+msgstr "Le tuner n’a pas pu être utilisé."
+
+msgid "No channels found on this frequency."
+msgstr "Aucune chaîne trouvée sur cette fréquence."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} inchangées, {changed} modifiées, {new} nouvelles, {gone} plus diffusées."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Enregistré : {added} ajoutées, {updated} mises à jour, {removed} supprimées."

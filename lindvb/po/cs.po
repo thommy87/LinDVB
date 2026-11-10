@@ -4027,3 +4027,60 @@ msgstr "Pojmenujte seznam vlastním názvem (je to i název jeho skupiny kanál�
 
 msgid "List renamed to {name}"
 msgstr "Seznam přejmenován na {name}"
+
+msgid "Add Channels…"
+msgstr "Přidat kanály…"
+
+msgid "Add channels"
+msgstr "Přidání kanálů"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Ručně naladit jednu frekvenci a porovnat její kanály se seznamem kanálů: nové přidat, změněné aktualizovat, staré odebrat."
+
+msgid "Unchanged"
+msgstr "Beze změny"
+
+msgid "Changed"
+msgstr "Změněno"
+
+msgid "No longer broadcast"
+msgstr "Již se nevysílá"
+
+msgid "Bandwidth"
+msgstr "Šířka pásma"
+
+msgid "yes"
+msgstr "ano"
+
+msgid "Add Channels"
+msgstr "Přidat kanály"
+
+msgid "Tune Channel"
+msgstr "Naladit"
+
+msgid "No tuner found."
+msgstr "Nebyl nalezen žádný tuner."
+
+msgid "Log"
+msgstr "Protokol"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP multiplexu DVB-T2, který jich vysílá více; při -1 vybírá tuner"
+
+msgid "Enter by hand"
+msgstr "Zadat ručně"
+
+msgid "Tuning…"
+msgstr "Ladění…"
+
+msgid "The tuner could not be used."
+msgstr "Tuner nelze použít."
+
+msgid "No channels found on this frequency."
+msgstr "Na této frekvenci nebyly nalezeny žádné kanály."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "Beze změny: {same}, změněno: {changed}, nové: {new}, již se nevysílá: {gone}."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Uloženo: přidáno {added}, aktualizováno {updated}, odebráno {removed}."
