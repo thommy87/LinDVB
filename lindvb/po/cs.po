@@ -4084,3 +4084,51 @@ msgstr "Beze změny: {same}, změněno: {changed}, nové: {new}, již se nevysí
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Uloženo: přidáno {added}, aktualizováno {updated}, odebráno {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Soubor kanálů LinDVB (.json): vše, včetně seznamů oblíbených"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Seznam stop M3U (.m3u): internetové kanály a streamy DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Soubor kanálů dvbv5 (.conf): kanály tuneru"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabulka CSV (.csv): všechny kanály"
+
+msgid "Export Channel List"
+msgstr "Exportovat seznam kanálů"
+
+msgid "TV channels only"
+msgstr "Pouze TV kanály"
+
+msgid "Radio stations only"
+msgstr "Pouze rozhlasové stanice"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Kanály zobrazené v seznamu ({n})"
+
+msgid "Save…"
+msgstr "Uložit…"
+
+msgid "There are no channels to export."
+msgstr "Nejsou žádné kanály k exportu."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Žádný z těchto {total} kanálů nelze v tomto formátu uložit; internetové kanály patří do M3U, kanály tuneru do dvbv5, všechny kanály do CSV nebo souboru kanálů LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Uloží se {n} z {total} kanálů; zbylých {skipped} nelze v tomto formátu uložit."
+
+msgid "{n} channels will be saved."
+msgstr "Počet ukládaných kanálů: {n}."
+
+msgid "Could not save {name}"
+msgstr "{name} nelze uložit"
+
+msgid "{n} channels exported to {path}"
+msgstr "Kanály exportovány do {path}: {n}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importovat seznam kanálů (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

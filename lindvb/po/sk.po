@@ -4084,3 +4084,51 @@ msgstr "Bez zmeny: {same}, zmenené: {changed}, nové: {new}, už sa nevysiela: 
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Uložené: pridané {added}, aktualizované {updated}, odstránené {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Súbor kanálov LinDVB (.json): všetko, so zoznamami obľúbených"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Zoznam skladieb M3U (.m3u): internetové kanály a streamy DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Súbor kanálov dvbv5 (.conf): kanály tunera"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabuľka CSV (.csv): všetky kanály"
+
+msgid "Export Channel List"
+msgstr "Exportovať zoznam kanálov"
+
+msgid "TV channels only"
+msgstr "Iba TV kanály"
+
+msgid "Radio stations only"
+msgstr "Iba rozhlasové stanice"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Kanály zobrazené v zozname ({n})"
+
+msgid "Save…"
+msgstr "Uložiť…"
+
+msgid "There are no channels to export."
+msgstr "Nie sú žiadne kanály na export."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Žiadny z týchto {total} kanálov nemožno uložiť v tomto formáte; internetové kanály patria do M3U, kanály tunera do dvbv5, všetky kanály do CSV alebo súboru kanálov LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Uloží sa {n} z {total} kanálov; zvyšných {skipped} nemožno v tomto formáte uložiť."
+
+msgid "{n} channels will be saved."
+msgstr "Počet ukladaných kanálov: {n}."
+
+msgid "Could not save {name}"
+msgstr "{name} sa nepodarilo uložiť"
+
+msgid "{n} channels exported to {path}"
+msgstr "Kanály exportované do {path}: {n}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importovať zoznam kanálov (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

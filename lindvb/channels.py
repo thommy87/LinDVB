@@ -8,6 +8,9 @@ Supported formats:
   * M3U / M3U8 playlists for IPTV (read/write)
   * CSV (read/write, LinDVB's own column layout)
   * DVBViewer channel lists (*.ini, read) so existing lists can be migrated
+  * LinDVB's own channel file (*.json, read/write): every channel with all
+    its fields, also DVB-I services, and the favourites lists, so nothing is
+    lost on the way to another computer or back
 """
 
 import configparser
@@ -528,6 +531,10 @@ def write_m3u(channels):
             attrs = f'tvg-id="{tvg}" ' if tvg else ""
             if c.tvg_name:
                 attrs += f'tvg-name="{c.tvg_name}" '
+            if c.logo_url:
+                attrs += f'tvg-logo="{c.logo_url}" '
+            if c.radio:
+                attrs += 'radio="true" '
             lines.append(f'#EXTINF:-1 {attrs}group-title="{c.category}",{c.name}')
             lines.append(c.url)
     return "\n".join(lines) + "\n"
@@ -565,6 +572,91 @@ def write_csv(channels):
         d["audio_pids"] = " ".join(map(str, c.audio_pids))
         w.writerow(d)
     return buf.getvalue()
+
+
+# --------------------------------------------------------------------------
+# LinDVB's own channel file (JSON)
+# --------------------------------------------------------------------------
+
+LINDVB_FORMAT = "lindvb-channels"
+LINDVB_VERSION = 1
+# fields that only make sense on the computer that wrote the file
+_LOCAL_FIELDS = ("logo",)
+
+
+def write_lindvb_json(channels, fav_lists=()):
+    """LinDVB's own channel file: every channel with all its fields and the
+    favourites lists (``[{"name": ..., "keys": [...]}]``). Only the keys of
+    the channels in the file are kept and lists left empty are dropped."""
+    chans = []
+    for c in channels:
+        d = asdict(c)
+        for k in _LOCAL_FIELDS:
+            d.pop(k, None)
+        chans.append(d)
+    keys = {c.key for c in channels}
+    lists = []
+    for fav in fav_lists:
+        kept = [k for k in fav.get("keys", []) if k in keys]
+        if kept:
+            lists.append({"name": fav["name"], "keys": kept})
+    data = {"format": LINDVB_FORMAT, "version": LINDVB_VERSION,
+            "channels": chans, "favourites": lists}
+    return json.dumps(data, indent=1, ensure_ascii=False) + "\n"
+
+
+def is_lindvb_json(text):
+    head = text.lstrip()[:200]
+    return head.startswith("{") and f'"{LINDVB_FORMAT}"' in head
+
+
+def parse_lindvb_json(text):
+    """(channels, favourites lists) of a LinDVB channel file."""
+    try:
+        data = json.loads(text)
+    except ValueError as e:
+        raise ValueError(f"Not a LinDVB channel file: {e}") from e
+    if not isinstance(data, dict) or data.get("format") != LINDVB_FORMAT:
+        raise ValueError("Not a LinDVB channel file.")
+    chans = [Channel.from_dict(d) for d in data.get("channels", [])
+             if isinstance(d, dict) and d.get("name")]
+    lists = [{"name": str(f["name"]), "keys": [str(k) for k in f.get("keys", [])]}
+             for f in data.get("favourites", [])
+             if isinstance(f, dict) and f.get("name")]
+    return chans, lists
+
+
+# --------------------------------------------------------------------------
+# Export: the formats a channel list can be saved in
+# --------------------------------------------------------------------------
+
+# (key, file extension) in the order the export dialog offers them
+EXPORT_FORMATS = (("json", ".json"), ("m3u", ".m3u"), ("dvbv5", ".conf"), ("csv", ".csv"))
+
+
+def export_fits(c, fmt):
+    """True when channel *c* can be written in format *fmt*: M3U takes the
+    channels with a stream address (IPTV and DVB-I over the internet), dvbv5
+    the tuner channels, CSV and LinDVB's own file take every channel."""
+    if fmt == "m3u":
+        return c.is_iptv and bool(c.url)
+    if fmt == "dvbv5":
+        return not c.is_iptv
+    return True
+
+
+def export_channels(channels, fmt, fav_lists=()):
+    """The text of *channels* in format *fmt* and the number of channels in it."""
+    chans = [c for c in channels if export_fits(c, fmt)]
+    if fmt == "json":
+        text = write_lindvb_json(chans, fav_lists)
+    elif fmt == "m3u":
+        text = write_m3u(chans)
+    elif fmt == "csv":
+        text = write_csv(chans)
+    else:
+        text = write_dvbv5(chans)
+    return text, len(chans)
 
 
 # --------------------------------------------------------------------------
@@ -686,6 +778,8 @@ def import_data(raw, name, source=""):
         url = source if "://" in source else "file://" + urllib.parse.quote(
             os.path.abspath(source))
         return [Channel(name=stem or "Stream", delsys="iptv", url=url, root=stem or "IPTV")]
+    if is_lindvb_json(text):
+        return parse_lindvb_json(text)[0]
     if is_m3u(text, low):
         return parse_m3u(text, root=stem)
     if low.endswith(".csv"):

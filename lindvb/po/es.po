@@ -4084,3 +4084,51 @@ msgstr "{same} sin cambios, {changed} cambiados, {new} nuevos, {gone} que ya no 
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Guardado: {added} añadidos, {updated} actualizados, {removed} quitados."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Archivo de canales de LinDVB (.json): todo, con las listas de favoritos"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Lista M3U (.m3u): canales de internet y streams DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Archivo de canales dvbv5 (.conf): canales del sintonizador"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabla CSV (.csv): todos los canales"
+
+msgid "Export Channel List"
+msgstr "Exportar lista de canales"
+
+msgid "TV channels only"
+msgstr "Solo canales de TV"
+
+msgid "Radio stations only"
+msgstr "Solo emisoras de radio"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Los canales mostrados en la lista ({n})"
+
+msgid "Save…"
+msgstr "Guardar…"
+
+msgid "There are no channels to export."
+msgstr "No hay canales para exportar."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Ninguno de estos {total} canales se puede guardar en este formato; los canales de internet van a M3U, los del sintonizador a dvbv5, todos los canales a CSV o al archivo de canales de LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Se guardarán {n} de {total} canales; los otros {skipped} no se pueden guardar en este formato."
+
+msgid "{n} channels will be saved."
+msgstr "Se guardarán {n} canales."
+
+msgid "Could not save {name}"
+msgstr "No se pudo guardar {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} canales exportados a {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importar lista de canales (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

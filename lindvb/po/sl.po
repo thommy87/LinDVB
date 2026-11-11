@@ -4084,3 +4084,51 @@ msgstr "Nespremenjeno: {same}, spremenjeno: {changed}, novo: {new}, se ne oddaja
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Shranjeno: dodano {added}, posodobljeno {updated}, odstranjeno {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Datoteka kanalov LinDVB (.json): vse, s seznami priljubljenih"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Seznam predvajanja M3U (.m3u): internetni kanali in tokovi DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Datoteka kanalov dvbv5 (.conf): kanali sprejemnika"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabela CSV (.csv): vsi kanali"
+
+msgid "Export Channel List"
+msgstr "Izvozi seznam kanalov"
+
+msgid "TV channels only"
+msgstr "Samo TV-kanali"
+
+msgid "Radio stations only"
+msgstr "Samo radijske postaje"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Kanali, prikazani na seznamu ({n})"
+
+msgid "Save…"
+msgstr "Shrani…"
+
+msgid "There are no channels to export."
+msgstr "Ni kanalov za izvoz."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Nobenega od teh {total} kanalov ni mogoče shraniti v tej obliki; internetni kanali gredo v M3U, kanali sprejemnika v dvbv5, vsi kanali v CSV ali datoteko kanalov LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Shranjenih bo {n} od {total} kanalov; preostalih {skipped} ni mogoče shraniti v tej obliki."
+
+msgid "{n} channels will be saved."
+msgstr "Število kanalov za shranjevanje: {n}."
+
+msgid "Could not save {name}"
+msgstr "{name} ni bilo mogoče shraniti"
+
+msgid "{n} channels exported to {path}"
+msgstr "Kanali izvoženi v {path}: {n}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Uvozi seznam kanalov (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
