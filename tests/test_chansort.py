@@ -25,3 +25,20 @@ def test_sort_orders():
     assert by("provider") == ["A", "b", "c"]      # without a provider last
     iptv = ch("Web", delsys="iptv", url="http://x")
     assert chansort.transponder(iptv) == ""
+
+
+def test_sources():
+    s1 = ch("Das Erste", delsys="dvb-s2", diseqc=0, root="Astra 19.2°E")
+    s2 = ch("Rai 1", delsys="dvb-s2", diseqc=1, root="Hotbird 13.0°E")
+    cab = ch("ZDF", delsys="dvb-c-a", root="Vodafone")
+    web = ch("Web", delsys="iptv", url="http://x", root="List 1")
+    assert chansort.sources([s1, cab]) == [("src:sat", "Satellite"), ("src:cable", "Cable")]
+    assert chansort.sources([s1, s2]) == [("src:sat:0", "Satellite · DiSEqC port 1"),
+                                         ("src:sat:1", "Satellite · DiSEqC port 2")]
+    keys = [k for k, _l in chansort.sources([s1, s2, cab, web])]
+    assert keys == ["src:sat", "src:sat:0", "src:sat:1", "src:cable", "src:iptv"]
+    assert chansort.sources([s1]) == [] and chansort.sources([web]) == []
+    assert chansort.in_source(s2, "src:sat") and chansort.in_source(s2, "src:sat:1")
+    assert not chansort.in_source(s1, "src:sat:1") and not chansort.in_source(cab, "src:sat")
+    assert chansort.in_source(web, "src:iptv")
+    assert chansort.source_kind(ch("T", delsys="dvb-t2")) == "terr"

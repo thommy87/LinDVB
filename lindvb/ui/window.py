@@ -516,6 +516,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.group_dd = Gtk.DropDown.new_from_strings([_("All groups")])
         self.group_dd.connect("notify::selected", lambda *_: self._on_list_group())
         self.group_dd.set_hexpand(True)
+        self.group_dd.set_tooltip_text(
+            _("Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, "
+              "or a satellite, network, import file or IPTV list"))
         row.append(self.filter_dd)
         favs_btn = Gtk.Button(icon_name="starred-symbolic", css_classes=["flat"],
                               tooltip_text=_("Manage favourites lists"))
@@ -865,7 +868,7 @@ class MainWindow(Gtk.ApplicationWindow):
         g, v = self.group_dd.get_selected(), self.value_dd.get_selected()
         raw = self.search.get_text().strip()
         return (raw, raw.lower(), self._filter_key(), self.mode == "radio",
-                self._groups[g] if g > 0 else None,
+                self._groups[g] if 0 < g < len(self._groups) else None,
                 self._values[v] if 0 < v < len(self._values) else None, self._sort())
 
     def _filter_func(self, item):
@@ -888,8 +891,12 @@ class MainWindow(Gtk.ApplicationWindow):
             return False
         if f == "iptv" and not c.is_iptv:
             return False
-        if group is not None and group != c.root:
-            return False
+        if group is not None:
+            if group.startswith(chansort.SOURCE_PREFIX):
+                if not chansort.in_source(c, group):
+                    return False
+            elif group != c.root:
+                return False
         if value is not None and chansort.group_value(c, srt) != value:
             return False
         if q:
@@ -908,9 +915,14 @@ class MainWindow(Gtk.ApplicationWindow):
         self._logo_paths.clear()
         self._off_air = self._channels_off_air()
         self._fill_store()
-        self._groups = [_("All groups")] + self.app.db.roots()
+        # the group entries: all, the reception paths / DiSEqC ports when the
+        # list mixes several (see chansort.sources), then the groups by name
+        srcs = chansort.sources(self.app.db.channels)
+        roots = self.app.db.roots()
+        self._groups = [""] + [k for k, _l in srcs] + roots
         self._group_sync = True
-        self.group_dd.set_model(Gtk.StringList.new(self._groups))
+        self.group_dd.set_model(Gtk.StringList.new(
+            [_("All groups")] + [lbl for _k, lbl in srcs] + roots))
         group = self.settings.get("list_group") or ""
         self.group_dd.set_selected(self._groups.index(group) if group in self._groups[1:] else 0)
         self._group_sync = False

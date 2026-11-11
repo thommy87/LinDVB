@@ -68,3 +68,57 @@ def values(channels, sort):
         if v and v not in seen:
             seen[v] = True
     return list(seen)
+
+
+# -- sources ------------------------------------------------------------------
+# Besides the groups (the satellite, network, import file or IPTV list a
+# channel came from) the group dropdown offers the reception paths when the
+# list mixes several: satellite / cable / terrestrial / internet streams, and
+# the DiSEqC ports of a dish switch. Their keys start with "src:".
+SOURCE_PREFIX = "src:"
+_KINDS = ("sat", "cable", "terr", "iptv")
+
+
+def source_kind(c):
+    """"sat", "cable", "terr" (antenna) or "iptv"."""
+    if c.is_iptv:
+        return "iptv"
+    if c.is_sat:
+        return "sat"
+    return "cable" if c.delsys.startswith("dvb-c") else "terr"
+
+
+def _kind_label(kind):
+    return {"sat": _("Satellite"), "cable": _("Cable"), "terr": _("Terrestrial"),
+            "iptv": _("Internet streams")}[kind]
+
+
+def sources(channels):
+    """The source entries for *channels* as (key, label): one per reception
+    path when there are several, one per DiSEqC port when satellite channels
+    sit behind different ports. Empty when the list has just one source."""
+    kinds, ports = set(), set()
+    for c in channels:
+        k = source_kind(c)
+        kinds.add(k)
+        if k == "sat":
+            ports.add(c.diseqc if c.diseqc >= 0 else -1)
+    out = []
+    for k in _KINDS:
+        if k not in kinds:
+            continue
+        if len(kinds) > 1:
+            out.append((SOURCE_PREFIX + k, _kind_label(k)))
+        if k == "sat" and len(ports) > 1:
+            out += [(f"{SOURCE_PREFIX}sat:{p}",
+                     _("Satellite · DiSEqC port {n}").format(n=p + 1))
+                    for p in sorted(ports) if p >= 0]
+    return out
+
+
+def in_source(c, key):
+    """Whether *c* belongs to the source entry *key* (see ``sources``)."""
+    kind, _sep, port = key[len(SOURCE_PREFIX):].partition(":")
+    if source_kind(c) != kind:
+        return False
+    return not port or c.diseqc == int(port)
