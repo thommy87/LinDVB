@@ -81,12 +81,23 @@ jobs:
           VERSION: ${{ steps.what.outputs.version }}
           ARCHES: ${{ steps.what.outputs.arches }}
         run: |
+          # "bash -e" would end the step on the first failed store call, before
+          # its output is printed, so errexit is off until the release calls.
+          set +e
           set -uo pipefail
+          # snapcraft 9 dropped the old "list-revisions" alias for "revisions".
+          revcmd=revisions
+          snapcraft revisions --help >/dev/null 2>&1 || revcmd=list-revisions
           # Wait until Canonical's build of this version is in the store, then
           # release that revision (one per architecture) to stable.
           deadline=$((SECONDS + WAIT_MINUTES * 60))
           while :; do
-            out="$(snapcraft list-revisions "$SNAP_NAME" 2>&1)"
+            out="$(snapcraft "$revcmd" "$SNAP_NAME" 2>&1)"; rc=$?
+            if [ "$rc" -ne 0 ]; then
+              printf '%s\n' "$out"
+              echo "::error title=Snap Store::snapcraft $revcmd $SNAP_NAME failed with exit code $rc."
+              exit 1
+            fi
             if [ -z "${shown:-}" ]; then printf '%s\n' "$out"; shown=1; fi
             revisions=""; missing=""
             for arch in $ARCHES; do
