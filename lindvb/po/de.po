@@ -4487,6 +4487,12 @@ msgstr "{same} unverändert, {changed} geändert, {new} neu, {gone} nicht mehr v
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Gespeichert: {added} hinzugefügt, {updated} aktualisiert, {removed} entfernt."
 
+msgid "Satellite · DiSEqC port {n}"
+msgstr "Satellit · DiSEqC-Port {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "Quelle: Satellit, Kabel, Terrestrisch oder Internet-Streams, ein DiSEqC-Port oder ein Satellit, Netz, eine Importdatei oder IPTV-Liste"
+
 msgid "LinDVB channel file (.json): everything, with the favourites lists"
 msgstr "LinDVB-Senderdatei (.json): alles, mit den Favoritenlisten"
 
