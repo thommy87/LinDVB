@@ -1,0 +1,4422 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ja\n"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "映像エラー：{n} 個のブロックを訂正できませんでした"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "受信状態が弱い：マージンは {db} dB しかありません"
+
+msgid "Signal lost"
+msgstr "信号が途切れました"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "このチューナーは視聴または録画に使用されていました。"
+
+msgid "{n} uncorrectable blocks"
+msgstr "訂正不能ブロック {n} 個"
+
+msgid "Lock lost"
+msgstr "ロックが外れました"
+
+msgid "{n} continuity errors"
+msgstr "連続性エラー {n} 件"
+
+msgid "PCR jump"
+msgstr "PCR のジャンプ"
+
+msgid "New table version (0x{tid})"
+msgstr "テーブルの新しいバージョン (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "ラウドネスの急変 {lu} LU"
+
+msgid "Rebuffering"
+msgstr "再バッファリング"
+
+msgid "Internet"
+msgstr "インターネット"
+
+msgid "Channel analysis: {name}"
+msgstr "チャンネル分析：{name}"
+
+msgid "Measured since {time}"
+msgstr "{time} から測定"
+
+msgid "Delivery"
+msgstr "伝送方式"
+
+msgid "Frame rate"
+msgstr "フレームレート"
+
+msgid "Resolution"
+msgstr "解像度"
+
+msgid "Audio"
+msgstr "音声"
+
+msgid "Average bit rate"
+msgstr "平均ビットレート"
+
+msgid "Video"
+msgstr "映像"
+
+msgid "Peak bit rate"
+msgstr "最大ビットレート"
+
+msgid "Signal quality"
+msgstr "信号品質"
+
+msgid "Continuity errors"
+msgstr "連続性エラー"
+
+msgid "Margin"
+msgstr "マージン"
+
+msgid "Loudness"
+msgstr "ラウドネス"
+
+msgid "Bit rate"
+msgstr "ビットレート"
+
+msgid "Content"
+msgstr "内容"
+
+msgid "Events"
+msgstr "イベント"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "チャンネルリストをインポート (dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "このチャンネルで起動する（名前または番号）"
+
+msgid "{channel} at {time}"
+msgstr "{channel}、{time}"
+
+msgid "Watch"
+msgstr "視聴"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "リマインダー：{time} から {channel} で「{title}」"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "先に設定で XMLTV の URL を指定してください"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV 番組表をダウンロード中…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr "、番組表なし {unmatched} 件（設定 ▸ EPG ▸ IPTV チャンネルの照合）"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I：サービスリストを読み込み中…"
+
+msgid "Search the web"
+msgstr "Web で検索"
+
+msgid "Name A–Z"
+msgstr "名前順 (A–Z)"
+
+msgid "Name Z–A"
+msgstr "名前順 (Z–A)"
+
+msgid "Number"
+msgstr "番号"
+
+msgid "Provider / category"
+msgstr "事業者 / カテゴリー"
+
+msgid "Transponder"
+msgstr "トランスポンダー"
+
+msgid "Picture quality"
+msgstr "画質"
+
+msgid "Cable"
+msgstr "ケーブル"
+
+msgid "Satellite"
+msgstr "衛星"
+
+msgid "Terrestrial"
+msgstr "地上波"
+
+msgid "Internet streams"
+msgstr "インターネットストリーム"
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "衛星 · DiSEqC ポート {n}"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB は次の GStreamer エレメントを見つけられません：{elements}。ライブ TV や一部のチャンネルが再生できない可能性があります。"
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package} にはこれらが含まれているはずです。バグとして報告してください。"
+
+msgid "Install them with:"
+msgstr "次のコマンドでインストールしてください："
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "お使いのディストリビューションから GStreamer プラグイン base、bad、libav をインストールしてください。"
+
+msgid "GStreamer plugins are missing"
+msgstr "GStreamer プラグインが不足しています"
+
+msgid "Contains code from"
+msgstr "使用しているコード"
+
+msgid "Built with"
+msgstr "ビルドに使用"
+
+msgid "Transponder lists"
+msgstr "トランスポンダーリスト"
+
+msgid "Broadcast (EIT)"
+msgstr "放送 (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "事業者 EPG (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "DVB-I コンテンツガイド"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV（インターネット）"
+
+msgid "Favourites"
+msgstr "お気に入り"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "テレテキスト (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "字幕 (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG データ (TS)"
+
+msgid "All streams of the channel (TS)"
+msgstr "チャンネルの全ストリーム (TS)"
+
+msgid "All audio tracks"
+msgstr "すべての音声トラック"
+
+msgid "Preferred language only"
+msgstr "優先言語のみ"
+
+msgid "First audio track only"
+msgstr "最初の音声トラックのみ"
+
+msgid "Record"
+msgstr "録画"
+
+msgid "Record and tune"
+msgstr "録画して選局"
+
+msgid "Tune only"
+msgstr "選局のみ"
+
+msgid "Hibernate"
+msgstr "ハイバネート"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Power off"
+msgstr "電源オフ"
+
+msgid "Quit LinDVB"
+msgstr "LinDVB を終了"
+
+msgid "Standby"
+msgstr "スタンバイ"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "インターネットストリームにはテレテキスト、字幕、EPG のデータストリームはありません。"
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 は音声トラックを 1 つだけ保存します（放送中であれば優先言語）。"
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "音声ファイルはトラックを 1 つだけ保存します（放送中であれば優先言語）。"
+
+msgid "Fr"
+msgstr "金"
+
+msgid "Mo"
+msgstr "月"
+
+msgid "Sa"
+msgstr "土"
+
+msgid "Su"
+msgstr "日"
+
+msgid "Th"
+msgstr "木"
+
+msgid "Tu"
+msgstr "火"
+
+msgid "We"
+msgstr "水"
+
+msgid "Scheduled"
+msgstr "予約済み"
+
+msgid "Done"
+msgstr "完了"
+
+msgid "Channel missing"
+msgstr "チャンネルなし"
+
+msgid "Tuned"
+msgstr "選局済み"
+
+msgid "Recording"
+msgstr "録画中"
+
+msgid "Failed"
+msgstr "失敗"
+
+msgid "Missed"
+msgstr "見逃し"
+
+msgid "After recording: {action}"
+msgstr "録画後：{action}"
+
+msgid "Andorra"
+msgstr "アンドラ"
+
+msgid "Argentina"
+msgstr "アルゼンチン"
+
+msgid "Australia"
+msgstr "オーストラリア"
+
+msgid "Austria"
+msgstr "オーストリア"
+
+msgid "Belgium"
+msgstr "ベルギー"
+
+msgid "Brazil"
+msgstr "ブラジル"
+
+msgid "Bulgaria"
+msgstr "ブルガリア"
+
+msgid "Åland Islands"
+msgstr "オーランド諸島"
+
+msgid "Canada"
+msgstr "カナダ"
+
+msgid "China"
+msgstr "中国"
+
+msgid "Colombia"
+msgstr "コロンビア"
+
+msgid "Switzerland"
+msgstr "スイス"
+
+msgid "Czechia"
+msgstr "チェコ"
+
+msgid "Denmark"
+msgstr "デンマーク"
+
+msgid "Estonia"
+msgstr "エストニア"
+
+msgid "Germany"
+msgstr "ドイツ"
+
+msgid "Finland"
+msgstr "フィンランド"
+
+msgid "France"
+msgstr "フランス"
+
+msgid "Greece"
+msgstr "ギリシャ"
+
+msgid "Spain"
+msgstr "スペイン"
+
+msgid "Croatia"
+msgstr "クロアチア"
+
+msgid "Hong Kong"
+msgstr "香港"
+
+msgid "Hungary"
+msgstr "ハンガリー"
+
+msgid "Ireland"
+msgstr "アイルランド"
+
+msgid "Iceland"
+msgstr "アイスランド"
+
+msgid "Indonesia"
+msgstr "インドネシア"
+
+msgid "Iran"
+msgstr "イラン"
+
+msgid "Israel"
+msgstr "イスラエル"
+
+msgid "Italy"
+msgstr "イタリア"
+
+msgid "Kenya"
+msgstr "ケニア"
+
+msgid "Liechtenstein"
+msgstr "リヒテンシュタイン"
+
+msgid "South Korea"
+msgstr "韓国"
+
+msgid "Latvia"
+msgstr "ラトビア"
+
+msgid "Lithuania"
+msgstr "リトアニア"
+
+msgid "Luxembourg"
+msgstr "ルクセンブルク"
+
+msgid "North Macedonia"
+msgstr "北マケドニア"
+
+msgid "Netherlands"
+msgstr "オランダ"
+
+msgid "New Zealand"
+msgstr "ニュージーランド"
+
+msgid "Norway"
+msgstr "ノルウェー"
+
+msgid "Poland"
+msgstr "ポーランド"
+
+msgid "Portugal"
+msgstr "ポルトガル"
+
+msgid "Romania"
+msgstr "ルーマニア"
+
+msgid "Russia"
+msgstr "ロシア"
+
+msgid "Sweden"
+msgstr "スウェーデン"
+
+msgid "Slovakia"
+msgstr "スロバキア"
+
+msgid "Slovenia"
+msgstr "スロベニア"
+
+msgid "Taiwan"
+msgstr "台湾"
+
+msgid "Ukraine"
+msgstr "ウクライナ"
+
+msgid "Uganda"
+msgstr "ウガンダ"
+
+msgid "United Kingdom"
+msgstr "イギリス"
+
+msgid "United States"
+msgstr "アメリカ合衆国"
+
+msgid "South Africa"
+msgstr "南アフリカ"
+
+msgid "Vietnam"
+msgstr "ベトナム"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "全周波数、7/8 MHz（ヨーロッパ、アフリカ、アジア）"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "全周波数、7 MHz（オーストラリア）"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "全周波数、6 MHz（南北アメリカ）"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "全周波数、6 MHz（台湾）"
+
+msgid "Whole country"
+msgstr "全国"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "仮想チューナー (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "その他の国（リストなし）"
+
+msgid "Own lists"
+msgstr "独自のリスト"
+
+msgid "All frequencies (blind scan)"
+msgstr "全周波数（ブラインドスキャン）"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "全周波数、6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "全周波数 (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "全周波数、8 MHz (DTMB)"
+
+msgid "1 minute"
+msgstr "1 分"
+
+msgid "15 minutes"
+msgstr "15 分"
+
+msgid "5 minutes"
+msgstr "5 分"
+
+msgid "audio description"
+msgstr "音声解説"
+
+msgid "Teletext"
+msgstr "テレテキスト"
+
+msgid "DVB subtitles"
+msgstr "DVB 字幕"
+
+msgid "hard of hearing"
+msgstr "聴覚障害者向け"
+
+msgid "Data"
+msgstr "データ"
+
+msgid "Signal"
+msgstr "信号"
+
+msgid "Level"
+msgstr "レベル"
+
+msgid "Carrier"
+msgstr "搬送波"
+
+msgid "Uncorrectable blocks"
+msgstr "訂正不能ブロック"
+
+msgid "Lock losses"
+msgstr "ロック喪失"
+
+msgid "C/N history"
+msgstr "C/N 履歴"
+
+msgid "Errors"
+msgstr "エラー"
+
+msgid "Reception"
+msgstr "受信"
+
+msgid "Frequency"
+msgstr "周波数"
+
+msgid "Symbol rate"
+msgstr "シンボルレート"
+
+msgid "Modulation"
+msgstr "変調方式"
+
+msgid "Roll-off / pilots"
+msgstr "ロールオフ / パイロット"
+
+msgid "Transponder capacity"
+msgstr "トランスポンダー容量"
+
+msgid "Protocol"
+msgstr "プロトコル"
+
+msgid "Response time"
+msgstr "応答時間"
+
+msgid "Server"
+msgstr "サーバー"
+
+msgid "Bad"
+msgstr "不良"
+
+msgid "Fair"
+msgstr "普通"
+
+msgid "Good"
+msgstr "良好"
+
+msgid "No signal"
+msgstr "信号なし"
+
+msgid "Poor"
+msgstr "弱い"
+
+msgid "Stream"
+msgstr "ストリーム"
+
+msgid "NO LOCK"
+msgstr "ロックなし"
+
+msgid "Buffer"
+msgstr "バッファー"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Buffer history"
+msgstr "バッファー履歴"
+
+msgid "(driver value)"
+msgstr "（ドライバーの値）"
+
+msgid "since start"
+msgstr "開始以降"
+
+msgid "required"
+msgstr "必要値"
+
+msgid "Quality history"
+msgstr "品質履歴"
+
+msgid "horizontal"
+msgstr "水平"
+
+msgid "left"
+msgstr "左旋"
+
+msgid "vertical"
+msgstr "垂直"
+
+msgid "right"
+msgstr "右旋"
+
+msgid "Port {n}"
+msgstr "ポート {n}"
+
+msgid "(theoretical)"
+msgstr "（理論値）"
+
+msgid "Overview"
+msgstr "概要"
+
+msgid "Bit rate of the channel"
+msgstr "チャンネルのビットレート"
+
+msgid "Average"
+msgstr "平均"
+
+msgid "Now"
+msgstr "現在"
+
+msgid "Peak"
+msgstr "最大"
+
+msgid "Share of transponder"
+msgstr "トランスポンダー内の割合"
+
+msgid "Codec"
+msgstr "コーデック"
+
+msgid "Aspect ratio"
+msgstr "アスペクト比"
+
+msgid "Colour"
+msgstr "色"
+
+msgid "Decoder"
+msgstr "デコーダー"
+
+msgid "Dropped frames"
+msgstr "ドロップフレーム"
+
+msgid "Format"
+msgstr "フォーマット"
+
+msgid "Track"
+msgstr "トラック"
+
+msgid "Channels"
+msgstr "チャンネル"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Now & next"
+msgstr "現在と次の番組"
+
+msgid "Encryption"
+msgstr "暗号化"
+
+msgid "Interactive"
+msgstr "インタラクティブ"
+
+msgid "Autostart"
+msgstr "自動開始"
+
+msgid "Stream health"
+msgstr "ストリームの健全性"
+
+msgid "Transport errors"
+msgstr "トランスポートエラー"
+
+msgid "PCR arrival jitter"
+msgstr "PCR 到着ジッター"
+
+msgid "PCR interval"
+msgstr "PCR 間隔"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT 間隔"
+
+msgid "Timeshift buffer"
+msgstr "タイムシフトバッファー"
+
+msgid "Teletext / subtitles / data"
+msgstr "テレテキスト / 字幕 / データ"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "interlaced"
+msgstr "インターレース"
+
+msgid "progressive"
+msgstr "プログレッシブ"
+
+msgid "only for the channel on screen"
+msgstr "表示中のチャンネルのみ"
+
+msgid "Hardware"
+msgstr "ハードウェア"
+
+msgid "Software"
+msgstr "ソフトウェア"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "{n} tracks"
+msgstr "{n} トラック"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "ラウドネス（現在のトラック）：{lufs} · ピーク {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "ラウドネス：表示中のチャンネルのみ"
+
+msgid "No programme information"
+msgstr "番組情報なし"
+
+msgid "Encrypted"
+msgstr "スクランブル"
+
+msgid "scrambled packets"
+msgstr "スクランブルされたパケット"
+
+msgid "Free-to-air"
+msgstr "無料放送"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT に CA 記述子がありません"
+
+msgid "none"
+msgstr "なし"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} ページ"
+
+msgid "Quality"
+msgstr "品質"
+
+msgid "Carrier to noise ratio"
+msgstr "搬送波対雑音比 (C/N)"
+
+msgid "Signal level"
+msgstr "信号レベル"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "ビット誤り率 (log₁₀)"
+
+msgid "Internet stream"
+msgstr "インターネットストリーム"
+
+msgid "Address"
+msgstr "アドレス"
+
+msgid "HTTP status"
+msgstr "HTTP ステータス"
+
+msgid "Content type"
+msgstr "コンテンツタイプ"
+
+msgid "Download speed"
+msgstr "ダウンロード速度"
+
+msgid "Playlist"
+msgstr "プレイリスト"
+
+msgid "Segments"
+msgstr "セグメント"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Variants"
+msgstr "バリアント"
+
+msgid "Codecs"
+msgstr "コーデック"
+
+msgid "Error timeline"
+msgstr "エラーのタイムライン"
+
+msgid "continuity errors"
+msgstr "連続性エラー"
+
+msgid "uncorrectable blocks"
+msgstr "訂正不能ブロック"
+
+msgid "lock lost"
+msgstr "ロック喪失"
+
+msgid "rebuffering"
+msgstr "再バッファリング"
+
+msgid "loudness jump"
+msgstr "ラウドネスの急変"
+
+msgid "table version"
+msgstr "テーブルバージョン"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "選局パラメーター（フロントエンドから取得）"
+
+msgid "Delivery system"
+msgstr "伝送方式"
+
+msgid "Code rate"
+msgstr "符号化率"
+
+msgid "Roll-off"
+msgstr "ロールオフ"
+
+msgid "Guard interval"
+msgstr "ガードインターバル"
+
+msgid "Pilots"
+msgstr "パイロット"
+
+msgid "Carriers"
+msgstr "キャリア数"
+
+msgid "Stream / PLP"
+msgstr "ストリーム / PLP"
+
+msgid "C/N needed"
+msgstr "必要な C/N"
+
+msgid "Source of the figures"
+msgstr "数値の取得元"
+
+msgid "Dish alignment aid…"
+msgstr "アンテナ調整補助…"
+
+msgid "Logging and warnings"
+msgstr "ログと警告"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "受信状態を記録する（1 分ごとに 1 行、31 日間保存）"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "受信状態が弱くなったら画面に警告を表示する"
+
+msgid "Warn below this margin (dB)"
+msgstr "警告するマージンの下限 (dB)"
+
+msgid "Reception over the last days"
+msgstr "過去数日間の受信状態"
+
+msgid "Open log folder"
+msgstr "ログフォルダーを開く"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · 最小 {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · 最大 {max}"
+
+msgid "{x}× the stream rate"
+msgstr "ストリームレートの {x} 倍"
+
+msgid "Download and stream rate"
+msgstr "ダウンロードレートとストリームレート"
+
+msgid "stream"
+msgstr "ストリーム"
+
+msgid "HLS with {n} variants"
+msgstr "HLS（バリアント {n} 個）"
+
+msgid "HLS media playlist"
+msgstr "HLS メディアプレイリスト"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "none (a plain stream)"
+msgstr "なし（単一のストリーム）"
+
+msgid "live"
+msgstr "ライブ"
+
+msgid "on demand"
+msgstr "オンデマンド"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "セグメント {n} 個、Ø {s}（目標 {t}） · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "バリアントリストはありません：このアドレスは単一のストリームです。"
+
+msgid "No events so far."
+msgstr "まだイベントはありません。"
+
+msgid "{n} minutes logged for this channel."
+msgstr "このチャンネルは {n} 分間記録されています。"
+
+msgid "Nothing logged for this channel yet."
+msgstr "このチャンネルはまだ記録されていません。"
+
+msgid "min {min} · max {max}"
+msgstr "最小 {min} · 最大 {max}"
+
+msgid "needs {db}"
+msgstr "必要 {db}"
+
+msgid "relative (driver)"
+msgstr "相対値（ドライバー）"
+
+msgid "post FEC {v}"
+msgstr "FEC 後 {v}"
+
+msgid "needed for a clean picture"
+msgstr "きれいな映像に必要"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 統計"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc（ドライバーのスケール）"
+
+msgid "internet stream"
+msgstr "インターネットストリーム"
+
+msgid "Transport Stream"
+msgstr "トランスポートストリーム"
+
+msgid "Elementary streams and PIDs"
+msgstr "エレメンタリーストリームと PID"
+
+msgid "This channel only"
+msgstr "このチャンネルのみ"
+
+msgid "Whole stream"
+msgstr "ストリーム全体"
+
+msgid "Sort by PID"
+msgstr "PID 順に並べる"
+
+msgid "Sort by bit rate"
+msgstr "ビットレート順に並べる"
+
+msgid "PID hex"
+msgstr "PID (16 進)"
+
+msgid "dec"
+msgstr "10 進"
+
+msgid "Type"
+msgstr "種類"
+
+msgid "CC errors"
+msgstr "CC エラー"
+
+msgid "Scrambled"
+msgstr "スクランブル"
+
+msgid "Last 60 s"
+msgstr "直近 60 秒"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "トランスポンダー全体を測定 (10 秒)"
+
+msgid "Packets"
+msgstr "パケット"
+
+msgid "Sync losses"
+msgstr "同期喪失"
+
+msgid "Null packets"
+msgstr "ヌルパケット"
+
+msgid "PCR jumps"
+msgstr "PCR ジャンプ"
+
+msgid "PID filter"
+msgstr "PID フィルター"
+
+msgid "unknown"
+msgstr "不明"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "ヌル"
+
+msgid "Other"
+msgstr "その他"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "合計（PID {n} 個）：{rate} · 連続性エラー {cc} 件"
+
+msgid "Measuring…"
+msgstr "測定中…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "空き / ヌル"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{cap} 中 {used} 使用 · {time} に測定"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "このチャンネルの PID だけを受信しています。同じトランスポンダー上の他のチャンネルを見るには、トランスポンダー全体を測定してください。"
+
+msgid "Internet channels have no transponder."
+msgstr "インターネットチャンネルにはトランスポンダーがありません。"
+
+msgid "whole transponder"
+msgstr "トランスポンダー全体"
+
+msgid "{n} PIDs"
+msgstr "PID {n} 個"
+
+msgid "Video & Audio"
+msgstr "映像と音声"
+
+msgid "Profile / level"
+msgstr "プロファイル / レベル"
+
+msgid "Scan"
+msgstr "走査方式"
+
+msgid "Black bars"
+msgstr "黒帯"
+
+msgid "Film (3:2 pulldown)"
+msgstr "フィルム (3:2 プルダウン)"
+
+msgid "Frames shown / dropped"
+msgstr "表示 / ドロップしたフレーム"
+
+msgid "Measured bit rate"
+msgstr "測定ビットレート"
+
+msgid "Nominal bit rate"
+msgstr "公称ビットレート"
+
+msgid "VBV buffer"
+msgstr "VBV バッファー"
+
+msgid "Frame sizes"
+msgstr "フレームサイズ"
+
+msgid "B frame"
+msgstr "B フレーム"
+
+msgid "I frame"
+msgstr "I フレーム"
+
+msgid "P frame"
+msgstr "P フレーム"
+
+msgid "GOP length"
+msgstr "GOP 長"
+
+msgid "I frame average"
+msgstr "I フレーム平均"
+
+msgid "P/B frame average"
+msgstr "P/B フレーム平均"
+
+msgid "Audio tracks"
+msgstr "音声トラック"
+
+msgid "Language"
+msgstr "言語"
+
+msgid "Nominal"
+msgstr "公称値"
+
+msgid "Sample rate"
+msgstr "サンプリングレート"
+
+msgid "Dialnorm"
+msgstr "ダイアログノーム"
+
+msgid "Measured"
+msgstr "測定値"
+
+msgid "Notes"
+msgstr "備考"
+
+msgid "Click a track to listen to it."
+msgstr "トラックをクリックすると試聴できます。"
+
+msgid "Loudness (EBU R 128)"
+msgstr "ラウドネス (EBU R 128)"
+
+msgid "Momentary"
+msgstr "モーメンタリー"
+
+msgid "Short term"
+msgstr "ショートターム"
+
+msgid "Integrated"
+msgstr "インテグレーテッド"
+
+msgid "Loudness range"
+msgstr "ラウドネスレンジ"
+
+msgid "Sample peak"
+msgstr "サンプルピーク"
+
+msgid "Teletext and subtitles"
+msgstr "テレテキストと字幕"
+
+msgid "level {l}"
+msgstr "レベル {l}"
+
+msgid "tier {t}"
+msgstr "ティア {t}"
+
+msgid "fields"
+msgstr "フィールド"
+
+msgid "mixed"
+msgstr "混在"
+
+msgid "interlaced capable"
+msgstr "インターレース対応"
+
+msgid "not sent"
+msgstr "未送信"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "レターボックス：上下 {pct} %"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "ピラーボックス：左右 {pct} %"
+
+msgid "picture {ratio}:1"
+msgstr "映像 {ratio}:1"
+
+msgid "no"
+msgstr "いいえ"
+
+msgid "yes, repeated fields"
+msgstr "はい、フィールドの繰り返し"
+
+msgid "mastering display data"
+msgstr "マスタリングディスプレイデータ"
+
+msgid "(maximum)"
+msgstr "（最大）"
+
+msgid "not signalled (variable)"
+msgstr "通知なし（可変）"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "現在 {now} · Ø {avg} · 最大 {max}"
+
+msgid "{n} frames"
+msgstr "{n} フレーム"
+
+msgid "clean audio"
+msgstr "クリーンオーディオ"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU 目標値 −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "表示中のチャンネルのデコード後の音声を、イコライザーの前で測定しています。"
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "6 LU 以上のラウドネスの急変が {n} 回（番組 ↔ CM）。"
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "ラウドネスは表示中のチャンネルでのみ測定されます。"
+
+msgid "index"
+msgstr "インデックス"
+
+msgid "info"
+msgstr "情報"
+
+msgid "schedule"
+msgstr "番組表"
+
+msgid "subtitles"
+msgstr "字幕"
+
+msgid "subtitles (hard of hearing)"
+msgstr "字幕（聴覚障害者向け）"
+
+msgid "Teletext PID {pid}:"
+msgstr "テレテキスト PID {pid}："
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB 字幕 PID {pid}："
+
+msgid "No teletext or subtitles in this channel."
+msgstr "このチャンネルにはテレテキストも字幕もありません。"
+
+msgid "Tables & EPG"
+msgstr "テーブルと EPG"
+
+msgid "SI tables"
+msgstr "SI テーブル"
+
+msgid "Table"
+msgstr "テーブル"
+
+msgid "Changes"
+msgstr "変更"
+
+msgid "Version"
+msgstr "バージョン"
+
+msgid "Repetition"
+msgstr "繰り返し"
+
+msgid "Sections"
+msgstr "セクション"
+
+msgid "Status"
+msgstr "状態"
+
+msgid "Programme guide and clock"
+msgstr "番組表と時計"
+
+msgid "Events in the guide"
+msgstr "番組表のイベント"
+
+msgid "Next"
+msgstr "次"
+
+msgid "EIT now/next"
+msgstr "EIT 現在/次"
+
+msgid "Guide reaches"
+msgstr "番組表の範囲"
+
+msgid "Clock of the channel"
+msgstr "チャンネルの時計"
+
+msgid "EIT schedule"
+msgstr "EIT スケジュール"
+
+msgid "Difference to this computer"
+msgstr "このコンピューターとの差"
+
+msgid "Local time offset"
+msgstr "ローカル時刻オフセット"
+
+msgid "Network"
+msgstr "ネットワーク"
+
+msgid "Provider"
+msgstr "事業者"
+
+msgid "Raw view"
+msgstr "生データ表示"
+
+msgid "Hex"
+msgstr "16 進"
+
+msgid "missing"
+msgstr "なし"
+
+msgid "ok"
+msgstr "OK"
+
+msgid "slow"
+msgstr "遅い"
+
+msgid "(all services)"
+msgstr "（全サービス）"
+
+msgid "(other services)"
+msgstr "（他のサービス）"
+
+msgid "not seen"
+msgstr "未検出"
+
+msgid "seen {s} s ago"
+msgstr "{s} 秒前に検出"
+
+msgid "{n} sections"
+msgstr "{n} セクション"
+
+msgid "timers may start early or late"
+msgstr "予約録画が早く、または遅く始まる可能性があります"
+
+msgid "no TDT/TOT"
+msgstr "TDT/TOT なし"
+
+msgid "Descrambling"
+msgstr "デスクランブル"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Descrambler state"
+msgstr "デスクランブラーの状態"
+
+msgid "Scrambled packets"
+msgstr "スクランブルされたパケット"
+
+msgid "Conditional access systems"
+msgstr "限定受信システム"
+
+msgid "CA system ID"
+msgstr "CA システム ID"
+
+msgid "System"
+msgstr "システム"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "For"
+msgstr "対象"
+
+msgid "ECM rate"
+msgstr "ECM レート"
+
+msgid "Scrambling per stream"
+msgstr "ストリームごとのスクランブル"
+
+msgid "Key changes"
+msgstr "鍵の切り替え"
+
+msgid "Crypto period"
+msgstr "暗号周期"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "鍵の切り替えとは偶数と奇数の制御ワードの切り替えのことで、暗号周期はその 2 回の間隔です。"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "このチャンネルは暗号化されています。LinDVB はご自身の契約カード（ソフトカムまたは CI モジュール）がある場合にのみデスクランブルします。"
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT に限定受信の情報がなく、スクランブルされたパケットもありません。"
+
+msgid "free"
+msgstr "無料"
+
+msgid "scrambled"
+msgstr "スクランブル"
+
+msgid "all streams"
+msgstr "全ストリーム"
+
+msgid "not received"
+msgstr "未受信"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT)：{list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "EMM ストリームを含む CAT を受信していません。"
+
+msgid "Applications (AIT)"
+msgstr "アプリケーション (AIT)"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "Organisation / app"
+msgstr "組織 / アプリ"
+
+msgid "Control"
+msgstr "制御"
+
+msgid "Profile"
+msgstr "プロファイル"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "データカルーセル (DSM-CC)"
+
+msgid "Component tag"
+msgstr "コンポーネントタグ"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT バージョン {v}（PID {pid}）"
+
+msgid "test application"
+msgstr "テストアプリケーション"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "このチャンネルは PID {pid} で AIT を通知していますが、まだ届いていません。"
+
+msgid "This channel has no HbbTV application."
+msgstr "このチャンネルには HbbTV アプリケーションがありません。"
+
+msgid "No object carousel in this channel."
+msgstr "このチャンネルにはオブジェクトカルーセルがありません。"
+
+msgid "Channel Analysis – {name}"
+msgstr "チャンネル分析 – {name}"
+
+msgid "Freeze the measurement"
+msgstr "測定を一時停止"
+
+msgid "Copy report as text"
+msgstr "レポートをテキストとしてコピー"
+
+msgid "Save report as text…"
+msgstr "レポートをテキストとして保存…"
+
+msgid "Save report as JSON…"
+msgstr "レポートを JSON として保存…"
+
+msgid "Save history as CSV…"
+msgstr "履歴を CSV として保存…"
+
+msgid "Save window as picture…"
+msgstr "ウィンドウを画像として保存…"
+
+msgid "Save 30 s of the stream…"
+msgstr "ストリームを 30 秒保存…"
+
+msgid "Export"
+msgstr "エクスポート"
+
+msgid "Compare with another channel…"
+msgstr "他のチャンネルと比較…"
+
+msgid "Analyse another channel…"
+msgstr "他のチャンネルを分析…"
+
+msgid "Window: {w}"
+msgstr "ウィンドウ：{w}"
+
+msgid "Follow the channel on screen"
+msgstr "表示中のチャンネルに追従する"
+
+msgid "Watch this channel"
+msgstr "このチャンネルを視聴"
+
+msgid "Try again"
+msgstr "再試行"
+
+msgid "Copy as text"
+msgstr "テキストとしてコピー"
+
+msgid "Export report…"
+msgstr "レポートをエクスポート…"
+
+msgid "Close"
+msgstr "閉じる"
+
+msgid "Channel Analysis · {name}"
+msgstr "チャンネル分析 · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "ライブ · {t} 測定中"
+
+msgid "Paused"
+msgstr "一時停止中"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "このチャンネルに使えるチューナーがありません。チャンネルを視聴するか、チューナーが空いてから再試行してください。"
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "このチャンネルのチューナーは別のチャンネルに切り替えられました。"
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "専用のチューナーでバックグラウンド測定しています。映像、音声、ラウドネスは表示中のチャンネルでのみ測定されます。"
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "このインターネットチャンネルはデコードせずにバックグラウンドで取得しています。映像、音声、バッファーの数値を見るには視聴してください。"
+
+msgid "Source: SAT>IP server {host}"
+msgstr "取得元：SAT>IP サーバー {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP 信号レポート (RTCP)"
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "取得元：DVB アダプター {a}、フロントエンド {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc 統計"
+
+msgid "Source: background download"
+msgstr "取得元：バックグラウンドダウンロード"
+
+msgid "Source: the player's stream"
+msgstr "取得元：プレーヤーのストリーム"
+
+msgid "Source: none"
+msgstr "取得元：なし"
+
+msgid "updated every second"
+msgstr "毎秒更新"
+
+msgid "Saved {path}"
+msgstr "{path} を保存しました"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "保存するものがありません：チャンネルを受信していません。"
+
+msgid "Recording the next 30 seconds…"
+msgstr "これから 30 秒間を録画しています…"
+
+msgid "Choose a channel"
+msgstr "チャンネルを選択"
+
+msgid "Channel name"
+msgstr "チャンネル名"
+
+msgid "Channel"
+msgstr "チャンネル"
+
+msgid "Compare channels"
+msgstr "チャンネルを比較"
+
+msgid "Compare {name} with"
+msgstr "{name} と比較するチャンネル"
+
+msgid "Comparison"
+msgstr "比較"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "数値は各分析の時間枠での値です。映像とラウドネスは表示中のチャンネルのみです。"
+
+msgid "Dish alignment aid"
+msgstr "アンテナ調整補助"
+
+msgid "Tone"
+msgstr "音"
+
+msgid "Reset best value"
+msgstr "最良値をリセット"
+
+msgid "Close (Esc)"
+msgstr "閉じる (Esc)"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "アンテナをゆっくり動かしてください。信号が良くなるほど音が高くなります。"
+
+msgid "% quality"
+msgstr "% 品質"
+
+msgid "Best so far: {v}"
+msgstr "これまでの最良値：{v}"
+
+msgid "The module was removed or reset."
+msgstr "モジュールが取り外されたか、リセットされました。"
+
+msgid "CAM Menu"
+msgstr "CAM メニュー"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "CAM メニューを開く"
+
+msgid "Select"
+msgstr "選択"
+
+msgid "Back"
+msgstr "戻る"
+
+msgid "Close Menu"
+msgstr "メニューを閉じる"
+
+msgid "Device: {path} – {state}"
+msgstr "デバイス：{path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "CAM メニューを開くと、モジュールの設定、スマートカードの情報、視聴制限を確認できます。"
+
+msgid "The module has not finished starting yet."
+msgstr "モジュールはまだ起動が完了していません。"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "自動（可能ならグラフィックカード）"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2（ARM ボード）"
+
+msgid "Software (processor)"
+msgstr "ソフトウェア（プロセッサー）"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "見つかったグラフィックカードのデコーダー：{list}"
+
+msgid "Switched off after an error: {list}"
+msgstr "エラーのため無効化：{list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "現在のデコード：{decoder}"
+
+msgid "Custom colour"
+msgstr "カスタムカラー"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB ブルー（既定）"
+
+msgid "System accent colour"
+msgstr "システムのアクセントカラー"
+
+msgid "Preferences"
+msgstr "設定"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Appearance"
+msgstr "外観"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "LinDVB の再起動後に有効になります。"
+
+msgid "Colour scheme"
+msgstr "配色"
+
+msgid "Dark"
+msgstr "ダーク"
+
+msgid "Light"
+msgstr "ライト"
+
+msgid "Same as the system"
+msgstr "システムと同じ"
+
+msgid "The picture always keeps its dark frame."
+msgstr "映像の枠は常に暗い色のままです。"
+
+msgid "Accent colour"
+msgstr "アクセントカラー"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "すべてのウィンドウで強調表示、選択、ボタンに使われます。"
+
+msgid "OSD and Visualisations"
+msgstr "OSD とビジュアライゼーション"
+
+msgid "On-screen display"
+msgstr "オンスクリーン表示"
+
+msgid "OSD display time (s)"
+msgstr "OSD の表示時間（秒）"
+
+msgid "OSD size (%)"
+msgstr "OSD のサイズ (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "映像の上に表示される番組情報とチャンネル番号です。"
+
+msgid "Overlay"
+msgstr "オーバーレイ"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "ラジオチャンネルや音声ファイルの再生中に、ビジュアライゼーションの上に表示する内容です。曲の情報は DVB ラジオの RadioText、インターネットラジオのストリームタイトル、音声ファイルのタグから取得します。"
+
+msgid "Station logo tile"
+msgstr "放送局ロゴのタイル"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "チャンネルのロゴ、ロゴがない場合は放送局名のタイルです。"
+
+msgid "Album cover"
+msgstr "アルバムカバー"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "再生中の曲のカバー。ファイルから取得するか、オンラインで検索します。"
+
+msgid "Song information"
+msgstr "曲の情報"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "アーティスト、アルバム、年、トラック番号、タイトル。曲の情報がない場合は放送局と放送中の番組を表示します。"
+
+msgid "Clock in the top right corner"
+msgstr "右上に時計を表示"
+
+msgid "Sources"
+msgstr "取得元"
+
+msgid "Look up covers online"
+msgstr "カバーをオンラインで検索する"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "再生中の曲のアーティストとタイトルを iTunes Search API に送信し、アルバム、年、カバーを検索します。"
+
+msgid "Station logo folder"
+msgstr "放送局ロゴのフォルダー"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "チャンネル名を付けた画像ファイル (PNG、SVG、JPG)（例：「Bayern 3.png」）、または Enigma2、Kodi、VDR で使われる picon セット（サービスリファレンス名または SNP 名）。チャンネルリストにも表示されます。ロゴは放送局のものなので、LinDVB には同梱されていません。空欄：{v0}"
+
+msgid "Picons for my channels"
+msgstr "自分のチャンネルの picon"
+
+msgid "Download Logos"
+msgstr "ロゴをダウンロード"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "リスト内のチャンネルのロゴだけを picons プロジェクト (github.com/picons/picons) からロゴフォルダーに取得します。すでにロゴがあるチャンネルはそのままです。"
+
+msgid "Visualisations"
+msgstr "ビジュアライゼーション"
+
+msgid "Playback"
+msgstr "再生"
+
+msgid "Video decoding"
+msgstr "映像のデコード"
+
+msgid "Deinterlace video"
+msgstr "映像をインターレース解除する"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "インターレースの TV 映像（ほとんどの SD と 1080i のチャンネル）。VA-API でデコードする場合はグラフィックカードで、それ以外はプロセッサーで処理します。"
+
+msgid "Preferred audio format"
+msgstr "優先する音声フォーマット"
+
+msgid "As broadcast"
+msgstr "放送のまま"
+
+msgid "Dolby Digital (AC-3)"
+msgstr "ドルビーデジタル (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "ドルビーデジタルプラス (E-AC-3)"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "ステレオ (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "チャンネルやファイルに同じ言語でこの音声がある場合、それを優先して再生します。"
+
+msgid "No screen saver during playback"
+msgstr "再生中はスクリーンセーバーを無効にする"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "TV、ラジオ、ファイルの再生中は画面をオンのままにします。"
+
+msgid "Screenshot folder"
+msgstr "スクリーンショットのフォルダー"
+
+msgid "Subtitles"
+msgstr "字幕"
+
+msgid "Font"
+msgstr "フォント"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "テレテキスト字幕と、ファイルやストリームのテキスト字幕。"
+
+msgid "Size (%)"
+msgstr "サイズ (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "画像として描画される字幕（DVB 字幕）は、チャンネルが送信するサイズのままです。"
+
+msgid "Timeshift"
+msgstr "タイムシフト"
+
+msgid "Timeshift folder"
+msgstr "タイムシフトのフォルダー"
+
+msgid "Timeshift buffer (MB)"
+msgstr "タイムシフトバッファー (MB)"
+
+msgid "Tuners"
+msgstr "チューナー"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB は複数のチューナーで同時に録画・再生でき、優先度の高いチューナーから使用します。同じトランスポンダー上のチャンネルは 1 つのチューナーを共有します。"
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "現在接続されているチューナーだけが表示されます。他のチューナーの設定は「未接続」に保存されています。"
+
+msgid "Capture whole transponder"
+msgstr "トランスポンダー全体を取り込む"
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "チャンネル自身のストリームだけでなく、トランスポンダーが送信するすべてを受信します。USB チューナーでは帯域を多く消費しますが、チャンネルリストに 1 つしか登録されていない場合でもすべての音声トラックを再生・録画できます。ライブ TV と録画に適用されます。"
+
+msgid "Channel Search…"
+msgstr "チャンネルスキャン…"
+
+msgid "Channel search"
+msgstr "チャンネルスキャン"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "アンテナ、ケーブル、衛星からチャンネルを探します (Shift+Ctrl+S)。"
+
+msgid "Add Channels…"
+msgstr "チャンネルを追加…"
+
+msgid "Add channels"
+msgstr "チャンネルを追加"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "1 つの周波数を手動で選局し、そのチャンネルをチャンネルリストと比較します：新しいものを追加、変更されたものを更新、古いものを削除します。"
+
+msgid "Channel Editor / Favourites"
+msgstr "チャンネルエディター / お気に入り"
+
+msgid "Channel editor"
+msgstr "チャンネルエディター"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "チャンネルの名前変更、並べ替え、削除、追加と、お気に入りの登録を行います (Shift+Ctrl+E)。"
+
+msgid "Favourites Lists…"
+msgstr "お気に入りリスト…"
+
+msgid "Favourites lists"
+msgstr "お気に入りリスト"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "お気に入りリストの作成、名前変更、削除、並べ替えを行います。"
+
+msgid "At start"
+msgstr "起動時"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "インタラクティブサービス (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "赤ボタン (F5) の先にあるメディアライブラリ、テレテキストの後継サービスなど。"
+
+msgid "Start automatically"
+msgstr "自動的に開始する"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "オフ：アプリケーションは赤ボタンでのみ起動します。チャンネルのアプリケーションは利用データを放送局に送信します。"
+
+msgid "Subtitles in media libraries"
+msgstr "メディアライブラリで字幕を表示"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "アプリケーションは動画の字幕を最初から表示します。"
+
+msgid "Audio description in media libraries"
+msgstr "メディアライブラリで音声解説を使用"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "アプリケーションは映像を説明する音声トラックを優先します。"
+
+msgid "Teletext from the interactive service"
+msgstr "インタラクティブサービスのテレテキスト"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT ボタンで、チャンネルの HbbTV テレテキストがあればそれを開きます。"
+
+msgid "Youth protection"
+msgstr "青少年保護"
+
+msgid "Off"
+msgstr "オフ"
+
+msgid "Viewers from {age} years"
+msgstr "{age} 歳以上"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "この年齢を超える指定のアプリケーションとその動画には PIN が必要です。"
+
+msgid "Current PIN"
+msgstr "現在の PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "青少年保護や PIN を変更するのに必要です。"
+
+msgid "New PIN"
+msgstr "新しい PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "現在の PIN を維持する場合は空欄のままにしてください。"
+
+msgid "Companion screens on the network"
+msgstr "ネットワーク上のセカンドスクリーン"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "ネットワーク内のスマートフォンやタブレットが LinDVB を見つけ、アプリケーションと通信し、映像に同期し、アプリケーションの起動を要求できます。オフ：ネットワークで何も待ち受けません。"
+
+msgid "Allow third-party cookies"
+msgstr "サードパーティ Cookie を許可する"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "広告ネットワークはこれを使ってチャンネルをまたいであなたを追跡します。"
+
+msgid "Delete HbbTV Data"
+msgstr "HbbTV データを削除"
+
+msgid "Cookies and storage"
+msgstr "Cookie とストレージ"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "HbbTV アプリケーションが保存した Cookie や設定などを削除します。"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "インターネットからのチャンネルリスト：お住まいの地域の DVB-I リストと IPTV プレイリスト。これらの設定はすぐに適用されます。"
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "録画"
+
+msgid "Recording folder"
+msgstr "録画フォルダー"
+
+msgid "File naming scheme"
+msgstr "ファイル名の形式"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "プレースホルダー：%year %date %time %end %station %name、/ でサブフォルダー"
+
+msgid "Timer padding"
+msgstr "録画マージン"
+
+msgid "Start earlier by (min)"
+msgstr "開始を早める（分）"
+
+msgid "Stop later by (min)"
+msgstr "終了を遅らせる（分）"
+
+msgid "Timers"
+msgstr "予約"
+
+msgid "Open the timer window after creating a timer"
+msgstr "予約作成後に予約ウィンドウを開く"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "番組表で録画を選んだ後、新しい予約をすぐに編集します。"
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "番組表：放送 EPG、インターネット EPG (XMLTV)、他の事業者の EPG。"
+
+msgid "Conditional access"
+msgstr "限定受信"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "契約している暗号化チャンネルを、ソフトカムまたは CI モジュールでご自身のカードを使ってデスクランブルします。"
+
+msgid "None (leave scrambled)"
+msgstr "なし（スクランブルのまま）"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "外部ソフトカム (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "ハードウェア CI / CI+ モジュール"
+
+msgid "Descrambling via"
+msgstr "デスクランブル方式"
+
+msgid "Softcam"
+msgstr "ソフトカム"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI ソケット"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix ソケットのパス、または host:port。"
+
+msgid "CI module"
+msgstr "CI モジュール"
+
+msgid "CI adapter number"
+msgstr "CI アダプター番号"
+
+msgid "CA device number"
+msgstr "CA デバイス番号"
+
+msgid "Plugins"
+msgstr "プラグイン"
+
+msgid "Load plugins at startup"
+msgstr "起動時にプラグインを読み込む"
+
+msgid "Manage Plugins…"
+msgstr "プラグインを管理…"
+
+msgid "Channel at start"
+msgstr "起動時のチャンネル"
+
+msgid "First channel of the current list"
+msgstr "現在のリストの最初のチャンネル"
+
+msgid "Last channel watched"
+msgstr "最後に視聴したチャンネル"
+
+msgid "A chosen channel"
+msgstr "指定したチャンネル"
+
+msgid "No channel (black screen)"
+msgstr "チャンネルなし（黒画面）"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "現在のリストとは、終了時の状態のチャンネルリストです：TV またはラジオ、フィルター、グループ、並び順。"
+
+msgid "Channel list"
+msgstr "チャンネルリスト"
+
+msgid "All channels"
+msgstr "全チャンネル"
+
+msgid "All channels or one of your favourites lists."
+msgstr "全チャンネル、またはお気に入りリストのいずれか。"
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "最後に視聴したチャンネルに関係なく、毎回起動時に選局します。"
+
+msgid "Format and tracks"
+msgstr "フォーマットとトラック"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "新しい予約と録画ボタンの既定値です。予約ごと、および「オプションを指定して録画…」で開始した録画で変更できます。\nTS：映像、全音声トラック、字幕、テレテキスト、EPG データ。MKV：映像、複数の音声トラック、字幕。MPG：映像と複数の音声トラック。MP4：映像と音声トラック 1 つ。インターネットストリームにはテレテキスト、字幕、EPG データはありません。HLS と DASH のストリームは音声トラック 1 つで録画されます。"
+
+msgid "TV format"
+msgstr "TV のフォーマット"
+
+msgid "Radio format"
+msgstr "ラジオのフォーマット"
+
+msgid "Preferred audio language"
+msgstr "優先する音声言語"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "「優先言語のみ」と、トラックを 1 つだけ保存する MP4 で使われます。音声解説トラックは除外されます。一致するものがなければ最初のトラックを録画します。"
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}：{items} は MPEG-TS でしか保存できないため、録画は TS で保存されます。"
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}：{items} は TS または MKV でしか保存できないため、録画は TS で保存されます。"
+
+msgid " and "
+msgstr "、"
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "優先する音声言語が設定されていないため、最初の音声トラックだけが録画されます。"
+
+msgid "Desktop accent: {found}"
+msgstr "デスクトップのアクセント：{found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "デスクトップのアクセントが見つからないため、LinDVB ブルーを使用します。"
+
+msgid "Current accent: {color}"
+msgstr "現在のアクセント：{color}"
+
+msgid "Subtitle font"
+msgstr "字幕のフォント"
+
+msgid "Default font"
+msgstr "既定のフォント"
+
+msgid "Visualisation"
+msgstr "ビジュアライゼーション"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "ラジオや音声の再生中に表示されます。ビジュアライゼーションボタンからも選べます。"
+
+msgid "Draw on the graphics card"
+msgstr "グラフィックカードで描画する"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "内蔵ビジュアライゼーションに OpenGL を使用します。LinDVB の再起動後に有効になります。"
+
+msgid "Youth protection not changed"
+msgstr "青少年保護は変更されていません"
+
+msgid "The current PIN is wrong."
+msgstr "現在の PIN が正しくありません。"
+
+msgid "Youth protection needs a PIN"
+msgstr "青少年保護には PIN が必要です"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "青少年保護をオンにするには PIN を設定してください。"
+
+msgid "No tuner is connected."
+msgstr "チューナーが接続されていません。"
+
+msgid "Not connected ({n})"
+msgstr "未接続 ({n})"
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP サーバー"
+
+msgid "Search Network"
+msgstr "ネットワークを検索"
+
+msgid "Find SAT>IP servers"
+msgstr "SAT>IP サーバーを探す"
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "ローカルネットワーク内の SAT>IP ボックスや LNB、minisatip、FRITZ!Box Cable などの DVB over IP サーバー。設定を保存して開き直すと、それらのチューナーが下に表示されます。"
+
+msgid "Add by address"
+msgstr "アドレスで追加"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "検索で見つからないサーバー（別のネットワーク、またはマルチキャストなし）の場合。"
+
+msgid "Antenna (terrestrial)"
+msgstr "アンテナ（地上波）"
+
+msgid "Add Server"
+msgstr "サーバーを追加"
+
+msgid "No SAT>IP server added."
+msgstr "SAT>IP サーバーは追加されていません。"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP（RTSP 接続内）"
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP は UDP ストリームを遮断するファイアウォールも通過できます。"
+
+msgid "Remove"
+msgstr "削除"
+
+msgid "Reception types unknown"
+msgstr "受信方式が不明"
+
+msgid "1 tuner"
+msgstr "チューナー 1 台"
+
+msgid "{n} tuners"
+msgstr "チューナー {n} 台"
+
+msgid "Searching…"
+msgstr "検索中…"
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "SAT>IP サーバーが応答しませんでした。下からアドレスで追加してください。"
+
+msgid "{n} servers found, {new} new."
+msgstr "サーバーが {n} 台見つかりました（新規 {new} 台）。"
+
+msgid "not connected"
+msgstr "未接続"
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "このチューナーの独自の名前。空欄：デバイス名。"
+
+msgid "Priority"
+msgstr "優先度"
+
+msgid "Higher numbers are used first."
+msgstr "数値が大きいものから使われます。"
+
+msgid "Connected to"
+msgstr "接続先"
+
+msgid "All its reception types"
+msgstr "すべての受信方式"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "コンボチューナーは、接続されている端子で一度に 1 つの方式だけを受信します。LinDVB はそれをその方式のチャンネルにだけ使います。"
+
+msgid "Shared antenna cable"
+msgstr "共有アンテナケーブル"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "他のチューナーと 1 本のケーブルにつながっているチューナー（ループスルー、または LNB 出力 1 つに分配器）の場合にオンにします。Unicable がなければ、一度に 1 つのバンドと偏波しか受信できません。"
+
+msgid "Cable name"
+msgstr "ケーブル名"
+
+msgid "Tuners with the same name share one cable."
+msgstr "同じ名前のチューナーは 1 本のケーブルを共有します。"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF ハイバンド (kHz)"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF ローバンド (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "切り替え周波数 (kHz)"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "Unicable なし"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "ユーザーバンド"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "ケーブル上の各チューナーには異なるユーザーバンドが必要です。そのすべてで上の共有アンテナケーブルをオンにしてください。"
+
+msgid "User band frequency (MHz)"
+msgstr "ユーザーバンドの周波数 (MHz)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "LNB またはマルチスイッチのラベルや説明書に記載されています。"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "保護されたユーザーバンドの場合のみ (0-255)。通常は空欄です。"
+
+msgid "(choose…)"
+msgstr "（選択…）"
+
+msgid "Fill in from"
+msgstr "プリセット"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "一般的な機器：上のユーザーバンドの種類と周波数を設定します。"
+
+msgid "Looking up…"
+msgstr "検索中…"
+
+msgid "{done} of {total}"
+msgstr "{done} / {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "ロゴを {got} 個ダウンロードしました。{have} 個は既存、{missing} 個は picon セットにありません。"
+
+msgid "Download failed: {error}"
+msgstr "ダウンロードに失敗しました：{error}"
+
+msgid "Channel Editor"
+msgstr "チャンネルエディター"
+
+msgid "Group"
+msgstr "グループ"
+
+msgid "Category"
+msgstr "カテゴリー"
+
+msgid "Filter channels"
+msgstr "チャンネルを絞り込む"
+
+msgid "General"
+msgstr "一般"
+
+msgid "Stream URL"
+msgstr "ストリーム URL"
+
+msgid "Radio"
+msgstr "ラジオ"
+
+msgid "Tuning"
+msgstr "選局"
+
+msgid "Polarity"
+msgstr "偏波"
+
+msgid "Frequency (kHz)"
+msgstr "周波数 (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "シンボルレート (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "帯域幅 (Hz)"
+
+msgid "Stream ID"
+msgstr "ストリーム ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC ポート (-1 はなし)"
+
+msgid "Service and PIDs"
+msgstr "サービスと PID"
+
+msgid "Service ID"
+msgstr "サービス ID"
+
+msgid "Transport ID"
+msgstr "トランスポート ID"
+
+msgid "Video PID"
+msgstr "映像 PID"
+
+msgid "Audio PIDs"
+msgstr "音声 PID"
+
+msgid "Teletext PID"
+msgstr "テレテキスト PID"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "編集したすべてのチャンネルの変更を適用 (Ctrl+S)"
+
+msgid "New channel"
+msgstr "新しいチャンネル"
+
+msgid "Delete channel"
+msgstr "チャンネルを削除"
+
+msgid "Move up"
+msgstr "上へ移動"
+
+msgid "Move down"
+msgstr "下へ移動"
+
+msgid "Sort by group and name"
+msgstr "グループと名前で並べ替え"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "チャンネルエディター – 未適用のチャンネル {n} 件"
+
+msgid "In no favourites list"
+msgstr "どのお気に入りリストにも含まれていません"
+
+msgid "New list…"
+msgstr "新しいリスト…"
+
+msgid "New Favourites List"
+msgstr "新しいお気に入りリスト"
+
+msgid "New list"
+msgstr "新しいリスト"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "{n} 件のチャンネルに変更を適用しますか？"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "編集内容はまだ適用されていません。適用しないと失われます。"
+
+msgid "Apply"
+msgstr "適用"
+
+msgid "Discard"
+msgstr "破棄"
+
+msgid "No channel selected"
+msgstr "チャンネルが選択されていません"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "編集するチャンネルをリストから選んでください。"
+
+msgid "Unnamed channel"
+msgstr "名前のないチャンネル"
+
+msgid "Recording and Device Statistics"
+msgstr "録画とデバイスの統計"
+
+msgid "Active recordings:"
+msgstr "実行中の録画："
+
+msgid "\nNext timer: {v0}"
+msgstr "\n次の予約：{v0}"
+
+msgid "Teletext – {name}"
+msgstr "テレテキスト – {name}"
+
+msgid "Find on page"
+msgstr "ページ内を検索"
+
+msgid "Copy page"
+msgstr "ページをコピー"
+
+msgid "Save page"
+msgstr "ページを保存"
+
+msgid "Waiting for teletext…"
+msgstr "テレテキストを待っています…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec がありません（libzvbi 付きの gst-plugins-bad）。"
+
+msgid "Searching page {page}…"
+msgstr "ページ {page} を検索中…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "デスクランブルが設定されていません。視聴権のある暗号化チャンネルは、設定で LinDVB にご自身のソフトカムまたは CI モジュールを指定するとデスクランブルできます。"
+
+msgid "Provider '{v0}' is not available."
+msgstr "プロバイダー「{v0}」は利用できません。"
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "プロバイダー：CI モジュール – {status}\nモジュールがチューナー内のカードでデスクランブルします。"
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "プロバイダー：{name}\nLinDVB は ECM セクションをご自身のカードクライアントに転送し、返された制御ワードを適用します。LinDVB 自体は鍵を保持しません。"
+
+msgid "Open CAM Menu…"
+msgstr "CAM メニューを開く…"
+
+msgid "Failed to load: {v0}"
+msgstr "読み込みに失敗しました：{v0}"
+
+msgid "Switched off"
+msgstr "無効"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "変更は LinDVB の再起動後に有効になります。"
+
+msgid "No plugins installed."
+msgstr "プラグインはインストールされていません。"
+
+msgid "Plugin actions"
+msgstr "プラグインの操作"
+
+msgid "Plugin folder: {path}"
+msgstr "プラグインフォルダー：{path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "プラグインをこのフォルダーにコピーしてください：Python ファイル (.py)、または __init__.py を含むフォルダー。"
+
+msgid "Open Plugin Folder"
+msgstr "プラグインフォルダーを開く"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder} を開けません：{message}"
+
+msgid "CAP"
+msgstr "CAP（郵便番号）"
+
+msgid "Postcode"
+msgstr "郵便番号"
+
+msgid "Region"
+msgstr "地域"
+
+msgid "Freeview region"
+msgstr "Freeview の地域"
+
+msgid "Regione"
+msgstr "州 (Regione)"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I は、お住まいの地域のチャンネルリスト（番号、名前、ロゴ、各チャンネルの受信方法）をインターネットから取得します。LinDVB は可能な限りチャンネルスキャンで見つかったアンテナ、ケーブル、衛星のチャンネルを使い、それ以外はインターネットストリームを使います。"
+
+msgid "Country"
+msgstr "国"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "DVB-I チャンネルの番組表 (EPG) を読み込む"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "受信経路（インターネット、アンテナ、ケーブル、衛星）が失敗したら別の経路に切り替える"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "チャンネルスキャンなしでリストから衛星チャンネルを選局する（リストに衛星チャンネルが必要）"
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "チャンネルに両方ある場合は、インターネットストリームよりアンテナ、ケーブル、衛星を優先する"
+
+msgid "Update the channel list automatically (daily)"
+msgstr "チャンネルリストを自動的に更新する（毎日）"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "警告！これをオフにすると、LinDVB はチャンネルリストを放送中のチャンネルに合わせて最新に保てなくなります。"
+
+msgid "Service list"
+msgstr "サービスリスト"
+
+msgid "Load Lists from Registry"
+msgstr "レジストリからリストを読み込む"
+
+msgid "Registry address"
+msgstr "レジストリのアドレス"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "スペース区切りで、この順に問い合わせます。Enter キーで変更を確定します。空欄にするとその国のレジストリに戻ります。"
+
+msgid "Service list address"
+msgstr "サービスリストのアドレス"
+
+msgid "Use This List"
+msgstr "このリストを使用"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "レジストリに問い合わせず、このサービスリストを直接読み込みます。"
+
+msgid "Region in the list"
+msgstr "リスト内の地域"
+
+msgid "Package"
+msgstr "パッケージ"
+
+msgid "Remove DVB-I Channels"
+msgstr "DVB-I チャンネルを削除"
+
+msgid "Update Now"
+msgstr "今すぐ更新"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "選択したリストを再読み込みします（毎日自動でも確認されます）"
+
+msgid "Install Channel List"
+msgstr "チャンネルリストをインストール"
+
+msgid "Settings follow: {profile}"
+msgstr "設定の基準：{profile}"
+
+msgid "Privacy"
+msgstr "プライバシー"
+
+msgid "Show Privacy Notice…"
+msgstr "プライバシーに関する通知を表示…"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "地域によって、地域チャンネルとその番号が決まります。"
+
+msgid "Choose…"
+msgstr "選択…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "任意。{label} はサービスリストのサーバーにのみ送信されます。"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "郵便番号によって、地域チャンネルとその番号が決まります。郵便番号はサービスリストのサーバーにのみ送信されます。"
+
+msgid "e.g. {example}"
+msgstr "例：{example}"
+
+msgid "No postcode: nationwide list"
+msgstr "郵便番号なし：全国リスト"
+
+msgid "In use: {current}"
+msgstr "使用中：{current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "DVB-I リストはまだ使用されていません。"
+
+msgid "Free channels only"
+msgstr "無料チャンネルのみ"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "このパッケージのチャンネル番号を使うには、もう一度インストールを押してください。"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "以前の国の DVB-I チャンネルは、{country} のリストをインストールするか削除するまで残ります。"
+
+msgid "Privacy Notice"
+msgstr "プライバシーに関する通知"
+
+msgid "Please read the privacy notice to the end."
+msgstr "プライバシーに関する通知を最後までお読みください。"
+
+msgid "Agree"
+msgstr "同意する"
+
+msgid "Please enter a web address (https://…)."
+msgstr "Web アドレス (https://…) を入力してください。"
+
+msgid "Please confirm the privacy notice first."
+msgstr "先にプライバシーに関する通知を確認してください。"
+
+msgid "Asking the service list registry…"
+msgstr "サービスリストのレジストリに問い合わせ中…"
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "レジストリまたはサービスリストのアドレスを入力してください。"
+
+msgid "The registry could not be reached: {error}"
+msgstr "レジストリに接続できませんでした：{error}"
+
+msgid "Default"
+msgstr "既定"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{netloc} のサービスリスト {v0} 件"
+
+msgid "The registry offers no service list for {country}."
+msgstr "レジストリには {country} のサービスリストがありません。"
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "{n} 桁の郵便番号を入力してください"
+
+msgid "Loading the service list…"
+msgstr "サービスリストを読み込み中…"
+
+msgid "In use: {v0}"
+msgstr "使用中：{v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\n地域を選んで、もう一度インストールを押してください。"
+
+msgid "Enter Again"
+msgstr "再入力"
+
+msgid "The service list does not know this postcode."
+msgstr "サービスリストにこの郵便番号はありません。"
+
+msgid "The service list server answered {code}."
+msgstr "サービスリストのサーバーが {code} を返しました。"
+
+msgid "Try Again"
+msgstr "再試行"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "再試行するか、郵便番号なしで全国リストを使用できます。"
+
+msgid "Nationwide List"
+msgstr "全国リスト"
+
+msgid "No DVB-I list is in use."
+msgstr "DVB-I リストは使用されていません。"
+
+msgid "{removed} DVB-I channels removed"
+msgstr "DVB-I チャンネルを {removed} 件削除しました"
+
+msgid "All programmes"
+msgstr "すべての番組"
+
+msgid "With audio description"
+msgstr "音声解説あり"
+
+msgid "With subtitles"
+msgstr "字幕あり"
+
+msgid "Programme Guide"
+msgstr "番組表"
+
+msgid "Now / Next"
+msgstr "現在 / 次"
+
+msgid "Per Channel"
+msgstr "チャンネル別"
+
+msgid "TV Guide"
+msgstr "番組表"
+
+msgid "Search"
+msgstr "検索"
+
+msgid "Record with Options…"
+msgstr "オプションを指定して録画…"
+
+msgid "Record Series"
+msgstr "シリーズ録画"
+
+msgid "Remind Me"
+msgstr "リマインダー"
+
+msgid "Search Web"
+msgstr "Web で検索"
+
+msgid "Export the guide as XMLTV"
+msgstr "番組表を XMLTV としてエクスポート"
+
+msgid "Only the channels of a favourites list"
+msgstr "お気に入りリストのチャンネルのみ"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "アクセシビリティ機能（DVB-I 番組表）"
+
+msgid "Show:"
+msgstr "表示："
+
+msgid "Start"
+msgstr "開始"
+
+msgid "End"
+msgstr "終了"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Genre"
+msgstr "ジャンル"
+
+msgid "Day"
+msgstr "日"
+
+msgid "Duration"
+msgstr "長さ"
+
+msgid "Subheading"
+msgstr "サブタイトル"
+
+msgid "Title or description"
+msgstr "タイトルまたは説明"
+
+msgid "Include description"
+msgstr "説明も含める"
+
+msgid "Case sensitive"
+msgstr "大文字と小文字を区別"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} 分{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "シリーズ録画：{title}"
+
+msgid "Reminder removed: {title}"
+msgstr "リマインダーを削除しました：{title}"
+
+msgid "{title} has already started"
+msgstr "「{title}」はすでに始まっています"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "リマインダーを設定しました：{title}、{time}"
+
+msgid "Remove Reminder"
+msgstr "リマインダーを削除"
+
+msgid "Save EPG data"
+msgstr "EPG データを保存する"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "LinDVB を閉じた後も番組表をディスクに保持します。"
+
+msgid "Show EPG info on channel change (s)"
+msgstr "チャンネル切り替え時に EPG 情報を表示（秒）"
+
+msgid "0 = do not show it."
+msgstr "0 = 表示しない。"
+
+msgid "Remind before start (min)"
+msgstr "開始前に通知（分）"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "番組表で設定したリマインダーを、この時間だけ前に通知します。"
+
+msgid "Preferred language"
+msgstr "優先する言語"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "番組が複数の言語で放送されているときに使われます。"
+
+msgid "Time zone"
+msgstr "タイムゾーン"
+
+msgid "Set time zone automatically"
+msgstr "タイムゾーンを自動設定する"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "オフ：番組表、予約、時計に GMT からの固定オフセットを使います。"
+
+msgid "Offset to GMT"
+msgstr "GMT からのオフセット"
+
+msgid "Internet EPG (IPTV)"
+msgstr "インターネット EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "放送 EPG に加えて使うインターネット EPG の取得元。"
+
+msgid "Match IPTV Channels…"
+msgstr "IPTV チャンネルを照合…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "どの番組表チャンネルがどの M3U チャンネルに対応するかを確認・修正します。"
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat の周波数"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "選局したチャンネルがこれらのトランスポンダー上にある場合、LinDVB はその事業者の EPG も読み込みます。変更は次にチャンネルを選局したときに適用されます。"
+
+msgid "Frequency (MHz)"
+msgstr "周波数 (MHz)"
+
+msgid "Add"
+msgstr "追加"
+
+msgid "Polarisation"
+msgstr "偏波"
+
+msgid "Defaults"
+msgstr "既定値"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "トランスポンダーの周波数を MHz で入力してください。"
+
+msgid "Advanced"
+msgstr "詳細"
+
+msgid "Priority of the EPG sources"
+msgstr "EPG 取得元の優先度"
+
+msgid "Automatic (recommended)"
+msgstr "自動（推奨）"
+
+msgid "Custom order"
+msgstr "カスタム順"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "自動：現在と次の番組は放送から、それ以降は最も充実した取得元を採用し、抜けている部分を他の取得元で補います。同じ番組が二重に表示されることはありません。"
+
+msgid "Order of the EPG sources"
+msgstr "EPG 取得元の順序"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "2 つの取得元の内容が食い違う場合は一番上の取得元が優先され、他は抜けを補います。独自の順序を持つチャンネルは常にそれを使います（放送 EPG が不十分な場合など）。"
+
+msgid "Applies to"
+msgstr "適用対象"
+
+msgid "Remove Channel"
+msgstr "チャンネルを削除"
+
+msgid "Move Up"
+msgstr "上へ移動"
+
+msgid "Move Down"
+msgstr "下へ移動"
+
+msgid "Own Order for Channel"
+msgstr "チャンネル独自の順序"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB チャンネルファイル (.json)：お気に入りリストを含むすべて"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U プレイリスト (.m3u)：インターネットチャンネルと DVB-I ストリーム"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 チャンネルファイル (.conf)：チューナーのチャンネル"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV 表 (.csv)：すべてのチャンネル"
+
+msgid "Export Channel List"
+msgstr "チャンネルリストをエクスポート"
+
+msgid "TV channels only"
+msgstr "TV チャンネルのみ"
+
+msgid "Radio stations only"
+msgstr "ラジオ局のみ"
+
+msgid "The channels shown in the list ({n})"
+msgstr "リストに表示中のチャンネル ({n})"
+
+msgid "Save…"
+msgstr "保存…"
+
+msgid "There are no channels to export."
+msgstr "エクスポートするチャンネルがありません。"
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "この {total} 件のチャンネルはいずれもこの形式で保存できません。インターネットチャンネルは M3U、チューナーのチャンネルは dvbv5、すべてのチャンネルは CSV または LinDVB チャンネルファイルに保存できます。"
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "{total} 件中 {n} 件のチャンネルを保存します。残りの {skipped} 件はこの形式では保存できません。"
+
+msgid "{n} channels will be saved."
+msgstr "{n} 件のチャンネルを保存します。"
+
+msgid "Could not save {name}"
+msgstr "{name} を保存できませんでした"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} 件のチャンネルを {path} にエクスポートしました"
+
+msgid "Name of the favourites list"
+msgstr "お気に入りリストの名前"
+
+msgid "Favourites Lists"
+msgstr "お気に入りリスト"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "各リストは独自の並び順を持ちます。リスト内のチャンネルはチャンネルリストで並べ替えます：リストを選んでから、チャンネルをドラッグするか右クリックメニューを使ってください。"
+
+msgid "Rename"
+msgstr "名前を変更"
+
+msgid "Delete list"
+msgstr "リストを削除"
+
+msgid "{n} channels"
+msgstr "{n} チャンネル"
+
+msgid "Rename Favourites List"
+msgstr "お気に入りリストの名前を変更"
+
+msgid "Delete the list “{name}”?"
+msgstr "リスト「{name}」を削除しますか？"
+
+msgid "The channels stay in the channel list."
+msgstr "チャンネルはチャンネルリストに残ります。"
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "WebKitGTK 6 (gir1.2-webkit-6.0) が必要ですが、インストールされていません。"
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "この環境では WebKit のサンドボックスがユーザー名前空間を作成できない可能性があり（Ubuntu の AppArmor による制限）、アプリケーションを安全に起動できません。docs/HBBTV.md を参照してください。"
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV データを削除しました"
+
+msgid "This interactive service is rated {age}+."
+msgstr "このインタラクティブサービスは {age} 歳以上向けです。"
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "青少年保護によりブロックされました。設定で PIN を設定してください。"
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "PIN の入力ミスが多すぎます。数分後に再試行してください。"
+
+msgid "Unlock"
+msgstr "ロック解除"
+
+msgid "Wrong PIN."
+msgstr "PIN が正しくありません。"
+
+msgid "This video is rated {age}+."
+msgstr "この動画は {age} 歳以上向けです。"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "この動画は {drm} で暗号化されています。LinDVB は DRM に対応していないため再生できません。"
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "この動画は暗号化されています。LinDVB は DRM に対応していないため再生できません。"
+
+msgid "Start an application from another device?"
+msgstr "他のデバイスからアプリケーションを起動しますか？"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "ネットワーク上のデバイスが「{name}」({url}) を起動しようとしています。"
+
+msgid "an HbbTV application"
+msgstr "HbbTV アプリケーション"
+
+msgid "Refuse"
+msgstr "拒否"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV：{name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "HbbTV アプリケーションを読み込めませんでした：{msg}"
+
+msgid "File"
+msgstr "ファイル"
+
+msgid "Web address"
+msgstr "Web アドレス"
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV チャンネルリスト (M3U、DVBViewer .ini、CSV)"
+
+msgid "All files"
+msgstr "すべてのファイル"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "インターネットストリームを含む M3U プレイリストや他のチャンネルリストを 1 つ以上インポートします。すでにリストにあるチャンネルは更新され、それ以外は追加されます。"
+
+msgid "Import Files…"
+msgstr "ファイルをインポート…"
+
+msgid "From files"
+msgstr "ファイルから"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8、DVBViewer .ini、CSV、dvbv5。複数のファイルを一度に選択できます。"
+
+msgid "Import"
+msgstr "インポート"
+
+msgid "From a web address"
+msgstr "Web アドレスから"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U プレイリスト、または単一の HLS ストリーム (.m3u8) のアドレス。"
+
+msgid "User name"
+msgstr "ユーザー名"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "サーバーが配信するストリーム形式。チャンネルが MPEG-TS で再生されない場合は HLS を選んでください。"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes アカウントのライブチャンネル。パスワードは LinDVB の設定内でリストのアドレスに保存されます。"
+
+msgid "Your lists"
+msgstr "あなたのリスト"
+
+msgid "Source"
+msgstr "取得元"
+
+msgid "Updated"
+msgstr "更新日時"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "リストを再読み込みします：お気に入り、チャンネル番号、番組表の対応付けは維持され、リストからなくなったチャンネルは削除されます。"
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "リストに独自の名前を付ける（チャンネルグループの名前にもなります）"
+
+msgid "Remove the list and its channels"
+msgstr "リストとそのチャンネルを削除"
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "チャンネルリスト内の IPTV チャンネル：{n}"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "新規 {total_a} 件、更新 {total_u} 件のチャンネルをインポートしました"
+
+msgid "{n} removed"
+msgstr "{n} 件削除"
+
+msgid "Import IPTV channel lists"
+msgstr "IPTV チャンネルリストをインポート"
+
+msgid "Could not import {name}"
+msgstr "{name} をインポートできませんでした"
+
+msgid "The file has no channels."
+msgstr "ファイルにチャンネルがありません。"
+
+msgid "Downloading {url}…"
+msgstr "{url} をダウンロード中…"
+
+msgid "The address has no channels."
+msgstr "このアドレスにはチャンネルがありません。"
+
+msgid "List renamed to {name}"
+msgstr "リストの名前を {name} に変更しました"
+
+msgid "{n} channels removed"
+msgstr "{n} 件のチャンネルを削除しました"
+
+msgid "Cover lookup failed: {e}"
+msgstr "カバーの検索に失敗しました：{e}"
+
+msgid "Swap with the main picture"
+msgstr "メイン画面と入れ替える"
+
+msgid "Close picture in picture"
+msgstr "ピクチャーインピクチャーを閉じる"
+
+msgid "Picture in picture: {error}"
+msgstr "ピクチャーインピクチャー：{error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "ピクチャーインピクチャーはインターネットチャンネルで使えます。DVB チャンネルには 2 台目のチューナーが必要です。"
+
+msgid "Channel Mosaic"
+msgstr "チャンネルモザイク"
+
+msgid "Previous channels"
+msgstr "前のチャンネル"
+
+msgid "Next channels"
+msgstr "次のチャンネル"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "モザイクはインターネットチャンネルを表示します。現在の表示のリストには含まれていません。"
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "{page} / {pages} ページ · インターネットチャンネル {n} 件"
+
+msgid "Click to watch {name}"
+msgstr "クリックして {name} を視聴"
+
+msgid "Single 10750"
+msgstr "シングル 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "ユニバーサル (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "シングル 10700"
+
+msgid "Single 11300"
+msgstr "シングル 11300"
+
+msgid "Extended"
+msgstr "拡張"
+
+msgid "Port 1 (A/A)"
+msgstr "ポート 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "ポート 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "ポート 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "ポート 4 (B/B)"
+
+msgid "Initial letter"
+msgstr "頭文字"
+
+msgid "Receives: {systems}"
+msgstr "受信方式：{systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "チューナーが受信方式を通知しないため、すべてのリストを表示しています。"
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP サーバーが LNB と DiSEqC スイッチを制御します。DiSEqC ポートで入力元 (1～4) を選びます。"
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "このチューナーのシングルケーブル設定：{setup}"
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "このトランスポンダーリストには衛星のトランスポンダーがありません。\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "チューナーは使用中です（録画またはチャンネル分析）。\n"
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "このトランスポンダーリストにはこのチューナー用のトランスポンダーがありません。\n"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP：スキャンはリストの周波数を使います（NIT 検索なし）。"
+
+msgid "Lock"
+msgstr "ロック"
+
+msgid "Channel Search"
+msgstr "チャンネルスキャン"
+
+msgid "Device"
+msgstr "デバイス"
+
+msgid "(no tuner)"
+msgstr "（チューナーなし）"
+
+msgid "Satellites"
+msgstr "衛星"
+
+msgid "Add satellite"
+msgstr "衛星を追加"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "DiSEqC スイッチの先にある複数のアンテナ位置を一度にスキャンする"
+
+msgid "LNB type"
+msgstr "LNB の種類"
+
+msgid "Target group"
+msgstr "追加先グループ"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "追加の周波数を検索する (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "無料放送のチャンネルだけを追加する"
+
+msgid "Only update existing channels"
+msgstr "既存のチャンネルだけを更新する"
+
+msgid "Update channel names"
+msgstr "チャンネル名を更新する"
+
+msgid "Group by"
+msgstr "グループ分け"
+
+msgid "Add folder…"
+msgstr "フォルダーを追加…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "トランスポンダーリストのフォルダー（dtv-scan-tables または DVBViewer 形式の .ini）"
+
+msgid "More options"
+msgstr "その他のオプション"
+
+msgid "Start Search"
+msgstr "スキャン開始"
+
+msgid "Stop"
+msgstr "停止"
+
+msgid "(no lists found)"
+msgstr "（リストが見つかりません）"
+
+msgid "Search this satellite"
+msgstr "この衛星をスキャン"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC ポート"
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "トランスポンダー：個別にスキャン、追加、変更、削除"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "衛星ごとに別々の DiSEqC ポートが必要です。"
+
+msgid "Tick the satellites to search."
+msgstr "スキャンする衛星にチェックを入れてください。"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "トランスポンダー {n} 件。一部だけにチェックがある場合は、そのトランスポンダーだけをスキャンします。"
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "これらの位置のリストにあるトランスポンダー {n} 件。ネットワークが通知するもの (NIT) はスキャン時に追加されます。"
+
+msgid "Own transponder list: {positions}."
+msgstr "独自のトランスポンダーリスト：{positions}。"
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "ブラインドスキャン：{n} 個の周波数を試します。約 {minutes} 分。"
+
+msgid "{n} frequencies from the list."
+msgstr "リストの周波数 {n} 個。"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "例：Astra 19.2°E"
+
+msgid "Folder with transponder lists"
+msgstr "トランスポンダーリストのフォルダー"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "トランスポンダーリストが選択されていません。dtv-scan-tables をインストールするか、フォルダーを追加してください。\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nチャンネルが見つかりませんでした。\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\n完了：新規 {added} 件、更新 {updated} 件のチャンネル。\n"
+
+msgid "Pause / play"
+msgstr "一時停止 / 再生"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "10 秒戻る / 進む（タイムシフト、ファイル）"
+
+msgid "Back to live"
+msgstr "ライブに戻る"
+
+msgid "Mute"
+msgstr "ミュート"
+
+msgid "Volume up / down"
+msgstr "音量を上げる / 下げる"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "音声を早める / 遅らせる（チャンネルの音声遅延）"
+
+msgid "Next radio visualisation"
+msgstr "次のラジオビジュアライゼーション"
+
+msgid "Next / previous playlist entry"
+msgstr "次 / 前のプレイリスト項目"
+
+msgid "Previous / next channel"
+msgstr "前 / 次のチャンネル"
+
+msgid "Next / previous channel"
+msgstr "次 / 前のチャンネル"
+
+msgid "Channel by number (type the digits)"
+msgstr "番号でチャンネルを選ぶ（数字を入力）"
+
+msgid "Last channel"
+msgstr "直前のチャンネル"
+
+msgid "Switch TV / radio"
+msgstr "TV / ラジオの切り替え"
+
+msgid "Show / hide the channel list"
+msgstr "チャンネルリストの表示 / 非表示"
+
+msgid "Programme guide and recording"
+msgstr "番組表と録画"
+
+msgid "Programme guide (EPG)"
+msgstr "番組表 (EPG)"
+
+msgid "Timer recordings"
+msgstr "予約録画"
+
+msgid "Programme info (OSD)"
+msgstr "番組情報 (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "テレテキストとインタラクティブサービス"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV（赤ボタン）"
+
+msgid "View"
+msgstr "表示"
+
+msgid "Full screen"
+msgstr "全画面表示"
+
+msgid "Leave full screen"
+msgstr "全画面表示を終了"
+
+msgid "Screenshot"
+msgstr "スクリーンショット"
+
+msgid "Application"
+msgstr "アプリケーション"
+
+msgid "Main menu"
+msgstr "メインメニュー"
+
+msgid "Open media file"
+msgstr "メディアファイルを開く"
+
+msgid "Open URL"
+msgstr "URL を開く"
+
+msgid "Keyboard shortcuts"
+msgstr "キーボードショートカット"
+
+msgid "Keyboard Shortcuts"
+msgstr "キーボードショートカット"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "チャンネルが通知するすべてのストリーム（HbbTV データや新しい音声トラックも含む）を、このチャンネルだけの番組テーブル付きで録画します。これを保存できるのは MPEG-TS だけなので、TS を使います。"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "予約録画"
+
+msgid "Search channels"
+msgstr "チャンネルを検索"
+
+msgid "  (Radio)"
+msgstr "  （ラジオ）"
+
+msgid "Date"
+msgstr "日付"
+
+msgid "Repeat"
+msgstr "繰り返し"
+
+msgid "Once"
+msgstr "1 回"
+
+msgid "Series"
+msgstr "シリーズ"
+
+msgid "Action"
+msgstr "動作"
+
+msgid "After"
+msgstr "録画後"
+
+msgid "Disabled"
+msgstr "無効"
+
+msgid "Series recordings"
+msgstr "シリーズ録画"
+
+msgid "Programme"
+msgstr "番組"
+
+msgid "Pick a channel on the left"
+msgstr "左側でチャンネルを選んでください"
+
+msgid "_Name"
+msgstr "名前(_N)"
+
+msgid "Time"
+msgstr "時刻"
+
+msgid "Repeat every {day}"
+msgstr "毎週{day}曜日に繰り返す"
+
+msgid "_Date"
+msgstr "日付(_D)"
+
+msgid "_Start"
+msgstr "開始(_S)"
+
+msgid "_End"
+msgstr "終了(_E)"
+
+msgid "_Lead (min)"
+msgstr "前マージン（分）(_L)"
+
+msgid "_Follow (min)"
+msgstr "後マージン（分）(_F)"
+
+msgid "Repeat on"
+msgstr "繰り返す曜日"
+
+msgid "_Timer action"
+msgstr "予約の動作(_T)"
+
+msgid "_After recording"
+msgstr "録画後の動作(_A)"
+
+msgid "For this recording"
+msgstr "この録画のみ"
+
+msgid "General settings"
+msgstr "一般設定"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "一般設定：フォーマット、音声トラック、追加ストリームは、録画開始時に設定から取得されます。"
+
+msgid "Formats and _tracks"
+msgstr "フォーマットとトラック(_T)"
+
+msgid "Next recording only"
+msgstr "次の録画のみ"
+
+msgid "Whole series"
+msgstr "シリーズ全体"
+
+msgid "_Apply to"
+msgstr "適用対象(_A)"
+
+msgid "T_V format"
+msgstr "TV のフォーマット(_V)"
+
+msgid "_Radio format"
+msgstr "ラジオのフォーマット(_R)"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "優先言語のみ：設定の音声言語のトラック（音声解説を除く）。MP4 とラジオの音声ファイルはトラックを 1 つだけ保存します。"
+
+msgid "Audi_o tracks"
+msgstr "音声トラック(_O)"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "テレテキストは MPEG-TS にしか存在しないため、TS を使います。"
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG データ (EIT) は MPEG-TS にしか存在しないため、TS を使います。"
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS はすべての字幕ストリームを保存します。MKV ではテレテキストの字幕ページがテキストトラックになります。DVB のビットマップ字幕は TS にのみ保存されます。"
+
+msgid "Extra streams"
+msgstr "追加ストリーム"
+
+msgid "Folder…"
+msgstr "フォルダー…"
+
+msgid "File _naming scheme"
+msgstr "ファイル名の形式(_N)"
+
+msgid "Use the recording folder from the preferences"
+msgstr "設定の録画フォルダーを使用する"
+
+msgid "Placeholders"
+msgstr "プレースホルダー"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder}（設定から）"
+
+msgid "Folder: "
+msgstr "フォルダー："
+
+msgid "Clear the editor"
+msgstr "エディターをクリア"
+
+msgid "New"
+msgstr "新規"
+
+msgid "Enable/Disable"
+msgstr "有効 / 無効"
+
+msgid "Switch the selected timer on or off"
+msgstr "選択した予約をオンまたはオフにする"
+
+msgid "Delete the selected timer"
+msgstr "選択した予約を削除"
+
+msgid "Save as default"
+msgstr "既定値として保存"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "このフォーマットと追加ストリームを新しい予約と手動録画に使う"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "エディターの設定を選択した予約に保存"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "エディターの設定を新しい予約として追加"
+
+msgid "Series title"
+msgstr "シリーズのタイトル"
+
+msgid "Delete series rule"
+msgstr "シリーズのルールを削除"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} は MPEG-TS でしか保存できないため、TS を使います。"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "字幕は TS または MKV に保存できます。"
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "設定に優先する音声言語がありません：最初のトラックを録画します。"
+
+msgid "File: {v0}"
+msgstr "ファイル：{v0}"
+
+msgid "Edit timer"
+msgstr "予約を編集"
+
+msgid "New timer"
+msgstr "新しい予約"
+
+msgid "Invalid start or end time"
+msgstr "開始または終了時刻が正しくありません"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "HH:MM の形式で入力してください（例：20:15）。"
+
+msgid "No channel"
+msgstr "チャンネルなし"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "録画するチャンネルを左のリストから選んでください。"
+
+msgid "Recording defaults saved"
+msgstr "録画の既定値を保存しました"
+
+msgid "Record with Options"
+msgstr "オプションを指定して録画"
+
+msgid "_Format"
+msgstr "フォーマット(_F)"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "テレテキストと EPG データは MPEG-TS でしか保存できないため、TS を使います。"
+
+msgid "Preferred audio language: {lang}."
+msgstr "優先する音声言語：{lang}。"
+
+msgid "Horizontal"
+msgstr "水平"
+
+msgid "Left (circular)"
+msgstr "左旋円偏波"
+
+msgid "Vertical"
+msgstr "垂直"
+
+msgid "Right (circular)"
+msgstr "右旋円偏波"
+
+msgid "Auto"
+msgstr "自動"
+
+msgid "Transponders of {position}"
+msgstr "{position} のトランスポンダー"
+
+msgid "Add…"
+msgstr "追加…"
+
+msgid "Edit…"
+msgstr "編集…"
+
+msgid "Tick all"
+msgstr "すべてチェック"
+
+msgid "Tick none"
+msgstr "チェックをすべて外す"
+
+msgid "Back to the lists"
+msgstr "リストに戻る"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "この位置への変更を破棄し、トランスポンダーリストを再び使う"
+
+msgid "All {n} transponders are searched."
+msgstr "全 {n} 件のトランスポンダーをスキャンします。"
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "{n} 件中 {on} 件のトランスポンダーをスキャンします。個別のトランスポンダーのスキャンでは、ネットワークが通知するもの (NIT) は追加されません。"
+
+msgid "The changed list is kept for this position."
+msgstr "変更したリストはこの位置用に保持されます。"
+
+msgid "This transponder is already in the list."
+msgstr "このトランスポンダーはすでにリストにあります。"
+
+msgid "Tick the transponders to search."
+msgstr "スキャンするトランスポンダーにチェックを入れてください。"
+
+msgid "The list could not be saved."
+msgstr "リストを保存できませんでした。"
+
+msgid "Add transponder"
+msgstr "トランスポンダーを追加"
+
+msgid "Edit transponder"
+msgstr "トランスポンダーを編集"
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S は QPSK のみです。8PSK、16APSK、32APSK には DVB-S2 を選んでください。"
+
+msgid "This transponder is not valid."
+msgstr "このトランスポンダーは無効です。"
+
+msgid "Changed"
+msgstr "変更あり"
+
+msgid "Unchanged"
+msgstr "変更なし"
+
+msgid "No longer broadcast"
+msgstr "放送終了"
+
+msgid "Bandwidth"
+msgstr "帯域幅"
+
+msgid "yes"
+msgstr "はい"
+
+msgid "Add Channels"
+msgstr "チャンネルを追加"
+
+msgid "Tune Channel"
+msgstr "チャンネルを選局"
+
+msgid "No tuner found."
+msgstr "チューナーが見つかりません。"
+
+msgid "Log"
+msgstr "ログ"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "複数の PLP を送信する DVB-T2 マルチプレックスの PLP。-1 はチューナーに任せます"
+
+msgid "Enter by hand"
+msgstr "手動で入力"
+
+msgid "Tuning…"
+msgstr "選局中…"
+
+msgid "The tuner could not be used."
+msgstr "チューナーを使用できませんでした。"
+
+msgid "No channels found on this frequency."
+msgstr "この周波数ではチャンネルが見つかりませんでした。"
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "変更なし {same} 件、変更あり {changed} 件、新規 {new} 件、放送終了 {gone} 件。"
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "保存しました：追加 {added} 件、更新 {updated} 件、削除 {removed} 件。"
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "ビジュアライゼーション「{v0}」が失敗しました：{e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} は古すぎます"
+
+msgid "Playback error: "
+msgstr "再生エラー："
+
+msgid "Free to air"
+msgstr "無料放送"
+
+msgid "Fill (crop)"
+msgstr "全体に拡大（切り抜き）"
+
+msgid "Fit"
+msgstr "全体を表示"
+
+msgid "Stretch"
+msgstr "引き伸ばし"
+
+msgid "Playback error: {m}"
+msgstr "再生エラー：{m}"
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name} での映像デコードに失敗したため、次のデコーダーで再生します"
+
+msgid "Plugin action failed: {e}"
+msgstr "プラグインの操作に失敗しました：{e}"
+
+msgid "Open Media File…"
+msgstr "メディアファイルを開く…"
+
+msgid "Open URL…"
+msgstr "URL を開く…"
+
+msgid "Import Channel List…"
+msgstr "チャンネルリストをインポート…"
+
+msgid "Export Channel List…"
+msgstr "チャンネルリストをエクスポート…"
+
+msgid "Programme Guide (EPG)"
+msgstr "番組表 (EPG)"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "インターネット EPG を更新 (XMLTV)"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "番組表をエクスポート (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "TV / ラジオの切り替え"
+
+msgid "Recordings"
+msgstr "録画"
+
+msgid "Timer Recordings"
+msgstr "予約録画"
+
+msgid "Channel Analysis…"
+msgstr "チャンネル分析…"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM メニュー（CI モジュール）…"
+
+msgid "Audio Track"
+msgstr "音声トラック"
+
+msgid "Play Rate"
+msgstr "再生速度"
+
+msgid "Back 10 s"
+msgstr "10 秒戻る"
+
+msgid "Forward 10 s"
+msgstr "10 秒進む"
+
+msgid "Back 1 min"
+msgstr "1 分戻る"
+
+msgid "Forward 1 min"
+msgstr "1 分進む"
+
+msgid "Back to Live"
+msgstr "ライブに戻る"
+
+msgid "Jump"
+msgstr "ジャンプ"
+
+msgid "Previous"
+msgstr "前へ"
+
+msgid "Random Order"
+msgstr "ランダム再生"
+
+msgid "Endless Playback"
+msgstr "エンドレス再生"
+
+msgid "Keep Timeshift as Recording"
+msgstr "タイムシフトを録画として保存"
+
+msgid "Rebuild Playback"
+msgstr "再生を再構築"
+
+msgid "Video Off (audio only)"
+msgstr "映像オフ（音声のみ）"
+
+msgid "Show Selected Channel"
+msgstr "選択中のチャンネルを表示"
+
+msgid "Swap Pictures"
+msgstr "画面を入れ替え"
+
+msgid "Picture in Picture"
+msgstr "ピクチャーインピクチャー"
+
+msgid "Channel Mosaic…"
+msgstr "チャンネルモザイク…"
+
+msgid "Stop in {mins} min"
+msgstr "{mins} 分後に停止"
+
+msgid "Stop after current programme"
+msgstr "現在の番組の終了後に停止"
+
+msgid "Sleep Timer"
+msgstr "スリープタイマー"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "音声を遅らせる (+{AUDIO_DELAY_STEP} ms、K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "音声を早める (−{AUDIO_DELAY_STEP} ms、J)"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Audio Delay (this channel)"
+msgstr "音声遅延（このチャンネル）"
+
+msgid "Full Screen"
+msgstr "全画面表示"
+
+msgid "Show/Hide Channel List"
+msgstr "チャンネルリストの表示/非表示"
+
+msgid "Aspect / Zoom"
+msgstr "アスペクト / ズーム"
+
+msgid "Window Size"
+msgstr "ウィンドウサイズ"
+
+msgid "Picture Settings…"
+msgstr "映像の設定…"
+
+msgid "Equalizer…"
+msgstr "イコライザー…"
+
+msgid "Radio Visualisation"
+msgstr "ラジオビジュアライゼーション"
+
+msgid "Plugins…"
+msgstr "プラグイン…"
+
+msgid "About LinDVB"
+msgstr "LinDVB について"
+
+msgid "Show/hide channel list (F9)"
+msgstr "チャンネルリストの表示/非表示 (F9)"
+
+msgid "Main menu (F10)"
+msgstr "メインメニュー (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "番組表 (Ctrl+E)"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "テレテキスト (Ctrl+Shift+T)"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV：このチャンネルでは利用できません"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "TV チャンネルを表示 (Ctrl+M で切り替え)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "ラジオ局を表示 (Ctrl+M で切り替え)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "録画を表示（ダブルクリックで再生）"
+
+msgid "Search name or number"
+msgstr "名前または番号で検索"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "フィルター。お気に入りリストには TV とラジオが表示されます"
+
+msgid "All groups"
+msgstr "すべてのグループ"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "取得元：衛星、ケーブル、地上波、インターネットストリーム、DiSEqC ポート、または衛星、ネットワーク、インポートファイル、IPTV リスト"
+
+msgid "Manage favourites lists"
+msgstr "お気に入りリストを管理"
+
+msgid "Sort by"
+msgstr "並べ替え"
+
+msgid "All"
+msgstr "すべて"
+
+msgid "Previous channel (Page Down)"
+msgstr "前のチャンネル (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "一時停止 / タイムシフト (Space)"
+
+msgid "Stop (switch the channel off)"
+msgstr "停止（チャンネルをオフ）"
+
+msgid "Next channel (Page Up)"
+msgstr "次のチャンネル (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "現在のチャンネルを録画 (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "この録画のフォーマットとトラックを選ぶ"
+
+msgid "Seek"
+msgstr "シーク"
+
+msgid "LIVE"
+msgstr "ライブ"
+
+msgid "Back to live (L)"
+msgstr "ライブに戻る (L)"
+
+msgid "Mute (M)"
+msgstr "ミュート (M)"
+
+msgid "Volume"
+msgstr "音量"
+
+msgid "Audio track"
+msgstr "音声トラック"
+
+msgid "Playback and picture settings"
+msgstr "再生と映像の設定"
+
+msgid "Full screen (F)"
+msgstr "全画面表示 (F)"
+
+msgid "\nNow: {title}"
+msgstr "\n現在：{title}"
+
+msgid "{n} of {total}"
+msgstr "{n} / {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "{total} 件中 {n} 件の録画を表示"
+
+msgid "{n} of {total} favourites shown"
+msgstr "{total} 件中 {n} 件のお気に入りを表示"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "{total} 局中 {n} 局のラジオ局を表示"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "{total} 件中 {n} 件の TV チャンネルを表示"
+
+msgid "Remove from “{name}”"
+msgstr "「{name}」から削除"
+
+msgid "Move to the top"
+msgstr "先頭へ移動"
+
+msgid "Move to the bottom"
+msgstr "末尾へ移動"
+
+msgid "Order in this list"
+msgstr "このリストでの順序"
+
+msgid "Remove from Favourites"
+msgstr "お気に入りから削除"
+
+msgid "Add to Favourites"
+msgstr "お気に入りに追加"
+
+msgid "Manage favourites lists…"
+msgstr "お気に入りリストを管理…"
+
+msgid "Show as Picture in Picture"
+msgstr "ピクチャーインピクチャーで表示"
+
+msgid "Select a channel in the list first"
+msgstr "先にリストでチャンネルを選択してください"
+
+msgid "Close the interactive service (Esc)"
+msgstr "インタラクティブサービスを閉じる (Esc)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "チャンネルのインタラクティブサービス（赤ボタン、F5）"
+
+msgid "By channel"
+msgstr "チャンネル順"
+
+msgid "By title"
+msgstr "タイトル順"
+
+msgid "Newest first"
+msgstr "新しい順"
+
+msgid "Oldest first"
+msgstr "古い順"
+
+msgid "Largest first"
+msgstr "サイズの大きい順"
+
+msgid "Sort the recordings"
+msgstr "録画を並べ替え"
+
+msgid "Open the recording folder"
+msgstr "録画フォルダーを開く"
+
+msgid "Look for new recordings"
+msgstr "新しい録画を探す"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "まだ録画はありません。\n\n録画の保存先：\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "設定で録画フォルダーが指定されていません。"
+
+msgid "Recording in progress"
+msgstr "録画中"
+
+msgid "Watched"
+msgstr "視聴済み"
+
+msgid "Watched up to {pos}"
+msgstr "{pos} まで視聴済み"
+
+msgid "Recording not found: {path}"
+msgstr "録画が見つかりません：{path}"
+
+msgid "Continuing at {pos}"
+msgstr "{pos} から再開します"
+
+msgid "Folder not found: {folder}"
+msgstr "フォルダーが見つかりません：{folder}"
+
+msgid "Play"
+msgstr "再生"
+
+msgid "Play from the Beginning"
+msgstr "最初から再生"
+
+msgid "Details…"
+msgstr "詳細…"
+
+msgid "Mark as Unwatched"
+msgstr "未視聴にする"
+
+msgid "Mark as Watched"
+msgstr "視聴済みにする"
+
+msgid "Show in Folder"
+msgstr "フォルダーで表示"
+
+msgid "Delete…"
+msgstr "削除…"
+
+msgid "Stop the recording before deleting it"
+msgstr "削除する前に録画を停止してください"
+
+msgid "Delete “{title}”?"
+msgstr "「{title}」を削除しますか？"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nファイルはディスクから削除されます。"
+
+msgid "Deleted {name}"
+msgstr "{name} を削除しました"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name} を削除できません：{strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name} を選局中…"
+
+msgid "Search recordings"
+msgstr "録画を検索"
+
+msgid "No radio stations in the channel list"
+msgstr "チャンネルリストにラジオ局がありません"
+
+msgid "No TV channels in the channel list"
+msgstr "チャンネルリストに TV チャンネルがありません"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}：{v1} – {kind} に切り替えました"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} は現在放送されていません"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "ライブ TV を停止しました：予約録画にチューナーが必要です"
+
+msgid "Playing TV or radio"
+msgstr "TV またはラジオを再生中"
+
+msgid "Stopped"
+msgstr "停止中"
+
+msgid "Sound {ms} ms later"
+msgstr "音声を {ms} ms 遅らせました"
+
+msgid "Sound {v0} ms earlier"
+msgstr "音声を {v0} ms 早めました"
+
+msgid "Audio delay off"
+msgstr "音声遅延オフ"
+
+msgid "Playing {item}"
+msgstr "{item} を再生中"
+
+msgid "Open media files"
+msgstr "メディアファイルを開く"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "開く"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "チャンネルリストをインポート (LinDVB .json、dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini)"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "番組表をエクスポート (XMLTV)"
+
+msgid "Exported to {path}"
+msgstr "{path} にエクスポートしました"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path} に書き込めません：{error}"
+
+msgid "Nothing to record"
+msgstr "録画するものがありません"
+
+msgid "This channel is already being recorded"
+msgstr "このチャンネルはすでに録画中です"
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "チャンネルのインタラクティブサービスのテレテキスト (Ctrl+Shift+T)"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "テレテキスト：デコーダーがありません（libzvbi 付きの gst-plugins-bad）"
+
+msgid "Teletext: not available on this channel"
+msgstr "テレテキスト：このチャンネルでは利用できません"
+
+msgid "Teletext needs a DVB channel"
+msgstr "テレテキストには DVB チャンネルが必要です"
+
+msgid "Volume {v0}%"
+msgstr "音量 {v0}%"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "クローズドキャプション (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} 言語"
+
+msgid "{n} audio tracks"
+msgstr "音声トラック {n} 個"
+
+msgid "Screenshot saved: {path}"
+msgstr "スクリーンショットを保存しました：{path}"
+
+msgid "Screenshot failed"
+msgstr "スクリーンショットに失敗しました"
+
+msgid "Picture Settings"
+msgstr "映像の設定"
+
+msgid "Restore Defaults"
+msgstr "既定値に戻す"
+
+msgid "Equalizer"
+msgstr "イコライザー"
+
+msgid "Leave full screen (F)"
+msgstr "全画面表示を終了 (F)"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} を開始できなかったため ({m})、代わりに {other} を表示します"
+
+msgid "All presets (shuffled)"
+msgstr "すべてのプリセット（シャッフル）"
+
+msgid "All of {name}"
+msgstr "{name} のすべて"
+
+msgid "Visualisation failed: {e}"
+msgstr "ビジュアライゼーションに失敗しました：{e}"
+
+msgid "Radio visualisation"
+msgstr "ラジオビジュアライゼーション"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "ラジオビジュアライゼーション（ラジオと音声のみ）"
+
+msgid "Playback stops at {v0}"
+msgstr "{v0} に再生を停止します"
+
+msgid "No programme information for the sleep timer"
+msgstr "スリープタイマー用の番組情報がありません"
+
+msgid "Sleep timer: playback stopped"
+msgstr "スリープタイマー：再生を停止しました"
+
+msgid "Next: {v0}  {title}"
+msgstr "次：{v0}  {title}"
+
+msgid "Signal quality {v0}%"
+msgstr "信号品質 {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "ストリーム品質 {v0}%"
+
+msgid "Signal {v0}%"
+msgstr "信号 {v0}%"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "ライブ"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "タイムシフト −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Linux DVB API と GStreamer で、DVB-S/S2、DVB-C、DVB-T/T2、ATSC、インターネット TV を視聴・録画します。"
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "IPTV チャンネルを XMLTV と照合"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV 番組表がまだ読み込まれていません。EPG 設定で XMLTV の URL を指定し、先に番組表をダウンロードしてください。照合はダウンロード後に自動的に始まります。"
+
+msgid "Download XMLTV guide now"
+msgstr "今すぐ XMLTV 番組表をダウンロード"
+
+msgid "Only channels without guide"
+msgstr "番組表のないチャンネルのみ"
+
+msgid "Match"
+msgstr "照合"
+
+msgid "Guide channel:"
+msgstr "番組表のチャンネル："
+
+msgid "Assign"
+msgstr "割り当て"
+
+msgid "Suggest"
+msgstr "候補を表示"
+
+msgid "Auto-match all"
+msgstr "すべて自動照合"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "手動で割り当てていないすべてのチャンネルを照合する"
+
+msgid "Reset to automatic"
+msgstr "自動に戻す"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "選択したチャンネルを再び自動照合に任せる"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{v1} 件中 {done} 件のチャンネルに番組表チャンネルがあります"
+
+msgid "No suggestion for {name}"
+msgstr "{name} の候補はありません"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "チャンネル名を付けた画像ファイル (PNG、SVG、JPG)（例：「Bayern 3.png」）。DVBViewer と同じくチャンネル名で保存されたロゴはそのまま使えます。空欄：{v0}"
+
+msgid "Tuner and Channels"
+msgstr "チューナーとチャンネル"
+
+msgid "DVB hardware"
+msgstr "DVB ハードウェア"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "LinDVB が使用できるアダプター番号（カンマ区切り）。"
+
+msgid "DVB adapters"
+msgstr "DVB アダプター"
+
+msgid "Frontend"
+msgstr "フロントエンド"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "チャンネルリストに音声 PID が 1 つしかない場合に、すべての音声トラックを使うのに必要です。"
+
+msgid "Satellite LNB"
+msgstr "衛星 LNB"
+
+msgid "Fav"
+msgstr "お気に入り"
+
+msgid "Favourite"
+msgstr "お気に入り"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "変更を適用 (Ctrl+S)"
+
+msgid "I have read the privacy notice"
+msgstr "プライバシーに関する通知を読みました"
+
+msgid "The registry offers no service list for Germany."
+msgstr "レジストリにはドイツのサービスリストがありません。"
+
+msgid "Only favourites"
+msgstr "お気に入りのみ"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U プレイリストのアドレス。チャンネルを更新するには再度インポートしてください。"
+
+msgid "None / not satellite"
+msgstr "なし / 衛星以外"
+
+msgid "Transponder list"
+msgstr "トランスポンダーリスト"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Tracks"
+msgstr "トラック"
+
+msgid "Favourites (TV + Radio)"
+msgstr "お気に入り（TV + ラジオ）"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "チャンネルリストをインポート (dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "チャンネルをエクスポート (.conf = dvbv5、.m3u = IPTV、.csv)"
+
+msgid "Off (station name only)"
+msgstr "オフ（放送局名のみ）"
+
+msgid "Spectrum analyser (classic)"
+msgstr "スペクトラムアナライザー（クラシック）"
+
+msgid "VU meters (classic)"
+msgstr "VU メーター（クラシック）"
+
+msgid "Oscilloscope (classic)"
+msgstr "オシロスコープ（クラシック）"
+
+msgid "Glow waves (modern)"
+msgstr "グローウェーブ（モダン）"
+
+msgid "Nebula particles (modern)"
+msgstr "星雲パーティクル（モダン）"
+
+msgid "Light ribbons (modern)"
+msgstr "光のリボン（モダン）"
+
+msgid "Pulsar (modern)"
+msgstr "パルサー（モダン）"
+
+msgid "Supernova (modern)"
+msgstr "超新星（モダン）"
+
+msgid "Occasus solis (modern)"
+msgstr "夕日 Occasus solis（モダン）"
+
+msgid "Aurora borealis (modern)"
+msgstr "オーロラ（モダン）"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "Dancer"
+msgstr "ダンサー"
+
+msgid "Drawing"
+msgstr "ドローイング"
+
+msgid "Fractal"
+msgstr "フラクタル"
+
+msgid "Geometric"
+msgstr "幾何学"
+
+msgid "Hypnotic"
+msgstr "催眠"
+
+msgid "Particles"
+msgstr "パーティクル"
+
+msgid "Reaction"
+msgstr "リアクション"
+
+msgid "Sparkle"
+msgstr "きらめき"
+
+msgid "Supernova"
+msgstr "超新星"
+
+msgid "Waveform"
+msgstr "波形"
+
+msgid "! Transition"
+msgstr "トランジション"
+
+msgid "For all tuners without an LNB of their own."
+msgstr "専用の LNB がないすべてのチューナー用。"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I はチャンネルリストをインターネットから読み込みます。そのために LinDVB は、ドイツのサービスリストレジストリ (csr.dvb-i-slr.de)、選択したサービスリストのサーバー、チャンネルロゴを提供するサーバー、さらに番組表がオンの場合は放送局の番組表サーバーに接続します。これらのサーバーには、お使いの IP アドレスとリクエストの時刻が伝わります。郵便番号を入力すると、地域のチャンネルを返せるようにサービスリストのサーバーへ送信されます。LinDVB はそれ以外の個人データを送信せず、リストとロゴはこのコンピューターにのみ保存します。インターネットチャンネルは放送局のサーバーからストリーミングされ、各サーバーは独自のプライバシーポリシーに従ってリクエストを記録する場合があります。"
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "アンテナ、衛星、インターネットのチャンネルは重複なく 1 つのリストにまとめられます。アンテナやパラボラで受信できるチャンネルは、それを優先して使います。"
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "地域によって、地上波のチャンネルスキャンと同様に、地域チャンネルを含むお住まいの地域の LCN テーブルが選ばれます。番号のないチャンネルは 850～999 になります。"
+
+msgid "Other (own registry or list)"
+msgstr "その他（独自のレジストリまたはリスト）"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I はチャンネルリストをインターネットから読み込みます。そのために LinDVB は、入力したアドレスのレジストリまたはサービスリストのサーバー、チャンネルロゴを提供するサーバー、さらに番組表がオンの場合は放送局の番組表サーバーに接続します。これらのサーバーには、お使いの IP アドレスとリクエストの時刻が伝わります。郵便番号を入力すると、サービスリストのサーバーへ送信されます。"
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "下にサービスリストのレジストリ、またはサービスリストのアドレスを直接入力してください。"
