@@ -104,7 +104,7 @@ _LANG_2TO3 = {
     "de": "deu", "en": "eng", "fr": "fra", "it": "ita", "es": "spa", "nl": "nld",
     "pt": "por", "pl": "pol", "cs": "ces", "sk": "slk", "hu": "hun", "da": "dan",
     "sv": "swe", "no": "nor", "nb": "nor", "nn": "nor", "fi": "fin", "tr": "tur",
-    "el": "ell", "ru": "rus", "ar": "ara",
+    "el": "ell", "ru": "rus", "ar": "ara", "ja": "jpn",
 }
 
 

@@ -18,7 +18,7 @@ from pathlib import Path
 
 PO_DIR = Path(__file__).with_name("po")
 # Preferences lists these when a catalogue exists ("" follows the desktop);
-# the official EU languages, Arabic, Russian and Ukrainian
+# the official EU languages, Arabic, Persian, Russian, Ukrainian and Japanese
 NATIVE_NAMES = {
     "": "System", "en": "English", "bg": "Български", "cs": "Čeština", "da": "Dansk",
     "de": "Deutsch", "el": "Ελληνικά", "es": "Español", "et": "Eesti", "fi": "Suomi",
@@ -26,6 +26,7 @@ NATIVE_NAMES = {
     "lt": "Lietuvių", "lv": "Latviešu", "mt": "Malti", "nl": "Nederlands", "pl": "Polski",
     "pt": "Português", "ro": "Română", "sk": "Slovenčina", "sl": "Slovenščina",
     "sv": "Svenska", "ar": "العربية", "fa": "فارسی", "ru": "Русский", "uk": "Українська",
+    "ja": "日本語",
 }
 RTL_LANGUAGES = {"ar", "fa"}
 LANGUAGES = {code: name for code, name in NATIVE_NAMES.items()
