@@ -10,7 +10,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import chansort, dvbi, logothumbs
 from ..favourites import fav_index, filter_keys, filter_setting
-from ..channels import import_file, write_csv, write_dvbv5, write_m3u
+from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
 from ..media_info import audio_summary
@@ -2049,7 +2049,8 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # ------------------------------------------------------------------ import / export
     def on_import(self):
-        dlg = Gtk.FileDialog(title=_("Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"))
+        dlg = Gtk.FileDialog(title=_("Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, "
+                                     "CSV, DVBViewer .ini)"))
         dlg.open_multiple(self, None, self._import_done)
 
     def _import_done(self, dlg, res):
@@ -2063,9 +2064,15 @@ class MainWindow(Gtk.ApplicationWindow):
         """Merge the channel lists in *paths* into the channel list; returns
         the status text."""
         total_a = total_u = 0
+        fav_lists = []
         for path in paths:
             try:
                 a, u = self.app.db.merge(import_file(path))
+                # LinDVB's own channel file also brings its favourites lists
+                if str(path).lower().endswith(".json"):
+                    text = Path(path).read_text(encoding="utf-8", errors="replace")
+                    if is_lindvb_json(text):
+                        fav_lists += parse_lindvb_json(text)[1]
             except (OSError, ValueError) as e:
                 message(parent or self, _("Could not import {name}").format(name=Path(path).name),
                         str(e))
@@ -2073,6 +2080,8 @@ class MainWindow(Gtk.ApplicationWindow):
             total_a += a
             total_u += u
         self.app.db.save()
+        if fav_lists and self.app.favs.merge_lists(fav_lists):
+            self.app.favourites_changed()
         self.reload_channels()
         text = _("Imported {total_a} new and {total_u} updated channels").format(
             total_a=total_a, total_u=total_u)
@@ -2080,24 +2089,12 @@ class MainWindow(Gtk.ApplicationWindow):
         return text
 
     def on_export(self):
-        dlg = Gtk.FileDialog(title=_("Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"),
-                             initial_name="channels.conf")
-        dlg.save(self, None, self._export_done)
-
-    def _export_done(self, dlg, res):
-        try:
-            path = dlg.save_finish(res).get_path()
-        except GLib.Error:
-            return
-        chans = self.app.db.channels
-        if path.endswith((".m3u", ".m3u8")):
-            text = write_m3u(chans)
-        elif path.endswith(".csv"):
-            text = write_csv(chans)
-        else:
-            text = write_dvbv5(chans)
-        Path(path).write_text(text)
-        self.set_status(_("Exported to {path}").format(path=path))
+        """The export window: which channels, which format, how many fit."""
+        from .export import ExportWindow
+        shown = None
+        if self.tab != "recordings":
+            shown = [self.filtered.get_item(i).data for i in range(self.filtered.get_n_items())]
+        ExportWindow(self.app, self, shown).present()
 
     def on_export_epg(self):
         dlg = Gtk.FileDialog(title=_("Export the programme guide (XMLTV)"),

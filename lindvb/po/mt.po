@@ -4084,3 +4084,51 @@ msgstr "Mhux mibdula: {same}, mibdula: {changed}, ġodda: {new}, m'għadhomx jix
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Issejvjat: miżjuda {added}, aġġornati {updated}, imneħħija {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Fajl tal-istazzjonijiet LinDVB (.json): kollox, bil-listi tal-favoriti"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Playlist M3U (.m3u): stazzjonijiet tal-internet u streams DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Fajl tal-istazzjonijiet dvbv5 (.conf): stazzjonijiet tat-tuner"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabella CSV (.csv): l-istazzjonijiet kollha"
+
+msgid "Export Channel List"
+msgstr "Esporta l-lista tal-istazzjonijiet"
+
+msgid "TV channels only"
+msgstr "Stazzjonijiet tat-TV biss"
+
+msgid "Radio stations only"
+msgstr "Stazzjonijiet tar-radju biss"
+
+msgid "The channels shown in the list ({n})"
+msgstr "L-istazzjonijiet murija fil-lista ({n})"
+
+msgid "Save…"
+msgstr "Issejvja…"
+
+msgid "There are no channels to export."
+msgstr "M’hemm l-ebda stazzjon x’tesporta."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "L-ebda wieħed minn dawn l-{total} stazzjon ma jista’ jiġi salvat f’dan il-format; l-istazzjonijiet tal-internet imorru f’M3U, dawk tat-tuner f’dvbv5, l-istazzjonijiet kollha f’CSV jew fil-fajl tal-istazzjonijiet LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Se jiġu salvati {n} minn {total} stazzjon; l-{skipped} l-oħra ma jistgħux jiġu salvati f’dan il-format."
+
+msgid "{n} channels will be saved."
+msgstr "Se jiġu salvati {n} stazzjon."
+
+msgid "Could not save {name}"
+msgstr "{name} ma setax jiġi salvat"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} stazzjon esportati lejn {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importa lista tal-istazzjonijiet (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

@@ -4084,3 +4084,51 @@ msgstr "{same} változatlan, {changed} megváltozott, {new} új, {gone} már nem
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Mentve: {added} hozzáadva, {updated} frissítve, {removed} eltávolítva."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB csatornafájl (.json): minden, a kedvenclistákkal együtt"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U lejátszási lista (.m3u): internetes csatornák és DVB-I streamek"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 csatornafájl (.conf): tuneres csatornák"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV táblázat (.csv): minden csatorna"
+
+msgid "Export Channel List"
+msgstr "Csatornalista exportálása"
+
+msgid "TV channels only"
+msgstr "Csak TV-csatornák"
+
+msgid "Radio stations only"
+msgstr "Csak rádióállomások"
+
+msgid "The channels shown in the list ({n})"
+msgstr "A listában látható csatornák ({n})"
+
+msgid "Save…"
+msgstr "Mentés…"
+
+msgid "There are no channels to export."
+msgstr "Nincs exportálható csatorna."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Ebből a {total} csatornából egyik sem menthető ebben a formátumban; az internetes csatornák M3U-ba, a tuneres csatornák dvbv5-be, minden csatorna CSV-be vagy a LinDVB csatornafájlba kerül."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "{total} csatornából {n} kerül mentésre; a többi {skipped} nem menthető ebben a formátumban."
+
+msgid "{n} channels will be saved."
+msgstr "{n} csatorna kerül mentésre."
+
+msgid "Could not save {name}"
+msgstr "{name} nem menthető"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} csatorna exportálva ide: {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Csatornalista importálása (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

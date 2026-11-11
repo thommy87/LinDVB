@@ -4084,3 +4084,51 @@ msgstr "{same} muutmata, {changed} muutunud, {new} uut, {gone} enam ei edastata.
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Salvestatud: {added} lisatud, {updated} uuendatud, {removed} eemaldatud."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB kanalifail (.json): kõik, koos lemmikloenditega"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U-esitusloend (.m3u): internetikanalid ja DVB-I vood"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 kanalifail (.conf): tuuneri kanalid"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV-tabel (.csv): kõik kanalid"
+
+msgid "Export Channel List"
+msgstr "Ekspordi kanalite loend"
+
+msgid "TV channels only"
+msgstr "Ainult telekanalid"
+
+msgid "Radio stations only"
+msgstr "Ainult raadiojaamad"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Loendis näidatud kanalid ({n})"
+
+msgid "Save…"
+msgstr "Salvesta…"
+
+msgid "There are no channels to export."
+msgstr "Eksportimiseks pole kanaleid."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Ühtegi neist {total} kanalist ei saa selles vormingus salvestada; internetikanalid lähevad M3U-sse, tuuneri kanalid dvbv5-sse, kõik kanalid CSV-sse või LinDVB kanalifaili."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Salvestatakse {n} kanalit {total}-st; ülejäänud {skipped} ei saa selles vormingus salvestada."
+
+msgid "{n} channels will be saved."
+msgstr "Salvestatakse {n} kanalit."
+
+msgid "Could not save {name}"
+msgstr "Faili {name} ei saanud salvestada"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} kanalit eksporditi asukohta {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Impordi kanaliloend (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

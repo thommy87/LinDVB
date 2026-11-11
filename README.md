@@ -160,7 +160,12 @@ them.
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U (also
   m3u_plus / m3u8_plus), CSV and `*.ini` channel lists; IPTV playlists also from a
   web address or an Xtream Codes login (MPEG-TS or HLS, live channels only), each
-  list with its own name (Preferences ▸ Internet ▸ IPTV). Export: dvbv5, M3U, CSV
+  list with its own name (Preferences ▸ Internet ▸ IPTV). Export (Menu ▸ File):
+  all channels, TV or radio only, the channels shown or one favourites list, as
+  LinDVB's own `.json` file (everything, also DVB-I services and the favourites
+  lists; imported again on another computer), M3U (internet channels and DVB-I
+  streams, with logos), dvbv5 (tuner channels) or CSV; the window says how many
+  of the channels the chosen format can hold
 * Conditional access for your own encrypted channels: an external softcam
   (DVBAPI/OSCam, descrambled in software with libdvbcsa) or a hardware CI/CI+
   module supplies the control words from your subscription card; CAM menu for
