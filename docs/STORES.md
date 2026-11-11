@@ -44,11 +44,22 @@ Without the secret the workflow only says so and does nothing. To move an
 earlier release into `stable`, run **Actions → Snap Store → Run workflow**
 with that release's tag.
 
-The first release into `stable`, or one that needs new permissions, can wait
-for a manual store review. Ask for the `dvb` interface to connect
-automatically in the
-[Snapcraft forum](https://forum.snapcraft.io/c/store-requests/19), so users
-need not run `snap connect lindvb:dvb`.
+### Interfaces the store has to allow
+
+A snap that asks for a **super-privileged** interface is reviewed by hand, and
+until that review is finished the store refuses to release it
+(`resource-not-ready: Snap cannot be published due to inconsistent state.`) and
+keeps the public page hidden. `shutdown` is such an interface, so the snap does
+not ask for it: standby or power-off after a recording does nothing in the snap,
+while the Flatpak and the AppImage still do it. To bring it back, ask for the
+privilege in the
+[Snapcraft forum](https://forum.snapcraft.io/c/privileged-interfaces/39) and add
+`- shutdown` back to the `plugs` list once it is granted.
+
+Two more requests are worth making in the
+[forum](https://forum.snapcraft.io/c/store-requests/19), but neither blocks a
+release: the `dvb` interface connecting automatically, so users need not run
+`snap connect lindvb:dvb`, and `removable-media` the same.
 
 ## AUR (`AUR_SSH_PRIVATE_KEY`)
 

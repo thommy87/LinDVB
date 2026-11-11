@@ -33,7 +33,11 @@ apps:
       - audio-playback
       - home             # recordings in ~/Videos
       - removable-media  # recordings on external drives
-      - shutdown         # standby / power off after recording
+    # No "shutdown" plug: it is a super-privileged interface, so every revision
+    # that asks for it goes into the Snap Store's manual review and cannot be
+    # released. Standby or power-off after a recording therefore does nothing in
+    # the snap (recorder.power_action logs the refused D-Bus call); the Flatpak
+    # and the AppImage still do it. See docs/STORES.md.
     # HbbTV uses WebKitGTK 6 from the GNOME content snap (gnome extension); WebKit
     # runs without its bubblewrap sandbox inside the snap's confinement.
     environment:
