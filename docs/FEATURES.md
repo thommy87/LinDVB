@@ -20,6 +20,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Channel editor | **Yes**: edit name, group, tuning data, PIDs, reorder, sort, delete, new IPTV entry; a star menu in every row to put the channel into favourites lists; edits to several channels are kept and applied together with one click |
 | Favourites and favourite zapping | **Yes**: any number of named favourites lists, each sorted freely (drag and drop or right-click menu) without touching the channel numbers; numbered 1, 2, 3 … for number entry; favourite plus/minus actions and the guide's favourites view use the chosen list |
 | Channel list import from other software | **Yes**: CSV, VDR channels.conf, Enigma2 lamedb, plus dvbv5 files, M3U and `.ini` channel lists |
+| Channel list export | **Yes**: LinDVB `.json` (every channel with all its data and the favourites lists, for a backup or another computer), M3U for internet and DVB-I channels, dvbv5 for tuner channels, CSV; all channels, TV or radio only, the channels shown or one favourites list |
 | Channel number entry, last channel, channel plus/minus | **Yes**: digit keys, Backspace, Page Up/Down |
 
 ## Playback

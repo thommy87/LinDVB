@@ -4084,3 +4084,51 @@ msgstr "Gan athrú: {same}, athraithe: {changed}, nua: {new}, ní chraoltar a th
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Sábháilte: curtha leis {added}, nuashonraithe {updated}, bainte {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Comhad cainéal LinDVB (.json): gach rud, leis na liostaí ceanán"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Seinmliosta M3U (.m3u): cainéil idirlín agus sruthanna DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Comhad cainéal dvbv5 (.conf): cainéil tiúnóra"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tábla CSV (.csv): gach cainéal"
+
+msgid "Export Channel List"
+msgstr "Easpórtáil liosta stáisiún"
+
+msgid "TV channels only"
+msgstr "Cainéil teilifíse amháin"
+
+msgid "Radio stations only"
+msgstr "Stáisiúin raidió amháin"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Na cainéil a thaispeántar sa liosta ({n})"
+
+msgid "Save…"
+msgstr "Sábháil…"
+
+msgid "There are no channels to export."
+msgstr "Níl aon chainéal le heaspórtáil."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Ní féidir aon cheann de na {total} cainéal seo a shábháil san fhormáid seo; téann cainéil idirlín i M3U, cainéil tiúnóra i dvbv5, gach cainéal i CSV nó i gcomhad cainéal LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Sábhálfar {n} as {total} cainéal; ní féidir an {skipped} eile a shábháil san fhormáid seo."
+
+msgid "{n} channels will be saved."
+msgstr "Sábhálfar {n} cainéal."
+
+msgid "Could not save {name}"
+msgstr "Níorbh fhéidir {name} a shábháil"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} cainéal easpórtáilte go {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Iompórtáil liosta cainéal (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

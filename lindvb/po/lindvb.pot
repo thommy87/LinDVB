@@ -5644,3 +5644,73 @@ msgstr ""
 #: lindvb/ui/tune.py
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr ""
+
+#: lindvb/ui/export.py
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "CSV table (.csv): every channel"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "Export Channel List"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "TV channels only"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "Radio stations only"
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "The channels shown in the list ({n})"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "Save…"
+msgstr ""
+
+#: lindvb/ui/export.py
+msgid "There are no channels to export."
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "{n} channels will be saved."
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "Could not save {name}"
+msgstr ""
+
+#: lindvb/ui/export.py
+#, python-brace-format
+msgid "{n} channels exported to {path}"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr ""

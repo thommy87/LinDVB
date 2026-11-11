@@ -4084,3 +4084,51 @@ msgstr "بلا تغيير: {same}، تغيّرت: {changed}، جديدة: {new}�
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "تم الحفظ: أُضيفت {added}، حُدّثت {updated}، أُزيلت {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "ملف قنوات LinDVB ‏(.json): كل شيء، مع قوائم المفضلة"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "قائمة تشغيل M3U ‏(.m3u): قنوات الإنترنت وبثوث DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "ملف قنوات dvbv5 ‏(.conf): قنوات الموالف"
+
+msgid "CSV table (.csv): every channel"
+msgstr "جدول CSV ‏(.csv): كل القنوات"
+
+msgid "Export Channel List"
+msgstr "تصدير قائمة القنوات"
+
+msgid "TV channels only"
+msgstr "القنوات التلفزيونية فقط"
+
+msgid "Radio stations only"
+msgstr "المحطات الإذاعية فقط"
+
+msgid "The channels shown in the list ({n})"
+msgstr "القنوات المعروضة في القائمة ({n})"
+
+msgid "Save…"
+msgstr "حفظ…"
+
+msgid "There are no channels to export."
+msgstr "لا توجد قنوات للتصدير."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "لا يمكن حفظ أي من هذه القنوات الـ{total} بهذا التنسيق؛ قنوات الإنترنت تُحفظ في M3U، وقنوات الموالف في dvbv5، وكل القنوات في CSV أو في ملف قنوات LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "سيُحفظ {n} من {total} قناة؛ ولا يمكن حفظ الـ{skipped} الأخرى بهذا التنسيق."
+
+msgid "{n} channels will be saved."
+msgstr "سيُحفظ {n} قناة."
+
+msgid "Could not save {name}"
+msgstr "تعذّر حفظ {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "صُدِّرت {n} قناة إلى {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "استيراد قائمة القنوات (LinDVB .json، dvbv5، VDR، lamedb، M3U، CSV، DVBViewer .ini)"

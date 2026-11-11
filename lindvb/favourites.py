@@ -93,6 +93,30 @@ class FavouriteLists:
             return j
         return i
 
+    def merge_lists(self, lists):
+        """Take over favourites lists from a channel file: a list of the same
+        name gets the channels it lacks (at its end), other lists are added.
+        Returns the number of lists added or extended."""
+        changed = 0
+        names = self.names()
+        for fav in lists:
+            name = str(fav.get("name") or "").strip()
+            keys = list(dict.fromkeys(str(k) for k in fav.get("keys", [])))
+            if not name or not keys:
+                continue
+            if name in names:
+                own = self.lists[names.index(name)]["keys"]
+                new = [k for k in keys if k not in own]
+                if new:
+                    own.extend(new)
+                    changed += 1
+            else:
+                self.lists.append({"name": name, "keys": keys})
+                names.append(name)
+                changed += 1
+        self.sync()
+        return changed
+
     def ensure_one(self):
         """Index of the first list, made if there is none."""
         if not self.lists:

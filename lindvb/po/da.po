@@ -4084,3 +4084,51 @@ msgstr "{same} uændret, {changed} ændret, {new} nye, {gone} sendes ikke længe
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Gemt: {added} tilføjet, {updated} opdateret, {removed} fjernet."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB-kanalfil (.json): alt, med favoritlisterne"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U-playliste (.m3u): internetkanaler og DVB-I-streams"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5-kanalfil (.conf): tunerkanaler"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV-tabel (.csv): alle kanaler"
+
+msgid "Export Channel List"
+msgstr "Eksportér kanalliste"
+
+msgid "TV channels only"
+msgstr "Kun tv-kanaler"
+
+msgid "Radio stations only"
+msgstr "Kun radiostationer"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Kanalerne, der vises i listen ({n})"
+
+msgid "Save…"
+msgstr "Gem…"
+
+msgid "There are no channels to export."
+msgstr "Der er ingen kanaler at eksportere."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Ingen af disse {total} kanaler kan gemmes i dette format; internetkanaler går i M3U, tunerkanaler i dvbv5, alle kanaler i CSV eller LinDVB-kanalfilen."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "{n} af {total} kanaler gemmes; de øvrige {skipped} kan ikke gemmes i dette format."
+
+msgid "{n} channels will be saved."
+msgstr "{n} kanaler gemmes."
+
+msgid "Could not save {name}"
+msgstr "Kunne ikke gemme {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} kanaler eksporteret til {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importér kanalliste (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"

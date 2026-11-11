@@ -4084,3 +4084,51 @@ msgstr "Αμετάβλητα: {same}, άλλαξαν: {changed}, νέα: {new}, 
 
 msgid "Saved: {added} added, {updated} updated, {removed} removed."
 msgstr "Αποθηκεύτηκε: προστέθηκαν {added}, ενημερώθηκαν {updated}, αφαιρέθηκαν {removed}."
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Αρχείο καναλιών LinDVB (.json): τα πάντα, μαζί με τις λίστες αγαπημένων"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Λίστα αναπαραγωγής M3U (.m3u): κανάλια διαδικτύου και ροές DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Αρχείο καναλιών dvbv5 (.conf): κανάλια δέκτη"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Πίνακας CSV (.csv): όλα τα κανάλια"
+
+msgid "Export Channel List"
+msgstr "Εξαγωγή λίστας καναλιών"
+
+msgid "TV channels only"
+msgstr "Μόνο τηλεοπτικά κανάλια"
+
+msgid "Radio stations only"
+msgstr "Μόνο ραδιοφωνικοί σταθμοί"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Τα κανάλια που εμφανίζονται στη λίστα ({n})"
+
+msgid "Save…"
+msgstr "Αποθήκευση…"
+
+msgid "There are no channels to export."
+msgstr "Δεν υπάρχουν κανάλια για εξαγωγή."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Κανένα από αυτά τα {total} κανάλια δεν μπορεί να αποθηκευτεί σε αυτή τη μορφή· τα κανάλια διαδικτύου πάνε σε M3U, τα κανάλια δέκτη σε dvbv5, όλα τα κανάλια σε CSV ή στο αρχείο καναλιών LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Θα αποθηκευτούν {n} από {total} κανάλια· τα υπόλοιπα {skipped} δεν μπορούν να αποθηκευτούν σε αυτή τη μορφή."
+
+msgid "{n} channels will be saved."
+msgstr "Θα αποθηκευτούν {n} κανάλια."
+
+msgid "Could not save {name}"
+msgstr "Δεν ήταν δυνατή η αποθήκευση του {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} κανάλια εξήχθησαν στο {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Εισαγωγή λίστας καναλιών (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
