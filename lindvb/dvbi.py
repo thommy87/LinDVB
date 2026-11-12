@@ -964,6 +964,34 @@ def pick_logo(urls, dark=True):
     return urls[0]
 
 
+# names a list gives itself that say nothing ("Service List", "DVB-I list" ...)
+_GENERIC_NAME = re.compile(r"^\s*(dvb-?i)?[\s_-]*(service|source|channel)?[\s_-]*lists?\s*$", re.I)
+
+
+def list_label(custom="", list_name="", sl_name="", provider="", country="", url="",
+               manual=False):
+    """The group name of the DVB-I channels in the channel list.
+
+    *custom* (the name set in the DVB-I preferences) wins. Otherwise the
+    list's own name (``sl_name``, else the registry's *list_name*), with the
+    provider when the name is generic or does not mention it; a list from a
+    registry names its *country* too. Always says "DVB-I"."""
+    if custom and custom.strip():
+        return custom.strip()
+    host = urllib.parse.urlsplit(url).netloc if url else ""
+    name = next((n.strip() for n in (sl_name, list_name)
+                 if n and n.strip() and not _GENERIC_NAME.match(n) and n.strip() != host), "")
+    provider = (provider or "").strip()
+    if provider and provider.casefold() in name.casefold():
+        provider = ""
+    body = " · ".join(x for x in (name, provider) if x) or ("" if not manual and country
+                                                             else host or "")
+    head = "DVB-I" if manual or not country else f"DVB-I {country}"
+    if "dvb-i" in body.casefold() and (manual or not country):
+        return body
+    return f"{head} · {body}" if body else head
+
+
 @dataclass
 class BuildResult:
     channels: list = field(default_factory=list)
@@ -1155,6 +1183,8 @@ class UpdateResult:
     etag: str = ""
     error: str = ""
     error_code: str = ""
+    label: str = ""                      # group name of the channels (list_label)
+    auto_label: str = ""                 # the same without the name set by the user
 
 
 class Updater:
@@ -1238,7 +1268,11 @@ class Updater:
                                         region if region is not None else s.get("dvbi_region", ""),
                                         countries.area(country, s.get("dvbi_area", "")))
         res.region, res.regions, res.service_list = rid, cands, sl
-        res.build = build_channels(sl, rid, scanned, s.get("dvbi_list_name") or sl.name,
+        manual = bool(s.get("dvbi_list_manual"))
+        res.auto_label = list_label("", s.get("dvbi_list_name", ""), sl.name, sl.provider,
+                                    "" if manual else country.name, url, manual=manual)
+        res.label = (s.get("dvbi_list_label") or "").strip() or res.auto_label
+        res.build = build_channels(sl, rid, scanned, res.label,
                                    sat_direct=s.get("dvbi_sat_direct", True),
                                    prefer_broadcast=s.get("dvbi_prefer_broadcast",
                                                           country.prefer_broadcast),
@@ -1267,6 +1301,8 @@ class Updater:
         if not res.changed:
             return "DVB-I: the service list is up to date"
         s["dvbi_region"] = res.region
+        if res.auto_label:
+            s["dvbi_list_auto_label"] = res.auto_label
         added, updated, removed = db.replace_dvbi(res.build.channels)
         b = res.build
         msg = (f"DVB-I: {len(b.channels)} channels ({b.broadcast} antenna/cable/satellite, "

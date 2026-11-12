@@ -231,6 +231,9 @@ columnview.tune-result cell.tune-gone { background-color: alpha(#e01b24, 0.32); 
 .lv-toolstrip button.lv-primary { background: @lv_accent; color: @lv_on_accent; }
 .lv-toolstrip button.lv-primary:hover { background: @lv_accent_hover; }
 .lv-toolstrip button.lv-danger:hover { background: alpha(@lv_rec, 0.18); color: @lv_rec; }
+/* channel editor: where a dragged channel lands in the favourites list */
+.lv-fav-list row .lv-drop-before { box-shadow: inset 0 2px @lv_accent; }
+.lv-fav-list row .lv-drop-after { box-shadow: inset 0 -2px @lv_accent; }
 .lv-toolstrip separator { margin: 6px 4px; background: alpha(@lv_line, 0.08); }
 .lv-group {
   background: alpha(@lv_line, 0.04); border: 1px solid alpha(@lv_line, 0.06);

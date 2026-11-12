@@ -139,8 +139,32 @@ class Channel:
         return cls(**{k: v for k, v in d.items() if k in names})
 
 
+def number_order(channels, manual=False):
+    """*channels* in channel number order as (channel, number) pairs: 1, 2,
+    3 ... in list order. Unless *manual*, channels from a DVB-I service list
+    keep their logical channel number (LCN) and come first, sorted by it; the
+    other channels follow after the highest LCN. Changes nothing."""
+    lcn = [] if manual else sorted((c for c in channels if c.lcn > 0), key=lambda c: c.lcn)
+    if not lcn:
+        return [(c, i) for i, c in enumerate(channels, 1)]
+    rest = [c for c in channels if c.lcn <= 0]
+    return [(c, c.lcn) for c in lcn] + [(c, i) for i, c in enumerate(rest, lcn[-1].lcn + 1)]
+
+
+def numbered(channels, manual=False):
+    """*channels* in number order with ``number`` set (see ``number_order``)."""
+    out = []
+    for c, n in number_order(channels, manual):
+        c.number = n
+        out.append(c)
+    return out
+
+
 class ChannelDB:
     path = CONFIG_DIR / "channels.json"
+    # the user put the channels in an order of their own (channel editor):
+    # the list order counts, the LCNs of a DVB-I list no longer
+    manual_order = False
 
     def __init__(self):
         self.channels: list[Channel] = []
@@ -160,20 +184,8 @@ class ChannelDB:
         tmp.replace(self.path)
 
     def renumber(self):
-        """Number the channels 1, 2, 3 ... in list order. Channels from a DVB-I
-        service list keep their logical channel number (LCN) and come first,
-        sorted by it; the other channels follow after the highest LCN."""
-        lcn = sorted((c for c in self.channels if c.lcn > 0), key=lambda c: c.lcn)
-        if not lcn:
-            for i, c in enumerate(self.channels, 1):
-                c.number = i
-            return
-        rest = [c for c in self.channels if c.lcn <= 0]
-        for c in lcn:
-            c.number = c.lcn
-        for i, c in enumerate(rest, lcn[-1].lcn + 1):
-            c.number = i
-        self.channels[:] = lcn + rest
+        """Number the channels 1, 2, 3 ... in list order (see ``numbered``)."""
+        self.channels[:] = numbered(self.channels, self.manual_order)
 
     def dvbi_channels(self):
         return [c for c in self.channels if c.dvbi_id]
@@ -196,7 +208,19 @@ class ChannelDB:
                 updated += 1
             else:
                 added += 1
-        self.channels[:] = list(new) + keep
+        if self.manual_order:
+            # an order of the user's own: the channels that stay keep their
+            # place, new ones come at the end
+            fresh = {c.key: c for c in new}
+            out = []
+            for c in self.channels:
+                if not c.dvbi_id:
+                    out.append(c)
+                elif c.key in fresh:
+                    out.append(fresh.pop(c.key))
+            self.channels[:] = out + list(fresh.values())
+        else:
+            self.channels[:] = list(new) + keep
         self.renumber()
         return added, updated, len(old)
 

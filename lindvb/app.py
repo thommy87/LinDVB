@@ -53,6 +53,7 @@ class LinDVBApp(Gtk.Application):
         self.plugins = PluginManager(self.settings)
         self.plugins.load_all()
         self.db = ChannelDB()
+        self.db.manual_order = bool(self.settings.get("channel_order_manual"))
         for path in opts.get("import", []):
             path = path.decode() if isinstance(path, bytes) else path
             if not os.path.isabs(path) and os.environ.get("LINDVB_ORIG_CWD"):

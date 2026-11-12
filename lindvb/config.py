@@ -99,6 +99,7 @@ DEFAULTS = {
     "list_group": "",
     "fav_last": 0,                   # favourites list used last (favourite zapping)
     "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
+    "channel_order_manual": False,  # the channel editor's own order, not the DVB-I LCNs
     "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
     "list_sort_value": "",          # the provider / transponder / quality shown
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,

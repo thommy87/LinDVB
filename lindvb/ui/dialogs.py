@@ -5,16 +5,17 @@ import dataclasses
 import time
 from pathlib import Path
 
-from gi.repository import Gdk, Gio, GLib, Gst, Gtk, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from ..channels import Channel
+from .. import chansort
+from ..channels import Channel, number_order
 from .. import hwaccel
 from ..config import DATA_DIR
 from ..epgsources import LANGUAGES
 from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LABELS,
                          RADIO_FORMATS, TV_FORMATS, audio_note, effective_format)
 from ..tuner import SegmentReader
-from .common import dropdown, fill, make_column_view, scrolled, selected
+from .common import Row, dropdown, fill, scrolled, selected
 from .theme import ACCENT, ACCENT_MODES, SCHEMES, apply_accent, apply_theme, system_accent, to_hex
 from ..i18n import LANGUAGES as LANGUAGES_UI, C_, _
 
@@ -1056,37 +1057,140 @@ class PrefsWindow(Gtk.Window):
 class EditorWindow(Gtk.Window):
     """Channel editor: rename, reorder, favourites, tuning data, delete.
 
-    Edits are kept as drafts per channel while moving through the list (the
-    favourites lists picked in the list included) and written all at once
-    with Apply; closing the window with drafts left asks what to do with them."""
+    Left the full channel list with the filters of the main window, beside it
+    the actions, then one favourites list (picked above it) with its own
+    arrows and drag and drop, right the details of the channel.
+
+    Edits are kept as drafts while moving through the list: the fields of each
+    channel, the order of the channel list and the favourites lists (members
+    and order). Apply writes them all at once; closing the window with drafts
+    left asks what to do with them. New and Delete act at once."""
 
     SECTIONS = ("general", "tuning", "pids")
+    # the filters of the main window without the favourites lists, plus TV / radio
+    FILTERS = (("all", _("All channels")), ("tv", _("TV")), ("radio", _("Radio")),
+               ("fta", _("Free to air")), ("enc", _("Encrypted")), ("hd", "HD channels"),
+               ("iptv", _("Internet streams")))
 
     def __init__(self, app, parent, channel=None):
         super().__init__(title=_("Channel Editor"), transient_for=parent,
-                         default_width=1040, default_height=640)
+                         default_width=1320, default_height=680)
         self.app = app
         self.current = None
         self.drafts = {}             # id(channel) -> (channel, edited copy)
-        self.fav_drafts = {}         # id(channel) -> (channel, favourites list indexes)
-        self._filling = False        # set while the list is rebuilt
+        db = app.db
+        self.order = list(db.channels)          # the channel list order (draft)
+        self.manual = bool(db.manual_order)     # own order instead of the DVB-I numbers
+        self.fav_keys = [list(f["keys"]) for f in app.favs.lists]   # favourites (draft)
+        self.touched = set()         # id(channel): moved or in other favourites lists
+        self.fav_index = 0 if self.fav_keys else -1
+        self._num = {}               # id(channel) -> channel number in the draft order
+        self._filling = False        # set while a list is rebuilt
         self._close_ok = False
+        self._last_pane = "all"      # the list Alt+Up/Down acts on
+
+        # -- 1: the full channel list with the filters of the main window
+        self.filter = Gtk.SearchEntry(placeholder_text=_("Search name or number"))
+        self.filter.connect("search-changed", lambda *_: self.refresh())
+        self.type_dd = dropdown([lbl for _k, lbl in self.FILTERS])
+        self.type_dd.set_tooltip_text(_("Filter"))
+        self.group_dd = dropdown([_("All groups")])
+        self.group_dd.set_tooltip_text(_("Source or group"))
+        self._groups = [""]
+        self._sorts = [k for k, _l in chansort.SORTS]
+        self.sort_dd = dropdown([lbl for _k, lbl in chansort.SORTS])
+        self.sort_dd.set_tooltip_text(_("Sort by"))
+        for d in (self.type_dd, self.group_dd, self.sort_dd):
+            d.set_hexpand(True)
+            d.connect("notify::selected", lambda *_: self.refresh())
+
+        self.store = Gio.ListStore(item_type=Row)
+        self.sel = Gtk.SingleSelection(model=self.store, autoselect=False)
+        self.view = Gtk.ColumnView(model=self.sel, show_column_separators=True)
         sh = self._shown
 
         def name(c):
-            edited = id(c) in self.drafts or id(c) in self.fav_drafts
-            return sh(c).name + ("  ✎" if edited else "")
-        cols = [("#", lambda c: str(c.number), False), (_("Name"), name, True),
-                (_("Group"), lambda c: sh(c).root, False),
-                (_("Category"), lambda c: sh(c).category, False),
-                (_("Type"), lambda c: sh(c).delsys, False)]
-        self.view, self.store, self.sel = make_column_view(cols)
+            return sh(c).name + ("  ✎" if self._pending(c) else "")
+        for title, fn, expand in ((("#", lambda c: str(self._num.get(id(c), "")), False),
+                                   (_("Name"), name, True),
+                                   (_("Group"), lambda c: sh(c).root, False),
+                                   (_("Category"), lambda c: sh(c).category, False),
+                                   (_("Type"), lambda c: sh(c).delsys, False))):
+            self.view.append_column(self._text_column(title, fn, expand))
         self.view.insert_column(4, self._fav_column())
         self.sel.connect("notify::selected-item", lambda *_: self._on_select())
-        self.filter = Gtk.SearchEntry(placeholder_text=_("Filter channels"))
-        self.filter.connect("search-changed", lambda *_: self.refresh())
+        self.count = Gtk.Label(xalign=0, css_classes=["lv-hint"])
+        self.sort_hint = Gtk.Label(xalign=1, hexpand=True, css_classes=["lv-hint"])
 
-        # -- details, grouped in collapsible sections
+        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=10,
+                       margin_end=6, margin_top=10, margin_bottom=10, hexpand=True)
+        left.append(self.filter)
+        frow = Gtk.Box(spacing=6)
+        for d in (self.type_dd, self.group_dd, self.sort_dd):
+            frow.append(d)
+        left.append(frow)
+        left.append(Gtk.Frame(child=scrolled(self.view)))
+        crow = Gtk.Box(spacing=6)
+        crow.append(self.count)
+        crow.append(self.sort_hint)
+        left.append(crow)
+
+        # -- 2: the actions, between the full list and the favourites
+        strip, self.btn = self._strip((
+            ("apply", "object-select-symbolic",
+             _("Apply the changes of all edited channels (Ctrl+S)"), self.on_apply, "lv-primary"),
+            None,
+            ("new", "list-add-symbolic", _("New channel"), self.on_new, None),
+            ("delete", "user-trash-symbolic", _("Delete channel"), self.on_delete, "lv-danger"),
+            None,
+            ("up", "go-up-symbolic", _("Move up in the channel list (Alt+Up)"),
+             lambda: self.on_move(-1), None),
+            ("down", "go-down-symbolic", _("Move down in the channel list (Alt+Down)"),
+             lambda: self.on_move(1), None),
+            ("sort", None, None, None, None),
+            None,
+            ("fav_add", "go-next-symbolic", _("Add to the favourites list"), self.on_fav_add,
+             None),
+            ("fav_remove", "go-previous-symbolic", _("Remove from the favourites list"),
+             self.on_fav_remove, None)))
+
+        # -- 3: one favourites list, chosen above it
+        self.fav_dd = dropdown([])
+        self.fav_dd.set_tooltip_text(_("Favourites list"))
+        self.fav_dd.update_property([Gtk.AccessibleProperty.LABEL], [_("Favourites list")])
+        self.fav_dd.connect("notify::selected", lambda *_: self._on_fav_list())
+        self.fav_store = Gio.ListStore(item_type=Row)
+        self.fav_sel = Gtk.SingleSelection(model=self.fav_store, autoselect=False,
+                                           can_unselect=True)
+        self.fav_sel.connect("notify::selected-item", lambda *_: self._on_fav_select())
+        fac = Gtk.SignalListItemFactory()
+        fac.connect("setup", self._fav_row_setup)
+        fac.connect("bind", self._fav_row_bind)
+        self.fav_view = Gtk.ListView(model=self.fav_sel, factory=fac,
+                                     css_classes=["lv-fav-list"])
+        self.fav_count = Gtk.Label(xalign=0, css_classes=["lv-hint"], wrap=True)
+        # dropped below the last row: at the end of the list
+        end_drop = Gtk.DropTarget.new(GObject.TYPE_STRING,
+                                      Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
+        end_drop.connect("drop", lambda _t, v, _x, _y: self._drop(v, None, True))
+        fav_frame = Gtk.Frame(child=scrolled(self.fav_view, h=False), vexpand=True)
+        fav_frame.add_controller(end_drop)
+        favs = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=6,
+                       margin_end=2, margin_top=10, margin_bottom=10, width_request=230)
+        favs.append(self.fav_dd)
+        favs.append(fav_frame)
+        favs.append(self.fav_count)
+
+        # -- 4: arrows for the favourites list
+        fstrip, fbtn = self._strip((
+            ("fav_up", "go-up-symbolic", _("Move up in the favourites list (Alt+Up)"),
+             lambda: self.on_fav_move(-1), None),
+            ("fav_down", "go-down-symbolic", _("Move down in the favourites list (Alt+Down)"),
+             lambda: self.on_fav_move(1), None)))
+        fstrip.set_margin_top(48)
+        self.btn.update(fbtn)
+
+        # -- 5: details, grouped in collapsible sections
         self.f = {}
         details = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, margin_start=20,
                           margin_end=16, margin_top=16, margin_bottom=16)
@@ -1120,6 +1224,8 @@ class EditorWindow(Gtk.Window):
                                       ("category", _("Category")), ("url", _("Stream URL"))]):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
         self.radio = field(g, 4, _("Radio"), Gtk.Switch())
+        self.radio.set_tooltip_text(_("For channels whose type was guessed wrong, e.g. "
+                                      "internet streams or imported lists"))
         self.enc = field(g, 5, _("Encrypted"), Gtk.Switch())
 
         g = section("tuning", _("Tuning"))
@@ -1140,56 +1246,97 @@ class EditorWindow(Gtk.Window):
                                       ("teletext_pid", _("Teletext PID"))]):
             self.f[k] = field(g, r, lbl, Gtk.Entry())
 
-        # -- slim vertical strip of actions beside the details
-        strip = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
-                        css_classes=["lv-toolstrip"])
-        for item in (("object-select-symbolic",
-                      _("Apply the changes of all edited channels (Ctrl+S)"), self.on_apply,
-                      "lv-primary"),
-                     None,
-                     ("list-add-symbolic", _("New channel"), self.on_new, None),
-                     ("user-trash-symbolic", _("Delete channel"), self.on_delete, "lv-danger"),
-                     None,
-                     ("go-up-symbolic", _("Move up"), lambda: self.on_move(-1), None),
-                     ("go-down-symbolic", _("Move down"), lambda: self.on_move(1), None),
-                     ("view-sort-ascending-symbolic", _("Sort by group and name"), self.on_sort,
-                      None)):
-            if item is None:
-                strip.append(Gtk.Separator())
-                continue
-            icon, tip, fn, cls = item
-            b = Gtk.Button(icon_name=icon, tooltip_text=tip)
-            b.update_property([Gtk.AccessibleProperty.LABEL], [tip])
-            if cls:
-                b.add_css_class(cls)
-            b.connect("clicked", lambda _b, fn=fn: fn())
-            strip.append(b)
-
+        lists = Gtk.Box()
+        lists.append(left)
+        lists.append(strip)
+        lists.append(favs)
+        lists.append(fstrip)
         right = Gtk.Box(css_classes=["lv-dialog-pane"])
         right.append(scrolled(details))
-        right.append(strip)
-
-        left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, margin_start=10,
-                       margin_end=12, margin_top=10, margin_bottom=10)
-        left.append(self.filter)
-        frame = Gtk.Frame(child=scrolled(self.view))
-        left.append(frame)
-        paned = Gtk.Paned(position=540, wide_handle=True, shrink_start_child=False,
+        paned = Gtk.Paned(position=860, wide_handle=True, shrink_start_child=False,
                           shrink_end_child=False)
-        paned.set_start_child(left)
+        paned.set_start_child(lists)
         paned.set_end_child(right)
         self.set_child(paned)
 
         keys = Gtk.ShortcutController()
-        keys.add_shortcut(Gtk.Shortcut(trigger=Gtk.ShortcutTrigger.parse_string("<Control>s"),
-                                       action=Gtk.CallbackAction.new(
-                                           lambda *_: (self.on_apply(), True)[1])))
+        for trigger, fn in (("<Control>s", self.on_apply),
+                            ("<Alt>Up", lambda: self._alt_move(-1)),
+                            ("<Alt>Down", lambda: self._alt_move(1))):
+            keys.add_shortcut(Gtk.Shortcut(
+                trigger=Gtk.ShortcutTrigger.parse_string(trigger),
+                action=Gtk.CallbackAction.new(lambda *_a, fn=fn: (fn(), True)[1])))
         self.add_controller(keys)
         self.connect("close-request", self._on_close_request)
 
+        self._fill_groups()
+        self._fill_fav_lists()
         self.refresh()
         self._load(channel)
         self._select_row(channel)
+        self._fill_favs()
+
+    # -- building blocks
+    def _strip(self, items):
+        """A slim vertical strip of icon buttons; returns (strip, {name: button})."""
+        strip = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4,
+                        css_classes=["lv-toolstrip"])
+        buttons = {}
+        for item in items:
+            if item is None:
+                strip.append(Gtk.Separator())
+                continue
+            key, icon, tip, fn, cls = item
+            if key == "sort":
+                b = Gtk.MenuButton(icon_name="view-sort-ascending-symbolic",
+                                   tooltip_text=_("Sort the channel list"))
+                b.update_property([Gtk.AccessibleProperty.LABEL], [_("Sort the channel list")])
+                box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+                pop = Gtk.Popover(child=box)
+                for label, act in ((_("By group and name"), self.on_sort),
+                                   (_("By the numbers of the DVB-I list"), self.on_sort_lcn)):
+                    mb = Gtk.Button(label=label, css_classes=["flat"])
+                    mb.get_child().set_xalign(0)
+                    mb.connect("clicked", lambda _b, act=act: (pop.popdown(), act()))
+                    box.append(mb)
+                b.set_popover(pop)
+            else:
+                b = Gtk.Button(icon_name=icon, tooltip_text=tip)
+                b.update_property([Gtk.AccessibleProperty.LABEL], [tip])
+                b.connect("clicked", lambda _b, fn=fn: fn())
+            if cls:
+                b.add_css_class(cls)
+            buttons[key] = b
+            strip.append(b)
+        return strip, buttons
+
+    def _text_column(self, title, fn, expand):
+        fac = Gtk.SignalListItemFactory()
+
+        def setup(_f, li):
+            lbl = Gtk.Label(xalign=0, ellipsize=3)
+            # drag a channel from the list into the favourites list
+            src = Gtk.DragSource(actions=Gdk.DragAction.COPY)
+            src.connect("prepare", lambda _s, _x, _y, li=li: self._drag_value(
+                "all", li.get_item().data if li.get_item() else None))
+            lbl.add_controller(src)
+            li.set_child(lbl)
+
+        def bind(_f, li):
+            li.get_child().set_text(fn(li.get_item().data))
+
+        fac.connect("setup", setup)
+        fac.connect("bind", bind)
+        col = Gtk.ColumnViewColumn(title=title, factory=fac)
+        col.set_expand(expand)
+        col.set_resizable(True)
+        return col
+
+    @staticmethod
+    def _drag_value(src, c):
+        if c is None:
+            return None
+        return Gdk.ContentProvider.new_for_value(f"{src}\n{c.key}")
 
     # -- drafts: edits not applied yet
     def _shown(self, c):
@@ -1198,6 +1345,24 @@ class EditorWindow(Gtk.Window):
 
     def _in_db(self, c):
         return any(x is c for x in self.app.db.channels)
+
+    def _order_dirty(self):
+        db = self.app.db
+        return self.manual != bool(db.manual_order) or \
+            [id(c) for c in self.order] != [id(c) for c in db.channels]
+
+    def _favs_dirty(self):
+        return self.fav_keys != [list(f["keys"]) for f in self.app.favs.lists]
+
+    def _pending(self, c):
+        return id(c) in self.drafts or id(c) in self.touched
+
+    def _touch(self, *channels):
+        if not self._order_dirty() and not self._favs_dirty():
+            self.touched.clear()          # moved back: nothing to apply
+        else:
+            self.touched.update(id(c) for c in channels)
+        self._update_title()
 
     def _set_draft(self, c, d):
         if dataclasses.asdict(d) == dataclasses.asdict(c):
@@ -1219,7 +1384,7 @@ class EditorWindow(Gtk.Window):
             self._redraw(c)
 
     def _redraw(self, c):
-        """Bind the row of ``c`` again (draft marker, favourite switch)."""
+        """Bind the row of ``c`` again (draft marker, favourite star)."""
         for i in range(self.store.get_n_items()):
             if self.store.get_item(i).data is c:
                 self._filling = True
@@ -1228,29 +1393,35 @@ class EditorWindow(Gtk.Window):
                 return
 
     def _update_title(self):
-        n = len(set(self.drafts) | set(self.fav_drafts))
+        n = len(set(self.drafts) | self.touched)
+        if not n and (self._order_dirty() or self._favs_dirty()):
+            n = 1
         self.set_title(_("Channel Editor") if not n else
                        _("Channel Editor – {n} channels not applied yet").format(n=n))
 
+    # -- favourites lists (drafts)
     def _favs_of(self, c):
-        """The favourites lists of *c* as the editor shows them (draft or saved)."""
-        hit = self.fav_drafts.get(id(c))
-        return hit[1] if hit else frozenset(self.app.favs.member_of(c))
+        """The favourites lists of *c* as the editor shows them."""
+        return frozenset(i for i, keys in enumerate(self.fav_keys) if c.key in keys)
 
     def _set_favs(self, c, lists):
-        lists = frozenset(lists)
-        if lists == frozenset(self.app.favs.member_of(c)):
-            self.fav_drafts.pop(id(c), None)
-        else:
-            self.fav_drafts[id(c)] = (c, lists)
-        self._update_title()
-        if c is self.current:
-            self._stash()                      # keep what was typed in the form
-        GLib.idle_add(lambda: (self._redraw(c), False)[1])
+        for i, keys in enumerate(self.fav_keys):
+            if i in lists and c.key not in keys:
+                keys.append(c.key)
+            elif i not in lists and c.key in keys:
+                keys.remove(c.key)
+        self._touch(c)
+        GLib.idle_add(lambda: (self._redraw(c), self._fill_favs(), False)[2])
+
+    def _sync_fav_lists(self):
+        """Lists made or deleted meanwhile (the favourites window)."""
+        favs = self.app.favs
+        while len(self.fav_keys) < len(favs):
+            self.fav_keys.append(list(favs.lists[len(self.fav_keys)]["keys"]))
+        del self.fav_keys[len(favs):]
 
     def _fav_column(self):
-        """A star in every row: a menu to put the channel into favourites lists,
-        a draft like any other edit."""
+        """A star in every row: a menu to put the channel into favourites lists."""
         fac = Gtk.SignalListItemFactory()
 
         def setup(_f, li):
@@ -1281,7 +1452,7 @@ class EditorWindow(Gtk.Window):
         fac.connect("setup", setup)
         fac.connect("bind", bind)
         fac.connect("unbind", unbind)
-        return Gtk.ColumnViewColumn(title=_("Favourites"), factory=fac)
+        return Gtk.ColumnViewColumn(title="★", factory=fac)
 
     def _fav_popup(self, btn):
         """The lists to tick for the channel of *btn*, made when it opens."""
@@ -1292,6 +1463,8 @@ class EditorWindow(Gtk.Window):
         if not len(favs):
             favs.ensure_one()
             self.app.favourites_changed()
+            self._sync_fav_lists()
+            self._fill_fav_lists()
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, margin_start=4,
                       margin_end=4, margin_top=4, margin_bottom=4)
         lists = self._favs_of(c)
@@ -1318,25 +1491,176 @@ class EditorWindow(Gtk.Window):
             def done(name):
                 i = favs.create(name)
                 self.app.favourites_changed()
+                self._sync_fav_lists()
+                self._fill_fav_lists()
                 self._set_favs(c, set(self._favs_of(c)) | {i})
             ask_name(self, _("New Favourites List"), _("New list"), done)
         new.connect("clicked", make_list)
         box.append(new)
         btn.set_popover(pop)
 
+    def _fill_fav_lists(self):
+        names = self.app.favs.names()
+        if not (0 <= self.fav_index < len(names)):
+            self.fav_index = 0 if names else -1
+        self._filling = True
+        self.fav_dd.set_model(Gtk.StringList.new(["★ " + n for n in names]))
+        if self.fav_index >= 0:
+            self.fav_dd.set_selected(self.fav_index)
+        self._filling = False
+
+    def _on_fav_list(self):
+        if self._filling:
+            return
+        self.fav_index = self.fav_dd.get_selected()
+        self._fill_favs()
+
+    def _fav_channels(self):
+        """The channels of the favourites list shown, in its order (draft)."""
+        if not (0 <= self.fav_index < len(self.fav_keys)):
+            return []
+        index = {}
+        for c in self.order:
+            index.setdefault(c.key, c)
+        return [index[k] for k in self.fav_keys[self.fav_index] if k in index]
+
+    def _fill_favs(self):
+        """Rebuild the favourites list; the channel shown stays selected."""
+        chans = self._fav_channels()
+        self._filling = True
+        fill(self.fav_store, chans)
+        pos = next((i for i, c in enumerate(chans) if c is self.current),
+                   Gtk.INVALID_LIST_POSITION)
+        self.fav_sel.set_selected(pos)
+        self._filling = False
+        if pos != Gtk.INVALID_LIST_POSITION and hasattr(self.fav_view, "scroll_to"):
+            self.fav_view.scroll_to(pos, Gtk.ListScrollFlags.NONE, None)
+        self.fav_count.set_text(
+            _("{n} channels · drag to reorder").format(n=len(chans)) if chans else
+            _("Empty. Drag channels here or use the arrow button.")
+            if self.fav_index >= 0 else _("No favourites list yet. Use the star of a channel "
+                                          "to make one."))
+        self._update_buttons()
+
+    def _fav_row_setup(self, _f, li):
+        row = Gtk.Box(spacing=8, margin_start=6, margin_end=6, margin_top=4, margin_bottom=4)
+        row.pos = Gtk.Label(xalign=1, width_chars=3, css_classes=["lv-hint", "numeric"])
+        row.name = Gtk.Label(xalign=0, ellipsize=3, hexpand=True)
+        row.append(row.pos)
+        row.append(row.name)
+        row.append(Gtk.Image(icon_name="list-drag-handle-symbolic", css_classes=["lv-hint"]))
+        src = Gtk.DragSource(actions=Gdk.DragAction.MOVE)
+        src.connect("prepare", lambda _s, _x, _y: self._drag_value(
+            "fav", li.get_item().data if li.get_item() else None))
+        row.add_controller(src)
+        drop = Gtk.DropTarget.new(GObject.TYPE_STRING, Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
+
+        def where(_t, _x, y):
+            after = y > row.get_height() / 2
+            row.remove_css_class("lv-drop-after" if not after else "lv-drop-before")
+            row.add_css_class("lv-drop-after" if after else "lv-drop-before")
+            return Gdk.DragAction.MOVE
+
+        def leave(_t):
+            row.remove_css_class("lv-drop-before")
+            row.remove_css_class("lv-drop-after")
+
+        def dropped(_t, value, _x, y):
+            leave(_t)
+            item = li.get_item()
+            return self._drop(value, item.data if item else None, y > row.get_height() / 2)
+
+        drop.connect("enter", where)
+        drop.connect("motion", where)
+        drop.connect("leave", leave)
+        drop.connect("drop", dropped)
+        row.add_controller(drop)
+        li.set_child(row)
+
+    def _fav_row_bind(self, _f, li):
+        row = li.get_child()
+        row.pos.set_text(str(li.get_position() + 1))
+        row.name.set_text(self._shown(li.get_item().data).name)
+
+    def _drop(self, value, target, after):
+        """A channel dropped on *target* in the favourites list (None: at the end)."""
+        if not isinstance(value, str) or "\n" not in value or self.fav_index < 0:
+            return False
+        _src, key = value.split("\n", 1)
+        c = next((x for x in self.order if x.key == key), None)
+        if c is None or c is target:
+            return False
+        keys = self.fav_keys[self.fav_index]
+        if key in keys:
+            keys.remove(key)
+        if target is None or target.key not in keys:
+            keys.append(key)
+        else:
+            keys.insert(keys.index(target.key) + (1 if after else 0), key)
+        self._touch(c)
+        self._show(c)
+        return True
+
+    def _show(self, c):
+        """Select *c* in both lists and load it."""
+        if c is not self.current:
+            self._stash()
+            self._load(c)
+        self._redraw(c)
+        self._select_row(c)
+        self._fill_favs()
+
+    # -- selection
     def _on_select(self):
         if self._filling:
             return
+        self._last_pane = "all"
         self._stash()
         self._load(selected(self.sel))
+        self._fill_favs()
+
+    def _on_fav_select(self):
+        if self._filling:
+            return
+        c = selected(self.fav_sel)
+        if c is None:
+            return
+        self._last_pane = "fav"
+        self._stash()
+        self._load(c)
+        self._select_row(c)
+        self._update_buttons()
+
+    def _alt_move(self, step):
+        if self._last_pane == "fav":
+            self.on_fav_move(step)
+        else:
+            self.on_move(step)
+
+    def _update_buttons(self):
+        c = self.current
+        movable = self._sorts[self.sort_dd.get_selected()] == "number"
+        vis = self._visible_ids()
+        p = vis.index(id(c)) if c is not None and id(c) in vis else -1
+        self.btn["up"].set_sensitive(movable and p > 0)
+        self.btn["down"].set_sensitive(movable and 0 <= p < len(vis) - 1)
+        self.sort_hint.set_text("" if movable else _("Sort by number to move channels"))
+        self.btn["delete"].set_sensitive(c is not None)
+        inlist = c is not None and self.fav_index >= 0 and c.key in self.fav_keys[self.fav_index]
+        self.btn["fav_add"].set_sensitive(c is not None and self.fav_index >= 0 and not inlist)
+        self.btn["fav_remove"].set_sensitive(inlist)
+        favs = [x.key for x in self._fav_channels()]
+        q = favs.index(c.key) if inlist and c.key in favs else -1
+        self.btn["fav_up"].set_sensitive(q > 0)
+        self.btn["fav_down"].set_sensitive(0 <= q < len(favs) - 1)
 
     def _on_close_request(self, *_a):
         if self._close_ok:
             return False
         self._stash()
-        if not self.drafts and not self.fav_drafts:
+        if not self.drafts and not self._order_dirty() and not self._favs_dirty():
             return False
-        n = len(set(self.drafts) | set(self.fav_drafts))
+        n = max(1, len(set(self.drafts) | self.touched))
         dlg = Gtk.AlertDialog(
             message=_("Apply the changes to {n} channels?").format(n=n),
             detail=_("The edits were not applied yet. Without applying they are lost."),
@@ -1352,7 +1676,7 @@ class EditorWindow(Gtk.Window):
             if choice == 2:
                 self.on_apply()
             self.drafts.clear()
-            self.fav_drafts.clear()
+            self.touched.clear()
             self._close_ok = True
             self.close()
 
@@ -1364,15 +1688,68 @@ class EditorWindow(Gtk.Window):
             k for k in self.SECTIONS if self._exp[k].get_expanded()]
         self.app.settings.save()
 
+    # -- the full list
+    def _fill_groups(self):
+        """The group entries as in the main window: all, the reception paths
+        when the list mixes several, then the groups by name."""
+        cur = self._groups[self.group_dd.get_selected()] if self._groups else ""
+        srcs = chansort.sources(self.order)
+        roots = sorted({self._shown(c).root for c in self.order if self._shown(c).root})
+        self._groups = [""] + [k for k, _l in srcs] + roots
+        self._filling = True
+        self.group_dd.set_model(Gtk.StringList.new(
+            [_("All groups")] + [lbl for _k, lbl in srcs] + roots))
+        self.group_dd.set_selected(self._groups.index(cur) if cur in self._groups else 0)
+        self._filling = False
+
+    def _visible(self):
+        """The channels the filters let through, in the order chosen."""
+        numbered = number_order(self.order, self.manual)
+        self._num = {id(c): n for c, n in numbered}
+        q = self.filter.get_text().strip().lower()
+        f = self.FILTERS[self.type_dd.get_selected()][0]
+        g = self.group_dd.get_selected()
+        group = self._groups[g] if 0 < g < len(self._groups) else None
+        srt = self._sorts[self.sort_dd.get_selected()]
+        out = []
+        for c, n in numbered:
+            s = self._shown(c)
+            if f == "tv" and s.radio or f == "radio" and not s.radio:
+                continue
+            if f == "fta" and s.encrypted or f == "enc" and not s.encrypted:
+                continue
+            if f == "hd" and not any(t in s.name for t in ("HD", "HEVC", "UHD")):
+                continue
+            if f == "iptv" and not s.is_iptv:
+                continue
+            if group is not None:
+                if group.startswith(chansort.SOURCE_PREFIX):
+                    if not chansort.in_source(s, group):
+                        continue
+                elif group != s.root:
+                    continue
+            if q and not (str(n).startswith(q) if q.isdigit() else q in s.name.lower()):
+                continue
+            out.append(c)
+        if srt != "number":
+            out.sort(key=lambda c: chansort.sort_key(self._shown(c), srt), reverse=srt == "za")
+        return out
+
+    def _visible_ids(self):
+        return [id(self.store.get_item(i).data) for i in range(self.store.get_n_items())]
+
     def refresh(self):
         """Rebuild the list; the channel shown stays selected and its form kept."""
+        if self._filling:
+            return
         self._stash()
-        q = self.filter.get_text().lower()
-        items = [c for c in self.app.db.channels if q in self._shown(c).name.lower()]
+        items = self._visible()
         self._filling = True
         fill(self.store, items)
         self._filling = False
+        self.count.set_text(_("{n} of {total}").format(n=len(items), total=len(self.order)))
         self._select_row(self.current)
+        self._update_buttons()
 
     def _select_row(self, c):
         """Select the row of ``c`` without loading it again."""
@@ -1382,20 +1759,21 @@ class EditorWindow(Gtk.Window):
         self._filling = True
         self.sel.set_selected(pos)
         self._filling = False
-        if pos != Gtk.INVALID_LIST_POSITION:
-            self.view.scroll_to(pos, None, Gtk.ListScrollFlags.NONE, None) \
-                if hasattr(self.view, "scroll_to") else None
+        if pos != Gtk.INVALID_LIST_POSITION and hasattr(self.view, "scroll_to"):
+            self.view.scroll_to(pos, None, Gtk.ListScrollFlags.NONE, None)
 
     def _load(self, c):
         self.current = c
         if not c:
             self.title.set_text(_("No channel selected"))
             self.subtitle.set_text(_("Pick a channel in the list to edit it."))
+            self._update_buttons()
             return
         c = self._shown(c)
         self.title.set_text(c.name or _("Unnamed channel"))
         kind = _("Radio") if c.radio else "TV"
-        self.subtitle.set_text(f"#{c.number} · {kind} · {c.delsys}")
+        self.subtitle.set_text(f"#{self._num.get(id(self.current), c.number)} · {kind} · "
+                               f"{c.delsys}")
         for k, w in self.f.items():
             v = getattr(c, k)
             w.set_text(" ".join(map(str, v)) if isinstance(v, list) else str(v))
@@ -1409,6 +1787,7 @@ class EditorWindow(Gtk.Window):
                             self.mod.get_selected())
         self.enc.set_active(c.encrypted)
         self.radio.set_active(c.radio)
+        self._update_buttons()
 
     def _save_into(self, c):
         loaded = getattr(self, "_loaded", {})
@@ -1437,29 +1816,43 @@ class EditorWindow(Gtk.Window):
         c.encrypted, c.radio = self.enc.get_active(), self.radio.get_active()
 
     def _commit(self):
+        """Save the channel list now (New, Delete) and show it everywhere."""
         self.app.db.renumber()
         self.app.db.save()
+        self._fill_groups()
         self.refresh()
+        self._fill_favs()
         self.app.window.reload_channels()
 
+    # -- actions
     def on_apply(self):
-        """Write the drafts of all edited channels and save the list once."""
+        """Write the drafts: channels, their order and the favourites lists."""
         self._stash()
-        favs = self.app.favs
+        app, db, favs = self.app, self.app.db, self.app.favs
+        self._sync_fav_lists()
+        # favourites first: their keys are those before the tuning edits below
+        for i, keys in enumerate(self.fav_keys):
+            favs.lists[i]["keys"] = list(keys)
         for c, d in self.drafts.values():
             if self._in_db(c):
                 old = c.key
                 for f in dataclasses.fields(Channel):
                     setattr(c, f.name, getattr(d, f.name))
                 favs.rekey(old, c.key)         # new tuning data: keep its favourites
-        for c, lists in self.fav_drafts.values():
-            if self._in_db(c):
-                for i in range(len(favs)):
-                    favs.set_member(i, c, i in lists)
+        ids = {id(c) for c in db.channels}
+        mine = {id(c) for c in self.order}
+        db.channels[:] = [c for c in self.order if id(c) in ids] + \
+            [c for c in db.channels if id(c) not in mine]
+        db.manual_order = self.manual
+        app.settings["channel_order_manual"] = self.manual
+        app.settings.save()
         self.drafts.clear()
-        self.fav_drafts.clear()
+        app.favourites_changed()
+        db.renumber()
+        self.order = list(db.channels)
+        self.fav_keys = [list(f["keys"]) for f in favs.lists]
+        self.touched.clear()
         self._update_title()
-        self.app.favourites_changed()
         self._commit()
         self._load(self.current)
 
@@ -1467,35 +1860,93 @@ class EditorWindow(Gtk.Window):
         self._stash()
         c = Channel(name=_("New channel"), delsys="iptv")
         self.app.db.channels.append(c)
+        self.order.append(c)
         self.current = c
         self._load(c)
         self._commit()
 
     def on_delete(self):
-        c = selected(self.sel)
-        if c:
-            self.drafts.pop(id(c), None)
-            self.fav_drafts.pop(id(c), None)
-            self._update_title()
-            self.app.db.channels.remove(c)
-            self.current = None
-            self._commit()
-            self._load(selected(self.sel))
+        c = self.current
+        if c is None or not self._in_db(c):
+            return
+        self.drafts.pop(id(c), None)
+        self.touched.discard(id(c))
+        self.app.db.channels.remove(c)
+        self.order = [x for x in self.order if x is not c]
+        self.current = None
+        self._update_title()
+        self._commit()
+        self._load(selected(self.sel))
+
+    def _own_order(self):
+        """From now on the list order counts, not the numbers of a DVB-I list:
+        the order is the one shown."""
+        if not self.manual:
+            self.order = [c for c, _n in number_order(self.order, False)]
+            self.manual = True
 
     def on_move(self, step):
-        c = selected(self.sel)
-        if not c:
+        """Move the channel shown one place up or down among the rows shown
+        (so it also works while the list is filtered)."""
+        c = self.current
+        if c is None or self._sorts[self.sort_dd.get_selected()] != "number":
             return
-        ch = self.app.db.channels
-        i = ch.index(c)
-        j = i + step
-        if 0 <= j < len(ch):
-            ch[i], ch[j] = ch[j], ch[i]
-            self._commit()             # the moved channel stays selected
+        rows = [self.store.get_item(i).data for i in range(self.store.get_n_items())]
+        if not any(r is c for r in rows):
+            return
+        p = next(i for i, r in enumerate(rows) if r is c)
+        q = p + step
+        if not 0 <= q < len(rows):
+            return
+        self._own_order()
+        other = rows[q]
+        i = next(n for n, x in enumerate(self.order) if x is c)
+        j = next(n for n, x in enumerate(self.order) if x is other)
+        self.order[i], self.order[j] = self.order[j], self.order[i]
+        self._touch(c, other)
+        self.refresh()                 # the moved channel stays selected
 
     def on_sort(self):
-        self.app.db.channels.sort(key=lambda c: (c.root, c.name.lower()))
-        self._commit()
+        self.order.sort(key=lambda c: (self._shown(c).root, self._shown(c).name.lower()))
+        self.manual = True
+        self._touch(*self.order)
+        self.refresh()
+
+    def on_sort_lcn(self):
+        """Back to the numbers the DVB-I list gives its channels."""
+        self.manual = False
+        self.order = [c for c, _n in number_order(self.order, False)]
+        self._touch(*self.order)
+        self.refresh()
+
+    def on_fav_add(self):
+        c = self.current
+        if c is None or self.fav_index < 0:
+            return
+        self._set_favs(c, set(self._favs_of(c)) | {self.fav_index})
+
+    def on_fav_remove(self):
+        c = self.current
+        if c is None or self.fav_index < 0:
+            return
+        self._set_favs(c, set(self._favs_of(c)) - {self.fav_index})
+
+    def on_fav_move(self, step):
+        """Move the channel shown one place in the favourites list."""
+        c = self.current
+        chans = self._fav_channels()
+        if c is None or not any(x is c for x in chans):
+            return
+        p = next(i for i, x in enumerate(chans) if x is c)
+        q = p + step
+        if not 0 <= q < len(chans):
+            return
+        keys = self.fav_keys[self.fav_index]
+        a, b = keys.index(c.key), keys.index(chans[q].key)
+        keys[a], keys[b] = keys[b], keys[a]
+        self._last_pane = "fav"
+        self._touch(c)
+        self._fill_favs()
 
 
 class StatsWindow(Gtk.Window):
