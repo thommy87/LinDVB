@@ -1150,7 +1150,7 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append(_("Record"), "win.ctx-rec")
         m.append(_("Programme Guide"), "win.ctx-epg")
         m.append(_("Edit…"), "win.ctx-edit")
-        if c.is_iptv:
+        if c.via_url:
             m.append(_("Show as Picture in Picture"), "win.ctx-pip")
         m.append(_("Channel Analysis…"), "win.ctx-analysis")
         return m
@@ -1732,9 +1732,10 @@ class MainWindow(Gtk.ApplicationWindow):
         """Play channel *c* (a list channel, or another instance of it)."""
         self._nolock_since = None
         # DVB-I services without a stream (an HbbTV application) have nothing to measure
-        self.quality.reset("dvb" if not c.is_iptv else "iptv" if c.url else None)
+        # Tvheadend: the server measures the signal, LinDVB gets the stream only
+        self.quality.reset("dvb" if not c.is_iptv else "iptv" if c.via_url and c.url else None)
         self._update_quality_bar()
-        if c.is_iptv:
+        if c.via_url or (c.is_iptv and not c.url):
             if c.url:
                 self.player.play_uri(c.url)
             else:
@@ -1850,7 +1851,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _start_live(self, cap):
         if cap is self.capture:
-            self.player.play_capture(cap, self._tuned.sid, offset=0)
+            # Tvheadend sends one service: let the demuxer take it, whatever its id
+            sid = 0 if self._tuned.tvh_server else self._tuned.sid
+            self.player.play_capture(cap, sid, offset=0)
         return False
 
     def _release_capture(self):

@@ -27,6 +27,7 @@ from . import hwaccel  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
+from .tvheadend import set_login  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -643,6 +644,8 @@ class Player(GObject.Object):
             src.set_property("max-bytes", TS_PACKET * 512 * 16)
             self.feeder = Feeder(SegmentReader(self.capture.store, self._start_offset), src)
             self.feeder.start()
+        elif src.find_property("user-id") is not None and self.uri:
+            set_login(src, self.uri)
         elif name == "udpsrc" and self._ssm_source:
             if src.find_property("multicast-source"):
                 src.set_property("multicast-source", self._ssm_source)

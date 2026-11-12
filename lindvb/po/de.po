@@ -4541,6 +4541,15 @@ msgstr "{n} Sender nach {path} exportiert"
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Senderliste importieren (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 
+msgid "Server (host:9981)"
+msgstr "Server (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Die Sender eines Tvheadend-Servers, mit seinen Sender-Tags als Gruppen und seinem Programmführer. Benutzername und Passwort leer lassen, wenn der Server keine verlangt. Das Passwort wird in den LinDVB-Einstellungen gespeichert."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: {n} Sendungen geladen"
+
 #: lindvb/ui/dialogs.py
 msgid "Hardware Tuners"
 msgstr "Hardware-Tuner"

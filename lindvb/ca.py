@@ -141,6 +141,18 @@ def pat_pmt_pid(section, program_number):
     return 0
 
 
+def pat_first_program(section):
+    """The first program number (not the NIT entry 0) of a PAT section, or 0."""
+    if len(section) < 12 or section[0] != 0x00:
+        return 0
+    end = min(len(section), 3 + (((section[1] & 0x0F) << 8) | section[2])) - 4
+    for i in range(8, end - 3, 4):
+        prog = (section[i] << 8) | section[i + 1]
+        if prog:
+            return prog
+    return 0
+
+
 # CA_PMT list-management and command ids (EN 50221)
 CA_PMT_LIST_ONLY = 0x03
 CA_PMT_CMD_OK_DESCRAMBLING = 0x01

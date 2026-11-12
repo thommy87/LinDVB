@@ -4132,3 +4132,12 @@ msgstr "Kanali izvezeni u {path}: {n}"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Uvezi popis kanala (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Poslužitelj (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Programi poslužitelja Tvheadend, s oznakama programa kao grupama i njegovim programskim vodičem. Ostavite korisničko ime i lozinku praznima ako ih poslužitelj ne traži. Lozinka se čuva u postavkama LinDVB-a."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: učitano emisija: {n}"

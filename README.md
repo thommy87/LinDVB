@@ -18,6 +18,8 @@ application written in Python on top of the standard Linux media stack:
   through GStreamer's `dvbsrc`, or driven directly for single-cable (Unicable / JESS) tuners
 * **SAT>IP** (RTSP/RTP) for tuners on the network: SAT>IP boxes and LNBs, minisatip,
   FRITZ!Box Cable, Octopus NET
+* **Tvheadend** servers as a channel source (channels, guide and the unchanged
+  transport stream over HTTP)
 * **libdvbv5** (`dvbv5-scan` from v4l-utils) for channel search
 * **GStreamer** for playback, recording and remuxing, `GstMpegts` for the programme guide
   and `teletextdec` (libzvbi) for teletext
@@ -160,7 +162,13 @@ them.
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U (also
   m3u_plus / m3u8_plus), CSV and `*.ini` channel lists; IPTV playlists also from a
   web address or an Xtream Codes login (MPEG-TS or HLS, live channels only), each
-  list with its own name (Preferences ▸ Internet ▸ IPTV). Export (Menu ▸ File):
+  list with its own name (Preferences ▸ Internet ▸ IPTV). A **Tvheadend** server is
+  added there with its address, user name and password: LinDVB loads its channels
+  (channel tags as groups, radio apart from TV), logos and programme guide (XMLTV)
+  and logs in with digest or plain authentication. Its streams go through the same
+  timeshift buffer as a local tuner's, so pausing, jumping back, LinDVB's own
+  recordings and timers, teletext, subtitles, the broadcast EPG and HbbTV work for
+  them too; the server picks the tuner. Export (Menu ▸ File):
   all channels, TV or radio only, the channels shown or one favourites list, as
   LinDVB's own `.json` file (everything, also DVB-I services and the favourites
   lists; imported again on another computer), M3U (internet channels and DVB-I

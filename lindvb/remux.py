@@ -75,6 +75,9 @@ class Remuxer:
             self.parse = None
             src = Gst.ElementFactory.make("urisourcebin")
             src.set_property("uri", url)
+            # a Tvheadend stream needs the server's login
+            from .tvheadend import set_login
+            src.connect("source-setup", lambda _b, el: set_login(el, url))
             self.pipeline.add(src)
             src.connect("pad-added", self._source_pad)
         else:

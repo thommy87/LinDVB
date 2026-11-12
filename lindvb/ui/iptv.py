@@ -10,7 +10,7 @@ import urllib.request
 
 from gi.repository import Gio, GLib, Gtk
 
-from .. import iptvsources
+from .. import iptvsources, tvheadend
 from ..channels import download_name, import_data, import_file
 from ..config import CACHE_DIR
 from .common import dropdown, fill, make_column_view, message, selected
@@ -19,7 +19,8 @@ from ..i18n import _
 
 PATTERNS = ("*.m3u", "*.m3u8", "*.m3uplus", "*.m3u8plus", "*.m3u_plus", "*.m3u8_plus",
             "*.ini", "*.csv", "*.conf")
-KINDS = {"file": _("File"), "url": _("Web address"), "xtream": "Xtream Codes"}
+KINDS = {"file": _("File"), "url": _("Web address"), "xtream": "Xtream Codes",
+         "tvheadend": "Tvheadend"}
 
 
 def _filters():
@@ -84,6 +85,24 @@ class IPTVPanel(Gtk.Box):
             _("The live channels of an Xtream Codes account. The password is kept in the "
               "list's address in the LinDVB settings."))
 
+        # Tvheadend: server, user name and password; channels, groups and guide
+        th = Gtk.Box(spacing=6)
+        self.th_server = Gtk.Entry(placeholder_text=_("Server (host:9981)"), width_chars=16,
+                                   input_purpose=Gtk.InputPurpose.URL)
+        self.th_server.connect("activate", lambda *_: self._tvheadend())
+        self.th_user = Gtk.Entry(placeholder_text=_("User name"), width_chars=10)
+        self.th_pass = Gtk.PasswordEntry(placeholder_text=_("Password"), show_peek_icon=True)
+        self.th_pass.set_size_request(110, -1)
+        self.th_pass.connect("activate", lambda *_: self._tvheadend())
+        self.th_btn = Gtk.Button(label=_("Import"))
+        self.th_btn.connect("clicked", lambda *_: self._tvheadend())
+        for w in (self.th_server, self.th_user, self.th_pass, self.th_btn):
+            th.append(w)
+        row(self, "Tvheadend", th,
+            _("The channels of a Tvheadend server, with its channel tags as groups and its "
+              "programme guide. Leave user name and password empty when the server does "
+              "not ask for them. The password is kept in the LinDVB settings."))
+
         # the imported lists
         self.append(Gtk.Label(label=_("Your lists"), xalign=0, css_classes=["heading"],
                               margin_start=12, margin_top=10))
@@ -143,12 +162,12 @@ class IPTVPanel(Gtk.Box):
         self.status.set_text(f"{text}\n{count}" if text else count)
 
     def _busy(self, on, text=""):
-        for b in (self.url_btn, self.xt_btn, self.update_btn):
+        for b in (self.url_btn, self.xt_btn, self.th_btn, self.update_btn):
             b.set_sensitive(not on)
         if text:
             self.status.set_text(text)
 
-    def _apply(self, kind, location, chans, replace=False):
+    def _apply(self, kind, location, chans, replace=False, **extra):
         """Merge a loaded list, remember it and show the result."""
         db = self.app.db
         sources = self._sources()
@@ -164,7 +183,7 @@ class IPTVPanel(Gtk.Box):
             (a, u), gone = db.merge(chans), 0
         db.save()
         self._set_sources(iptvsources.remember(sources, kind, location, root,
-                                               len(chans)))
+                                               len(chans), **extra))
         text = _("Imported {total_a} new and {total_u} updated channels").format(
             total_a=a, total_u=u)
         if gone:
@@ -182,9 +201,12 @@ class IPTVPanel(Gtk.Box):
         if not todo:
             return
         from .. import dvbi
+        folder = os.path.join(str(CACHE_DIR), "iptv-logos")
 
         def work():
-            dvbi.download_logos(todo, os.path.join(str(CACHE_DIR), "iptv-logos"))
+            # logos in a Tvheadend server's image cache need its login
+            dvbi.download_logos([c for c in todo if not c.tvh_server], folder)
+            tvheadend.download_logos([c for c in todo if c.tvh_server], folder)
             GLib.idle_add(done)
 
         def done():
@@ -238,6 +260,52 @@ class IPTVPanel(Gtk.Box):
         self._load_url("xtream", iptvsources.xtream_url(server, user, self.xt_pass.get_text(),
                                                         output))
 
+    def _tvheadend(self, src=None):
+        """Load the channels of a Tvheadend server: the one typed in, or the
+        list *src* again (Update)."""
+        if src is None:
+            try:
+                base = tvheadend.base_url(self.th_server.get_text())
+            except tvheadend.TvheadendError:
+                return
+            user, password = self.th_user.get_text().strip(), self.th_pass.get_text()
+        else:
+            base, user, password = src.get("location", ""), src.get("user", ""), \
+                src.get("password", "")
+        old = iptvsources.find(self._sources(), base)
+        root = old.get("root", "") if old else ""
+        self._busy(True, _("Downloading {url}…").format(
+            url=tvheadend.display_location({"location": base, "user": user})))
+
+        def work():
+            try:
+                chans = tvheadend.load_channels(base, user, password, root)
+                GLib.idle_add(self._tvh_loaded, base, user, password, chans, "", src)
+            except tvheadend.TvheadendError as e:
+                GLib.idle_add(self._tvh_loaded, base, user, password, None, str(e), src)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _tvh_loaded(self, base, user, password, chans, error, src):
+        self._busy(False)
+        if error or not chans:
+            self._count()
+            message(self.get_root(), _("Could not import {name}").format(
+                name=tvheadend.display_location({"location": base, "user": user})),
+                error or _("The address has no channels."))
+            return False
+        # the server's login is needed to fetch logos and guide right away
+        tvheadend._servers[base] = (user, password)
+        self._apply("tvheadend", base, chans, replace=src is not None or
+                    iptvsources.find(self._sources(), base) is not None,
+                    user=user, password=password)
+        tvheadend.configure(self.app.settings)
+        if src is None:
+            self.th_pass.set_text("")
+        self.app.update_tvheadend_guide(
+            done=lambda msg: (self._count(msg),
+                              self.app.window and self.app.window.reload_channels()))
+        return False
+
     def _load_url(self, kind, url, replace=False):
         shown = iptvsources.display_location({"kind": kind, "location": url})
         self._busy(True, _("Downloading {url}…").format(url=shown))
@@ -272,7 +340,9 @@ class IPTVPanel(Gtk.Box):
         if not src:
             return
         loc = src.get("location", "")
-        if src.get("kind") == "file":
+        if src.get("kind") == "tvheadend":
+            self._tvheadend(src)
+        elif src.get("kind") == "file":
             if os.path.exists(loc):
                 self._import_path(loc, replace=True)
             else:
@@ -303,6 +373,7 @@ class IPTVPanel(Gtk.Box):
         n = iptvsources.remove(self.app.db, src.get("root", ""))
         self.app.db.save()
         self._set_sources(iptvsources.forget(self._sources(), src.get("location")))
+        tvheadend.configure(self.app.settings)
         if self.app.window is not None:
             self.app.window.reload_channels()
         self._count(_("{n} channels removed").format(n=n))

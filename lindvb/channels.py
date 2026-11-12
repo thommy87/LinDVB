@@ -82,10 +82,19 @@ class Channel:
     dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
+    tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
 
     @property
     def is_iptv(self):
         return self.delsys == "iptv"
+
+    @property
+    def via_url(self):
+        """Played and recorded from its web address with GStreamer (internet
+        streams), not through a tuner capture. Tvheadend channels are internet
+        channels too, but their transport stream goes through a capture
+        (timeshift, recordings, teletext, HbbTV) like a tuner's."""
+        return self.is_iptv and not self.tvh_server
 
     @property
     def is_sat(self):
@@ -126,6 +135,9 @@ class Channel:
             keys.append("dvbi:" + self.dvbi_id)
         if self.xmltv_id:
             keys.append("xmltv:" + self.xmltv_id)
+        if self.tvh_server and self.sid:
+            # Tvheadend passes the service's own EIT; its ids are learnt from the stream
+            keys.append(f"{self.tsid}:{self.sid}")
         return list(dict.fromkeys(keys))
 
     def pids(self):

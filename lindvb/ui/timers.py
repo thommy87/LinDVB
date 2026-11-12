@@ -436,7 +436,7 @@ class TimersWindow(Gtk.Window):
         ch = self.app.db.by_key(t.channel_key)
         radio = bool(ch and ch.radio)
         fmt = effective_format(t.radio_format if radio else t.tv_format, t.extras, radio,
-                               bool(ch and ch.is_iptv))
+                               bool(ch and ch.via_url))
         return FORMAT_LABELS[fmt].split(" (")[0] if fmt == "Audio" else fmt
 
     def _on_day_selected(self, cal):
@@ -460,7 +460,7 @@ class TimersWindow(Gtk.Window):
         self.audio.set_selected(AUDIO_MODES.index(mode) if mode in AUDIO_MODES else 0)
 
     def _iptv(self):
-        return bool(self.channel and self.channel.is_iptv)
+        return bool(self.channel and self.channel.via_url)
 
     def _sync_formats(self):
         iptv = self._iptv()
@@ -746,7 +746,7 @@ class RecordOptionsWindow(Gtk.Window):
         box.append(_label(_("Audi_o tracks"), self.audio))
         box.append(self.audio)
         self.extra_btns = {}
-        iptv = channel.is_iptv
+        iptv = channel.via_url
         for e in EXTRAS:
             b = Gtk.CheckButton(label=EXTRA_LABELS[e], active=d[e] and not iptv,
                                 sensitive=not iptv)
@@ -769,7 +769,7 @@ class RecordOptionsWindow(Gtk.Window):
     def _sync(self):
         if not getattr(self, "_ready", False):
             return
-        iptv = self.channel.is_iptv
+        iptv = self.channel.via_url
         extras = usable_extras(self._extras(), iptv)
         self.fmt.restrict(extras, iptv)
         mode = AUDIO_MODES[self.audio.get_selected()]

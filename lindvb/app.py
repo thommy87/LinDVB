@@ -48,6 +48,8 @@ class LinDVBApp(Gtk.Application):
         if i18n.is_rtl():
             Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
         channels_mod.DVBI_GUIDE_FIRST = bool(self.settings.get("dvbi_guide", True))
+        from . import tvheadend
+        tvheadend.configure(self.settings)
         from . import dvbi
         dvbi.use_country(self.settings.get("dvbi_country"))
         self.plugins = PluginManager(self.settings)
@@ -91,6 +93,10 @@ class LinDVBApp(Gtk.Application):
         self._dvbi_busy = False
         self._guide_busy = False
         GLib.timeout_add_seconds(15, self._dvbi_check)
+        # Tvheadend servers: their guide, at the start and every few hours
+        self._tvh_busy = False
+        GLib.timeout_add_seconds(20, lambda: (self.update_tvheadend_guide(), False)[1])
+        GLib.timeout_add_seconds(GUIDE_INTERVAL, lambda: (self.update_tvheadend_guide(), True)[1])
         # programme reminders from the guide
         from .reminders import ReminderStore
         self.reminders = ReminderStore()
@@ -206,6 +212,13 @@ class LinDVBApp(Gtk.Application):
     def on_tsid(self, cap, tsid):
         """Channel lists without transport stream ids (older scans) learn it from
         the PAT, so the DVB guide (keyed by tsid:sid) finds its channels."""
+        if cap.channel.tvh_server:
+            # a Tvheadend stream: the capture kept the service's ids on the
+            # channel; its broadcast guide now links to the server's guide
+            self.db.save()
+            self.epg.relink()
+            self._epg_dirty = True
+            return
         mux = cap.channel.mux_key
         changed = False
         for c in self.db.channels:
@@ -234,6 +247,11 @@ class LinDVBApp(Gtk.Application):
 
     def update_xmltv(self):
         url = self.settings.get("xmltv_url")
+        from . import tvheadend
+        if tvheadend.servers(self.settings):
+            self.update_tvheadend_guide()
+            if not url:
+                return
         if not url:
             self.window.set_status(_("Set an XMLTV URL in the preferences first"))
             return
@@ -263,6 +281,55 @@ class LinDVBApp(Gtk.Application):
         if unmatched:
             msg += _(", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)").format(unmatched=unmatched)
         self.window.set_status(msg)
+        return False
+
+    # -- Tvheadend ---------------------------------------------------------------
+    def update_tvheadend_guide(self, done=None):
+        """Load the XMLTV guide of every Tvheadend server in the background.
+        *done(message)* runs on the main thread when all are loaded."""
+        from . import tvheadend
+        srcs = tvheadend.servers(self.settings)
+        if not srcs or self._tvh_busy:
+            return False
+        self._tvh_busy = True
+        language = self.settings.get("epg_language", "")
+
+        def work():
+            results = []
+            for src in srcs:
+                base = src.get("location", "")
+                try:
+                    channels, items = tvheadend.load_guide(
+                        base, src.get("user", ""), src.get("password", ""), language)
+                    results.append((base, channels, items, ""))
+                except Exception as e:  # network and XML errors are reported to the user
+                    results.append((base, {}, [], str(e)))
+            GLib.idle_add(self._apply_tvheadend_guide, results, done)
+        threading.Thread(target=work, daemon=True).start()
+        return True
+
+    def _apply_tvheadend_guide(self, results, done=None):
+        from . import tvheadend
+        self._tvh_busy = False
+        total, errors = 0, []
+        for base, channels, items, error in results:
+            if error:
+                errors.append(error)
+                continue
+            for cid, ev in items:
+                self.epg.add("xmltv:" + cid, ev, "xmltv")
+            tvheadend.match_guide(self.db.channels, base, channels)
+            total += len(items)
+        self.db.save()
+        self.epg.notify()
+        self.epg.save()
+        msg = _("Tvheadend: {n} programmes loaded").format(n=total)
+        if errors:
+            msg += " (" + "; ".join(errors) + ")"
+        if self.window is not None:
+            self.window.set_status(msg)
+        if done:
+            done(msg)
         return False
 
     # -- DVB-I -----------------------------------------------------------------

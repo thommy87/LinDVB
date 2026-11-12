@@ -407,9 +407,9 @@ class TimerManager(GObject.Object):
                                               "folder": opts.folder})
         audio = {"audio_mode": opts.audio_mode, "language": s.get("rec_audio_language", "")}
         full = bool(s.get("full_transponder")) or not channel.pmt_pid
-        extras = usable_extras(opts.extras, channel.is_iptv)
+        extras = usable_extras(opts.extras, channel.via_url)
         fmt = effective_format(opts.radio_format if channel.radio else opts.tv_format,
-                               extras, channel.radio, channel.is_iptv)
+                               extras, channel.radio, channel.via_url)
         if fmt != "TS":
             from .remux import available
             if not available(fmt):
@@ -424,7 +424,7 @@ class TimerManager(GObject.Object):
                                  "without a stream of its own")
             return None
         try:
-            if channel.is_iptv:
+            if channel.via_url:
                 rec, cap = Recording(path, url=channel.url, fmt=fmt, channel=channel,
                                      extras=extras, **audio), None
             else:

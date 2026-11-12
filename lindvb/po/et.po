@@ -4132,3 +4132,12 @@ msgstr "{n} kanalit eksporditi asukohta {path}"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Impordi kanaliloend (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Server (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Tvheadendi serveri kanalid, kanalisildid gruppidena, koos serveri telekavaga. Jäta kasutajanimi ja parool tühjaks, kui server neid ei küsi. Parool salvestatakse LinDVB seadetesse."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: laaditi {n} saadet"

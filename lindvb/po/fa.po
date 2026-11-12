@@ -4175,3 +4175,12 @@ msgstr "{n} کانال به {path} برون‌بری شد"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "وارد کردن فهرست کانال (LinDVB .json، dvbv5، VDR، lamedb، M3U، CSV، DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "سرور (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "کانال‌های یک سرور Tvheadend، با برچسب‌های کانال به‌عنوان گروه و راهنمای برنامهٔ آن. اگر سرور نام کاربری و گذرواژه نمی‌خواهد، آن‌ها را خالی بگذارید. گذرواژه در تنظیمات LinDVB نگه داشته می‌شود."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: {n} برنامه بارگذاری شد"

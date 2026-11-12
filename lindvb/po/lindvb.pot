@@ -5714,3 +5714,15 @@ msgstr ""
 #: lindvb/ui/window.py
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr ""
+
+#: lindvb/ui/iptv.py
+msgid "Server (host:9981)"
+msgstr ""
+
+#: lindvb/ui/iptv.py
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr ""
+
+#: lindvb/app.py
+msgid "Tvheadend: {n} programmes loaded"
+msgstr ""
