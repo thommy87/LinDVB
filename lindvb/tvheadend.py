@@ -39,6 +39,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from . import ipstream
+
 DEFAULT_PORT = 9981
 PROFILE = "pass"                 # the unchanged transport stream of the service
 USER_AGENT = "LinDVB"
@@ -438,69 +440,24 @@ def free_adapter(used):
     return a
 
 
-class StreamReader:
+class StreamReader(ipstream.StreamReader):
     """Reads the transport stream of a channel from the server in a thread
     and hands it on in chunks: *on_data(bytes)*; *on_error(message)* when
-    the server refuses or the connection breaks (not after close())."""
+    the server refuses the stream, or the connection broke and opening it
+    again failed for a while (not after close()); *on_status(kind, message)*
+    while it reconnects (lindvb.ipstream.StreamReader)."""
 
-    def __init__(self, url, on_data, on_error=None, login=None, opener=None):
-        self.url = url
-        self.on_data = on_data
-        self.on_error = on_error
+    name = "tvheadend"
+
+    def __init__(self, url, on_data, on_error=None, login=None, opener=None,
+                 on_status=None, reconnect=True, retry=None):
+        super().__init__(url, on_data, on_error, on_status, reconnect=reconnect, retry=retry)
         self.login = login if login is not None else (credentials(url) or ("", ""))
         self.opener = opener
-        self.closed = False
-        self.received = 0
-        self._resp = None
-        self._thread = None
 
-    def start(self):
-        import threading
-        self._thread = threading.Thread(target=self._run, daemon=True,
-                                        name="tvheadend-stream")
-        self._thread.start()
-
-    def _run(self):
+    def _open(self):
         try:
-            resp = open_url(self.url, *self.login, timeout=20, opener=self.opener)
+            return open_url(self.url, *self.login, timeout=20, opener=self.opener)
         except TvheadendError as e:
-            self._fail(str(e))
-            return
-        self._resp = resp
-        if self.closed:
-            resp.close()
-            return
-        try:
-            while not self.closed:
-                data = resp.read1(CHUNK) if hasattr(resp, "read1") else resp.read(CHUNK)
-                if not data:
-                    self._fail(f"{urllib.parse.urlsplit(self.url).netloc}: "
-                               "the server ended the stream")
-                    break
-                self.received += len(data)
-                self.on_data(data)
-        except (OSError, ValueError) as e:
-            self._fail(f"{urllib.parse.urlsplit(self.url).netloc}: {e}")
-        finally:
-            try:
-                resp.close()
-            except OSError:
-                pass
-
-    def _fail(self, message):
-        if not self.closed and self.on_error is not None:
-            self.on_error(message)
-
-    def close(self):
-        """Stop reading; Tvheadend frees its tuner when the connection closes."""
-        self.closed = True
-        resp = self._resp
-        if resp is None:
-            return
-        import socket
-        sock = getattr(getattr(getattr(resp, "fp", None), "raw", None), "_sock", None)
-        try:
-            if sock is not None:
-                sock.shutdown(socket.SHUT_RDWR)      # wakes up the blocked read
-        except OSError:
-            pass
+            msg, prefix = str(e), f"{self.host}: "
+            raise OSError(msg[len(prefix):] if msg.startswith(prefix) else msg) from None

@@ -344,7 +344,7 @@ def test_channel_kinds():
     tvh = Channel(name="Das Erste HD", delsys="iptv", url="http://tvh:9981/stream/channel/x",
                   tvh_server="http://tvh:9981", xmltv_id=U1)
     web = Channel(name="Web", delsys="iptv", url="http://x/1.m3u8")
-    assert tvh.is_iptv and not tvh.via_url and web.via_url
+    assert tvh.is_iptv and not tvh.via_url and web.plays_url and not tvh.plays_url
     assert tvh.epg_links == ["xmltv:" + U1]
     tvh.sid, tvh.tsid = SID, TSID
     assert tvh.epg_links == ["xmltv:" + U1, f"{TSID}:{SID}"]

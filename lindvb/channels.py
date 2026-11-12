@@ -28,6 +28,9 @@ from .config import CONFIG_DIR
 # programme guide from it, ahead of XMLTV (the app sets this from the
 # "dvbi_guide" setting).
 DVBI_GUIDE_FIRST = True
+# Internet TV channels go through a capture (lindvb.ipstream) for timeshift;
+# set by the app from the setting "iptv_timeshift"
+IPTV_TIMESHIFT = True
 
 SAT_SYSTEMS = ("dvb-s", "dvb-s2", "turbo", "isdb-s")
 
@@ -93,8 +96,24 @@ class Channel:
         """Played and recorded from its web address with GStreamer (internet
         streams), not through a tuner capture. Tvheadend channels are internet
         channels too, but their transport stream goes through a capture
-        (timeshift, recordings, teletext, HbbTV) like a tuner's."""
-        return self.is_iptv and not self.tvh_server
+        (timeshift, recordings, teletext, HbbTV) like a tuner's; so do
+        internet TV channels with timeshift on (buffered)."""
+        return self.is_iptv and not self.tvh_server and not self.buffered
+
+    @property
+    def buffered(self):
+        """An internet TV channel that LinDVB reads into a capture itself
+        (lindvb.ipstream) for timeshift. Radio stays with playbin, which
+        shows the station's now-playing titles."""
+        if not (IPTV_TIMESHIFT and self.is_iptv and self.url) or self.tvh_server or self.radio:
+            return False
+        scheme = self.url.split("://", 1)[0].lower() if "://" in self.url else ""
+        return scheme in ("http", "https", "udp", "rtp")
+
+    @property
+    def plays_url(self):
+        """Has an address a plain player can show (picture in picture, mosaic)."""
+        return bool(self.is_iptv and self.url and not self.tvh_server)
 
     @property
     def is_sat(self):
