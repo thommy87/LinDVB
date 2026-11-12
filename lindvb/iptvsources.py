@@ -28,6 +28,9 @@ def xtream_url(server, user, password, output="ts"):
 def display_location(src):
     """Where a list comes from, without an Xtream password."""
     loc = src.get("location", "")
+    if src.get("kind") == "tvheadend":
+        from .tvheadend import display_location as tvh_location
+        return tvh_location(src)
     if src.get("kind") == "xtream":
         parts = urllib.parse.urlsplit(loc)
         user = urllib.parse.parse_qs(parts.query).get("username", [""])[0]
@@ -86,10 +89,11 @@ def rename(db, sources, location, name):
     return [dict(s, root=name) if s is src else s for s in sources], name
 
 
-def remember(sources, kind, location, root, count, now=None):
-    """*sources* with the list at *location* added or refreshed (new list)."""
+def remember(sources, kind, location, root, count, now=None, **extra):
+    """*sources* with the list at *location* added or refreshed (new list).
+    *extra* is kept with it (a Tvheadend server's user name and password)."""
     entry = {"kind": kind, "location": location, "root": root, "count": int(count),
-             "date": int(now if now is not None else time.time())}
+             "date": int(now if now is not None else time.time()), **extra}
     return [s for s in sources if s.get("location") != location] + [entry]
 
 

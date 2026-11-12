@@ -4132,3 +4132,12 @@ msgstr "{n} cainéal easpórtáilte go {path}"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Iompórtáil liosta cainéal (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Freastalaí (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Cainéil fhreastalaí Tvheadend, lena chlibeanna cainéil mar ghrúpaí agus a threoir chláir. Fág an t-ainm úsáideora agus an pasfhocal folamh mura n-iarrann an freastalaí iad. Coinnítear an pasfhocal i socruithe LinDVB."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: {n} clár luchtaithe"

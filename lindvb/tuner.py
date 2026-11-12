@@ -742,6 +742,8 @@ class IPTVRecorder:
         self.pipeline = Gst.Pipeline.new("iptvrec")
         self.src = Gst.ElementFactory.make("urisourcebin")
         self.src.set_property("uri", url)
+        from .tvheadend import set_login
+        self.src.connect("source-setup", lambda _b, el: set_login(el, url))
         self.parse = Gst.ElementFactory.make("parsebin")
         self.mux = Gst.ElementFactory.make("mpegtsmux")
         sink = Gst.ElementFactory.make("filesink")

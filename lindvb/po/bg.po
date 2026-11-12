@@ -4132,3 +4132,12 @@ msgstr "Експортирани канали в {path}: {n}"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Импортиране на списък с канали (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Сървър (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Каналите на сървър Tvheadend, с етикетите на каналите като групи и програмния му справочник. Оставете потребителското име и паролата празни, ако сървърът не ги изисква. Паролата се пази в настройките на LinDVB."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: заредени са {n} предавания"

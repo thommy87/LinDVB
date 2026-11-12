@@ -123,7 +123,8 @@ def auto_match(channels, xmltv_channels, overwrite=False):
     m = Matcher(xmltv_channels)
     matched = unmatched = 0
     for c in channels:
-        if not c.is_iptv or c.xmltv_manual:
+        # Tvheadend channels take the guide of their server (lindvb.tvheadend)
+        if not c.is_iptv or c.xmltv_manual or c.tvh_server:
             continue
         if c.xmltv_id and c.xmltv_id in m.channels and not overwrite:
             matched += 1

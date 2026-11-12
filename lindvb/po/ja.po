@@ -4420,3 +4420,12 @@ msgstr "DVB-I はチャンネルリストをインターネットから読み込
 
 msgid "Enter the address of a service list registry, or of a service list directly, below."
 msgstr "下にサービスリストのレジストリ、またはサービスリストのアドレスを直接入力してください。"
+
+msgid "Server (host:9981)"
+msgstr "サーバー (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Tvheadend サーバーのチャンネル。チャンネルタグをグループとして使い、番組表も取得します。サーバーが求めない場合はユーザー名とパスワードを空のままにしてください。パスワードは LinDVB の設定に保存されます。"
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: {n} 件の番組を読み込みました"

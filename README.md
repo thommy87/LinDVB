@@ -160,7 +160,10 @@ them.
 * Import: dvbv5 channel files, VDR `channels.conf`, Enigma2 `lamedb`, M3U (also
   m3u_plus / m3u8_plus), CSV and `*.ini` channel lists; IPTV playlists also from a
   web address or an Xtream Codes login (MPEG-TS or HLS, live channels only), each
-  list with its own name (Preferences ▸ Internet ▸ IPTV). Export (Menu ▸ File):
+  list with its own name (Preferences ▸ Internet ▸ IPTV). A **Tvheadend** server is
+  added there with its address, user name and password: LinDVB loads its channels
+  (channel tags as groups, radio apart from TV), logos and programme guide (XMLTV)
+  and logs in with digest or plain authentication. Export (Menu ▸ File):
   all channels, TV or radio only, the channels shown or one favourites list, as
   LinDVB's own `.json` file (everything, also DVB-I services and the favourites
   lists; imported again on another computer), M3U (internet channels and DVB-I
