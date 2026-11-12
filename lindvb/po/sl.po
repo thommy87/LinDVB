@@ -4141,3 +4141,83 @@ msgstr "Programi strežnika Tvheadend, z oznakami programov kot skupinami in nje
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: naloženih oddaj: {n}"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Internetni pretok {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "strežnik je končal pretok"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – ponovna povezava čez {s} s"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: znova povezano"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "pretoka ni bilo mogoče odpreti"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: pretok se predvaja neposredno, brez časovnega zamika ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Povezava izgubljena ({reason}) – nov poskus čez {s} s"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Znova povezano"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} nima ogleda za nazaj"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Ogled za nazaj: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Časovni zamik za internetne programe"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Internetni TV-programi gredo skozi medpomnilnik časovnega zamika kot sprejemnik: premor, skok nazaj in shranitev medpomnilnika kot posnetka. Radijski pretoki se predvajajo neposredno."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "Kakovost pretokov HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Samodejna (sledi povezavi)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Vedno najboljša"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Samodejna preklopi na nižjo kakovost, ko se povezava upočasni; medpomnilnik obdrži, kar je prispelo. Vedno najboljša je ves čas enaka, a se pri počasni povezavi ustavi in čaka."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Znova poveži internetne pretoke"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Ko se povezava internetnega ali Tvheadend programa prekine, se po nekaj sekundah znova odpre, največ tri minute."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Glej od začetka"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Predvaja oddajo od začetka iz arhiva ponudnika (ogled za nazaj)"

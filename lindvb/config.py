@@ -58,6 +58,12 @@ DEFAULTS = {
     "hbbtv_device_uuid": "",            # DIAL/UPnP device id, made on first use
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
+    # internet TV channels through the timeshift buffer (lindvb.ipstream);
+    # HLS/DASH quality there: "auto" (follows the connection) or "best"
+    "iptv_timeshift": True,
+    "iptv_timeshift_quality": "auto",
+    # open internet streams (and Tvheadend) again when the connection breaks
+    "stream_reconnect": True,
     "recording_dir": str(Path.home() / "Videos" / "LinDVB"),
     "name_scheme": "%station_%date_%time_%name",
     # Default recording options for new timers and manual recordings.

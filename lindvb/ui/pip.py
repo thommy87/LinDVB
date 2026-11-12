@@ -21,7 +21,7 @@ MOSAIC_TILES = 9
 
 def can_show(channel):
     """Picture in picture / mosaic tiles take internet channels only (no tuner)."""
-    return bool(channel is not None and channel.via_url and channel.url)
+    return bool(channel is not None and channel.plays_url)
 
 
 class MiniPlayer:

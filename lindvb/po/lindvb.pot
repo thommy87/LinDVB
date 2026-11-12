@@ -5726,3 +5726,83 @@ msgstr ""
 #: lindvb/app.py
 msgid "Tvheadend: {n} programmes loaded"
 msgstr ""
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr ""
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr ""
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr ""
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr ""
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr ""
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr ""
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr ""

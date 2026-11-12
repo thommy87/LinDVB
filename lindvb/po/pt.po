@@ -4141,3 +4141,83 @@ msgstr "Os canais de um servidor Tvheadend, com as suas etiquetas de canais como
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: {n} programas carregados"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Stream da Internet {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "o servidor terminou o stream"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – nova ligação em {s} s"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: ligado novamente"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "não foi possível abrir o stream"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: a reproduzir o stream diretamente, sem timeshift ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Ligação perdida ({reason}) – nova tentativa em {s} s"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Ligado novamente"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} não tem catch-up"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Catch-up: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Timeshift para canais da Internet"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Os canais de TV pela Internet passam pelo buffer de timeshift como um sintonizador: pausar, recuar e guardar o buffer como gravação. Os streams de rádio são reproduzidos diretamente."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "Qualidade dos streams HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Automática (segue a ligação)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Sempre a melhor"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Automática muda para uma qualidade inferior quando a ligação fica lenta; o buffer guarda o que chegou. Sempre a melhor tem sempre o mesmo aspeto, mas para para esperar numa ligação lenta."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Voltar a ligar streams da Internet"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Quando a ligação de um canal da Internet ou Tvheadend cai, é reaberta após alguns segundos, durante até três minutos."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Ver desde o início"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Reproduz o programa desde o início a partir do arquivo do fornecedor (catch-up)"

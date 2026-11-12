@@ -48,6 +48,7 @@ class LinDVBApp(Gtk.Application):
         if i18n.is_rtl():
             Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
         channels_mod.DVBI_GUIDE_FIRST = bool(self.settings.get("dvbi_guide", True))
+        channels_mod.IPTV_TIMESHIFT = bool(self.settings.get("iptv_timeshift", True))
         from . import tvheadend
         tvheadend.configure(self.settings)
         from . import dvbi

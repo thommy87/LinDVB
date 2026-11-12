@@ -4141,3 +4141,83 @@ msgstr "Cainéil fhreastalaí Tvheadend, lena chlibeanna cainéil mar ghrúpaí 
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: {n} clár luchtaithe"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Sruth Idirlín {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "chuir an freastalaí deireadh leis an sruth"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – ag ceangal arís i gceann {s} s"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: ceangailte arís"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "níorbh fhéidir an sruth a oscailt"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: an sruth á sheinm go díreach, gan athrú ama ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Ceangal caillte ({reason}) – iarracht nua i gceann {s} s"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Ceangailte arís"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "Níl féachaint siar ag {name}"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Féachaint siar: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Athrú ama do chainéil Idirlín"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Téann cainéil teilifíse Idirlín tríd an maolán athraithe ama ar nós tiúnóra: sos, léim siar agus coinnigh an maolán mar thaifeadadh. Seinntear sruthanna raidió go díreach."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "Cáilíocht sruthanna HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Uathoibríoch (de réir an cheangail)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "An ceann is fearr i gcónaí"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Aistríonn uathoibríoch go cáilíocht níos ísle nuair a éiríonn an ceangal mall; coinníonn an maolán an méid a tháinig. Breathnaíonn an ceann is fearr mar an gcéanna an t-am ar fad, ach stopann sé chun fanacht ar cheangal mall."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Athcheangail sruthanna Idirlín"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Nuair a bhriseann ceangal cainéil Idirlín nó Tvheadend, osclaítear arís é tar éis cúpla soicind, ar feadh suas le trí nóiméad."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Féach ón tús"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Seinneann sé an clár óna thús ó chartlann an tsoláthraí (féachaint siar)"

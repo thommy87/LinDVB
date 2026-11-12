@@ -4141,3 +4141,83 @@ msgstr "Egy Tvheadend-kiszolgáló csatornái, a csatornacímkékkel mint csopor
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: {n} műsor betöltve"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Internetes stream {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "a szerver befejezte a streamet"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – újracsatlakozás {s} mp múlva"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: újra csatlakozva"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "a stream nem nyitható meg"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: a stream közvetlenül szól, időcsúsztatás nélkül ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "A kapcsolat megszakadt ({reason}) – új próbálkozás {s} mp múlva"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Újra csatlakozva"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} csatornán nincs visszanézés"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Visszanézés: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Időcsúsztatás internetes csatornákhoz"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Az internetes TV-csatornák a tunerhez hasonlóan az időcsúsztatási pufferen át futnak: szünet, visszaugrás és a puffer megtartása felvételként. A rádióstreamek közvetlenül szólnak."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH streamek minősége"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Automatikus (követi a kapcsolatot)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Mindig a legjobb"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Az automatikus lassú kapcsolatnál alacsonyabb minőségre vált; a puffer megtartja, ami megérkezett. A mindig a legjobb végig ugyanúgy néz ki, de lassú kapcsolatnál megáll és vár."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Internetes streamek újracsatlakoztatása"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Ha egy internetes vagy Tvheadend-csatorna kapcsolata megszakad, néhány másodperc múlva újra megnyílik, legfeljebb három percig."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Megnézés az elejétől"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Lejátssza a műsort az elejétől a szolgáltató archívumából (visszanézés)"

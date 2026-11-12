@@ -244,6 +244,22 @@ class PrefsWindow(Gtk.Window):
         g = group(pg, _("Timeshift"))
         entry(g, "timeshift_dir", _("Timeshift folder"))
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
+        switch(g, "iptv_timeshift", _("Timeshift for internet channels"),
+               _("Internet TV channels go through the timeshift buffer like a tuner's: "
+                 "pause, jump back and keep the buffer as a recording. Radio streams "
+                 "play directly."))
+        from ..ipstream import QUALITIES
+        self._ts_qualities = list(QUALITIES)
+        cur = s.get("iptv_timeshift_quality", "auto")
+        self._ts_quality_drop = _row(g, _("Quality of HLS / DASH streams"), dropdown(
+            [_("Automatic (follows the connection)"), _("Always the best")],
+            self._ts_qualities.index(cur) if cur in self._ts_qualities else 0),
+            _("Automatic switches to a lower quality when the connection gets slow; the "
+              "buffer keeps what arrived. Always the best looks the same all the time, "
+              "but stops to wait on a slow connection."))
+        switch(g, "stream_reconnect", _("Reconnect internet streams"),
+               _("When the connection of an internet or Tvheadend channel breaks, it is "
+                 "opened again after a few seconds, for up to three minutes."))
 
         # -- Tuner
         pg = page("tuner", _("Tuners"),
@@ -1049,6 +1065,7 @@ class PrefsWindow(Gtk.Window):
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
         s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
+        s["iptv_timeshift_quality"] = self._ts_qualities[self._ts_quality_drop.get_selected()]
         s.update(self._startup_values())
         vis_before = s.get("visualizer", "")
         if self._vis_drop is not None:
@@ -1067,6 +1084,8 @@ class PrefsWindow(Gtk.Window):
         self._epg.save(s)
         s.save()
         self._saved = True
+        from .. import channels as channels_mod
+        channels_mod.IPTV_TIMESHIFT = bool(s.get("iptv_timeshift", True))
         apply_accent(s)
         apply_theme(s)
         self._epg.apply(s)

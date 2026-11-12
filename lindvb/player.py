@@ -43,12 +43,9 @@ PLAY_FLAGS_VIS = 8
 
 SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
-# hlsdemux2 / dashdemux2 (playbin3): start on a good quality instead of
-# climbing up through every variant (each switch can stall the picture), and
-# only stop to buffer when less than a few seconds are left. On ARD alpha the
-# old setting stalled once for 2.6 s and went through five picture sizes in 90 s.
-ADAPTIVE_DEMUX_SETTINGS = {"start-bitrate": 5_000_000,              # bit/s
-                           "low-watermark-time": 3_000_000_000}     # ns
+# hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
+from .ipstream import ADAPTIVE_DEMUX_SETTINGS, Retry  # noqa: E402
+from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
@@ -274,6 +271,10 @@ class Player(GObject.Object):
         "metadata": (GObject.SignalFlags.RUN_LAST, None, (object,)),
         # how full the network buffer of an internet stream is (0..100)
         "buffering": (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        # an internet stream played directly lost its connection: (seconds
+        # until it is opened again, the reason); "reconnected" when it plays
+        "reconnecting": (GObject.SignalFlags.RUN_LAST, None, (int, str)),
+        "reconnected": (GObject.SignalFlags.RUN_LAST, None, ()),
     }
 
     def __init__(self, picture, settings):
@@ -337,6 +338,10 @@ class Player(GObject.Object):
         self.fragments = []              # recent (uri, bytes, seconds) of HLS/DASH
         self.rebuffers = 0
         self._played = False             # this stream reached PLAYING once
+        # reconnecting an internet stream that broke (lindvb.ipstream.Retry)
+        self._retry = None
+        self._reconnecting = False
+        self._reconnect_timer = 0
 
     # -- pipeline -----------------------------------------------------------
 
@@ -838,6 +843,7 @@ class Player(GObject.Object):
 
     def play_capture(self, capture, sid, offset=None):
         """Play a DVB capture, starting at the live end or at a byte offset."""
+        self._cancel_reconnect()
         if capture is not self.capture or sid != self.sid:
             self._reset_metadata()
         self.capture, self.sid, self.uri = capture, sid, None
@@ -854,7 +860,11 @@ class Player(GObject.Object):
         self.paused = False
         pb.set_state(Gst.State.PLAYING)
 
-    def play_uri(self, uri):
+    def play_uri(self, uri, live=False):
+        """Play a file or an address; *live*: a channel's stream, opened again
+        when its connection breaks (files and archives play to their end)."""
+        self._cancel_reconnect()
+        self._retry = Retry() if live else None
         self.capture, self.sid = None, 0
         if "://" not in uri:
             uri = Gst.filename_to_uri(uri)
@@ -913,6 +923,48 @@ class Player(GObject.Object):
             self.emit("hw-fallback", hwaccel.NAMES.get(gpu, gpu))
         return False
 
+    # -- reconnecting -------------------------------------------------------
+    def _network_stream(self):
+        return bool(self.uri and not self.capture and
+                    self.uri.split("://", 1)[0].lower() in ("http", "https", "udp", "rtp"))
+
+    def _live_stream(self):
+        """No duration: a live stream (an ending file plays to its end)."""
+        if not self.playbin:
+            return True
+        ok, dur = self.playbin.query_duration(Gst.Format.TIME)
+        return not ok or dur <= 0
+
+    def _try_reconnect(self, reason):
+        """The connection of a played internet stream broke: open it again
+        after a while (lindvb.ipstream.Retry). False when it is not tried."""
+        if not self.settings.get("stream_reconnect", True) or not self._network_stream() or \
+                self._retry is None or not (self._played or self._reconnecting):
+            return False
+        if self._reconnect_timer:
+            return True                  # more errors of the same break
+        delay = self._retry.broken()
+        if delay is None:
+            self._reconnecting = False
+            return False
+        self._reconnecting = True
+        token = self._token
+        self._reconnect_timer = GLib.timeout_add(int(delay * 1000), self._reconnect, token)
+        self.emit("reconnecting", int(delay), reason)
+        return True
+
+    def _reconnect(self, token):
+        self._reconnect_timer = 0
+        if token == self._token and self.uri and not self.capture:
+            self._start_uri(self._pb3)
+        return False
+
+    def _cancel_reconnect(self):
+        if self._reconnect_timer:
+            GLib.source_remove(self._reconnect_timer)
+            self._reconnect_timer = 0
+        self._reconnecting = False
+
     def set_audio_delay(self, ms):
         """Shift the sound against the picture (ms, + = sound later)."""
         self.audio_delay_ms = int(ms)
@@ -920,6 +972,7 @@ class Player(GObject.Object):
             self.playbin.set_property("av-offset", -self.audio_delay_ms * Gst.MSECOND)
 
     def stop(self):
+        self._cancel_reconnect()
         self._token += 1
         self._teardown()
         self.capture = None
@@ -1443,10 +1496,13 @@ class Player(GObject.Object):
                 hwaccel.disable(gpu, self._decoder_mode())
                 GLib.idle_add(self._hw_fallback, self._token, gpu)
                 return
-            if self._pb3 and self.uri and not self.capture and not self._fallback_done:
+            if self._pb3 and self.uri and not self.capture and not self._fallback_done and \
+                    not self._played and not self._reconnecting:
                 # e.g. hlsdemux2 refusing a stream: try the classic pipeline once
                 self._fallback_done = True
                 GLib.idle_add(self._fallback_to_playbin, self._token)
+                return
+            if self._try_reconnect(describe_error(err, _dbg)):
                 return
             # one error per playback: the first one names the cause, the ones
             # after it ("not enough data", "can't typefind") only follow from it
@@ -1456,11 +1512,19 @@ class Player(GObject.Object):
                 self._error_token = self._token
             self.emit("error", describe_error(err, _dbg))
         elif t == Gst.MessageType.EOS:
+            if self._network_stream() and self._live_stream() and \
+                    self._try_reconnect(_("the server ended the stream")):
+                return
             self.emit("eos")
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:
             _old, new, _p = msg.parse_state_changed()
             if new == Gst.State.PLAYING:
                 self._played = True
+                if self._retry is not None:
+                    self._retry.running()
+                if self._reconnecting:
+                    self._reconnecting = False
+                    self.emit("reconnected")
                 if self._pending_seek is not None:
                     target, self._pending_seek = self._pending_seek, None
                     self.seek_to(target)

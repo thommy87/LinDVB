@@ -4141,3 +4141,83 @@ msgstr "Τα κανάλια ενός διακομιστή Tvheadend, με τις
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: φορτώθηκαν {n} εκπομπές"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Ροή Διαδικτύου {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "ο διακομιστής τερμάτισε τη ροή"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – νέα σύνδεση σε {s} δ"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: συνδέθηκε ξανά"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "δεν ήταν δυνατό το άνοιγμα της ροής"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: η ροή αναπαράγεται απευθείας, χωρίς timeshift ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Η σύνδεση χάθηκε ({reason}) – νέα προσπάθεια σε {s} δ"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Συνδέθηκε ξανά"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "Το {name} δεν έχει catch-up"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Catch-up: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Timeshift για κανάλια Διαδικτύου"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Τα τηλεοπτικά κανάλια Διαδικτύου περνούν από την προσωρινή μνήμη timeshift όπως ένας δέκτης: παύση, άλμα πίσω και διατήρηση της μνήμης ως εγγραφή. Οι ραδιοφωνικές ροές αναπαράγονται απευθείας."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "Ποιότητα ροών HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Αυτόματη (ακολουθεί τη σύνδεση)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Πάντα η καλύτερη"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Η αυτόματη αλλάζει σε χαμηλότερη ποιότητα όταν η σύνδεση γίνεται αργή· η μνήμη κρατά ό,τι έφτασε. Η πάντα καλύτερη φαίνεται ίδια συνέχεια, αλλά σταματά να περιμένει σε αργή σύνδεση."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Επανασύνδεση ροών Διαδικτύου"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Όταν η σύνδεση ενός καναλιού Διαδικτύου ή Tvheadend διακοπεί, ανοίγει ξανά μετά από λίγα δευτερόλεπτα, για έως τρία λεπτά."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Παρακολούθηση από την αρχή"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Αναπαράγει την εκπομπή από την αρχή από το αρχείο του παρόχου (catch-up)"

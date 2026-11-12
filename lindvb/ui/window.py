@@ -98,6 +98,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stopped = None          # channel switched off with Stop (Play resumes it)
         self._tuned = None           # the channel or DVB-I instance actually playing
         self._tried = set()          # DVB-I instances tried since the last channel change
+        self._direct_fallback = False  # the internet channel plays without timeshift
         self._nolock_since = None
         self.quality = QualityMeter()  # the OSD's signal quality bar
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
@@ -162,6 +163,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.connect("state", lambda _p, s: self._update_transport())
         # quality bar in the OSD for internet channels: the stream's health
         self.player.connect("buffering", self._on_stream_buffering)
+        self.player.connect("reconnecting", self._on_player_reconnecting)
+        self.player.connect("reconnected", self._on_player_reconnected)
         self.player.connect("state", self._on_stream_state)
         # no screen saver while something plays (Preferences › Playback)
         self._inhibit_cookie = 0
@@ -1150,7 +1153,7 @@ class MainWindow(Gtk.ApplicationWindow):
         m.append(_("Record"), "win.ctx-rec")
         m.append(_("Programme Guide"), "win.ctx-epg")
         m.append(_("Edit…"), "win.ctx-edit")
-        if c.via_url:
+        if c.plays_url:
             m.append(_("Show as Picture in Picture"), "win.ctx-pip")
         m.append(_("Channel Analysis…"), "win.ctx-analysis")
         return m
@@ -1733,11 +1736,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self._nolock_since = None
         # DVB-I services without a stream (an HbbTV application) have nothing to measure
         # Tvheadend: the server measures the signal, LinDVB gets the stream only
-        self.quality.reset("dvb" if not c.is_iptv else "iptv" if c.via_url and c.url else None)
+        self.quality.reset("dvb" if not c.is_iptv else
+                           "iptv" if (c.via_url or c.buffered) and c.url else None)
+        self._direct_fallback = False
         self._update_quality_bar()
         if c.via_url or (c.is_iptv and not c.url):
             if c.url:
-                self.player.play_uri(c.url)
+                self.player.play_uri(c.url, live=True)
             else:
                 self.player.stop()          # DVB-I: an HbbTV application is the service
             self.hbbtv.channel_changed(c, None)
@@ -1746,7 +1751,8 @@ class MainWindow(Gtk.ApplicationWindow):
         else:
             self.capture = self.app.tuners.acquire(c, "live")
             self.capture.connect("stats", self._on_stats)
-            self.capture.connect("error", lambda _c, m: self._on_play_error(m))
+            self.capture.connect("error", self._on_capture_error)
+            self.capture.connect("connection", self._on_connection)
             self.capture.connect("eit", self.app.on_eit)
             self.capture.connect("provider-epg", self.app.on_provider_epg)
             self.capture.connect("tsid", self.app.on_tsid)
@@ -1761,6 +1767,48 @@ class MainWindow(Gtk.ApplicationWindow):
             self.hbbtv.channel_changed(c, own)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
+
+    def _on_capture_error(self, cap, msg):
+        """An internet channel that never delivered into the timeshift buffer
+        (a format it cannot take) is played directly instead, once."""
+        c = self._tuned
+        if cap is self.capture and c is not None and c.buffered and not cap.received and \
+                not self._direct_fallback and self.stopped is None:
+            self._direct_fallback = True
+            self._release_capture()
+            self.quality.reset("iptv")
+            self._update_quality_bar()
+            self.player.play_uri(c.url, live=True)
+            self.hbbtv.channel_changed(c, None)
+            self.set_status(_("{name}: playing the stream directly, without timeshift ({reason})")
+                            .format(name=c.name, reason=_short(msg)))
+            return
+        self._on_play_error(msg)
+
+    def _on_connection(self, cap, kind, msg):
+        """The stream of an internet or Tvheadend channel broke and is opened again."""
+        if cap is not self.capture:
+            return
+        if kind == "reconnecting":
+            if self.quality.kind == "iptv":
+                self.quality.stream_failed()
+                self._update_quality_bar()
+            self.set_status(msg)
+        else:
+            if self.quality.kind == "iptv":
+                self.quality.stream_playing()
+                self._update_quality_bar()
+            self.set_status(msg)
+
+    def _on_player_reconnecting(self, _p, seconds, reason):
+        if self.quality.kind == "iptv":
+            self.quality.stream_failed()
+            self._update_quality_bar()
+        self.set_status(_("Connection lost ({reason}) – connecting again in {s} s").format(
+            reason=_short(reason), s=seconds))
+
+    def _on_player_reconnected(self, _p):
+        self.set_status(_("Connected again"))
 
     def _on_play_error(self, msg):
         if not self._try_failover(msg):
@@ -1852,7 +1900,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _start_live(self, cap):
         if cap is self.capture:
             # Tvheadend sends one service: let the demuxer take it, whatever its id
-            sid = 0 if self._tuned.tvh_server else self._tuned.sid
+            sid = 0 if self._tuned.tvh_server or self._tuned.buffered else self._tuned.sid
             self.player.play_capture(cap, sid, offset=0)
         return False
 
@@ -1981,6 +2029,25 @@ class MainWindow(Gtk.ApplicationWindow):
             self.zap(self.current)
 
     # ------------------------------------------------------------------ files / urls / playlist
+    def play_catchup(self, channel, event):
+        """A programme from the provider's archive (lindvb.catchup), played
+        like a file: from its start, with the seek bar."""
+        from .. import catchup
+        url = catchup.url(channel, event.start, event.end)
+        if not url:
+            self.set_status(_("{name} has no catch-up").format(name=channel.name))
+            return
+        self.stop_playback()
+        self.stopped = None
+        self._show_picture(True)
+        self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(channel.key, 0)
+        self.playlist, self.playlist_pos = [url], 0
+        self.player.play_uri(url)
+        self.set_title(f"{event.title} – {channel.name} – {APP_NAME}")
+        self.set_status(_("Catch-up: {title} ({name}, {time})").format(
+            title=event.title, name=channel.name,
+            time=time.strftime("%a %H:%M", time.localtime(event.start))))
+
     def play_files(self, paths):
         self.stop_playback()
         self.stopped = None

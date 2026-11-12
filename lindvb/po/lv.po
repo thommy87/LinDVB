@@ -4141,3 +4141,83 @@ msgstr "Tvheadend servera kanāli ar kanālu birkām kā grupām un servera prog
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: ielādēti raidījumi: {n}"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Interneta straume {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "serveris pārtrauca straumi"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – atkārtota savienošana pēc {s} s"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: atkal savienots"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "straumi neizdevās atvērt"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: straume tiek atskaņota tieši, bez laika nobīdes ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Savienojums zaudēts ({reason}) – jauns mēģinājums pēc {s} s"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Atkal savienots"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} nav atskatīšanās"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Atskatīšanās: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Laika nobīde interneta kanāliem"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Interneta TV kanāli iet caur laika nobīdes buferi kā uztvērējs: pauze, lēciens atpakaļ un bufera saglabāšana kā ieraksts. Radio straumes tiek atskaņotas tieši."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH straumju kvalitāte"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Automātiska (seko savienojumam)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Vienmēr labākā"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Automātiska pārslēdzas uz zemāku kvalitāti, kad savienojums kļūst lēns; buferis patur to, kas pienāca. Vienmēr labākā izskatās vienādi visu laiku, bet lēna savienojuma gadījumā apstājas un gaida."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Atkārtoti savienot interneta straumes"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Ja interneta vai Tvheadend kanāla savienojums pārtrūkst, to pēc dažām sekundēm atver no jauna, līdz trim minūtēm."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Skatīties no sākuma"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Atskaņo raidījumu no sākuma no pakalpojuma sniedzēja arhīva (atskatīšanās)"

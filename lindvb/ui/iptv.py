@@ -312,7 +312,15 @@ class IPTVPanel(Gtk.Box):
 
         def work():
             try:
-                GLib.idle_add(self._downloaded, kind, url, _download(url), "", replace)
+                chans = _download(url)
+                if chans and kind == "xtream":
+                    # which channels the server keeps an archive of (catch-up)
+                    from .. import catchup
+                    try:
+                        catchup.apply_xtream_archive(chans, catchup.load_xtream_archive(url))
+                    except (OSError, ValueError):
+                        pass
+                GLib.idle_add(self._downloaded, kind, url, chans, "", replace)
             except (OSError, ValueError) as e:
                 GLib.idle_add(self._downloaded, kind, url, None, str(e), replace)
         threading.Thread(target=work, daemon=True).start()
