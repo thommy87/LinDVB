@@ -89,6 +89,14 @@ class Channel:
         return self.delsys == "iptv"
 
     @property
+    def via_url(self):
+        """Played and recorded from its web address with GStreamer (internet
+        streams), not through a tuner capture. Tvheadend channels are internet
+        channels too, but their transport stream goes through a capture
+        (timeshift, recordings, teletext, HbbTV) like a tuner's."""
+        return self.is_iptv and not self.tvh_server
+
+    @property
     def is_sat(self):
         return self.delsys in SAT_SYSTEMS
 
@@ -127,6 +135,9 @@ class Channel:
             keys.append("dvbi:" + self.dvbi_id)
         if self.xmltv_id:
             keys.append("xmltv:" + self.xmltv_id)
+        if self.tvh_server and self.sid:
+            # Tvheadend passes the service's own EIT; its ids are learnt from the stream
+            keys.append(f"{self.tsid}:{self.sid}")
         return list(dict.fromkeys(keys))
 
     def pids(self):

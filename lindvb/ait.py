@@ -575,8 +575,11 @@ class AitMonitor:
                     if ait is not None and self.on_ait:
                         self.on_ait(ait)
         elif pid == 0 and self._pat is not None:
-            from .ca import pat_pmt_pid
+            from .ca import pat_first_program, pat_pmt_pid
             for section in self._pat.feed(packet):
+                if section and not self.sid:
+                    # a stream of one service (Tvheadend): take the service it names
+                    self.sid = pat_first_program(section)
                 found = pat_pmt_pid(section, self.sid) if section else 0
                 if found:
                     self.pmt_pid = found

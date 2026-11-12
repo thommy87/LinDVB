@@ -20,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import directtune, satip, tunerprofiles, unicable  # noqa: E402
+from . import directtune, satip, tunerprofiles, tvheadend, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -241,7 +241,9 @@ class Capture(GObject.Object):
         self._uc = unicable.config(self.tuner) if channel.is_sat else None
         # SAT>IP: a server on the network tunes; the stream comes over RTP
         self._satip = None
-        if satip.is_satip(self.tuner):
+        # Tvheadend: the server tunes; LinDVB reads the service's stream over HTTP
+        self._tvh = None
+        if satip.is_satip(self.tuner) or tvheadend.is_tvheadend(self.tuner):
             self._uc = None
         self._lnb = tunerprofiles.tuner_lnb(self.tuner, settings)
         self._direct = None
@@ -279,7 +281,11 @@ class Capture(GObject.Object):
                 '! clocksync sync-to-first=true', True)
         else:
             props = dvbsrc_properties(channel, settings, adapter, frontend, self._lnb)
-            if satip.is_satip(self.tuner):
+            if tvheadend.is_tvheadend(self.tuner):
+                src = self._appsrc()
+                self._tvh = tvheadend.StreamReader(channel.url, on_data=self._push_direct,
+                                                   on_error=self._on_tvh_error)
+            elif satip.is_satip(self.tuner):
                 src = self._appsrc()
                 self._satip = satip.Session(self.tuner["host"], self.tuner.get("port"),
                                             self.tuner.get("transport", "udp"),
@@ -333,7 +339,9 @@ class Capture(GObject.Object):
         # HbbTV: watch the PMT for the AIT and the AIT for applications
         self.ait_monitor = None
         self._views = {}                 # channel key -> ServiceView (shared services)
-        if settings.get("hbbtv_enabled", True) and channel.sid and channel.delsys not in ATSC_SYSTEMS:
+        # (a Tvheadend stream has one service: its id comes with the PAT)
+        if settings.get("hbbtv_enabled", True) and (channel.sid or self._tvh is not None) and \
+                channel.delsys not in ATSC_SYSTEMS:
             from .ait import AitMonitor
             self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait, self._on_ait_pids)
             parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._ait_probe)
@@ -365,6 +373,8 @@ class Capture(GObject.Object):
         """Where the stream comes from, for the user."""
         if satip.is_satip(self.tuner):
             return f"SAT>IP {self.tuner.get('host', '')}"
+        if tvheadend.is_tvheadend(self.tuner):
+            return self.tuner.get("name", "Tvheadend")
         return f"adapter{self.adapter}/frontend{self.frontend}"
 
     # -- channel analysis ---------------------------------------------------
@@ -532,7 +542,9 @@ class Capture(GObject.Object):
         GLib.idle_add(lambda: (self.emit("provider-epg", key, events), False)[1])
 
     def start(self):
-        if self._satip is not None:
+        if self._tvh is not None:
+            self._tvh.start()
+        elif self._satip is not None:
             self._start_satip()
         elif self._direct is not None and not self._start_direct():
             return
@@ -605,6 +617,27 @@ class Capture(GObject.Object):
                 self.emit("stats", st)
             return False
         GLib.idle_add(deliver)
+
+    def _on_tvh_error(self, msg):
+        """Reader thread: the server refused the stream or the connection broke."""
+        def deliver():
+            if not self.store.finished:
+                self.emit("error", f"Tvheadend: {msg}")
+            return False
+        GLib.idle_add(deliver)
+
+    def _learn_service(self, section):
+        """Tvheadend: the PAT names the one service of the stream. Keep its ids
+        on the channel, so the broadcast EIT finds it (Channel.epg_links)."""
+        try:
+            programs = [p.program_number for p in section.get_pat() if p.program_number]
+        except (TypeError, AttributeError):
+            return
+        tsid = section.subtable_extension
+        if programs and (self.channel.sid, self.channel.tsid) != (programs[0], tsid):
+            self.channel.sid, self.channel.tsid = programs[0], tsid
+            self.tsid = tsid
+            self.emit("tsid", tsid)
 
     def _push_direct(self, data):
         """Reader thread: hand a chunk of the DVR stream to the pipeline."""
@@ -698,6 +731,8 @@ class Capture(GObject.Object):
             self._direct.close()
         if self._satip is not None:
             self._satip.close()
+        if self._tvh is not None:
+            self._tvh.close()
 
     def destroy(self):
         self.stop()
@@ -720,7 +755,10 @@ class Capture(GObject.Object):
             elif GstMpegts is not None:
                 section = GstMpegts.message_parse_mpegts_section(msg)
                 if section is not None:
-                    if section.section_type == GstMpegts.SectionType.PAT and not self.tsid:
+                    if section.section_type == GstMpegts.SectionType.PAT and \
+                            self._tvh is not None:
+                        self._learn_service(section)
+                    elif section.section_type == GstMpegts.SectionType.PAT and not self.tsid:
                         self.tsid = section.subtable_extension
                         self.emit("tsid", self.tsid)
                     if self._atsc is not None:
@@ -839,6 +877,8 @@ class TunerManager(GObject.Object):
                 self.settings.get("ca_provider", "none") not in ("none", ""))
 
     def acquire(self, channel, user):
+        if channel.tvh_server:
+            return self._acquire_tvheadend(channel, user)
         try:
             how = tunerprofiles.choose(channel, user, self.profiles(), self.captures,
                                        self.settings,
@@ -871,6 +911,21 @@ class TunerManager(GObject.Object):
         a = profile["adapter"]
         cap = Capture(channel, a, int(profile.get("frontend", 0) or 0), self.settings, provider,
                       tuner=profile)
+        cap.users.add(user)
+        self.captures[a] = cap
+        cap.start()
+        return cap
+
+    def _acquire_tvheadend(self, channel, user):
+        """A Tvheadend channel: one stream (capture) per channel, shared by the
+        live view and recordings of that channel. The server decides whether
+        it has a tuner free; it refuses the stream otherwise."""
+        for cap in self.captures.values():
+            if tvheadend.is_tvheadend(cap.tuner) and cap.channel.key == channel.key:
+                cap.users.add(user)
+                return cap
+        a = tvheadend.free_adapter(self.captures)
+        cap = Capture(channel, a, 0, self.settings, tuner=tvheadend.stream_profile(a, channel))
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()

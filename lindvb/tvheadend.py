@@ -406,3 +406,101 @@ def download_logos(channels, folder, user="", password="", max_age=7 * 24 * 3600
         done[url] = path
         c.logo = path if os.path.exists(path) else c.logo
     return count
+
+
+# --------------------------------------------------------------------------
+# the stream, read into a tuner capture (lindvb.tuner.Capture)
+# --------------------------------------------------------------------------
+
+# Each stream from a server is a capture of its own, with an adapter number
+# from here up that no /dev/dvb adapter and no SAT>IP server uses.
+ADAPTER_BASE = 2000
+CHUNK = 188 * 348                # about 64 KiB of transport stream packets
+
+
+def is_tvheadend(profile):
+    """True for the tuner profile of a Tvheadend stream."""
+    return bool(profile) and profile.get("type") == "tvheadend"
+
+
+def stream_profile(adapter, channel):
+    """A tuner profile (lindvb.tunerprofiles) for one stream of a server."""
+    host = urllib.parse.urlsplit(channel.tvh_server).netloc
+    return {"type": "tvheadend", "adapter": adapter, "frontend": 0,
+            "server": channel.tvh_server, "name": f"Tvheadend {host}"}
+
+
+def free_adapter(used):
+    """The first adapter number for a new stream that *used* does not hold."""
+    a = ADAPTER_BASE
+    while a in used:
+        a += 1
+    return a
+
+
+class StreamReader:
+    """Reads the transport stream of a channel from the server in a thread
+    and hands it on in chunks: *on_data(bytes)*; *on_error(message)* when
+    the server refuses or the connection breaks (not after close())."""
+
+    def __init__(self, url, on_data, on_error=None, login=None, opener=None):
+        self.url = url
+        self.on_data = on_data
+        self.on_error = on_error
+        self.login = login if login is not None else (credentials(url) or ("", ""))
+        self.opener = opener
+        self.closed = False
+        self.received = 0
+        self._resp = None
+        self._thread = None
+
+    def start(self):
+        import threading
+        self._thread = threading.Thread(target=self._run, daemon=True,
+                                        name="tvheadend-stream")
+        self._thread.start()
+
+    def _run(self):
+        try:
+            resp = open_url(self.url, *self.login, timeout=20, opener=self.opener)
+        except TvheadendError as e:
+            self._fail(str(e))
+            return
+        self._resp = resp
+        if self.closed:
+            resp.close()
+            return
+        try:
+            while not self.closed:
+                data = resp.read1(CHUNK) if hasattr(resp, "read1") else resp.read(CHUNK)
+                if not data:
+                    self._fail(f"{urllib.parse.urlsplit(self.url).netloc}: "
+                               "the server ended the stream")
+                    break
+                self.received += len(data)
+                self.on_data(data)
+        except (OSError, ValueError) as e:
+            self._fail(f"{urllib.parse.urlsplit(self.url).netloc}: {e}")
+        finally:
+            try:
+                resp.close()
+            except OSError:
+                pass
+
+    def _fail(self, message):
+        if not self.closed and self.on_error is not None:
+            self.on_error(message)
+
+    def close(self):
+        """Stop reading; Tvheadend frees its tuner when the connection closes."""
+        self.closed = True
+        resp = self._resp
+        if resp is None:
+            return
+        import socket
+        sock = getattr(getattr(getattr(resp, "fp", None), "raw", None), "_sock", None)
+        try:
+            if sock is not None:
+                sock.shutdown(socket.SHUT_RDWR)      # wakes up the blocked read
+        except OSError:
+            pass

@@ -212,6 +212,13 @@ class LinDVBApp(Gtk.Application):
     def on_tsid(self, cap, tsid):
         """Channel lists without transport stream ids (older scans) learn it from
         the PAT, so the DVB guide (keyed by tsid:sid) finds its channels."""
+        if cap.channel.tvh_server:
+            # a Tvheadend stream: the capture kept the service's ids on the
+            # channel; its broadcast guide now links to the server's guide
+            self.db.save()
+            self.epg.relink()
+            self._epg_dirty = True
+            return
         mux = cap.channel.mux_key
         changed = False
         for c in self.db.channels:

@@ -232,3 +232,162 @@ def test_set_login():
     tvheadend.set_login(other, "http://other/stream")
     assert other.props == {}
     tvheadend._servers.clear()
+
+
+# --------------------------------------------------------------------------
+# stage 2: the stream through a tuner capture
+# --------------------------------------------------------------------------
+
+def psi(table_id, ext, body):
+    from lindvb.epgsources import mpeg_crc
+    head = bytes([table_id, 0xB0 | ((len(body) + 9) >> 8), (len(body) + 9) & 0xFF,
+                  ext >> 8, ext & 0xFF, 0xC1, 0, 0])
+    sec = head + body
+    return sec + mpeg_crc(sec).to_bytes(4, "big")
+
+
+SID, TSID, PMT_PID = 28106, 1101, 0x100
+
+
+def pcr_packet(pid, pcr90k, cc=0):
+    """A video packet carrying a PCR (tsparse timestamps by the PCR)."""
+    b = pcr90k & ((1 << 33) - 1)
+    pcr = bytes([b >> 25, (b >> 17) & 0xFF, (b >> 9) & 0xFF, (b >> 1) & 0xFF,
+                 ((b & 1) << 7) | 0x7E, 0])
+    af = bytes([7, 0x10]) + pcr
+    return bytes([0x47, pid >> 8, pid & 0xFF, 0x30 | (cc & 0x0F)]) + af + \
+        b"\xff" * (184 - len(af))
+
+
+def service_ts(repeat=40, start=0, step_ms=40):
+    """A small transport stream of one service (as Tvheadend's "pass" profile
+    sends it): PAT, PMT, a PCR and null packets, *step_ms* apart."""
+    from lindvb.dsmcc import ts_packets
+    pat = psi(0x00, TSID, bytes([SID >> 8, SID & 0xFF, 0xE0 | (PMT_PID >> 8), PMT_PID & 0xFF]))
+    pmt = psi(0x02, SID, bytes([0xE1, 0x01, 0xF0, 0x00,
+                                0x1B, 0xE1, 0x01, 0xF0, 0x00]))   # H.264 video on 0x101
+    null = b"\x47\x1f\xff\x10" + b"\xff" * 184
+    out = b""
+    for i in range(start, start + repeat):
+        out += ts_packets(0, [pat], i)[0] + ts_packets(PMT_PID, [pmt], i)[0] + \
+            pcr_packet(0x101, i * step_ms * 90, i) + null * 20
+    return out
+
+
+class StreamingTvheadend(FakeTvheadend):
+    def do_GET(self):
+        if not self.path.startswith("/stream/"):
+            return FakeTvheadend.do_GET(self)
+        FakeTvheadend.seen.append(self.path)
+        if not self._authorized():
+            self.send_response(401)
+            self.send_header("WWW-Authenticate", 'Digest realm="tvheadend", qop=auth, '
+                             'nonce="n1", opaque="op"')
+            self.end_headers()
+            return
+        if U3 in self.path:                       # no tuner free on the server
+            self.send_response(503)
+            self.end_headers()
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "video/mp2t")
+        self.end_headers()
+        import time
+        try:
+            for n in range(400):
+                self.wfile.write(service_ts(1, n))
+                self.wfile.flush()
+                time.sleep(0.01)
+        except OSError:
+            pass
+
+
+@pytest.fixture
+def streaming():
+    FakeTvheadend.mode = "digest"
+    FakeTvheadend.seen = []
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), StreamingTvheadend)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{srv.server_address[1]}"
+    tvheadend._servers.clear()
+    tvheadend._servers[base] = ("alex", "geheim")
+    yield base
+    srv.shutdown()
+    tvheadend._servers.clear()
+
+
+def test_stream_reader(streaming):
+    got, errors, done = [], [], threading.Event()
+
+    def data(b):
+        got.append(b)
+        if sum(map(len, got)) > 100_000:
+            done.set()
+    r = tvheadend.StreamReader(tvheadend.stream_url(streaming, U1), data, errors.append)
+    assert r.login == ("alex", "geheim")
+    r.start()
+    assert done.wait(10)
+    r.close()
+    r._thread.join(5)
+    assert not r._thread.is_alive() and not errors
+    assert b"".join(got)[0] == 0x47
+
+    failed = threading.Event()
+    r = tvheadend.StreamReader(tvheadend.stream_url(streaming, U3), got.append,
+                               lambda m: (errors.append(m), failed.set()))
+    r.start()
+    assert failed.wait(10) and "503" in errors[-1]
+
+
+def test_channel_kinds():
+    tvh = Channel(name="Das Erste HD", delsys="iptv", url="http://tvh:9981/stream/channel/x",
+                  tvh_server="http://tvh:9981", xmltv_id=U1)
+    web = Channel(name="Web", delsys="iptv", url="http://x/1.m3u8")
+    assert tvh.is_iptv and not tvh.via_url and web.via_url
+    assert tvh.epg_links == ["xmltv:" + U1]
+    tvh.sid, tvh.tsid = SID, TSID
+    assert tvh.epg_links == ["xmltv:" + U1, f"{TSID}:{SID}"]
+
+
+def test_ait_monitor_takes_the_only_service():
+    from lindvb.ait import AitMonitor
+    mon = AitMonitor(0)
+    mon.feed_buffer(service_ts(1))
+    assert mon.sid == SID and mon.pmt_pid == PMT_PID
+
+
+def test_tuner_manager_capture(streaming, tmp_path):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import GLib, Gst
+    Gst.init(None)
+    if not all(Gst.ElementFactory.find(e) for e in ("appsrc", "tsparse", "multifilesink")):
+        pytest.skip("GStreamer elements missing")
+    from lindvb.tuner import TunerManager
+    from lindvb.config import DEFAULTS
+    settings = dict(DEFAULTS, timeshift_dir=str(tmp_path), timeshift_max_mb=64)
+    tm = TunerManager(settings, probe=lambda a, f: [])
+    ch = tvheadend.channels_from_playlist(m3u("127.0.0.1"), streaming)[0]
+    assert ch.tvh_server == streaming and ch.sid == 0
+    cap = tm.acquire(ch, "live")
+    assert cap.adapter == tvheadend.ADAPTER_BASE and cap.source_label == "Tvheadend " + \
+        streaming.split("//")[1]
+    assert tm.acquire(ch, "rec") is cap and cap.users == {"live", "rec"}
+    tsids = []
+    cap.connect("tsid", lambda _c, t: tsids.append(t))
+    loop = GLib.MainLoop()
+    GLib.timeout_add(100, lambda: (loop.quit(), False)[1]
+                     if tsids and cap.store.bounds()[1] > 50_000 else True)
+    GLib.timeout_add_seconds(10, lambda: (loop.quit(), False)[1])
+    loop.run()
+    assert tsids == [TSID] and (ch.sid, ch.tsid) == (SID, TSID)
+    assert cap.store.bounds()[1] > 50_000             # in the timeshift buffer
+    assert any(p.startswith(f"/stream/channel/{U1}") for p in FakeTvheadend.seen)
+    other = tvheadend.channels_from_playlist(m3u("127.0.0.1"), streaming)[1]
+    cap2 = tm.acquire(other, "live2")
+    assert cap2 is not cap and cap2.adapter == tvheadend.ADAPTER_BASE + 1
+    tm.release(cap, "live")
+    tm.release(cap, "rec")
+    tm.release(cap2, "live2")
+    assert not tm.captures and cap._tvh.closed
