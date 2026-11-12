@@ -407,11 +407,15 @@ def test_player_reconnects():
     seen = []
     p.connect("reconnecting", lambda _p, s, r: seen.append((s, r)))
     p.uri, p._retry, p._played = "http://example.invalid/live.ts", ipstream.Retry(), True
+    assert p._retry is not None                       # play_uri(live=True) sets it
     assert p._try_reconnect("gone") and seen == [(1, "gone")]
     assert p._try_reconnect("gone again") and len(seen) == 1     # the same break
     p._cancel_reconnect()
     p.uri = "file:///tmp/film.ts"
     assert not p._try_reconnect("end")
+    p.uri, p._retry = "http://example.invalid/archive.ts", None     # not live: no retry
+    assert not p._try_reconnect("end")
+    p._retry = ipstream.Retry()
     p.uri, p.settings["stream_reconnect"] = "http://example.invalid/live.ts", False
     assert not p._try_reconnect("gone")
     p.stop()

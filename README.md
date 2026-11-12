@@ -56,7 +56,14 @@ them.
   groups; channel number entry, last channel, channel and favourite zapping
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
-* Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer
+* Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer.
+  Internet TV channels (M3U, Xtream, DVB-I, multicast) go through the same
+  buffer; HLS/DASH keep switching quality with the connection ("automatic") or
+  stay on the best quality (Preferences ▸ Playback ▸ Timeshift). Broken
+  internet and Tvheadend streams are opened again after a few seconds, for up
+  to three minutes. **Catch-up**: programmes of the last days from the
+  provider's archive ("Watch from the Start" in the programme guide), for M3U
+  lists with `catchup` attributes and Xtream Codes servers with an archive
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer

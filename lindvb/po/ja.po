@@ -4429,3 +4429,83 @@ msgstr "Tvheadend サーバーのチャンネル。チャンネルタグをグ�
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: {n} 件の番組を読み込みました"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "インターネットストリーム {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "サーバーがストリームを終了しました"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – {s} 秒後に再接続します"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: 再接続しました"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "ストリームを開けませんでした"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: タイムシフトなしでストリームを直接再生しています ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "接続が切れました ({reason}) – {s} 秒後に再試行します"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "再接続しました"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} には見逃し配信がありません"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "見逃し配信: {title} ({name}、{time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "インターネットチャンネルのタイムシフト"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "インターネットテレビのチャンネルもチューナーと同じようにタイムシフトバッファーを通ります。一時停止、巻き戻し、バッファーの録画保存ができます。ラジオのストリームは直接再生されます。"
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH ストリームの画質"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "自動 (接続に合わせる)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "常に最高画質"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "自動は接続が遅くなると低い画質に切り替え、バッファーは届いた内容を保持します。常に最高画質は見た目が変わりませんが、接続が遅いと止まって待ちます。"
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "インターネットストリームを再接続"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "インターネットまたは Tvheadend のチャンネルの接続が切れると、数秒後に最大 3 分間まで接続し直します。"
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "最初から見る"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "番組を提供元のアーカイブから最初から再生します (見逃し配信)"

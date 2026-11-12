@@ -373,7 +373,7 @@ class GstReader:
         pl = Gst.Pipeline.new(f"ipstream{gen}")
         src = Gst.ElementFactory.make("urisourcebin")
         if src is None:
-            self._fail(_("GStreamer element 'urisourcebin' is missing"))
+            self._fail("GStreamer element 'urisourcebin' is missing (gst-plugins-base)")
             return
         uri, ssm, rtp = multicast_source(self.url) if stream_kind(self.url) == "multicast" \
             else (self.url, None, False)

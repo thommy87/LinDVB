@@ -1742,7 +1742,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._update_quality_bar()
         if c.via_url or (c.is_iptv and not c.url):
             if c.url:
-                self.player.play_uri(c.url)
+                self.player.play_uri(c.url, live=True)
             else:
                 self.player.stop()          # DVB-I: an HbbTV application is the service
             self.hbbtv.channel_changed(c, None)
@@ -1778,7 +1778,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self._release_capture()
             self.quality.reset("iptv")
             self._update_quality_bar()
-            self.player.play_uri(c.url)
+            self.player.play_uri(c.url, live=True)
             self.hbbtv.channel_changed(c, None)
             self.set_status(_("{name}: playing the stream directly, without timeshift ({reason})")
                             .format(name=c.name, reason=_short(msg)))
@@ -2029,6 +2029,25 @@ class MainWindow(Gtk.ApplicationWindow):
             self.zap(self.current)
 
     # ------------------------------------------------------------------ files / urls / playlist
+    def play_catchup(self, channel, event):
+        """A programme from the provider's archive (lindvb.catchup), played
+        like a file: from its start, with the seek bar."""
+        from .. import catchup
+        url = catchup.url(channel, event.start, event.end)
+        if not url:
+            self.set_status(_("{name} has no catch-up").format(name=channel.name))
+            return
+        self.stop_playback()
+        self.stopped = None
+        self._show_picture(True)
+        self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(channel.key, 0)
+        self.playlist, self.playlist_pos = [url], 0
+        self.player.play_uri(url)
+        self.set_title(f"{event.title} – {channel.name} – {APP_NAME}")
+        self.set_status(_("Catch-up: {title} ({name}, {time})").format(
+            title=event.title, name=channel.name,
+            time=time.strftime("%a %H:%M", time.localtime(event.start))))
+
     def play_files(self, paths):
         self.stop_playback()
         self.stopped = None

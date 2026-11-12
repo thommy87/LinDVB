@@ -86,6 +86,10 @@ class Channel:
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
     tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
+    # catch-up (lindvb.catchup): the provider's archive of the last days
+    catchup: str = ""                # "", "default", "append", "shift", "flussonic", "xc"
+    catchup_days: int = 0
+    catchup_source: str = ""         # the address template ("default" / "append")
 
     @property
     def is_iptv(self):
@@ -552,6 +556,7 @@ def is_m3u(text, name=""):
 
 
 def parse_m3u(text, root="IPTV"):
+    from .catchup import kind_from_attrs
     out, info, group = [], {}, ""
     for line in text.splitlines():
         line = line.strip().lstrip("\ufeff")
@@ -562,7 +567,8 @@ def parse_m3u(text, root="IPTV"):
                     "radio": attrs.get("radio", "").lower() == "true",
                     "tvg_id": attrs.get("tvg-id", "").strip(),
                     "tvg_name": attrs.get("tvg-name", "").strip(),
-                    "logo_url": attrs.get("tvg-logo", "").strip()}
+                    "logo_url": attrs.get("tvg-logo", "").strip(),
+                    "catchup": kind_from_attrs(attrs)}
             group = ""
         elif line.upper().startswith("#EXTGRP:"):
             group = line.split(":", 1)[1].strip()
@@ -574,6 +580,8 @@ def parse_m3u(text, root="IPTV"):
                                radio=info.get("radio", False),
                                tvg_id=info.get("tvg_id", ""), tvg_name=info.get("tvg_name", ""),
                                logo_url=info.get("logo_url", "")))
+            kind, days, source = info.get("catchup") or ("", 0, "")
+            out[-1].catchup, out[-1].catchup_days, out[-1].catchup_source = kind, days, source
             info, group = {}, ""
     return out
 
@@ -590,6 +598,10 @@ def write_m3u(channels):
                 attrs += f'tvg-logo="{c.logo_url}" '
             if c.radio:
                 attrs += 'radio="true" '
+            if c.catchup:
+                attrs += f'catchup="{c.catchup}" catchup-days="{c.catchup_days}" '
+                if c.catchup_source:
+                    attrs += f'catchup-source="{c.catchup_source}" '
             lines.append(f'#EXTINF:-1 {attrs}group-title="{c.category}",{c.name}')
             lines.append(c.url)
     return "\n".join(lines) + "\n"

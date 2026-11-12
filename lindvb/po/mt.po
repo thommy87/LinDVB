@@ -4141,3 +4141,83 @@ msgstr "Il-kanali ta' server Tvheadend, bit-tags tal-kanali bħala gruppi u l-gw
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: {n} programmi mgħobbija"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "Fluss tal-Internet {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "is-server temm il-fluss"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – konnessjoni ġdida f'{s} s"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: konness mill-ġdid"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "il-fluss ma setax jinfetaħ"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: il-fluss qed jindaqq direttament, mingħajr timeshift ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Il-konnessjoni intilfet ({reason}) – tentattiv ġdid f'{s} s"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "Konness mill-ġdid"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "{name} m'għandux catch-up"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Catch-up: {title} ({name}, {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "Timeshift għall-kanali tal-Internet"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Il-kanali tat-TV tal-Internet jgħaddu mill-buffer tat-timeshift bħal tuner: pawża, aqbeż lura u żomm il-buffer bħala reġistrazzjoni. Il-flussi tar-radju jindaqqu direttament."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "Kwalità tal-flussi HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "Awtomatika (issegwi l-konnessjoni)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "Dejjem l-aħjar"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Awtomatika taqleb għal kwalità aktar baxxa meta l-konnessjoni tkun bil-mod; il-buffer iżomm dak li wasal. Dejjem l-aħjar tidher l-istess il-ħin kollu, imma tieqaf tistenna fuq konnessjoni bil-mod."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "Erġa' qabbad il-flussi tal-Internet"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Meta l-konnessjoni ta' kanal tal-Internet jew Tvheadend tinqata', terġa' tinfetaħ wara ftit sekondi, sa tliet minuti."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "Ara mill-bidu"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Idoqq il-programm mill-bidu tiegħu mill-arkivju tal-fornitur (catch-up)"

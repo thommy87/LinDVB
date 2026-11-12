@@ -45,6 +45,7 @@ SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
 from .ipstream import ADAPTIVE_DEMUX_SETTINGS, Retry  # noqa: E402
+from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
             "947 Hz", "1.9 kHz", "3.8 kHz", "7.5 kHz", "15 kHz"]
@@ -859,9 +860,11 @@ class Player(GObject.Object):
         self.paused = False
         pb.set_state(Gst.State.PLAYING)
 
-    def play_uri(self, uri):
+    def play_uri(self, uri, live=False):
+        """Play a file or an address; *live*: a channel's stream, opened again
+        when its connection breaks (files and archives play to their end)."""
         self._cancel_reconnect()
-        self._retry = Retry()
+        self._retry = Retry() if live else None
         self.capture, self.sid = None, 0
         if "://" not in uri:
             uri = Gst.filename_to_uri(uri)
@@ -1510,7 +1513,7 @@ class Player(GObject.Object):
             self.emit("error", describe_error(err, _dbg))
         elif t == Gst.MessageType.EOS:
             if self._network_stream() and self._live_stream() and \
-                    self._try_reconnect("the server ended the stream"):
+                    self._try_reconnect(_("the server ended the stream")):
                 return
             self.emit("eos")
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:

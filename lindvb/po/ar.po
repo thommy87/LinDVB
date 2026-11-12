@@ -4141,3 +4141,83 @@ msgstr "قنوات خادم Tvheadend، مع وسوم القنوات كمجمو�
 
 msgid "Tvheadend: {n} programmes loaded"
 msgstr "Tvheadend: تم تحميل {n} برنامج"
+
+#: lindvb/ipstream.py
+msgid "Internet stream {host}"
+msgstr "بث إنترنت {host}"
+
+#: lindvb/ipstream.py
+msgid "the server ended the stream"
+msgstr "أنهى الخادم البث"
+
+#: lindvb/ipstream.py
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – إعادة الاتصال بعد {s} ث"
+
+#: lindvb/ipstream.py
+msgid "{host}: connected again"
+msgstr "{host}: تم الاتصال مجددًا"
+
+#: lindvb/ipstream.py
+msgid "could not open the stream"
+msgstr "تعذّر فتح البث"
+
+#: lindvb/ui/window.py
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: يُعرض البث مباشرة دون إزاحة زمنية ({reason})"
+
+#: lindvb/ui/window.py
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "انقطع الاتصال ({reason}) – محاولة جديدة بعد {s} ث"
+
+#: lindvb/ui/window.py
+msgid "Connected again"
+msgstr "تم الاتصال مجددًا"
+
+#: lindvb/ui/window.py
+msgid "{name} has no catch-up"
+msgstr "لا توجد مشاهدة لاحقة لـ {name}"
+
+#: lindvb/ui/window.py
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "مشاهدة لاحقة: {title} ({name}، {time})"
+
+#: lindvb/ui/dialogs.py
+msgid "Timeshift for internet channels"
+msgstr "إزاحة زمنية لقنوات الإنترنت"
+
+#: lindvb/ui/dialogs.py
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "تمر قنوات تلفزيون الإنترنت عبر ذاكرة الإزاحة الزمنية مثل الموالف: إيقاف مؤقت والرجوع للخلف والاحتفاظ بالذاكرة كتسجيل. تُعرض بثوث الراديو مباشرة."
+
+#: lindvb/ui/dialogs.py
+msgid "Quality of HLS / DASH streams"
+msgstr "جودة بثوث HLS / DASH"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic (follows the connection)"
+msgstr "تلقائية (تتبع الاتصال)"
+
+#: lindvb/ui/dialogs.py
+msgid "Always the best"
+msgstr "الأفضل دائمًا"
+
+#: lindvb/ui/dialogs.py
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "التلقائية تنتقل إلى جودة أقل عندما يبطؤ الاتصال، وتحتفظ الذاكرة بما وصل. الأفضل دائمًا تبدو كما هي طوال الوقت، لكنها تتوقف للانتظار مع الاتصال البطيء."
+
+#: lindvb/ui/dialogs.py
+msgid "Reconnect internet streams"
+msgstr "إعادة اتصال بثوث الإنترنت"
+
+#: lindvb/ui/dialogs.py
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "عندما ينقطع اتصال قناة إنترنت أو Tvheadend يُعاد فتحه بعد بضع ثوانٍ، لمدة تصل إلى ثلاث دقائق."
+
+#: lindvb/ui/epg.py
+msgid "Watch from the Start"
+msgstr "المشاهدة من البداية"
+
+#: lindvb/ui/epg.py
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "يعرض البرنامج من بدايته من أرشيف المزوّد (مشاهدة لاحقة)"

@@ -61,7 +61,9 @@ class EPGWindow(Gtk.Window):
         det = scrolled(dbox)
         det.set_size_request(-1, 130)
         bar = Gtk.Box(spacing=6)
-        for label, fn in ((_("Watch"), self.on_watch), (_("Record"), self.on_record),
+        for label, fn in ((_("Watch"), self.on_watch),
+                          (_("Watch from the Start"), self.on_watch_from_start),
+                          (_("Record"), self.on_record),
                           (_("Record with Options…"), self.on_record_options),
                           (_("Record Series"), self.on_series), (_("Remind Me"), self.on_remind),
                           (_("Search Web"), self.on_web)):
@@ -70,6 +72,11 @@ class EPGWindow(Gtk.Window):
             bar.append(b)
             if fn == self.on_remind:
                 self.remind_btn = b
+            if fn == self.on_watch_from_start:
+                self.start_btn = b
+                b.set_tooltip_text(_("Plays the programme from its start from the "
+                                     "provider's archive (catch-up)"))
+                b.set_sensitive(False)
         bar.append(Gtk.Box(hexpand=True))
         export = Gtk.Button(icon_name="document-save-symbolic",
                             tooltip_text=_("Export the guide as XMLTV"))
@@ -368,7 +375,20 @@ class EPGWindow(Gtk.Window):
     # -- actions ----------------------------------------------------------------
     def on_watch(self):
         if self.selected_event:
-            self.app.window.zap(self.selected_event[0])
+            c, e = self.selected_event
+            from .. import catchup
+            if e.end <= time.time() and catchup.available(c, e.start, e.end):
+                self.app.window.play_catchup(c, e)       # over: from the archive
+            else:
+                self.app.window.zap(c)
+
+    def on_watch_from_start(self):
+        """Catch-up: the programme from its start, from the provider's archive."""
+        if self.selected_event:
+            c, e = self.selected_event
+            from .. import catchup
+            if catchup.available(c, e.start, e.end):
+                self.app.window.play_catchup(c, e)
 
     def on_record(self):
         if self.selected_event:
@@ -407,6 +427,9 @@ class EPGWindow(Gtk.Window):
 
     def _update_remind_button(self):
         sel = self.selected_event
+        from .. import catchup
+        self.start_btn.set_sensitive(bool(sel and catchup.available(sel[0], sel[1].start,
+                                                                     sel[1].end)))
         on = bool(sel and self.app.reminders.has(sel[0].key, sel[1].start))
         self.remind_btn.set_label(_("Remove Reminder") if on else _("Remind Me"))
 
