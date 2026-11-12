@@ -641,44 +641,68 @@ class PrefsWindow(Gtk.Window):
             s["hbbtv_pin"] = hb_core.hash_pin(pin, s["hbbtv_pin_salt"])
 
     def _build_tuners(self, pg, s):
-        """One block per tuner: name, on/off, priority, reception type, and for
-        satellite its cable, LNB and single cable settings."""
+        """Two sections: the hardware tuners found in this computer (numbered,
+        one block each with name, on/off, priority, reception type, and for
+        satellite its cable, LNB and single cable settings), then SAT>IP."""
         from .. import satip, tunerprofiles as tp
-        legacy = None if s.get("tuners") else list(s.get("adapters") or [0])
-        found = tp.merge_profiles(s.get("tuners") or [], tp.detect_tuners(), legacy)
-        found = satip.merge_profiles(found, s)
-        if not found:
-            found = [dict(p, present=False) for p in tp.legacy_profiles(s)]
+        present, missing = tp.hardware_tuners(s, tp.detect_tuners())
+        net = satip.merge_profiles([dict(p) for p in s.get("tuners") or []
+                                    if satip.is_satip(p)], s)
         self._tuner_rows = []
         glob = tp.tuner_lnb(None, s)
-        sats = [p for p in found if not p.get("systems") or "sat" in tp.families(p)]
+        local = present + missing
+        sats = [p for p in local if not p.get("systems") or "sat" in tp.families(p)]
         cables = {(p.get("group") or "").strip() for p in sats} - {""}
         # with up to two satellite tuners a switch says enough; the cable name
         # only shows when there can be more than one shared cable
         self._cable_names = len(sats) > 2 or len(cables) > 1
         self._default_cable = cables.pop() if len(cables) == 1 else tp.DEFAULT_GROUP
-        missing = [p for p in found if not p.get("present", True)]
-        if len(missing) == len(found):
-            pg.append(Gtk.Label(label=_("No tuner is connected."), xalign=0,
-                                css_classes=["lv-hint"]))
-        away = None
+
+        hw = self._tuner_section(pg, _("Hardware Tuners"))
+        if not present:
+            hw.append(Gtk.Label(label=_("No hardware tuner found."), xalign=0,
+                                css_classes=["lv-section-title"]))
+            hint = {"snap": _("The Snap package may only use the tuners once its DVB "
+                              "interface is connected: run \u201csudo snap connect "
+                              "lindvb:dvb\u201d and start LinDVB again."),
+                    "driver": _("Linux has not set up a DVB device (/dev/dvb is missing). "
+                                "The driver or the firmware of the tuner is probably "
+                                "missing; \u201cdmesg | grep -i dvb\u201d shows what the "
+                                "kernel reports.")}.get(tp.no_tuner_reason(),
+                                                       _("Connect a tuner and open the "
+                                                         "preferences again."))
+            hw.append(Gtk.Label(label=hint, xalign=0, wrap=True, css_classes=["lv-hint"]))
+        else:
+            hw.append(Gtk.Label(label=_("{n} tuners found in this computer.").format(
+                n=len(present)) if len(present) > 1 else
+                _("1 tuner found in this computer."), xalign=0, css_classes=["lv-hint"]))
+        for n, prof in enumerate(present, 1):
+            g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+            hw.append(g)
+            self._tuner_rows.append(self._tuner_block(g, prof, glob, number=n))
         if missing:
             away = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
-            exp = Gtk.Expander(label=_("Not connected ({n})").format(n=len(missing)),
-                               child=away)
-        for prof in [p for p in found if p.get("present", True)] + missing:
-            g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
-            (away if away is not None and not prof.get("present", True) else pg).append(g)
-            self._tuner_rows.append(self._tuner_block(g, prof, glob))
-        if away is not None:
-            pg.append(exp)
-        self._build_satip(pg, s)
+            hw.append(Gtk.Expander(label=_("Not connected ({n})").format(n=len(missing)),
+                                   child=away))
+            for prof in missing:
+                g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+                away.append(g)
+                self._tuner_rows.append(self._tuner_block(g, prof, glob))
 
-    def _build_satip(self, pg, s):
-        """The SAT>IP servers: found on the network or added by hand."""
+        self._build_satip(self._tuner_section(pg, "SAT>IP"), s, net, glob)
+
+    @staticmethod
+    def _tuner_section(pg, title):
+        """A darker box with a heading that holds one kind of tuners."""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10,
+                      css_classes=["lv-tuner-section"])
+        box.append(Gtk.Label(label=title, xalign=0, css_classes=["lv-section-title"]))
+        pg.append(box)
+        return box
+
+    def _build_satip(self, pg, s, tuners=(), glob=None):
+        """The SAT>IP servers (found on the network or added by hand) and their tuners."""
         from .. import satip
-        pg.append(Gtk.Label(label=_("SAT>IP servers"), xalign=0,
-                            css_classes=["lv-section-title"], margin_top=4))
         self._satip_servers = [dict(x) for x in s.get("satip_servers") or []]
         self._satip_group = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
                                     css_classes=["lv-group"])
@@ -720,6 +744,10 @@ class PrefsWindow(Gtk.Window):
             host.set_text("")
         add.connect("clicked", do_add)
         host.connect("activate", do_add)
+        for prof in tuners:
+            g = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+            pg.append(g)
+            self._tuner_rows.append(self._tuner_block(g, prof, glob))
 
     def _fill_satip(self):
         from .. import satip, tunerprofiles as tp
@@ -799,7 +827,7 @@ class PrefsWindow(Gtk.Window):
             servers.append(srv)
         s["satip_servers"] = servers
 
-    def _tuner_block(self, g, prof, glob):
+    def _tuner_block(self, g, prof, glob, number=None):
         from .. import satip, tunerprofiles as tp
         info = [tp.systems_label(prof.get("systems") or []) or _("Reception types unknown")]
         if prof.get("label") and prof.get("name"):
@@ -810,7 +838,10 @@ class PrefsWindow(Gtk.Window):
             info.append(f"adapter{prof['adapter']}/frontend{prof['frontend']}")
         if not prof.get("present", True):
             info.append(_("not connected"))
-        on = _row(g, tp.display_name(prof), Gtk.Switch(active=bool(prof.get("enabled", True))),
+        title = tp.display_name(prof)
+        if number is not None:
+            title = _("Tuner {n}: {name}").format(n=number, name=title)
+        on = _row(g, title, Gtk.Switch(active=bool(prof.get("enabled", True))),
                   " · ".join(info))
         label = _row(g, _("Name"), Gtk.Entry(text=prof.get("label", ""),
                                              placeholder_text=prof.get("name", "")),

@@ -178,6 +178,42 @@ def merge_profiles(saved, detected, legacy_adapters=None):
     return out
 
 
+def is_placeholder(profile):
+    """True for a tuner LinDVB only assumed and never saw: the older default
+    "Adapter 0" kept in the settings while no hardware was connected. It has
+    no reception types, no name of the device and no name of the user's own."""
+    if profile.get("type") == "satip" or profile.get("present", True):
+        return False
+    if profile.get("systems") or (profile.get("label") or "").strip():
+        return False
+    return (profile.get("name") or "").strip() in ("", f"Adapter {profile.get('adapter', 0)}")
+
+
+def hardware_tuners(settings, detected):
+    """The local DVB tuners for the preferences: (connected, not connected).
+
+    *detected* are the frontends found now (:func:`detect_tuners`). Saved
+    tuners that are missing now keep their settings; tuners that were never
+    seen (:func:`is_placeholder`) and the SAT>IP tuners are left out.
+    """
+    saved = [p for p in settings.get("tuners") or [] if p.get("type") != "satip"]
+    legacy = None if settings.get("tuners") else list(settings.get("adapters") or [0])
+    merged = [p for p in merge_profiles(saved, detected, legacy) if not is_placeholder(p)]
+    return ([p for p in merged if p.get("present", True)],
+            [p for p in merged if not p.get("present", True)])
+
+
+def no_tuner_reason(env=None, dvb_dir="/dev/dvb"):
+    """Why no tuner is seen: "snap" (the dvb interface is not connected),
+    "driver" (no /dev/dvb: driver or firmware missing) or "" (unknown)."""
+    env = os.environ if env is None else env
+    if env.get("SNAP_NAME") or env.get("SNAP"):
+        return "snap"
+    if not os.path.isdir(dvb_dir):
+        return "driver"
+    return ""
+
+
 def uses_default_adapters(adapters):
     """True for the untouched older adapter setting ([0]): then every tuner found is used."""
     return list(adapters or []) in ([], [0])

@@ -4540,3 +4540,35 @@ msgstr "{n} Sender nach {path} exportiert"
 
 msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
 msgstr "Senderliste importieren (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+#: lindvb/ui/dialogs.py
+msgid "Hardware Tuners"
+msgstr "Hardware-Tuner"
+
+#: lindvb/ui/dialogs.py
+msgid "No hardware tuner found."
+msgstr "Kein Hardware-Tuner gefunden."
+
+#: lindvb/ui/dialogs.py
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "Das Snap-Paket darf die Tuner erst nutzen, wenn seine DVB-Schnittstelle verbunden ist: „sudo snap connect lindvb:dvb“ ausführen und LinDVB neu starten."
+
+#: lindvb/ui/dialogs.py
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux hat kein DVB-Gerät eingerichtet (/dev/dvb fehlt). Wahrscheinlich fehlt der Treiber oder die Firmware des Tuners; „dmesg | grep -i dvb“ zeigt, was der Kernel meldet."
+
+#: lindvb/ui/dialogs.py
+msgid "Connect a tuner and open the preferences again."
+msgstr "Einen Tuner anschließen und die Einstellungen erneut öffnen."
+
+#: lindvb/ui/dialogs.py
+msgid "{n} tuners found in this computer."
+msgstr "{n} Tuner in diesem Computer gefunden."
+
+#: lindvb/ui/dialogs.py
+msgid "1 tuner found in this computer."
+msgstr "1 Tuner in diesem Computer gefunden."
+
+#: lindvb/ui/dialogs.py
+msgid "Tuner {n}: {name}"
+msgstr "Tuner {n}: {name}"
