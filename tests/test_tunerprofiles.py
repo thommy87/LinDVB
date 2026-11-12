@@ -235,3 +235,47 @@ def test_hbbtv_view_of_a_shared_service():
     assert cap._views == {}
     cap.ait_monitor = None                               # HbbTV switched off
     assert Capture.service_view(cap, live) is None
+
+
+# -- the tuner list of the preferences -------------------------------------------
+
+def test_hardware_tuners_without_hardware_shows_none():
+    """No tuner connected: no made-up "Adapter 0", neither from the older
+    default setting nor from a placeholder saved by an earlier version."""
+    assert tp.hardware_tuners({"adapters": [0]}, []) == ([], [])
+    saved = {"tuners": [tp.new_profile(0, 0)]}
+    assert tp.hardware_tuners(saved, []) == ([], [])
+
+
+def test_hardware_tuners_lists_every_frontend():
+    """A card with four tuners and a DVB-T2 stick: five entries, in order."""
+    found = [tp.new_profile(0, f, "Quad card", ["dvb-s", "dvb-s2"]) for f in range(4)]
+    found.append(tp.new_profile(1, 0, "T2 stick", ["dvb-t", "dvb-t2"]))
+    present, missing = tp.hardware_tuners({"adapters": [0]}, found)
+    assert [(p["adapter"], p["frontend"]) for p in present] == \
+        [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0)]
+    assert all(p["enabled"] for p in present)
+    assert missing == []
+
+
+def test_hardware_tuners_keeps_known_missing_tuners_and_skips_satip():
+    seen = dict(tp.new_profile(1, 0, "T2 stick", ["dvb-t2"]), label="Stick")
+    net = {"type": "satip", "adapter": 1000, "frontend": 0, "host": "box"}
+    s = {"tuners": [tp.new_profile(0, 0, "Card", ["dvb-s2"]), seen, net]}
+    present, missing = tp.hardware_tuners(s, [tp.new_profile(0, 0, "Card", ["dvb-s2"])])
+    assert [p["name"] for p in present] == ["Card"]
+    assert [p["label"] for p in missing] == ["Stick"]
+
+
+def test_is_placeholder():
+    assert tp.is_placeholder(dict(tp.new_profile(0), present=False))
+    assert not tp.is_placeholder(dict(tp.new_profile(0), present=True))
+    assert not tp.is_placeholder(dict(tp.new_profile(0, systems=["dvb-s"]), present=False))
+    assert not tp.is_placeholder(dict(tp.new_profile(0), label="Mine", present=False))
+    assert not tp.is_placeholder(dict(tp.new_profile(0, name="TBS 6903"), present=False))
+
+
+def test_no_tuner_reason(tmp_path):
+    assert tp.no_tuner_reason({"SNAP_NAME": "lindvb"}, str(tmp_path)) == "snap"
+    assert tp.no_tuner_reason({}, str(tmp_path / "missing")) == "driver"
+    assert tp.no_tuner_reason({}, str(tmp_path)) == ""
