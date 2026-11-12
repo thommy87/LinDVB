@@ -241,12 +241,22 @@ columnview.tune-result cell.tune-gone { background-color: alpha(#e01b24, 0.32); 
 }
 .lv-group > .lv-row { padding: 8px 0; }
 .lv-group > .lv-row + .lv-row { border-top: 1px solid alpha(@lv_line, 0.06); }
+/* preferences: a section that holds one kind of tuners (hardware, SAT>IP) */
+.lv-tuner-section {
+  background: alpha(black, 0.22); border: 1px solid alpha(@lv_line, 0.05);
+  border-radius: 14px; padding: 12px;
+}
 .lv-page-title { font-size: 1.25em; font-weight: 700; }
 stacksidebar.lv-nav { background: alpha(@lv_line, 0.02); }
 stacksidebar.lv-nav row { padding: 8px 12px; border-radius: 8px; margin: 1px 6px; }
 """
 
 # The OSD sits on the picture, so it stays dark in the light scheme too.
+# Darker than the page in the light scheme too, but only a little.
+_LIGHT_DIALOGS = """
+.lv-tuner-section { background: alpha(black, 0.05); }
+"""
+
 _LIGHT_OSD = """
 .osd, .osd-num { background: alpha(#121215, 0.86); color: #F2F2F5;
                  border-color: alpha(white, 0.08); }
@@ -262,7 +272,7 @@ def theme_css(scheme="dark"):
     """The player's CSS in the colour scheme "dark" or "light"."""
     pal = PALETTES["light" if scheme == "light" else "dark"]
     defs = "".join(f"@define-color {k} {v};\n" for k, v in pal.items())
-    return defs + CSS_BODY + (_LIGHT_OSD if scheme == "light" else "")
+    return defs + CSS_BODY + (_LIGHT_OSD + _LIGHT_DIALOGS if scheme == "light" else "")
 
 
 CSS = theme_css("dark")
