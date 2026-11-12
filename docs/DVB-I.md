@@ -88,6 +88,12 @@ The rest of this page describes the German profile; requirement numbers
      backgrounds is preferred. A logo in your own logo folder still wins
 6. The DVB-I channels come first in the channel list, in their own group. Your
    other channels keep their place after the highest DVB-I channel number.
+   The group is named after the list, e.g. "DVB-I Italy · Rai" or, for a list
+   loaded by its address, "DVB-I · <name of the list>". **Name in the channel
+   list** in the setup sets a name of your own.
+   Once you move channels in the channel editor, your order counts instead of
+   the DVB-I numbers, also after list updates (new channels come at the end).
+   The editor's sort menu brings back the numbers of the list.
 
 The list is checked again at least every 24 hours (with If-Modified-Since).
 When the download fails, the last list stays in use. **Update Now** in the

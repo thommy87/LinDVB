@@ -131,6 +131,19 @@ class DVBIPanel(Gtk.Box):
         self.lists.connect("row-selected", lambda *_: self._sensitive())
         box.append(self.lists)
         self.current_lbl = self.hint(box, "")
+        # the group name of the DVB-I channels in the channel list
+        nrow = Gtk.Box(spacing=8)
+        nrow.append(Gtk.Label(label=_("Name in the channel list"), xalign=0))
+        self.label_entry = Gtk.Entry(hexpand=True, text=self.s.get("dvbi_list_label", ""))
+        self.label_entry.set_tooltip_text(_("Shown as the source in the channel list filter. "
+                                            "Empty: the name the list gives itself."))
+        self.label_entry.connect("activate", lambda *_: self._label_edited())
+        focus = Gtk.EventControllerFocus()
+        focus.connect("leave", lambda *_: self._label_edited())
+        self.label_entry.add_controller(focus)
+        nrow.append(self.label_entry)
+        box.append(nrow)
+        self._show_label_hint()
         exp = Gtk.Expander(label=_("Registry address"))
         ebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_top=6)
         self.registry_entry = Gtk.Entry(hexpand=True)
@@ -432,8 +445,11 @@ class DVBIPanel(Gtk.Box):
             self.status.set_text(_("Please confirm the privacy notice first."))
             return
         s = self.s
+        if url != s.get("dvbi_list_url"):
+            self._forget_label()
         s["dvbi_list_url"] = url
         s["dvbi_list_name"] = urllib.parse.urlsplit(url).netloc or url
+        s["dvbi_list_manual"] = True
         s["dvbi_last_modified"] = s["dvbi_etag"] = s["dvbi_region"] = ""
         s["dvbi_privacy_ack"] = True
         s.save()
@@ -588,7 +604,10 @@ class DVBIPanel(Gtk.Box):
         changed = offer is not None and offer.url != s.get("dvbi_list_url") or \
             postcode != s.get("dvbi_postcode", "")
         if offer is not None:
+            if offer.url != s.get("dvbi_list_url"):
+                self._forget_label()
             s["dvbi_list_url"], s["dvbi_list_name"] = offer.url, offer.name
+            s["dvbi_list_manual"] = False
         if changed:
             # a new list or postcode: the first request goes without the
             # caching headers (IT-18), the region is chosen again
@@ -609,6 +628,7 @@ class DVBIPanel(Gtk.Box):
 
     def _done(self, res, msg):
         self._busy(False, msg)
+        self._show_label_hint()
         self.current_lbl.set_text(_("In use: {v0}").format(
             v0=self.s.get('dvbi_list_name') or self.s.get('dvbi_list_url')))
         if res.error_code:
@@ -647,6 +667,36 @@ class DVBIPanel(Gtk.Box):
                 self._install(nationwide=True)
         dlg.choose(self.get_root(), None, chosen)
 
+    def _show_label_hint(self):
+        auto = self.s.get("dvbi_list_auto_label", "")
+        self.label_entry.set_placeholder_text(auto or _("The name the list gives itself"))
+
+    def _forget_label(self):
+        """Another list: its own name, not the one set for the last list."""
+        self.s["dvbi_list_label"] = self.s["dvbi_list_auto_label"] = ""
+        self.label_entry.set_text("")
+        self._show_label_hint()
+
+    def _label_edited(self):
+        """Keep the name and rename the DVB-I channels already in the list."""
+        text = self.label_entry.get_text().strip()
+        if text == (self.s.get("dvbi_list_label") or ""):
+            return
+        self.s["dvbi_list_label"] = text
+        new = text or self.s.get("dvbi_list_auto_label", "")
+        db = self.app.db
+        old = {c.root for c in db.channels if c.dvbi_id}
+        if new:
+            for c in db.channels:
+                if c.dvbi_id:
+                    c.root = new
+            if self.s.get("list_group") in old:
+                self.s["list_group"] = new          # the filter stays on the list
+            db.save()
+            if self.app.window:
+                self.app.window.reload_channels()
+        self.s.save()
+
     def _set(self, key, value):
         self.s[key] = value
         self.s.save()
@@ -662,7 +712,7 @@ class DVBIPanel(Gtk.Box):
     def _remove(self):
         removed = self.app.db.replace_dvbi([])[2]
         for k in ("dvbi_list_url", "dvbi_list_name", "dvbi_region", "dvbi_last_modified",
-                  "dvbi_etag"):
+                  "dvbi_etag", "dvbi_list_auto_label"):
             self.s[k] = ""
         self.s["dvbi_last_check"] = 0
         self.s.save()
