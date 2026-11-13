@@ -8,7 +8,9 @@ user enters the server, a user name and a password once, and LinDVB fetches
 * the channel list: ``/playlist/channels.m3u?profile=pass`` (an M3U with the
   channel number, logo and the channel's UUID as ``tvg-id``),
 * the channel tags: ``/playlist/e2/tags`` (Enigma2 format, the tags and the
-  channels in each), which become the channel groups and tell radio apart,
+  channels in each), which become the channel groups and tell radio apart
+  (the tags Tvheadend makes for the picture quality, HDTV / SDTV / UHDTV,
+  and for TV / radio are not groups),
 * the guide: ``/xmltv/channels`` (XMLTV whose channel ids are the same UUIDs),
 * the streams: ``/stream/channel/<uuid>?profile=pass``, the unchanged MPEG
   transport stream of the service.
@@ -314,11 +316,25 @@ def parse_e2_tags(text):
 
 
 RADIO_TAG = re.compile(r"radio", re.I)
+# Tags Tvheadend makes itself for the kind of service ("Create type-based
+# tags" of the service mapper, the wizard's "TV channels"): picture quality
+# and TV / radio, not groups of channels.
+TYPE_TAG = re.compile(r"^(?:(?:u|f)?hd|sd|uhd|4k|8k)(?:[ -]?tv)?(?: channels)?$"
+                      r"|^tv(?: channels)?$|^tv-?sender$", re.I)
+
+
+def is_type_tag(tag):
+    """True for a tag that only tells the kind of service (radio, TV, HDTV,
+    SDTV, UHDTV ...), not a group."""
+    tag = (tag or "").strip()
+    return bool(RADIO_TAG.search(tag) or TYPE_TAG.match(tag))
 
 
 def channels_from_playlist(raw, base, tags=None, root=""):
     """The channels of the server's M3U (bytes): stream addresses by UUID,
-    the guide id set, groups and radio from the tags."""
+    the guide id set, groups and radio from the tags. A channel can have
+    several tags; all of them that are groups go to ``Channel.groups`` (the
+    channel list offers each), the first of them is its category."""
     from .channels import decode_text, parse_m3u
     tags = tags or {}
     out = []
@@ -333,10 +349,16 @@ def channels_from_playlist(raw, base, tags=None, root=""):
         mine = tags.get(cid, [])
         if any(RADIO_TAG.search(t) for t in mine):
             c.radio = True
-        groups = [t for t in mine if not RADIO_TAG.search(t) and
-                  not re.search(r"^(tv|hd|sd)( channels)?$|^tv-?sender$", t, re.I)]
-        if not c.category and groups:
-            c.category = groups[0]
+        groups = []
+        for t in mine:
+            if not is_type_tag(t) and t not in groups:
+                groups.append(t)
+        if is_type_tag(c.category):
+            c.category = ""              # a group-title that is only the kind of service
+        if not groups and c.category:
+            groups = [c.category]
+        c.groups = groups
+        c.category = groups[0] if groups else ""
         out.append(c)
     return out
 

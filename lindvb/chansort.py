@@ -42,6 +42,20 @@ def group_value(c, sort):
     return ""
 
 
+def group_values(c, sort):
+    """All values of *c* the list groups by for *sort*: a Tvheadend channel
+    can be in several groups (its channel tags), the others in one."""
+    if sort == "provider" and c.groups:
+        return list(c.groups)
+    v = group_value(c, sort)
+    return [v] if v else []
+
+
+def in_group(c, sort, value):
+    """True when *c* belongs to the group *value* of *sort*."""
+    return value in group_values(c, sort)
+
+
 _QUALITY_ORDER = {"UHD": 0, "HD": 1, "SD": 2, "": 3}
 
 
@@ -64,9 +78,10 @@ def values(channels, sort):
     """The distinct group values among *channels*, in list order of *sort*."""
     seen = {}
     for c in sorted(channels, key=lambda c: sort_key(c, sort)):
-        v = group_value(c, sort)
-        if v and v not in seen:
-            seen[v] = True
+        for v in group_values(c, sort):
+            seen.setdefault(v, True)
+    if sort == "provider":
+        return sorted(seen, key=str.casefold)
     return list(seen)
 
 
