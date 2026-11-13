@@ -190,6 +190,17 @@ class Feeder(threading.Thread):
         self.running = False
 
 
+def display_size(s):
+    """(width, height) of a video caps structure as it is shown: the width
+    stretched by the pixel aspect ratio, so 720x576 at 64/45 (SD 16:9) is
+    1024x576. Without a pixel-aspect-ratio field the pixels count as square."""
+    w, h = s.get_int("width")[1], s.get_int("height")[1]
+    ok, n, d = s.get_fraction("pixel-aspect-ratio")
+    if ok and n > 0 and d > 0 and n != d:
+        w = round(w * n / d)
+    return w, h
+
+
 class VideoBin:
     """Video sink for GTK 4: gtk4paintablesink if present, else appsink -> GdkTexture."""
 
@@ -207,6 +218,12 @@ class VideoBin:
             return
         bin_ = Gst.Bin.new("videoout")
         conv = Gst.ElementFactory.make("videoconvert")
+        # A GdkMemoryTexture has square pixels. Anamorphic pictures (SD 16:9
+        # as 720x576 with pixel-aspect-ratio 64/45, HD as 1440x1080 with 4/3)
+        # would be shown squeezed, so videoscale stretches them to square
+        # pixels first (720x576 16:9 -> 1024x576). gtk4paintablesink above
+        # applies the pixel aspect ratio itself.
+        scale = Gst.ElementFactory.make("videoscale")
         appsink = Gst.ElementFactory.make("appsink")
         # Opaque formats: visualisers such as GOOM leave junk in the padding
         # byte, which RGBA would turn into transparency.
@@ -214,14 +231,17 @@ class VideoBin:
             self._format, caps = Gdk.MemoryFormat.R8G8B8X8, "RGBx"
         else:
             self._format, caps = Gdk.MemoryFormat.R8G8B8, "RGB"
-        appsink.set_property("caps", Gst.Caps.from_string(f"video/x-raw,format={caps}"))
+        appsink.set_property("caps", Gst.Caps.from_string(
+            f"video/x-raw,format={caps},pixel-aspect-ratio=1/1"))
         appsink.set_property("emit-signals", True)
         appsink.set_property("max-buffers", 2)
         appsink.set_property("drop", True)
         appsink.connect("new-sample", self._on_sample)
-        bin_.add(conv)
-        bin_.add(appsink)
-        conv.link(appsink)
+        chain = [conv] + ([scale] if scale is not None else []) + [appsink]
+        for e in chain:
+            bin_.add(e)
+        for a, b in zip(chain, chain[1:]):
+            a.link(b)
         bin_.add_pad(Gst.GhostPad.new("sink", conv.get_static_pad("sink")))
         self.sink = bin_
         self._pending = None
@@ -1310,8 +1330,7 @@ class Player(GObject.Object):
             pad = self.playbin.emit("get-video-pad", 0)
             caps = pad.get_current_caps() if pad else None
         if caps:
-            s = caps.get_structure(0)
-            return s.get_int("width")[1], s.get_int("height")[1]
+            return display_size(caps.get_structure(0))
         return None
 
     # -- channel analysis ---------------------------------------------------
