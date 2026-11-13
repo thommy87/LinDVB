@@ -1,0 +1,4587 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_CN\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "导入频道列表（dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini）"
+
+msgid "Start with this channel (name or number)"
+msgstr "以此频道启动（名称或编号）"
+
+msgid "{channel} at {time}"
+msgstr "{channel}，{time}"
+
+msgid "Watch"
+msgstr "观看"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "提醒：{title}，{channel}，{time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "请先在设置中填写 XMLTV 地址"
+
+msgid "Downloading XMLTV guide…"
+msgstr "正在下载 XMLTV 节目指南…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr "，{unmatched} 个没有节目指南（设置 ▸ EPG ▸ 匹配 IPTV 频道）"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I：正在加载服务列表…"
+
+msgid "Search the web"
+msgstr "在网上搜索"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "图文电视 (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "字幕 (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG 数据 (TS)"
+
+msgid "All audio tracks"
+msgstr "所有音轨"
+
+msgid "Preferred language only"
+msgstr "仅首选语言"
+
+msgid "First audio track only"
+msgstr "仅第一条音轨"
+
+msgid "Record"
+msgstr "录制"
+
+msgid "Record and tune"
+msgstr "录制并切换"
+
+msgid "Tune only"
+msgstr "仅切换"
+
+msgid "Hibernate"
+msgstr "休眠"
+
+msgid "None"
+msgstr "无"
+
+msgid "Power off"
+msgstr "关机"
+
+msgid "Quit LinDVB"
+msgstr "退出 LinDVB"
+
+msgid "Standby"
+msgstr "待机"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "网络流没有图文电视、字幕或 EPG 数据流。"
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 只保留一条音轨（播出时的首选语言）。"
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "音频文件只保留一条音轨（播出时的首选语言）。"
+
+msgid "Fr"
+msgstr "五"
+
+msgid "Mo"
+msgstr "一"
+
+msgid "Sa"
+msgstr "六"
+
+msgid "Su"
+msgstr "日"
+
+msgid "Th"
+msgstr "四"
+
+msgid "Tu"
+msgstr "二"
+
+msgid "We"
+msgstr "三"
+
+msgid "Scheduled"
+msgstr "已计划"
+
+msgid "Done"
+msgstr "已完成"
+
+msgid "Channel missing"
+msgstr "频道缺失"
+
+msgid "Tuned"
+msgstr "已切换"
+
+msgid "Recording"
+msgstr "正在录制"
+
+msgid "Failed"
+msgstr "失败"
+
+msgid "Missed"
+msgstr "已错过"
+
+msgid "After recording: {action}"
+msgstr "录制后：{action}"
+
+msgid "The module was removed or reset."
+msgstr "模块已被移除或重置。"
+
+msgid "CAM Menu"
+msgstr "CAM 菜单"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "OK"
+msgstr "确定"
+
+msgid "Open CAM Menu"
+msgstr "打开 CAM 菜单"
+
+msgid "Select"
+msgstr "选择"
+
+msgid "Back"
+msgstr "返回"
+
+msgid "Close Menu"
+msgstr "关闭菜单"
+
+msgid "Device: {path} – {state}"
+msgstr "设备：{path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "打开 CAM 菜单以查看模块设置、智能卡信息和家长控制。"
+
+msgid "The module has not finished starting yet."
+msgstr "模块尚未完成启动。"
+
+msgid "Custom colour"
+msgstr "自定义颜色"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB 蓝（默认）"
+
+msgid "System accent colour"
+msgstr "系统强调色"
+
+msgid "Preferences"
+msgstr "设置"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Appearance"
+msgstr "外观"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "重新启动 LinDVB 后生效。"
+
+msgid "Accent colour"
+msgstr "强调色"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "用于所有窗口中的高亮、选中项和按钮。"
+
+msgid "On-screen display"
+msgstr "屏幕显示"
+
+msgid "OSD display time (s)"
+msgstr "OSD 显示时间（秒）"
+
+msgid "Visualisation"
+msgstr "可视化效果"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "播放广播频道或音频文件时，在广播可视化效果上显示的内容。歌曲信息来自 DVB 广播的 RadioText、网络电台的流标题以及音频文件的标签。"
+
+msgid "Overlay"
+msgstr "叠加显示"
+
+msgid "Station logo tile"
+msgstr "电台台标图块"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "频道的台标；没有台标时显示带电台名称的图块。"
+
+msgid "Album cover"
+msgstr "专辑封面"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "正在播出歌曲的封面，取自文件或在网上查找。"
+
+msgid "Song information"
+msgstr "歌曲信息"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "艺人、专辑和年份、曲目和标题。没有歌曲信息时，显示电台和正在播出的节目。"
+
+msgid "Clock in the top right corner"
+msgstr "右上角的时钟"
+
+msgid "Sources"
+msgstr "来源"
+
+msgid "Look up covers online"
+msgstr "在网上查找封面"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "将正在播出歌曲的艺人和标题发送到 iTunes Search API，以查找专辑、年份和封面。"
+
+msgid "Station logo folder"
+msgstr "电台台标文件夹"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "以频道命名的图片文件（PNG、SVG、JPG），例如 \"Bayern 3.png\"。以频道命名的台标（DVBViewer 的保存方式）可直接使用。留空：{v0}"
+
+msgid "Playback"
+msgstr "播放"
+
+msgid "Deinterlace video"
+msgstr "视频去隔行"
+
+msgid "Screenshot folder"
+msgstr "截图文件夹"
+
+msgid "Timeshift"
+msgstr "时移"
+
+msgid "Timeshift folder"
+msgstr "时移文件夹"
+
+msgid "Timeshift buffer (MB)"
+msgstr "时移缓冲区 (MB)"
+
+msgid "Tuner and Channels"
+msgstr "调谐器和频道"
+
+msgid "DVB hardware"
+msgstr "DVB 硬件"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "LinDVB 可使用的适配器编号，用逗号分隔。"
+
+msgid "DVB adapters"
+msgstr "DVB 适配器"
+
+msgid "Frontend"
+msgstr "前端"
+
+msgid "Capture whole transponder"
+msgstr "捕获整个转发器"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "当频道列表只知道一个音频 PID 时，录制所有音轨需要此选项。"
+
+msgid "Satellite LNB"
+msgstr "卫星 LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF 低波段 (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF 高波段 (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "切换频率 (kHz)"
+
+msgid "Channels"
+msgstr "频道"
+
+msgid "Channel Search…"
+msgstr "频道搜索…"
+
+msgid "Channel search"
+msgstr "频道搜索"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "在天线、有线或卫星上搜索频道 (Shift+Ctrl+S)。"
+
+msgid "Channel Editor / Favourites"
+msgstr "频道编辑器 / 收藏"
+
+msgid "Channel editor"
+msgstr "频道编辑器"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "重命名、排序、删除和添加频道，并标记收藏 (Shift+Ctrl+E)。"
+
+msgid "Internet"
+msgstr "网络"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "来自网络的频道列表：您所在地区的 DVB-I 列表和 IPTV 播放列表。这些设置立即生效。"
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "录制"
+
+msgid "Recording folder"
+msgstr "录制文件夹"
+
+msgid "File naming scheme"
+msgstr "文件命名规则"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "占位符：%year %date %time %end %station %name，/ 表示子文件夹"
+
+msgid "Timer padding"
+msgstr "定时录制余量"
+
+msgid "Start earlier by (min)"
+msgstr "提前开始（分钟）"
+
+msgid "Stop later by (min)"
+msgstr "延后结束（分钟）"
+
+msgid "Timers"
+msgstr "定时录制"
+
+msgid "Open the timer window after creating a timer"
+msgstr "创建定时录制后打开定时录制窗口"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "在节目指南中点击“录制”后，立即编辑新的定时录制。"
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "节目指南：广播 EPG、网络 EPG (XMLTV) 以及其他运营商的 EPG。"
+
+msgid "Conditional access"
+msgstr "条件接收"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "使用您自己在 softcam 或 CI 模块中的卡，为您订阅的加密频道解扰。"
+
+msgid "None (leave scrambled)"
+msgstr "无（保持加扰）"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "外部 softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "硬件 CI / CI+ 模块"
+
+msgid "Descrambling via"
+msgstr "解扰方式"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI 套接字"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix 套接字路径，或 host:port。"
+
+msgid "CI module"
+msgstr "CI 模块"
+
+msgid "CI adapter number"
+msgstr "CI 适配器编号"
+
+msgid "CA device number"
+msgstr "CA 设备编号"
+
+msgid "Plugins"
+msgstr "插件"
+
+msgid "Load plugins at startup"
+msgstr "启动时加载插件"
+
+msgid "Manage Plugins…"
+msgstr "管理插件…"
+
+msgid "Format and tracks"
+msgstr "格式和轨道"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "新定时录制和录制按钮的默认值。每个定时录制以及通过“带选项录制…”开始的录制都可以更改这些设置。\nTS：视频、所有音轨、字幕、图文电视和 EPG 数据。MKV：视频、多条音轨和字幕。MPG：视频和多条音轨。MP4：视频和一条音轨。网络流没有图文电视、字幕或 EPG 数据；HLS 和 DASH 流以一条音轨录制。"
+
+msgid "TV format"
+msgstr "电视格式"
+
+msgid "Radio format"
+msgstr "广播格式"
+
+msgid "Audio tracks"
+msgstr "音轨"
+
+msgid "Preferred audio language"
+msgstr "首选音频语言"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "用于“仅首选语言”以及只保留一条音轨的 MP4。音频描述音轨会被跳过。没有匹配时录制第一条音轨。"
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}：{items} 只能保存在 MPEG-TS 中，因此录制保存为 TS。"
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}：{items} 只能保存在 TS 或 MKV 中，因此录制保存为 TS。"
+
+msgid " and "
+msgstr "和"
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "未设置首选音频语言，因此只录制第一条音轨。"
+
+msgid "Desktop accent: {found}"
+msgstr "桌面强调色：{found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "未找到桌面强调色，使用 LinDVB 蓝。"
+
+msgid "Current accent: {color}"
+msgstr "当前强调色：{color}"
+
+msgid "Channel Editor"
+msgstr "频道编辑器"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Category"
+msgstr "类别"
+
+msgid "Group"
+msgstr "分组"
+
+msgid "Fav"
+msgstr "收藏"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Filter channels"
+msgstr "筛选频道"
+
+msgid "General"
+msgstr "常规"
+
+msgid "Stream URL"
+msgstr "流地址"
+
+msgid "Favourite"
+msgstr "收藏"
+
+msgid "Radio"
+msgstr "广播"
+
+msgid "Encrypted"
+msgstr "加密"
+
+msgid "Tuning"
+msgstr "调谐"
+
+msgid "System"
+msgstr "系统"
+
+msgid "Polarity"
+msgstr "极化"
+
+msgid "Modulation"
+msgstr "调制"
+
+msgid "Frequency (kHz)"
+msgstr "频率 (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "符号率 (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "带宽 (Hz)"
+
+msgid "Stream ID"
+msgstr "流 ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC 端口（-1 为无）"
+
+msgid "Service and PIDs"
+msgstr "服务和 PID"
+
+msgid "Service ID"
+msgstr "服务 ID"
+
+msgid "Transport ID"
+msgstr "传输流 ID"
+
+msgid "Video PID"
+msgstr "视频 PID"
+
+msgid "Audio PIDs"
+msgstr "音频 PID"
+
+msgid "Teletext PID"
+msgstr "图文电视 PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "应用更改 (Ctrl+S)"
+
+msgid "New channel"
+msgstr "新建频道"
+
+msgid "Delete channel"
+msgstr "删除频道"
+
+msgid "Move up"
+msgstr "上移"
+
+msgid "Move down"
+msgstr "下移"
+
+msgid "Sort by group and name"
+msgstr "按分组和名称排序"
+
+msgid "No channel selected"
+msgstr "未选择频道"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "在列表中选择一个频道进行编辑。"
+
+msgid "Unnamed channel"
+msgstr "未命名频道"
+
+msgid "Recording and Device Statistics"
+msgstr "录制和设备统计"
+
+msgid "Active recordings:"
+msgstr "正在进行的录制："
+
+msgid "\nNext timer: {v0}"
+msgstr "\n下一个定时录制：{v0}"
+
+msgid "Teletext – {name}"
+msgstr "图文电视 – {name}"
+
+msgid "Find on page"
+msgstr "在页面中查找"
+
+msgid "Copy page"
+msgstr "复制页面"
+
+msgid "Save page"
+msgstr "保存页面"
+
+msgid "Waiting for teletext…"
+msgstr "正在等待图文电视…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "缺少 teletextdec（带 libzvbi 的 gst-plugins-bad）。"
+
+msgid "Searching page {page}…"
+msgstr "正在搜索第 {page} 页…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "未配置解扰。在设置中让 LinDVB 指向您自己的 softcam 或 CI 模块，即可为您有权收看的加密频道解扰。"
+
+msgid "Provider '{v0}' is not available."
+msgstr "运营商“{v0}”不可用。"
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "运营商：CI 模块 – {status}\n模块使用调谐器内您的卡进行解扰。"
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "运营商：{name}\nLinDVB 将 ECM 段转发给您自己的卡客户端，并使用其返回的控制字；它本身不保存任何密钥。"
+
+msgid "Open CAM Menu…"
+msgstr "打开 CAM 菜单…"
+
+msgid "Failed to load: {v0}"
+msgstr "加载失败：{v0}"
+
+msgid "Switched off"
+msgstr "已关闭"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "重新启动 LinDVB 后更改才会生效。"
+
+msgid "No plugins installed."
+msgstr "未安装插件。"
+
+msgid "Plugin actions"
+msgstr "插件操作"
+
+msgid "Plugin folder: {path}"
+msgstr "插件文件夹：{path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "将插件复制到此文件夹：一个 Python 文件 (.py)，或一个包含 __init__.py 的文件夹。"
+
+msgid "Open Plugin Folder"
+msgstr "打开插件文件夹"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I 从网络获取您所在地区的频道列表：编号、名称和台标，以及每个频道的接收方式。LinDVB 会尽可能使用频道搜索得到的天线、有线或卫星频道，否则使用网络流。"
+
+msgid "Privacy"
+msgstr "隐私"
+
+msgid "I have read the privacy notice"
+msgstr "我已阅读隐私声明"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "加载 DVB-I 频道的节目指南 (EPG)"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "一种接收途径失败时，切换到另一种（网络、天线、有线、卫星）"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "无需频道搜索即可从列表调谐卫星频道（您的列表中需要有卫星频道）"
+
+msgid "Service list"
+msgstr "服务列表"
+
+msgid "Load Lists from Registry"
+msgstr "从注册中心加载列表"
+
+msgid "In use: {current}"
+msgstr "使用中：{current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "尚未使用 DVB-I 列表。"
+
+msgid "Region"
+msgstr "地区"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "您的邮政编码决定地区频道及其编号。它只会发送到服务列表服务器。"
+
+msgid "Postcode"
+msgstr "邮政编码"
+
+msgid "No postcode: nationwide list"
+msgstr "无邮政编码：全国列表"
+
+msgid "Remove DVB-I Channels"
+msgstr "移除 DVB-I 频道"
+
+msgid "Update Now"
+msgstr "立即更新"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "重新加载所选列表（每天也会检查一次）"
+
+msgid "Install Channel List"
+msgstr "安装频道列表"
+
+msgid "Asking the service list registry…"
+msgstr "正在查询服务列表注册中心…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "无法连接注册中心：{error}"
+
+msgid "Default"
+msgstr "默认"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "来自 {netloc} 的 {v0} 个服务列表"
+
+msgid "The registry offers no service list for Germany."
+msgstr "注册中心没有提供德国的服务列表。"
+
+msgid "Loading the service list…"
+msgstr "正在加载服务列表…"
+
+msgid "In use: {v0}"
+msgstr "使用中：{v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\n请选择您的地区，然后再次点击“安装”。"
+
+msgid "Enter Again"
+msgstr "重新输入"
+
+msgid "The service list does not know this postcode."
+msgstr "服务列表不认识此邮政编码。"
+
+msgid "The service list server answered {code}."
+msgstr "服务列表服务器返回 {code}。"
+
+msgid "Try Again"
+msgstr "重试"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "您可以重试，或使用不含邮政编码的全国列表。"
+
+msgid "Nationwide List"
+msgstr "全国列表"
+
+msgid "No DVB-I list is in use."
+msgstr "未使用 DVB-I 列表。"
+
+msgid "{removed} DVB-I channels removed"
+msgstr "已移除 {removed} 个 DVB-I 频道"
+
+msgid "All programmes"
+msgstr "所有节目"
+
+msgid "With audio description"
+msgstr "带音频描述"
+
+msgid "With subtitles"
+msgstr "带字幕"
+
+msgid "Programme Guide"
+msgstr "节目指南"
+
+msgid "Now / Next"
+msgstr "现在 / 接下来"
+
+msgid "Per Channel"
+msgstr "按频道"
+
+msgid "TV Guide"
+msgstr "电视节目表"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Record Series"
+msgstr "录制系列"
+
+msgid "Remind Me"
+msgstr "提醒我"
+
+msgid "Search Web"
+msgstr "网上搜索"
+
+msgid "Export the guide as XMLTV"
+msgstr "将节目指南导出为 XMLTV"
+
+msgid "Next"
+msgstr "接下来"
+
+msgid "Now"
+msgstr "现在"
+
+msgid "Only favourites"
+msgstr "仅收藏"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "无障碍功能（DVB-I 节目指南）"
+
+msgid "Show:"
+msgstr "显示："
+
+msgid "Channel"
+msgstr "频道"
+
+msgid "Start"
+msgstr "开始"
+
+msgid "End"
+msgstr "结束"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "Genre"
+msgstr "类型"
+
+msgid "Day"
+msgstr "日"
+
+msgid "Duration"
+msgstr "时长"
+
+msgid "Subheading"
+msgstr "副标题"
+
+msgid "Title or description"
+msgstr "标题或简介"
+
+msgid "Include description"
+msgstr "包含简介"
+
+msgid "Case sensitive"
+msgstr "区分大小写"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} 分钟{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "系列录制：{title}"
+
+msgid "Reminder removed: {title}"
+msgstr "已移除提醒：{title}"
+
+msgid "{title} has already started"
+msgstr "{title} 已经开始"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "已设置提醒：{title}，{time}"
+
+msgid "Remove Reminder"
+msgstr "移除提醒"
+
+msgid "Save EPG data"
+msgstr "保存 EPG 数据"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "关闭 LinDVB 后仍将节目指南保存在磁盘上。"
+
+msgid "Show EPG info on channel change (s)"
+msgstr "切换频道时显示 EPG 信息（秒）"
+
+msgid "0 = do not show it."
+msgstr "0 = 不显示。"
+
+msgid "Remind before start (min)"
+msgstr "开始前提醒（分钟）"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "在节目指南中设置的提醒会提前这么久通知您。"
+
+msgid "Preferred language"
+msgstr "首选语言"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "当节目以多种语言播出时使用。"
+
+msgid "Time zone"
+msgstr "时区"
+
+msgid "Set time zone automatically"
+msgstr "自动设置时区"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "关闭：节目指南、定时录制和时钟使用与 GMT 的固定时差。"
+
+msgid "Offset to GMT"
+msgstr "与 GMT 的时差"
+
+msgid "Internet EPG (IPTV)"
+msgstr "网络 EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "网络 EPG 来源，与广播 EPG 一起使用。"
+
+msgid "Match IPTV Channels…"
+msgstr "匹配 IPTV 频道…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "检查或修正哪个节目指南频道对应哪个 M3U 频道。"
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat 频率"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "当调谐的频道位于这些转发器之一时，LinDVB 也会读取该运营商的 EPG。更改在下次调谐频道时生效。"
+
+msgid "Frequency (MHz)"
+msgstr "频率 (MHz)"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Polarisation"
+msgstr "极化"
+
+msgid "Defaults"
+msgstr "默认值"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "请输入转发器频率 (MHz)。"
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV 频道列表（M3U、DVBViewer .ini、CSV）"
+
+msgid "All files"
+msgstr "所有文件"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "导入一个或多个 M3U 播放列表或其他含网络流的频道列表。已在列表中的频道会被更新，其他频道会被添加。"
+
+msgid "Import Files…"
+msgstr "导入文件…"
+
+msgid "From files"
+msgstr "从文件"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8、DVBViewer .ini、CSV 或 dvbv5。可一次选择多个文件。"
+
+msgid "Import"
+msgstr "导入"
+
+msgid "From a web address"
+msgstr "从网址"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U 播放列表的地址。再次导入即可更新频道。"
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "频道列表中的 IPTV 频道：{n}"
+
+msgid "Import IPTV channel lists"
+msgstr "导入 IPTV 频道列表"
+
+msgid "Downloading {url}…"
+msgstr "正在下载 {url}…"
+
+msgid "Could not import {name}"
+msgstr "无法导入 {name}"
+
+msgid "The address has no channels."
+msgstr "该地址没有频道。"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "已导入 {total_a} 个新频道，更新 {total_u} 个频道"
+
+msgid "Cover lookup failed: {e}"
+msgstr "封面查找失败：{e}"
+
+msgid "Swap with the main picture"
+msgstr "与主画面交换"
+
+msgid "Close picture in picture"
+msgstr "关闭画中画"
+
+msgid "Picture in picture: {error}"
+msgstr "画中画：{error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "画中画适用于网络频道；DVB 频道需要第二个调谐器。"
+
+msgid "Channel Mosaic"
+msgstr "频道马赛克"
+
+msgid "Previous channels"
+msgstr "上一组频道"
+
+msgid "Next channels"
+msgstr "下一组频道"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "马赛克显示网络频道。当前视图的列表中没有网络频道。"
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "第 {page} 页，共 {pages} 页 · {n} 个网络频道"
+
+msgid "Click to watch {name}"
+msgstr "点击观看 {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "扩展"
+
+msgid "None / not satellite"
+msgstr "无 / 非卫星"
+
+msgid "Port 1 (A/A)"
+msgstr "端口 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "端口 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "端口 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "端口 4 (B/B)"
+
+msgid "Frequency"
+msgstr "频率"
+
+msgid "Initial letter"
+msgstr "首字母"
+
+msgid "Provider"
+msgstr "运营商"
+
+msgid "Channel Search"
+msgstr "频道搜索"
+
+msgid "Device"
+msgstr "设备"
+
+msgid "(choose…)"
+msgstr "（选择…）"
+
+msgid "Add folder…"
+msgstr "添加文件夹…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "包含转发器列表的文件夹（dtv-scan-tables 或 DVBViewer 格式的 .ini）"
+
+msgid "Transponder list"
+msgstr "转发器列表"
+
+msgid "LNB type"
+msgstr "LNB 类型"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "目标分组"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "例如 Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "搜索其他频率 (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "仅添加免费频道"
+
+msgid "Only update existing channels"
+msgstr "仅更新现有频道"
+
+msgid "Update channel names"
+msgstr "更新频道名称"
+
+msgid "Group by"
+msgstr "分组方式"
+
+msgid "Start Search"
+msgstr "开始搜索"
+
+msgid "Stop"
+msgstr "停止"
+
+msgid "Folder with transponder lists"
+msgstr "包含转发器列表的文件夹"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "未选择转发器列表。请安装 dtv-scan-tables 或添加文件夹。\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\n未找到频道。\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\n完成：新增 {added} 个，更新 {updated} 个频道。\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "定时录制"
+
+msgid "Search channels"
+msgstr "搜索频道"
+
+msgid "  (Radio)"
+msgstr "  （广播）"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Repeat"
+msgstr "重复"
+
+msgid "Once"
+msgstr "一次"
+
+msgid "Series"
+msgstr "系列"
+
+msgid "Action"
+msgstr "操作"
+
+msgid "Format"
+msgstr "格式"
+
+msgid "After"
+msgstr "之后"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Repeat every {day}"
+msgstr "每{day}重复"
+
+msgid "_Date"
+msgstr "日期(_D)"
+
+msgid "_Lead (min)"
+msgstr "提前（分钟）(_L)"
+
+msgid "_End"
+msgstr "结束(_E)"
+
+msgid "_Start"
+msgstr "开始(_S)"
+
+msgid "Repeat on"
+msgstr "重复于"
+
+msgid "_Follow (min)"
+msgstr "延后（分钟）(_F)"
+
+msgid "Pick a channel on the left"
+msgstr "请在左侧选择频道"
+
+msgid "_Name"
+msgstr "名称(_N)"
+
+msgid "_Timer action"
+msgstr "定时操作(_T)"
+
+msgid "_After recording"
+msgstr "录制后(_A)"
+
+msgid "T_V format"
+msgstr "电视格式(_V)"
+
+msgid "_Radio format"
+msgstr "广播格式(_R)"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "仅首选语言：设置中音频语言的音轨，不含音频描述。MP4 和广播音频文件只保留一条音轨。"
+
+msgid "Audi_o tracks"
+msgstr "音轨(_O)"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "图文电视只存在于 MPEG-TS 中，因此使用 TS。"
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG 数据 (EIT) 只存在于 MPEG-TS 中，因此使用 TS。"
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS 保留所有字幕流。MKV 将图文电视字幕页作为文本轨；DVB 位图字幕只保留在 TS 中。"
+
+msgid "Tracks"
+msgstr "轨道"
+
+msgid "File _naming scheme"
+msgstr "文件命名规则(_N)"
+
+msgid "Folder…"
+msgstr "文件夹…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "使用设置中的录制文件夹"
+
+msgid "Placeholders"
+msgstr "占位符"
+
+msgid "Folder: "
+msgstr "文件夹："
+
+msgid "Clear the editor"
+msgstr "清空编辑器"
+
+msgid "New"
+msgstr "新建"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "将编辑器中的设置添加为新的定时录制"
+
+msgid "Apply"
+msgstr "应用"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "将编辑器中的设置保存到所选定时录制"
+
+msgid "Delete the selected timer"
+msgstr "删除所选定时录制"
+
+msgid "Enable/Disable"
+msgstr "启用/禁用"
+
+msgid "Switch the selected timer on or off"
+msgstr "开启或关闭所选定时录制"
+
+msgid "Save as default"
+msgstr "保存为默认值"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "将这些格式和附加流用于新的定时录制和手动录制"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "Series title"
+msgstr "系列标题"
+
+msgid "Delete series rule"
+msgstr "删除系列规则"
+
+msgid "Series recordings"
+msgstr "系列录制"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "字幕可保存在 TS 或 MKV 中。"
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "设置中没有首选音频语言：录制第一条音轨。"
+
+msgid "File: {v0}"
+msgstr "文件：{v0}"
+
+msgid "Invalid start or end time"
+msgstr "开始或结束时间无效"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "请使用 HH:MM，例如 20:15。"
+
+msgid "No channel"
+msgstr "无频道"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "请在左侧列表中选择要录制的频道。"
+
+msgid "Recording defaults saved"
+msgstr "已保存录制默认值"
+
+msgid "Record with Options"
+msgstr "带选项录制"
+
+msgid "_Format"
+msgstr "格式(_F)"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "图文电视和 EPG 数据只能保存在 MPEG-TS 中，因此使用 TS。"
+
+msgid "Preferred audio language: {lang}."
+msgstr "首选音频语言：{lang}。"
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "可视化效果“{v0}”失败：{e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} 版本太旧"
+
+msgid "Playback error: "
+msgstr "播放错误："
+
+msgid "All channels"
+msgstr "所有频道"
+
+msgid "Favourites (TV + Radio)"
+msgstr "收藏（电视 + 广播）"
+
+msgid "Free to air"
+msgstr "免费"
+
+msgid "Internet streams"
+msgstr "网络流"
+
+msgid "Fill (crop)"
+msgstr "填充（裁剪）"
+
+msgid "Fit"
+msgstr "适应"
+
+msgid "Stretch"
+msgstr "拉伸"
+
+msgid "Playback error: {m}"
+msgstr "播放错误：{m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "插件操作失败：{e}"
+
+msgid "Open Media File…"
+msgstr "打开媒体文件…"
+
+msgid "Open URL…"
+msgstr "打开网址…"
+
+msgid "Import Channel List…"
+msgstr "导入频道列表…"
+
+msgid "Export Channel List…"
+msgstr "导出频道列表…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "导出节目指南 (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "切换电视 / 广播"
+
+msgid "Recordings"
+msgstr "录像"
+
+msgid "Programme Guide (EPG)"
+msgstr "节目指南 (EPG)"
+
+msgid "Timer Recordings"
+msgstr "定时录制"
+
+msgid "Record with Options…"
+msgstr "带选项录制…"
+
+msgid "Teletext"
+msgstr "图文电视"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM 菜单（CI 模块）…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "更新网络 EPG (XMLTV)"
+
+msgid "Audio Track"
+msgstr "音轨"
+
+msgid "Subtitles"
+msgstr "字幕"
+
+msgid "Play Rate"
+msgstr "播放速度"
+
+msgid "Back 10 s"
+msgstr "后退 10 秒"
+
+msgid "Forward 10 s"
+msgstr "前进 10 秒"
+
+msgid "Back 1 min"
+msgstr "后退 1 分钟"
+
+msgid "Forward 1 min"
+msgstr "前进 1 分钟"
+
+msgid "Back to Live"
+msgstr "回到直播"
+
+msgid "Jump"
+msgstr "跳转"
+
+msgid "Previous"
+msgstr "上一个"
+
+msgid "Random Order"
+msgstr "随机顺序"
+
+msgid "Endless Playback"
+msgstr "循环播放"
+
+msgid "Playlist"
+msgstr "播放列表"
+
+msgid "Keep Timeshift as Recording"
+msgstr "将时移保存为录像"
+
+msgid "Rebuild Playback"
+msgstr "重建播放"
+
+msgid "Video Off (audio only)"
+msgstr "关闭视频（仅音频）"
+
+msgid "Show Selected Channel"
+msgstr "显示所选频道"
+
+msgid "Swap Pictures"
+msgstr "交换画面"
+
+msgid "Picture in Picture"
+msgstr "画中画"
+
+msgid "Channel Mosaic…"
+msgstr "频道马赛克…"
+
+msgid "Stop in {mins} min"
+msgstr "{mins} 分钟后停止"
+
+msgid "Stop after current programme"
+msgstr "当前节目结束后停止"
+
+msgid "Sleep Timer"
+msgstr "睡眠定时器"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "声音延后（+{AUDIO_DELAY_STEP} 毫秒，K）"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "声音提前（−{AUDIO_DELAY_STEP} 毫秒，J）"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Audio Delay (this channel)"
+msgstr "音频延迟（此频道）"
+
+msgid "Full Screen"
+msgstr "全屏"
+
+msgid "Show/Hide Channel List"
+msgstr "显示/隐藏频道列表"
+
+msgid "Aspect / Zoom"
+msgstr "宽高比 / 缩放"
+
+msgid "Window Size"
+msgstr "窗口大小"
+
+msgid "Picture Settings…"
+msgstr "画面设置…"
+
+msgid "Equalizer…"
+msgstr "均衡器…"
+
+msgid "Radio Visualisation"
+msgstr "广播可视化效果"
+
+msgid "Screenshot"
+msgstr "截图"
+
+msgid "Plugins…"
+msgstr "插件…"
+
+msgid "About LinDVB"
+msgstr "关于 LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "显示/隐藏频道列表 (F9)"
+
+msgid "Main menu (F10)"
+msgstr "主菜单 (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "节目指南 (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "图文电视 (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "显示电视频道（Ctrl+M 切换）"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "显示广播电台（Ctrl+M 切换）"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "显示您的录像（双击即可播放）"
+
+msgid "Search name or number"
+msgstr "搜索名称或编号"
+
+msgid "All groups"
+msgstr "所有分组"
+
+msgid "Previous channel (Page Down)"
+msgstr "上一个频道 (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "暂停 / 时移（空格键）"
+
+msgid "Stop (switch the channel off)"
+msgstr "停止（关闭频道）"
+
+msgid "Next channel (Page Up)"
+msgstr "下一个频道 (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "录制当前频道 (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "选择此次录制的格式和轨道"
+
+msgid "Seek"
+msgstr "跳转"
+
+msgid "LIVE"
+msgstr "LIVE"
+
+msgid "Back to live (L)"
+msgstr "回到直播 (L)"
+
+msgid "Mute (M)"
+msgstr "静音 (M)"
+
+msgid "Volume"
+msgstr "音量"
+
+msgid "Audio track"
+msgstr "音轨"
+
+msgid "Playback and picture settings"
+msgstr "播放和画面设置"
+
+msgid "Full screen (F)"
+msgstr "全屏 (F)"
+
+msgid "\nNow: {title}"
+msgstr "\n现在：{title}"
+
+msgid "{n} of {total}"
+msgstr "{n} / {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "显示 {n} / {total} 个录像"
+
+msgid "{n} of {total} favourites shown"
+msgstr "显示 {n} / {total} 个收藏"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "显示 {n} / {total} 个广播电台"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "显示 {n} / {total} 个电视频道"
+
+msgid "Add to Favourites"
+msgstr "添加到收藏"
+
+msgid "Remove from Favourites"
+msgstr "从收藏中移除"
+
+msgid "Edit…"
+msgstr "编辑…"
+
+msgid "Show as Picture in Picture"
+msgstr "以画中画显示"
+
+msgid "Select a channel in the list first"
+msgstr "请先在列表中选择频道"
+
+msgid "By channel"
+msgstr "按频道"
+
+msgid "By title"
+msgstr "按标题"
+
+msgid "Newest first"
+msgstr "最新的在前"
+
+msgid "Oldest first"
+msgstr "最旧的在前"
+
+msgid "Largest first"
+msgstr "最大的在前"
+
+msgid "Sort the recordings"
+msgstr "排序录像"
+
+msgid "Open the recording folder"
+msgstr "打开录制文件夹"
+
+msgid "Look for new recordings"
+msgstr "查找新录像"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "还没有录像。\n\n录像保存在\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "设置中未指定录制文件夹。"
+
+msgid "Recording in progress"
+msgstr "正在录制"
+
+msgid "Watched"
+msgstr "已观看"
+
+msgid "Watched up to {pos}"
+msgstr "已观看到 {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "找不到录像：{path}"
+
+msgid "Continuing at {pos}"
+msgstr "从 {pos} 继续"
+
+msgid "Folder not found: {folder}"
+msgstr "找不到文件夹：{folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "无法打开 {folder}：{message}"
+
+msgid "Play"
+msgstr "播放"
+
+msgid "Play from the Beginning"
+msgstr "从头播放"
+
+msgid "Details…"
+msgstr "详细信息…"
+
+msgid "Mark as Unwatched"
+msgstr "标记为未观看"
+
+msgid "Mark as Watched"
+msgstr "标记为已观看"
+
+msgid "Show in Folder"
+msgstr "在文件夹中显示"
+
+msgid "Delete…"
+msgstr "删除…"
+
+msgid "Stop the recording before deleting it"
+msgstr "请先停止录制再删除"
+
+msgid "Delete “{title}”?"
+msgstr "要删除“{title}”吗？"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\n文件将从磁盘中删除。"
+
+msgid "Deleted {name}"
+msgstr "已删除 {name}"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "无法删除 {name}：{strerror}"
+
+msgid "Tuning {name}…"
+msgstr "正在调谐 {name}…"
+
+msgid "Search recordings"
+msgstr "搜索录像"
+
+msgid "No radio stations in the channel list"
+msgstr "频道列表中没有广播电台"
+
+msgid "No TV channels in the channel list"
+msgstr "频道列表中没有电视频道"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}：{v1} – 已切换到 {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} 目前未播出"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "直播电视已停止：定时录制需要使用调谐器"
+
+msgid "Stopped"
+msgstr "已停止"
+
+msgid "Sound {ms} ms later"
+msgstr "声音延后 {ms} 毫秒"
+
+msgid "Sound {v0} ms earlier"
+msgstr "声音提前 {v0} 毫秒"
+
+msgid "Audio delay off"
+msgstr "音频延迟已关闭"
+
+msgid "Playing {item}"
+msgstr "正在播放 {item}"
+
+msgid "Open media files"
+msgstr "打开媒体文件"
+
+msgid "Open URL"
+msgstr "打开网址"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "打开"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "导入频道列表（dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini）"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "导出频道（.conf = dvbv5、.m3u = IPTV、.csv）"
+
+msgid "Exported to {path}"
+msgstr "已导出到 {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "导出节目指南 (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "无法写入 {path}：{error}"
+
+msgid "Nothing to record"
+msgstr "没有可录制的内容"
+
+msgid "This channel is already being recorded"
+msgstr "此频道已在录制中"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "图文电视：缺少解码器（带 libzvbi 的 gst-plugins-bad）"
+
+msgid "Teletext: not available on this channel"
+msgstr "图文电视：此频道不提供"
+
+msgid "Teletext needs a DVB channel"
+msgstr "图文电视需要 DVB 频道"
+
+msgid "Volume {v0}%"
+msgstr "音量 {v0}%"
+
+msgid "Off"
+msgstr "关闭"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "隐藏式字幕 (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} 种语言"
+
+msgid "{n} audio tracks"
+msgstr "{n} 条音轨"
+
+msgid "Screenshot saved: {path}"
+msgstr "截图已保存：{path}"
+
+msgid "Screenshot failed"
+msgstr "截图失败"
+
+msgid "Picture Settings"
+msgstr "画面设置"
+
+msgid "Restore Defaults"
+msgstr "恢复默认值"
+
+msgid "Equalizer"
+msgstr "均衡器"
+
+msgid "Leave full screen (F)"
+msgstr "退出全屏 (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "可视化效果失败：{e}"
+
+msgid "Radio visualisation"
+msgstr "广播可视化效果"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "广播可视化效果（仅适用于广播和音频）"
+
+msgid "Playback stops at {v0}"
+msgstr "播放将于 {v0} 停止"
+
+msgid "No programme information for the sleep timer"
+msgstr "睡眠定时器没有节目信息"
+
+msgid "Sleep timer: playback stopped"
+msgstr "睡眠定时器：播放已停止"
+
+msgid "No programme information"
+msgstr "没有节目信息"
+
+msgid "Next: {v0}  {title}"
+msgstr "接下来：{v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "信号 {v0}%"
+
+msgid "Signal quality {v0}%"
+msgstr "信号质量 {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "流质量 {v0}%"
+
+msgid "No signal"
+msgstr "无信号"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "直播"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "时移 −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "通过 Linux DVB API 和 GStreamer 观看和录制 DVB-S/S2、DVB-C、DVB-T/T2、ATSC 和网络电视。"
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "将 IPTV 频道匹配到 XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "尚未加载 XMLTV 节目指南。请在 EPG 设置中填写 XMLTV 地址并先下载节目指南；下载后会自动开始匹配。"
+
+msgid "Download XMLTV guide now"
+msgstr "立即下载 XMLTV 节目指南"
+
+msgid "Only channels without guide"
+msgstr "仅显示没有节目指南的频道"
+
+msgid "Match"
+msgstr "匹配"
+
+msgid "Guide channel:"
+msgstr "节目指南频道："
+
+msgid "Assign"
+msgstr "指定"
+
+msgid "Suggest"
+msgstr "建议"
+
+msgid "Auto-match all"
+msgstr "全部自动匹配"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "匹配所有未手动指定的频道"
+
+msgid "Reset to automatic"
+msgstr "重置为自动"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "让自动匹配重新决定所选频道"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} / {v1} 个频道有节目指南频道"
+
+msgid "No suggestion for {name}"
+msgstr "{name} 没有建议"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} 无法启动（{m}），改为显示 {other}"
+
+msgid "Off (station name only)"
+msgstr "关闭（仅电台名称）"
+
+msgid "Spectrum analyser (classic)"
+msgstr "频谱分析仪（经典）"
+
+msgid "VU meters (classic)"
+msgstr "VU 表（经典）"
+
+msgid "Oscilloscope (classic)"
+msgstr "示波器（经典）"
+
+msgid "Glow waves (modern)"
+msgstr "光晕波纹（现代）"
+
+msgid "Nebula particles (modern)"
+msgstr "星云粒子（现代）"
+
+msgid "Light ribbons (modern)"
+msgstr "光带（现代）"
+
+msgid "Pulsar (modern)"
+msgstr "脉冲星（现代）"
+
+msgid "Supernova (modern)"
+msgstr "超新星（现代）"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis（现代）"
+
+msgid "Aurora borealis (modern)"
+msgstr "北极光（现代）"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "所有预设（随机）"
+
+msgid "All of {name}"
+msgstr "{name} 全部"
+
+msgid "Dancer"
+msgstr "舞者"
+
+msgid "Drawing"
+msgstr "绘图"
+
+msgid "Fractal"
+msgstr "分形"
+
+msgid "Geometric"
+msgstr "几何"
+
+msgid "Hypnotic"
+msgstr "催眠"
+
+msgid "Particles"
+msgstr "粒子"
+
+msgid "Reaction"
+msgstr "反应"
+
+msgid "Sparkle"
+msgstr "闪光"
+
+msgid "Supernova"
+msgstr "超新星"
+
+msgid "Waveform"
+msgstr "波形"
+
+msgid "! Transition"
+msgstr "! 转场"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "互动服务 (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "红色按钮 (F5) 背后的媒体库、图文电视的后继服务等。"
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "需要 WebKitGTK 6 (gir1.2-webkit-6.0)，但尚未安装。"
+
+msgid "Start automatically"
+msgstr "自动启动"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "关闭：应用只能通过红色按钮启动。频道的应用会将使用数据发送给电视台。"
+
+msgid "Allow third-party cookies"
+msgstr "允许第三方 Cookie"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "广告网络会利用它们跨频道跟踪您。"
+
+msgid "Delete HbbTV Data"
+msgstr "删除 HbbTV 数据"
+
+msgid "Cookies and storage"
+msgstr "Cookie 和存储"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "删除 HbbTV 应用保存的内容，例如 Cookie 和设置。"
+
+msgid "HbbTV data deleted"
+msgstr "已删除 HbbTV 数据"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV：{name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "无法加载 HbbTV 应用：{msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV（红色按钮）"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "频道的互动服务（红色按钮，F5）"
+
+msgid "Close the interactive service (Esc)"
+msgstr "关闭互动服务 (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "媒体库中的字幕"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "应用从一开始就在其视频中显示字幕。"
+
+msgid "Audio description in media libraries"
+msgstr "媒体库中的音频描述"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "应用优先使用描述画面的音轨。"
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKit 的沙盒在此可能无法创建用户命名空间（Ubuntu 的 AppArmor 限制），因此应用无法安全启动。请参阅 docs/HBBTV.md。"
+
+msgid "This interactive service is rated {age}+."
+msgstr "此互动服务分级为 {age}+。"
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "已被未成年人保护拦截。请在设置中设置 PIN 码。"
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "PIN 码错误次数过多。请几分钟后再试。"
+
+msgid "Youth protection"
+msgstr "未成年人保护"
+
+msgid "PIN"
+msgstr "PIN 码"
+
+msgid "Unlock"
+msgstr "解锁"
+
+msgid "Wrong PIN."
+msgstr "PIN 码错误。"
+
+msgid "This video is rated {age}+."
+msgstr "此视频分级为 {age}+。"
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "频道互动服务的图文电视 (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "来自互动服务的图文电视"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT 按钮会打开频道的 HbbTV 图文电视（如有）。"
+
+msgid "Viewers from {age} years"
+msgstr "{age} 岁以上观众"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "分级高于此年龄的应用及其视频需要 PIN 码。"
+
+msgid "Current PIN"
+msgstr "当前 PIN 码"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "更改未成年人保护或 PIN 码时需要。"
+
+msgid "New PIN"
+msgstr "新 PIN 码"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "留空以保留当前 PIN 码。"
+
+msgid "Youth protection not changed"
+msgstr "未成年人保护未更改"
+
+msgid "The current PIN is wrong."
+msgstr "当前 PIN 码错误。"
+
+msgid "Youth protection needs a PIN"
+msgstr "未成年人保护需要 PIN 码"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "请设置 PIN 码以开启未成年人保护。"
+
+msgid "Companion screens on the network"
+msgstr "网络中的协同屏幕"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "您网络中的手机和平板可以发现 LinDVB、与应用通信、同步跟随画面，并请求启动应用。关闭：不在网络上监听。"
+
+msgid "Start an application from another device?"
+msgstr "要从其他设备启动应用吗？"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "您网络中的一台设备想要启动“{name}”({url})。"
+
+msgid "an HbbTV application"
+msgstr "一个 HbbTV 应用"
+
+msgid "Refuse"
+msgstr "拒绝"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "此视频使用 {drm} 加密。LinDVB 不支持 DRM，因此无法播放。"
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "此视频已加密。LinDVB 不支持 DRM，因此无法播放。"
+
+msgid "Contains code from"
+msgstr "包含以下来源的代码"
+
+msgid "Built with"
+msgstr "构建使用"
+
+msgid "Visualisations"
+msgstr "可视化效果"
+
+msgid "Broadcast (EIT)"
+msgstr "广播 (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "运营商 EPG (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "DVB-I 内容指南"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV（网络）"
+
+msgid "Advanced"
+msgstr "高级"
+
+msgid "Priority of the EPG sources"
+msgstr "EPG 来源优先级"
+
+msgid "Automatic (recommended)"
+msgstr "自动（推荐）"
+
+msgid "Custom order"
+msgstr "自定义顺序"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "自动：现在和接下来的节目来自广播，更远的时段由最完整的来源优先，空缺由其他来源补齐。同一节目绝不会显示两次。"
+
+msgid "Order of the EPG sources"
+msgstr "EPG 来源顺序"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "两个来源不一致时，以最上面的来源为准；其他来源补齐空缺。有自己顺序的频道始终使用该顺序，例如其广播 EPG 质量较差时。"
+
+msgid "Applies to"
+msgstr "适用于"
+
+msgid "Remove Channel"
+msgstr "移除频道"
+
+msgid "Move Up"
+msgstr "上移"
+
+msgid "Move Down"
+msgstr "下移"
+
+msgid "Own Order for Channel"
+msgstr "频道专用顺序"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "自动（尽可能使用显卡）"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2（ARM 开发板）"
+
+msgid "Software (processor)"
+msgstr "软件（处理器）"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "找到的显卡解码器：{list}"
+
+msgid "none"
+msgstr "无"
+
+msgid "Switched off after an error: {list}"
+msgstr "出错后已关闭：{list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "当前解码：{decoder}"
+
+msgid "Video decoding"
+msgstr "视频解码"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "隔行扫描电视画面（大多数标清和 1080i 频道）。VA-API 解码时在显卡上处理，否则由处理器处理。"
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name} 视频解码失败，改用下一个解码器播放"
+
+msgid "Tuners"
+msgstr "调谐器"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB 可同时在多个调谐器上录制和播放，并优先使用优先级最高的调谐器。同一转发器上的频道共用一个调谐器。"
+
+msgid "Reception types unknown"
+msgstr "接收类型未知"
+
+msgid "not connected"
+msgstr "未连接"
+
+msgid "Priority"
+msgstr "优先级"
+
+msgid "Higher numbers are used first."
+msgstr "数字越大越先使用。"
+
+msgid "Shared antenna cable"
+msgstr "共用天线电缆"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "为与其他调谐器共用一根电缆的调谐器开启（环路输出或 LNB 单一输出上的分配器）。没有 Unicable 时，它们一次只能接收一个波段和极化。"
+
+msgid "Cable name"
+msgstr "电缆名称"
+
+msgid "Tuners with the same name share one cable."
+msgstr "名称相同的调谐器共用一根电缆。"
+
+msgid "For all tuners without an LNB of their own."
+msgstr "适用于所有没有自己 LNB 的调谐器。"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "画面错误：{n} 个块无法纠正"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "接收较弱：余量仅 {db} dB"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} 个无法纠正的块"
+
+msgid "Lock lost"
+msgstr "失锁"
+
+msgid "{n} continuity errors"
+msgstr "{n} 个连续性错误"
+
+msgid "PCR jump"
+msgstr "PCR 跳变"
+
+msgid "New table version (0x{tid})"
+msgstr "新的表版本 (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "响度跳变 {lu} LU"
+
+msgid "Rebuffering"
+msgstr "重新缓冲"
+
+msgid "Measured since {time}"
+msgstr "自 {time} 起测量"
+
+msgid "Delivery"
+msgstr "传输方式"
+
+msgid "Frame rate"
+msgstr "帧率"
+
+msgid "Average bit rate"
+msgstr "平均码率"
+
+msgid "Peak bit rate"
+msgstr "峰值码率"
+
+msgid "Margin"
+msgstr "余量"
+
+msgid "Loudness"
+msgstr "响度"
+
+msgid "Bit rate"
+msgstr "码率"
+
+msgid "Events"
+msgstr "事件"
+
+msgid "1 minute"
+msgstr "1 分钟"
+
+msgid "15 minutes"
+msgstr "15 分钟"
+
+msgid "5 minutes"
+msgstr "5 分钟"
+
+msgid "hard of hearing"
+msgstr "听障"
+
+msgid "Data"
+msgstr "数据"
+
+msgid "Level"
+msgstr "电平"
+
+msgid "Carrier"
+msgstr "载波"
+
+msgid "Uncorrectable blocks"
+msgstr "无法纠正的块"
+
+msgid "Lock losses"
+msgstr "失锁次数"
+
+msgid "C/N history"
+msgstr "C/N 历史"
+
+msgid "Errors"
+msgstr "错误"
+
+msgid "Roll-off / pilots"
+msgstr "滚降 / 导频"
+
+msgid "Protocol"
+msgstr "协议"
+
+msgid "Response time"
+msgstr "响应时间"
+
+msgid "Bad"
+msgstr "差"
+
+msgid "Fair"
+msgstr "一般"
+
+msgid "Good"
+msgstr "良好"
+
+msgid "Poor"
+msgstr "较差"
+
+msgid "NO LOCK"
+msgstr "未锁定"
+
+msgid "Buffer"
+msgstr "缓冲区"
+
+msgid "Download"
+msgstr "下载"
+
+msgid "Buffer history"
+msgstr "缓冲区历史"
+
+msgid "(driver value)"
+msgstr "（驱动程序数值）"
+
+msgid "since start"
+msgstr "自启动以来"
+
+msgid "required"
+msgstr "需要"
+
+msgid "Quality history"
+msgstr "质量历史"
+
+msgid "horizontal"
+msgstr "水平"
+
+msgid "left"
+msgstr "左"
+
+msgid "vertical"
+msgstr "垂直"
+
+msgid "right"
+msgstr "右"
+
+msgid "Port {n}"
+msgstr "端口 {n}"
+
+msgid "(theoretical)"
+msgstr "（理论值）"
+
+msgid "Overview"
+msgstr "概览"
+
+msgid "Bit rate of the channel"
+msgstr "频道码率"
+
+msgid "Average"
+msgstr "平均"
+
+msgid "Peak"
+msgstr "峰值"
+
+msgid "Codec"
+msgstr "编解码器"
+
+msgid "Decoder"
+msgstr "解码器"
+
+msgid "Dropped frames"
+msgstr "丢帧"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "自动启动"
+
+msgid "PCR arrival jitter"
+msgstr "PCR 到达抖动"
+
+msgid "PCR interval"
+msgstr "PCR 间隔"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT 间隔"
+
+msgid "Teletext / subtitles / data"
+msgstr "图文电视 / 字幕 / 数据"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "逐行"
+
+msgid "only for the channel on screen"
+msgstr "仅限屏幕上的频道"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "响度（当前音轨）：{lufs} · 峰值 {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "响度：仅限屏幕上的频道"
+
+msgid "scrambled packets"
+msgstr "加扰数据包"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT 中没有 CA 描述符"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} 页"
+
+msgid "Quality"
+msgstr "质量"
+
+msgid "Carrier to noise ratio"
+msgstr "载噪比"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "误码率 (log₁₀)"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "HTTP status"
+msgstr "HTTP 状态"
+
+msgid "Content type"
+msgstr "内容类型"
+
+msgid "Download speed"
+msgstr "下载速度"
+
+msgid "Segments"
+msgstr "分片"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Variants"
+msgstr "变体"
+
+msgid "Codecs"
+msgstr "编解码器"
+
+msgid "Error timeline"
+msgstr "错误时间线"
+
+msgid "uncorrectable blocks"
+msgstr "无法纠正的块"
+
+msgid "lock lost"
+msgstr "失锁"
+
+msgid "rebuffering"
+msgstr "重新缓冲"
+
+msgid "loudness jump"
+msgstr "响度跳变"
+
+msgid "table version"
+msgstr "表版本"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "调谐参数（来自前端）"
+
+msgid "Delivery system"
+msgstr "传输系统"
+
+msgid "Code rate"
+msgstr "码率（编码）"
+
+msgid "Roll-off"
+msgstr "滚降"
+
+msgid "Guard interval"
+msgstr "保护间隔"
+
+msgid "Pilots"
+msgstr "导频"
+
+msgid "Carriers"
+msgstr "载波"
+
+msgid "C/N needed"
+msgstr "所需 C/N"
+
+msgid "Dish alignment aid…"
+msgstr "天线对星辅助…"
+
+msgid "Logging and warnings"
+msgstr "日志和警告"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "记录接收情况（每分钟一行，保留 31 天）"
+
+msgid "Warn below this margin (dB)"
+msgstr "低于此余量时警告 (dB)"
+
+msgid "Reception over the last days"
+msgstr "最近几天的接收情况"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · 最小 {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · 峰值 {max}"
+
+msgid "{x}× the stream rate"
+msgstr "流速率的 {x}×"
+
+msgid "Download and stream rate"
+msgstr "下载和流速率"
+
+msgid "HLS with {n} variants"
+msgstr "HLS，{n} 个变体"
+
+msgid "HLS media playlist"
+msgstr "HLS 媒体播放列表"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "直播"
+
+msgid "on demand"
+msgstr "点播"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} 个分片，Ø {s}（目标 {t}）· {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "没有变体列表：该地址是单个流。"
+
+msgid "No events so far."
+msgstr "目前没有事件。"
+
+msgid "{n} minutes logged for this channel."
+msgstr "此频道已记录 {n} 分钟。"
+
+msgid "Nothing logged for this channel yet."
+msgstr "此频道尚未记录任何内容。"
+
+msgid "min {min} · max {max}"
+msgstr "最小 {min} · 最大 {max}"
+
+msgid "needs {db}"
+msgstr "需要 {db}"
+
+msgid "relative (driver)"
+msgstr "相对值（驱动程序）"
+
+msgid "post FEC {v}"
+msgstr "FEC 后 {v}"
+
+msgid "needed for a clean picture"
+msgstr "清晰画面所需"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 统计"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc（驱动程序刻度）"
+
+msgid "Elementary streams and PIDs"
+msgstr "基本流和 PID"
+
+msgid "Whole stream"
+msgstr "整个流"
+
+msgid "Sort by PID"
+msgstr "按 PID 排序"
+
+msgid "Sort by bit rate"
+msgstr "按码率排序"
+
+msgid "PID hex"
+msgstr "PID 十六进制"
+
+msgid "dec"
+msgstr "十进制"
+
+msgid "CC errors"
+msgstr "CC 错误"
+
+msgid "Scrambled"
+msgstr "已加扰"
+
+msgid "Last 60 s"
+msgstr "最近 60 秒"
+
+msgid "Packets"
+msgstr "数据包"
+
+msgid "Sync losses"
+msgstr "同步丢失"
+
+msgid "Null packets"
+msgstr "空包"
+
+msgid "PCR jumps"
+msgstr "PCR 跳变"
+
+msgid "PID filter"
+msgstr "PID 过滤器"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "其他"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "总计（{n} 个 PID）：{rate} · {cc} 个连续性错误"
+
+msgid "Measuring…"
+msgstr "正在测量…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "空闲 / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "已使用 {used} / {cap} · 测量于 {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "只接收此频道的 PID。测量整个转发器即可查看其上的其他频道。"
+
+msgid "{n} PIDs"
+msgstr "{n} 个 PID"
+
+msgid "Profile / level"
+msgstr "档次 / 级别"
+
+msgid "Scan"
+msgstr "扫描方式"
+
+msgid "Film (3:2 pulldown)"
+msgstr "电影（3:2 下拉）"
+
+msgid "Frames shown / dropped"
+msgstr "显示 / 丢弃的帧"
+
+msgid "Measured bit rate"
+msgstr "实测码率"
+
+msgid "Nominal bit rate"
+msgstr "标称码率"
+
+msgid "VBV buffer"
+msgstr "VBV 缓冲区"
+
+msgid "Frame sizes"
+msgstr "帧大小"
+
+msgid "B frame"
+msgstr "B 帧"
+
+msgid "I frame"
+msgstr "I 帧"
+
+msgid "P frame"
+msgstr "P 帧"
+
+msgid "GOP length"
+msgstr "GOP 长度"
+
+msgid "I frame average"
+msgstr "I 帧平均"
+
+msgid "P/B frame average"
+msgstr "P/B 帧平均"
+
+msgid "Nominal"
+msgstr "标称"
+
+msgid "Sample rate"
+msgstr "采样率"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "实测"
+
+msgid "Notes"
+msgstr "备注"
+
+msgid "Loudness (EBU R 128)"
+msgstr "响度 (EBU R 128)"
+
+msgid "Momentary"
+msgstr "瞬时"
+
+msgid "Short term"
+msgstr "短期"
+
+msgid "Loudness range"
+msgstr "响度范围"
+
+msgid "Sample peak"
+msgstr "采样峰值"
+
+msgid "level {l}"
+msgstr "级别 {l}"
+
+msgid "tier {t}"
+msgstr "层级 {t}"
+
+msgid "fields"
+msgstr "场"
+
+msgid "mixed"
+msgstr "混合"
+
+msgid "not sent"
+msgstr "未发送"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "上下黑边 {pct} %"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "左右黑边 {pct} %"
+
+msgid "picture {ratio}:1"
+msgstr "画面 {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "是，重复场"
+
+msgid "mastering display data"
+msgstr "母版显示器数据"
+
+msgid "(maximum)"
+msgstr "（最大值）"
+
+msgid "not signalled (variable)"
+msgstr "未标示（可变）"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "当前 {now} · Ø {avg} · 峰值 {max}"
+
+msgid "clean audio"
+msgstr "清晰音频"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU 目标 −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "在均衡器之前，对屏幕上频道已解码的声音进行测量。"
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} 次 6 LU 以上的响度跳变（节目 ↔ 广告）。"
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "仅对屏幕上的频道测量响度。"
+
+msgid "index"
+msgstr "索引"
+
+msgid "info"
+msgstr "信息"
+
+msgid "subtitles (hard of hearing)"
+msgstr "字幕（听障）"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB 字幕 PID {pid}："
+
+msgid "Tables & EPG"
+msgstr "表和 EPG"
+
+msgid "SI tables"
+msgstr "SI 表"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "Events in the guide"
+msgstr "节目指南中的事件"
+
+msgid "EIT now/next"
+msgstr "EIT 现在/接下来"
+
+msgid "Difference to this computer"
+msgstr "与本机的差异"
+
+msgid "Local time offset"
+msgstr "本地时差"
+
+msgid "Network"
+msgstr "网络"
+
+msgid "Raw view"
+msgstr "原始视图"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "正常"
+
+msgid "slow"
+msgstr "缓慢"
+
+msgid "(all services)"
+msgstr "（所有服务）"
+
+msgid "not seen"
+msgstr "未见到"
+
+msgid "seen {s} s ago"
+msgstr "{s} 秒前见到"
+
+msgid "timers may start early or late"
+msgstr "定时录制可能提前或延后开始"
+
+msgid "no TDT/TOT"
+msgstr "没有 TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "加扰数据包"
+
+msgid "CA system ID"
+msgstr "CA 系统 ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM 速率"
+
+msgid "Scrambling per stream"
+msgstr "各流的加扰"
+
+msgid "Crypto period"
+msgstr "加密周期"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "密钥更换是指在偶控制字和奇控制字之间切换；加密周期是两次切换之间的时间。"
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT 中没有条件接收，也没有加扰数据包。"
+
+msgid "free"
+msgstr "免费"
+
+msgid "all streams"
+msgstr "所有流"
+
+msgid "not received"
+msgstr "未接收"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT)：{list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "未收到含 EMM 流的 CAT。"
+
+msgid "Applications (AIT)"
+msgstr "应用 (AIT)"
+
+msgid "Organisation / app"
+msgstr "组织 / 应用"
+
+msgid "Control"
+msgstr "控制"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "数据轮播 (DSM-CC)"
+
+msgid "Component tag"
+msgstr "组件标签"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "PID {pid} 上的 AIT 版本 {v}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "频道声明在 PID {pid} 上有 AIT；尚未收到。"
+
+msgid "Channel Analysis – {name}"
+msgstr "频道分析 – {name}"
+
+msgid "Freeze the measurement"
+msgstr "冻结测量"
+
+msgid "Copy report as text"
+msgstr "将报告复制为文本"
+
+msgid "Save report as text…"
+msgstr "将报告保存为文本…"
+
+msgid "Save report as JSON…"
+msgstr "将报告保存为 JSON…"
+
+msgid "Save history as CSV…"
+msgstr "将历史保存为 CSV…"
+
+msgid "Save window as picture…"
+msgstr "将窗口保存为图片…"
+
+msgid "Save 30 s of the stream…"
+msgstr "保存 30 秒的流…"
+
+msgid "Channel Analysis · {name}"
+msgstr "频道分析 · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "直播 · 已测量 {t}"
+
+msgid "Paused"
+msgstr "已暂停"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "没有可用于此频道的调谐器。请观看该频道，或在有调谐器空闲时重试。"
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "此频道的调谐器已切换到其他频道。"
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "在后台用专用调谐器测量；画面、声音和响度只对屏幕上的频道测量。"
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "此网络频道在后台获取但不解码；观看它即可获得画面、声音和缓冲区数据。"
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "来源：DVB 适配器 {a}，前端 {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc 统计"
+
+msgid "Source: background download"
+msgstr "来源：后台下载"
+
+msgid "Source: the player's stream"
+msgstr "来源：播放器的流"
+
+msgid "updated every second"
+msgstr "每秒更新"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "没有可保存的内容：未接收此频道。"
+
+msgid "Compare {name} with"
+msgstr "将 {name} 与以下比较"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "各分析时间窗口内的数据；画面和响度仅限屏幕上的频道。"
+
+msgid "Dish alignment aid"
+msgstr "天线对星辅助"
+
+msgid "Tone"
+msgstr "提示音"
+
+msgid "Reset best value"
+msgstr "重置最佳值"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "请缓慢转动天线；信号越好，提示音越高。"
+
+msgid "% quality"
+msgstr "% 质量"
+
+msgid "Best so far: {v}"
+msgstr "目前最佳：{v}"
+
+msgid "Signal lost"
+msgstr "信号中断"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "该调谐器正用于观看或录制。"
+
+msgid "Channel analysis: {name}"
+msgstr "频道分析：{name}"
+
+msgid "Resolution"
+msgstr "分辨率"
+
+msgid "Audio"
+msgstr "音频"
+
+msgid "Video"
+msgstr "视频"
+
+msgid "Signal quality"
+msgstr "信号质量"
+
+msgid "Continuity errors"
+msgstr "连续性错误"
+
+msgid "Content"
+msgstr "内容"
+
+msgid "audio description"
+msgstr "音频描述"
+
+msgid "DVB subtitles"
+msgstr "DVB 字幕"
+
+msgid "Signal"
+msgstr "信号"
+
+msgid "Reception"
+msgstr "接收"
+
+msgid "Symbol rate"
+msgstr "符号率"
+
+msgid "Transponder capacity"
+msgstr "转发器容量"
+
+msgid "Server"
+msgstr "服务器"
+
+msgid "Stream"
+msgstr "流"
+
+msgid "Share of transponder"
+msgstr "占转发器比例"
+
+msgid "Aspect ratio"
+msgstr "宽高比"
+
+msgid "Colour"
+msgstr "色彩"
+
+msgid "Track"
+msgstr "轨道"
+
+msgid "Now & next"
+msgstr "现在和接下来"
+
+msgid "Encryption"
+msgstr "加密"
+
+msgid "Interactive"
+msgstr "互动"
+
+msgid "Stream health"
+msgstr "流健康状况"
+
+msgid "Transport errors"
+msgstr "传输错误"
+
+msgid "Timeshift buffer"
+msgstr "时移缓冲区"
+
+msgid "interlaced"
+msgstr "隔行"
+
+msgid "Hardware"
+msgstr "硬件"
+
+msgid "Software"
+msgstr "软件"
+
+msgid "{n} tracks"
+msgstr "{n} 条轨道"
+
+msgid "Free-to-air"
+msgstr "免费"
+
+msgid "Signal level"
+msgstr "信号电平"
+
+msgid "Internet stream"
+msgstr "网络流"
+
+msgid "continuity errors"
+msgstr "连续性错误"
+
+msgid "Stream / PLP"
+msgstr "流 / PLP"
+
+msgid "Source of the figures"
+msgstr "数据来源"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "接收变弱时在屏幕上警告"
+
+msgid "Open log folder"
+msgstr "打开日志文件夹"
+
+msgid "stream"
+msgstr "流"
+
+msgid "none (a plain stream)"
+msgstr "无（普通流）"
+
+msgid "internet stream"
+msgstr "网络流"
+
+msgid "Transport Stream"
+msgstr "传输流"
+
+msgid "This channel only"
+msgstr "仅此频道"
+
+msgid "Transponder"
+msgstr "转发器"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "测量整个转发器（10 秒）"
+
+msgid "Internet channels have no transponder."
+msgstr "网络频道没有转发器。"
+
+msgid "whole transponder"
+msgstr "整个转发器"
+
+msgid "Video & Audio"
+msgstr "视频和音频"
+
+msgid "Black bars"
+msgstr "黑边"
+
+msgid "Click a track to listen to it."
+msgstr "点击轨道即可收听。"
+
+msgid "Integrated"
+msgstr "集成"
+
+msgid "Teletext and subtitles"
+msgstr "图文电视和字幕"
+
+msgid "interlaced capable"
+msgstr "支持隔行"
+
+msgid "no"
+msgstr "否"
+
+msgid "{n} frames"
+msgstr "{n} 帧"
+
+msgid "schedule"
+msgstr "节目表"
+
+msgid "subtitles"
+msgstr "字幕"
+
+msgid "Teletext PID {pid}:"
+msgstr "图文电视 PID {pid}："
+
+msgid "No teletext or subtitles in this channel."
+msgstr "此频道没有图文电视或字幕。"
+
+msgid "Table"
+msgstr "表"
+
+msgid "Changes"
+msgstr "变更"
+
+msgid "Repetition"
+msgstr "重复周期"
+
+msgid "Sections"
+msgstr "段"
+
+msgid "Programme guide and clock"
+msgstr "节目指南和时钟"
+
+msgid "Guide reaches"
+msgstr "节目指南覆盖到"
+
+msgid "Clock of the channel"
+msgstr "频道时钟"
+
+msgid "EIT schedule"
+msgstr "EIT 节目表"
+
+msgid "missing"
+msgstr "缺失"
+
+msgid "(other services)"
+msgstr "（其他服务）"
+
+msgid "{n} sections"
+msgstr "{n} 个段"
+
+msgid "Descrambling"
+msgstr "解扰"
+
+msgid "Descrambler state"
+msgstr "解扰器状态"
+
+msgid "Conditional access systems"
+msgstr "条件接收系统"
+
+msgid "For"
+msgstr "适用于"
+
+msgid "Key changes"
+msgstr "密钥更换"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "此频道已加密。LinDVB 只使用您自己的订阅卡（softcam 或 CI 模块）为其解扰。"
+
+msgid "scrambled"
+msgstr "已加扰"
+
+msgid "Profile"
+msgstr "档次"
+
+msgid "test application"
+msgstr "测试应用"
+
+msgid "This channel has no HbbTV application."
+msgstr "此频道没有 HbbTV 应用。"
+
+msgid "No object carousel in this channel."
+msgstr "此频道没有对象轮播。"
+
+msgid "Export"
+msgstr "导出"
+
+msgid "Compare with another channel…"
+msgstr "与其他频道比较…"
+
+msgid "Analyse another channel…"
+msgstr "分析其他频道…"
+
+msgid "Window: {w}"
+msgstr "时间窗口：{w}"
+
+msgid "Follow the channel on screen"
+msgstr "跟随屏幕上的频道"
+
+msgid "Watch this channel"
+msgstr "观看此频道"
+
+msgid "Try again"
+msgstr "重试"
+
+msgid "Copy as text"
+msgstr "复制为文本"
+
+msgid "Export report…"
+msgstr "导出报告…"
+
+msgid "Source: none"
+msgstr "来源：无"
+
+msgid "Saved {path}"
+msgstr "已保存 {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "正在录制接下来的 30 秒…"
+
+msgid "Choose a channel"
+msgstr "选择频道"
+
+msgid "Channel name"
+msgstr "频道名称"
+
+msgid "Compare channels"
+msgstr "比较频道"
+
+msgid "Comparison"
+msgstr "比较"
+
+msgid "Close (Esc)"
+msgstr "关闭 (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "频道分析…"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "无 Unicable"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "用户频段"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "电缆上的每个调谐器都需要不同的用户频段。请为所有调谐器开启上面的共用天线电缆。"
+
+msgid "User band frequency (MHz)"
+msgstr "用户频段频率 (MHz)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "见 LNB 或多切换器的标签或说明书。"
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "仅适用于受保护的用户频段 (0-255)。通常留空。"
+
+msgid "Fill in from"
+msgstr "填写自"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "常见设备：设置上面用户频段的类型和频率。"
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "此转发器列表中没有卫星转发器。\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "调谐器正忙（录制或频道分析）。\n"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "应用所有已编辑频道的更改 (Ctrl+S)"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "频道编辑器 – 还有 {n} 个频道未应用"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "要将更改应用到 {n} 个频道吗？"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "编辑尚未应用。如不应用，将会丢失。"
+
+msgid "Discard"
+msgstr "放弃"
+
+msgid "Germany"
+msgstr "德国"
+
+msgid "Italy"
+msgstr "意大利"
+
+msgid "New Zealand"
+msgstr "新西兰"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "Freeview 地区"
+
+msgid "Country"
+msgstr "国家"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "按此顺序查询，以空格分隔。按 Enter 保留更改；留空则恢复该国的注册中心。"
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "频道同时有天线、有线或卫星和网络流时，优先使用前者"
+
+msgid "Registry address"
+msgstr "注册中心地址"
+
+msgid "Region in the list"
+msgstr "列表中的地区"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "您的地区决定地区频道及其编号。"
+
+msgid "Settings follow: {profile}"
+msgstr "设置跟随：{profile}"
+
+msgid "Choose…"
+msgstr "选择…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "可选。您的{label}只会发送到服务列表服务器。"
+
+msgid "e.g. {example}"
+msgstr "例如 {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "在您为 {country} 安装列表或将其移除之前，上一个国家的 DVB-I 频道会保留。"
+
+msgid "The registry offers no service list for {country}."
+msgstr "注册中心没有提供 {country} 的服务列表。"
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "请输入 {n} 位邮政编码"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I 从网络加载频道列表。为此，LinDVB 会连接德国服务列表注册中心 (csr.dvb-i-slr.de)、您所选服务列表的服务器、存放频道台标的服务器，以及在开启节目指南时连接电视台的节目指南服务器。这些服务器会看到您的 IP 地址和请求时间。如果您输入邮政编码，它会发送到服务列表服务器，以便返回您所在地区的频道。LinDVB 不发送其他个人数据，列表和台标只保存在本机上。网络频道从电视台的服务器传输，这些服务器可能会根据其隐私政策记录您的请求。"
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "天线、卫星和网络频道合并为一个无重复的列表；可通过天线或卫星锅接收的频道优先使用该方式。"
+
+msgid "Update the channel list automatically (daily)"
+msgstr "自动更新频道列表（每天）"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "警告！关闭此选项后，LinDVB 将无法再根据正在播出的频道更新您的频道列表。"
+
+msgid "Package"
+msgstr "套餐"
+
+msgid "Free channels only"
+msgstr "仅免费频道"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "再次点击“安装”即可使用此套餐的频道编号。"
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "地区会选择您所在区域的 LCN 表（含地方频道），方式与地面频道搜索相同。没有编号的频道排在 850-999。"
+
+msgid "No screen saver during playback"
+msgstr "播放时禁用屏幕保护程序"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "播放电视、广播或文件时保持屏幕开启。"
+
+msgid "Playing TV or radio"
+msgstr "正在播放电视或广播"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV：此频道不提供"
+
+msgid "OSD and Visualisations"
+msgstr "OSD 和可视化效果"
+
+msgid "OSD size (%)"
+msgstr "OSD 大小 (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "画面上的节目信息和频道编号。"
+
+msgid "Font"
+msgstr "字体"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "图文电视字幕以及文件和流的文本字幕。"
+
+msgid "Size (%)"
+msgstr "大小 (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "以图片绘制的字幕（DVB 字幕）保持频道发送的大小。"
+
+msgid "Subtitle font"
+msgstr "字幕字体"
+
+msgid "Default font"
+msgstr "默认字体"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "播放广播或音频时显示；也显示在可视化效果按钮中。"
+
+msgid "Draw on the graphics card"
+msgstr "在显卡上绘制"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "内置可视化效果使用 OpenGL。重新启动 LinDVB 后生效。"
+
+msgid "Service list address"
+msgstr "服务列表地址"
+
+msgid "Use This List"
+msgstr "使用此列表"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "直接加载此服务列表，不查询注册中心。"
+
+msgid "Please enter a web address (https://…)."
+msgstr "请输入网址 (https://…)。"
+
+msgid "Please confirm the privacy notice first."
+msgstr "请先确认隐私声明。"
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "请输入注册中心或服务列表的地址。"
+
+msgid "Pause / play"
+msgstr "暂停 / 播放"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "后退 / 前进 10 秒（时移、文件）"
+
+msgid "Back to live"
+msgstr "回到直播"
+
+msgid "Mute"
+msgstr "静音"
+
+msgid "Volume up / down"
+msgstr "音量增大 / 减小"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "声音提前 / 延后（频道的音频延迟）"
+
+msgid "Next radio visualisation"
+msgstr "下一个广播可视化效果"
+
+msgid "Next / previous playlist entry"
+msgstr "播放列表下一项 / 上一项"
+
+msgid "Previous / next channel"
+msgstr "上一个 / 下一个频道"
+
+msgid "Next / previous channel"
+msgstr "下一个 / 上一个频道"
+
+msgid "Channel by number (type the digits)"
+msgstr "按编号换台（输入数字）"
+
+msgid "Last channel"
+msgstr "上一个观看的频道"
+
+msgid "Switch TV / radio"
+msgstr "切换电视 / 广播"
+
+msgid "Show / hide the channel list"
+msgstr "显示 / 隐藏频道列表"
+
+msgid "Programme guide and recording"
+msgstr "节目指南和录制"
+
+msgid "Programme guide (EPG)"
+msgstr "节目指南 (EPG)"
+
+msgid "Timer recordings"
+msgstr "定时录制"
+
+msgid "Programme info (OSD)"
+msgstr "节目信息 (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "图文电视和互动服务"
+
+msgid "View"
+msgstr "视图"
+
+msgid "Full screen"
+msgstr "全屏"
+
+msgid "Leave full screen"
+msgstr "退出全屏"
+
+msgid "Application"
+msgstr "应用程序"
+
+msgid "Main menu"
+msgstr "主菜单"
+
+msgid "Open media file"
+msgstr "打开媒体文件"
+
+msgid "Keyboard shortcuts"
+msgstr "键盘快捷键"
+
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
+
+msgid "Time"
+msgstr "时间"
+
+msgid "Programme"
+msgstr "节目"
+
+msgid "File"
+msgstr "文件"
+
+msgid "Other (own registry or list)"
+msgstr "其他（自有注册中心或列表）"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I 从网络加载频道列表。为此，LinDVB 会连接您所输入地址的注册中心或服务列表服务器、存放频道台标的服务器，以及在开启节目指南时连接电视台的节目指南服务器。这些服务器会看到您的 IP 地址和请求时间。如果您输入邮政编码，它会发送到服务列表服务器。"
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "请在下面输入服务列表注册中心的地址，或直接输入服务列表的地址。"
+
+msgid "Preferred audio format"
+msgstr "首选音频格式"
+
+msgid "As broadcast"
+msgstr "按播出原样"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "立体声 (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "当频道或文件有相同语言的此种声音时，优先播放。"
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "编号"
+
+msgid "Name A–Z"
+msgstr "名称 A–Z"
+
+msgid "Name Z–A"
+msgstr "名称 Z–A"
+
+msgid "Picture quality"
+msgstr "画质"
+
+msgid "Sort by"
+msgstr "排序方式"
+
+msgid "All"
+msgstr "全部"
+
+msgid "General settings"
+msgstr "常规设置"
+
+msgid "For this recording"
+msgstr "用于此次录制"
+
+msgid "Formats and _tracks"
+msgstr "格式和轨道(_T)"
+
+msgid "Whole series"
+msgstr "整个系列"
+
+msgid "Next recording only"
+msgstr "仅下一次录制"
+
+msgid "_Apply to"
+msgstr "应用于(_A)"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "常规设置：录制开始时，格式、音轨和附加流取自设置。"
+
+msgid "All streams of the channel (TS)"
+msgstr "频道的所有流 (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "录制频道声明的所有流，包括 HbbTV 数据和新音轨，并带有仅含此频道的节目表。只有 MPEG-TS 能容纳，因此使用 TS。"
+
+msgid "Web address"
+msgstr "网址"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U 播放列表或单个 HLS 流 (.m3u8) 的地址。"
+
+msgid "User name"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes 账户的直播频道。密码保存在 LinDVB 设置中的列表地址里。"
+
+msgid "Your lists"
+msgstr "您的列表"
+
+msgid "Source"
+msgstr "来源"
+
+msgid "Updated"
+msgstr "已更新"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "重新加载列表：收藏、频道编号和节目指南匹配会保留，不再在列表中的频道会被移除。"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Remove the list and its channels"
+msgstr "移除列表及其频道"
+
+msgid "{n} removed"
+msgstr "已移除 {n} 个"
+
+msgid "The file has no channels."
+msgstr "文件中没有频道。"
+
+msgid "{n} channels removed"
+msgstr "已移除 {n} 个频道"
+
+msgid "Colour scheme"
+msgstr "配色方案"
+
+msgid "Dark"
+msgstr "深色"
+
+msgid "Light"
+msgstr "浅色"
+
+msgid "Same as the system"
+msgstr "跟随系统"
+
+msgid "The picture always keeps its dark frame."
+msgstr "画面始终保持深色边框。"
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "只列出当前已连接的调谐器；其他调谐器的设置保存在“未连接”下。"
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "接收转发器发送的所有内容，而不只是频道本身的流。在 USB 调谐器上占用更多带宽，但即使频道列表只知道一条音轨，也能播放和录制所有音轨。适用于直播电视和录制。"
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "您为此调谐器自定义的名称。留空：设备名称。"
+
+msgid "Satellite"
+msgstr "卫星"
+
+msgid "Antenna (terrestrial)"
+msgstr "天线（地面）"
+
+msgid "Cable"
+msgstr "有线"
+
+msgid "Connected to"
+msgstr "连接到"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "组合调谐器一次只接收一种类型，即其所连接接口的类型。LinDVB 随后只将其用于该类型的频道。"
+
+msgid "No tuner is connected."
+msgstr "未连接调谐器。"
+
+msgid "Not connected ({n})"
+msgstr "未连接 ({n})"
+
+msgid "All its reception types"
+msgstr "其所有接收类型"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "以频道命名的图片文件（PNG、SVG、JPG），例如 \"Bayern 3.png\"，或 Enigma2、Kodi 和 VDR 使用的 picon 套件（按服务引用或 SNP 名称命名）。它们也会显示在频道列表中。LinDVB 不附带任何台标，因为台标属于电视台。留空：{v0}"
+
+msgid "Picons for my channels"
+msgstr "为我的频道获取 picon"
+
+msgid "Download Logos"
+msgstr "下载台标"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "只从 picons 项目 (github.com/picons/picons) 将您列表中频道的台标下载到台标文件夹。已有台标的频道保持不变。"
+
+msgid "Looking up…"
+msgstr "正在查找…"
+
+msgid "{done} of {total}"
+msgstr "{done} / {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "已下载 {got} 个台标，{have} 个已存在，{missing} 个不在 picon 套件中。"
+
+msgid "Download failed: {error}"
+msgstr "下载失败：{error}"
+
+msgid "Provider / category"
+msgstr "运营商 / 类别"
+
+msgid "Extra streams"
+msgstr "附加流"
+
+msgid "New timer"
+msgstr "新建定时录制"
+
+msgid "Edit timer"
+msgstr "编辑定时录制"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder}（取自设置）"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} 只能保存在 MPEG-TS 中，因此使用 TS。"
+
+msgid "Privacy Notice"
+msgstr "隐私声明"
+
+msgid "Show Privacy Notice…"
+msgstr "显示隐私声明…"
+
+msgid "Agree"
+msgstr "同意"
+
+msgid "Please read the privacy notice to the end."
+msgstr "请将隐私声明读到最后。"
+
+msgid "Andorra"
+msgstr "安道尔"
+
+msgid "Argentina"
+msgstr "阿根廷"
+
+msgid "Austria"
+msgstr "奥地利"
+
+msgid "Australia"
+msgstr "澳大利亚"
+
+msgid "Åland Islands"
+msgstr "奥兰群岛"
+
+msgid "Belgium"
+msgstr "比利时"
+
+msgid "Bulgaria"
+msgstr "保加利亚"
+
+msgid "Brazil"
+msgstr "巴西"
+
+msgid "Canada"
+msgstr "加拿大"
+
+msgid "Switzerland"
+msgstr "瑞士"
+
+msgid "China"
+msgstr "中国"
+
+msgid "Colombia"
+msgstr "哥伦比亚"
+
+msgid "Czechia"
+msgstr "捷克"
+
+msgid "Denmark"
+msgstr "丹麦"
+
+msgid "Estonia"
+msgstr "爱沙尼亚"
+
+msgid "Spain"
+msgstr "西班牙"
+
+msgid "Finland"
+msgstr "芬兰"
+
+msgid "France"
+msgstr "法国"
+
+msgid "Greece"
+msgstr "希腊"
+
+msgid "Hong Kong"
+msgstr "中国香港"
+
+msgid "Croatia"
+msgstr "克罗地亚"
+
+msgid "Hungary"
+msgstr "匈牙利"
+
+msgid "Ireland"
+msgstr "爱尔兰"
+
+msgid "Israel"
+msgstr "以色列"
+
+msgid "Iran"
+msgstr "伊朗"
+
+msgid "Iceland"
+msgstr "冰岛"
+
+msgid "Kenya"
+msgstr "肯尼亚"
+
+msgid "South Korea"
+msgstr "韩国"
+
+msgid "Liechtenstein"
+msgstr "列支敦士登"
+
+msgid "Lithuania"
+msgstr "立陶宛"
+
+msgid "Luxembourg"
+msgstr "卢森堡"
+
+msgid "Latvia"
+msgstr "拉脱维亚"
+
+msgid "Netherlands"
+msgstr "荷兰"
+
+msgid "Norway"
+msgstr "挪威"
+
+msgid "Poland"
+msgstr "波兰"
+
+msgid "Portugal"
+msgstr "葡萄牙"
+
+msgid "Romania"
+msgstr "罗马尼亚"
+
+msgid "Russia"
+msgstr "俄罗斯"
+
+msgid "Sweden"
+msgstr "瑞典"
+
+msgid "Slovenia"
+msgstr "斯洛文尼亚"
+
+msgid "Slovakia"
+msgstr "斯洛伐克"
+
+msgid "Taiwan"
+msgstr "中国台湾"
+
+msgid "Ukraine"
+msgstr "乌克兰"
+
+msgid "Uganda"
+msgstr "乌干达"
+
+msgid "United Kingdom"
+msgstr "英国"
+
+msgid "United States"
+msgstr "美国"
+
+msgid "Vietnam"
+msgstr "越南"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "所有频率，7/8 MHz（欧洲、非洲、亚洲）"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "所有频率，7 MHz（澳大利亚）"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "所有频率，6 MHz（美洲）"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "所有频率，6 MHz（中国台湾）"
+
+msgid "Whole country"
+msgstr "全国"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "虚拟调谐器 (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "其他国家（无列表）"
+
+msgid "Own lists"
+msgstr "自有列表"
+
+msgid "All frequencies (blind scan)"
+msgstr "所有频率（盲扫）"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "所有频率，6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "所有频率 (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "所有频率，8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "地面"
+
+msgid "Satellites"
+msgstr "卫星"
+
+msgid "Add satellite"
+msgstr "添加卫星"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "一次搜索 DiSEqC 开关后面的多个天线位置"
+
+msgid "More options"
+msgstr "更多选项"
+
+msgid "Receives: {systems}"
+msgstr "接收：{systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "调谐器没有说明其接收类型，因此提供所有列表。"
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "此调谐器的单线设置：{setup}"
+
+msgid "(no lists found)"
+msgstr "（未找到列表）"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC 端口"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "每颗卫星都需要自己的 DiSEqC 端口。"
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "来自这些位置列表的 {n} 个转发器；搜索时会添加网络声明的转发器 (NIT)。"
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "盲扫：尝试 {n} 个频率，约 {minutes} 分钟。"
+
+msgid "{n} frequencies from the list."
+msgstr "列表中的 {n} 个频率。"
+
+msgid "Transponder lists"
+msgstr "转发器列表"
+
+msgid "Favourites"
+msgstr "收藏"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "创建、重命名、删除收藏列表并调整其顺序。"
+
+msgid "Delete list"
+msgstr "删除列表"
+
+msgid "Delete the list “{name}”?"
+msgstr "要删除列表“{name}”吗？"
+
+msgid "Favourites Lists"
+msgstr "收藏列表"
+
+msgid "Favourites Lists…"
+msgstr "收藏列表…"
+
+msgid "Favourites lists"
+msgstr "收藏列表"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "筛选；收藏列表显示电视和广播"
+
+msgid "In no favourites list"
+msgstr "不在任何收藏列表中"
+
+msgid "Manage favourites lists"
+msgstr "管理收藏列表"
+
+msgid "Manage favourites lists…"
+msgstr "管理收藏列表…"
+
+msgid "Move to the bottom"
+msgstr "移到底部"
+
+msgid "Move to the top"
+msgstr "移到顶部"
+
+msgid "Name of the favourites list"
+msgstr "收藏列表名称"
+
+msgid "New Favourites List"
+msgstr "新建收藏列表"
+
+msgid "New list"
+msgstr "新列表"
+
+msgid "New list…"
+msgstr "新列表…"
+
+msgid "Only the channels of a favourites list"
+msgstr "仅收藏列表中的频道"
+
+msgid "Order in this list"
+msgstr "在此列表中的顺序"
+
+msgid "Remove from “{name}”"
+msgstr "从“{name}”中移除"
+
+msgid "Rename Favourites List"
+msgstr "重命名收藏列表"
+
+msgid "Rename"
+msgstr "重命名"
+
+msgid "The channels stay in the channel list."
+msgstr "频道仍保留在频道列表中。"
+
+msgid "{n} channels"
+msgstr "{n} 个频道"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "每个列表都有自己的顺序。请在频道列表中排列列表内的频道：选择列表，然后拖动频道或使用右键菜单。"
+
+msgid "Indonesia"
+msgstr "印度尼西亚"
+
+msgid "North Macedonia"
+msgstr "北马其顿"
+
+msgid "South Africa"
+msgstr "南非"
+
+msgid "(no tuner)"
+msgstr "（无调谐器）"
+
+msgid "1 tuner"
+msgstr "1 个调谐器"
+
+msgid "{n} tuners"
+msgstr "{n} 个调谐器"
+
+msgid "Add Server"
+msgstr "添加服务器"
+
+msgid "Add by address"
+msgstr "按地址添加"
+
+msgid "Find SAT>IP servers"
+msgstr "查找 SAT>IP 服务器"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "用于搜索找不到的服务器（其他网络，或不支持组播）。"
+
+msgid "No SAT>IP server added."
+msgstr "尚未添加 SAT>IP 服务器。"
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "没有 SAT>IP 服务器响应。请在下面按地址添加。"
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "局域网中的 SAT>IP 盒子和 LNB、minisatip、FRITZ!Box Cable 以及其他 DVB over IP 服务器。保存并重新打开设置后，其调谐器会列在下面。"
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP 服务器"
+
+msgid "Search Network"
+msgstr "搜索网络"
+
+msgid "Searching…"
+msgstr "正在搜索…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP（在 RTSP 连接中）"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP 可以穿过阻止 UDP 流的防火墙。"
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "找到 {n} 台服务器，其中 {new} 台是新的。"
+
+msgid "Source: SAT>IP server {host}"
+msgstr "来源：SAT>IP 服务器 {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP 信号报告 (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP：搜索使用列表中的频率（不进行 NIT 搜索）。"
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP 服务器控制 LNB 和 DiSEqC 开关；DiSEqC 端口选择其信号源（1 到 4）。"
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "此转发器列表中没有适用于此调谐器的转发器。\n"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB 找不到以下 GStreamer 元素：{elements}。直播电视或部分频道可能无法播放。"
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package} 应该包含这些元素。请将此问题作为错误报告。"
+
+msgid "Install them with:"
+msgstr "请使用以下命令安装："
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "请从您的发行版安装 GStreamer 插件 base、bad 和 libav。"
+
+msgid "GStreamer plugins are missing"
+msgstr "缺少 GStreamer 插件"
+
+msgid "At start"
+msgstr "启动时"
+
+msgid "Channel at start"
+msgstr "启动时的频道"
+
+msgid "Last channel watched"
+msgstr "上次观看的频道"
+
+msgid "First channel of the current list"
+msgstr "当前列表的第一个频道"
+
+msgid "A chosen channel"
+msgstr "指定的频道"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "当前列表是指您离开时的频道列表：电视或广播、筛选、分组和排序方式。"
+
+msgid "Channel list"
+msgstr "频道列表"
+
+msgid "All channels or one of your favourites lists."
+msgstr "所有频道或您的某个收藏列表。"
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "每次启动时调谐，无论您上次观看哪个频道。"
+
+msgid "No channel (black screen)"
+msgstr "无频道（黑屏）"
+
+msgid "Lock"
+msgstr "锁定"
+
+msgid "Search this satellite"
+msgstr "搜索此卫星"
+
+msgid "Tick the satellites to search."
+msgstr "请勾选要搜索的卫星。"
+
+msgid "Horizontal"
+msgstr "水平"
+
+msgid "Vertical"
+msgstr "垂直"
+
+msgid "Left (circular)"
+msgstr "左旋（圆极化）"
+
+msgid "Right (circular)"
+msgstr "右旋（圆极化）"
+
+msgid "Auto"
+msgstr "自动"
+
+msgid "Add…"
+msgstr "添加…"
+
+msgid "Tick all"
+msgstr "全选"
+
+msgid "Tick none"
+msgstr "全不选"
+
+msgid "Back to the lists"
+msgstr "返回列表"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "放弃对此位置的更改，重新使用转发器列表"
+
+msgid "The changed list is kept for this position."
+msgstr "更改后的列表会保留给此位置。"
+
+msgid "This transponder is already in the list."
+msgstr "此转发器已在列表中。"
+
+msgid "Tick the transponders to search."
+msgstr "请勾选要搜索的转发器。"
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S 只使用 QPSK；8PSK、16APSK 和 32APSK 请选择 DVB-S2。"
+
+msgid "This transponder is not valid."
+msgstr "此转发器无效。"
+
+msgid "All {n} transponders are searched."
+msgstr "将搜索全部 {n} 个转发器。"
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "将搜索 {on} / {n} 个转发器。搜索单个转发器时不会添加网络声明的转发器 (NIT)。"
+
+msgid "Edit transponder"
+msgstr "编辑转发器"
+
+msgid "Add transponder"
+msgstr "添加转发器"
+
+msgid "Transponders of {position}"
+msgstr "{position} 的转发器"
+
+msgid "The list could not be saved."
+msgstr "无法保存列表。"
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "转发器：搜索单个转发器，或添加、更改、移除"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} 个转发器；如只勾选部分，则只搜索这些。"
+
+msgid "Own transponder list: {positions}."
+msgstr "自有转发器列表：{positions}。"
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "服务器提供的流格式。如果频道无法以 MPEG-TS 播放，请选择 HLS。"
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "为列表自定义名称（也是其频道分组的名称）"
+
+msgid "List renamed to {name}"
+msgstr "列表已重命名为 {name}"
+
+msgid "Add Channels…"
+msgstr "添加频道…"
+
+msgid "Add channels"
+msgstr "添加频道"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "手动调谐单个频率，并将其频道与频道列表比较：添加新频道、更新已更改的频道、移除旧频道。"
+
+msgid "Unchanged"
+msgstr "未更改"
+
+msgid "Changed"
+msgstr "已更改"
+
+msgid "No longer broadcast"
+msgstr "已停播"
+
+msgid "Bandwidth"
+msgstr "带宽"
+
+msgid "yes"
+msgstr "是"
+
+msgid "Add Channels"
+msgstr "添加频道"
+
+msgid "Tune Channel"
+msgstr "调谐频道"
+
+msgid "No tuner found."
+msgstr "未找到调谐器。"
+
+msgid "Log"
+msgstr "日志"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "发送多个 PLP 的 DVB-T2 复用中的 PLP；-1 表示由调谐器选择"
+
+msgid "Enter by hand"
+msgstr "手动输入"
+
+msgid "Tuning…"
+msgstr "正在调谐…"
+
+msgid "The tuner could not be used."
+msgstr "无法使用该调谐器。"
+
+msgid "No channels found on this frequency."
+msgstr "此频率上未找到频道。"
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} 个未更改，{changed} 个已更改，{new} 个新频道，{gone} 个已停播。"
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "已保存：添加 {added} 个，更新 {updated} 个，移除 {removed} 个。"
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "卫星 · DiSEqC 端口 {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "来源：卫星、有线、地面或网络流、DiSEqC 端口，或卫星、网络、导入文件或 IPTV 列表"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB 频道文件 (.json)：全部内容，含收藏列表"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U 播放列表 (.m3u)：网络频道和 DVB-I 流"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 频道文件 (.conf)：调谐器频道"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV 表格 (.csv)：所有频道"
+
+msgid "Export Channel List"
+msgstr "导出频道列表"
+
+msgid "TV channels only"
+msgstr "仅电视频道"
+
+msgid "Radio stations only"
+msgstr "仅广播电台"
+
+msgid "The channels shown in the list ({n})"
+msgstr "列表中显示的频道 ({n})"
+
+msgid "Save…"
+msgstr "保存…"
+
+msgid "There are no channels to export."
+msgstr "没有可导出的频道。"
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "这 {total} 个频道都无法以此格式保存；网络频道可存为 M3U，调谐器频道可存为 dvbv5，所有频道可存为 CSV 或 LinDVB 频道文件。"
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "将保存 {n} / {total} 个频道；其余 {skipped} 个无法以此格式保存。"
+
+msgid "{n} channels will be saved."
+msgstr "将保存 {n} 个频道。"
+
+msgid "Could not save {name}"
+msgstr "无法保存 {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "已将 {n} 个频道导出到 {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "导入频道列表（LinDVB .json、dvbv5、VDR、lamedb、M3U、CSV、DVBViewer .ini）"
+
+msgid "Server (host:9981)"
+msgstr "服务器 (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Tvheadend 服务器的频道，以其频道标签作为分组，并包含其节目指南。如果服务器不要求，用户名和密码请留空。密码保存在 LinDVB 设置中。"
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend：已加载 {n} 个节目"
+
+msgid "Hardware Tuners"
+msgstr "硬件调谐器"
+
+msgid "No hardware tuner found."
+msgstr "未找到硬件调谐器。"
+
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "Snap 软件包只有在其 DVB 接口连接后才能使用调谐器：请运行“sudo snap connect lindvb:dvb”并重新启动 LinDVB。"
+
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux 尚未设置 DVB 设备（缺少 /dev/dvb）。可能缺少调谐器的驱动程序或固件；“dmesg | grep -i dvb”会显示内核报告的内容。"
+
+msgid "Connect a tuner and open the preferences again."
+msgstr "请连接调谐器并重新打开设置。"
+
+msgid "{n} tuners found in this computer."
+msgstr "在此计算机中找到 {n} 个调谐器。"
+
+msgid "1 tuner found in this computer."
+msgstr "在此计算机中找到 1 个调谐器。"
+
+msgid "Tuner {n}: {name}"
+msgstr "调谐器 {n}：{name}"
+
+msgid "Internet stream {host}"
+msgstr "网络流 {host}"
+
+msgid "the server ended the stream"
+msgstr "服务器结束了流"
+
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}：{reason} – {s} 秒后重新连接"
+
+msgid "{host}: connected again"
+msgstr "{host}：已重新连接"
+
+msgid "could not open the stream"
+msgstr "无法打开流"
+
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}：直接播放流，不使用时移（{reason}）"
+
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "连接中断（{reason}）– {s} 秒后重新连接"
+
+msgid "Connected again"
+msgstr "已重新连接"
+
+msgid "{name} has no catch-up"
+msgstr "{name} 没有回看功能"
+
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "回看：{title}（{name}，{time}）"
+
+msgid "Timeshift for internet channels"
+msgstr "网络频道的时移"
+
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "网络电视频道像调谐器频道一样经过时移缓冲区：可暂停、回退并将缓冲区保存为录像。广播流直接播放。"
+
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH 流的质量"
+
+msgid "Automatic (follows the connection)"
+msgstr "自动（随连接调整）"
+
+msgid "Always the best"
+msgstr "始终最佳"
+
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "连接变慢时，自动模式会切换到较低画质；缓冲区会保留已收到的内容。“始终最佳”画质始终一致，但在连接较慢时会停下来等待。"
+
+msgid "Reconnect internet streams"
+msgstr "重新连接网络流"
+
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "网络或 Tvheadend 频道的连接中断时，会在几秒后重新打开，最长持续三分钟。"
+
+msgid "Watch from the Start"
+msgstr "从头观看"
+
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "从运营商的存档中从头播放节目（回看）"
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr "HLS 和 DASH 网络流以一条音轨录制（如有提供，则为首选语言）。"
+
+msgid "margin"
+msgstr "余量"
+
+msgid "pixel"
+msgstr "像素"
+
+msgid "TV"
+msgstr "电视"
+
+msgid "Filter"
+msgstr "筛选"
+
+msgid "Source or group"
+msgstr "来源或分组"
+
+msgid "Favourites list"
+msgstr "收藏列表"
+
+msgid "For channels whose type was guessed wrong, e.g. internet streams or imported lists"
+msgstr "适用于类型判断错误的频道，例如网络流或导入的列表"
+
+msgid "Sort by number to move channels"
+msgstr "请按编号排序以移动频道"
+
+msgid "Move up in the channel list (Alt+Up)"
+msgstr "在频道列表中上移 (Alt+Up)"
+
+msgid "Move down in the channel list (Alt+Down)"
+msgstr "在频道列表中下移 (Alt+Down)"
+
+msgid "Add to the favourites list"
+msgstr "添加到收藏列表"
+
+msgid "Remove from the favourites list"
+msgstr "从收藏列表中移除"
+
+msgid "Move up in the favourites list (Alt+Up)"
+msgstr "在收藏列表中上移 (Alt+Up)"
+
+msgid "Move down in the favourites list (Alt+Down)"
+msgstr "在收藏列表中下移 (Alt+Down)"
+
+msgid "Empty. Drag channels here or use the arrow button."
+msgstr "空。请将频道拖到此处或使用箭头按钮。"
+
+msgid "No favourites list yet. Use the star of a channel to make one."
+msgstr "还没有收藏列表。使用频道的星标即可创建。"
+
+msgid "Sort the channel list"
+msgstr "排序频道列表"
+
+msgid "By group and name"
+msgstr "按分组和名称"
+
+msgid "By the numbers of the DVB-I list"
+msgstr "按 DVB-I 列表的编号"
+
+msgid "{n} channels · drag to reorder"
+msgstr "{n} 个频道 · 拖动以重新排序"
+
+msgid "Shown as the source in the channel list filter. Empty: the name the list gives itself."
+msgstr "在频道列表筛选器中显示为来源。留空：列表自身的名称。"
+
+msgid "The name the list gives itself"
+msgstr "列表自身的名称"
+
+msgid "Name in the channel list"
+msgstr "频道列表中的名称"

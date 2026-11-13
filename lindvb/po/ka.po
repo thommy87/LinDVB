@@ -1,0 +1,4587 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ka\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "არხების სიის იმპორტი (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "ამ არხით დაწყება (სახელი ან ნომერი)"
+
+msgid "{channel} at {time}"
+msgstr "{channel}, {time}"
+
+msgid "Watch"
+msgstr "ყურება"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "შეხსენება: {title} — {channel}, {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "ჯერ პარამეტრებში მიუთითეთ XMLTV-ის URL"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV გიდის ჩამოტვირთვა…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} გიდის გარეშე (პარამეტრები ▸ EPG ▸ IPTV არხების დაკავშირება)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: სერვისების სიის ჩატვირთვა…"
+
+msgid "Search the web"
+msgstr "ინტერნეტში ძებნა"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "ტელეტექსტი (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "სუბტიტრები (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG მონაცემები (TS)"
+
+msgid "All audio tracks"
+msgstr "ყველა აუდიოტრეკი"
+
+msgid "Preferred language only"
+msgstr "მხოლოდ სასურველი ენა"
+
+msgid "First audio track only"
+msgstr "მხოლოდ პირველი აუდიოტრეკი"
+
+msgid "Record"
+msgstr "ჩაწერა"
+
+msgid "Record and tune"
+msgstr "ჩაწერა და გადართვა"
+
+msgid "Tune only"
+msgstr "მხოლოდ გადართვა"
+
+msgid "Hibernate"
+msgstr "ჰიბერნაცია"
+
+msgid "None"
+msgstr "არცერთი"
+
+msgid "Power off"
+msgstr "გამორთვა"
+
+msgid "Quit LinDVB"
+msgstr "LinDVB-დან გასვლა"
+
+msgid "Standby"
+msgstr "მოლოდინის რეჟიმი"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "ინტერნეტ-ნაკადებს არ აქვს ტელეტექსტის, სუბტიტრების ან EPG-ის ნაკადები."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 ინახავს ერთ აუდიოტრეკს (სასურველ ენას, თუ ის ეთერშია)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "აუდიოფაილი ინახავს ერთ ტრეკს (სასურველ ენას, თუ ის ეთერშია)."
+
+msgid "Fr"
+msgstr "პა"
+
+msgid "Mo"
+msgstr "ორ"
+
+msgid "Sa"
+msgstr "შა"
+
+msgid "Su"
+msgstr "კვ"
+
+msgid "Th"
+msgstr "ხუ"
+
+msgid "Tu"
+msgstr "სა"
+
+msgid "We"
+msgstr "ოთ"
+
+msgid "Scheduled"
+msgstr "დაგეგმილი"
+
+msgid "Done"
+msgstr "დასრულებული"
+
+msgid "Channel missing"
+msgstr "არხი აკლია"
+
+msgid "Tuned"
+msgstr "გადართულია"
+
+msgid "Recording"
+msgstr "მიმდინარეობს ჩაწერა"
+
+msgid "Failed"
+msgstr "ვერ შესრულდა"
+
+msgid "Missed"
+msgstr "გამოტოვებული"
+
+msgid "After recording: {action}"
+msgstr "ჩაწერის შემდეგ: {action}"
+
+msgid "The module was removed or reset."
+msgstr "მოდული ამოღებულ ან გადატვირთულ იქნა."
+
+msgid "CAM Menu"
+msgstr "CAM მენიუ"
+
+msgid "Cancel"
+msgstr "გაუქმება"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "CAM მენიუს გახსნა"
+
+msgid "Select"
+msgstr "არჩევა"
+
+msgid "Back"
+msgstr "უკან"
+
+msgid "Close Menu"
+msgstr "მენიუს დახურვა"
+
+msgid "Device: {path} – {state}"
+msgstr "მოწყობილობა: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "გახსენით CAM მენიუ მოდულის პარამეტრების, სმარტ-ბარათის ინფორმაციისა და მშობლის კონტროლის სანახავად."
+
+msgid "The module has not finished starting yet."
+msgstr "მოდულს ჯერ არ დაუსრულებია ჩართვა."
+
+msgid "Custom colour"
+msgstr "საკუთარი ფერი"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB ლურჯი (ნაგულისხმევი)"
+
+msgid "System accent colour"
+msgstr "სისტემის აქცენტის ფერი"
+
+msgid "Preferences"
+msgstr "პარამეტრები"
+
+msgid "Save"
+msgstr "შენახვა"
+
+msgid "Appearance"
+msgstr "იერსახე"
+
+msgid "Language"
+msgstr "ენა"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "ძალაში შედის LinDVB-ის ხელახლა გაშვებისას."
+
+msgid "Accent colour"
+msgstr "აქცენტის ფერი"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "გამოიყენება მონიშვნებისთვის, არჩეული ელემენტებისა და ღილაკებისთვის ყველა ფანჯარაში."
+
+msgid "On-screen display"
+msgstr "ეკრანული ჩვენება"
+
+msgid "OSD display time (s)"
+msgstr "OSD-ის ჩვენების დრო (წმ)"
+
+msgid "Visualisation"
+msgstr "ვიზუალიზაცია"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "რა ჩანს რადიოს ვიზუალიზაციაზე რადიოარხის ან აუდიოფაილის დაკვრისას. სიმღერის მონაცემები მოდის DVB რადიოს RadioText-იდან, ინტერნეტ-რადიოს ნაკადის სათაურიდან და აუდიოფაილების ტეგებიდან."
+
+msgid "Overlay"
+msgstr "ზედდება"
+
+msgid "Station logo tile"
+msgstr "სადგურის ლოგოს ფილა"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "არხის ლოგო, ან ფილა სადგურის სახელით, თუ ლოგო არ არის."
+
+msgid "Album cover"
+msgstr "ალბომის ყდა"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "ეთერში მიმდინარე სიმღერის ყდა, ფაილიდან ან ინტერნეტში მოძიებული."
+
+msgid "Song information"
+msgstr "სიმღერის ინფორმაცია"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "შემსრულებელი, ალბომი და წელი, ტრეკი და სათაური. სიმღერის მონაცემების გარეშე ნაჩვენებია სადგური და მიმდინარე გადაცემა."
+
+msgid "Clock in the top right corner"
+msgstr "საათი ზედა მარჯვენა კუთხეში"
+
+msgid "Sources"
+msgstr "წყაროები"
+
+msgid "Look up covers online"
+msgstr "ყდების ინტერნეტში მოძიება"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "ეთერში მიმდინარე სიმღერის შემსრულებელსა და სათაურს უგზავნის iTunes Search API-ს ალბომის, წლისა და ყდის მოსაძებნად."
+
+msgid "Station logo folder"
+msgstr "სადგურების ლოგოების საქაღალდე"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "სურათის ფაილები (PNG, SVG, JPG), არხის სახელით, მაგ. \"Bayern 3.png\". არხის სახელით დასახელებული ლოგოები, როგორც მათ DVBViewer ინახავს, მუშაობს ისე, როგორც არის. ცარიელი: {v0}"
+
+msgid "Playback"
+msgstr "დაკვრა"
+
+msgid "Deinterlace video"
+msgstr "ვიდეოს დეინტერლეისი"
+
+msgid "Screenshot folder"
+msgstr "ეკრანის სურათების საქაღალდე"
+
+msgid "Timeshift"
+msgstr "დროის გადაწევა"
+
+msgid "Timeshift folder"
+msgstr "დროის გადაწევის საქაღალდე"
+
+msgid "Timeshift buffer (MB)"
+msgstr "დროის გადაწევის ბუფერი (MB)"
+
+msgid "Tuner and Channels"
+msgstr "ტიუნერი და არხები"
+
+msgid "DVB hardware"
+msgstr "DVB აპარატურა"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "ადაპტერების ნომრები, რომლებიც LinDVB-ს შეუძლია გამოიყენოს, მძიმით გამოყოფილი."
+
+msgid "DVB adapters"
+msgstr "DVB ადაპტერები"
+
+msgid "Frontend"
+msgstr "ფრონტენდი"
+
+msgid "Capture whole transponder"
+msgstr "მთელი ტრანსპონდერის ჩაწერა"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "საჭიროა ყველა აუდიოტრეკისთვის, როცა არხების სიამ მხოლოდ ერთი აუდიო PID იცის."
+
+msgid "Satellite LNB"
+msgstr "სატელიტური LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF დაბალი დიაპაზონი (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF მაღალი დიაპაზონი (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "გადართვის სიხშირე (kHz)"
+
+msgid "Channels"
+msgstr "არხები"
+
+msgid "Channel Search…"
+msgstr "არხების ძებნა…"
+
+msgid "Channel search"
+msgstr "არხების ძებნა"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "არხების ძებნა ანტენაზე, კაბელსა ან სატელიტზე (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "არხების რედაქტორი / რჩეულები"
+
+msgid "Channel editor"
+msgstr "არხების რედაქტორი"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "არხების გადარქმევა, დალაგება, წაშლა, დამატება და რჩეულებად მონიშვნა (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "ინტერნეტი"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "არხების სიები ინტერნეტიდან: თქვენი რეგიონის DVB-I სია და IPTV დასაკრავი სიები. ეს პარამეტრები მაშინვე მოქმედებს."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "ჩაწერა"
+
+msgid "Recording folder"
+msgstr "ჩანაწერების საქაღალდე"
+
+msgid "File naming scheme"
+msgstr "ფაილების დასახელების სქემა"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "ჩასანაცვლებლები: %year %date %time %end %station %name, / ქვესაქაღალდეებისთვის"
+
+msgid "Timer padding"
+msgstr "ტაიმერის მარაგი"
+
+msgid "Start earlier by (min)"
+msgstr "დაწყება უფრო ადრე (წთ)"
+
+msgid "Stop later by (min)"
+msgstr "დასრულება უფრო გვიან (წთ)"
+
+msgid "Timers"
+msgstr "ტაიმერები"
+
+msgid "Open the timer window after creating a timer"
+msgstr "ტაიმერის ფანჯრის გახსნა ტაიმერის შექმნის შემდეგ"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "გადაცემების გიდში „ჩაწერის“ შემდეგ ახალი ტაიმერის მაშინვე რედაქტირება."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "გადაცემების გიდი: სამაუწყებლო EPG, ინტერნეტ EPG (XMLTV) და სხვა პროვაიდერების EPG."
+
+msgid "Conditional access"
+msgstr "პირობითი წვდომა"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "დაშიფრული არხების გაშიფვრა, რომლებზეც გამოწერილი ხართ, საკუთარი ბარათით softcam-ში ან CI მოდულში."
+
+msgid "None (leave scrambled)"
+msgstr "არცერთი (დაშიფრულად დატოვება)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "გარე softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "აპარატურული CI / CI+ მოდული"
+
+msgid "Descrambling via"
+msgstr "გაშიფვრა საშუალებით"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI სოკეტი"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix სოკეტის ბილიკი, ან host:port."
+
+msgid "CI module"
+msgstr "CI მოდული"
+
+msgid "CI adapter number"
+msgstr "CI ადაპტერის ნომერი"
+
+msgid "CA device number"
+msgstr "CA მოწყობილობის ნომერი"
+
+msgid "Plugins"
+msgstr "დანამატები"
+
+msgid "Load plugins at startup"
+msgstr "დანამატების ჩატვირთვა გაშვებისას"
+
+msgid "Manage Plugins…"
+msgstr "დანამატების მართვა…"
+
+msgid "Format and tracks"
+msgstr "ფორმატი და ტრეკები"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "ნაგულისხმევი მნიშვნელობები ახალი ტაიმერებისა და ჩაწერის ღილაკისთვის. ყოველ ტაიმერს და „ჩაწერა პარამეტრებით…“-ით დაწყებულ ჩანაწერს შეუძლია მათი შეცვლა.\nTS: ვიდეო, ყველა აუდიოტრეკი, სუბტიტრები, ტელეტექსტი და EPG მონაცემები. MKV: ვიდეო, რამდენიმე აუდიოტრეკი და სუბტიტრები. MPG: ვიდეო და რამდენიმე აუდიოტრეკი. MP4: ვიდეო და ერთი აუდიოტრეკი. ინტერნეტ-ნაკადებს არ აქვს ტელეტექსტი, სუბტიტრები ან EPG მონაცემები; HLS და DASH ნაკადები იწერება ერთი აუდიოტრეკით."
+
+msgid "TV format"
+msgstr "TV ფორმატი"
+
+msgid "Radio format"
+msgstr "რადიოს ფორმატი"
+
+msgid "Audio tracks"
+msgstr "აუდიოტრეკები"
+
+msgid "Preferred audio language"
+msgstr "სასურველი აუდიოს ენა"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "გამოიყენება „მხოლოდ სასურველი ენის“ და MP4-ის მიერ, რომელიც ერთ ტრეკს ინახავს. აუდიოაღწერის ტრეკები გამოტოვებულია. თუ შესაბამისი არ მოიძებნა, იწერება პირველი ტრეკი."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} შეიძლება შენახულ იქნას მხოლოდ MPEG-TS-ში, ამიტომ ჩანაწერები ინახება TS-ად."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} შეიძლება შენახულ იქნას მხოლოდ TS-ში ან MKV-ში, ამიტომ ჩანაწერები ინახება TS-ად."
+
+msgid " and "
+msgstr " და "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "სასურველი აუდიოს ენა არ არის მითითებული, ამიტომ იწერება მხოლოდ პირველი აუდიოტრეკი."
+
+msgid "Desktop accent: {found}"
+msgstr "სამუშაო მაგიდის აქცენტი: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "სამუშაო მაგიდის აქცენტი ვერ მოიძებნა, გამოიყენება LinDVB ლურჯი."
+
+msgid "Current accent: {color}"
+msgstr "მიმდინარე აქცენტი: {color}"
+
+msgid "Channel Editor"
+msgstr "არხების რედაქტორი"
+
+msgid "Name"
+msgstr "სახელი"
+
+msgid "Category"
+msgstr "კატეგორია"
+
+msgid "Group"
+msgstr "ჯგუფი"
+
+msgid "Fav"
+msgstr "რჩ."
+
+msgid "Type"
+msgstr "ტიპი"
+
+msgid "Filter channels"
+msgstr "არხების ფილტრი"
+
+msgid "General"
+msgstr "ზოგადი"
+
+msgid "Stream URL"
+msgstr "ნაკადის URL"
+
+msgid "Favourite"
+msgstr "რჩეული"
+
+msgid "Radio"
+msgstr "რადიო"
+
+msgid "Encrypted"
+msgstr "დაშიფრული"
+
+msgid "Tuning"
+msgstr "მომართვა"
+
+msgid "System"
+msgstr "სისტემა"
+
+msgid "Polarity"
+msgstr "პოლარიზაცია"
+
+msgid "Modulation"
+msgstr "მოდულაცია"
+
+msgid "Frequency (kHz)"
+msgstr "სიხშირე (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "სიმბოლოების სიჩქარე (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "ზოლის სიგანე (Hz)"
+
+msgid "Stream ID"
+msgstr "ნაკადის ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC პორტი (-1 არცერთი)"
+
+msgid "Service and PIDs"
+msgstr "სერვისი და PID-ები"
+
+msgid "Service ID"
+msgstr "სერვისის ID"
+
+msgid "Transport ID"
+msgstr "ტრანსპორტის ID"
+
+msgid "Video PID"
+msgstr "ვიდეო PID"
+
+msgid "Audio PIDs"
+msgstr "აუდიო PID-ები"
+
+msgid "Teletext PID"
+msgstr "ტელეტექსტის PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "ცვლილებების გამოყენება (Ctrl+S)"
+
+msgid "New channel"
+msgstr "ახალი არხი"
+
+msgid "Delete channel"
+msgstr "არხის წაშლა"
+
+msgid "Move up"
+msgstr "ზემოთ გადატანა"
+
+msgid "Move down"
+msgstr "ქვემოთ გადატანა"
+
+msgid "Sort by group and name"
+msgstr "ჯგუფითა და სახელით დალაგება"
+
+msgid "No channel selected"
+msgstr "არხი არ არის არჩეული"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "რედაქტირებისთვის აირჩიეთ არხი სიაში."
+
+msgid "Unnamed channel"
+msgstr "უსახელო არხი"
+
+msgid "Recording and Device Statistics"
+msgstr "ჩაწერისა და მოწყობილობის სტატისტიკა"
+
+msgid "Active recordings:"
+msgstr "აქტიური ჩანაწერები:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nშემდეგი ტაიმერი: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "ტელეტექსტი – {name}"
+
+msgid "Find on page"
+msgstr "გვერდზე ძებნა"
+
+msgid "Copy page"
+msgstr "გვერდის კოპირება"
+
+msgid "Save page"
+msgstr "გვერდის შენახვა"
+
+msgid "Waiting for teletext…"
+msgstr "ტელეტექსტის მოლოდინი…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec აკლია (gst-plugins-bad libzvbi-ით)."
+
+msgid "Searching page {page}…"
+msgstr "{page} გვერდის ძებნა…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "გაშიფვრა არ არის მორგებული. დაშიფრული არხები, რომლებზეც უფლება გაქვთ, შეიძლება გაიშიფროს, თუ პარამეტრებში LinDVB-ს მიუთითებთ საკუთარ softcam-ს ან CI მოდულს."
+
+msgid "Provider '{v0}' is not available."
+msgstr "პროვაიდერი '{v0}' მიუწვდომელია."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "პროვაიდერი: CI მოდული – {status}\nმოდული შიფრს ხსნის თქვენი ბარათით ტიუნერის შიგნით."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "პროვაიდერი: {name}\nLinDVB ECM სექციებს უგზავნის თქვენს საკუთარ ბარათის კლიენტს და იყენებს მის მიერ დაბრუნებულ საკონტროლო სიტყვებს; თავად არცერთ გასაღებს არ ინახავს."
+
+msgid "Open CAM Menu…"
+msgstr "CAM მენიუს გახსნა…"
+
+msgid "Failed to load: {v0}"
+msgstr "ჩატვირთვა ვერ მოხერხდა: {v0}"
+
+msgid "Switched off"
+msgstr "გამორთულია"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "ცვლილებები ძალაში შედის LinDVB-ის ხელახლა გაშვებისას."
+
+msgid "No plugins installed."
+msgstr "დანამატები არ არის დაყენებული."
+
+msgid "Plugin actions"
+msgstr "დანამატის მოქმედებები"
+
+msgid "Plugin folder: {path}"
+msgstr "დანამატების საქაღალდე: {path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "დააკოპირეთ დანამატები ამ საქაღალდეში: Python ფაილი (.py) ან საქაღალდე, რომელიც შეიცავს __init__.py-ს."
+
+msgid "Open Plugin Folder"
+msgstr "დანამატების საქაღალდის გახსნა"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I იღებს თქვენი რეგიონის არხების სიას ინტერნეტიდან: ნუმერაციას, სახელებსა და ლოგოებს, და თითოეული არხისთვის მიღების გზებს. LinDVB, სადაც შეუძლია, იყენებს ანტენის, კაბელის ან სატელიტის არხებს თქვენი არხების ძებნიდან, სხვა შემთხვევაში კი ინტერნეტ-ნაკადს."
+
+msgid "Privacy"
+msgstr "კონფიდენციალურობა"
+
+msgid "I have read the privacy notice"
+msgstr "წავიკითხე კონფიდენციალურობის შეტყობინება"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "DVB-I არხების გადაცემების გიდის (EPG) ჩატვირთვა"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "მიღების სხვა გზაზე გადართვა (ინტერნეტი, ანტენა, კაბელი, სატელიტი), როცა ერთი ვერ მუშაობს"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "სატელიტური არხების სიიდან მომართვა არხების ძებნის გარეშე (საჭიროა სატელიტური არხები თქვენს სიაში)"
+
+msgid "Service list"
+msgstr "სერვისების სია"
+
+msgid "Load Lists from Registry"
+msgstr "სიების ჩატვირთვა რეესტრიდან"
+
+msgid "In use: {current}"
+msgstr "გამოიყენება: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "DVB-I სია ჯერ არ გამოიყენება."
+
+msgid "Region"
+msgstr "რეგიონი"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "თქვენი საფოსტო ინდექსი ირჩევს რეგიონულ არხებსა და მათ ნუმერაციას. ის მხოლოდ სერვისების სიის სერვერს ეგზავნება."
+
+msgid "Postcode"
+msgstr "საფოსტო ინდექსი"
+
+msgid "No postcode: nationwide list"
+msgstr "ინდექსის გარეშე: ქვეყნის მასშტაბის სია"
+
+msgid "Remove DVB-I Channels"
+msgstr "DVB-I არხების წაშლა"
+
+msgid "Update Now"
+msgstr "ახლავე განახლება"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "არჩეული სიის ხელახლა ჩატვირთვა (ის ასევე ყოველდღე მოწმდება)"
+
+msgid "Install Channel List"
+msgstr "არხების სიის დაყენება"
+
+msgid "Asking the service list registry…"
+msgstr "სერვისების სიების რეესტრთან მიმართვა…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "რეესტრთან დაკავშირება ვერ მოხერხდა: {error}"
+
+msgid "Default"
+msgstr "ნაგულისხმევი"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} სერვისების სია {netloc}-დან"
+
+msgid "The registry offers no service list for Germany."
+msgstr "რეესტრი არ გვთავაზობს სერვისების სიას გერმანიისთვის."
+
+msgid "Loading the service list…"
+msgstr "სერვისების სიის ჩატვირთვა…"
+
+msgid "In use: {v0}"
+msgstr "გამოიყენება: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nაირჩიეთ თქვენი რეგიონი და კვლავ დააჭირეთ „დაყენებას“."
+
+msgid "Enter Again"
+msgstr "ხელახლა შეყვანა"
+
+msgid "The service list does not know this postcode."
+msgstr "სერვისების სიამ არ იცის ეს საფოსტო ინდექსი."
+
+msgid "The service list server answered {code}."
+msgstr "სერვისების სიის სერვერმა უპასუხა {code}."
+
+msgid "Try Again"
+msgstr "ხელახლა ცდა"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "შეგიძლიათ ხელახლა სცადოთ ან გამოიყენოთ ქვეყნის მასშტაბის სია ინდექსის გარეშე."
+
+msgid "Nationwide List"
+msgstr "ქვეყნის მასშტაბის სია"
+
+msgid "No DVB-I list is in use."
+msgstr "DVB-I სია არ გამოიყენება."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "წაიშალა {removed} DVB-I არხი"
+
+msgid "All programmes"
+msgstr "ყველა გადაცემა"
+
+msgid "With audio description"
+msgstr "აუდიოაღწერით"
+
+msgid "With subtitles"
+msgstr "სუბტიტრებით"
+
+msgid "Programme Guide"
+msgstr "გადაცემების გიდი"
+
+msgid "Now / Next"
+msgstr "ახლა / შემდეგ"
+
+msgid "Per Channel"
+msgstr "არხების მიხედვით"
+
+msgid "TV Guide"
+msgstr "TV გიდი"
+
+msgid "Search"
+msgstr "ძებნა"
+
+msgid "Record Series"
+msgstr "სერიალის ჩაწერა"
+
+msgid "Remind Me"
+msgstr "შემახსენე"
+
+msgid "Search Web"
+msgstr "ინტერნეტში ძებნა"
+
+msgid "Export the guide as XMLTV"
+msgstr "გიდის ექსპორტი XMLTV-ად"
+
+msgid "Next"
+msgstr "შემდეგი"
+
+msgid "Now"
+msgstr "ახლა"
+
+msgid "Only favourites"
+msgstr "მხოლოდ რჩეულები"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "ხელმისაწვდომობის ფუნქციები (DVB-I გადაცემების გიდი)"
+
+msgid "Show:"
+msgstr "ჩვენება:"
+
+msgid "Channel"
+msgstr "არხი"
+
+msgid "Start"
+msgstr "დაწყება"
+
+msgid "End"
+msgstr "დასასრული"
+
+msgid "Title"
+msgstr "სათაური"
+
+msgid "Genre"
+msgstr "ჟანრი"
+
+msgid "Day"
+msgstr "დღე"
+
+msgid "Duration"
+msgstr "ხანგრძლივობა"
+
+msgid "Subheading"
+msgstr "ქვესათაური"
+
+msgid "Title or description"
+msgstr "სათაური ან აღწერა"
+
+msgid "Include description"
+msgstr "აღწერის ჩართვა"
+
+msgid "Case sensitive"
+msgstr "რეგისტრის გათვალისწინება"
+
+msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
+msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} წთ{v7}{v8}\n\n{v9}"
+
+msgid "Series recording: {title}"
+msgstr "სერიალის ჩაწერა: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "შეხსენება წაიშალა: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} უკვე დაიწყო"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "შეხსენება დაყენებულია: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "შეხსენების წაშლა"
+
+msgid "Save EPG data"
+msgstr "EPG მონაცემების შენახვა"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "ინახავს გიდს დისკზე LinDVB-ის დახურვის შემდეგაც."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "EPG ინფორმაციის ჩვენება არხის შეცვლისას (წმ)"
+
+msgid "0 = do not show it."
+msgstr "0 = არ აჩვენო."
+
+msgid "Remind before start (min)"
+msgstr "შეხსენება დაწყებამდე (წთ)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "გადაცემების გიდში დაყენებული შეხსენებები ამდენი ხნით ადრე გაცნობებთ."
+
+msgid "Preferred language"
+msgstr "სასურველი ენა"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "გამოიყენება, როცა გადაცემა რამდენიმე ენაზე გადაიცემა."
+
+msgid "Time zone"
+msgstr "დროის სარტყელი"
+
+msgid "Set time zone automatically"
+msgstr "დროის სარტყლის ავტომატური დაყენება"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "გამორთული: გიდისთვის, ტაიმერებისა და საათისთვის GMT-სთან ფიქსირებული წანაცვლების გამოყენება."
+
+msgid "Offset to GMT"
+msgstr "წანაცვლება GMT-სთან"
+
+msgid "Internet EPG (IPTV)"
+msgstr "ინტერნეტ EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "ინტერნეტ EPG-ის წყარო, გამოიყენება სამაუწყებლო EPG-სთან ერთად."
+
+msgid "Match IPTV Channels…"
+msgstr "IPTV არხების დაკავშირება…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "შეამოწმეთ ან შეასწორეთ, რომელი გიდის არხი რომელ M3U არხს ეკუთვნის."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat სიხშირეები"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "როცა მომართული არხი ერთ-ერთ ამ ტრანსპონდერზეა, LinDVB ასევე კითხულობს ამ პროვაიდერის EPG-ს. ცვლილებები მოქმედებს არხის შემდეგი მომართვისას."
+
+msgid "Frequency (MHz)"
+msgstr "სიხშირე (MHz)"
+
+msgid "Add"
+msgstr "დამატება"
+
+msgid "Polarisation"
+msgstr "პოლარიზაცია"
+
+msgid "Defaults"
+msgstr "ნაგულისხმევი"
+
+msgid "Delete"
+msgstr "წაშლა"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "შეიყვანეთ ტრანსპონდერის სიხშირე MHz-ში."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV არხების სიები (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "ყველა ფაილი"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "ერთი ან მეტი M3U დასაკრავი სიის ან ინტერნეტ-ნაკადებიანი სხვა არხების სიის იმპორტი. თქვენს სიაში უკვე არსებული არხები განახლდება, დანარჩენები დაემატება."
+
+msgid "Import Files…"
+msgstr "ფაილების იმპორტი…"
+
+msgid "From files"
+msgstr "ფაილებიდან"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV ან dvbv5. შესაძლებელია რამდენიმე ფაილის ერთდროულად არჩევა."
+
+msgid "Import"
+msgstr "იმპორტი"
+
+msgid "From a web address"
+msgstr "ვებმისამართიდან"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U დასაკრავი სიის მისამართი. არხების განსაახლებლად კვლავ შემოიტანეთ."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "IPTV არხები თქვენს არხების სიაში: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "IPTV არხების სიების იმპორტი"
+
+msgid "Downloading {url}…"
+msgstr "{url}-ის ჩამოტვირთვა…"
+
+msgid "Could not import {name}"
+msgstr "{name}-ის იმპორტი ვერ მოხერხდა"
+
+msgid "The address has no channels."
+msgstr "მისამართზე არხები არ არის."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "შემოტანილია {total_a} ახალი და {total_u} განახლებული არხი"
+
+msgid "Cover lookup failed: {e}"
+msgstr "ყდის მოძიება ვერ მოხერხდა: {e}"
+
+msgid "Swap with the main picture"
+msgstr "მთავარ სურათთან გაცვლა"
+
+msgid "Close picture in picture"
+msgstr "სურათი-სურათში დახურვა"
+
+msgid "Picture in picture: {error}"
+msgstr "სურათი-სურათში: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "სურათი-სურათში მუშაობს ინტერნეტ-არხებთან; DVB არხებს მეორე ტიუნერი სჭირდება."
+
+msgid "Channel Mosaic"
+msgstr "არხების მოზაიკა"
+
+msgid "Previous channels"
+msgstr "წინა არხები"
+
+msgid "Next channels"
+msgstr "შემდეგი არხები"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "მოზაიკა აჩვენებს ინტერნეტ-არხებს. მიმდინარე ხედში სიას ისინი არ აქვს."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "გვერდი {page} / {pages} · {n} ინტერნეტ-არხი"
+
+msgid "Click to watch {name}"
+msgstr "დააწკაპუნეთ {name}-ის საყურებლად"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "გაფართოებული"
+
+msgid "None / not satellite"
+msgstr "არცერთი / არა სატელიტი"
+
+msgid "Port 1 (A/A)"
+msgstr "პორტი 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "პორტი 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "პორტი 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "პორტი 4 (B/B)"
+
+msgid "Frequency"
+msgstr "სიხშირე"
+
+msgid "Initial letter"
+msgstr "საწყისი ასო"
+
+msgid "Provider"
+msgstr "პროვაიდერი"
+
+msgid "Channel Search"
+msgstr "არხების ძებნა"
+
+msgid "Device"
+msgstr "მოწყობილობა"
+
+msgid "(choose…)"
+msgstr "(არჩევა…)"
+
+msgid "Add folder…"
+msgstr "საქაღალდის დამატება…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "საქაღალდე ტრანსპონდერების სიებით (dtv-scan-tables ან DVBViewer-ის სტილის .ini)"
+
+msgid "Transponder list"
+msgstr "ტრანსპონდერების სია"
+
+msgid "LNB type"
+msgstr "LNB-ის ტიპი"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "სამიზნე ჯგუფი"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "მაგ. Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "დამატებითი სიხშირეების ძებნა (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "მხოლოდ თავისუფალი არხების დამატება"
+
+msgid "Only update existing channels"
+msgstr "მხოლოდ არსებული არხების განახლება"
+
+msgid "Update channel names"
+msgstr "არხების სახელების განახლება"
+
+msgid "Group by"
+msgstr "დაჯგუფება"
+
+msgid "Start Search"
+msgstr "ძებნის დაწყება"
+
+msgid "Stop"
+msgstr "შეჩერება"
+
+msgid "Folder with transponder lists"
+msgstr "საქაღალდე ტრანსპონდერების სიებით"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "ტრანსპონდერების სია არ არის არჩეული. დააყენეთ dtv-scan-tables ან დაამატეთ საქაღალდე.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nარხები ვერ მოიძებნა.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nდასრულდა: {added} ახალი, {updated} განახლებული არხი.\n"
+
+msgid "HH:MM"
+msgstr "სს:წწ"
+
+msgid "Recording Timers"
+msgstr "ჩაწერის ტაიმერები"
+
+msgid "Search channels"
+msgstr "არხების ძებნა"
+
+msgid "  (Radio)"
+msgstr "  (რადიო)"
+
+msgid "Date"
+msgstr "თარიღი"
+
+msgid "Repeat"
+msgstr "გამეორება"
+
+msgid "Once"
+msgstr "ერთხელ"
+
+msgid "Series"
+msgstr "სერიალი"
+
+msgid "Action"
+msgstr "მოქმედება"
+
+msgid "Format"
+msgstr "ფორმატი"
+
+msgid "After"
+msgstr "შემდეგ"
+
+msgid "Disabled"
+msgstr "გამორთული"
+
+msgid "Status"
+msgstr "სტატუსი"
+
+msgid "Repeat every {day}"
+msgstr "გამეორება ყოველ {day}"
+
+msgid "_Date"
+msgstr "_თარიღი"
+
+msgid "_Lead (min)"
+msgstr "_წინასწარ (წთ)"
+
+msgid "_End"
+msgstr "_დასასრული"
+
+msgid "_Start"
+msgstr "_დაწყება"
+
+msgid "Repeat on"
+msgstr "გამეორების დღეები"
+
+msgid "_Follow (min)"
+msgstr "_შემდეგ (წთ)"
+
+msgid "Pick a channel on the left"
+msgstr "აირჩიეთ არხი მარცხნივ"
+
+msgid "_Name"
+msgstr "_სახელი"
+
+msgid "_Timer action"
+msgstr "ტაიმერის _მოქმედება"
+
+msgid "_After recording"
+msgstr "ჩაწერის _შემდეგ"
+
+msgid "T_V format"
+msgstr "_TV ფორმატი"
+
+msgid "_Radio format"
+msgstr "_რადიოს ფორმატი"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "მხოლოდ სასურველი ენა: ტრეკები პარამეტრებში მითითებულ აუდიოს ენაზე, აუდიოაღწერის გარეშე. MP4 და რადიოს აუდიოფაილი ერთ ტრეკს ინახავს."
+
+msgid "Audi_o tracks"
+msgstr "_აუდიოტრეკები"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "ტელეტექსტი მხოლოდ MPEG-TS-ში არსებობს, ამიტომ გამოიყენება TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG მონაცემები (EIT) მხოლოდ MPEG-TS-ში არსებობს, ამიტომ გამოიყენება TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS ინახავს სუბტიტრების ყველა ნაკადს. MKV ტელეტექსტის სუბტიტრების გვერდს ტექსტურ ტრეკად იღებს; DVB-ის ბიტმაპ-სუბტიტრები მხოლოდ TS-ში ინახება."
+
+msgid "Tracks"
+msgstr "ტრეკები"
+
+msgid "File _naming scheme"
+msgstr "ფაილების _დასახელების სქემა"
+
+msgid "Folder…"
+msgstr "საქაღალდე…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "პარამეტრებიდან ჩანაწერების საქაღალდის გამოყენება"
+
+msgid "Placeholders"
+msgstr "ჩასანაცვლებლები"
+
+msgid "Folder: "
+msgstr "საქაღალდე: "
+
+msgid "Clear the editor"
+msgstr "რედაქტორის გასუფთავება"
+
+msgid "New"
+msgstr "ახალი"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "რედაქტორის პარამეტრების დამატება ახალ ტაიმერად"
+
+msgid "Apply"
+msgstr "გამოყენება"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "რედაქტორის პარამეტრების შენახვა არჩეულ ტაიმერში"
+
+msgid "Delete the selected timer"
+msgstr "არჩეული ტაიმერის წაშლა"
+
+msgid "Enable/Disable"
+msgstr "ჩართვა/გამორთვა"
+
+msgid "Switch the selected timer on or off"
+msgstr "არჩეული ტაიმერის ჩართვა ან გამორთვა"
+
+msgid "Save as default"
+msgstr "ნაგულისხმევად შენახვა"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "ამ ფორმატებისა და დამატებითი ნაკადების გამოყენება ახალი ტაიმერებისა და ხელით ჩაწერისთვის"
+
+msgid "Close"
+msgstr "დახურვა"
+
+msgid "Series title"
+msgstr "სერიალის სათაური"
+
+msgid "Delete series rule"
+msgstr "სერიალის წესის წაშლა"
+
+msgid "Series recordings"
+msgstr "სერიალების ჩანაწერები"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "სუბტიტრები ეტევა TS-ში ან MKV-ში."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "პარამეტრებში სასურველი აუდიოს ენა არ არის: იწერება პირველი ტრეკი."
+
+msgid "File: {v0}"
+msgstr "ფაილი: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "დაწყების ან დასრულების არასწორი დრო"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "გამოიყენეთ სს:წწ, მაგალითად 20:15."
+
+msgid "No channel"
+msgstr "არხი არ არის"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "ჩასაწერი არხი აირჩიეთ მარცხნივ მდებარე სიაში."
+
+msgid "Recording defaults saved"
+msgstr "ჩაწერის ნაგულისხმევი პარამეტრები შენახულია"
+
+msgid "Record with Options"
+msgstr "ჩაწერა პარამეტრებით"
+
+msgid "_Format"
+msgstr "_ფორმატი"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "ტელეტექსტი და EPG მონაცემები მხოლოდ MPEG-TS-ში შეიძლება შენახულ იქნას, ამიტომ გამოიყენება TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "სასურველი აუდიოს ენა: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "ვიზუალიზაცია '{v0}' ვერ შესრულდა: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} ძალიან ძველია"
+
+msgid "Playback error: "
+msgstr "დაკვრის შეცდომა: "
+
+msgid "All channels"
+msgstr "ყველა არხი"
+
+msgid "Favourites (TV + Radio)"
+msgstr "რჩეულები (TV + რადიო)"
+
+msgid "Free to air"
+msgstr "თავისუფალი"
+
+msgid "Internet streams"
+msgstr "ინტერნეტ-ნაკადები"
+
+msgid "Fill (crop)"
+msgstr "შევსება (მოჭრა)"
+
+msgid "Fit"
+msgstr "მორგება"
+
+msgid "Stretch"
+msgstr "გაჭიმვა"
+
+msgid "Playback error: {m}"
+msgstr "დაკვრის შეცდომა: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "დანამატის მოქმედება ვერ შესრულდა: {e}"
+
+msgid "Open Media File…"
+msgstr "მედიაფაილის გახსნა…"
+
+msgid "Open URL…"
+msgstr "URL-ის გახსნა…"
+
+msgid "Import Channel List…"
+msgstr "არხების სიის იმპორტი…"
+
+msgid "Export Channel List…"
+msgstr "არხების სიის ექსპორტი…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "გადაცემების გიდის ექსპორტი (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "TV / რადიოს გადართვა"
+
+msgid "Recordings"
+msgstr "ჩანაწერები"
+
+msgid "Programme Guide (EPG)"
+msgstr "გადაცემების გიდი (EPG)"
+
+msgid "Timer Recordings"
+msgstr "ტაიმერით ჩაწერა"
+
+msgid "Record with Options…"
+msgstr "ჩაწერა პარამეტრებით…"
+
+msgid "Teletext"
+msgstr "ტელეტექსტი"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM მენიუ (CI მოდული)…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "ინტერნეტ EPG-ის განახლება (XMLTV)"
+
+msgid "Audio Track"
+msgstr "აუდიოტრეკი"
+
+msgid "Subtitles"
+msgstr "სუბტიტრები"
+
+msgid "Play Rate"
+msgstr "დაკვრის სიჩქარე"
+
+msgid "Back 10 s"
+msgstr "უკან 10 წმ"
+
+msgid "Forward 10 s"
+msgstr "წინ 10 წმ"
+
+msgid "Back 1 min"
+msgstr "უკან 1 წთ"
+
+msgid "Forward 1 min"
+msgstr "წინ 1 წთ"
+
+msgid "Back to Live"
+msgstr "პირდაპირ ეთერში დაბრუნება"
+
+msgid "Jump"
+msgstr "გადასვლა"
+
+msgid "Previous"
+msgstr "წინა"
+
+msgid "Random Order"
+msgstr "შემთხვევითი რიგი"
+
+msgid "Endless Playback"
+msgstr "უწყვეტი დაკვრა"
+
+msgid "Playlist"
+msgstr "დასაკრავი სია"
+
+msgid "Keep Timeshift as Recording"
+msgstr "დროის გადაწევის ჩანაწერად შენახვა"
+
+msgid "Rebuild Playback"
+msgstr "დაკვრის თავიდან აგება"
+
+msgid "Video Off (audio only)"
+msgstr "ვიდეოს გამორთვა (მხოლოდ აუდიო)"
+
+msgid "Show Selected Channel"
+msgstr "არჩეული არხის ჩვენება"
+
+msgid "Swap Pictures"
+msgstr "სურათების გაცვლა"
+
+msgid "Picture in Picture"
+msgstr "სურათი-სურათში"
+
+msgid "Channel Mosaic…"
+msgstr "არხების მოზაიკა…"
+
+msgid "Stop in {mins} min"
+msgstr "შეჩერება {mins} წუთში"
+
+msgid "Stop after current programme"
+msgstr "შეჩერება მიმდინარე გადაცემის შემდეგ"
+
+msgid "Sleep Timer"
+msgstr "ძილის ტაიმერი"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "ხმა უფრო გვიან (+{AUDIO_DELAY_STEP} მწმ, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "ხმა უფრო ადრე (−{AUDIO_DELAY_STEP} მწმ, J)"
+
+msgid "Reset"
+msgstr "ჩამოყრა"
+
+msgid "Audio Delay (this channel)"
+msgstr "აუდიოს დაყოვნება (ეს არხი)"
+
+msgid "Full Screen"
+msgstr "სრული ეკრანი"
+
+msgid "Show/Hide Channel List"
+msgstr "არხების სიის ჩვენება/დამალვა"
+
+msgid "Aspect / Zoom"
+msgstr "პროპორცია / მასშტაბი"
+
+msgid "Window Size"
+msgstr "ფანჯრის ზომა"
+
+msgid "Picture Settings…"
+msgstr "სურათის პარამეტრები…"
+
+msgid "Equalizer…"
+msgstr "ეკვალაიზერი…"
+
+msgid "Radio Visualisation"
+msgstr "რადიოს ვიზუალიზაცია"
+
+msgid "Screenshot"
+msgstr "ეკრანის სურათი"
+
+msgid "Plugins…"
+msgstr "დანამატები…"
+
+msgid "About LinDVB"
+msgstr "LinDVB-ის შესახებ"
+
+msgid "Show/hide channel list (F9)"
+msgstr "არხების სიის ჩვენება/დამალვა (F9)"
+
+msgid "Main menu (F10)"
+msgstr "მთავარი მენიუ (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "გადაცემების გიდი (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "ტელეტექსტი (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "TV არხების ჩვენება (Ctrl+M გადართავს)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "რადიოსადგურების ჩვენება (Ctrl+M გადართავს)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "თქვენი ჩანაწერების ჩვენება (ორმაგი დაწკაპუნება უკრავს)"
+
+msgid "Search name or number"
+msgstr "სახელის ან ნომრის ძებნა"
+
+msgid "All groups"
+msgstr "ყველა ჯგუფი"
+
+msgid "Previous channel (Page Down)"
+msgstr "წინა არხი (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "პაუზა / დროის გადაწევა (Space)"
+
+msgid "Stop (switch the channel off)"
+msgstr "შეჩერება (არხის გამორთვა)"
+
+msgid "Next channel (Page Up)"
+msgstr "შემდეგი არხი (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "მიმდინარე არხის ჩაწერა (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "ამ ჩანაწერის ფორმატისა და ტრეკების არჩევა"
+
+msgid "Seek"
+msgstr "გადახვევა"
+
+msgid "LIVE"
+msgstr "LIVE"
+
+msgid "Back to live (L)"
+msgstr "პირდაპირ ეთერში დაბრუნება (L)"
+
+msgid "Mute (M)"
+msgstr "ხმის დადუმება (M)"
+
+msgid "Volume"
+msgstr "ხმა"
+
+msgid "Audio track"
+msgstr "აუდიოტრეკი"
+
+msgid "Playback and picture settings"
+msgstr "დაკვრისა და სურათის პარამეტრები"
+
+msgid "Full screen (F)"
+msgstr "სრული ეკრანი (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nახლა: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} / {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "ნაჩვენებია {n} / {total} ჩანაწერი"
+
+msgid "{n} of {total} favourites shown"
+msgstr "ნაჩვენებია {n} / {total} რჩეული"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "ნაჩვენებია {n} / {total} რადიოსადგური"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "ნაჩვენებია {n} / {total} TV არხი"
+
+msgid "Add to Favourites"
+msgstr "რჩეულებში დამატება"
+
+msgid "Remove from Favourites"
+msgstr "რჩეულებიდან წაშლა"
+
+msgid "Edit…"
+msgstr "რედაქტირება…"
+
+msgid "Show as Picture in Picture"
+msgstr "სურათი-სურათში ჩვენება"
+
+msgid "Select a channel in the list first"
+msgstr "ჯერ აირჩიეთ არხი სიაში"
+
+msgid "By channel"
+msgstr "არხის მიხედვით"
+
+msgid "By title"
+msgstr "სათაურის მიხედვით"
+
+msgid "Newest first"
+msgstr "ჯერ უახლესი"
+
+msgid "Oldest first"
+msgstr "ჯერ უძველესი"
+
+msgid "Largest first"
+msgstr "ჯერ უდიდესი"
+
+msgid "Sort the recordings"
+msgstr "ჩანაწერების დალაგება"
+
+msgid "Open the recording folder"
+msgstr "ჩანაწერების საქაღალდის გახსნა"
+
+msgid "Look for new recordings"
+msgstr "ახალი ჩანაწერების მოძიება"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "ჩანაწერები ჯერ არ არის.\n\nჩანაწერები ინახება აქ:\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "პარამეტრებში ჩანაწერების საქაღალდე არ არის მითითებული."
+
+msgid "Recording in progress"
+msgstr "მიმდინარეობს ჩაწერა"
+
+msgid "Watched"
+msgstr "ნანახი"
+
+msgid "Watched up to {pos}"
+msgstr "ნანახია {pos}-მდე"
+
+msgid "Recording not found: {path}"
+msgstr "ჩანაწერი ვერ მოიძებნა: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "გაგრძელება {pos}-დან"
+
+msgid "Folder not found: {folder}"
+msgstr "საქაღალდე ვერ მოიძებნა: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder}-ის გახსნა ვერ ხერხდება: {message}"
+
+msgid "Play"
+msgstr "დაკვრა"
+
+msgid "Play from the Beginning"
+msgstr "დაკვრა თავიდან"
+
+msgid "Details…"
+msgstr "დეტალები…"
+
+msgid "Mark as Unwatched"
+msgstr "უნახავად მონიშვნა"
+
+msgid "Mark as Watched"
+msgstr "ნანახად მონიშვნა"
+
+msgid "Show in Folder"
+msgstr "საქაღალდეში ჩვენება"
+
+msgid "Delete…"
+msgstr "წაშლა…"
+
+msgid "Stop the recording before deleting it"
+msgstr "წაშლამდე შეაჩერეთ ჩაწერა"
+
+msgid "Delete “{title}”?"
+msgstr "წაიშალოს „{title}“?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nფაილი წაიშლება დისკიდან."
+
+msgid "Deleted {name}"
+msgstr "წაიშალა {name}"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name}-ის წაშლა ვერ ხერხდება: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name}-ზე გადართვა…"
+
+msgid "Search recordings"
+msgstr "ჩანაწერების ძებნა"
+
+msgid "No radio stations in the channel list"
+msgstr "არხების სიაში რადიოსადგურები არ არის"
+
+msgid "No TV channels in the channel list"
+msgstr "არხების სიაში TV არხები არ არის"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – გადაირთო {kind}-ზე"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} ამჟამად ეთერში არ არის"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "პირდაპირი TV შეჩერდა: ტიუნერი საჭიროა ტაიმერით ჩაწერისთვის"
+
+msgid "Stopped"
+msgstr "შეჩერებულია"
+
+msgid "Sound {ms} ms later"
+msgstr "ხმა {ms} მწმ-ით გვიან"
+
+msgid "Sound {v0} ms earlier"
+msgstr "ხმა {v0} მწმ-ით ადრე"
+
+msgid "Audio delay off"
+msgstr "აუდიოს დაყოვნება გამორთულია"
+
+msgid "Playing {item}"
+msgstr "იკვრება {item}"
+
+msgid "Open media files"
+msgstr "მედიაფაილების გახსნა"
+
+msgid "Open URL"
+msgstr "URL-ის გახსნა"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "გახსნა"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "არხების სიის იმპორტი (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "არხების ექსპორტი (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "ექსპორტირებულია: {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "გადაცემების გიდის ექსპორტი (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path}-ში ჩაწერა ვერ ხერხდება: {error}"
+
+msgid "Nothing to record"
+msgstr "ჩასაწერი არაფერია"
+
+msgid "This channel is already being recorded"
+msgstr "ეს არხი უკვე იწერება"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "ტელეტექსტი: დეკოდერი აკლია (gst-plugins-bad libzvbi-ით)"
+
+msgid "Teletext: not available on this channel"
+msgstr "ტელეტექსტი: ამ არხზე მიუწვდომელია"
+
+msgid "Teletext needs a DVB channel"
+msgstr "ტელეტექსტს DVB არხი სჭირდება"
+
+msgid "Volume {v0}%"
+msgstr "ხმა {v0}%"
+
+msgid "Off"
+msgstr "გამორთული"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "დახურული სუბტიტრები (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} ენა"
+
+msgid "{n} audio tracks"
+msgstr "{n} აუდიოტრეკი"
+
+msgid "Screenshot saved: {path}"
+msgstr "ეკრანის სურათი შენახულია: {path}"
+
+msgid "Screenshot failed"
+msgstr "ეკრანის სურათი ვერ შეიქმნა"
+
+msgid "Picture Settings"
+msgstr "სურათის პარამეტრები"
+
+msgid "Restore Defaults"
+msgstr "ნაგულისხმევის აღდგენა"
+
+msgid "Equalizer"
+msgstr "ეკვალაიზერი"
+
+msgid "Leave full screen (F)"
+msgstr "სრული ეკრანიდან გასვლა (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "ვიზუალიზაცია ვერ შესრულდა: {e}"
+
+msgid "Radio visualisation"
+msgstr "რადიოს ვიზუალიზაცია"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "რადიოს ვიზუალიზაცია (მხოლოდ რადიოსა და აუდიოსთვის)"
+
+msgid "Playback stops at {v0}"
+msgstr "დაკვრა შეჩერდება {v0}-ზე"
+
+msgid "No programme information for the sleep timer"
+msgstr "ძილის ტაიმერისთვის გადაცემის ინფორმაცია არ არის"
+
+msgid "Sleep timer: playback stopped"
+msgstr "ძილის ტაიმერი: დაკვრა შეჩერდა"
+
+msgid "No programme information"
+msgstr "გადაცემის ინფორმაცია არ არის"
+
+msgid "Next: {v0}  {title}"
+msgstr "შემდეგი: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "სიგნალი {v0}%"
+
+msgid "Signal quality {v0}%"
+msgstr "სიგნალის ხარისხი {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "ნაკადის ხარისხი {v0}%"
+
+msgid "No signal"
+msgstr "სიგნალი არ არის"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "პირდაპირ"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "დროის გადაწევა −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "უყურეთ და ჩაწერეთ DVB-S/S2, DVB-C, DVB-T/T2, ATSC და ინტერნეტ TV Linux DVB API-ითა და GStreamer-ით."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "IPTV არხების დაკავშირება XMLTV-სთან"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV გიდი ჯერ არ არის ჩატვირთული. მიუთითეთ XMLTV-ის URL EPG-ის პარამეტრებში და ჯერ ჩამოტვირთეთ გიდი; დაკავშირება ჩამოტვირთვის შემდეგ ავტომატურად იწყება."
+
+msgid "Download XMLTV guide now"
+msgstr "XMLTV გიდის ახლავე ჩამოტვირთვა"
+
+msgid "Only channels without guide"
+msgstr "მხოლოდ გიდის გარეშე არხები"
+
+msgid "Match"
+msgstr "დაკავშირება"
+
+msgid "Guide channel:"
+msgstr "გიდის არხი:"
+
+msgid "Assign"
+msgstr "მინიჭება"
+
+msgid "Suggest"
+msgstr "შეთავაზება"
+
+msgid "Auto-match all"
+msgstr "ყველას ავტომატური დაკავშირება"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "ყველა არხის დაკავშირება, რომელიც ხელით არ არის მინიჭებული"
+
+msgid "Reset to automatic"
+msgstr "ავტომატურზე დაბრუნება"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "არჩეული არხისთვის კვლავ ავტომატურმა დაკავშირებამ გადაწყვიტოს"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} / {v1} არხს აქვს გიდის არხი"
+
+msgid "No suggestion for {name}"
+msgstr "{name}-ისთვის შეთავაზება არ არის"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} ვერ ჩაირთო ({m}), მის ნაცვლად ნაჩვენებია {other}"
+
+msgid "Off (station name only)"
+msgstr "გამორთული (მხოლოდ სადგურის სახელი)"
+
+msgid "Spectrum analyser (classic)"
+msgstr "სპექტრის ანალიზატორი (კლასიკური)"
+
+msgid "VU meters (classic)"
+msgstr "VU მეტრები (კლასიკური)"
+
+msgid "Oscilloscope (classic)"
+msgstr "ოსცილოსკოპი (კლასიკური)"
+
+msgid "Glow waves (modern)"
+msgstr "მანათობელი ტალღები (თანამედროვე)"
+
+msgid "Nebula particles (modern)"
+msgstr "ნისლეულის ნაწილაკები (თანამედროვე)"
+
+msgid "Light ribbons (modern)"
+msgstr "სინათლის ლენტები (თანამედროვე)"
+
+msgid "Pulsar (modern)"
+msgstr "პულსარი (თანამედროვე)"
+
+msgid "Supernova (modern)"
+msgstr "სუპერნოვა (თანამედროვე)"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis (თანამედროვე)"
+
+msgid "Aurora borealis (modern)"
+msgstr "ჩრდილოეთის ციალი (თანამედროვე)"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "ყველა პრესეტი (შემთხვევითი რიგით)"
+
+msgid "All of {name}"
+msgstr "{name} — ყველა"
+
+msgid "Dancer"
+msgstr "მოცეკვავე"
+
+msgid "Drawing"
+msgstr "ნახატი"
+
+msgid "Fractal"
+msgstr "ფრაქტალი"
+
+msgid "Geometric"
+msgstr "გეომეტრიული"
+
+msgid "Hypnotic"
+msgstr "ჰიპნოტური"
+
+msgid "Particles"
+msgstr "ნაწილაკები"
+
+msgid "Reaction"
+msgstr "რეაქცია"
+
+msgid "Sparkle"
+msgstr "ციმციმი"
+
+msgid "Supernova"
+msgstr "სუპერნოვა"
+
+msgid "Waveform"
+msgstr "ტალღის ფორმა"
+
+msgid "! Transition"
+msgstr "! გადასვლა"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "ინტერაქტიული სერვისები (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "მედიათეკები, ტელეტექსტის მემკვიდრეები და სხვა წითელი ღილაკის მიღმა (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "საჭიროა WebKitGTK 6 (gir1.2-webkit-6.0), რომელიც არ არის დაყენებული."
+
+msgid "Start automatically"
+msgstr "ავტომატური გაშვება"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "გამორთული: აპლიკაცია მხოლოდ წითელი ღილაკით ეშვება. არხების აპლიკაციები მაუწყებელს გამოყენების მონაცემებს უგზავნის."
+
+msgid "Allow third-party cookies"
+msgstr "მესამე მხარის ქუქიების დაშვება"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "სარეკლამო ქსელები მათ იყენებენ არხებს შორის თქვენს თვალთვალისთვის."
+
+msgid "Delete HbbTV Data"
+msgstr "HbbTV მონაცემების წაშლა"
+
+msgid "Cookies and storage"
+msgstr "ქუქიები და საცავი"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "შლის იმას, რაც HbbTV აპლიკაციებმა შეინახეს, მაგალითად ქუქიებსა და პარამეტრებს."
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV მონაცემები წაიშალა"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "HbbTV აპლიკაციის ჩატვირთვა ვერ მოხერხდა: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (წითელი ღილაკი)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "არხის ინტერაქტიული სერვისი (წითელი ღილაკი, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "ინტერაქტიული სერვისის დახურვა (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "სუბტიტრები მედიათეკებში"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "აპლიკაციები თავიდანვე აჩვენებენ სუბტიტრებს თავიანთ ვიდეოებში."
+
+msgid "Audio description in media libraries"
+msgstr "აუდიოაღწერა მედიათეკებში"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "აპლიკაციები უპირატესობას ანიჭებენ ხმოვან ბილიკს, რომელიც სურათს აღწერს."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKit-ის sandbox-ს აქ შეიძლება არ შეეძლოს მომხმარებლის namespace-ების შექმნა (Ubuntu-ს AppArmor-ის შეზღუდვა), ამიტომ აპლიკაციები უსაფრთხოდ ვერ ეშვება. იხ. docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "ეს ინტერაქტიული სერვისი შეფასებულია {age}+."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "დაბლოკილია არასრულწლოვანთა დაცვით. მიუთითეთ PIN პარამეტრებში."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "ზედმეტად ბევრი არასწორი PIN. სცადეთ რამდენიმე წუთში."
+
+msgid "Youth protection"
+msgstr "არასრულწლოვანთა დაცვა"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "განბლოკვა"
+
+msgid "Wrong PIN."
+msgstr "არასწორი PIN."
+
+msgid "This video is rated {age}+."
+msgstr "ეს ვიდეო შეფასებულია {age}+."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "არხის ინტერაქტიული სერვისის ტელეტექსტი (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "ტელეტექსტი ინტერაქტიული სერვისიდან"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT ღილაკი ხსნის არხის HbbTV ტელეტექსტს, სადაც ის არსებობს."
+
+msgid "Viewers from {age} years"
+msgstr "მაყურებლები {age} წლიდან"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "ამ ასაკზე მაღლა შეფასებულ აპლიკაციებსა და მათ ვიდეოებს PIN სჭირდება."
+
+msgid "Current PIN"
+msgstr "მიმდინარე PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "საჭიროა არასრულწლოვანთა დაცვის ან PIN-ის შესაცვლელად."
+
+msgid "New PIN"
+msgstr "ახალი PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "დატოვეთ ცარიელი მიმდინარე PIN-ის შესანარჩუნებლად."
+
+msgid "Youth protection not changed"
+msgstr "არასრულწლოვანთა დაცვა არ შეცვლილა"
+
+msgid "The current PIN is wrong."
+msgstr "მიმდინარე PIN არასწორია."
+
+msgid "Youth protection needs a PIN"
+msgstr "არასრულწლოვანთა დაცვას PIN სჭირდება"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "მიუთითეთ PIN არასრულწლოვანთა დაცვის ჩასართავად."
+
+msgid "Companion screens on the network"
+msgstr "თანმხლები ეკრანები ქსელში"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "თქვენს ქსელში არსებულ ტელეფონებსა და პლანშეტებს შეუძლიათ იპოვონ LinDVB, დაუკავშირდნენ აპლიკაციებს, სინქრონულად მიჰყვნენ სურათს და მოითხოვონ აპლიკაციების გაშვება. გამორთული: ქსელში არაფერი უსმენს."
+
+msgid "Start an application from another device?"
+msgstr "გაეშვას აპლიკაცია სხვა მოწყობილობიდან?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "თქვენს ქსელში არსებულ მოწყობილობას სურს გაუშვას „{name}“ ({url})."
+
+msgid "an HbbTV application"
+msgstr "HbbTV აპლიკაცია"
+
+msgid "Refuse"
+msgstr "უარყოფა"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "ეს ვიდეო დაშიფრულია {drm}-ით. LinDVB არ უჭერს მხარს DRM-ს, ამიტომ მისი დაკვრა შეუძლებელია."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "ეს ვიდეო დაშიფრულია. LinDVB არ უჭერს მხარს DRM-ს, ამიტომ მისი დაკვრა შეუძლებელია."
+
+msgid "Contains code from"
+msgstr "შეიცავს კოდს შემდეგიდან"
+
+msgid "Built with"
+msgstr "აგებულია შემდეგით"
+
+msgid "Visualisations"
+msgstr "ვიზუალიზაციები"
+
+msgid "Broadcast (EIT)"
+msgstr "სამაუწყებლო (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "პროვაიდერის EPG (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "DVB-I კონტენტის გიდი"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV (ინტერნეტი)"
+
+msgid "Advanced"
+msgstr "დამატებითი"
+
+msgid "Priority of the EPG sources"
+msgstr "EPG წყაროების პრიორიტეტი"
+
+msgid "Automatic (recommended)"
+msgstr "ავტომატური (რეკომენდებული)"
+
+msgid "Custom order"
+msgstr "საკუთარი რიგი"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "ავტომატური: „ახლა“ და „შემდეგ“ მოდის მაუწყებლობიდან, უფრო შორს ყველაზე სრული წყარო იმარჯვებს, ხარვეზები კი სხვა წყაროებიდან ივსება. გადაცემა არასოდეს ჩანს ორჯერ."
+
+msgid "Order of the EPG sources"
+msgstr "EPG წყაროების რიგი"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "ზედა წყარო იმარჯვებს, როცა ორი წყარო ერთმანეთს არ ემთხვევა; დანარჩენები ხარვეზებს ავსებენ. არხი, რომელსაც საკუთარი რიგი აქვს, ყოველთვის მას იყენებს, მაგალითად, როცა მისი სამაუწყებლო EPG ცუდია."
+
+msgid "Applies to"
+msgstr "ვრცელდება"
+
+msgid "Remove Channel"
+msgstr "არხის წაშლა"
+
+msgid "Move Up"
+msgstr "ზემოთ გადატანა"
+
+msgid "Move Down"
+msgstr "ქვემოთ გადატანა"
+
+msgid "Own Order for Channel"
+msgstr "საკუთარი რიგი არხისთვის"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "ავტომატური (ვიდეობარათი, როცა შესაძლებელია)"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM დაფები)"
+
+msgid "Software (processor)"
+msgstr "პროგრამული (პროცესორი)"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "ნაპოვნი ვიდეობარათის დეკოდერები: {list}"
+
+msgid "none"
+msgstr "არცერთი"
+
+msgid "Switched off after an error: {list}"
+msgstr "გამოირთო შეცდომის შემდეგ: {list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "ახლა დეკოდირებს: {decoder}"
+
+msgid "Video decoding"
+msgstr "ვიდეოს დეკოდირება"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "ჩახლართული (interlaced) TV სურათები (უმეტესი SD და 1080i არხები). სრულდება ვიდეობარათზე, როცა VA-API დეკოდირებს, სხვა შემთხვევაში პროცესორით."
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name} ვიდეოს დეკოდირება ვერ შესრულდა, იკვრება შემდეგი დეკოდერით"
+
+msgid "Tuners"
+msgstr "ტიუნერები"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB ერთდროულად რამდენიმე ტიუნერზე იწერს და უკრავს და ჯერ ყველაზე მაღალი პრიორიტეტის ტიუნერებს იყენებს. ერთ ტრანსპონდერზე მყოფი არხები ერთ ტიუნერს იზიარებენ."
+
+msgid "Reception types unknown"
+msgstr "მიღების ტიპები უცნობია"
+
+msgid "not connected"
+msgstr "არ არის დაკავშირებული"
+
+msgid "Priority"
+msgstr "პრიორიტეტი"
+
+msgid "Higher numbers are used first."
+msgstr "უფრო მაღალი ნომრები ჯერ გამოიყენება."
+
+msgid "Shared antenna cable"
+msgstr "საერთო ანტენის კაბელი"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "ჩართეთ ტიუნერებისთვის, რომლებიც სხვა ტიუნერებთან ერთად ერთ კაბელზეა (loop-through ან გამყოფი ერთ LNB გამოსავალზე). Unicable-ის გარეშე ისინი ერთდროულად მხოლოდ ერთ დიაპაზონსა და პოლარიზაციას იღებენ."
+
+msgid "Cable name"
+msgstr "კაბელის სახელი"
+
+msgid "Tuners with the same name share one cable."
+msgstr "ერთი და იმავე სახელის მქონე ტიუნერები ერთ კაბელს იზიარებენ."
+
+msgid "For all tuners without an LNB of their own."
+msgstr "ყველა ტიუნერისთვის, რომელსაც საკუთარი LNB არ აქვს."
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "სურათის შეცდომები: {n} ბლოკის შესწორება ვერ მოხერხდა"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "სუსტი მიღება: მხოლოდ {db} dB მარაგი"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} შეუსწორებელი ბლოკი"
+
+msgid "Lock lost"
+msgstr "სინქრონიზაცია დაიკარგა"
+
+msgid "{n} continuity errors"
+msgstr "{n} უწყვეტობის შეცდომა"
+
+msgid "PCR jump"
+msgstr "PCR-ის ნახტომი"
+
+msgid "New table version (0x{tid})"
+msgstr "ცხრილის ახალი ვერსია (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "ხმამაღლობის ნახტომი {lu} LU"
+
+msgid "Rebuffering"
+msgstr "ხელახალი ბუფერიზაცია"
+
+msgid "Measured since {time}"
+msgstr "გაზომილია {time}-დან"
+
+msgid "Delivery"
+msgstr "მიწოდება"
+
+msgid "Frame rate"
+msgstr "კადრების სიხშირე"
+
+msgid "Average bit rate"
+msgstr "საშუალო ბიტრეიტი"
+
+msgid "Peak bit rate"
+msgstr "პიკური ბიტრეიტი"
+
+msgid "Margin"
+msgstr "მარაგი"
+
+msgid "Loudness"
+msgstr "ხმამაღლობა"
+
+msgid "Bit rate"
+msgstr "ბიტრეიტი"
+
+msgid "Events"
+msgstr "მოვლენები"
+
+msgid "1 minute"
+msgstr "1 წუთი"
+
+msgid "15 minutes"
+msgstr "15 წუთი"
+
+msgid "5 minutes"
+msgstr "5 წუთი"
+
+msgid "hard of hearing"
+msgstr "სმენადაქვეითებულთათვის"
+
+msgid "Data"
+msgstr "მონაცემები"
+
+msgid "Level"
+msgstr "დონე"
+
+msgid "Carrier"
+msgstr "მატარებელი"
+
+msgid "Uncorrectable blocks"
+msgstr "შეუსწორებელი ბლოკები"
+
+msgid "Lock losses"
+msgstr "სინქრონიზაციის დაკარგვები"
+
+msgid "C/N history"
+msgstr "C/N-ის ისტორია"
+
+msgid "Errors"
+msgstr "შეცდომები"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / პილოტები"
+
+msgid "Protocol"
+msgstr "პროტოკოლი"
+
+msgid "Response time"
+msgstr "პასუხის დრო"
+
+msgid "Bad"
+msgstr "ცუდი"
+
+msgid "Fair"
+msgstr "საშუალო"
+
+msgid "Good"
+msgstr "კარგი"
+
+msgid "Poor"
+msgstr "სუსტი"
+
+msgid "NO LOCK"
+msgstr "სინქრ. არ არის"
+
+msgid "Buffer"
+msgstr "ბუფერი"
+
+msgid "Download"
+msgstr "ჩამოტვირთვა"
+
+msgid "Buffer history"
+msgstr "ბუფერის ისტორია"
+
+msgid "(driver value)"
+msgstr "(დრაივერის მნიშვნელობა)"
+
+msgid "since start"
+msgstr "დაწყებიდან"
+
+msgid "required"
+msgstr "საჭირო"
+
+msgid "Quality history"
+msgstr "ხარისხის ისტორია"
+
+msgid "horizontal"
+msgstr "ჰორიზონტალური"
+
+msgid "left"
+msgstr "მარცხენა"
+
+msgid "vertical"
+msgstr "ვერტიკალური"
+
+msgid "right"
+msgstr "მარჯვენა"
+
+msgid "Port {n}"
+msgstr "პორტი {n}"
+
+msgid "(theoretical)"
+msgstr "(თეორიული)"
+
+msgid "Overview"
+msgstr "მიმოხილვა"
+
+msgid "Bit rate of the channel"
+msgstr "არხის ბიტრეიტი"
+
+msgid "Average"
+msgstr "საშუალო"
+
+msgid "Peak"
+msgstr "პიკი"
+
+msgid "Codec"
+msgstr "კოდეკი"
+
+msgid "Decoder"
+msgstr "დეკოდერი"
+
+msgid "Dropped frames"
+msgstr "გამოტოვებული კადრები"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "ავტოგაშვება"
+
+msgid "PCR arrival jitter"
+msgstr "PCR-ის მოსვლის ჯიტერი"
+
+msgid "PCR interval"
+msgstr "PCR-ის ინტერვალი"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT ინტერვალი"
+
+msgid "Teletext / subtitles / data"
+msgstr "ტელეტექსტი / სუბტიტრები / მონაცემები"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "პროგრესული"
+
+msgid "only for the channel on screen"
+msgstr "მხოლოდ ეკრანზე მყოფი არხისთვის"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "ხმამაღლობა (მიმდინარე ტრეკი): {lufs} · პიკი {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "ხმამაღლობა: მხოლოდ ეკრანზე მყოფი არხისთვის"
+
+msgid "scrambled packets"
+msgstr "დაშიფრული პაკეტები"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT-ში CA დესკრიპტორები არ არის"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} გვერდი"
+
+msgid "Quality"
+msgstr "ხარისხი"
+
+msgid "Carrier to noise ratio"
+msgstr "მატარებლისა და ხმაურის შეფარდება"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "ბიტური შეცდომების სიხშირე (log₁₀)"
+
+msgid "Address"
+msgstr "მისამართი"
+
+msgid "HTTP status"
+msgstr "HTTP სტატუსი"
+
+msgid "Content type"
+msgstr "კონტენტის ტიპი"
+
+msgid "Download speed"
+msgstr "ჩამოტვირთვის სიჩქარე"
+
+msgid "Segments"
+msgstr "სეგმენტები"
+
+msgid "Error"
+msgstr "შეცდომა"
+
+msgid "Variants"
+msgstr "ვარიანტები"
+
+msgid "Codecs"
+msgstr "კოდეკები"
+
+msgid "Error timeline"
+msgstr "შეცდომების ქრონოლოგია"
+
+msgid "uncorrectable blocks"
+msgstr "შეუსწორებელი ბლოკები"
+
+msgid "lock lost"
+msgstr "სინქრონიზაცია დაიკარგა"
+
+msgid "rebuffering"
+msgstr "ხელახალი ბუფერიზაცია"
+
+msgid "loudness jump"
+msgstr "ხმამაღლობის ნახტომი"
+
+msgid "table version"
+msgstr "ცხრილის ვერსია"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "მომართვის პარამეტრები (ფრონტენდიდან)"
+
+msgid "Delivery system"
+msgstr "მიწოდების სისტემა"
+
+msgid "Code rate"
+msgstr "კოდის სიჩქარე"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "დამცავი ინტერვალი"
+
+msgid "Pilots"
+msgstr "პილოტები"
+
+msgid "Carriers"
+msgstr "მატარებლები"
+
+msgid "C/N needed"
+msgstr "საჭირო C/N"
+
+msgid "Dish alignment aid…"
+msgstr "ანტენის მიმართვის დამხმარე…"
+
+msgid "Logging and warnings"
+msgstr "ჟურნალი და გაფრთხილებები"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "მიღების ჟურნალი (წუთში ერთი ხაზი, ინახება 31 დღე)"
+
+msgid "Warn below this margin (dB)"
+msgstr "გაფრთხილება ამ მარაგზე ქვემოთ (dB)"
+
+msgid "Reception over the last days"
+msgstr "მიღება ბოლო დღეებში"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · მინ. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · პიკი {max}"
+
+msgid "{x}× the stream rate"
+msgstr "ნაკადის სიჩქარის {x}×"
+
+msgid "Download and stream rate"
+msgstr "ჩამოტვირთვისა და ნაკადის სიჩქარე"
+
+msgid "HLS with {n} variants"
+msgstr "HLS {n} ვარიანტით"
+
+msgid "HLS media playlist"
+msgstr "HLS მედია დასაკრავი სია"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "პირდაპირი"
+
+msgid "on demand"
+msgstr "მოთხოვნით"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} სეგმენტი Ø {s} (მიზანი {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "ვარიანტების სია არ არის: მისამართი ერთი ნაკადია."
+
+msgid "No events so far."
+msgstr "ჯერჯერობით მოვლენები არ არის."
+
+msgid "{n} minutes logged for this channel."
+msgstr "ამ არხისთვის ჩაწერილია {n} წუთი."
+
+msgid "Nothing logged for this channel yet."
+msgstr "ამ არხისთვის ჯერ არაფერია ჩაწერილი."
+
+msgid "min {min} · max {max}"
+msgstr "მინ. {min} · მაქს. {max}"
+
+msgid "needs {db}"
+msgstr "საჭიროა {db}"
+
+msgid "relative (driver)"
+msgstr "ფარდობითი (დრაივერი)"
+
+msgid "post FEC {v}"
+msgstr "FEC-ის შემდეგ {v}"
+
+msgid "needed for a clean picture"
+msgstr "საჭიროა სუფთა სურათისთვის"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 სტატისტიკა"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (დრაივერის სკალა)"
+
+msgid "Elementary streams and PIDs"
+msgstr "ელემენტარული ნაკადები და PID-ები"
+
+msgid "Whole stream"
+msgstr "მთელი ნაკადი"
+
+msgid "Sort by PID"
+msgstr "PID-ით დალაგება"
+
+msgid "Sort by bit rate"
+msgstr "ბიტრეიტით დალაგება"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC შეცდომები"
+
+msgid "Scrambled"
+msgstr "დაშიფრული"
+
+msgid "Last 60 s"
+msgstr "ბოლო 60 წმ"
+
+msgid "Packets"
+msgstr "პაკეტები"
+
+msgid "Sync losses"
+msgstr "სინქრონიზაციის დაკარგვები"
+
+msgid "Null packets"
+msgstr "ნულოვანი პაკეტები"
+
+msgid "PCR jumps"
+msgstr "PCR-ის ნახტომები"
+
+msgid "PID filter"
+msgstr "PID ფილტრი"
+
+msgid "unknown"
+msgstr "უცნობი"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "სხვა"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "ჯამი ({n} PID): {rate} · {cc} უწყვეტობის შეცდომა"
+
+msgid "Measuring…"
+msgstr "გაზომვა…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "თავისუფალი / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "გამოყენებულია {used} / {cap} · გაზომილია {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "მიიღება მხოლოდ ამ არხის PID-ები. გაზომეთ მთელი ტრანსპონდერი, რომ ნახოთ მასზე არსებული სხვა არხები."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "პროფილი / დონე"
+
+msgid "Scan"
+msgstr "სკანირება"
+
+msgid "Film (3:2 pulldown)"
+msgstr "ფილმი (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "ნაჩვენები / გამოტოვებული კადრები"
+
+msgid "Measured bit rate"
+msgstr "გაზომილი ბიტრეიტი"
+
+msgid "Nominal bit rate"
+msgstr "ნომინალური ბიტრეიტი"
+
+msgid "VBV buffer"
+msgstr "VBV ბუფერი"
+
+msgid "Frame sizes"
+msgstr "კადრების ზომები"
+
+msgid "B frame"
+msgstr "B კადრი"
+
+msgid "I frame"
+msgstr "I კადრი"
+
+msgid "P frame"
+msgstr "P კადრი"
+
+msgid "GOP length"
+msgstr "GOP-ის სიგრძე"
+
+msgid "I frame average"
+msgstr "I კადრის საშუალო"
+
+msgid "P/B frame average"
+msgstr "P/B კადრის საშუალო"
+
+msgid "Nominal"
+msgstr "ნომინალური"
+
+msgid "Sample rate"
+msgstr "დისკრეტიზაციის სიხშირე"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "გაზომილი"
+
+msgid "Notes"
+msgstr "შენიშვნები"
+
+msgid "Loudness (EBU R 128)"
+msgstr "ხმამაღლობა (EBU R 128)"
+
+msgid "Momentary"
+msgstr "მომენტალური"
+
+msgid "Short term"
+msgstr "მოკლევადიანი"
+
+msgid "Loudness range"
+msgstr "ხმამაღლობის დიაპაზონი"
+
+msgid "Sample peak"
+msgstr "ნიმუშის პიკი"
+
+msgid "level {l}"
+msgstr "დონე {l}"
+
+msgid "tier {t}"
+msgstr "საფეხური {t}"
+
+msgid "fields"
+msgstr "ველები"
+
+msgid "mixed"
+msgstr "შერეული"
+
+msgid "not sent"
+msgstr "არ იგზავნება"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % ზემოთ და ქვემოთ"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % გვერდებზე"
+
+msgid "picture {ratio}:1"
+msgstr "სურათი {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "დიახ, გამეორებული ველები"
+
+msgid "mastering display data"
+msgstr "mastering display-ის მონაცემები"
+
+msgid "(maximum)"
+msgstr "(მაქსიმუმი)"
+
+msgid "not signalled (variable)"
+msgstr "არ არის მითითებული (ცვლადი)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "ახლა {now} · Ø {avg} · პიკი {max}"
+
+msgid "clean audio"
+msgstr "სუფთა აუდიო"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU-ს მიზანი −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "იზომება ეკრანზე მყოფი არხის დეკოდირებულ ხმაზე, ეკვალაიზერამდე."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} ხმამაღლობის ნახტომი 6 LU ან მეტი (გადაცემა ↔ რეკლამა)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "ხმამაღლობა იზომება მხოლოდ ეკრანზე მყოფი არხისთვის."
+
+msgid "index"
+msgstr "ინდექსი"
+
+msgid "info"
+msgstr "ინფო"
+
+msgid "subtitles (hard of hearing)"
+msgstr "სუბტიტრები (სმენადაქვეითებულთათვის)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB სუბტიტრების PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "ცხრილები და EPG"
+
+msgid "SI tables"
+msgstr "SI ცხრილები"
+
+msgid "Version"
+msgstr "ვერსია"
+
+msgid "Events in the guide"
+msgstr "მოვლენები გიდში"
+
+msgid "EIT now/next"
+msgstr "EIT ახლა/შემდეგ"
+
+msgid "Difference to this computer"
+msgstr "სხვაობა ამ კომპიუტერთან"
+
+msgid "Local time offset"
+msgstr "ადგილობრივი დროის წანაცვლება"
+
+msgid "Network"
+msgstr "ქსელი"
+
+msgid "Raw view"
+msgstr "ნედლი ხედი"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "ნელი"
+
+msgid "(all services)"
+msgstr "(ყველა სერვისი)"
+
+msgid "not seen"
+msgstr "არ ჩანს"
+
+msgid "seen {s} s ago"
+msgstr "ნანახია {s} წმ-ის წინ"
+
+msgid "timers may start early or late"
+msgstr "ტაიმერები შეიძლება ადრე ან გვიან დაიწყოს"
+
+msgid "no TDT/TOT"
+msgstr "TDT/TOT არ არის"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "დაშიფრული პაკეტები"
+
+msgid "CA system ID"
+msgstr "CA სისტემის ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM სიხშირე"
+
+msgid "Scrambling per stream"
+msgstr "დაშიფვრა ნაკადების მიხედვით"
+
+msgid "Crypto period"
+msgstr "კრიპტოპერიოდი"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "გასაღების ცვლა არის გადართვა ლუწ და კენტ საკონტროლო სიტყვას შორის; კრიპტოპერიოდი არის დრო ორ ასეთ ცვლას შორის."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT-ში პირობითი წვდომა არ არის და დაშიფრული პაკეტებიც არ არის."
+
+msgid "free"
+msgstr "თავისუფალი"
+
+msgid "all streams"
+msgstr "ყველა ნაკადი"
+
+msgid "not received"
+msgstr "არ მიიღება"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "EMM ნაკადებიანი CAT არ მიღებულა."
+
+msgid "Applications (AIT)"
+msgstr "აპლიკაციები (AIT)"
+
+msgid "Organisation / app"
+msgstr "ორგანიზაცია / აპლიკაცია"
+
+msgid "Control"
+msgstr "მართვა"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "მონაცემთა კარუსელები (DSM-CC)"
+
+msgid "Component tag"
+msgstr "კომპონენტის ტეგი"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT ვერსია {v} PID {pid}-ზე"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "არხი აცხადებს AIT-ს PID {pid}-ზე; ის ჯერ არ მოსულა."
+
+msgid "Channel Analysis – {name}"
+msgstr "არხის ანალიზი – {name}"
+
+msgid "Freeze the measurement"
+msgstr "გაზომვის გაყინვა"
+
+msgid "Copy report as text"
+msgstr "ანგარიშის ტექსტად კოპირება"
+
+msgid "Save report as text…"
+msgstr "ანგარიშის ტექსტად შენახვა…"
+
+msgid "Save report as JSON…"
+msgstr "ანგარიშის JSON-ად შენახვა…"
+
+msgid "Save history as CSV…"
+msgstr "ისტორიის CSV-ად შენახვა…"
+
+msgid "Save window as picture…"
+msgstr "ფანჯრის სურათად შენახვა…"
+
+msgid "Save 30 s of the stream…"
+msgstr "ნაკადის 30 წამის შენახვა…"
+
+msgid "Channel Analysis · {name}"
+msgstr "არხის ანალიზი · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "პირდაპირ · იზომება {t}"
+
+msgid "Paused"
+msgstr "დაპაუზებული"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "ამ არხისთვის თავისუფალი ტიუნერი არ არის. უყურეთ მას, ან სცადეთ, როცა ტიუნერი გათავისუფლდება."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "ამ არხის ტიუნერი სხვა არხზე გადაირთო."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "იზომება ფონურად საკუთარ ტიუნერზე; სურათი, ხმა და ხმამაღლობა იზომება მხოლოდ ეკრანზე მყოფი არხისთვის."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "ეს ინტერნეტ-არხი ფონურად იტვირთება დეკოდირების გარეშე; სურათის, ხმისა და ბუფერის მონაცემებისთვის უყურეთ მას."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "წყარო: DVB ადაპტერი {a}, ფრონტენდი {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc სტატისტიკა"
+
+msgid "Source: background download"
+msgstr "წყარო: ფონური ჩამოტვირთვა"
+
+msgid "Source: the player's stream"
+msgstr "წყარო: დამკვრელის ნაკადი"
+
+msgid "updated every second"
+msgstr "განახლება ყოველ წამს"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "შესანახი არაფერია: არხი არ მიიღება."
+
+msgid "Compare {name} with"
+msgstr "{name}-ის შედარება"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "მონაცემები თითოეული ანალიზის დროის ფანჯრისთვის; სურათი და ხმამაღლობა მხოლოდ ეკრანზე მყოფი არხისთვის."
+
+msgid "Dish alignment aid"
+msgstr "ანტენის მიმართვის დამხმარე"
+
+msgid "Tone"
+msgstr "ტონი"
+
+msgid "Reset best value"
+msgstr "საუკეთესო მნიშვნელობის ჩამოყრა"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "ნელა მოაბრუნეთ ანტენა; უკეთესი სიგნალისას ტონი მაღლდება."
+
+msgid "% quality"
+msgstr "% ხარისხი"
+
+msgid "Best so far: {v}"
+msgstr "ჯერჯერობით საუკეთესო: {v}"
+
+msgid "Signal lost"
+msgstr "სიგნალი დაიკარგა"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "ტიუნერი საჭირო იყო ყურების ან ჩაწერისთვის."
+
+msgid "Channel analysis: {name}"
+msgstr "არხის ანალიზი: {name}"
+
+msgid "Resolution"
+msgstr "გარჩევადობა"
+
+msgid "Audio"
+msgstr "აუდიო"
+
+msgid "Video"
+msgstr "ვიდეო"
+
+msgid "Signal quality"
+msgstr "სიგნალის ხარისხი"
+
+msgid "Continuity errors"
+msgstr "უწყვეტობის შეცდომები"
+
+msgid "Content"
+msgstr "კონტენტი"
+
+msgid "audio description"
+msgstr "აუდიოაღწერა"
+
+msgid "DVB subtitles"
+msgstr "DVB სუბტიტრები"
+
+msgid "Signal"
+msgstr "სიგნალი"
+
+msgid "Reception"
+msgstr "მიღება"
+
+msgid "Symbol rate"
+msgstr "სიმბოლოების სიჩქარე"
+
+msgid "Transponder capacity"
+msgstr "ტრანსპონდერის ტევადობა"
+
+msgid "Server"
+msgstr "სერვერი"
+
+msgid "Stream"
+msgstr "ნაკადი"
+
+msgid "Share of transponder"
+msgstr "ტრანსპონდერის წილი"
+
+msgid "Aspect ratio"
+msgstr "გვერდების თანაფარდობა"
+
+msgid "Colour"
+msgstr "ფერი"
+
+msgid "Track"
+msgstr "ტრეკი"
+
+msgid "Now & next"
+msgstr "ახლა და შემდეგ"
+
+msgid "Encryption"
+msgstr "დაშიფვრა"
+
+msgid "Interactive"
+msgstr "ინტერაქტიული"
+
+msgid "Stream health"
+msgstr "ნაკადის მდგომარეობა"
+
+msgid "Transport errors"
+msgstr "ტრანსპორტის შეცდომები"
+
+msgid "Timeshift buffer"
+msgstr "დროის გადაწევის ბუფერი"
+
+msgid "interlaced"
+msgstr "ჩახლართული"
+
+msgid "Hardware"
+msgstr "აპარატურული"
+
+msgid "Software"
+msgstr "პროგრამული"
+
+msgid "{n} tracks"
+msgstr "{n} ტრეკი"
+
+msgid "Free-to-air"
+msgstr "თავისუფალი"
+
+msgid "Signal level"
+msgstr "სიგნალის დონე"
+
+msgid "Internet stream"
+msgstr "ინტერნეტ-ნაკადი"
+
+msgid "continuity errors"
+msgstr "უწყვეტობის შეცდომები"
+
+msgid "Stream / PLP"
+msgstr "ნაკადი / PLP"
+
+msgid "Source of the figures"
+msgstr "მონაცემების წყარო"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "ეკრანზე გაფრთხილება, როცა მიღება სუსტდება"
+
+msgid "Open log folder"
+msgstr "ჟურნალის საქაღალდის გახსნა"
+
+msgid "stream"
+msgstr "ნაკადი"
+
+msgid "none (a plain stream)"
+msgstr "არცერთი (უბრალო ნაკადი)"
+
+msgid "internet stream"
+msgstr "ინტერნეტ-ნაკადი"
+
+msgid "Transport Stream"
+msgstr "სატრანსპორტო ნაკადი"
+
+msgid "This channel only"
+msgstr "მხოლოდ ეს არხი"
+
+msgid "Transponder"
+msgstr "ტრანსპონდერი"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "მთელი ტრანსპონდერის გაზომვა (10 წმ)"
+
+msgid "Internet channels have no transponder."
+msgstr "ინტერნეტ-არხებს ტრანსპონდერი არ აქვს."
+
+msgid "whole transponder"
+msgstr "მთელი ტრანსპონდერი"
+
+msgid "Video & Audio"
+msgstr "ვიდეო და აუდიო"
+
+msgid "Black bars"
+msgstr "შავი ზოლები"
+
+msgid "Click a track to listen to it."
+msgstr "დააწკაპუნეთ ტრეკზე მის მოსასმენად."
+
+msgid "Integrated"
+msgstr "ინტეგრირებული"
+
+msgid "Teletext and subtitles"
+msgstr "ტელეტექსტი და სუბტიტრები"
+
+msgid "interlaced capable"
+msgstr "ჩახლართულის მხარდაჭერით"
+
+msgid "no"
+msgstr "არა"
+
+msgid "{n} frames"
+msgstr "{n} კადრი"
+
+msgid "schedule"
+msgstr "განრიგი"
+
+msgid "subtitles"
+msgstr "სუბტიტრები"
+
+msgid "Teletext PID {pid}:"
+msgstr "ტელეტექსტის PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "ამ არხზე ტელეტექსტი ან სუბტიტრები არ არის."
+
+msgid "Table"
+msgstr "ცხრილი"
+
+msgid "Changes"
+msgstr "ცვლილებები"
+
+msgid "Repetition"
+msgstr "გამეორება"
+
+msgid "Sections"
+msgstr "სექციები"
+
+msgid "Programme guide and clock"
+msgstr "გადაცემების გიდი და საათი"
+
+msgid "Guide reaches"
+msgstr "გიდი ვრცელდება"
+
+msgid "Clock of the channel"
+msgstr "არხის საათი"
+
+msgid "EIT schedule"
+msgstr "EIT განრიგი"
+
+msgid "missing"
+msgstr "აკლია"
+
+msgid "(other services)"
+msgstr "(სხვა სერვისები)"
+
+msgid "{n} sections"
+msgstr "{n} სექცია"
+
+msgid "Descrambling"
+msgstr "გაშიფვრა"
+
+msgid "Descrambler state"
+msgstr "დეშიფრატორის მდგომარეობა"
+
+msgid "Conditional access systems"
+msgstr "პირობითი წვდომის სისტემები"
+
+msgid "For"
+msgstr "ვისთვის"
+
+msgid "Key changes"
+msgstr "გასაღების ცვლილებები"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "ეს არხი დაშიფრულია. LinDVB მას შიფრს მხოლოდ თქვენი საკუთარი გამოწერის ბარათით ხსნის (softcam ან CI მოდული)."
+
+msgid "scrambled"
+msgstr "დაშიფრული"
+
+msgid "Profile"
+msgstr "პროფილი"
+
+msgid "test application"
+msgstr "სატესტო აპლიკაცია"
+
+msgid "This channel has no HbbTV application."
+msgstr "ამ არხს HbbTV აპლიკაცია არ აქვს."
+
+msgid "No object carousel in this channel."
+msgstr "ამ არხზე ობიექტების კარუსელი არ არის."
+
+msgid "Export"
+msgstr "ექსპორტი"
+
+msgid "Compare with another channel…"
+msgstr "სხვა არხთან შედარება…"
+
+msgid "Analyse another channel…"
+msgstr "სხვა არხის ანალიზი…"
+
+msgid "Window: {w}"
+msgstr "ფანჯარა: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "ეკრანზე მყოფი არხის თვალყურის დევნება"
+
+msgid "Watch this channel"
+msgstr "ამ არხის ყურება"
+
+msgid "Try again"
+msgstr "ხელახლა ცდა"
+
+msgid "Copy as text"
+msgstr "ტექსტად კოპირება"
+
+msgid "Export report…"
+msgstr "ანგარიშის ექსპორტი…"
+
+msgid "Source: none"
+msgstr "წყარო: არცერთი"
+
+msgid "Saved {path}"
+msgstr "შენახულია {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "მომდევნო 30 წამის ჩაწერა…"
+
+msgid "Choose a channel"
+msgstr "აირჩიეთ არხი"
+
+msgid "Channel name"
+msgstr "არხის სახელი"
+
+msgid "Compare channels"
+msgstr "არხების შედარება"
+
+msgid "Comparison"
+msgstr "შედარება"
+
+msgid "Close (Esc)"
+msgstr "დახურვა (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "არხის ანალიზი…"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "Unicable-ის გარეშე"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "მომხმარებლის ზოლი"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "კაბელზე ყოველ ტიუნერს სხვადასხვა მომხმარებლის ზოლი სჭირდება. ყველასთვის ჩართეთ ზემოთ საერთო ანტენის კაბელი."
+
+msgid "User band frequency (MHz)"
+msgstr "მომხმარებლის ზოლის სიხშირე (MHz)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "LNB-ის ან მულტისვიჩის ეტიკეტიდან ან სახელმძღვანელოდან."
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "მხოლოდ დაცული მომხმარებლის ზოლისთვის (0-255). ჩვეულებრივ ცარიელია."
+
+msgid "Fill in from"
+msgstr "შევსება შემდეგიდან"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "გავრცელებული მოწყობილობები: აყენებს ზემოთ მომხმარებლის ზოლის ტიპსა და სიხშირეს."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "ამ ტრანსპონდერების სიაში სატელიტური ტრანსპონდერები არ არის.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "ტიუნერი დაკავებულია (ჩაწერა ან არხის ანალიზი).\n"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "ყველა რედაქტირებული არხის ცვლილებების გამოყენება (Ctrl+S)"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "არხების რედაქტორი – {n} არხი ჯერ არ არის გამოყენებული"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "გამოვიყენოთ ცვლილებები {n} არხზე?"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "რედაქტირებები ჯერ არ არის გამოყენებული. გამოყენების გარეშე ისინი დაიკარგება."
+
+msgid "Discard"
+msgstr "გაუქმება"
+
+msgid "Germany"
+msgstr "გერმანია"
+
+msgid "Italy"
+msgstr "იტალია"
+
+msgid "New Zealand"
+msgstr "ახალი ზელანდია"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "Freeview-ის რეგიონი"
+
+msgid "Country"
+msgstr "ქვეყანა"
+
+msgid "Options"
+msgstr "პარამეტრები"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "მიმართვა ამ რიგით, ჰარით გამოყოფილი. ცვლილების შესანარჩუნებლად დააჭირეთ Enter-ს; ცარიელი აბრუნებს ქვეყნის რეესტრებს."
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "ანტენის, კაბელისა და სატელიტის უპირატესობა ინტერნეტ-ნაკადთან შედარებით, როცა არხს ორივე აქვს"
+
+msgid "Registry address"
+msgstr "რეესტრის მისამართი"
+
+msgid "Region in the list"
+msgstr "რეგიონი სიაში"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "თქვენი რეგიონი ირჩევს რეგიონულ არხებსა და მათ ნუმერაციას."
+
+msgid "Settings follow: {profile}"
+msgstr "პარამეტრები მიჰყვება: {profile}"
+
+msgid "Choose…"
+msgstr "არჩევა…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "არასავალდებულო. თქვენი {label} მხოლოდ სერვისების სიის სერვერს ეგზავნება."
+
+msgid "e.g. {example}"
+msgstr "მაგ. {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "წინა ქვეყნის DVB-I არხები რჩება, სანამ {country}-ისთვის სიას არ დააყენებთ ან არ წაშლით მათ."
+
+msgid "The registry offers no service list for {country}."
+msgstr "რეესტრი არ გვთავაზობს სერვისების სიას {country}-ისთვის."
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "გთხოვთ, შეიყვანოთ {n}-ნიშნა საფოსტო ინდექსი"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I არხების სიას ინტერნეტიდან ტვირთავს. ამისთვის LinDVB უკავშირდება გერმანიის სერვისების სიების რეესტრს (csr.dvb-i-slr.de), თქვენ მიერ არჩეული სერვისების სიის სერვერს, არხების ლოგოების მასპინძელ სერვერებს და, როცა გადაცემების გიდი ჩართულია, მაუწყებლების გადაცემების გიდის სერვერებს. ეს სერვერები ხედავენ თქვენს IP მისამართსა და მოთხოვნის დროს. თუ საფოსტო ინდექსს შეიყვანთ, ის ეგზავნება სერვისების სიის სერვერს, რათა მან თქვენი რეგიონის არხები დააბრუნოს. LinDVB სხვა პერსონალურ მონაცემებს არ აგზავნის და სიასა და ლოგოებს მხოლოდ ამ კომპიუტერზე ინახავს. ინტერნეტ-არხები გადაიცემა მაუწყებლების სერვერებიდან, რომლებმაც შეიძლება თქვენი მოთხოვნები საკუთარი კონფიდენციალურობის პოლიტიკის მიხედვით ჩაწერონ."
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "ანტენის, სატელიტისა და ინტერნეტ-არხები ერთიანდება ერთ სიაში დუბლიკატების გარეშე; არხი, რომელსაც ანტენით ან თეფშით იღებთ, ჯერ ამ გზას იყენებს."
+
+msgid "Update the channel list automatically (daily)"
+msgstr "არხების სიის ავტომატური განახლება (ყოველდღე)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "ყურადღება! ამის გამორთვის შემთხვევაში LinDVB ვეღარ შეძლებს თქვენი არხების სიის განახლებას ეთერში არსებული არხების მიხედვით."
+
+msgid "Package"
+msgstr "პაკეტი"
+
+msgid "Free channels only"
+msgstr "მხოლოდ თავისუფალი არხები"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "დააჭირეთ „დაყენებას“ კვლავ, რომ გამოიყენოთ ამ პაკეტის არხების ნომრები."
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "რეგიონი ირჩევს თქვენი მხარის LCN ცხრილს ადგილობრივი არხებით, ისევე როგორც მიწისზედა არხების ძებნა. ნომრის გარეშე არხები 850-999-ზე გადადის."
+
+msgid "No screen saver during playback"
+msgstr "ეკრანმზოგის გარეშე დაკვრისას"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "ეკრანს ჩართულს ტოვებს TV-ის, რადიოს ან ფაილის დაკვრისას."
+
+msgid "Playing TV or radio"
+msgstr "იკვრება TV ან რადიო"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: ამ არხზე მიუწვდომელია"
+
+msgid "OSD and Visualisations"
+msgstr "OSD და ვიზუალიზაციები"
+
+msgid "OSD size (%)"
+msgstr "OSD-ის ზომა (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "გადაცემის ინფორმაცია სურათზე და არხის ნომერი."
+
+msgid "Font"
+msgstr "შრიფტი"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "ტელეტექსტის სუბტიტრები და ფაილებისა და ნაკადების ტექსტური სუბტიტრები."
+
+msgid "Size (%)"
+msgstr "ზომა (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "სურათებად დახატული სუბტიტრები (DVB სუბტიტრები) ინარჩუნებენ არხის მიერ გამოგზავნილ ზომას."
+
+msgid "Subtitle font"
+msgstr "სუბტიტრების შრიფტი"
+
+msgid "Default font"
+msgstr "ნაგულისხმევი შრიფტი"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "ჩანს რადიოს ან აუდიოს დაკვრისას; ასევე ვიზუალიზაციის ღილაკში."
+
+msgid "Draw on the graphics card"
+msgstr "ვიდეობარათზე დახატვა"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL ჩაშენებული ვიზუალიზაციებისთვის. ძალაში შედის LinDVB-ის ხელახლა გაშვებისას."
+
+msgid "Service list address"
+msgstr "სერვისების სიის მისამართი"
+
+msgid "Use This List"
+msgstr "ამ სიის გამოყენება"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "ტვირთავს ამ სერვისების სიას პირდაპირ, რეესტრის გარეშე."
+
+msgid "Please enter a web address (https://…)."
+msgstr "გთხოვთ, შეიყვანოთ ვებმისამართი (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "გთხოვთ, ჯერ დაადასტუროთ კონფიდენციალურობის შეტყობინება."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "შეიყვანეთ რეესტრის ან სერვისების სიის მისამართი."
+
+msgid "Pause / play"
+msgstr "პაუზა / დაკვრა"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "უკან / წინ 10 წამით (დროის გადაწევა, ფაილები)"
+
+msgid "Back to live"
+msgstr "პირდაპირ ეთერში დაბრუნება"
+
+msgid "Mute"
+msgstr "ხმის დადუმება"
+
+msgid "Volume up / down"
+msgstr "ხმის აწევა / დაწევა"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "ხმა ადრე / გვიან (არხის აუდიოს დაყოვნება)"
+
+msgid "Next radio visualisation"
+msgstr "შემდეგი რადიოს ვიზუალიზაცია"
+
+msgid "Next / previous playlist entry"
+msgstr "დასაკრავი სიის შემდეგი / წინა ჩანაწერი"
+
+msgid "Previous / next channel"
+msgstr "წინა / შემდეგი არხი"
+
+msgid "Next / previous channel"
+msgstr "შემდეგი / წინა არხი"
+
+msgid "Channel by number (type the digits)"
+msgstr "არხი ნომრით (აკრიფეთ ციფრები)"
+
+msgid "Last channel"
+msgstr "ბოლო არხი"
+
+msgid "Switch TV / radio"
+msgstr "TV / რადიოს გადართვა"
+
+msgid "Show / hide the channel list"
+msgstr "არხების სიის ჩვენება / დამალვა"
+
+msgid "Programme guide and recording"
+msgstr "გადაცემების გიდი და ჩაწერა"
+
+msgid "Programme guide (EPG)"
+msgstr "გადაცემების გიდი (EPG)"
+
+msgid "Timer recordings"
+msgstr "ტაიმერით ჩაწერა"
+
+msgid "Programme info (OSD)"
+msgstr "გადაცემის ინფორმაცია (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "ტელეტექსტი და ინტერაქტიული სერვისები"
+
+msgid "View"
+msgstr "ხედი"
+
+msgid "Full screen"
+msgstr "სრული ეკრანი"
+
+msgid "Leave full screen"
+msgstr "სრული ეკრანიდან გასვლა"
+
+msgid "Application"
+msgstr "აპლიკაცია"
+
+msgid "Main menu"
+msgstr "მთავარი მენიუ"
+
+msgid "Open media file"
+msgstr "მედიაფაილის გახსნა"
+
+msgid "Keyboard shortcuts"
+msgstr "კლავიატურის მალსახმობები"
+
+msgid "Keyboard Shortcuts"
+msgstr "კლავიატურის მალსახმობები"
+
+msgid "Time"
+msgstr "დრო"
+
+msgid "Programme"
+msgstr "გადაცემა"
+
+msgid "File"
+msgstr "ფაილი"
+
+msgid "Other (own registry or list)"
+msgstr "სხვა (საკუთარი რეესტრი ან სია)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I არხების სიას ინტერნეტიდან ტვირთავს. ამისთვის LinDVB უკავშირდება რეესტრის ან სერვისების სიის სერვერს, რომლის მისამართსაც თქვენ შეიყვანთ, არხების ლოგოების მასპინძელ სერვერებს და, როცა გადაცემების გიდი ჩართულია, მაუწყებლების გადაცემების გიდის სერვერებს. ეს სერვერები ხედავენ თქვენს IP მისამართსა და მოთხოვნის დროს. თუ საფოსტო ინდექსს შეიყვანთ, ის სერვისების სიის სერვერს ეგზავნება."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "ქვემოთ შეიყვანეთ სერვისების სიების რეესტრის ან უშუალოდ სერვისების სიის მისამართი."
+
+msgid "Preferred audio format"
+msgstr "სასურველი აუდიოფორმატი"
+
+msgid "As broadcast"
+msgstr "როგორც გადაიცემა"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "სტერეო (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "როცა არხს ან ფაილს ამ ხმით აქვს იმავე ენაზე, ის პირველი იკვრება."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "ნომერი"
+
+msgid "Name A–Z"
+msgstr "სახელი A–Z"
+
+msgid "Name Z–A"
+msgstr "სახელი Z–A"
+
+msgid "Picture quality"
+msgstr "სურათის ხარისხი"
+
+msgid "Sort by"
+msgstr "დალაგება"
+
+msgid "All"
+msgstr "ყველა"
+
+msgid "General settings"
+msgstr "ზოგადი პარამეტრები"
+
+msgid "For this recording"
+msgstr "ამ ჩანაწერისთვის"
+
+msgid "Formats and _tracks"
+msgstr "ფორმატები და _ტრეკები"
+
+msgid "Whole series"
+msgstr "მთელი სერიალი"
+
+msgid "Next recording only"
+msgstr "მხოლოდ შემდეგი ჩანაწერი"
+
+msgid "_Apply to"
+msgstr "_გამოყენება"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "ზოგადი პარამეტრები: ფორმატები, აუდიოტრეკები და დამატებითი ნაკადები ჩაწერის დაწყებისას პარამეტრებიდან მოდის."
+
+msgid "All streams of the channel (TS)"
+msgstr "არხის ყველა ნაკადი (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "იწერს ყველა ნაკადს, რომელსაც არხი აცხადებს, მათ შორის HbbTV მონაცემებსა და ახალ აუდიოტრეკებს, მხოლოდ ამ არხის გადაცემების ცხრილით. მისი შენახვა მხოლოდ MPEG-TS-ს შეუძლია, ამიტომ გამოიყენება TS."
+
+msgid "Web address"
+msgstr "ვებმისამართი"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U დასაკრავი სიის ან ერთი HLS ნაკადის (.m3u8) მისამართი."
+
+msgid "User name"
+msgstr "მომხმარებლის სახელი"
+
+msgid "Password"
+msgstr "პაროლი"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes ანგარიშის პირდაპირი არხები. პაროლი ინახება სიის მისამართში LinDVB-ის პარამეტრებში."
+
+msgid "Your lists"
+msgstr "თქვენი სიები"
+
+msgid "Source"
+msgstr "წყარო"
+
+msgid "Updated"
+msgstr "განახლებული"
+
+msgid "Update"
+msgstr "განახლება"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "სიის ხელახლა ჩატვირთვა: რჩეულები, არხების ნომრები და გიდთან დაკავშირებები რჩება, სიაში აღარ არსებული არხები იშლება."
+
+msgid "Remove"
+msgstr "წაშლა"
+
+msgid "Remove the list and its channels"
+msgstr "სიისა და მისი არხების წაშლა"
+
+msgid "{n} removed"
+msgstr "{n} წაიშალა"
+
+msgid "The file has no channels."
+msgstr "ფაილში არხები არ არის."
+
+msgid "{n} channels removed"
+msgstr "{n} არხი წაიშალა"
+
+msgid "Colour scheme"
+msgstr "ფერთა სქემა"
+
+msgid "Dark"
+msgstr "მუქი"
+
+msgid "Light"
+msgstr "ღია"
+
+msgid "Same as the system"
+msgstr "სისტემის მსგავსად"
+
+msgid "The picture always keeps its dark frame."
+msgstr "სურათი ყოველთვის ინარჩუნებს მუქ ჩარჩოს."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "ნაჩვენებია მხოლოდ ამჟამად დაკავშირებული ტიუნერები; სხვების პარამეტრები ინახება „არ არის დაკავშირებული“-ში."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "იღებს ყველაფერს, რასაც ტრანსპონდერი აგზავნის, მხოლოდ არხის საკუთარი ნაკადების ნაცვლად. USB ტიუნერებზე მეტ გამტარუნარიანობას მოითხოვს, მაგრამ უკრავს და იწერს ყველა აუდიოტრეკს, მაშინაც კი, როცა არხების სიამ მხოლოდ ერთი იცის. ვრცელდება პირდაპირ TV-სა და ჩანაწერებზე."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "თქვენ მიერ დარქმეული სახელი ამ ტიუნერისთვის. ცარიელი: მოწყობილობის სახელი."
+
+msgid "Satellite"
+msgstr "სატელიტი"
+
+msgid "Antenna (terrestrial)"
+msgstr "ანტენა (მიწისზედა)"
+
+msgid "Cable"
+msgstr "კაბელი"
+
+msgid "Connected to"
+msgstr "დაკავშირებულია"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "კომბინირებული ტიუნერი ერთდროულად ერთ ტიპს იღებს, იმ ბუდეზე, რომელზეც დაკავშირებულია. LinDVB მას მაშინ მხოლოდ ამ ტიპის არხებისთვის იყენებს."
+
+msgid "No tuner is connected."
+msgstr "ტიუნერი არ არის დაკავშირებული."
+
+msgid "Not connected ({n})"
+msgstr "არ არის დაკავშირებული ({n})"
+
+msgid "All its reception types"
+msgstr "მიღების ყველა მისი ტიპი"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "სურათის ფაილები (PNG, SVG, JPG), არხის სახელით, მაგ. \"Bayern 3.png\", ან picon-ების ნაკრები, როგორსაც Enigma2, Kodi და VDR იყენებენ (სერვისის მითითებით ან SNP სახელით). ისინი არხების სიაშიც ჩანს. LinDVB ლოგოებს არ შეიცავს, რადგან ისინი მაუწყებლებს ეკუთვნის. ცარიელი: {v0}"
+
+msgid "Picons for my channels"
+msgstr "Picon-ები ჩემი არხებისთვის"
+
+msgid "Download Logos"
+msgstr "ლოგოების ჩამოტვირთვა"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "picons პროექტიდან (github.com/picons/picons) ლოგოების საქაღალდეში ტვირთავს მხოლოდ თქვენს სიაში არსებული არხების ლოგოებს. არხებს, რომლებსაც იქ უკვე აქვთ ლოგო, არ ეხება."
+
+msgid "Looking up…"
+msgstr "მოძიება…"
+
+msgid "{done} of {total}"
+msgstr "{done} / {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "ჩამოიტვირთა {got} ლოგო, {have} უკვე იყო, {missing} არ არის picon-ების ნაკრებში."
+
+msgid "Download failed: {error}"
+msgstr "ჩამოტვირთვა ვერ მოხერხდა: {error}"
+
+msgid "Provider / category"
+msgstr "პროვაიდერი / კატეგორია"
+
+msgid "Extra streams"
+msgstr "დამატებითი ნაკადები"
+
+msgid "New timer"
+msgstr "ახალი ტაიმერი"
+
+msgid "Edit timer"
+msgstr "ტაიმერის რედაქტირება"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (პარამეტრებიდან)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} შეიძლება შენახულ იქნას მხოლოდ MPEG-TS-ში, ამიტომ გამოიყენება TS."
+
+msgid "Privacy Notice"
+msgstr "კონფიდენციალურობის შეტყობინება"
+
+msgid "Show Privacy Notice…"
+msgstr "კონფიდენციალურობის შეტყობინების ჩვენება…"
+
+msgid "Agree"
+msgstr "ვეთანხმები"
+
+msgid "Please read the privacy notice to the end."
+msgstr "გთხოვთ, ბოლომდე წაიკითხოთ კონფიდენციალურობის შეტყობინება."
+
+msgid "Andorra"
+msgstr "ანდორა"
+
+msgid "Argentina"
+msgstr "არგენტინა"
+
+msgid "Austria"
+msgstr "ავსტრია"
+
+msgid "Australia"
+msgstr "ავსტრალია"
+
+msgid "Åland Islands"
+msgstr "ალანდის კუნძულები"
+
+msgid "Belgium"
+msgstr "ბელგია"
+
+msgid "Bulgaria"
+msgstr "ბულგარეთი"
+
+msgid "Brazil"
+msgstr "ბრაზილია"
+
+msgid "Canada"
+msgstr "კანადა"
+
+msgid "Switzerland"
+msgstr "შვეიცარია"
+
+msgid "China"
+msgstr "ჩინეთი"
+
+msgid "Colombia"
+msgstr "კოლუმბია"
+
+msgid "Czechia"
+msgstr "ჩეხეთი"
+
+msgid "Denmark"
+msgstr "დანია"
+
+msgid "Estonia"
+msgstr "ესტონეთი"
+
+msgid "Spain"
+msgstr "ესპანეთი"
+
+msgid "Finland"
+msgstr "ფინეთი"
+
+msgid "France"
+msgstr "საფრანგეთი"
+
+msgid "Greece"
+msgstr "საბერძნეთი"
+
+msgid "Hong Kong"
+msgstr "ჰონკონგი"
+
+msgid "Croatia"
+msgstr "ხორვატია"
+
+msgid "Hungary"
+msgstr "უნგრეთი"
+
+msgid "Ireland"
+msgstr "ირლანდია"
+
+msgid "Israel"
+msgstr "ისრაელი"
+
+msgid "Iran"
+msgstr "ირანი"
+
+msgid "Iceland"
+msgstr "ისლანდია"
+
+msgid "Kenya"
+msgstr "კენია"
+
+msgid "South Korea"
+msgstr "სამხრეთ კორეა"
+
+msgid "Liechtenstein"
+msgstr "ლიხტენშტაინი"
+
+msgid "Lithuania"
+msgstr "ლიეტუვა"
+
+msgid "Luxembourg"
+msgstr "ლუქსემბურგი"
+
+msgid "Latvia"
+msgstr "ლატვია"
+
+msgid "Netherlands"
+msgstr "ნიდერლანდები"
+
+msgid "Norway"
+msgstr "ნორვეგია"
+
+msgid "Poland"
+msgstr "პოლონეთი"
+
+msgid "Portugal"
+msgstr "პორტუგალია"
+
+msgid "Romania"
+msgstr "რუმინეთი"
+
+msgid "Russia"
+msgstr "რუსეთი"
+
+msgid "Sweden"
+msgstr "შვედეთი"
+
+msgid "Slovenia"
+msgstr "სლოვენია"
+
+msgid "Slovakia"
+msgstr "სლოვაკეთი"
+
+msgid "Taiwan"
+msgstr "ტაივანი"
+
+msgid "Ukraine"
+msgstr "უკრაინა"
+
+msgid "Uganda"
+msgstr "უგანდა"
+
+msgid "United Kingdom"
+msgstr "გაერთიანებული სამეფო"
+
+msgid "United States"
+msgstr "ამერიკის შეერთებული შტატები"
+
+msgid "Vietnam"
+msgstr "ვიეტნამი"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "ყველა სიხშირე, 7/8 MHz (ევროპა, აფრიკა, აზია)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "ყველა სიხშირე, 7 MHz (ავსტრალია)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "ყველა სიხშირე, 6 MHz (ამერიკა)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "ყველა სიხშირე, 6 MHz (ტაივანი)"
+
+msgid "Whole country"
+msgstr "მთელი ქვეყანა"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "ვირტუალური ტიუნერი (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "სხვა ქვეყანა (სიის გარეშე)"
+
+msgid "Own lists"
+msgstr "საკუთარი სიები"
+
+msgid "All frequencies (blind scan)"
+msgstr "ყველა სიხშირე (ბრმა სკანირება)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "ყველა სიხშირე, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "ყველა სიხშირე (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "ყველა სიხშირე, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "მიწისზედა"
+
+msgid "Satellites"
+msgstr "სატელიტები"
+
+msgid "Add satellite"
+msgstr "სატელიტის დამატება"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "რამდენიმე ანტენის პოზიციის ერთბაშად ძებნა DiSEqC გადამრთველის მიღმა"
+
+msgid "More options"
+msgstr "მეტი პარამეტრი"
+
+msgid "Receives: {systems}"
+msgstr "იღებს: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "ტიუნერი არ ამბობს, რას იღებს, ამიტომ ყველა სია შეთავაზებულია."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "ამ ტიუნერის ერთკაბელიანი კონფიგურაცია: {setup}"
+
+msgid "(no lists found)"
+msgstr "(სიები ვერ მოიძებნა)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC პორტი"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "ყოველ სატელიტს საკუთარი DiSEqC პორტი სჭირდება."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} ტრანსპონდერი ამ პოზიციების სიებიდან; ძებნა ამატებს იმათ, რომლებსაც ქსელი აცხადებს (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "ბრმა სკანირება: ცდის {n} სიხშირეს, დაახლოებით {minutes} წთ."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} სიხშირე სიიდან."
+
+msgid "Transponder lists"
+msgstr "ტრანსპონდერების სიები"
+
+msgid "Favourites"
+msgstr "რჩეულები"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "რჩეულების სიების შექმნა, გადარქმევა, წაშლა და გადალაგება."
+
+msgid "Delete list"
+msgstr "სიის წაშლა"
+
+msgid "Delete the list “{name}”?"
+msgstr "წაიშალოს სია „{name}“?"
+
+msgid "Favourites Lists"
+msgstr "რჩეულების სიები"
+
+msgid "Favourites Lists…"
+msgstr "რჩეულების სიები…"
+
+msgid "Favourites lists"
+msgstr "რჩეულების სიები"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "ფილტრი; რჩეულების სიები აჩვენებს TV-სა და რადიოს"
+
+msgid "In no favourites list"
+msgstr "არცერთ რჩეულების სიაში"
+
+msgid "Manage favourites lists"
+msgstr "რჩეულების სიების მართვა"
+
+msgid "Manage favourites lists…"
+msgstr "რჩეულების სიების მართვა…"
+
+msgid "Move to the bottom"
+msgstr "ბოლოში გადატანა"
+
+msgid "Move to the top"
+msgstr "თავში გადატანა"
+
+msgid "Name of the favourites list"
+msgstr "რჩეულების სიის სახელი"
+
+msgid "New Favourites List"
+msgstr "ახალი რჩეულების სია"
+
+msgid "New list"
+msgstr "ახალი სია"
+
+msgid "New list…"
+msgstr "ახალი სია…"
+
+msgid "Only the channels of a favourites list"
+msgstr "მხოლოდ რჩეულების სიის არხები"
+
+msgid "Order in this list"
+msgstr "რიგი ამ სიაში"
+
+msgid "Remove from “{name}”"
+msgstr "„{name}“-დან წაშლა"
+
+msgid "Rename Favourites List"
+msgstr "რჩეულების სიის გადარქმევა"
+
+msgid "Rename"
+msgstr "გადარქმევა"
+
+msgid "The channels stay in the channel list."
+msgstr "არხები რჩება არხების სიაში."
+
+msgid "{n} channels"
+msgstr "{n} არხი"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "თითოეული სია საკუთარ რიგს ინახავს. სიის არხები დაალაგეთ არხების სიაში: აირჩიეთ სია, შემდეგ გადაათრიეთ არხები ან გამოიყენეთ მარჯვენა დაწკაპუნების მენიუ."
+
+msgid "Indonesia"
+msgstr "ინდონეზია"
+
+msgid "North Macedonia"
+msgstr "ჩრდილოეთ მაკედონია"
+
+msgid "South Africa"
+msgstr "სამხრეთ აფრიკა"
+
+msgid "(no tuner)"
+msgstr "(ტიუნერის გარეშე)"
+
+msgid "1 tuner"
+msgstr "1 ტიუნერი"
+
+msgid "{n} tuners"
+msgstr "{n} ტიუნერი"
+
+msgid "Add Server"
+msgstr "სერვერის დამატება"
+
+msgid "Add by address"
+msgstr "დამატება მისამართით"
+
+msgid "Find SAT>IP servers"
+msgstr "SAT>IP სერვერების მოძიება"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "სერვერისთვის, რომელსაც ძებნა ვერ პოულობს (სხვა ქსელი, ან multicast-ის გარეშე)."
+
+msgid "No SAT>IP server added."
+msgstr "SAT>IP სერვერი არ არის დამატებული."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "არცერთმა SAT>IP სერვერმა არ უპასუხა. დაამატეთ ის ქვემოთ მისი მისამართით."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP ბოქსები და LNB-ები, minisatip, FRITZ!Box Cable და სხვა DVB over IP სერვერები ლოკალურ ქსელში. მათი ტიუნერები ქვემოთ გამოჩნდება, როცა პარამეტრებს შეინახავთ და ხელახლა გახსნით."
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP სერვერები"
+
+msgid "Search Network"
+msgstr "ქსელში ძებნა"
+
+msgid "Searching…"
+msgstr "ძებნა…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (RTSP კავშირში)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP მუშაობს ფაიერვოლებში, რომლებიც UDP ნაკადს ბლოკავენ."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "ნაპოვნია {n} სერვერი, {new} ახალი."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "წყარო: SAT>IP სერვერი {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP სიგნალის ანგარიში (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: ძებნა იყენებს სიის სიხშირეებს (NIT ძებნის გარეშე)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP სერვერი მართავს LNB-სა და DiSEqC გადამრთველს; DiSEqC პორტი ირჩევს მის წყაროს (1-დან 4-მდე)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "ამ ტრანსპონდერების სიაში ამ ტიუნერისთვის ტრანსპონდერები არ არის.\n"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB ვერ პოულობს ამ GStreamer ელემენტებს: {elements}. პირდაპირი TV ან ზოგიერთი არხი შეიძლება არ დაიკრას."
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package} უნდა შეიცავდეს მათ. გთხოვთ, შეატყობინოთ ეს, როგორც ხარვეზი."
+
+msgid "Install them with:"
+msgstr "დააყენეთ ისინი ბრძანებით:"
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "დააყენეთ GStreamer-ის დანამატები base, bad და libav თქვენი დისტრიბუტივიდან."
+
+msgid "GStreamer plugins are missing"
+msgstr "GStreamer-ის დანამატები აკლია"
+
+msgid "At start"
+msgstr "გაშვებისას"
+
+msgid "Channel at start"
+msgstr "არხი გაშვებისას"
+
+msgid "Last channel watched"
+msgstr "ბოლოს ნანახი არხი"
+
+msgid "First channel of the current list"
+msgstr "მიმდინარე სიის პირველი არხი"
+
+msgid "A chosen channel"
+msgstr "არჩეული არხი"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "მიმდინარე სია არის არხების სია ისეთი, როგორიც დატოვეთ: TV ან რადიო, ფილტრი, ჯგუფი და დალაგების რიგი."
+
+msgid "Channel list"
+msgstr "არხების სია"
+
+msgid "All channels or one of your favourites lists."
+msgstr "ყველა არხი ან თქვენი ერთ-ერთი რჩეულების სია."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "ირთვება ყოველი გაშვებისას, მიუხედავად იმისა, რომელს უყურეთ ბოლოს."
+
+msgid "No channel (black screen)"
+msgstr "არხის გარეშე (შავი ეკრანი)"
+
+msgid "Lock"
+msgstr "ფიქსაცია"
+
+msgid "Search this satellite"
+msgstr "ამ სატელიტზე ძებნა"
+
+msgid "Tick the satellites to search."
+msgstr "მონიშნეთ საძიებო სატელიტები."
+
+msgid "Horizontal"
+msgstr "ჰორიზონტალური"
+
+msgid "Vertical"
+msgstr "ვერტიკალური"
+
+msgid "Left (circular)"
+msgstr "მარცხენა (წრიული)"
+
+msgid "Right (circular)"
+msgstr "მარჯვენა (წრიული)"
+
+msgid "Auto"
+msgstr "ავტო"
+
+msgid "Add…"
+msgstr "დამატება…"
+
+msgid "Tick all"
+msgstr "ყველას მონიშვნა"
+
+msgid "Tick none"
+msgstr "მონიშვნის მოხსნა"
+
+msgid "Back to the lists"
+msgstr "სიებზე დაბრუნება"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "ამ პოზიციის ცვლილებების დავიწყება და ტრანსპონდერების სიების ხელახლა გამოყენება"
+
+msgid "The changed list is kept for this position."
+msgstr "შეცვლილი სია ინახება ამ პოზიციისთვის."
+
+msgid "This transponder is already in the list."
+msgstr "ეს ტრანსპონდერი უკვე არის სიაში."
+
+msgid "Tick the transponders to search."
+msgstr "მონიშნეთ საძიებო ტრანსპონდერები."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S მხოლოდ QPSK-ს იყენებს; 8PSK-ის, 16APSK-ისა და 32APSK-ისთვის აირჩიეთ DVB-S2."
+
+msgid "This transponder is not valid."
+msgstr "ეს ტრანსპონდერი არასწორია."
+
+msgid "All {n} transponders are searched."
+msgstr "იძებნება ყველა {n} ტრანსპონდერი."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "იძებნება {on} / {n} ტრანსპონდერი. ცალკეული ტრანსპონდერების ძებნა არ ამატებს იმათ, რომლებსაც ქსელი აცხადებს (NIT)."
+
+msgid "Edit transponder"
+msgstr "ტრანსპონდერის რედაქტირება"
+
+msgid "Add transponder"
+msgstr "ტრანსპონდერის დამატება"
+
+msgid "Transponders of {position}"
+msgstr "{position}-ის ტრანსპონდერები"
+
+msgid "The list could not be saved."
+msgstr "სიის შენახვა ვერ მოხერხდა."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "ტრანსპონდერები: ცალკეულის ძებნა, დამატება, შეცვლა ან წაშლა"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} ტრანსპონდერი; სადაც მხოლოდ ზოგიერთია მონიშნული, მხოლოდ ისინი იძებნება."
+
+msgid "Own transponder list: {positions}."
+msgstr "საკუთარი ტრანსპონდერების სია: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "ნაკადის ფორმატი, რომელსაც სერვერი აწვდის. აირჩიეთ HLS, როცა არხები MPEG-TS-ად არ იკვრება."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "სიას საკუთარი სახელის მიცემა (ასევე მისი არხების ჯგუფის სახელი)"
+
+msgid "List renamed to {name}"
+msgstr "სიას დაერქვა {name}"
+
+msgid "Add Channels…"
+msgstr "არხების დამატება…"
+
+msgid "Add channels"
+msgstr "არხების დამატება"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "ერთი სიხშირის ხელით მომართვა და მისი არხების შედარება არხების სიასთან: ახლების დამატება, შეცვლილების განახლება, ძველების წაშლა."
+
+msgid "Unchanged"
+msgstr "უცვლელი"
+
+msgid "Changed"
+msgstr "შეცვლილი"
+
+msgid "No longer broadcast"
+msgstr "აღარ გადაიცემა"
+
+msgid "Bandwidth"
+msgstr "ზოლის სიგანე"
+
+msgid "yes"
+msgstr "დიახ"
+
+msgid "Add Channels"
+msgstr "არხების დამატება"
+
+msgid "Tune Channel"
+msgstr "არხის მომართვა"
+
+msgid "No tuner found."
+msgstr "ტიუნერი ვერ მოიძებნა."
+
+msgid "Log"
+msgstr "ჟურნალი"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "DVB-T2 მულტიპლექსის PLP, რომელიც რამდენიმეს აგზავნის; -1 არჩევანს ტიუნერს უტოვებს"
+
+msgid "Enter by hand"
+msgstr "ხელით შეყვანა"
+
+msgid "Tuning…"
+msgstr "მომართვა…"
+
+msgid "The tuner could not be used."
+msgstr "ტიუნერის გამოყენება ვერ მოხერხდა."
+
+msgid "No channels found on this frequency."
+msgstr "ამ სიხშირეზე არხები ვერ მოიძებნა."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} უცვლელი, {changed} შეცვლილი, {new} ახალი, {gone} აღარ გადაიცემა."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "შენახულია: {added} დამატებული, {updated} განახლებული, {removed} წაშლილი."
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "სატელიტი · DiSEqC პორტი {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "წყარო: სატელიტური, საკაბელო, მიწისზედა ან ინტერნეტ-ნაკადები, DiSEqC პორტი, ან სატელიტი, ქსელი, იმპორტის ფაილი ან IPTV სია"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB არხების ფაილი (.json): ყველაფერი, რჩეულების სიებით"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U დასაკრავი სია (.m3u): ინტერნეტ-არხები და DVB-I ნაკადები"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 არხების ფაილი (.conf): ტიუნერის არხები"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV ცხრილი (.csv): ყველა არხი"
+
+msgid "Export Channel List"
+msgstr "არხების სიის ექსპორტი"
+
+msgid "TV channels only"
+msgstr "მხოლოდ TV არხები"
+
+msgid "Radio stations only"
+msgstr "მხოლოდ რადიოსადგურები"
+
+msgid "The channels shown in the list ({n})"
+msgstr "სიაში ნაჩვენები არხები ({n})"
+
+msgid "Save…"
+msgstr "შენახვა…"
+
+msgid "There are no channels to export."
+msgstr "საექსპორტო არხები არ არის."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "ამ {total} არხიდან არცერთის შენახვა ამ ფორმატში შეუძლებელია; ინტერნეტ-არხები M3U-ში მიდის, ტიუნერის არხები dvbv5-ში, ყველა არხი CSV-ში ან LinDVB არხების ფაილში."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "შეინახება {n} / {total} არხი; დანარჩენი {skipped} ამ ფორმატში ვერ შეინახება."
+
+msgid "{n} channels will be saved."
+msgstr "შეინახება {n} არხი."
+
+msgid "Could not save {name}"
+msgstr "{name}-ის შენახვა ვერ მოხერხდა"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} არხი ექსპორტირებულია {path}-ში"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "არხების სიის იმპორტი (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "სერვერი (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Tvheadend სერვერის არხები, მისი არხების ტეგებით ჯგუფებად და მისი გადაცემების გიდით. დატოვეთ მომხმარებლის სახელი და პაროლი ცარიელი, როცა სერვერი მათ არ ითხოვს. პაროლი ინახება LinDVB-ის პარამეტრებში."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: ჩატვირთულია {n} გადაცემა"
+
+msgid "Hardware Tuners"
+msgstr "აპარატურული ტიუნერები"
+
+msgid "No hardware tuner found."
+msgstr "აპარატურული ტიუნერი ვერ მოიძებნა."
+
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "Snap პაკეტს ტიუნერების გამოყენება მხოლოდ მაშინ შეუძლია, როცა მისი DVB ინტერფეისი დაკავშირებულია: გაუშვით „sudo snap connect lindvb:dvb“ და ხელახლა ჩართეთ LinDVB."
+
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux-ს DVB მოწყობილობა არ აქვს მომზადებული (/dev/dvb აკლია). ალბათ ტიუნერის დრაივერი ან firmware აკლია; „dmesg | grep -i dvb“ აჩვენებს, რას აცნობებს ბირთვი."
+
+msgid "Connect a tuner and open the preferences again."
+msgstr "დააკავშირეთ ტიუნერი და ხელახლა გახსენით პარამეტრები."
+
+msgid "{n} tuners found in this computer."
+msgstr "ამ კომპიუტერში ნაპოვნია {n} ტიუნერი."
+
+msgid "1 tuner found in this computer."
+msgstr "ამ კომპიუტერში ნაპოვნია 1 ტიუნერი."
+
+msgid "Tuner {n}: {name}"
+msgstr "ტიუნერი {n}: {name}"
+
+msgid "Internet stream {host}"
+msgstr "ინტერნეტ-ნაკადი {host}"
+
+msgid "the server ended the stream"
+msgstr "სერვერმა ნაკადი დაასრულა"
+
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – ხელახალი დაკავშირება {s} წმ-ში"
+
+msgid "{host}: connected again"
+msgstr "{host}: ხელახლა დაკავშირებულია"
+
+msgid "could not open the stream"
+msgstr "ნაკადის გახსნა ვერ მოხერხდა"
+
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: ნაკადი იკვრება პირდაპირ, დროის გადაწევის გარეშე ({reason})"
+
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "კავშირი დაიკარგა ({reason}) – ხელახალი დაკავშირება {s} წმ-ში"
+
+msgid "Connected again"
+msgstr "ხელახლა დაკავშირებულია"
+
+msgid "{name} has no catch-up"
+msgstr "{name}-ს არქივი (catch-up) არ აქვს"
+
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "არქივი: {title} ({name}, {time})"
+
+msgid "Timeshift for internet channels"
+msgstr "დროის გადაწევა ინტერნეტ-არხებისთვის"
+
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "ინტერნეტ TV არხები დროის გადაწევის ბუფერში გადის ისევე, როგორც ტიუნერისა: პაუზა, უკან გადასვლა და ბუფერის ჩანაწერად შენახვა. რადიონაკადები პირდაპირ იკვრება."
+
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH ნაკადების ხარისხი"
+
+msgid "Automatic (follows the connection)"
+msgstr "ავტომატური (კავშირს მიჰყვება)"
+
+msgid "Always the best"
+msgstr "ყოველთვის საუკეთესო"
+
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "ავტომატური გადადის დაბალ ხარისხზე, როცა კავშირი ნელდება; ბუფერი ინარჩუნებს მიღებულს. „ყოველთვის საუკეთესო“ ყოველთვის ერთნაირად გამოიყურება, მაგრამ ნელ კავშირზე ჩერდება და ელოდება."
+
+msgid "Reconnect internet streams"
+msgstr "ინტერნეტ-ნაკადებთან ხელახალი დაკავშირება"
+
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "როცა ინტერნეტ- ან Tvheadend-არხის კავშირი წყდება, ის რამდენიმე წამში ხელახლა იხსნება, სამ წუთამდე."
+
+msgid "Watch from the Start"
+msgstr "ყურება დასაწყისიდან"
+
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "უკრავს გადაცემას დასაწყისიდან პროვაიდერის არქივიდან (catch-up)"
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr "HLS და DASH ინტერნეტ-ნაკადები იწერება ერთი აუდიოტრეკით (სასურველი ენით, თუ ის შეთავაზებულია)."
+
+msgid "margin"
+msgstr "მარაგი"
+
+msgid "pixel"
+msgstr "პიქსელი"
+
+msgid "TV"
+msgstr "TV"
+
+msgid "Filter"
+msgstr "ფილტრი"
+
+msgid "Source or group"
+msgstr "წყარო ან ჯგუფი"
+
+msgid "Favourites list"
+msgstr "რჩეულების სია"
+
+msgid "For channels whose type was guessed wrong, e.g. internet streams or imported lists"
+msgstr "არხებისთვის, რომელთა ტიპიც არასწორად იქნა გამოცნობილი, მაგ. ინტერნეტ-ნაკადები ან შემოტანილი სიები"
+
+msgid "Sort by number to move channels"
+msgstr "არხების გადასაადგილებლად დაალაგეთ ნომრით"
+
+msgid "Move up in the channel list (Alt+Up)"
+msgstr "არხების სიაში ზემოთ გადატანა (Alt+Up)"
+
+msgid "Move down in the channel list (Alt+Down)"
+msgstr "არხების სიაში ქვემოთ გადატანა (Alt+Down)"
+
+msgid "Add to the favourites list"
+msgstr "რჩეულების სიაში დამატება"
+
+msgid "Remove from the favourites list"
+msgstr "რჩეულების სიიდან წაშლა"
+
+msgid "Move up in the favourites list (Alt+Up)"
+msgstr "რჩეულების სიაში ზემოთ გადატანა (Alt+Up)"
+
+msgid "Move down in the favourites list (Alt+Down)"
+msgstr "რჩეულების სიაში ქვემოთ გადატანა (Alt+Down)"
+
+msgid "Empty. Drag channels here or use the arrow button."
+msgstr "ცარიელია. გადმოათრიეთ არხები აქ ან გამოიყენეთ ისრის ღილაკი."
+
+msgid "No favourites list yet. Use the star of a channel to make one."
+msgstr "რჩეულების სია ჯერ არ არის. შესაქმნელად გამოიყენეთ არხის ვარსკვლავი."
+
+msgid "Sort the channel list"
+msgstr "არხების სიის დალაგება"
+
+msgid "By group and name"
+msgstr "ჯგუფითა და სახელით"
+
+msgid "By the numbers of the DVB-I list"
+msgstr "DVB-I სიის ნომრებით"
+
+msgid "{n} channels · drag to reorder"
+msgstr "{n} არხი · გადაათრიეთ გადასალაგებლად"
+
+msgid "Shown as the source in the channel list filter. Empty: the name the list gives itself."
+msgstr "ნაჩვენებია, როგორც წყარო არხების სიის ფილტრში. ცარიელი: სახელი, რომელსაც სია თავად ირქმევს."
+
+msgid "The name the list gives itself"
+msgstr "სახელი, რომელსაც სია თავად ირქმევს"
+
+msgid "Name in the channel list"
+msgstr "სახელი არხების სიაში"

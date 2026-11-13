@@ -30,6 +30,14 @@ def test_pick_language(monkeypatch):
             monkeypatch.setenv("LANG", f"{code}_XX.UTF-8")
             assert i18n.pick_language() == code
             assert i18n.pick_language(code) == code
+    if "zh_TW" in i18n.LANGUAGES:
+        # Hong Kong and Macau write traditional characters too
+        assert i18n.pick_language("zh_HK.UTF-8") == "zh_TW"
+        assert i18n.pick_language("zh_MO") == "zh_TW"
+    if "zh_CN" in i18n.LANGUAGES:
+        # Singapore writes simplified characters, like mainland China
+        assert i18n.pick_language("zh_SG.UTF-8") == "zh_CN"
+        assert i18n.pick_language("zh_CN.UTF-8") == "zh_CN"
 
 
 def test_setup_translates_and_falls_back():
