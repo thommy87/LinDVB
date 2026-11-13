@@ -30,13 +30,27 @@ http://{host}/stream/channelid/103?profile=pass
 def e2(host):
     q = urllib.parse.quote(f"http://{host}", safe="")
     return f"""#NAME Tvheadend Channels
-#SERVICE 1:64:0:0:0:0:0:0:0:0::Öffentlich-rechtlich
+#SERVICE 1:64:0:0:0:0:0:0:0:0::HDTV
+#DESCRIPTION HDTV
+#SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/101?profile=pass:Das Erste HD
+#DESCRIPTION Das Erste HD
+#SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/102?profile=pass:ZDF HD
+#DESCRIPTION ZDF HD
+#SERVICE 1:64:1:0:0:0:0:0:0:0::TV channels
+#DESCRIPTION TV channels
+#SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/101?profile=pass:Das Erste HD
+#DESCRIPTION Das Erste HD
+#SERVICE 1:64:2:0:0:0:0:0:0:0::Öffentlich-rechtlich
 #DESCRIPTION Öffentlich-rechtlich
 #SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/101?profile=pass:Das Erste HD
 #DESCRIPTION Das Erste HD
 #SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/102?profile=pass:ZDF HD
 #DESCRIPTION ZDF HD
-#SERVICE 1:64:1:0:0:0:0:0:0:0::Radio channels
+#SERVICE 1:64:3:0:0:0:0:0:0:0::Nachrichten
+#DESCRIPTION Nachrichten
+#SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/102?profile=pass:ZDF HD
+#DESCRIPTION ZDF HD
+#SERVICE 1:64:4:0:0:0:0:0:0:0::Radio channels
 #DESCRIPTION Radio channels
 #SERVICE 1:0:0:0:0:0:0:0:0:0:{q}/stream/channelid/103?profile=pass:Bayern 3
 #DESCRIPTION Bayern 3
@@ -163,9 +177,34 @@ def test_load_channels_with_login(server, mode):
     assert erste.url == f"{server}/stream/channel/{U1}?profile=pass"
     assert erste.xmltv_id == U1 and erste.tvh_server == server and erste.is_iptv
     assert erste.category == "Öffentlich-rechtlich" and not erste.radio
-    assert b3.radio and b3.category == ""
+    assert erste.groups == ["Öffentlich-rechtlich"]          # not "HDTV" / "TV channels"
+    assert zdf.groups == ["Öffentlich-rechtlich", "Nachrichten"]
+    assert b3.radio and b3.category == "" and b3.groups == []
     assert erste.root == "Tvheadend 127.0.0.1"
     assert erste.logo_url == f"{server}/imagecache/7"
+
+
+@pytest.mark.parametrize("tag", ["HDTV", "SDTV", "UHDTV", "FHDTV", "HD", "SD", "UHD", "4K",
+                                 "TV", "TV channels", "Radio", "Radio channels", "TV-Sender"])
+def test_type_tags_are_not_groups(tag):
+    assert tvheadend.is_type_tag(tag)
+
+
+@pytest.mark.parametrize("tag", ["Nachrichten", "Sport", "HD+", "ARD", "Kinder-TV", "Other"])
+def test_user_tags_are_groups(tag):
+    assert not tvheadend.is_type_tag(tag)
+
+
+def test_channel_in_several_groups():
+    from lindvb import chansort
+    a = Channel("ZDF HD", delsys="iptv", category="ARD", groups=["ARD", "News"])
+    b = Channel("n-tv", delsys="iptv", category="News", groups=["News"])
+    c = Channel("Sat 1", category="ProSiebenSat.1")
+    assert chansort.values([a, b, c], "provider") == ["ARD", "News", "ProSiebenSat.1"]
+    assert chansort.in_group(a, "provider", "News") and chansort.in_group(b, "provider", "News")
+    assert not chansort.in_group(c, "provider", "News")
+    assert chansort.in_group(c, "provider", "ProSiebenSat.1")
+    assert chansort.group_values(a, "quality") == ["HD"]
 
 
 def test_wrong_password(server):

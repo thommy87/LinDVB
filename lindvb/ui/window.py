@@ -900,7 +900,7 @@ class MainWindow(Gtk.ApplicationWindow):
                     return False
             elif group != c.root:
                 return False
-        if value is not None and chansort.group_value(c, srt) != value:
+        if value is not None and not chansort.in_group(c, srt, value):
             return False
         if q:
             if q.isdigit():
