@@ -18,7 +18,8 @@ from pathlib import Path
 
 PO_DIR = Path(__file__).with_name("po")
 # Preferences lists these when a catalogue exists ("" follows the desktop);
-# the official EU languages, Arabic, Persian, Russian, Ukrainian and Japanese
+# the official EU languages, Arabic, Persian, Russian, Ukrainian, Japanese, Georgian
+# and Chinese (traditional characters)
 NATIVE_NAMES = {
     "": "System", "en": "English", "bg": "Български", "cs": "Čeština", "da": "Dansk",
     "de": "Deutsch", "el": "Ελληνικά", "es": "Español", "et": "Eesti", "fi": "Suomi",
@@ -26,8 +27,10 @@ NATIVE_NAMES = {
     "lt": "Lietuvių", "lv": "Latviešu", "mt": "Malti", "nl": "Nederlands", "pl": "Polski",
     "pt": "Português", "ro": "Română", "sk": "Slovenčina", "sl": "Slovenščina",
     "sv": "Svenska", "ar": "العربية", "fa": "فارسی", "ru": "Русский", "uk": "Українська",
-    "ja": "日本語",
+    "ja": "日本語", "ka": "ქართული", "zh_TW": "繁體中文",
 }
+# desktop locales that read the catalogue of another region
+ALIASES = {"zh_HK": "zh_TW", "zh_MO": "zh_TW"}
 RTL_LANGUAGES = {"ar", "fa"}
 LANGUAGES = {code: name for code, name in NATIVE_NAMES.items()
              if code in ("", "en") or (PO_DIR / f"{code}.po").exists()}
@@ -96,7 +99,10 @@ def pick_language(setting=""):
     """The catalogue to use: the setting, else the first desktop language we have."""
     for lang in ([setting] if setting else desktop_languages()):
         code = lang.split(".")[0].split("@")[0]
-        for cand in (code, code.split("_")[0]):
+        region = "_".join(code.split("_")[:2])
+        for cand in (code, region, ALIASES.get(region, ""), code.split("_")[0]):
+            if not cand:
+                continue
             if cand == "en" or cand in ("C", "POSIX"):
                 return "en"
             if (PO_DIR / f"{cand}.po").exists():
