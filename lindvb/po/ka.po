@@ -818,9 +818,6 @@ msgstr "აღწერის ჩართვა"
 msgid "Case sensitive"
 msgstr "რეგისტრის გათვალისწინება"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} წთ{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "სერიალის ჩაწერა: {title}"
 

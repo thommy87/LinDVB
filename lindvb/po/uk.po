@@ -822,9 +822,6 @@ msgstr "Шукати в описі"
 msgid "Case sensitive"
 msgstr "З урахуванням регістру"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} хв{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "Запис серіалу: {title}"
 

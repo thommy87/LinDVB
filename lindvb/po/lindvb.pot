@@ -2883,15 +2883,6 @@ msgstr ""
 msgid "Case sensitive"
 msgstr ""
 
-#: lindvb/ui/epg.py:263
-#, python-brace-format
-msgid ""
-"<b>{v0}</b>  {v1}\n"
-"{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n"
-"\n"
-"{v9}"
-msgstr ""
-
 #: lindvb/ui/epg.py:370
 #, python-brace-format
 msgid "Series recording: {title}"
@@ -5817,4 +5808,12 @@ msgstr ""
 
 #: lindvb/ui/hbbtv.py
 msgid "unknown error"
+msgstr ""
+
+#: lindvb/ui/epg.py
+msgid "Show more"
+msgstr ""
+
+#: lindvb/ui/epg.py
+msgid "Show less"
 msgstr ""

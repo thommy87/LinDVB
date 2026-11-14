@@ -2711,9 +2711,6 @@ msgstr "説明も含める"
 msgid "Case sensitive"
 msgstr "大文字と小文字を区別"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} 分{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "シリーズ録画：{title}"
 

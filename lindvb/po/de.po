@@ -822,9 +822,6 @@ msgstr "Beschreibung einbeziehen"
 msgid "Case sensitive"
 msgstr "Groß-/Kleinschreibung beachten"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "Serienaufnahme: {title}"
 
@@ -4673,3 +4670,11 @@ msgstr "HbbTV-Video konnte nicht abgespielt werden: {msg}"
 #: lindvb/ui/hbbtv.py
 msgid "unknown error"
 msgstr "unbekannter Fehler"
+
+#: lindvb/ui/epg.py
+msgid "Show more"
+msgstr "Mehr anzeigen"
+
+#: lindvb/ui/epg.py
+msgid "Show less"
+msgstr "Weniger anzeigen"

@@ -3,10 +3,11 @@
 
 import hashlib
 import os
+import re
 import threading
 import time
 
-from gi.repository import Gdk, GLib, Gtk, Pango
+from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 
 from ..config import CACHE_DIR
 from ..contentguide import AUDIO_DESCRIPTION, SUBTITLES, badges, image_url
@@ -14,6 +15,7 @@ from .common import day, dropdown, fill, hm, make_column_view, scrolled, selecte
 from ..i18n import _
 
 ROW_H = 34
+DESC_LINES = 3      # description lines before "Show more"
 IMAGE_DIR = CACHE_DIR / "dvbi" / "images"
 # Now/next filter (DTVP IT-16: let viewers find programmes with these features)
 ACCESS_FILTERS = [(_("All programmes"), None), (_("With audio description"), AUDIO_DESCRIPTION),
@@ -49,45 +51,15 @@ class EPGWindow(Gtk.Window):
         if channel:
             nb.set_current_page(1)
 
-        self.details = Gtk.Label(xalign=0, yalign=0, wrap=True, selectable=True, hexpand=True,
-                                 wrap_mode=Pango.WrapMode.WORD_CHAR)
-        # programme image from the DVB-I content guide
-        self.image = Gtk.Picture(can_shrink=True, content_fit=Gtk.ContentFit.CONTAIN,
-                                 visible=False, valign=Gtk.Align.START)
-        self.image.set_size_request(200, 112)
-        dbox = Gtk.Box(spacing=12)
-        dbox.append(self.image)
-        dbox.append(self.details)
-        det = scrolled(dbox)
-        det.set_size_request(-1, 130)
-        bar = Gtk.Box(spacing=6)
-        for label, fn in ((_("Watch"), self.on_watch),
-                          (_("Watch from the Start"), self.on_watch_from_start),
-                          (_("Record"), self.on_record),
-                          (_("Record with Options…"), self.on_record_options),
-                          (_("Record Series"), self.on_series), (_("Remind Me"), self.on_remind),
-                          (_("Search Web"), self.on_web)):
-            b = Gtk.Button(label=label)
-            b.connect("clicked", lambda _b, fn=fn: fn())
-            bar.append(b)
-            if fn == self.on_remind:
-                self.remind_btn = b
-            if fn == self.on_watch_from_start:
-                self.start_btn = b
-                b.set_tooltip_text(_("Plays the programme from its start from the "
-                                     "provider's archive (catch-up)"))
-                b.set_sensitive(False)
-        bar.append(Gtk.Box(hexpand=True))
-        export = Gtk.Button(icon_name="document-save-symbolic",
-                            tooltip_text=_("Export the guide as XMLTV"))
-        export.connect("clicked", lambda _b: self.app.window.on_export_epg())
-        bar.append(export)
+        _install_css()
+        self.insert_action_group("epg", self._actions())
         paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL, position=420)
         paned.set_start_child(nb)
-        lower = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6,
-                        margin_start=8, margin_end=8, margin_top=6, margin_bottom=6)
-        lower.append(bar)
-        lower.append(det)
+        lower = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8,
+                        margin_start=10, margin_end=10, margin_top=8, margin_bottom=8)
+        lower.append(self._action_bar())
+        lower.append(Gtk.Separator())
+        lower.append(self._details_area())
         paned.set_end_child(lower)
         self.set_child(paned)
         self.refresh()
@@ -95,6 +67,107 @@ class EPGWindow(Gtk.Window):
         self._select(selected(self.ch_sel if channel else self.now_sel))
         app.epg.listeners.append(self.refresh)
         self.connect("close-request", lambda *_: (app.epg.listeners.remove(self.refresh), False)[1])
+
+    # -- details --------------------------------------------------------------
+    def _actions(self):
+        """Window actions behind the Record and More menus."""
+        group = Gio.SimpleActionGroup()
+        for name, fn in (("watch-start", self.on_watch_from_start),
+                         ("record-options", self.on_record_options),
+                         ("series", self.on_series), ("web", self.on_web)):
+            a = Gio.SimpleAction.new(name, None)
+            a.connect("activate", lambda _a, _p, fn=fn: fn())
+            group.add_action(a)
+        self.start_action = group.lookup_action("watch-start")
+        self.start_action.set_enabled(False)
+        return group
+
+    def _action_bar(self):
+        """The main actions as buttons, the rarer ones in menus."""
+        bar = Gtk.Box(spacing=6)
+        watch = _icon_button(_("Watch"), "media-playback-start-symbolic")
+        watch.add_css_class("suggested-action")
+        watch.connect("clicked", lambda _b: self.on_watch())
+        bar.append(watch)
+        # Record with a menu for the timer options and series recordings
+        rec = Gtk.Box(css_classes=["linked"])
+        rec_btn = _icon_button(_("Record"), "media-record-symbolic")
+        rec_btn.connect("clicked", lambda _b: self.on_record())
+        rec_menu = Gio.Menu()
+        rec_menu.append(_("Record with Options…"), "epg.record-options")
+        rec_menu.append(_("Record Series"), "epg.series")
+        rec.append(rec_btn)
+        rec.append(Gtk.MenuButton(icon_name="pan-down-symbolic", menu_model=rec_menu,
+                                  tooltip_text=_("More options")))
+        bar.append(rec)
+        self.remind_btn = _icon_button(_("Remind Me"), "alarm-symbolic")
+        self.remind_btn.connect("clicked", lambda _b: self.on_remind())
+        bar.append(self.remind_btn)
+        bar.append(Gtk.Box(hexpand=True))
+        export = Gtk.Button(icon_name="document-save-symbolic",
+                            tooltip_text=_("Export the guide as XMLTV"))
+        export.connect("clicked", lambda _b: self.app.window.on_export_epg())
+        bar.append(export)
+        more = Gio.Menu()
+        more.append(_("Watch from the Start"), "epg.watch-start")
+        more.append(_("Search Web"), "epg.web")
+        bar.append(Gtk.MenuButton(icon_name="view-more-symbolic", menu_model=more,
+                                  tooltip_text=_("More options")))
+        return bar
+
+    def _details_area(self):
+        """Picture, title, subheading, facts as chips and the description."""
+        # programme image from the DVB-I content guide
+        self.image = _Thumb(can_shrink=True, content_fit=Gtk.ContentFit.COVER,
+                            visible=False, valign=Gtk.Align.START,
+                            overflow=Gtk.Overflow.HIDDEN, css_classes=["epg-thumb"])
+        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, hexpand=True)
+        head = Gtk.Box(spacing=8)
+        self.title_lbl = Gtk.Label(xalign=0, wrap=True, selectable=True,
+                                   wrap_mode=Pango.WrapMode.WORD_CHAR, css_classes=["epg-title"])
+        self.episode_lbl = Gtk.Label(xalign=0, valign=Gtk.Align.BASELINE,
+                                     css_classes=["epg-title", "dim-label"])
+        self.title_lbl.set_valign(Gtk.Align.BASELINE)
+        head.append(self.title_lbl)
+        head.append(self.episode_lbl)
+        text.append(head)
+        self.sub_lbl = Gtk.Label(xalign=0, wrap=True, selectable=True,
+                                 wrap_mode=Pango.WrapMode.WORD_CHAR,
+                                 css_classes=["epg-sub", "dim-label"])
+        text.append(self.sub_lbl)
+        self.chips = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, column_spacing=6,
+                                 row_spacing=6, homogeneous=False, max_children_per_line=12,
+                                 margin_top=8, valign=Gtk.Align.START)
+        text.append(self.chips)
+        self.desc_lbl = Gtk.Label(xalign=0, yalign=0, wrap=True, selectable=True,
+                                  wrap_mode=Pango.WrapMode.WORD_CHAR, margin_top=10,
+                                  lines=DESC_LINES, ellipsize=Pango.EllipsizeMode.END,
+                                  css_classes=["epg-desc"])
+        text.append(self.desc_lbl)
+        self.more_btn = Gtk.Button(label=_("Show more"), halign=Gtk.Align.START,
+                                   css_classes=["flat", "epg-more"], visible=False)
+        self.more_btn.connect("clicked", lambda _b: self._toggle_description())
+        text.append(self.more_btn)
+        self._desc_open = False
+        box = Gtk.Box(spacing=16)
+        box.append(self.image)
+        box.append(text)
+        det = scrolled(box)
+        det.set_size_request(-1, 150)
+        return det
+
+    def _toggle_description(self):
+        self._desc_open = not self._desc_open
+        self.desc_lbl.set_lines(-1 if self._desc_open else DESC_LINES)
+        self.desc_lbl.set_ellipsize(Pango.EllipsizeMode.NONE if self._desc_open
+                                    else Pango.EllipsizeMode.END)
+        self.more_btn.set_label(_("Show less") if self._desc_open else _("Show more"))
+
+    def _check_description(self):
+        """Offer "Show more" only when the description does not fit."""
+        if not self._desc_open:
+            self.more_btn.set_visible(self.desc_lbl.get_layout().is_ellipsized())
+        return False
 
     # -- pages ------------------------------------------------------------------
     def _now_page(self):
@@ -273,13 +346,26 @@ class EPGWindow(Gtk.Window):
         self.selected_event = row
         self._update_remind_button()
         c, e = row
-        extra = ""
-        if e.access:
-            extra += " · " + ", ".join(e.access)
-        if e.min_age:
-            extra += f" · FSK {e.min_age}"
-        self.details.set_markup(
-            _("<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}").format(v0=_esc(e.title), v1=_esc(e.subtitle), v2=_esc(c.name), v3=day(e.start), v4=hm(e.start), v5=hm(e.end), v6=e.duration // 60, v7=' · ' + _esc(e.genre) if e.genre else '', v8=_esc(extra), v9=_esc(e.description)))
+        title, episode = _split_episode(e.title)
+        self.title_lbl.set_text(title)
+        self.episode_lbl.set_text(episode)
+        self.episode_lbl.set_visible(bool(episode))
+        self.sub_lbl.set_text(e.subtitle or "")
+        self.sub_lbl.set_visible(bool(e.subtitle))
+        self.chips.remove_all()
+        facts = [f"{day(e.start)}  {hm(e.start)}–{hm(e.end)}", f"{e.duration // 60} min"]
+        facts += [e.genre] if e.genre else []
+        facts += list(e.access or [])
+        facts += [f"FSK {e.min_age}"] if e.min_age else []
+        for i, fact in enumerate([c.name] + facts):
+            css = ["epg-chip"] + (["epg-chip-accent"] if i == 0 else [])
+            self.chips.append(Gtk.Label(label=fact, halign=Gtk.Align.START, css_classes=css))
+        if self._desc_open:
+            self._toggle_description()
+        self.desc_lbl.set_text(e.description or "")
+        self.desc_lbl.set_visible(bool(e.description))
+        self.more_btn.set_visible(False)
+        GLib.idle_add(self._check_description)
         self._show_image(e.image)
 
     def _show_image(self, url):
@@ -428,16 +514,62 @@ class EPGWindow(Gtk.Window):
     def _update_remind_button(self):
         sel = self.selected_event
         from .. import catchup
-        self.start_btn.set_sensitive(bool(sel and catchup.available(sel[0], sel[1].start,
-                                                                     sel[1].end)))
+        self.start_action.set_enabled(bool(sel and catchup.available(sel[0], sel[1].start,
+                                                                      sel[1].end)))
         on = bool(sel and self.app.reminders.has(sel[0].key, sel[1].start))
-        self.remind_btn.set_label(_("Remove Reminder") if on else _("Remind Me"))
+        self.remind_btn.label.set_text(_("Remove Reminder") if on else _("Remind Me"))
 
     def on_web(self):
         if self.selected_event:
             self.app.web_search(self.selected_event[1].title, self)
 
 
-def _esc(s):
-    from gi.repository import GLib
-    return GLib.markup_escape_text(s or "")
+def _split_episode(title):
+    """"Panda, Gorilla & Co. (315)" -> ("Panda, Gorilla & Co.", "(315)")."""
+    m = re.match(r"^(.*\S)\s+(\(\d+\))$", title or "")
+    return (m.group(1), m.group(2)) if m else (title or "", "")
+
+
+class _Thumb(Gtk.Picture):
+    """The programme picture at a fixed 16:9 size, however large the image."""
+    W, H = 200, 112
+
+    def do_measure(self, orientation, _for_size):
+        n = self.W if orientation == Gtk.Orientation.HORIZONTAL else self.H
+        return n, n, -1, -1
+
+
+def _icon_button(label, icon):
+    b = Gtk.Button()
+    box = Gtk.Box(spacing=6)
+    box.append(Gtk.Image(icon_name=icon))
+    b.label = Gtk.Label(label=label)
+    box.append(b.label)
+    b.set_child(box)
+    return b
+
+
+CSS = """
+.epg-title { font-size: 1.4em; font-weight: bold; }
+.epg-sub { font-size: 1.05em; }
+.epg-chip { padding: 2px 10px; border-radius: 999px; background: alpha(currentColor, 0.10);
+  font-size: 0.92em; }
+.epg-chip-accent { background: alpha(@theme_selected_bg_color, 0.45); }
+.epg-thumb { border-radius: 8px; }
+.epg-more { margin-left: -10px; }
+"""
+_css_done = False
+
+
+def _install_css():
+    global _css_done
+    if _css_done:
+        return
+    prov = Gtk.CssProvider()
+    if hasattr(prov, "load_from_string"):
+        prov.load_from_string(CSS)
+    else:
+        prov.load_from_data(CSS.encode())
+    Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), prov,
+                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    _css_done = True
