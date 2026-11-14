@@ -818,9 +818,6 @@ msgstr "包含說明"
 msgid "Case sensitive"
 msgstr "區分大小寫"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} 分鐘{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "系列錄影：{title}"
 

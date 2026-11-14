@@ -2066,9 +2066,6 @@ msgstr "شامل توضیح"
 msgid "Case sensitive"
 msgstr "حساس به بزرگی و کوچکی حروف"
 
-msgid "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} min{v7}{v8}\n\n{v9}"
-msgstr "<b>{v0}</b>  {v1}\n{v2} · {v3} {v4}–{v5} · {v6} دقیقه{v7}{v8}\n\n{v9}"
-
 msgid "Series recording: {title}"
 msgstr "ضبط مجموعه: {title}"
 
