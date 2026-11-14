@@ -4661,3 +4661,15 @@ msgstr "Ab Anfang ansehen"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Spielt die Sendung von Beginn an aus dem Archiv des Anbieters (Catch-up)"
+
+#: lindvb/ui/hbbtv.py
+msgid "HbbTV: the application is not signalled on this channel"
+msgstr "HbbTV: Die Anwendung wird auf diesem Sender nicht angeboten"
+
+#: lindvb/ui/hbbtv.py
+msgid "HbbTV video could not be played: {msg}"
+msgstr "HbbTV-Video konnte nicht abgespielt werden: {msg}"
+
+#: lindvb/ui/hbbtv.py
+msgid "unknown error"
+msgstr "unbekannter Fehler"

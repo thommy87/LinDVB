@@ -27,6 +27,12 @@ from ..i18n import _
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gdk, Gio, GLib, Gtk  # noqa: E402
 
+# WebKitGTK hides GStreamer's HLS and DASH demuxers unless asked: without
+# them an application's HLS video (and DASH that dash.js cannot load) stays
+# black. Set before the first web process starts, which inherits them.
+os.environ.setdefault("WEBKIT_GST_ENABLE_HLS_SUPPORT", "1")
+os.environ.setdefault("WEBKIT_GST_ENABLE_DASH_SUPPORT", "1")
+
 try:
     gi.require_version("WebKit", "6.0")
     from gi.repository import WebKit  # noqa: E402
@@ -66,6 +72,7 @@ def clear_data(app):
         win.set_status(_("HbbTV data deleted"))
 
 
+AUTOSTART_DELAY = 1.5          # seconds on a channel before its AUTOSTART app loads
 CAROUSEL_TIMEOUT = 30          # seconds to wait for a file of the object carousel
 _companion = None               # lindvb.hbbtvcs.CompanionService of this process
 _views = weakref.WeakKeyDictionary()     # WebView -> HbbTV
@@ -196,6 +203,8 @@ class HbbTV:
         self._ste = {}                  # JS listener id -> DsmccService handle
         self._drm_label = None          # the "content is encrypted" notice over the video
         self._drm_timeout = None
+        self._tuned_at = 0.0            # monotonic time of the last zap
+        self._autostart_timer = None
 
     # -- channel -------------------------------------------------------------
 
@@ -231,6 +240,8 @@ class HbbTV:
             return
         if not same:
             self._unlocked = set()
+            self._tuned_at = time.monotonic()
+            self._cancel_autostart()
             self.life.channel_changed()
         if self.view is not None and self.life.active:
             self._js("channelChanged", self._channel_json(channel))
@@ -241,6 +252,7 @@ class HbbTV:
 
     def stopped(self):
         """Live TV stopped (no channel)."""
+        self._cancel_autostart()
         self._new_dsmcc(None)
         self.capture = None
         self.life.no_signalling()
@@ -502,8 +514,31 @@ class HbbTV:
         self._notify()
 
     def _on_ait(self, ait):
+        wait = AUTOSTART_DELAY - (time.monotonic() - self._tuned_at)
+        if self.life.autostart and not self.life.active and wait > 0:
+            # zapping through: start the app only once the viewer stays on
+            # the channel, so passing channels load no pages
+            self.life.ait = ait                 # red and TXT work meanwhile
+            self._cancel_autostart()
+            key = self._channel_key
+            self._autostart_timer = GLib.timeout_add(int(wait * 1000) + 1,
+                                                     self._deferred_autostart, key)
+            self._notify()
+            return
         self.life.on_ait(ait)
         self._notify()
+
+    def _deferred_autostart(self, key):
+        self._autostart_timer = None
+        if key == self._channel_key and self.life.ait is not None and self.enabled:
+            self.life.on_ait(self.life.ait)
+            self._notify()
+        return False
+
+    def _cancel_autostart(self):
+        if self._autostart_timer:
+            GLib.source_remove(self._autostart_timer)
+            self._autostart_timer = None
 
     def _notify(self):
         if self.on_state:
@@ -603,6 +638,7 @@ class HbbTV:
         s.set_enable_javascript(True)
         s.set_javascript_can_open_windows_automatically(False)
         s.set_media_playback_requires_user_gesture(False)
+        s.set_enable_mediasource(True)              # dash.js plays DASH through MSE
         s.set_allow_file_access_from_file_urls(False)
         s.set_allow_universal_access_from_file_urls(False)
         s.set_enable_developer_extras(bool(os.environ.get("LINDVB_HBBTV_DEBUG")))
@@ -855,7 +891,21 @@ class HbbTV:
         elif kind == WebKit.PolicyDecisionType.NEW_WINDOW_ACTION:
             decision.ignore()
             return True
+        elif kind == WebKit.PolicyDecisionType.NAVIGATION_ACTION:
+            uri = decision.get_navigation_action().get_request().get_uri() or ""
+            if hb.parse_ait_url(uri) is not None:
+                # location.href = "dvb://current.ait/..": an AIT application
+                decision.ignore()
+                GLib.idle_add(lambda: (self._create(uri), False)[1])
+                return True
         return False
+
+    def _create(self, url):
+        """createApplication(): start it, or tell the app it is not there."""
+        if not self.life.create_application(url):
+            self.win.set_status(_("HbbTV: the application is not signalled on this channel"))
+            self._js("createFailed", url)
+        self._notify()
 
     def _on_download(self, _session, download):
         path = tempfile.mktemp(prefix="hbbtv-", dir=str(CACHE_DIR / "hbbtv"))
@@ -929,7 +979,9 @@ class HbbTV:
         elif cmd == "create":
             url = msg.get("url") or ""
             if url.startswith(("http://", "https://", "dvb://")):
-                self.life.create_application(url)
+                self._create(url)
+        elif cmd == "media-error":
+            self._media_error(msg)
         elif cmd == "video-rect":
             if msg.get("full"):
                 self.set_video_rect(None)
@@ -961,6 +1013,13 @@ class HbbTV:
             elif msg.get("type") == 2:
                 self.win.player.select_subtitle(i)
             GLib.timeout_add(300, lambda: (self._on_tracks(), False)[1])
+
+    def _media_error(self, msg):
+        """The app's own video failed: say so (the picture would only stay black)."""
+        detail = str(msg.get("message") or "")[:200]
+        print(f"LinDVB HbbTV: video failed: {msg.get('url') or ''} {detail}", flush=True)
+        self.win.set_status(_("HbbTV video could not be played: {msg}").format(
+            msg=detail or _("unknown error")))
 
     def _set_channel(self, msg):
         c = self._ccids.get(msg.get("ccid"))

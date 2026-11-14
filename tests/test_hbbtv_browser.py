@@ -193,6 +193,71 @@ window.onload = function () {
 </body></html>
 """
 
+TT_LAUNCHER = b"""<html><head><title>launcher</title>
+<script type="text/javascript">
+window.onload = function () {
+  var app = document.getElementById('am').getOwnerApplication(document);
+  setTimeout(function () {
+    // the "Teletext" link of a launcher bar: the AIT's teletext app by its ids
+    var t = app.createApplication('dvb://current.ait/13.2?page=100', false);
+    app.destroyApplication();
+    document.title = 'launched:' + (t !== null);
+  }, 200);
+};
+</script></head><body>
+<object id="am" type="application/oipfApplicationManager"></object>
+</body></html>
+"""
+
+TT_PAGE = b"""<html><head><title>loading</title>
+<script type="text/javascript">window.onload = function () { document.title = 'teletext' + location.search; };</script>
+</head><body></body></html>
+"""
+
+SYNC_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+window.onload = function () {
+  var log = [];
+  // created and used in one go, before any MutationObserver could run
+  var vb = document.createElement('object');
+  vb.type = 'video/broadcast';
+  document.body.appendChild(vb);
+  vb.bindToCurrentChannel();
+  log.push('created=' + vb.playState);
+  var box = document.getElementById('box');
+  box.innerHTML = '<object id="vb2" type="video/broadcast"></object>';
+  var vb2 = document.getElementById('vb2');
+  vb2.bindToCurrentChannel();
+  log.push('markup=' + vb2.playState + ':' + (vb2.currentChannel ? vb2.currentChannel.name : '-'));
+  var av = document.createElement('object');
+  av.setAttribute('type', 'video/mp4');
+  av.setAttribute('data', 'dash/manifest.mpd');
+  log.push('av=' + av.data.indexOf('manifest.mpd') + ':' + av.playState);
+  var v = document.createElement('video');
+  log.push('dash=' + (v.canPlayType('application/dash+xml') !== ''));
+  log.push('hls=' + (v.canPlayType('application/vnd.apple.mpegurl') !== ''));
+  document.title = log.join(' ');
+};
+</script></head><body><div id="box"></div></body></html>
+"""
+
+CORS_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+window.onload = function () {
+  // the manifest's CDN sends no CORS headers: a TV's own player does not need them
+  var av = document.getElementById('av');
+  av.data = 'http://localhost:' + location.port + '/dash/manifest.mpd';
+  av.onPlayStateChange = function () {
+    if (av.playState === 1) { document.title = 'av-playing'; }
+    if (av.playState === 6) { document.title = 'av-error'; }
+  };
+  av.play(1);
+};
+</script></head><body>
+<object id="av" type="application/dash+xml" style="position:absolute;left:0;top:0;width:320px;height:180px"></object>
+</body></html>
+"""
+
 XML_AIT = b"""<?xml version="1.0" encoding="UTF-8"?>
 <mhp:ServiceDiscovery xmlns:mhp="urn:dvb:mhp:2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <mhp:ApplicationDiscovery DomainName="example.org"><mhp:ApplicationList><mhp:Application>
@@ -231,7 +296,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body = DASH_APP if path.startswith("/dashapp") else \
                 SUB_APP if path.startswith("/subapp") else \
                 PC_APP if path.startswith("/pcapp") else \
-                DRM_APP if path.startswith("/drmapp") else APP
+                DRM_APP if path.startswith("/drmapp") else \
+                TT_LAUNCHER if path.startswith("/ttlauncher") else \
+                TT_PAGE if path.startswith("/ttapp") else \
+                SYNC_APP if path.startswith("/syncapp") else \
+                CORS_APP if path.startswith("/corsapp") else APP
             ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
         self.send_header("Content-Type", ctype)
@@ -316,6 +385,13 @@ class FakeWindow:
 
     def zap_relative(self, step):
         pass
+
+
+@pytest.fixture(autouse=True)
+def _no_zap_delay(monkeypatch):
+    """Applications start as soon as the AIT is there (no wait for zapping)."""
+    import lindvb.ui.hbbtv as ui
+    monkeypatch.setattr(ui, "AUTOSTART_DELAY", 0)
 
 
 def _wait(cond, timeout=20):
@@ -723,3 +799,103 @@ async def _remote_client(svc, endpoint):
     msg = await client.recv()
     await client.send("hallo tv")
     return msg
+
+
+def test_teletext_link_starts_the_ait_application():
+    """A launcher's teletext link, createApplication("dvb://current.ait/13.2"),
+    starts that application of the AIT (with the query) and the launcher's
+    destroyApplication() right after does not end it."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_address[1]}/"
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        cap = FakeCapture()
+        hbb.channel_changed(ch, cap)
+        a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
+        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="ttlauncher"),
+                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location="ttapp", usage=ait.USAGE_TELETEXT)]
+        cap.ait = a
+        cap.emit("ait", a)
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: title().startswith("teletext")), (title(), win.status)
+        assert title() == "teletext?page=100"
+        assert hbb.life.active and hbb.life.running.app_id == 2
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_objects_work_before_the_observer_ran():
+    """Objects made and used in one script (createElement + type, innerHTML)
+    work at once; DASH and HLS are playable types."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "syncapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: title().startswith("created"), timeout=30), title()
+        parts = title().replace("Das Erste", "DasErste").split()
+        assert parts[:2] == ["created=1", "markup=1:DasErste"], title()
+        assert parts[2].startswith("av=") and not parts[2].startswith("av=-1"), title()
+        assert parts[3:] == ["dash=true", "hls=true"], title()
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_dash_without_cors_plays_natively():
+    """dash.js cannot read a manifest without CORS headers: GStreamer plays it."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.window.present()
+        hbb = HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "corsapp")
+        title = lambda: hbb.view.get_title() or ""  # noqa: E731
+        assert _wait(lambda: title().startswith("av-"), timeout=40), (title(), win.status)
+        assert title() == "av-playing", win.status
+        win.window.destroy()
+    finally:
+        server.shutdown()
+
+
+def test_autostart_waits_while_zapping(monkeypatch):
+    """The AUTOSTART application loads only once the viewer stays on the channel."""
+    import lindvb.ui.hbbtv as ui
+    monkeypatch.setattr(ui, "AUTOSTART_DELAY", 0.6)
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    other = Channel("ZDF", delsys="dvb-s2", sid=28006, onid=1, tsid=1079)
+    win = FakeWindow(ch)
+    hbb = ui.HbbTV(win)
+    launched = []
+    hbb._launch = lambda url, app: launched.append(url)
+    hbb.life.launch_cb = hbb._launch
+    a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, ["http://tv.example/"])])
+    a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="index.html")]
+    cap = FakeCapture()
+    cap.ait = a
+    hbb.channel_changed(ch, cap)
+    assert launched == [] and hbb.has_app          # the red button is offered at once
+    hbb.channel_changed(other, FakeCapture())      # zapped on before the delay ran out
+    assert not _wait(lambda: launched, timeout=1.0)
+    cap2 = FakeCapture()
+    cap2.ait = a
+    hbb.channel_changed(ch, cap2)
+    assert _wait(lambda: launched, timeout=3)
+    assert launched == ["http://tv.example/index.html"]

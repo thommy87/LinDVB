@@ -143,6 +143,19 @@
   };
   Object.defineProperty(privateData, "currentChannel", { get: function () { return current; } });
 
+  // createApplication() without a child replaces this application: the
+  // destroyApplication() apps call right after it must not end the new one
+  var replaced = false;
+  function createdApplication() {
+    return eventTarget({
+      visible: true, active: true, isPrimaryReceiver: true, permissions: [], privateData: privateData,
+      show: function () { return true; }, hide: function () { return true; },
+      activate: function () {}, deactivate: function () {}, destroyApplication: function () {},
+      startWidget: function () { return null; }, stopWidget: function () {},
+      createApplication: function (uri, child) { return application.createApplication(uri, child); }
+    });
+  }
+
   var application = eventTarget({
     visible: true, active: true, isPrimaryReceiver: true, permissions: [],
     privateData: privateData,
@@ -150,10 +163,14 @@
     hide: function () { this.visible = false; post({ cmd: "hide" }); return true; },
     activate: function () { this.active = true; },
     deactivate: function () { this.active = false; },
-    destroyApplication: function () { post({ cmd: "destroy" }); },
+    destroyApplication: function () { if (!replaced) { post({ cmd: "destroy" }); } },
     createApplication: function (uri, createChild) {
-      post({ cmd: "create", url: new URL(uri, location.href).href, child: !!createChild });
-      return null;
+      var url;
+      try { url = new URL(String(uri), location.href).href; } catch (e) { return null; }
+      if (!/^(https?|dvb):/i.test(url)) { return null; }
+      replaced = true;
+      post({ cmd: "create", url: url, child: !!createChild });
+      return createdApplication();
     },
     startWidget: function () { return null; }, stopWidget: function () {},
     getOwnerApplication: function () { return application; }
@@ -739,6 +756,29 @@
     return /\.mpd($|[?#])/i.test(url || "");
   }
   var srcDesc = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "src");
+  var nativeCanPlay = HTMLMediaElement.prototype.canPlayType;
+  // can WebKit's own GStreamer player take this manifest (no CORS, no MSE)?
+  function nativePlays(type) {
+    try { return nativeCanPlay.call(document.createElement("video"), type) !== ""; } catch (e) { return false; }
+  }
+  // apps ask before they pick a format: DASH plays through dash.js
+  HTMLMediaElement.prototype.canPlayType = function (type) {
+    var answer = nativeCanPlay.call(this, type);
+    if (!answer && dashLib && window.MediaSource && isDash("", String(type || ""))) { return "probably"; }
+    return answer;
+  };
+
+  // tell the terminal, which says so: the picture would only stay black
+  function mediaError(video, url, message) {
+    post({ cmd: "media-error", url: String(url || ""), message: String(message || "") });
+  }
+  var MEDIA_ERR = { 1: "aborted", 2: "network error", 3: "decoding failed", 4: "format not supported" };
+  document.addEventListener("error", function (e) {
+    var v = e.target;
+    if (!(v instanceof HTMLMediaElement) || v.__dash || !v.error) { return; }
+    mediaError(v, srcDesc.get.call(v), (MEDIA_ERR[v.error.code] || ("error " + v.error.code)) +
+               (v.error.message ? ": " + v.error.message : ""));
+  }, true);
   var setAttr = Element.prototype.setAttribute;
   var removeAttr = Element.prototype.removeAttribute;
 
@@ -794,8 +834,25 @@
     });
     video.__dash = p;
     video.__dashUrl = url;
+    var played = false;
+    p.on(dashLib.MediaPlayer.events.PLAYBACK_PLAYING, function () { played = true; });
     p.on(dashLib.MediaPlayer.events.ERROR, function (e) {
-      console.error("LinDVB DASH:", e && e.error && (e.error.message || e.error.code));
+      var err = (e && e.error) || {};
+      var text = err.message || String(err.code || "");
+      console.error("LinDVB DASH:", text);
+      if (video.__dash !== p) { return; }
+      // the CDN sends no CORS headers (a TV's own player needs none), or MSE
+      // lacks a codec: GStreamer plays the manifest itself
+      if (!played && !drmTold && nativePlays(DASH_TYPE)) {
+        console.warn("LinDVB DASH: dash.js failed, playing natively:", text);
+        dashDetach(video);
+        srcDesc.set.call(video, url);
+        var r = video.play();
+        if (r && r.catch) { r.catch(function () { /* the error event reports it */ }); }
+        return;
+      }
+      mediaError(video, url, "DASH: " + text);
+      try { video.dispatchEvent(new Event("error")); } catch (x) { /* old engine */ }
     });
     p.on(dashLib.MediaPlayer.events.MANIFEST_LOADED, function (e) {
       try { pcCheck(video, e && e.data); } catch (err) { console.error(err); }
@@ -833,9 +890,16 @@
     }
   });
   Element.prototype.setAttribute = function (name, value) {
-    if (this instanceof HTMLMediaElement && String(name).toLowerCase() === "src") {
+    var n = String(name).toLowerCase();
+    if (this instanceof HTMLMediaElement && n === "src") {
       this.src = value;
       return;
+    }
+    if (this instanceof HTMLObjectElement) {
+      if (n === "data" && this.__video) { this.data = value; return; }     // an A/V object
+      var r = setAttr.call(this, name, value);
+      if (n === "type") { augment(this); }        // usable at once, not after the next task
+      return r;
     }
     return setAttr.call(this, name, value);
   };
@@ -906,7 +970,8 @@
 
   /* ---------------------------------------------------------------- A/V control object */
   var AV_TYPES = ["video/mp4", "video/mpeg", "video/mpeg4", "audio/mp4", "audio/mpeg",
-                  "application/dash+xml", "video/mp2t", "audio/mp3"];
+                  "application/dash+xml", "video/mp2t", "audio/mp3", "application/vnd.apple.mpegurl",
+                  "application/x-mpegurl", "audio/mpegurl", "audio/x-mpegurl", "video/x-mpegurl"];
   var AV = { STOPPED: 0, PLAYING: 1, PAUSED: 2, CONNECTING: 3, BUFFERING: 4, FINISHED: 5, ERROR: 6 };
 
   function augmentAV(el) {
@@ -953,7 +1018,12 @@
       speed = s;
       video.playbackRate = Math.abs(s) >= 1 ? Math.min(Math.abs(s), 16) : 1;
       var p = video.play();
-      if (p && p.catch) { p.catch(function () { setState(AV.ERROR, 4); }); }
+      if (p && p.catch) {
+        p.catch(function (e) {
+          // a new source (another URL, or dash.js handing over to GStreamer) aborts it
+          if (!e || e.name !== "AbortError") { setState(AV.ERROR, 4); }
+        });
+      }
       return true;
     };
     el.stop = function () {
@@ -1055,6 +1125,45 @@
     try { fn(el); } catch (e) { console.error("LinDVB HbbTV:", type, e); }
   }
 
+  /* An app may create an object and use it in the same script, before the
+   * MutationObserver runs: obj.type = "video/broadcast"; obj.bindToCurrentChannel().
+   * Setting the type augments at once, and the methods on the prototype
+   * augment an object first that came from markup or innerHTML. */
+  var typeDesc = Object.getOwnPropertyDescriptor(HTMLObjectElement.prototype, "type");
+  if (typeDesc && typeDesc.set) {
+    Object.defineProperty(HTMLObjectElement.prototype, "type", {
+      configurable: true, enumerable: true, get: typeDesc.get,
+      set: function (v) { typeDesc.set.call(this, v); augment(this); }
+    });
+  }
+  ["play", "stop", "seek", "setVolume", "queue", "bindToCurrentChannel", "setChannel",
+   "prevChannel", "nextChannel", "release", "setFullScreen", "getChannelConfig",
+   "createChannelObject", "getComponents", "getCurrentActiveComponents", "selectComponent",
+   "unselectComponent", "addStreamEventListener", "removeStreamEventListener",
+   "getOwnerApplication", "hasCapability", "verifyParentalControlPIN"].forEach(function (name) {
+    if (name in HTMLObjectElement.prototype) { return; }
+    Object.defineProperty(HTMLObjectElement.prototype, name, {
+      configurable: true, writable: true, enumerable: false,
+      value: function () {
+        augment(this);
+        var own = Object.prototype.hasOwnProperty.call(this, name) ? this[name] : null;
+        return typeof own === "function" ? own.apply(this, arguments) : undefined;
+      }
+    });
+  });
+  ["playState", "playPosition", "playTime", "speed", "error", "currentChannel", "fullScreen",
+   "programmes"].forEach(function (name) {
+    if (name in HTMLObjectElement.prototype) { return; }
+    Object.defineProperty(HTMLObjectElement.prototype, name, {
+      configurable: true, enumerable: false,
+      get: function () {
+        augment(this);
+        var d = Object.getOwnPropertyDescriptor(this, name);
+        return d ? (d.get ? d.get.call(this) : d.value) : undefined;
+      }
+    });
+  });
+
   function scan(root) {
     if (root.tagName === "OBJECT") { augment(root); }
     if (root.tagName === "VIDEO" || root.tagName === "AUDIO") { scanMedia(root); }
@@ -1145,6 +1254,14 @@
       broadcasts.forEach(function (b) { b.__fire("SelectedComponentChanged", {}, []); });
     },
     streamEvent: function (lid, ev) { steFire(lid, ev); },
+    createFailed: function () {
+      replaced = false;            // the application stays
+      [application, appManager].forEach(function (o) {
+        if (typeof o.onApplicationLoadError === "function") {
+          try { o.onApplicationLoadError(null); } catch (e) { console.error(e); }
+        }
+      });
+    },
     csResult: function (id, value) {
       var cb = csCallbacks[id];
       delete csCallbacks[id];

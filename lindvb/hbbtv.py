@@ -359,6 +359,35 @@ class PinGuard:
 
 # -- application lifecycle ------------------------------------------------------
 
+def parse_ait_url(url):
+    """((org_id, app_id), '?query#fragment') of an application URL of the
+    current AIT, dvb://current.ait/<org_id>.<app_id> in hex (TS 102 851,
+    TS 102 796 6.2.2.6); None for any other URL."""
+    low = (url or "").lower()
+    if not low.startswith("dvb://current.ait/"):
+        return None
+    rest = url[len("dvb://current.ait/"):]
+    cut = min([i for i in (rest.find("?"), rest.find("#")) if i >= 0] or [len(rest)])
+    ids, extra = rest[:cut].strip("/"), rest[cut:]
+    org, _, app = ids.partition(".")
+    try:
+        return (int(org, 16), int(app, 16)), extra
+    except ValueError:
+        return None
+
+
+def append_query(url, extra):
+    """The application URL with the query and fragment of a dvb://current.ait URL."""
+    if not extra:
+        return url
+    query, _, frag = extra.partition("#")
+    base, _, old_frag = url.partition("#")
+    if query.startswith("?") and len(query) > 1:
+        base += ("&" if "?" in base else "?") + query[1:]
+    frag = frag or old_frag
+    return base + ("#" + frag if frag else "")
+
+
 class Lifecycle:
     """Decides which application runs (TS 102 796 6.2.2, 6.3).
 
@@ -454,7 +483,22 @@ class Lifecycle:
         return self._gate(app, by_user=True)
 
     def create_application(self, url):
-        """Application.createApplication(): an app the AIT may not list."""
+        """Application.createApplication(): an app the AIT may not list, or
+        one of the AIT by its ids (dvb://current.ait/<org>.<app>). False when
+        that application is not signalled (the calling app keeps running)."""
+        ref = parse_ait_url(url)
+        if ref is not None:
+            key, extra = ref
+            app = self.ait.find(key) if self.ait is not None else None
+            base = self.ait.url(app) if app is not None else ""
+            if not base:
+                return False
+            target = append_query(base, extra)
+            if self.allowed is None or self.allowed(app):
+                self.start(app, target)
+            elif self.on_blocked is not None:
+                self.on_blocked(app, lambda: self.start(app, target))
+            return True
         app = None
         if self.ait is not None:
             app = next((a for a in self.ait.apps if self.ait.url(a) and
@@ -462,6 +506,7 @@ class Lifecycle:
         self.running = app
         self.running_url = url
         self.launch_cb(url, app)
+        return True
 
     def stop(self, by_user=False):
         if self.running is not None and by_user:

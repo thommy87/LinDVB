@@ -27,7 +27,7 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 | Setting | Default | Meaning |
 |---|---|---|
 | Interactive services (HbbTV) | on | Watch the AIT and offer the red button |
-| Start automatically | off | Start the AUTOSTART application by itself, as a TV does. Off: only with the red button |
+| Start automatically | off | Start the AUTOSTART application by itself, as a TV does (that application shows the "red button" banner). It loads 1.5 s after a zap, so zapping through channels loads no pages. Off: only with the red button. Note that autostarted applications report every channel you watch to the broadcaster |
 | Subtitles in media libraries | off | `configuration.subtitlesEnabled`; DASH videos start with subtitles on |
 | Audio description in media libraries | off | `configuration.audioDescriptionEnabled`; DASH videos prefer the describing soundtrack |
 | Teletext from the interactive service | on | TXT opens the HbbTV teletext of the channel where there is one |
@@ -79,7 +79,9 @@ settings file can switch it off.
 2. **Lifecycle** (`lindvb/hbbtv.py`, `Lifecycle`): which application runs.
    AUTOSTART apps start (or wait for red), KILL/DESTROY end them, apps not
    signalled on a new service end, service-bound apps end on a channel change,
-   `createApplication()` starts broadcast-independent apps.
+   `createApplication()` starts broadcast-independent apps, and an application
+   of the AIT by its ids (`dvb://current.ait/<org>.<app>[?query]`, as the
+   "Teletext" link of a launcher bar uses it; also as `location.href`).
 3. **Browser** (`lindvb/ui/hbbtv.py`): a WebKitGTK view over the 16:9 video
    area, zoomed so the application sees 1280×720. Documents served as
    `application/vnd.hbbtv.xhtml+xml` are taken as a download and loaded as
@@ -92,7 +94,8 @@ settings file can switch it off.
    list, programmes now/next, full screen or a window of its own; LinDVB scales
    the picture into that window; the live audio and subtitle tracks as
    components the app can switch), the A/V control object, `oipfObjectFactory`,
-   `KeyEvent.VK_*`.
+   `KeyEvent.VK_*`. Objects work as soon as their type is set, also when the
+   app creates one and calls it in the same script.
 5. **Object carousel** (`lindvb/dsmcc.py`): applications signalled with the
    DSM-CC transport (protocol 0x0001) are loaded from the broadcast. LinDVB
    adds the carousel's PID to the demux filter, puts DSI, DII and DDB sections
@@ -157,6 +160,14 @@ Tune a channel with that service id. `LINDVB_HBBTV_DEBUG=1` writes the
 application's console messages to the terminal and enables the WebKit
 inspector. A recording of a real channel in TS format also works, since it
 keeps the AIT.
+
+**Videos of an application.** DASH plays through dash.js (MSE). When dash.js
+cannot load a manifest (a CDN without CORS headers, which a TV's own player
+does not need) or the codecs, the video goes to WebKit's GStreamer player.
+HLS (`.m3u8`) plays in GStreamer; LinDVB sets `WEBKIT_GST_ENABLE_HLS_SUPPORT`
+and `WEBKIT_GST_ENABLE_DASH_SUPPORT`, without which WebKitGTK refuses both.
+A video that still fails shows its error in the status bar and in the
+terminal (`LinDVB HbbTV: video failed: …`).
 
 `tests/test_hbbtv_browser.py` runs applications end to end in WebKitGTK
 (under `xvfb-run`): the red button, the key set, the video window, live
