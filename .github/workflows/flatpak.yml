@@ -28,6 +28,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The image ships the GNOME SDK in a read-only image layer. Once Flathub
+      # has a newer SDK than the image, flatpak-builder updates it, and that
+      # fails with "Invalid cross-device link" (overlayfs cannot rename
+      # directories of a lower layer). Copying the installations moves them
+      # into the container's writable layer, where the update works.
+      - name: Make the preinstalled runtimes updatable
+        run: |
+          for d in /var/lib/flatpak "$HOME/.local/share/flatpak"; do
+            [ -d "$d" ] || continue
+            echo "Copying $d ($(du -sh "$d" | cut -f1))"
+            cp -a "$d" "$d.rw" && rm -rf "$d" && mv "$d.rw" "$d"
+          done
+          flatpak list --runtime --columns=application,branch,installation
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: LinDVB.flatpak
