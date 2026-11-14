@@ -69,6 +69,21 @@ def _vis_item(label, vis_id):
     item.set_action_and_target_value("win.vis", GLib.Variant.new_string(vis_id))
     return item
 
+
+def _space_is_free(focus):
+    """True when Space may mean play / pause: nothing that types text has the
+    focus, and no open menu or popover (whose items Space picks) holds it."""
+    if isinstance(focus, Gtk.Editable) or \
+            isinstance(focus, Gtk.TextView) and focus.get_editable():
+        return False
+    w = focus
+    while w is not None:
+        if isinstance(w, Gtk.Popover):
+            return False
+        w = w.get_parent()
+    return True
+
+
 class _ChannelRow(Row):
     """A channel in the list, with its place in the chosen sort order. GTK
     sorts by that number itself, which is much faster than asking Python for
@@ -687,6 +702,13 @@ class MainWindow(Gtk.ApplicationWindow):
         keys = Gtk.EventControllerKey()
         keys.connect("key-pressed", self._on_key)
         self.add_controller(keys)
+        # Space is play / pause only. A focused button, toggle or list row
+        # would otherwise take it as "activate" before the handler above
+        # sees it (e.g. a clicked "previous channel" button zapping on), so
+        # Space is caught in the capture phase, ahead of the focused widget.
+        space = Gtk.EventControllerKey(propagation_phase=Gtk.PropagationPhase.CAPTURE)
+        space.connect("key-pressed", self._on_space)
+        self.add_controller(space)
 
     def _build_controls(self):
         bar = Gtk.Box(spacing=8, css_classes=["lv-controls"], valign=Gtk.Align.CENTER)
@@ -2865,6 +2887,18 @@ class MainWindow(Gtk.ApplicationWindow):
             self.activate_action(f"win.{act}", None)
             return True
         return False
+
+    def _on_space(self, _ctl, keyval, _code, state):
+        if keyval not in (Gdk.KEY_space, Gdk.KEY_KP_Space) or state & (
+                Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.ALT_MASK
+                | Gdk.ModifierType.SHIFT_MASK | Gdk.ModifierType.SUPER_MASK):
+            return False
+        if not _space_is_free(self.get_focus()):
+            return False
+        if self.hbbtv.handle_key("space"):           # keys the HbbTV app asked for
+            return True
+        self.activate_action("win.pause", None)
+        return True
 
     def _number_commit(self, buf):
         if self.number_buffer == buf:
