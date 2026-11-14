@@ -427,8 +427,10 @@ class MainWindow(Gtk.ApplicationWindow):
                 vis.append_item(_vis_item(label, vid))
         view.append_submenu(_("Radio Visualisation"), vis)
         view.append(_("Screenshot"), "win.screenshot")
-        m.append_section(None, view)
-        # the gear in the control bar shows just the playback and view sections
+        # the view section (full screen … screenshot) is only in the gear menu
+        # of the control bar, not in the main menu; its shortcuts (F11, F9,
+        # Shift+Ctrl+P) are application accels and work without a menu entry.
+        # The gear shows just the playback and view sections.
         self.settings_menu = Gio.Menu()
         self.settings_menu.append_section(None, play)
         self.settings_menu.append_section(None, view)
