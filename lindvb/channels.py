@@ -150,6 +150,12 @@ class Channel:
         return f"{self.tsid}:{self.sid}"
 
     @property
+    def tvh_eit_key(self):
+        """Tvheadend: the store key of the broadcast EIT that came with the
+        channel's stream (lindvb.tuner.Capture._tvh_eit_key)."""
+        return "tvh:" + self.key
+
+    @property
     def epg_links(self):
         """All guide keys of the channel, ``epg_key`` first: the broadcast EIT,
         the DVB-I content guide (when it is loaded) and XMLTV. The EPG store
@@ -159,9 +165,10 @@ class Channel:
             keys.append("dvbi:" + self.dvbi_id)
         if self.xmltv_id:
             keys.append("xmltv:" + self.xmltv_id)
-        if self.tvh_server and self.sid:
-            # Tvheadend passes the service's own EIT; its ids are learnt from the stream
-            keys.append(f"{self.tsid}:{self.sid}")
+        if self.tvh_server:
+            # Tvheadend passes the service's own EIT; the capture keeps it under
+            # the channel's own key, the stream's ids can be the same on all channels
+            keys.append(self.tvh_eit_key)
         return list(dict.fromkeys(keys))
 
     def pids(self):

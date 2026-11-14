@@ -246,6 +246,8 @@ class Capture(GObject.Object):
         self._satip = None
         # Tvheadend: the server tunes; LinDVB reads the service's stream over HTTP
         self._tvh = None
+        # Tvheadend: the service id the stream's PAT names (None until it came)
+        self._tvh_sid = None
         # internet streams (lindvb.ipstream) and Tvheadend: the reader of the stream
         self._net = None
         if satip.is_satip(self.tuner) or tvheadend.is_tvheadend(self.tuner) or \
@@ -671,10 +673,28 @@ class Capture(GObject.Object):
         except (TypeError, AttributeError):
             return
         tsid = section.subtable_extension
+        if programs:
+            self._tvh_sid = programs[0]
         if programs and (self.channel.sid, self.channel.tsid) != (programs[0], tsid):
             self.channel.sid, self.channel.tsid = programs[0], tsid
             self.tsid = tsid
             self.emit("tsid", tsid)
+
+    def _tvh_eit_key(self, section):
+        """Tvheadend: the store key of an EIT section of the stream, or None to drop it.
+
+        The server can rewrite the service and transport stream ids of the
+        stream (its pass profile does so with "Rewrite Service ID"), so many
+        channels of one server send the same tsid:sid. Keyed by those ids, the
+        guide of the first channel watched showed on all of them (issue 126).
+        The present/following and schedule of the stream's own service are
+        kept under the channel's own key (Channel.tvh_eit_key), the rest is
+        dropped: its ids say nothing reliable about which channel it is."""
+        actual = section.table_id == 0x4E or 0x50 <= section.table_id <= 0x5F
+        if not actual or (self._tvh_sid is not None and
+                          section.subtable_extension != self._tvh_sid):
+            return None
+        return self.channel.tvh_eit_key
 
     def _push_direct(self, data):
         """Reader thread: hand a chunk of the DVR stream to the pipeline."""
@@ -804,7 +824,9 @@ class Capture(GObject.Object):
                         return
                     res = parse_eit_section(section, GstMpegts, self.epg_language)
                     if res and res[1]:
-                        self.emit("eit", res[0], res[1])
+                        key = self._tvh_eit_key(section) if self._tvh is not None else res[0]
+                        if key:
+                            self.emit("eit", key, res[1])
         elif t == Gst.MessageType.ERROR:
             err, dbg = msg.parse_error()
             self.emit("error", f"{err.message}")
