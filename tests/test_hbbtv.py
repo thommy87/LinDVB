@@ -224,3 +224,28 @@ def test_service_app_starts_without_autostart():
     assert started == []
     assert life.start_service_app() and started == ["https://x/app/"]
     assert not life.start_service_app()                 # already running
+
+
+def test_ait_application_urls():
+    assert hbbtv.parse_ait_url("dvb://current.ait/13.2") == ((0x13, 2), "")
+    assert hbbtv.parse_ait_url("DVB://current.ait/a.1f?page=100#x") == ((0xA, 0x1F), "?page=100#x")
+    assert hbbtv.parse_ait_url("dvb://current.ait/zz") is None
+    assert hbbtv.parse_ait_url("dvb://current.1/index.html") is None
+    assert hbbtv.parse_ait_url("http://tv.example/") is None
+    assert hbbtv.append_query("http://a/t.html", "?page=100") == "http://a/t.html?page=100"
+    assert hbbtv.append_query("http://a/t.html?x=1#f", "?p=2") == "http://a/t.html?x=1&p=2#f"
+    assert hbbtv.append_query("http://a/t.html", "") == "http://a/t.html"
+
+
+def test_create_application_from_the_ait():
+    life, b = _life(autostart=False)
+    tt = _app(2, ait.PRESENT, loc="tt.html")
+    tt.usage = ait.USAGE_TELETEXT
+    life.on_ait(_ait(_app(1), tt))
+    assert life.red_button()
+    assert life.create_application("dvb://current.ait/1.2?page=100")
+    assert b.calls[-1] == ("launch", "http://tv.example/tt.html?page=100", 2)
+    assert life.running.key == (1, 2)
+    n = len(b.calls)
+    assert life.create_application("dvb://current.ait/1.7") is False   # not signalled
+    assert len(b.calls) == n and life.running.key == (1, 2)

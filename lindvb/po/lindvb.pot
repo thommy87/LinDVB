@@ -5806,3 +5806,15 @@ msgstr ""
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr ""
+
+#: lindvb/ui/hbbtv.py
+msgid "HbbTV: the application is not signalled on this channel"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py
+msgid "HbbTV video could not be played: {msg}"
+msgstr ""
+
+#: lindvb/ui/hbbtv.py
+msgid "unknown error"
+msgstr ""
