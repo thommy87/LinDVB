@@ -10,6 +10,7 @@ window of its own.
 
 import json
 import os
+import sys
 import tempfile
 import threading
 import urllib.request
@@ -89,8 +90,10 @@ def log(*parts):
     global _log_file
     if not DEBUG:
         return
-    line = time.strftime("%H:%M:%S ") + "HbbTV: " + " ".join(str(p) for p in parts)
-    print(line, flush=True)
+    try:
+        line = time.strftime("%H:%M:%S ") + "HbbTV: " + " ".join(str(p) for p in parts)
+    except Exception:  # noqa: BLE001 - logging must never break the terminal
+        return
     try:
         if _log_file is None:
             CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -98,6 +101,22 @@ def log(*parts):
         _log_file.write(line + "\n")
         _log_file.flush()
     except OSError:
+        pass
+    _print(line)
+
+
+def _print(line):
+    """Print to a terminal of any encoding: the AppImage's Python may run with
+    an ASCII stdout, and an application name with an umlaut must not raise."""
+    try:
+        print(line, flush=True)
+    except UnicodeEncodeError:
+        enc = getattr(sys.stdout, "encoding", None) or "ascii"
+        try:
+            print(line.encode(enc, "replace").decode(enc), flush=True)
+        except (OSError, ValueError, LookupError):
+            pass
+    except (OSError, ValueError):
         pass
 
 
@@ -546,7 +565,10 @@ class HbbTV:
     def _on_ait(self, ait):
         if DEBUG and (self.life.ait is None or self.life.ait.version != ait.version
                       or len(self.life.ait.apps) != len(ait.apps)):
-            log(_describe_ait(ait))
+            try:
+                log(_describe_ait(ait))
+            except Exception as e:  # noqa: BLE001 - never lose the AIT over a log line
+                log("AIT (not printable):", repr(e))
         wait = AUTOSTART_DELAY - (time.monotonic() - self._tuned_at)
         if self.life.autostart and not self.life.active and wait > 0:
             # zapping through: start the app only once the viewer stays on
@@ -1062,7 +1084,7 @@ class HbbTV:
     def _media_error(self, msg):
         """The app's own video failed: say so (the picture would only stay black)."""
         detail = str(msg.get("message") or "")[:200]
-        print(f"LinDVB HbbTV: video failed: {msg.get('url') or ''} {detail}", flush=True)
+        _print(f"LinDVB HbbTV: video failed: {msg.get('url') or ''} {detail}")
         log("video failed", msg.get("url") or "", detail)
         self.win.set_status(_("HbbTV video could not be played: {msg}").format(
             msg=detail or _("unknown error")))

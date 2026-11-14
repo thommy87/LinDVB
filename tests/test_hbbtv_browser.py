@@ -899,3 +899,27 @@ def test_autostart_waits_while_zapping(monkeypatch):
     hbb.channel_changed(ch, cap2)
     assert _wait(lambda: launched, timeout=3)
     assert launched == ["http://tv.example/index.html"]
+
+
+def test_debug_log_survives_an_ascii_terminal(monkeypatch, tmp_path):
+    """LINDVB_HBBTV_DEBUG with an ASCII stdout (the AppImage's Python under
+    some locales): an application name with a dash or umlaut must not make
+    the terminal drop the AIT."""
+    import io
+    import lindvb.ui.hbbtv as ui
+    monkeypatch.setattr(ui, "DEBUG", True)
+    monkeypatch.setattr(ui, "CACHE_DIR", tmp_path)
+    monkeypatch.setattr(ui, "_log_file", None)
+    out = io.TextIOWrapper(io.BytesIO(), encoding="ascii")
+    monkeypatch.setattr(sys, "stdout", out)
+    a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, ["http://tv.example/"])])
+    a.apps = [AitApp(0x13, 1, ait.AUTOSTART, names={"deu": "Startleiste – Übersicht"},
+                     labels=[1], location="index.html")]
+    ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+    hbb = ui.HbbTV(FakeWindow(ch))
+    cap = FakeCapture()
+    cap.ait = a
+    hbb.channel_changed(ch, cap)
+    assert hbb.has_app
+    assert "Übersicht" in (tmp_path / "hbbtv.log").read_text(encoding="utf-8")
+    ui._log_file.close()
