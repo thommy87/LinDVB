@@ -384,9 +384,10 @@ def test_channel_kinds():
                   tvh_server="http://tvh:9981", xmltv_id=U1)
     web = Channel(name="Web", delsys="iptv", url="http://x/1.m3u8")
     assert tvh.is_iptv and not tvh.via_url and web.plays_url and not tvh.plays_url
-    assert tvh.epg_links == ["xmltv:" + U1]
+    assert tvh.epg_links == ["xmltv:" + U1, "tvh:url:http://tvh:9981/stream/channel/x"]
     tvh.sid, tvh.tsid = SID, TSID
-    assert tvh.epg_links == ["xmltv:" + U1, f"{TSID}:{SID}"]
+    # the stream's ids are not linked: the server may send the same ones on all channels
+    assert tvh.epg_links == ["xmltv:" + U1, "tvh:url:http://tvh:9981/stream/channel/x"]
 
 
 def test_ait_monitor_takes_the_only_service():
@@ -430,3 +431,25 @@ def test_tuner_manager_capture(streaming, tmp_path):
     tm.release(cap, "rec")
     tm.release(cap2, "live2")
     assert not tm.captures and cap._tvh.closed
+
+
+def test_stream_eit_kept_per_channel():
+    """Issue 126: the server can send the same ids on every channel; the EIT
+    of a stream belongs to the tuned channel, not to its tsid:sid."""
+    from types import SimpleNamespace as NS
+    pytest.importorskip("gi")
+    from lindvb.tuner import Capture
+    a = Channel(name="A", delsys="iptv", url="http://tvh:9981/stream/channel/a",
+                tvh_server="http://tvh:9981", sid=1, tsid=1)
+    cap = NS(channel=a, _tvh_sid=None)
+    key = Capture._tvh_eit_key
+    assert key(cap, NS(table_id=0x4E, subtable_extension=1)) == a.tvh_eit_key
+    assert key(cap, NS(table_id=0x50, subtable_extension=7)) == a.tvh_eit_key
+    assert key(cap, NS(table_id=0x4F, subtable_extension=1)) is None    # other services
+    cap._tvh_sid = 1
+    assert key(cap, NS(table_id=0x4E, subtable_extension=1)) == a.tvh_eit_key
+    assert key(cap, NS(table_id=0x4E, subtable_extension=2)) is None
+    b = Channel(name="B", delsys="iptv", url="http://tvh:9981/stream/channel/b",
+                tvh_server="http://tvh:9981", sid=1, tsid=1)
+    assert a.tvh_eit_key != b.tvh_eit_key
+    assert not set(a.epg_links) & set(b.epg_links)
