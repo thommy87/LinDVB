@@ -27,6 +27,11 @@ def _title(e):
     return f"{e.title}  {b}" if b else e.title
 PX_PER_MIN = 4
 NAME_W = 150
+# Start widths of the list columns; the user's own widths are saved per view.
+COL_WIDTHS = {"now": [180, 60, 60, 380, 160],
+              "channel": [110, 60, 80, 320, 260],
+              "search": [180, 110, 60, 420]}
+WIDTHS_KEY = "epg_column_widths"
 
 
 class EPGWindow(Gtk.Window):
@@ -43,6 +48,9 @@ class EPGWindow(Gtk.Window):
         self.focus_key = focus.key if focus else None
         self._initial = True
 
+        saved = app.settings.get(WIDTHS_KEY)
+        self._saved_widths = saved if isinstance(saved, dict) else {}
+        self._synced_key = None         # Now/Next channel last shown on "Per Channel"
         nb = Gtk.Notebook()
         nb.append_page(self._now_page(), Gtk.Label(label=_("Now / Next")))
         nb.append_page(self._channel_page(focus), Gtk.Label(label=_("Per Channel")))
@@ -50,6 +58,8 @@ class EPGWindow(Gtk.Window):
         nb.append_page(self._search_page(), Gtk.Label(label=_("Search")))
         if channel:
             nb.set_current_page(1)
+            self._synced_key = channel.key
+        nb.connect("switch-page", self._on_switch_page)
 
         _install_css()
         self.insert_action_group("epg", self._actions())
@@ -66,7 +76,48 @@ class EPGWindow(Gtk.Window):
         self._initial = False
         self._select(selected(self.ch_sel if channel else self.now_sel))
         app.epg.listeners.append(self.refresh)
-        self.connect("close-request", lambda *_: (app.epg.listeners.remove(self.refresh), False)[1])
+        self.connect("close-request", self._on_close)
+
+    def _on_close(self, *_):
+        self.app.epg.listeners.remove(self.refresh)
+        self._save_widths()
+        return False
+
+    def _widths(self, name):
+        """Saved column widths of a list view, else the defaults."""
+        default = COL_WIDTHS[name]
+        saved = self._saved_widths.get(name)
+        if isinstance(saved, list) and len(saved) == len(default) \
+                and all(isinstance(w, int) and w > 0 for w in saved):
+            return saved
+        return default
+
+    def _save_widths(self):
+        """Remember the column widths the user set for the next time."""
+        widths = {}
+        for name, view in (("now", self.now_view), ("channel", self.ch_view),
+                           ("search", self.s_view)):
+            cols = view.get_columns()
+            ws = [cols.get_item(i).get_fixed_width() for i in range(cols.get_n_items())]
+            if all(w > 0 for w in ws):
+                widths[name] = ws
+        if widths and widths != self._saved_widths:
+            self.app.settings[WIDTHS_KEY] = widths
+            self.app.settings.save()
+
+    def _on_switch_page(self, _nb, _page, num):
+        """Show the channel focused on "Now / Next" on "Per Channel" too."""
+        if num != 1:
+            return
+        row = selected(self.now_sel)
+        if not row or row[0].key == self._synced_key:
+            return              # keep a channel the user picked here meanwhile
+        self._synced_key = row[0].key
+        idx = next((i for i, c in enumerate(self.chans) if c.key == row[0].key), None)
+        if idx is not None and idx != self.ch_dd.get_selected():
+            self.ch_dd.set_selected(idx)
+        else:
+            self._select(selected(self.ch_sel))
 
     # -- details --------------------------------------------------------------
     def _actions(self):
@@ -197,7 +248,8 @@ class EPGWindow(Gtk.Window):
         cols = [(_("Channel"), lambda r: r[0].name, False), (_("Start"), lambda r: hm(r[1].start), False),
                 (_("End"), lambda r: hm(r[1].end), False), (_("Title"), lambda r: _title(r[1]), True),
                 (_("Genre"), lambda r: r[1].genre, False)]
-        self.now_view, self.now_store, self.now_sel = make_column_view(cols, lambda r: self.app.window.zap(r[0]))
+        self.now_view, self.now_store, self.now_sel = make_column_view(
+            cols, lambda r: self.app.window.zap(r[0]), self._widths("now"))
         self.now_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.now_view))
         return box
@@ -219,7 +271,8 @@ class EPGWindow(Gtk.Window):
         cols = [(_("Day"), lambda r: day(r[1].start), False), (_("Start"), lambda r: hm(r[1].start), False),
                 (_("Duration"), lambda r: f"{r[1].duration // 60} min", False),
                 (_("Title"), lambda r: _title(r[1]), True), (_("Subheading"), lambda r: r[1].subtitle, True)]
-        self.ch_view, self.ch_store, self.ch_sel = make_column_view(cols, lambda r: self.on_record())
+        self.ch_view, self.ch_store, self.ch_sel = make_column_view(
+            cols, lambda r: self.on_record(), self._widths("channel"))
         self.ch_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.ch_view))
         return box
@@ -249,7 +302,8 @@ class EPGWindow(Gtk.Window):
         box.append(top)
         cols = [(_("Channel"), lambda r: r[0].name, False), (_("Day"), lambda r: day(r[1].start), False),
                 (_("Start"), lambda r: hm(r[1].start), False), (_("Title"), lambda r: _title(r[1]), True)]
-        self.s_view, self.s_store, self.s_sel = make_column_view(cols, lambda r: self.on_record())
+        self.s_view, self.s_store, self.s_sel = make_column_view(
+            cols, lambda r: self.on_record(), self._widths("search"))
         self.s_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
         box.append(scrolled(self.s_view))
         return box

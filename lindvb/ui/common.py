@@ -14,13 +14,17 @@ class Row(GObject.Object):
         self.data = data
 
 
-def make_column_view(columns, on_activate=None):
-    """columns: list of (title, fn(data) -> str, expand). Returns (view, store, selection)."""
+def make_column_view(columns, on_activate=None, widths=None):
+    """columns: list of (title, fn(data) -> str, expand). Returns (view, store, selection).
+
+    widths: optional fixed start width per column (None = size to content).
+    A fixed width keeps the columns from jumping while scrolling, because
+    otherwise GTK sizes them to the rows that happen to be visible."""
     store = Gio.ListStore(item_type=Row)
     sel = Gtk.SingleSelection(model=store)
     view = Gtk.ColumnView(model=sel)
     view.set_show_column_separators(True)
-    for title, fn, expand in columns:
+    for i, (title, fn, expand) in enumerate(columns):
         fac = Gtk.SignalListItemFactory()
         fac.connect("setup", lambda _f, li: li.set_child(Gtk.Label(xalign=0, ellipsize=3)))
 
@@ -31,6 +35,8 @@ def make_column_view(columns, on_activate=None):
         col = Gtk.ColumnViewColumn(title=title, factory=fac)
         col.set_expand(expand)
         col.set_resizable(True)
+        if widths and i < len(widths) and widths[i]:
+            col.set_fixed_width(int(widths[i]))
         view.append_column(col)
     if on_activate:
         view.connect("activate", lambda _v, pos: on_activate(store.get_item(pos).data))
