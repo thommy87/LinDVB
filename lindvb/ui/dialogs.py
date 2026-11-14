@@ -135,8 +135,9 @@ class PrefsWindow(Gtk.Window):
             pg.append(g)
             return g
 
-        def entry(g, key, label, hint=None):
-            self.w[key] = (_row(g, label, Gtk.Entry(text=str(s[key])), hint), str)
+        def entry(g, key, label, hint=None, stacked=False):
+            self.w[key] = (_row(g, label, Gtk.Entry(text=str(s[key]), hexpand=stacked), hint,
+                                stacked=stacked), str)
 
         def spin(g, key, label, lo, hi, hint=None):
             sp = _row(g, label, Gtk.SpinButton.new_with_range(lo, hi, 1), hint)
@@ -206,7 +207,7 @@ class PrefsWindow(Gtk.Window):
                 "a picon set as Enigma2, Kodi and VDR use it (named by service reference or "
                 "by SNP name). They are shown in the channel list too. LinDVB ships no "
                 "logos, because they belong to the broadcasters. Empty: {v0}"
-                ).format(v0=DATA_DIR / 'logos'))
+                ).format(v0=DATA_DIR / 'logos'), stacked=True)
         self._picon_btn = _row(g, _("Picons for my channels"),
                                Gtk.Button(label=_("Download Logos")),
                                _("Fetches only the logos of the channels in your list from "
@@ -372,7 +373,8 @@ class PrefsWindow(Gtk.Window):
         g = group(pg)
         entry(g, "recording_dir", _("Recording folder"))
         entry(g, "name_scheme", _("File naming scheme"),
-              _("Placeholders: %year %date %time %end %station %name, / for sub-folders"))
+              _("Placeholders: %year %date %time %end %station %name, / for sub-folders"),
+              stacked=True)
         self._recording_options(pg, group, switch)
         g = group(pg, _("Timer padding"))
         spin(g, "lead_minutes", _("Start earlier by (min)"), 0, 60)
