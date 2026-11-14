@@ -401,7 +401,6 @@ class MainWindow(Gtk.ApplicationWindow):
         delay.append(_("Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)").format(AUDIO_DELAY_STEP=AUDIO_DELAY_STEP), "win.audio-earlier")
         delay.append(_("Reset"), "win.audio-delay-reset")
         play.append_submenu(_("Audio Delay (this channel)"), delay)
-        m.append_section(None, play)
 
         view = Gio.Menu()
         view.append(_("Full Screen"), "win.fullscreen")
@@ -427,8 +426,10 @@ class MainWindow(Gtk.ApplicationWindow):
                 vis.append_item(_vis_item(label, vid))
         view.append_submenu(_("Radio Visualisation"), vis)
         view.append(_("Screenshot"), "win.screenshot")
-        m.append_section(None, view)
-        # the gear in the control bar shows just the playback and view sections
+        # the playback (audio track … audio delay) and view (full screen …
+        # screenshot) sections are only in the gear menu of the control bar,
+        # not in the main menu; their shortcuts are application accels and
+        # work without a menu entry.
         self.settings_menu = Gio.Menu()
         self.settings_menu.append_section(None, play)
         self.settings_menu.append_section(None, view)
