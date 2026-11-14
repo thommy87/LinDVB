@@ -79,6 +79,36 @@ _views = weakref.WeakKeyDictionary()     # WebView -> HbbTV
 _schemes = set()
 
 
+DEBUG = bool(os.environ.get("LINDVB_HBBTV_DEBUG"))
+_log_file = None
+
+
+def log(*parts):
+    """With LINDVB_HBBTV_DEBUG=1: what the terminal does, on stdout and in
+    ~/.cache/lindvb/hbbtv.log (to send along with a bug report)."""
+    global _log_file
+    if not DEBUG:
+        return
+    line = time.strftime("%H:%M:%S ") + "HbbTV: " + " ".join(str(p) for p in parts)
+    print(line, flush=True)
+    try:
+        if _log_file is None:
+            CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            _log_file = open(CACHE_DIR / "hbbtv.log", "a", encoding="utf-8")
+        _log_file.write(line + "\n")
+        _log_file.flush()
+    except OSError:
+        pass
+
+
+def _describe_ait(ait):
+    out = []
+    for a in ait.apps:
+        out.append(f"{a.org_id:x}.{a.app_id:x} code={a.control_code} usage={a.usage} "
+                   f"bound={a.service_bound} url={ait.url(a)!r} name={a.name()!r}")
+    return f"AIT v{ait.version}: " + "; ".join(out)
+
+
 def _idle(fn):
     GLib.idle_add(lambda: (fn(), False)[1])
 
@@ -514,6 +544,9 @@ class HbbTV:
         self._notify()
 
     def _on_ait(self, ait):
+        if DEBUG and (self.life.ait is None or self.life.ait.version != ait.version
+                      or len(self.life.ait.apps) != len(ait.apps)):
+            log(_describe_ait(ait))
         wait = AUTOSTART_DELAY - (time.monotonic() - self._tuned_at)
         if self.life.autostart and not self.life.active and wait > 0:
             # zapping through: start the app only once the viewer stays on
@@ -588,8 +621,10 @@ class HbbTV:
                 self._notify()
                 return True
             if code and hb.wanted(code, self.keyset, self.other_keys):
+                log("key", gdk_name, code)
                 self._js("key", code)
                 return True
+            log("key not for the app", gdk_name, code, f"keyset={self.keyset:#x}")
             return False
         if code == hb.VK["RED"]:
             started = self.life.red_button()
@@ -632,7 +667,8 @@ class HbbTV:
         ucm.register_script_message_handler("lindvb", None)
         ucm.connect("script-message-received::lindvb", self._on_message)
         view = WebKit.WebView(network_session=session, user_content_manager=ucm,
-                              hexpand=True, vexpand=True, can_focus=False, focusable=False)
+                              hexpand=True, vexpand=True, can_focus=False, focusable=False,
+                              can_target=False)    # remote keys only: clicks reach the video
         s = view.get_settings()
         s.set_user_agent(hb.user_agent(hb.terminal_version()))
         s.set_enable_javascript(True)
@@ -641,8 +677,8 @@ class HbbTV:
         s.set_enable_mediasource(True)              # dash.js plays DASH through MSE
         s.set_allow_file_access_from_file_urls(False)
         s.set_allow_universal_access_from_file_urls(False)
-        s.set_enable_developer_extras(bool(os.environ.get("LINDVB_HBBTV_DEBUG")))
-        s.set_enable_write_console_messages_to_stdout(bool(os.environ.get("LINDVB_HBBTV_DEBUG")))
+        s.set_enable_developer_extras(DEBUG)
+        s.set_enable_write_console_messages_to_stdout(DEBUG)
         s.set_default_font_family("sans-serif")
         s.set_enable_back_forward_navigation_gestures(False)
         clear = Gdk.RGBA()
@@ -835,6 +871,7 @@ class HbbTV:
             self._carousel_tag = t.component_tag
         self._ste_clear()
         view.set_visible(True)
+        log("launch", url, f"app={app.org_id:x}.{app.app_id:x}" if app else "app=-")
         view.load_uri(url)
         name = app.name(("deu", "ger", "eng")) if app else ""
         self.win.set_status(_("HbbTV: {name}").format(name=name or url))
@@ -858,6 +895,7 @@ class HbbTV:
         self._pending_red = False
         self.keyset, self.other_keys = 0, ()
         self.set_video_rect(None)
+        log("application ended")
         if self.view is not None:
             self.view.set_visible(False)
             self.view.load_uri("about:blank")
@@ -893,6 +931,8 @@ class HbbTV:
             return True
         elif kind == WebKit.PolicyDecisionType.NAVIGATION_ACTION:
             uri = decision.get_navigation_action().get_request().get_uri() or ""
+            if DEBUG and uri != "about:blank":
+                log("navigate", uri)
             if hb.parse_ait_url(uri) is not None:
                 # location.href = "dvb://current.ait/..": an AIT application
                 decision.ignore()
@@ -902,7 +942,9 @@ class HbbTV:
 
     def _create(self, url):
         """createApplication(): start it, or tell the app it is not there."""
+        log("createApplication", url)
         if not self.life.create_application(url):
+            log("createApplication: not signalled", url)
             self.win.set_status(_("HbbTV: the application is not signalled on this channel"))
             self._js("createFailed", url)
         self._notify()
@@ -935,6 +977,7 @@ class HbbTV:
         if error.matches(WebKit.PolicyError.quark(),
                          WebKit.PolicyError.FRAME_LOAD_INTERRUPTED_BY_POLICY_CHANGE):
             return False                                  # turned into the HTML load
+        log("load failed", uri, error.message)
         self.win.set_status(_("HbbTV application could not be loaded: {msg}").format(msg=error.message))
         self.life.stop()
         self._notify()
@@ -951,6 +994,8 @@ class HbbTV:
         except (ValueError, AttributeError):
             return
         cmd = msg.get("cmd")
+        if DEBUG and cmd not in ("video-rect", "sync-ct", "ready"):
+            log("app:", json.dumps(msg)[:400])
         if cmd == "keyset":
             self.keyset = int(msg.get("value") or 0)
             self.other_keys = tuple(msg.get("otherKeys") or ())
@@ -1018,6 +1063,7 @@ class HbbTV:
         """The app's own video failed: say so (the picture would only stay black)."""
         detail = str(msg.get("message") or "")[:200]
         print(f"LinDVB HbbTV: video failed: {msg.get('url') or ''} {detail}", flush=True)
+        log("video failed", msg.get("url") or "", detail)
         self.win.set_status(_("HbbTV video could not be played: {msg}").format(
             msg=detail or _("unknown error")))
 
