@@ -158,7 +158,9 @@ LINDVB_TEST_TS=hbbtv.ts LINDVB_HBBTV_DEBUG=1 lindvb
 
 Tune a channel with that service id. `LINDVB_HBBTV_DEBUG=1` writes the
 application's console messages to the terminal and enables the WebKit
-inspector. A recording of a real channel in TS format also works, since it
+inspector. It also logs what the terminal does (the AIT, launched URLs,
+createApplication, navigations, keys, video errors) to the terminal and to
+`~/.cache/lindvb/hbbtv.log`, the file to attach to a bug report. A recording of a real channel in TS format also works, since it
 keeps the AIT.
 
 **Videos of an application.** DASH plays through dash.js (MSE). When dash.js
