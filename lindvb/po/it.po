@@ -4290,3 +4290,11 @@ msgstr "Guarda dall'inizio"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Riproduce il programma dall'inizio dall'archivio del fornitore (catch-up)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Tutti i tag"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tag del canale Tvheadend"

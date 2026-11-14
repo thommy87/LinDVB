@@ -4261,3 +4261,11 @@ msgstr "تماشا از ابتدا"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "برنامه را از ابتدا از آرشیو ارائه‌دهنده پخش می‌کند (بازپخش)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "همه برچسب‌ها"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "برچسب کانال Tvheadend"

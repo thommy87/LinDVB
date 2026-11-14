@@ -4218,3 +4218,11 @@ msgstr "Vaata algusest"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Esitab saate algusest teenusepakkuja arhiivist (järelvaatamine)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Kõik sildid"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadendi kanali silt"

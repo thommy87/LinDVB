@@ -42,3 +42,21 @@ def test_sources():
     assert not chansort.in_source(s1, "src:sat:1") and not chansort.in_source(cab, "src:sat")
     assert chansort.in_source(web, "src:iptv")
     assert chansort.source_kind(ch("T", delsys="dvb-t2")) == "terr"
+
+
+def test_list_group_and_tvheadend_tags():
+    tvh = dict(delsys="iptv", url="http://tvh/stream", tvh_server="http://tvh:9981",
+               root="Tvheadend")
+    a = ch("ZDF", groups=["ARD", "News"], category="ARD", **tvh)
+    b = ch("n-tv", groups=["News"], category="News", **tvh)
+    c = ch("Plain", **tvh)
+    web = ch("Web", delsys="iptv", url="http://x", root="List 1", category="Sport",
+             groups=["Sport"])
+    assert chansort.in_list_group(a, "Tvheadend") and not chansort.in_list_group(web, "Tvheadend")
+    assert chansort.in_list_group(web, "src:iptv")
+    # only the server's channels give tags, an IPTV list's categories are none
+    assert chansort.tags([a, b, c, web]) == ["ARD", "News"]
+    assert chansort.has_tag(a, "News") and not chansort.has_tag(c, "News")
+    # the provider values of one group leave the other lists' categories out
+    group = [x for x in (a, b, c, web) if chansort.in_list_group(x, "Tvheadend")]
+    assert chansort.values(group, "provider") == ["ARD", "News"]

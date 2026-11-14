@@ -4582,3 +4582,11 @@ msgstr "列表自身的名称"
 
 msgid "Name in the channel list"
 msgstr "频道列表中的名称"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "所有标签"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend 频道标签"

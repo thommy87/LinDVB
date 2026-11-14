@@ -4218,3 +4218,11 @@ msgstr "Féach ón tús"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Seinneann sé an clár óna thús ó chartlann an tsoláthraí (féachaint siar)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Gach clib"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Clib cainéil Tvheadend"

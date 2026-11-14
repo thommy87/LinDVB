@@ -4218,3 +4218,11 @@ msgstr "Παρακολούθηση από την αρχή"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Αναπαράγει την εκπομπή από την αρχή από το αρχείο του παρόχου (catch-up)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Όλες οι ετικέτες"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Ετικέτα καναλιού Tvheadend"

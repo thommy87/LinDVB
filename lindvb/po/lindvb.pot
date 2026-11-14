@@ -5817,3 +5817,11 @@ msgstr ""
 #: lindvb/ui/epg.py
 msgid "Show less"
 msgstr ""
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr ""

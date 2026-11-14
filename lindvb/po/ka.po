@@ -4582,3 +4582,11 @@ msgstr "სახელი, რომელსაც სია თავად �
 
 msgid "Name in the channel list"
 msgstr "სახელი არხების სიაში"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "ყველა ტეგი"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend-ის არხის ტეგი"
