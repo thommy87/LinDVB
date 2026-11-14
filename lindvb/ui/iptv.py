@@ -54,22 +54,24 @@ class IPTVPanel(Gtk.Box):
         files = Gtk.Button(label=_("Import Files…"))
         files.connect("clicked", lambda *_: self._pick_files())
         row(self, _("From files"), files,
-            _("M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."))
-        url_box = Gtk.Box(spacing=6)
+            _("M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."),
+            stacked=True)
+        url_box = Gtk.Box(spacing=6, hexpand=True)
         self.url = Gtk.Entry(placeholder_text="https://…/playlist.m3u", width_chars=28,
-                             input_purpose=Gtk.InputPurpose.URL)
+                             input_purpose=Gtk.InputPurpose.URL, hexpand=True)
         self.url.connect("activate", lambda *_: self._download())
         self.url_btn = Gtk.Button(label=_("Import"))
         self.url_btn.connect("clicked", lambda *_: self._download())
         url_box.append(self.url)
         url_box.append(self.url_btn)
         row(self, _("From a web address"), url_box,
-            _("The address of an M3U playlist, or of a single HLS stream (.m3u8)."))
+            _("The address of an M3U playlist, or of a single HLS stream (.m3u8)."),
+            stacked=True)
 
         # Xtream Codes: server, user name and password give the M3U address
-        xt = Gtk.Box(spacing=6)
+        xt = Gtk.Box(spacing=6, hexpand=True)
         self.xt_server = Gtk.Entry(placeholder_text=_("Server"), width_chars=16,
-                                   input_purpose=Gtk.InputPurpose.URL)
+                                   input_purpose=Gtk.InputPurpose.URL, hexpand=True)
         self.xt_user = Gtk.Entry(placeholder_text=_("User name"), width_chars=10)
         self.xt_pass = Gtk.PasswordEntry(placeholder_text=_("Password"), show_peek_icon=True)
         self.xt_pass.set_size_request(110, -1)
@@ -83,12 +85,12 @@ class IPTVPanel(Gtk.Box):
             xt.append(w)
         row(self, "Xtream Codes", xt,
             _("The live channels of an Xtream Codes account. The password is kept in the "
-              "list's address in the LinDVB settings."))
+              "list's address in the LinDVB settings."), stacked=True)
 
         # Tvheadend: server, user name and password; channels, groups and guide
-        th = Gtk.Box(spacing=6)
+        th = Gtk.Box(spacing=6, hexpand=True)
         self.th_server = Gtk.Entry(placeholder_text=_("Server (host:9981)"), width_chars=16,
-                                   input_purpose=Gtk.InputPurpose.URL)
+                                   input_purpose=Gtk.InputPurpose.URL, hexpand=True)
         self.th_server.connect("activate", lambda *_: self._tvheadend())
         self.th_user = Gtk.Entry(placeholder_text=_("User name"), width_chars=10)
         self.th_pass = Gtk.PasswordEntry(placeholder_text=_("Password"), show_peek_icon=True)
@@ -101,11 +103,12 @@ class IPTVPanel(Gtk.Box):
         row(self, "Tvheadend", th,
             _("The channels of a Tvheadend server, with its channel tags as groups and its "
               "programme guide. Leave user name and password empty when the server does "
-              "not ask for them. The password is kept in the LinDVB settings."))
+              "not ask for them. The password is kept in the LinDVB settings."),
+            stacked=True)
 
         # the imported lists
         self.append(Gtk.Label(label=_("Your lists"), xalign=0, css_classes=["heading"],
-                              margin_start=12, margin_top=10))
+                              margin_top=10, margin_bottom=4))
         cols = [(_("Name"), lambda s: s.get("root", ""), False),
                 (_("Type"), lambda s: KINDS.get(s.get("kind"), ""), False),
                 (_("Source"), iptvsources.display_location, True),
@@ -114,10 +117,10 @@ class IPTVPanel(Gtk.Box):
                 (_("Updated"), lambda s: time.strftime("%x %H:%M", time.localtime(
                     s.get("date", 0))), False)]
         self.view, self.store, self.sel = make_column_view(cols)
-        sw = Gtk.ScrolledWindow(child=self.view, min_content_height=110, margin_start=12,
-                                margin_end=12, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        sw = Gtk.ScrolledWindow(child=self.view, min_content_height=110,
+                                hscrollbar_policy=Gtk.PolicyType.NEVER)
         self.append(sw)
-        btns = Gtk.Box(spacing=6, margin_start=12, margin_end=12, margin_top=6)
+        btns = Gtk.Box(spacing=6, margin_top=6)
         self.update_btn = Gtk.Button(label=_("Update"))
         self.update_btn.set_tooltip_text(
             _("Load the list again: favourites, channel numbers and guide matches stay, "
@@ -136,7 +139,7 @@ class IPTVPanel(Gtk.Box):
         self.append(btns)
 
         self.status = Gtk.Label(xalign=0, wrap=True, selectable=True, css_classes=["lv-hint"],
-                                margin_top=4, margin_bottom=8, margin_start=12)
+                                margin_top=4, margin_bottom=8)
         self.append(self.status)
         self._refresh()
         self._count()

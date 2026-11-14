@@ -48,15 +48,24 @@ def decoder_hint(player=None):
 ACCENT_LABELS = [_("LinDVB blue (default)"), _("System accent colour"), _("Custom colour")]
 
 
-def _row(group, label, widget, hint=None):
-    """One labelled setting inside a preferences group."""
-    row = Gtk.Box(spacing=16, css_classes=["lv-row"])
+def _row(group, label, widget, hint=None, stacked=False):
+    """One labelled setting inside a preferences group. *stacked* puts the title and
+    the hint above the widget, over the full width, for widgets too wide to leave
+    room for the text beside them (several entries in a row)."""
+    row = Gtk.Box(spacing=8 if stacked else 16, css_classes=["lv-row"],
+                  orientation=Gtk.Orientation.VERTICAL if stacked
+                  else Gtk.Orientation.HORIZONTAL)
     text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, hexpand=True,
                    valign=Gtk.Align.CENTER)
     text.append(Gtk.Label(label=label, xalign=0, wrap=True))
     if hint:
         text.append(Gtk.Label(label=hint, xalign=0, wrap=True, css_classes=["lv-hint"]))
     row.append(text)
+    if stacked:
+        widget.set_halign(Gtk.Align.FILL if widget.get_hexpand() else Gtk.Align.START)
+        row.append(widget)
+        group.append(row)
+        return widget
     widget.set_valign(Gtk.Align.CENTER)
     if isinstance(widget, (Gtk.Entry, Gtk.PasswordEntry)):
         widget.set_size_request(280, -1)
