@@ -4218,3 +4218,11 @@ msgstr "Skatīties no sākuma"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Atskaņo raidījumu no sākuma no pakalpojuma sniedzēja arhīva (atskatīšanās)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Visi tagi"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend kanāla tags"

@@ -4218,3 +4218,11 @@ msgstr "Megnézés az elejétől"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "Lejátssza a műsort az elejétől a szolgáltató archívumából (visszanézés)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Minden címke"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend-csatornacímke"

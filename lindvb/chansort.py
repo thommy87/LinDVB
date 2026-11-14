@@ -137,3 +137,31 @@ def in_source(c, key):
     if source_kind(c) != kind:
         return False
     return not port or c.diseqc == int(port)
+
+
+def in_list_group(c, key):
+    """Whether *c* belongs to the entry *key* of the group dropdown: a source
+    entry (see ``sources``) or a group by name (the channel's root)."""
+    if key.startswith(SOURCE_PREFIX):
+        return in_source(c, key)
+    return c.root == key
+
+
+# -- Tvheadend channel tags -----------------------------------------------------
+# A Tvheadend server's channels carry the user tags of the server
+# (``Channel.groups``, see lindvb.tvheadend). When the group dropdown shows
+# one server, the list offers its tags in a dropdown of their own.
+
+def tags(channels):
+    """The distinct Tvheadend tags among *channels*, sorted by name."""
+    seen = {}
+    for c in channels:
+        if c.tvh_server:
+            for t in c.groups:
+                seen.setdefault(t, True)
+    return sorted(seen, key=str.casefold)
+
+
+def has_tag(c, tag):
+    """True when *c* carries the Tvheadend tag *tag*."""
+    return tag in c.groups

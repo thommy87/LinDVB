@@ -4678,3 +4678,11 @@ msgstr "Mehr anzeigen"
 #: lindvb/ui/epg.py
 msgid "Show less"
 msgstr "Weniger anzeigen"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "Alle Tags"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend-Kanal-Tag"

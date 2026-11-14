@@ -546,6 +546,17 @@ class MainWindow(Gtk.ApplicationWindow):
         row.append(favs_btn)
         row.append(self.group_dd)
         chan_page.append(row)
+        # the channel tags of a Tvheadend server, shown when the group
+        # dropdown picks one (the server's channels carry its user tags)
+        self._tags = [""]
+        self._tag_sync = False
+        self.tag_row = Gtk.Box(spacing=8, margin_start=10, margin_end=10, visible=False)
+        self.tag_dd = Gtk.DropDown.new_from_strings([_("All tags")])
+        self.tag_dd.set_hexpand(True)
+        self.tag_dd.set_tooltip_text(_("Tvheadend channel tag"))
+        self.tag_dd.connect("notify::selected", lambda *_: self._on_list_tag())
+        self.tag_row.append(self.tag_dd)
+        chan_page.append(self.tag_row)
         # sort order, and for grouping orders (provider …) one value to show
         row2 = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
         self._sorts = [k for k, _l in chansort.SORTS]
@@ -891,16 +902,40 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _filter_state(self):
         """What the list is filtered by, read from the widgets."""
-        g, v = self.group_dd.get_selected(), self.value_dd.get_selected()
+        v = self.value_dd.get_selected()
         raw = self.search.get_text().strip()
         return (raw, raw.lower(), self._filter_key(), self.mode == "radio",
-                self._groups[g] if 0 < g < len(self._groups) else None,
+                self._group(), self._tag(),
                 self._values[v] if 0 < v < len(self._values) else None, self._sort())
+
+    def _group(self):
+        """The group dropdown's key, None for all groups."""
+        g = self.group_dd.get_selected()
+        return self._groups[g] if 0 < g < len(self._groups) else None
+
+    def _tag(self):
+        """The Tvheadend tag chosen, None for all (or no tag dropdown)."""
+        t = self.tag_dd.get_selected()
+        return self._tags[t] if 0 < t < len(self._tags) else None
+
+    def _scope(self, tag=True):
+        """The channels of the list in the TV or radio mode, the group and
+        (with *tag*) the tag chosen: what the tag and value dropdowns offer."""
+        group, tg = self._group(), self._tag() if tag else None
+        fav, radio = self._list_fav is not None, self.mode == "radio"
+        out = []
+        for i in range(self.store.get_n_items()):
+            c = self.store.get_item(i).data
+            if (fav or c.radio == radio) and \
+                    (group is None or chansort.in_list_group(c, group)) and \
+                    (tg is None or chansort.has_tag(c, tg)):
+                out.append(c)
+        return out
 
     def _filter_func(self, item):
         # _refilter reads the widgets once for the whole list, GTK asking for
         # single new rows reads them here
-        raw, q, f, radio, group, value, srt = self._fstate or self._filter_state()
+        raw, q, f, radio, group, tag, value, srt = self._fstate or self._filter_state()
         c = item.data
         if not c.visible or c.dvbi_periods and id(c) in self._off_air:
             # DVB-I: hidden services and pop-up channels off air (IT-4), still
@@ -917,12 +952,10 @@ class MainWindow(Gtk.ApplicationWindow):
             return False
         if f == "iptv" and not c.is_iptv:
             return False
-        if group is not None:
-            if group.startswith(chansort.SOURCE_PREFIX):
-                if not chansort.in_source(c, group):
-                    return False
-            elif group != c.root:
-                return False
+        if group is not None and not chansort.in_list_group(c, group):
+            return False
+        if tag is not None and not chansort.has_tag(c, tag):
+            return False
         if value is not None and not chansort.in_group(c, srt, value):
             return False
         if q:
@@ -978,9 +1011,35 @@ class MainWindow(Gtk.ApplicationWindow):
             sorter = Gtk.NumericSorter.new(
                 Gtk.PropertyExpression.new(_ChannelRow.__gtype__, None, "rank"))
         self.filtered.set_sorter(sorter)
+        self._update_choices()
+
+    def _update_choices(self):
+        """Offer the tags and the values of a grouping order the channels in
+        the group (and mode) chosen have; the choices in the settings stay
+        chosen when they are among them."""
+        self._update_tags()
+        self._update_values()
+
+    def _update_tags(self):
+        """The tag dropdown: shown for a group that is one Tvheadend server
+        whose channels have tags."""
+        group = self._group()
+        chans = (self._scope(tag=False)
+                 if group is not None and not group.startswith(chansort.SOURCE_PREFIX) else [])
+        tags = chansort.tags(chans)
+        keep = self.settings.get("list_tag", "")
+        self._tags = [""] + tags
+        self._tag_sync = True
+        self.tag_dd.set_model(Gtk.StringList.new([_("All tags")] + tags))
+        self.tag_dd.set_selected(self._tags.index(keep) if keep in tags else 0)
+        self._tag_sync = False
+        self.tag_row.set_visible(bool(tags))
+
+    def _update_values(self):
+        srt = self._sort()
         grouped = srt in chansort.GROUPED
         keep = self.settings.get("list_sort_value", "")
-        self._values = [""] + (chansort.values(self.app.db.channels, srt) if grouped else [])
+        self._values = [""] + (chansort.values(self._scope(), srt) if grouped else [])
         self._value_sync = True
         self.value_dd.set_model(Gtk.StringList.new([_("All")] + self._values[1:]))
         self.value_dd.set_selected(self._values.index(keep) if keep in self._values[1:] else 0)
@@ -1073,7 +1132,14 @@ class MainWindow(Gtk.ApplicationWindow):
             g = self.group_dd.get_selected()
             self.settings["list_group"] = (self._groups[g] if 0 < g < len(self._groups)
                                            else "")
+            self._update_choices()
         self._refilter()
+
+    def _on_list_tag(self):
+        if not self._tag_sync:
+            self.settings["list_tag"] = self._tag() or ""
+            self._update_values()
+            self._refilter()
 
     def _refilter(self):
         self._fstate = self._filter_state()
@@ -1711,6 +1777,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.side_stack.set_visible_child_name("channels")
         self.mode = mode
         self.settings["mode"] = mode
+        self._update_choices()
         self._refilter()
         if not tune or (self.current is not None and self.current.radio == (mode == "radio")):
             return

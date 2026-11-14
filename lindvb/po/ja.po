@@ -4506,3 +4506,11 @@ msgstr "最初から見る"
 #: lindvb/ui/epg.py
 msgid "Plays the programme from its start from the provider's archive (catch-up)"
 msgstr "番組を提供元のアーカイブから最初から再生します (見逃し配信)"
+
+#: lindvb/ui/window.py
+msgid "All tags"
+msgstr "すべてのタグ"
+
+#: lindvb/ui/window.py
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend のチャンネルタグ"
