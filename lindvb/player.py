@@ -44,7 +44,8 @@ PLAY_FLAGS_VIS = 8
 SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
-from .ipstream import ADAPTIVE_DEMUX_SETTINGS, Retry  # noqa: E402
+from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, REFUSED_CODES, Retry,  # noqa: E402
+                       http_headers, resolve_redirects, setup_http_source)
 from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
@@ -73,7 +74,7 @@ def _is_hls_url(uri):
 
 
 def _fetch_text(url, limit=256 * 1024, timeout=4):
-    req = urllib.request.Request(url, headers={"User-Agent": "LinDVB"})
+    req = urllib.request.Request(url, headers=http_headers())
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read(limit).decode("utf-8", "replace")
 
@@ -144,15 +145,25 @@ def black_borders(data, w, h, stride, threshold=24):
     return top / h, bottom / h, left / w, right / w
 
 
+def http_status(err, debug=""):
+    """The HTTP status in a GStreamer error, or None."""
+    m = re.search(r"\((40[134]|410|451)\)", f"{err.message} {debug or ''}")
+    return int(m.group(1)) if m else None
+
+
+def redirect_target(debug=""):
+    """The address souphttpsrc names in "Redirect to: …", or None."""
+    m = re.search(r"Redirect to:\s*(\S+?)\)?\s*$", (debug or "").strip(), re.M)
+    return m.group(1) if m else None
+
+
 def describe_error(err, debug=""):
     """A readable text for a GStreamer error; HTTP refusals get their reason."""
-    text = f"{err.message} {debug or ''}"
-    m = re.search(r"\((40[134]|410|451)\)", text)
-    if m:
-        code = m.group(1)
-        if code in ("401", "403", "451"):
-            return (f"The server refused the stream (HTTP {code}). It is probably "
-                    "only available in certain countries.")
+    code = http_status(err, debug)
+    if code is not None:
+        if code in REFUSED_CODES:
+            return (f"The server refused the stream (HTTP {code}). It may be "
+                    "limited to certain countries or devices.")
         return f"The stream was not found on the server (HTTP {code})."
     return err.message
 
@@ -336,6 +347,7 @@ class Player(GObject.Object):
         self._hls_alt_audio = {}        # url -> master playlist has audio renditions
         self._fallback_done = False
         self._error_token = -1          # playback that already reported an error
+        self._resolve_token = -1        # playback whose address was resolved once
         self._hw_error_token = -1       # playback whose GPU decoder failed
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
@@ -669,13 +681,17 @@ class Player(GObject.Object):
             src.set_property("max-bytes", TS_PACKET * 512 * 16)
             self.feeder = Feeder(SegmentReader(self.capture.store, self._start_offset), src)
             self.feeder.start()
-        elif src.find_property("user-id") is not None and self.uri:
-            set_login(src, self.uri)
         elif name == "udpsrc" and self._ssm_source:
             if src.find_property("multicast-source"):
                 src.set_property("multicast-source", self._ssm_source)
             src.set_property("caps", Gst.Caps.from_string(
                 "application/x-rtp,media=video,clock-rate=90000,encoding-name=MP2T"))
+        else:
+            # an HTTP source: our user agent (a broadcaster CDN refuses an
+            # unknown client with 403) and, for Tvheadend, the server login
+            setup_http_source(src)
+            if src.find_property("user-id") is not None and self.uri:
+                set_login(src, self.uri)
 
     def _on_element_setup(self, _pb, element):
         f = element.get_factory()
@@ -935,6 +951,49 @@ class Player(GObject.Object):
         pb.set_property("uri", real)
         self.paused = False
         pb.set_state(Gst.State.PLAYING)
+
+    # -- a refused stream: ask the CDN behind the gateway ------------------
+    def _resolve_refused(self, err, debug=""):
+        """A DVB-I gateway URL refused with 401/403/451: resolve its redirect
+        and play what it points at, once per playback. The gateway redirects
+        to the broadcaster's CDN, and the hop through GStreamer can lose the
+        request (an https address answering with a plain http target among
+        other reasons)."""
+        if self.capture or not self.uri or self._resolve_token == self._token:
+            return False
+        if http_status(err, debug) not in REFUSED_CODES:
+            return False
+        if not self.uri.startswith(("http://", "https://")):
+            return False
+        self._resolve_token = self._token
+        text = describe_error(err, debug)
+        hint = redirect_target(debug)
+        debuglog.write("Player", f"refused ({text}); resolving {self.uri}"
+                                 + (f" (redirect to {hint})" if hint else ""))
+        threading.Thread(target=self._resolve_worker, args=(self.uri, self._token, text),
+                         daemon=True).start()
+        return True
+
+    def _resolve_worker(self, uri, token, text):
+        try:
+            target = resolve_redirects(uri)
+        except OSError as e:
+            debuglog.write("Player", f"resolving {uri} failed: {e}")
+            target = uri
+        GLib.idle_add(self._resolved, token, uri, target, text)
+
+    def _resolved(self, token, uri, target, text):
+        if token != self._token or self.uri != uri or self.capture:
+            return False
+        if target == uri:
+            self.emit("error", text)
+            return False
+        debuglog.write("Player", f"playing the resolved address {target}")
+        self.uri = target
+        self._played = False
+        self._fallback_done = False
+        self._start_uri(self._pb3)
+        return False
 
     def _fallback_to_playbin(self, token):
         if token == self._token and self.uri and not self.capture:
@@ -1535,6 +1594,8 @@ class Player(GObject.Object):
                 # e.g. hlsdemux2 refusing a stream: try the classic pipeline once
                 self._fallback_done = True
                 GLib.idle_add(self._fallback_to_playbin, self._token)
+                return
+            if self._resolve_refused(err, _dbg):
                 return
             if self._try_reconnect(describe_error(err, _dbg)):
                 return

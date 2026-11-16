@@ -187,6 +187,107 @@ def test_tvheadend_reader_reconnects(flaky):
     assert status[0] == "reconnecting"
 
 
+# -- DVB-I gateways: user agent and redirects --------------------------------------
+
+
+class Gateway(http.server.BaseHTTPRequestHandler):
+    """A DVB-I gateway like ARD's: /dvbi/dash/36/dash.mpd redirects to the
+    broadcaster's CDN, which refuses the first request (403) and serves the
+    stream on the next one. /strict.ts answers 403 to a client that does not
+    identify itself as a TV terminal."""
+    requests = []
+    agents = []
+    refused = set()
+
+    def log_message(self, *a):
+        pass
+
+    def do_GET(self):
+        Gateway.requests.append(self.path)
+        Gateway.agents.append(self.headers.get("User-Agent", ""))
+        if self.path.startswith("/dvbi/"):
+            self.send_response(302)
+            self.send_header("Location", "/cdn/manifest.ts")
+            self.end_headers()
+            return
+        if self.path == "/strict.ts" and "HbbTV/" not in self.headers.get("User-Agent", ""):
+            self.send_response(403)
+            self.end_headers()
+            return
+        if self.path == "/cdn/manifest.ts" and self.path not in Gateway.refused:
+            Gateway.refused.add(self.path)          # the first request is refused
+            self.send_response(403)
+            self.end_headers()
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "video/mp2t")
+        self.end_headers()
+        try:
+            for _i in range(3):
+                self.wfile.write(NULL * 100)
+                self.wfile.flush()
+        except OSError:
+            pass
+        self.close_connection = True
+
+
+@pytest.fixture
+def gateway():
+    Gateway.requests, Gateway.agents, Gateway.refused = [], [], set()
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Gateway)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    yield f"http://127.0.0.1:{srv.server_address[1]}"
+    srv.shutdown()
+
+
+def test_user_agent_is_a_tv_terminal():
+    ua = ipstream.user_agent()
+    assert "HbbTV/" in ua and ua.startswith("Mozilla/5.0")
+    assert ipstream.http_headers()["User-Agent"] == ua
+    assert ipstream.http_headers({"Range": "bytes=0-"})["Range"] == "bytes=0-"
+
+
+def test_reader_sends_the_user_agent(gateway):
+    """A CDN that refuses an unknown client (ARD: 403) is served our agent."""
+    got, errors = [], []
+    done = threading.Event()
+    r = ipstream.StreamReader(gateway + "/strict.ts", lambda b: (got.append(b), done.set()),
+                              errors.append, reconnect=False)
+    r.start()
+    assert done.wait(5)                     # no 403: the server knows the client
+    r.close()
+    assert sum(map(len, got)) > 0 and not [e for e in errors if "403" in e]
+    assert all("HbbTV/" in a for a in Gateway.agents)
+
+
+def test_resolve_redirects_follows_a_gateway(gateway):
+    target = ipstream.resolve_redirects(gateway + "/dvbi/dash/36/dash.mpd")
+    assert target == gateway + "/cdn/manifest.ts"
+    assert ipstream.resolve_redirects(gateway + "/cdn/manifest.ts") == \
+        gateway + "/cdn/manifest.ts"                       # no redirect: unchanged
+
+
+def test_resolve_redirects_reports_an_unreachable_address():
+    with pytest.raises(OSError):
+        ipstream.resolve_redirects("http://127.0.0.1:1/dvbi/dash/1/dash.mpd", timeout=1)
+
+
+def test_reader_retries_once_at_the_resolved_address(gateway):
+    """403 from the address behind a gateway: resolve the redirect and ask
+    the CDN again, instead of failing the channel."""
+    got, errors = [], []
+    done = threading.Event()
+    r = ipstream.StreamReader(gateway + "/dvbi/dash/36/dash.mpd",
+                              lambda b: (got.append(b), done.set()),
+                              errors.append, reconnect=False)
+    r.start()
+    assert done.wait(5) and not errors
+    r.close()
+    assert r.url == gateway + "/cdn/manifest.ts"
+    assert Gateway.requests.count("/cdn/manifest.ts") >= 2
+
+
 # -- GStreamer -------------------------------------------------------------------------
 
 def _gst(*elements):
