@@ -209,6 +209,24 @@ window.onload = function () {
 </body></html>
 """
 
+TT_LAUNCHER_LEAVES = b"""<html><head><title>launcher</title>
+<script type="text/javascript">
+window.onload = function () {
+  var app = document.getElementById('am').getOwnerApplication(document);
+  setTimeout(function () {
+    app.createApplication('dvb://current.ait/13.2?page=100', false);
+    app.destroyApplication();
+    // what a launcher may do next while the teletext page is still on its way
+    setTimeout(function () {
+      if (location.search.indexOf('stop') >= 0) { window.stop(); } else { location.href = 'about:blank'; }
+    }, 100);
+  }, 200);
+};
+</script></head><body>
+<object id="am" type="application/oipfApplicationManager"></object>
+</body></html>
+"""
+
 TT_PAGE = b"""<html><head><title>loading</title>
 <script type="text/javascript">window.onload = function () { document.title = 'teletext' + location.search; };</script>
 </head><body></body></html>
@@ -305,11 +323,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body = XML_AIT.replace(b"BASE", base.encode())
             ctype = "application/vnd.dvb.ait+xml"
         else:
+            if path.startswith("/ttapp") and "slow" in self.path:
+                time.sleep(1.0)                    # a teletext server that takes its time
             body = DASH_APP if path.startswith("/dashapp") else \
                 SUB_APP if path.startswith("/subapp") else \
                 PC_APP if path.startswith("/pcapp") else \
                 DRM_APP if path.startswith("/drmapp") else \
                 TT_LAUNCHER if path.startswith("/ttlauncher") else \
+                TT_LAUNCHER_LEAVES if path.startswith("/ttleaves") else \
                 TT_PAGE if path.startswith("/ttapp") else \
                 SYNC_APP if path.startswith("/syncapp") else \
                 CORS_APP if path.startswith("/corsapp") else \
@@ -814,10 +835,9 @@ async def _remote_client(svc, endpoint):
     return msg
 
 
-def test_teletext_link_starts_the_ait_application():
-    """A launcher's teletext link, createApplication("dvb://current.ait/13.2"),
-    starts that application of the AIT (with the query) and the launcher's
-    destroyApplication() right after does not end it."""
+def _teletext_link(launcher, teletext, check):
+    """Runs a launcher whose teletext link opens the AIT's teletext app 13.2,
+    then hands the HbbTV object to check() while the server still runs."""
     from lindvb.ui.hbbtv import HbbTV
 
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
@@ -831,17 +851,34 @@ def test_teletext_link_starts_the_ait_application():
         cap = FakeCapture()
         hbb.channel_changed(ch, cap)
         a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
-        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="ttlauncher"),
-                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location="ttapp", usage=ait.USAGE_TELETEXT)]
+        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location=launcher),
+                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location=teletext, usage=ait.USAGE_TELETEXT)]
         cap.ait = a
         cap.emit("ait", a)
         title = lambda: hbb.view.get_title() or ""  # noqa: E731
         assert _wait(lambda: title().startswith("teletext")), (title(), win.status)
-        assert title() == "teletext?page=100"
+        check(hbb, title())
         assert hbb.life.active and hbb.life.running.app_id == 2
         win.window.destroy()
     finally:
         server.shutdown()
+
+
+def test_teletext_link_starts_the_ait_application():
+    """A launcher's teletext link, createApplication("dvb://current.ait/13.2"),
+    starts that application of the AIT (with the query) and the launcher's
+    destroyApplication() right after does not end it."""
+    def check(hbb, title):
+        assert title == "teletext?page=100"
+    _teletext_link("ttlauncher", "ttapp", check)
+
+
+@pytest.mark.parametrize("how", ["blank", "stop"])
+def test_teletext_link_survives_the_launcher_leaving(how):
+    """ARD's launcher calls createApplication() for the teletext and then blanks
+    or stops itself while the (slow) teletext page is still loading: the
+    teletext still opens instead of the application ending."""
+    _teletext_link("ttleaves?" + how, "ttapp?slow=1", lambda hbb, title: None)
 
 
 def test_objects_work_before_the_observer_ran():

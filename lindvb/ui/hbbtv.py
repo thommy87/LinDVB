@@ -226,6 +226,9 @@ class HbbTV:
                                  autostart=self.settings.get("hbbtv_autostart", False))
         self.on_state = None            # callback(has_app, running) for the header button
         self._pending_red = False
+        self._launch_url = ""            # the application URL being loaded
+        self._launch_committed = True    # its document replaced the previous one
+        self._launch_retried = False
         self._broadcast_stopped = False
         self._ccids = {}
         self._channel_key = None
@@ -897,6 +900,7 @@ class HbbTV:
         self._ste_clear()
         view.set_visible(True)
         log("launch", url, f"app={app.org_id:x}.{app.app_id:x}" if app else "app=-")
+        self._launch_url, self._launch_committed, self._launch_retried = url, False, False
         view.load_uri(url)
         name = app.name(("deu", "ger", "eng")) if app else ""
         self.win.set_status(_("HbbTV: {name}").format(name=name or url))
@@ -923,6 +927,7 @@ class HbbTV:
         log("application ended")
         if self.view is not None:
             self.view.set_visible(False)
+            self._launch_url, self._launch_committed = "", True     # our own blank page
             self.view.load_uri("about:blank")
         GLib.idle_add(lambda: (self._resume_broadcast(), False)[1])
 
@@ -955,9 +960,17 @@ class HbbTV:
             decision.ignore()
             return True
         elif kind == WebKit.PolicyDecisionType.NAVIGATION_ACTION:
-            uri = decision.get_navigation_action().get_request().get_uri() or ""
-            if DEBUG and uri != "about:blank":
-                log("navigate", uri)
+            action = decision.get_navigation_action()
+            uri = action.get_request().get_uri() or ""
+            if (not self._launch_committed and self.life.active and uri == "about:blank"
+                    and self._launch_url != "about:blank" and not action.is_redirect()):
+                # the previous application, still running until the next one's
+                # document arrives, must not cancel that load (an ARD launcher
+                # blanks itself after createApplication)
+                log("ignored navigation of the previous application", uri)
+                decision.ignore()
+                return True
+            log("navigate", uri)
             if hb.parse_ait_url(uri) is not None:
                 # location.href = "dvb://current.ait/..": an AIT application
                 decision.ignore()
@@ -996,8 +1009,20 @@ class HbbTV:
         download.connect("finished", finished)
 
     def _on_load_failed(self, _view, _event, uri, error):
-        if uri == "about:blank" or error.matches(WebKit.NetworkError.quark(),
-                                                 WebKit.NetworkError.CANCELLED):
+        cancelled = (error.matches(WebKit.NetworkError.quark(), WebKit.NetworkError.CANCELLED)
+                     or error.matches(Gio.io_error_quark(), int(Gio.IOErrorEnum.CANCELLED)))
+        if cancelled and uri == self._launch_url and not self._launch_committed \
+                and not self._launch_retried and self.life.active:
+            # the load of a new application was cut off before its page came
+            # (the previous page stopped it): once more
+            log("load cancelled, again", uri)
+            self._launch_retried = True
+            GLib.timeout_add(200, lambda: (self.view is not None and self.life.active and
+                                           self.life.running_url == uri and
+                                           self.view.load_uri(uri), False)[1])
+            return False
+        if uri == "about:blank" or cancelled:
+            log("load cancelled", uri)
             return False
         if error.matches(WebKit.PolicyError.quark(),
                          WebKit.PolicyError.FRAME_LOAD_INTERRUPTED_BY_POLICY_CHANGE):
@@ -1008,7 +1033,10 @@ class HbbTV:
         self._notify()
         return False
 
-    def _on_load_changed(self, _view, event):
+    def _on_load_changed(self, view, event):
+        if event == WebKit.LoadEvent.COMMITTED and not self._launch_committed:
+            self._launch_committed = True
+            log("loaded", view.get_uri())
         if event == WebKit.LoadEvent.FINISHED and self._pending_red:
             self._pending_red = False
             GLib.timeout_add(1500, lambda: (self._js("key", hb.VK["RED"]), False)[1])
