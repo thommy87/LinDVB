@@ -835,10 +835,9 @@ async def _remote_client(svc, endpoint):
     return msg
 
 
-def test_teletext_link_starts_the_ait_application():
-    """A launcher's teletext link, createApplication("dvb://current.ait/13.2"),
-    starts that application of the AIT (with the query) and the launcher's
-    destroyApplication() right after does not end it."""
+def _teletext_link(launcher, teletext, check):
+    """Runs a launcher whose teletext link opens the AIT's teletext app 13.2,
+    then hands the HbbTV object to check() while the server still runs."""
     from lindvb.ui.hbbtv import HbbTV
 
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
@@ -852,17 +851,34 @@ def test_teletext_link_starts_the_ait_application():
         cap = FakeCapture()
         hbb.channel_changed(ch, cap)
         a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
-        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="ttlauncher"),
-                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location="ttapp", usage=ait.USAGE_TELETEXT)]
+        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location=launcher),
+                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location=teletext, usage=ait.USAGE_TELETEXT)]
         cap.ait = a
         cap.emit("ait", a)
         title = lambda: hbb.view.get_title() or ""  # noqa: E731
         assert _wait(lambda: title().startswith("teletext")), (title(), win.status)
-        assert title() == "teletext?page=100"
+        check(hbb, title())
         assert hbb.life.active and hbb.life.running.app_id == 2
         win.window.destroy()
     finally:
         server.shutdown()
+
+
+def test_teletext_link_starts_the_ait_application():
+    """A launcher's teletext link, createApplication("dvb://current.ait/13.2"),
+    starts that application of the AIT (with the query) and the launcher's
+    destroyApplication() right after does not end it."""
+    def check(hbb, title):
+        assert title == "teletext?page=100"
+    _teletext_link("ttlauncher", "ttapp", check)
+
+
+@pytest.mark.parametrize("how", ["blank", "stop"])
+def test_teletext_link_survives_the_launcher_leaving(how):
+    """ARD's launcher calls createApplication() for the teletext and then blanks
+    or stops itself while the (slow) teletext page is still loading: the
+    teletext still opens instead of the application ending."""
+    _teletext_link("ttleaves?" + how, "ttapp?slow=1", lambda hbb, title: None)
 
 
 def test_objects_work_before_the_observer_ran():
@@ -993,34 +1009,3 @@ def test_diagnostic_log_records_what_the_app_asks(monkeypatch, tmp_path):
         debuglog.configure({})
         debuglog._path = None
         monkeypatch.setattr(ui, "DEBUG", False)
-
-
-@pytest.mark.parametrize("how", ["blank", "stop"])
-def test_teletext_link_survives_the_launcher_leaving(how):
-    """ARD's launcher calls createApplication() for the teletext and then blanks
-    or stops itself while the (slow) teletext page is still loading: the
-    teletext still opens instead of the application ending."""
-    from lindvb.ui.hbbtv import HbbTV
-
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    url = f"http://127.0.0.1:{server.server_address[1]}/"
-    try:
-        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
-        win = FakeWindow(ch)
-        win.window.present()
-        hbb = HbbTV(win)
-        cap = FakeCapture()
-        hbb.channel_changed(ch, cap)
-        a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
-        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="ttleaves?" + how),
-                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location="ttapp?slow=1",
-                         usage=ait.USAGE_TELETEXT)]
-        cap.ait = a
-        cap.emit("ait", a)
-        title = lambda: hbb.view.get_title() or ""  # noqa: E731
-        assert _wait(lambda: title().startswith("teletext"), timeout=20), (title(), win.status)
-        assert hbb.life.active and hbb.life.running.app_id == 2
-        win.window.destroy()
-    finally:
-        server.shutdown()
