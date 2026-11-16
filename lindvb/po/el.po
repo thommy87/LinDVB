@@ -3406,8 +3406,8 @@ msgstr "Όνομα Α–Ω"
 msgid "Name Z–A"
 msgstr "Όνομα Ω–Α"
 
-msgid "Picture quality"
-msgstr "Ποιότητα εικόνας"
+msgid "Video resolution"
+msgstr "Ανάλυση βίντεο"
 
 msgid "Sort by"
 msgstr "Ταξινόμηση κατά"
@@ -4226,3 +4226,12 @@ msgstr "Όλες οι ετικέτες"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Ετικέτα καναλιού Tvheadend"
+
+msgid "{n} min left"
+msgstr "απομένουν {n} λεπ."
+
+msgid "Audio description"
+msgstr "Ακουστική περιγραφή"
+
+msgid "Black and white"
+msgstr "Ασπρόμαυρο"

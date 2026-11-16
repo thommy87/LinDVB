@@ -8,12 +8,13 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, dvbi, logothumbs
+from .. import chansort, dvbi, logothumbs, satip
 from ..favourites import fav_index, filter_keys, filter_setting
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
-from ..media_info import audio_summary
+from ..media_info import (aspect_label, audio_badges, audio_summary, is_audio_description, is_hdr,
+                           source_label, system_label, video_class)
 from ..player import EQ_BANDS, Player
 from ..library import Positions, delete_info
 from ..recordings import find_recordings, sort_recordings
@@ -626,18 +627,27 @@ class MainWindow(Gtk.ApplicationWindow):
         for w in (self.osd_num, self.osd_title, self.osd_clock):
             top.append(w)
         self.osd_now = Gtk.Label(xalign=0, css_classes=["lv-osd-now"], ellipsize=Pango.EllipsizeMode.END)
-        # genre, country, year of the programme on air, and what audio is on offer
-        self.osd_meta_row = meta = Gtk.Box(spacing=6)
-        self.osd_meta = Gtk.Label(xalign=0, hexpand=True, css_classes=["lv-osd-meta"],
+        # progress of the programme on air and the minutes it has left
+        prog_row = Gtk.Box(spacing=8)
+        self.osd_prog = Gtk.ProgressBar(hexpand=True, valign=Gtk.Align.CENTER)
+        self.osd_left = Gtk.Label(css_classes=["lv-osd-time", "lv-osd-left"])
+        prog_row.append(self.osd_prog)
+        prog_row.append(self.osd_left)
+        self.osd_prog_row = prog_row
+        # genre, country, year of the programme on air
+        self.osd_meta = Gtk.Label(xalign=0, css_classes=["lv-osd-meta"],
                                   ellipsize=Pango.EllipsizeMode.END)
-        self.osd_tags = Gtk.Box(spacing=4, valign=Gtk.Align.CENTER)
-        meta.append(self.osd_meta)
-        meta.append(self.osd_tags)
-        self.osd_prog = Gtk.ProgressBar()
         self.osd_next = Gtk.Label(xalign=0, ellipsize=Pango.EllipsizeMode.END, css_classes=["lv-osd-next"])
+        # technical row: where the channel comes from and the picture (left),
+        # the sound on offer, languages and subtitles (right)
+        self.osd_tech = tech = Gtk.Box(spacing=10, css_classes=["lv-osd-tech"])
+        self.osd_video = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER, hexpand=True)
+        self.osd_tags = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER, halign=Gtk.Align.END)
+        tech.append(self.osd_video)
+        tech.append(self.osd_tags)
         # quality of service: empty without signal, red / orange / yellow / green
         self.osd_quality = Gtk.ProgressBar(css_classes=["lv-osd-quality"])
-        for w in (self.osd_quality, top, self.osd_now, meta, self.osd_prog, self.osd_next):
+        for w in (self.osd_quality, top, self.osd_now, prog_row, self.osd_meta, self.osd_next, tech):
             self.osd.append(w)
         self.osd.set_visible(False)
         overlay.add_overlay(self.osd)
@@ -2407,27 +2417,79 @@ class MainWindow(Gtk.ApplicationWindow):
         self._update_osd_tags()
 
     def _update_osd_tags(self):
-        """Info bar tags: sound formats (current first), languages, subtitles."""
-        for w in list(_children(self.osd_tags)):
-            self.osd_tags.remove(w)
-        if not self.current or not self.player.playbin:
-            self.osd_meta_row.set_visible(bool(self.osd_meta.get_text()))
+        """The OSD's technical row: source, resolution, picture format (and
+        HDR) on the left; sound formats (current first), languages, audio
+        description and subtitles on the right."""
+        for box in (self.osd_video, self.osd_tags):
+            for w in list(_children(box)):
+                box.remove(w)
+        c = self.current
+        if not c:
+            self.osd_tech.set_visible(False)
             return
-        tracks, cur = self.player.audio_track_info()
-        layouts, languages = audio_summary(tracks, cur)
-        tags = [(lay, i == 0, None) for i, lay in enumerate(layouts)]
-        if len(languages) > 1:
-            tags.append((_("{n} languages").format(n=len(languages)), False, " / ".join(languages)))
-        elif len(tracks) > 1:
-            tags.append((_("{n} audio tracks").format(n=len(tracks)), False, None))
-        if self.player.subtitle_tracks()[0]:
-            tags.append((_("Subtitles"), False, None))
-        for text, current, tip in tags:
-            lbl = Gtk.Label(label=text, css_classes=["lv-osd-tag"], tooltip_text=tip)
-            if current:
-                lbl.add_css_class("lv-current")
-            self.osd_tags.append(lbl)
-        self.osd_meta_row.set_visible(bool(tags) or bool(self.osd_meta.get_text()))
+        satip_cap = bool(self.capture is not None and satip.is_satip(getattr(self.capture, "tuner", None)))
+        src = source_label(c, satip=satip_cap)
+        if src:
+            tip = system_label(c) if src == "SAT>IP" else None
+            self.osd_video.append(Gtk.Label(label=src, css_classes=["lv-osd-src"], tooltip_text=tip))
+        sized = False
+        if self.player.playbin and not c.radio:
+            info = self.player.video_info()
+            w, h = info.get("width"), info.get("height")
+            vc = video_class(w, h, info.get("interlace-mode"))
+            if vc:
+                res = Gtk.Box(spacing=4, css_classes=["lv-osd-res"], valign=Gtk.Align.CENTER,
+                              tooltip_text=f"{w}×{h}")
+                res.append(Gtk.Label(label=vc[0], css_classes=["lv-osd-res-class"]))
+                res.append(Gtk.Label(label=vc[1], css_classes=["lv-osd-res-lines"]))
+                self.osd_video.append(res)
+                sized = True
+            ar = aspect_label(w, h, info.get("par"))
+            if ar:
+                self.osd_video.append(Gtk.Label(label=ar, css_classes=["lv-osd-tag", "lv-osd-ar"]))
+            if is_hdr(info.get("colorimetry")):
+                self.osd_video.append(Gtk.Label(label="HDR", css_classes=["lv-osd-hdr"]))
+            now = self.app.epg.now_next(c.epg_key)[0]
+            if now is not None and now.bw:
+                self.osd_video.append(Gtk.Image(icon_name="lindvb-black-white-symbolic", pixel_size=18,
+                                                css_classes=["lv-osd-icon"],
+                                                tooltip_text=_("Black and white")))
+        if self.player.playbin:
+            tracks, cur = self.player.audio_track_info()
+            badges, langs = audio_badges(tracks, cur)
+            for icon, layout, codec, current in badges:
+                b = Gtk.Box(spacing=3, css_classes=["lv-osd-audio"], valign=Gtk.Align.CENTER,
+                            tooltip_text=", ".join(p for p in (layout, codec) if p))
+                b.add_css_class("lv-current" if current else "lv-off")
+                if icon:
+                    b.append(Gtk.Image(icon_name=icon, pixel_size=18))
+                if layout and layout not in ("Mono", "Stereo"):
+                    b.append(Gtk.Label(label=layout, css_classes=["lv-osd-layout"]))
+                if codec:
+                    b.append(Gtk.Label(label=codec, css_classes=["lv-osd-codec"]))
+                self.osd_tags.append(b)
+            if len(langs) > 1:
+                _layouts, names = audio_summary(tracks, cur)
+                self.osd_tags.append(Gtk.Label(label=" · ".join(langs), css_classes=["lv-osd-tag"],
+                                               tooltip_text=" / ".join(names) or None))
+            if any(is_audio_description(t) for t in tracks):
+                self.osd_tags.append(Gtk.Image(icon_name="lindvb-audio-description-symbolic",
+                                               pixel_size=18, css_classes=["lv-osd-icon"],
+                                               tooltip_text=_("Audio description")))
+            if self.player.subtitle_tracks()[0] or self.player.has_closed_captions():
+                self.osd_tags.append(Gtk.Image(icon_name="lindvb-hearing-impaired-symbolic",
+                                               pixel_size=18, css_classes=["lv-osd-icon"],
+                                               tooltip_text=_("Subtitles")))
+        self.osd_tech.set_visible(bool(list(_children(self.osd_video)) or list(_children(self.osd_tags))))
+        # the picture size is known once the first frame is decoded: look again
+        if self.osd.get_visible() and not getattr(self, "_osd_tech_retry", None) and \
+                self.player.playbin and not c.radio and not sized:
+            def again():
+                self._osd_tech_retry = None
+                if self.osd.get_visible():
+                    self._update_osd_tags()
+                return False
+            self._osd_tech_retry = GLib.timeout_add(1500, again)
 
     def on_screenshot(self):
         d = Path(self.settings["screenshot_dir"]).expanduser()
@@ -2705,6 +2767,7 @@ class MainWindow(Gtk.ApplicationWindow):
         meta = details_line(now) if now else ""
         self.osd_meta.set_text(meta)
         self.osd_meta.set_visible(bool(meta))
+        self.osd.set_visible(True)
         self._update_osd_tags()
         self.quality.tick()
         self._update_quality_bar()
@@ -2712,12 +2775,14 @@ class MainWindow(Gtk.ApplicationWindow):
             sub = now.subtitle if now.subtitle and not programme_details(now)[3] else ""
             self.osd_now.set_text(now.title + (f" – {sub}" if sub else ""))
             self.osd_prog.set_fraction(min(1, max(0, (time.time() - now.start) / max(1, now.duration))))
-            self.osd_prog.set_visible(True)
+            left = max(0, int(round((now.end - time.time()) / 60)))
+            self.osd_left.set_text(_("{n} min left").format(n=left))
+            self.osd_prog_row.set_visible(True)
         else:
             self.osd_now.set_text(_("No programme information"))
-            self.osd_prog.set_visible(False)
+            self.osd_prog_row.set_visible(False)
         self.osd_next.set_text(_("Next: {v0}  {title}").format(v0=hm(nxt.start), title=nxt.title) if nxt else "")
-        self.osd.set_visible(True)
+        self.osd_next.set_visible(bool(nxt))
         if self._osd_timeout:
             GLib.source_remove(self._osd_timeout)
         self._osd_timeout = GLib.timeout_add_seconds(seconds or self.settings["osd_seconds"],

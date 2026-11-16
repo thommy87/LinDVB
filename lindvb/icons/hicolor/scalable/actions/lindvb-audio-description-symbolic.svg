@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- audio description: the letters AD in a frame -->
+  <path fill="#222222" fill-rule="evenodd" d="M0.5 2.5h15v11h-15ZM1.8 3.8v8.4h12.4v-8.4Z"/>
+  <path fill="#222222" fill-rule="evenodd" d="M2.6 11.2L4.8 4.8H6.2L8.4 11.2H7L6.55 9.8H4.45L4 11.2ZM4.85 8.6H6.15L5.5 6.5Z"/>
+  <path fill="#222222" fill-rule="evenodd" d="M9 4.8H10.6A3.2 3.2 0 0 1 10.6 11.2H9ZM10.3 6V10H10.6A2 2 0 0 0 10.6 6Z"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- 5.1: front left, centre, right, two surrounds around the listener, the .1 as a box -->
+  <path fill="#222222" fill-rule="evenodd" d="M6.1 8.5a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0ZM7.1 8.5a0.8999999999999999 0.8999999999999999 0 1 0 1.7999999999999998 0a0.8999999999999999 0.8999999999999999 0 1 0 -1.7999999999999998 0Z"/>
+  <circle fill="#222222" cx="2.8" cy="4" r="1.4"/>
+  <circle fill="#222222" cx="8" cy="2.2" r="1.4"/>
+  <circle fill="#222222" cx="13.2" cy="4" r="1.4"/>
+  <circle fill="#222222" cx="2.5" cy="13.2" r="1.4"/>
+  <circle fill="#222222" cx="13.5" cy="13.2" r="1.4"/>
+  <path fill="#222222" fill-rule="evenodd" d="M6.4 12.4h3.2v2.8h-3.2ZM7.4 13.4v0.7999999999999998h1.2000000000000002v-0.7999999999999998Z"/>
+</svg>

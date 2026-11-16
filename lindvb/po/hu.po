@@ -3406,8 +3406,8 @@ msgstr "Név A–Z"
 msgid "Name Z–A"
 msgstr "Név Z–A"
 
-msgid "Picture quality"
-msgstr "Képminőség"
+msgid "Video resolution"
+msgstr "Videófelbontás"
 
 msgid "Sort by"
 msgstr "Rendezés"
@@ -4226,3 +4226,12 @@ msgstr "Minden címke"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend-csatornacímke"
+
+msgid "{n} min left"
+msgstr "még {n} perc"
+
+msgid "Audio description"
+msgstr "Hangos narráció"
+
+msgid "Black and white"
+msgstr "Fekete-fehér"

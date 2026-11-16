@@ -133,8 +133,8 @@ msgstr "事業者 / カテゴリー"
 msgid "Transponder"
 msgstr "トランスポンダー"
 
-msgid "Picture quality"
-msgstr "画質"
+msgid "Video resolution"
+msgstr "映像解像度"
 
 msgid "Cable"
 msgstr "ケーブル"
@@ -4514,3 +4514,12 @@ msgstr "すべてのタグ"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend のチャンネルタグ"
+
+msgid "{n} min left"
+msgstr "残り {n} 分"
+
+msgid "Audio description"
+msgstr "音声解説"
+
+msgid "Black and white"
+msgstr "白黒"

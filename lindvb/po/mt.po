@@ -3406,8 +3406,8 @@ msgstr "Isem A–Ż"
 msgid "Name Z–A"
 msgstr "Isem Ż–A"
 
-msgid "Picture quality"
-msgstr "Kwalità tal-istampa"
+msgid "Video resolution"
+msgstr "Riżoluzzjoni tal-vidjo"
 
 msgid "Sort by"
 msgstr "Issortja skont"
@@ -4226,3 +4226,12 @@ msgstr "It-tikketti kollha"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tikketta tal-kanal ta' Tvheadend"
+
+msgid "{n} min left"
+msgstr "fadal {n} min"
+
+msgid "Audio description"
+msgstr "Deskrizzjoni awdjo"
+
+msgid "Black and white"
+msgstr "Iswed u abjad"

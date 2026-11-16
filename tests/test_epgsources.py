@@ -177,3 +177,18 @@ def test_xmltv_language_and_channels():
     (cid, ev), = items
     assert cid == "DasErste.de" and ev.title == "Tagesschau"
     assert read_xmltv(xml)[1][0][1].title == "Daily News"
+
+
+def test_black_and_white_programmes():
+    """EIT content 0xB1 and XMLTV <colour>no</colour> mark a black and white film (OSD)."""
+    content = bytes([0x54, 4, 0x10, 0x00, 0xB1, 0x00])      # movie, then "black and white"
+    sec = _eit(1, 2, [(1, START, 5400, [_short("deu", "Metropolis", ""), content]),
+                      (2, START + 5400, 1800, [_short("deu", "Nachrichten", "")])])
+    bw, colour = parse_eit_raw(sec, "")[1]
+    assert bw.bw and not colour.bw
+    xml = b"""<tv><programme channel="a" start="20300101120000 +0000" stop="20300101130000 +0000">
+    <title>Casablanca</title><video><colour>no</colour></video></programme>
+    <programme channel="a" start="20300101130000 +0000" stop="20300101140000 +0000">
+    <title>News</title><video><colour>yes</colour></video></programme></tv>"""
+    (_c1, film), (_c2, news) = read_xmltv(xml)[1]
+    assert film.bw and not news.bw

@@ -101,3 +101,70 @@ def test_preferred_audio_track():
     # E-AC-3 wanted but only AC-3 there: the other Dolby format
     assert preferred_track([de_mp2, de_ac3], "eac3", 0) == 1
     assert preferred_track([de_mp2], "ac3", 0) is None
+
+
+# -- OSD technical row (issue #127) ---------------------------------------------
+
+from types import SimpleNamespace  # noqa: E402
+
+from lindvb.media_info import (aspect_label, audio_badges, is_hdr, language_short,  # noqa: E402
+                               layout_icon, source_label, video_class)
+
+
+def _ch(**kw):
+    base = dict(delsys="dvb-s2", dvbi_id="", tvh_server="")
+    base.update(kw)
+    return SimpleNamespace(**base)
+
+
+def test_source_label():
+    assert source_label(_ch()) == "DVB-S2"
+    assert source_label(_ch(delsys="dvb-s")) == "DVB-S"
+    assert source_label(_ch(delsys="dvb-c")) == "DVB-C"
+    assert source_label(_ch(delsys="dvb-t2")) == "DVB-T2"
+    assert source_label(_ch(delsys="atsc")) == "ATSC"
+    assert source_label(_ch(delsys="isdb-t")) == "ISDB-T"
+    assert source_label(_ch(delsys="dtmb")) == "DTMB"
+    assert source_label(_ch(delsys="iptv")) == "IPTV"
+    assert source_label(_ch(), satip=True) == "SAT>IP"
+    assert source_label(_ch(delsys="iptv", tvh_server="tvh1")) == "TVHeadend"
+    assert source_label(_ch(delsys="dvb-t2", dvbi_id="tag:x")) == "DVB-I"
+
+
+def test_video_class():
+    assert video_class(720, 576, "interleaved") == ("SD", "576i")
+    assert video_class(720, 480, "mixed") == ("SD", "480i")
+    assert video_class(1280, 720, "progressive") == ("HD", "720p")
+    assert video_class(1440, 1080, "interleaved") == ("HD", "1080i")
+    assert video_class(1920, 1088, "progressive") == ("HD", "1080p")
+    assert video_class(3840, 2160, "progressive") == ("UHD", "2160p")
+    assert video_class(640, 360) == ("SD", "360")
+    assert video_class(0, 0) is None
+
+
+def test_aspect_label():
+    assert aspect_label(720, 576, (64, 45)) == "16:9"
+    assert aspect_label(720, 576, (16, 15)) == "4:3"
+    assert aspect_label(1920, 1080) == "16:9"
+    assert aspect_label(1440, 1080, (4, 3)) == "16:9"
+    assert aspect_label(640, 480, (1, 1)) == "4:3"
+    assert aspect_label(0, 576) is None
+
+
+def test_is_hdr():
+    assert is_hdr("bt2100-pq") and is_hdr("bt2100-hlg") and is_hdr("1:4:14:7")
+    assert not is_hdr("bt709") and not is_hdr("2:4:5:4") and not is_hdr(None)
+
+
+def test_audio_badges(monkeypatch):
+    _no_gst(monkeypatch)
+    tracks = [AudioTrack("deu", codec="MPEG-1 Layer 2", channels=2),
+              AudioTrack("deu", codec="AC-3 (ATSC A/52)", channels=6),
+              AudioTrack("eng", codec="MPEG-1 Layer 2", channels=2),
+              AudioTrack("qad", codec="MPEG-1 Layer 2", channels=2)]
+    badges, langs = audio_badges(tracks, 1)
+    assert badges == [("lindvb-audio-surround-51-symbolic", "5.1", "AC-3", True),
+                      ("lindvb-audio-stereo-symbolic", "Stereo", "MP2", False)]
+    assert langs == ["DE", "EN"]
+    assert layout_icon(8) == "lindvb-audio-surround-71-symbolic" and layout_icon(3) is None
+    assert language_short("qaa") == "OV" and language_short("und") is None

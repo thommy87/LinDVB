@@ -3406,8 +3406,8 @@ msgstr "Ainm A–Z"
 msgid "Name Z–A"
 msgstr "Ainm Z–A"
 
-msgid "Picture quality"
-msgstr "Cáilíocht pictiúir"
+msgid "Video resolution"
+msgstr "Taifeach físe"
 
 msgid "Sort by"
 msgstr "Sórtáil de réir"
@@ -4226,3 +4226,12 @@ msgstr "Gach clib"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Clib cainéil Tvheadend"
+
+msgid "{n} min left"
+msgstr "{n} nóim fágtha"
+
+msgid "Audio description"
+msgstr "Closchur"
+
+msgid "Black and white"
+msgstr "Dubh agus bán"

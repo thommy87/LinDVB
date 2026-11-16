@@ -3406,8 +3406,8 @@ msgstr "Nosaukums A–Z"
 msgid "Name Z–A"
 msgstr "Nosaukums Z–A"
 
-msgid "Picture quality"
-msgstr "Attēla kvalitāte"
+msgid "Video resolution"
+msgstr "Video izšķirtspēja"
 
 msgid "Sort by"
 msgstr "Kārtot pēc"
@@ -4226,3 +4226,12 @@ msgstr "Visi tagi"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend kanāla tags"
+
+msgid "{n} min left"
+msgstr "atlikušas {n} min"
+
+msgid "Audio description"
+msgstr "Audioapraksts"
+
+msgid "Black and white"
+msgstr "Melnbalts"

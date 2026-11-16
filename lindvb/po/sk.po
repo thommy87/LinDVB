@@ -3406,8 +3406,8 @@ msgstr "Názov A–Z"
 msgid "Name Z–A"
 msgstr "Názov Z–A"
 
-msgid "Picture quality"
-msgstr "Kvalita obrazu"
+msgid "Video resolution"
+msgstr "Rozlíšenie videa"
 
 msgid "Sort by"
 msgstr "Zoradiť podľa"
@@ -4226,3 +4226,12 @@ msgstr "Všetky štítky"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Štítok kanála Tvheadend"
+
+msgid "{n} min left"
+msgstr "zostáva {n} min"
+
+msgid "Audio description"
+msgstr "Zvukový popis"
+
+msgid "Black and white"
+msgstr "Čiernobiely"

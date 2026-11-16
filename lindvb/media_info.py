@@ -194,3 +194,143 @@ def hls_has_alternate_audio(playlist_text):
         if line.startswith("#EXT-X-MEDIA:") and "TYPE=AUDIO" in line and "URI=" in line:
             return True
     return False
+
+
+# -- what the OSD's technical row shows (lindvb.ui.window) ------------------------
+
+_DELSYS_LABELS = {
+    "dvb-s": "DVB-S", "dvb-s2": "DVB-S2", "turbo": "DVB-S2", "isdb-s": "ISDB-S",
+    "dvb-c": "DVB-C", "dvb-c-a": "DVB-C", "dvb-c-c": "DVB-C", "dvb-c-b": "DVB-C",
+    "dvb-c2": "DVB-C2", "dvb-t": "DVB-T", "dvb-t2": "DVB-T2",
+    "atsc": "ATSC", "isdb-t": "ISDB-T", "dtmb": "DTMB",
+}
+
+
+def source_label(channel, satip=False):
+    """Where a channel comes from, as the OSD shows it: 'DVB-I', 'TVHeadend',
+    'SAT>IP', 'IPTV' (any other internet stream or playlist), or the delivery
+    system of a tuner channel ('DVB-S2', 'DVB-C', 'DVB-T2', 'ATSC', ...).
+    ``satip``: the channel is received through a SAT>IP server."""
+    if getattr(channel, "dvbi_id", ""):
+        return "DVB-I"
+    if getattr(channel, "tvh_server", ""):
+        return "TVHeadend"
+    if satip:
+        return "SAT>IP"
+    delsys = (getattr(channel, "delsys", "") or "").lower()
+    if delsys == "iptv":
+        return "IPTV"
+    return _DELSYS_LABELS.get(delsys, delsys.upper())
+
+
+def system_label(channel):
+    """The delivery system alone ('DVB-S2'), e.g. for the SAT>IP tooltip."""
+    delsys = (getattr(channel, "delsys", "") or "").lower()
+    return _DELSYS_LABELS.get(delsys, delsys.upper()) if delsys != "iptv" else ""
+
+
+def video_class(width, height, interlace=None):
+    """('SD' | 'HD' | 'UHD', lines + scan like '1080i') for a picture size.
+
+    SD goes up to 576 lines (720x576 PAL, 720x480 NTSC and smaller web
+    streams); HD from 700 lines or 1200 pixels across (1280x720, 1440x1080,
+    1920x1080); UHD from 1800 lines or 3200 pixels across (3840x2160).
+    ``interlace``: GStreamer's interlace-mode ('progressive', 'interleaved',
+    'mixed', ...); unknown leaves the scan letter out. None without a size."""
+    if not width or not height:
+        return None
+    if height >= 1800 or width >= 3200:
+        cls = "UHD"
+    elif height >= 700 or width >= 1200:
+        cls = "HD"
+    else:
+        cls = "SD"
+    lines = height
+    for std in (480, 576, 720, 1080, 2160, 4320):   # 1088 / 544 coded heights
+        if std <= height <= std + 8:
+            lines = std
+            break
+    mode = (interlace or "").lower()
+    scan = "p" if mode == "progressive" else "i" if mode in (
+        "interleaved", "mixed", "fields", "alternate") else ""
+    return cls, f"{lines}{scan}"
+
+
+def aspect_label(width, height, par=None):
+    """'16:9' or '4:3' for the picture as it is shown: the width stretched by
+    the pixel aspect ratio ``par`` (n, d), so 720x576 at 64/45 is 16:9 and at
+    16/15 is 4:3. From 1.55 up the picture counts as wide. None without a size."""
+    if not width or not height:
+        return None
+    n, d = par if par and par[0] and par[1] else (1, 1)
+    return "16:9" if width * n / (height * d) >= 1.55 else "4:3"
+
+
+def is_hdr(colorimetry):
+    """True when GStreamer's colorimetry names a HDR transfer (PQ / HLG)."""
+    c = (colorimetry or "").lower()
+    if not c:
+        return False
+    if "pq" in c or "hlg" in c or "2084" in c or "b67" in c:
+        return True
+    parts = c.split(":")
+    # range:matrix:transfer:primaries; transfer 14 = SMPTE ST 2084, 15 = ARIB STD-B67
+    return len(parts) == 4 and parts[2] in ("14", "15")
+
+
+def layout_icon(channels):
+    """Icon name for a channel count: mono, stereo, 5.1, 7.1; None otherwise."""
+    return {1: "lindvb-audio-mono-symbolic", 2: "lindvb-audio-stereo-symbolic",
+            6: "lindvb-audio-surround-51-symbolic",
+            8: "lindvb-audio-surround-71-symbolic"}.get(channels or 0)
+
+
+def is_audio_description(track):
+    """A track for blind and visually impaired viewers (Hörfilm)."""
+    if (track.language or "").strip().lower() in ("qad", "nar_ad"):
+        return True
+    t = (track.title or "").lower()
+    return any(k in t for k in ("audio description", "audiodeskription", "hörfilm",
+                                "audiodescription", "audiodescripción"))
+
+
+_ISO1 = {"deu": "de", "ger": "de", "eng": "en", "fra": "fr", "fre": "fr", "ita": "it",
+         "spa": "es", "nld": "nl", "dut": "nl", "pol": "pl", "tur": "tr", "rus": "ru",
+         "por": "pt", "dan": "da", "swe": "sv", "nor": "no", "fin": "fi", "ces": "cs",
+         "cze": "cs", "hun": "hu", "ell": "el", "gre": "el", "ara": "ar", "ukr": "uk",
+         "ron": "ro", "rum": "ro", "hrv": "hr", "srp": "sr", "slv": "sl", "slk": "sk",
+         "slo": "sk", "bul": "bg", "jpn": "ja", "zho": "zh", "chi": "zh", "kor": "ko",
+         "fas": "fa", "per": "fa", "heb": "he", "hin": "hi"}
+
+
+def language_short(code):
+    """'deu' -> 'DE', 'qaa' -> 'OV'; None for no language."""
+    c = (code or "").strip().lower()
+    if c in _NO_LANGUAGE or c in ("qad", "nar_ad", "mul"):
+        return None
+    if c in ("qaa", "qof", "orig", "mis") or (c.startswith("q") and len(c) == 3 and "qaa" <= c <= "qtz"):
+        return "OV"
+    if len(c) == 2:
+        return c.upper()
+    return (_ISO1.get(c) or c).upper()
+
+
+def audio_badges(tracks, current=-1):
+    """What the OSD shows about the sound, current track first:
+    [(icon name or None, layout text, short codec, is current)], one per
+    layout + codec on offer, and the short language codes on offer."""
+    order = ([current] if 0 <= current < len(tracks) else []) + \
+        [i for i in range(len(tracks)) if i != current]
+    badges, seen, langs = [], set(), []
+    for i in order:
+        t = tracks[i]
+        if is_audio_description(t):
+            continue
+        key = (t.channels, short_codec(t.codec))
+        if key not in seen and (t.channels or t.codec):
+            seen.add(key)
+            badges.append((layout_icon(t.channels), t.layout, key[1], i == current))
+        s = language_short(t.language)
+        if s and s not in langs:
+            langs.append(s)
+    return badges, langs

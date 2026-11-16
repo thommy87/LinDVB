@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- black and white: a frame, black on the left up to a face in profile (as in the old TV listings) -->
+  <path fill="#222222" fill-rule="evenodd" d="M0.5 0.5h15v15h-15ZM1.7 1.7v12.6h12.6v-12.6Z"/>
+  <path fill="#222222" d="M1.7 1.7H7.2C6.4 2.6 6.2 3.8 6.6 5.1L5.9 6.6C6.4 6.9 6.9 6.9 7.1 7.2C6.8 7.6 6.9 7.9 7.3 8.1C7.0 8.4 7.0 8.8 7.4 9.1C7.2 9.6 7.3 10.2 7.9 10.4C8.6 10.6 9.4 10.6 9.9 11.4C10.3 12.2 10.3 13.4 10.2 14.3H1.7Z"/>
+</svg>

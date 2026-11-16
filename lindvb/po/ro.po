@@ -3406,8 +3406,8 @@ msgstr "Nume A–Z"
 msgid "Name Z–A"
 msgstr "Nume Z–A"
 
-msgid "Picture quality"
-msgstr "Calitatea imaginii"
+msgid "Video resolution"
+msgstr "Rezoluție video"
 
 msgid "Sort by"
 msgstr "Sortează după"
@@ -4226,3 +4226,12 @@ msgstr "Toate etichetele"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Etichetă de canal Tvheadend"
+
+msgid "{n} min left"
+msgstr "încă {n} min"
+
+msgid "Audio description"
+msgstr "Audiodescriere"
+
+msgid "Black and white"
+msgstr "Alb-negru"
