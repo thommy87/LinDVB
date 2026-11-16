@@ -4235,3 +4235,55 @@ msgstr "Ακουστική περιγραφή"
 
 msgid "Black and white"
 msgstr "Ασπρόμαυρο"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "In memory (RAM)"
+msgstr "Στη μνήμη (RAM)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "On disk as a file"
+msgstr "Στον δίσκο ως αρχείο"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "Ανενεργό: η ζωντανή TV δεν μπορεί να γίνει παύση ή να γυρίσει πίσω. Στη μνήμη: τίποτα δεν γράφεται στον δίσκο, αλλά η προσωρινή μνήμη πιάνει RAM. Στον δίσκο: η μεγαλύτερη προσωρινή μνήμη."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer in memory (MB)"
+msgstr "Προσωρινή μνήμη χρονομετατόπισης στη RAM (MB)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "Το πολύ η μισή μνήμη ({mb} MB)· λιγότερο όταν τη χρειάζονται άλλα προγράμματα."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "Λιγότερο όταν ο δίσκος είναι σχεδόν γεμάτος (μένουν ελεύθερα {mb} MB)."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "{m} min"
+msgstr "{m} λεπτά"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "Η προσωρινή μνήμη χρονομετατόπισης μειώθηκε σε {mb} MB: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "Η χρονομετατόπιση είναι ανενεργή για αυτό το κανάλι: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "not enough free memory"
+msgstr "δεν υπάρχει αρκετή ελεύθερη μνήμη"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "the disk is almost full"
+msgstr "ο δίσκος είναι σχεδόν γεμάτος"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "Η χρονομετατόπιση είναι ανενεργή (Προτιμήσεις › Αναπαραγωγή)"

@@ -4235,3 +4235,55 @@ msgstr "وصف صوتي"
 
 msgid "Black and white"
 msgstr "أبيض وأسود"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "In memory (RAM)"
+msgstr "في الذاكرة (RAM)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "On disk as a file"
+msgstr "على القرص كملف"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "متوقف: لا يمكن إيقاف البث المباشر مؤقتًا أو الرجوع فيه. في الذاكرة: لا يُكتب شيء على القرص، لكن المخزن المؤقت يشغل الذاكرة. على القرص: أكبر مخزن مؤقت."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer in memory (MB)"
+msgstr "المخزن المؤقت للإزاحة الزمنية في الذاكرة (ميغابايت)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "نصف الذاكرة على الأكثر ({mb} ميغابايت)؛ وأقل عندما تحتاجها برامج أخرى."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "أقل عندما يكون القرص ممتلئًا تقريبًا (يبقى {mb} ميغابايت حرًا)."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "{m} min"
+msgstr "{m} دقيقة"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "تم تقليص المخزن المؤقت للإزاحة الزمنية إلى {mb} ميغابايت: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "الإزاحة الزمنية متوقفة لهذه القناة: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "not enough free memory"
+msgstr "لا توجد ذاكرة حرة كافية"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "the disk is almost full"
+msgstr "القرص ممتلئ تقريبًا"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "الإزاحة الزمنية متوقفة (التفضيلات › التشغيل)"

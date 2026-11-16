@@ -2002,6 +2002,9 @@ class MainWindow(Gtk.ApplicationWindow):
             # Tvheadend sends one service: let the demuxer take it, whatever its id
             sid = 0 if self._tuned.tvh_server or self._tuned.buffered else self._tuned.sid
             self.player.play_capture(cap, sid, offset=0)
+            note = getattr(getattr(cap, "plan", None), "note", "")
+            if note and self.current:
+                self.set_status(f"{self.current.name}: {note}")
         return False
 
     def _release_capture(self):
@@ -2335,8 +2338,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def on_keep_timeshift(self):
         """Save the whole timeshift buffer, then continue recording live."""
+        if self.current and self.capture and not getattr(self.capture, "timeshift", True):
+            self.set_status(_("Timeshift is off (Preferences › Playback)"))
+            return
         if self.current and self.capture:
-            start, _ = self.capture.store.bounds()
+            start, _end = self.capture.store.bounds()
             self.app.timers.record_now(self.current, self.capture, _("Timeshift"), start_offset=start)
 
     # ------------------------------------------------------------------ teletext
@@ -2371,6 +2377,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def player_pause(self):
         if not self.player.playbin and self.stopped:
             self.zap(self.stopped)          # Play after Stop: switch the channel back on
+            return
+        if not self.player.can_timeshift():
+            self.set_status(_("Timeshift is off (Preferences › Playback)"))
             return
         self.player.toggle_pause()
 
@@ -2914,7 +2923,12 @@ class MainWindow(Gtk.ApplicationWindow):
     def _tick(self):
         if self.nowplaying.get_visible():
             self.nowplaying.tick()
-        if self.capture and self.player.capture:
+        if self.capture and self.player.capture and not self.player.can_timeshift():
+            self.ts_label.set_text(_("Live"))
+            if self.status.get_text().startswith(_("Tuning {name}…").split("{")[0]) and self.capture.store.bounds()[1] > 0:
+                self.set_status(self.current.name)
+            self._show_seek(None, None)
+        elif self.capture and self.player.capture:
             d = self.player.timeshift_delay()
             self.ts_label.set_text(_("Timeshift −{v0}:{v1:02d}").format(v0=int(d) // 60, v1=int(d) % 60) if d > 3 else _("Live"))
             if self.status.get_text().startswith(_("Tuning {name}…").split("{")[0]) and self.capture.store.bounds()[1] > 0:

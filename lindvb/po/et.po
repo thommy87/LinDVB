@@ -4235,3 +4235,55 @@ msgstr "Kirjeldustõlge"
 
 msgid "Black and white"
 msgstr "Mustvalge"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "In memory (RAM)"
+msgstr "Mälus (RAM)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "On disk as a file"
+msgstr "Kettal failina"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "Väljas: otse-TV-d ei saa peatada ega tagasi kerida. Mälus: kettale ei kirjutata midagi, kuid puhver võtab RAM-i. Kettal: suurim puhver."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer in memory (MB)"
+msgstr "Ajanihke puhver mälus (MB)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "Kõige rohkem pool mälust ({mb} MB); vähem, kui teised programmid seda vajavad."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "Vähem, kui ketas on peaaegu täis ({mb} MB jääb vabaks)."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "{m} min"
+msgstr "{m} min"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "Ajanihke puhver vähendatud {mb} MB-ni: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "Ajanihe on selle kanali jaoks väljas: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "not enough free memory"
+msgstr "vaba mälu pole piisavalt"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "the disk is almost full"
+msgstr "ketas on peaaegu täis"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "Ajanihe on väljas (Eelistused › Taasesitus)"

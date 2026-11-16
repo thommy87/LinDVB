@@ -4235,3 +4235,55 @@ msgstr "Аудіоопис"
 
 msgid "Black and white"
 msgstr "Чорно-білий"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "In memory (RAM)"
+msgstr "У пам'яті (RAM)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "On disk as a file"
+msgstr "На диску у вигляді файлу"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "Вимк.: пряму трансляцію не можна призупинити чи перемотати назад. У пам'яті: на диск нічого не записується, але буфер займає RAM. На диску: найбільший буфер."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer in memory (MB)"
+msgstr "Буфер Timeshift у пам'яті (МБ)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "Не більше половини пам'яті ({mb} МБ); менше, коли вона потрібна іншим програмам."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "Менше, коли диск майже заповнений ({mb} МБ лишаються вільними)."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "{m} min"
+msgstr "{m} хв"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "Буфер Timeshift зменшено до {mb} МБ: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "Timeshift для цього каналу вимкнено: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "not enough free memory"
+msgstr "недостатньо вільної пам'яті"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "the disk is almost full"
+msgstr "диск майже заповнений"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "Timeshift вимкнено (Налаштування › Відтворення)"

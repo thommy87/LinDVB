@@ -252,12 +252,12 @@ class PrefsWindow(Gtk.Window):
         spin(g, "subtitle_scale", _("Size (%)"), 50, 300,
              _("Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."))
         g = group(pg, _("Timeshift"))
-        entry(g, "timeshift_dir", _("Timeshift folder"))
-        spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), 128, 200000)
+        self._timeshift_rows(g, s, entry, spin)
         switch(g, "iptv_timeshift", _("Timeshift for internet channels"),
                _("Internet TV channels go through the timeshift buffer like a tuner's: "
                  "pause, jump back and keep the buffer as a recording. Radio streams "
                  "play directly."))
+        self._iptv_ts_rows = [self.w["iptv_timeshift"][0].get_parent()]
         from ..ipstream import QUALITIES
         self._ts_qualities = list(QUALITIES)
         cur = s.get("iptv_timeshift_quality", "auto")
@@ -267,6 +267,8 @@ class PrefsWindow(Gtk.Window):
             _("Automatic switches to a lower quality when the connection gets slow; the "
               "buffer keeps what arrived. Always the best looks the same all the time, "
               "but stops to wait on a slow connection."))
+        self._iptv_ts_rows.append(self._ts_quality_drop.get_parent())
+        self._on_timeshift_mode()
         switch(g, "stream_reconnect", _("Reconnect internet streams"),
                _("When the connection of an internet or Tvheadend channel breaks, it is "
                  "opened again after a few seconds, for up to three minutes."))
@@ -1064,8 +1066,58 @@ class PrefsWindow(Gtk.Window):
 
         threading.Thread(target=work, daemon=True).start()
 
+    # -- timeshift (lindvb.timeshift)
+    def _timeshift_rows(self, g, s, entry, spin):
+        from .. import timeshift
+        self._ts_modes = list(timeshift.MODES)
+        cur = timeshift.mode(s)
+        self._ts_mode_drop = _row(g, _("Timeshift"), dropdown(
+            [_("Off"), _("In memory (RAM)"), _("On disk as a file")],
+            self._ts_modes.index(cur)),
+            _("Off: live TV cannot pause or jump back. In memory: nothing is written "
+              "to the disk, but the buffer takes RAM. On disk: the largest buffer."))
+        self._ts_mode_drop.connect("notify::selected", lambda *_a: self._on_timeshift_mode())
+        entry(g, "timeshift_dir", _("Timeshift folder"))
+        spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), timeshift.MIN_MB,
+             timeshift.DISK_MAX_MB, " ")
+        ram_max = timeshift.ram_limit_mb()
+        s["timeshift_ram_mb"] = min(int(s.get("timeshift_ram_mb", timeshift.RAM_DEFAULT_MB)),
+                                    ram_max)
+        spin(g, "timeshift_ram_mb", _("Timeshift buffer in memory (MB)"), timeshift.MIN_MB,
+             ram_max, " ")
+        for key in ("timeshift_max_mb", "timeshift_ram_mb"):
+            sp = self.w[key][0]
+            sp.connect("value-changed", lambda w: self._ts_hint(w))
+            self._ts_hint(sp)
+
+    @staticmethod
+    def _ts_hint_label(spin):
+        text = spin.get_parent().get_first_child()
+        return text.get_last_child()
+
+    def _ts_hint(self, spin):
+        from .. import timeshift
+        mb = int(spin.get_value())
+        hint = timeshift.duration_hint(mb)
+        if spin is self.w["timeshift_ram_mb"][0]:
+            hint += "\n" + _("At most half of the memory ({mb} MB); less when other "
+                             "programs need it.").format(mb=timeshift.ram_limit_mb())
+        else:
+            hint += "\n" + _("Less when the disk is almost full ({mb} MB stay free).").format(
+                mb=timeshift.DISK_RESERVE_MB)
+        self._ts_hint_label(spin).set_text(hint)
+
+    def _on_timeshift_mode(self):
+        mode = self._ts_modes[self._ts_mode_drop.get_selected()]
+        self.w["timeshift_dir"][0].get_parent().set_visible(mode == "disk")
+        self.w["timeshift_max_mb"][0].get_parent().set_visible(mode == "disk")
+        self.w["timeshift_ram_mb"][0].get_parent().set_visible(mode == "ram")
+        for row in getattr(self, "_iptv_ts_rows", []):
+            row.set_sensitive(mode != "off")
+
     def on_save(self):
         s = self.app.settings
+        s["timeshift_mode"] = self._ts_modes[self._ts_mode_drop.get_selected()]
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
         video_before = (s.get("video_decoder", "auto"), bool(s.get("deinterlace")))

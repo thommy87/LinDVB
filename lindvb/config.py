@@ -56,8 +56,12 @@ DEFAULTS = {
     "hbbtv_pin_salt": "",
     "hbbtv_companion": False,           # DIAL, app to app and sync on the network (off: local only)
     "hbbtv_device_uuid": "",            # DIAL/UPnP device id, made on first use
+    # timeshift buffer (lindvb.timeshift): "disk" (in timeshift_dir), "ram"
+    # (tmpfs, at most half of the memory) or "off" (no pause / jumping back)
+    "timeshift_mode": "disk",
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
+    "timeshift_ram_mb": 1024,
     # internet TV channels through the timeshift buffer (lindvb.ipstream);
     # HLS/DASH quality there: "auto" (follows the connection) or "best"
     "iptv_timeshift": True,

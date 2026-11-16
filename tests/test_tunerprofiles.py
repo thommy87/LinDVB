@@ -154,11 +154,16 @@ def test_tuner_manager_shares_and_releases(monkeypatch):
         pytest.skip("GStreamer is missing")
 
     class FakeCapture:
-        def __init__(self, channel, adapter, frontend, settings, provider=None, tuner=None):
+        def __init__(self, channel, adapter, frontend, settings, provider=None, tuner=None,
+                     live=True):
             self.channel, self.adapter, self.frontend, self.tuner = channel, adapter, frontend, tuner
             self.channels = {channel.key: channel}
             self.users = set()
             self.destroyed = False
+            self.live = live
+
+        def set_live(self):
+            self.live = True
 
         def add_channel(self, channel):
             self.channels[channel.key] = channel

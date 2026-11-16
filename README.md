@@ -377,7 +377,11 @@ with these keys; use `ir-keytable` to remap buttons.
 ## Settings and files
 
 * `~/.config/lindvb/settings.json`, `channels.json`, `timers.json`
-* `~/.cache/lindvb/epg.json` and the timeshift buffer (`timeshift/`)
+* `~/.cache/lindvb/epg.json` and the timeshift buffer (`timeshift/`). Under
+  *Preferences › Playback › Timeshift* the buffer can also be kept in memory
+  (`/dev/shm`, at most half of the RAM, nothing written to the disk) or switched
+  off (no pause or jumping back). On disk, the buffer shrinks when the disk is
+  almost full (2 GB stay free); in memory, when the free RAM runs low.
 * `~/.local/share/lindvb/reception/` the reception log of the channel analysis (one
   CSV file a day, kept 31 days; off unless switched on)
 * Recordings go to `~/Videos/LinDVB` as `.ts` by default (naming scheme with

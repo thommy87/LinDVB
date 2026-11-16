@@ -20,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import directtune, ipstream, satip, tunerprofiles, tvheadend, unicable  # noqa: E402
+from . import directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -29,7 +29,7 @@ try:
 except (ImportError, ValueError):
     GstMpegts = None
 
-SEGMENT_BYTES = 64 * 1024 * 1024
+SEGMENT_BYTES = timeshift.SEGMENT_BYTES
 # Unicable / JESS: seconds to wait for a lock before the command is sent again,
 # and how often it is sent at most
 UNICABLE_LOCK_WAIT = 4
@@ -230,9 +230,11 @@ class Capture(GObject.Object):
         "connection": (GObject.SignalFlags.RUN_LAST, None, (str, str)),
     }
 
-    def __init__(self, channel, adapter, frontend, settings, ca_provider=None, tuner=None):
+    def __init__(self, channel, adapter, frontend, settings, ca_provider=None, tuner=None,
+                 live=True):
         super().__init__()
         self.channel = channel
+        self.settings = settings
         self.adapter = adapter
         self.frontend = frontend
         # the tuner profile (lindvb.tunerprofiles), and the keys of all channels
@@ -270,9 +272,18 @@ class Capture(GObject.Object):
         if channel.delsys in ATSC_SYSTEMS:
             from .atsc import AtscGuide
             self._atsc = AtscGuide(self.epg_language)
-        base = Path(settings["timeshift_dir"])
-        base.mkdir(parents=True, exist_ok=True)
-        self.store = SegmentStore(tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base))
+        # the buffer (lindvb.timeshift): disk, RAM or the small one
+        self.plan = timeshift.plan(settings, live=live)
+        base = self.plan.dir
+        try:
+            base.mkdir(parents=True, exist_ok=True)
+            tmp = tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base)
+        except OSError:
+            # e.g. no /dev/shm in this sandbox: fall back to the timeshift folder
+            base = timeshift.disk_dir(settings)
+            base.mkdir(parents=True, exist_ok=True)
+            tmp = tempfile.mkdtemp(prefix=f"a{adapter}-", dir=base)
+        self.store = SegmentStore(tmp)
         self.users = set()
         self.started_at = time.time()
         self.stats = {}
@@ -324,9 +335,9 @@ class Capture(GObject.Object):
         sink = Gst.ElementFactory.make("multifilesink", "sink")
         sink.set_property("location", str(self.store.dir / "seg%05d.ts"))
         Gst.util_set_object_arg(sink, "next-file", "max-size")
-        sink.set_property("max-file-size", SEGMENT_BYTES)
-        max_files = max(2, int(settings["timeshift_max_mb"]) * 1024 * 1024 // SEGMENT_BYTES)
-        sink.set_property("max-files", max_files)
+        sink.set_property("max-file-size", self.plan.segment_bytes)
+        sink.set_property("max-files", self.plan.max_files)
+        self._sink = sink
         sink.set_property("sync", False)
         sink.set_property("async", False)
         for e in (src, parse, sink):
@@ -778,6 +789,24 @@ class Capture(GObject.Object):
             i += TS_PACKET if data[i] == TS_SYNC else 1
         return offs
 
+    @property
+    def timeshift(self):
+        """Can the live view pause and jump back in this capture's buffer?"""
+        return self.plan.full
+
+    def set_live(self):
+        """The live view joined a capture that so far only recorded: give it
+        the full buffer of the RAM mode (the new size applies from the next
+        segment; multifilesink reads both properties at each new file)."""
+        if self.plan.full or timeshift.mode(self.settings) != "ram":
+            return
+        p = timeshift.plan(self.settings, live=True)
+        if not p.full or p.dir != self.plan.dir:
+            return
+        self.plan = p
+        self._sink.set_property("max-file-size", p.segment_bytes)
+        self._sink.set_property("max-files", p.max_files)
+
     def stop(self):
         if self.ca is not None:
             self.ca.stop()
@@ -912,6 +941,8 @@ class TunerManager(GObject.Object):
         self.captures = {}           # adapter -> Capture
         self._probe = probe or tunerprofiles.probe_delivery_systems
         self._systems = {}           # (adapter, frontend) -> delivery systems
+        # buffers a crashed LinDVB left (in RAM they would stay until a reboot)
+        timeshift.cleanup_stale(settings)
 
     def _systems_for(self, adapter, frontend):
         key = (adapter, frontend)
@@ -951,6 +982,8 @@ class TunerManager(GObject.Object):
             if how[0] == "share":
                 cap.add_channel(channel)
             cap.users.add(user)
+            if user == "live":
+                cap.set_live()
             return cap
         _tune, profile, preempt = how
         if preempt is not None:
@@ -971,7 +1004,7 @@ class TunerManager(GObject.Object):
                 provider = None
         a = profile["adapter"]
         cap = Capture(channel, a, int(profile.get("frontend", 0) or 0), self.settings, provider,
-                      tuner=profile)
+                      tuner=profile, live=user == "live")
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()
@@ -984,9 +1017,12 @@ class TunerManager(GObject.Object):
         for cap in self.captures.values():
             if tvheadend.is_tvheadend(cap.tuner) and cap.channel.key == channel.key:
                 cap.users.add(user)
+                if user == "live":
+                    cap.set_live()
                 return cap
         a = tvheadend.free_adapter(self.captures)
-        cap = Capture(channel, a, 0, self.settings, tuner=tvheadend.stream_profile(a, channel))
+        cap = Capture(channel, a, 0, self.settings, tuner=tvheadend.stream_profile(a, channel),
+                      live=user == "live")
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()
@@ -998,9 +1034,12 @@ class TunerManager(GObject.Object):
         for cap in self.captures.values():
             if ipstream.is_stream(cap.tuner) and cap.channel.key == channel.key:
                 cap.users.add(user)
+                if user == "live":
+                    cap.set_live()
                 return cap
         a = ipstream.free_adapter(self.captures)
-        cap = Capture(channel, a, 0, self.settings, tuner=ipstream.stream_profile(a, channel))
+        cap = Capture(channel, a, 0, self.settings, tuner=ipstream.stream_profile(a, channel),
+                      live=user == "live")
         cap.users.add(user)
         self.captures[a] = cap
         cap.start()
