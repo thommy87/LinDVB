@@ -3406,8 +3406,8 @@ msgstr "Nimi A–Z"
 msgid "Name Z–A"
 msgstr "Nimi Z–A"
 
-msgid "Picture quality"
-msgstr "Pildikvaliteet"
+msgid "Video resolution"
+msgstr "Video eraldusvõime"
 
 msgid "Sort by"
 msgstr "Sorteeri"
@@ -4226,3 +4226,9 @@ msgstr "Kõik sildid"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadendi kanali silt"
+
+msgid "{n} min left"
+msgstr "jäänud {n} min"
+
+msgid "Audio description"
+msgstr "Kirjeldustõlge"

@@ -3406,8 +3406,8 @@ msgstr "Pavadinimas A–Ž"
 msgid "Name Z–A"
 msgstr "Pavadinimas Ž–A"
 
-msgid "Picture quality"
-msgstr "Vaizdo kokybė"
+msgid "Video resolution"
+msgstr "Vaizdo raiška"
 
 msgid "Sort by"
 msgstr "Rikiuoti pagal"
@@ -4226,3 +4226,9 @@ msgstr "Visos žymos"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend kanalo žyma"
+
+msgid "{n} min left"
+msgstr "liko {n} min."
+
+msgid "Audio description"
+msgstr "Garsinis vaizdavimas"

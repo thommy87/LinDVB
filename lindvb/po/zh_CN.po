@@ -3617,8 +3617,8 @@ msgstr "名称 A–Z"
 msgid "Name Z–A"
 msgstr "名称 Z–A"
 
-msgid "Picture quality"
-msgstr "画质"
+msgid "Video resolution"
+msgstr "视频分辨率"
 
 msgid "Sort by"
 msgstr "排序方式"
@@ -4590,3 +4590,9 @@ msgstr "所有标签"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend 频道标签"
+
+msgid "{n} min left"
+msgstr "剩余 {n} 分钟"
+
+msgid "Audio description"
+msgstr "口述影像"

@@ -3406,8 +3406,8 @@ msgstr "Назва А–Я"
 msgid "Name Z–A"
 msgstr "Назва Я–А"
 
-msgid "Picture quality"
-msgstr "Якість зображення"
+msgid "Video resolution"
+msgstr "Роздільність відео"
 
 msgid "Sort by"
 msgstr "Сортувати за"
@@ -4226,3 +4226,9 @@ msgstr "Усі теги"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Тег каналу Tvheadend"
+
+msgid "{n} min left"
+msgstr "залишилось {n} хв"
+
+msgid "Audio description"
+msgstr "Аудіоопис"

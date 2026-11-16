@@ -4772,7 +4772,7 @@ msgstr ""
 msgid "Name Z–A"
 msgstr ""
 
-msgid "Picture quality"
+msgid "Video resolution"
 msgstr ""
 
 msgid "Sort by"
@@ -5824,4 +5824,12 @@ msgstr ""
 
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "{n} min left"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Audio description"
 msgstr ""

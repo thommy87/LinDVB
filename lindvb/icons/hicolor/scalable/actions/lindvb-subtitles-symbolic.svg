@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- subtitles: a screen with two lines of text -->
+  <path fill="#222222" fill-rule="evenodd" d="M0.5 2.5h15v11h-15ZM1.9 3.9v8.2h12.2v-8.2Z"/>
+  <rect fill="#222222" x="3.5" y="8" width="4" height="1.4"/>
+  <rect fill="#222222" x="8.5" y="8" width="4" height="1.4"/>
+  <rect fill="#222222" x="3.5" y="10.4" width="6.5" height="1.4"/>
+</svg>

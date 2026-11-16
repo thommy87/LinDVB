@@ -3617,8 +3617,8 @@ msgstr "სახელი A–Z"
 msgid "Name Z–A"
 msgstr "სახელი Z–A"
 
-msgid "Picture quality"
-msgstr "სურათის ხარისხი"
+msgid "Video resolution"
+msgstr "ვიდეოს გარჩევადობა"
 
 msgid "Sort by"
 msgstr "დალაგება"
@@ -4590,3 +4590,9 @@ msgstr "ყველა ტეგი"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend-ის არხის ტეგი"
+
+msgid "{n} min left"
+msgstr "დარჩა {n} წთ"
+
+msgid "Audio description"
+msgstr "აუდიოაღწერა"

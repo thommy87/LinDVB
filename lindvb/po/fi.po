@@ -3406,8 +3406,8 @@ msgstr "Nimi A–Ö"
 msgid "Name Z–A"
 msgstr "Nimi Ö–A"
 
-msgid "Picture quality"
-msgstr "Kuvanlaatu"
+msgid "Video resolution"
+msgstr "Videon resoluutio"
 
 msgid "Sort by"
 msgstr "Lajitteluperuste"
@@ -4226,3 +4226,9 @@ msgstr "Kaikki tunnisteet"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Tvheadend-kanavatunniste"
+
+msgid "{n} min left"
+msgstr "{n} min jäljellä"
+
+msgid "Audio description"
+msgstr "Kuvailutulkkaus"

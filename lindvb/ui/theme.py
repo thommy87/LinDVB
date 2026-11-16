@@ -108,6 +108,29 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
   padding: 0 5px; border: 1px solid alpha(@lv_line, 0.22);
 }
 .osd .lv-osd-tag.lv-current { color: @lv_text; border-color: @lv_accent; }
+/* technical row: source, resolution, picture format | sound, languages, subtitles */
+.osd .lv-osd-tech { border-top: 1px solid alpha(@lv_line, 0.10); padding-top: 7px; margin-top: 2px; }
+.osd .lv-osd-src {
+  color: @lv_text; background: alpha(@lv_accent, 0.28); font-size: 0.78em; font-weight: 700;
+  border-radius: 4px; padding: 0 6px;
+}
+.osd .lv-osd-res { border: 1.5px solid alpha(@lv_text, 0.85); border-radius: 4px; padding: 0 5px; }
+.osd .lv-osd-res-class { font-size: 0.78em; font-weight: 800; }
+.osd .lv-osd-res-lines { font-size: 0.7em; font-weight: 600; color: @lv_text_dim; font-feature-settings: "tnum"; }
+.osd .lv-osd-ar { font-feature-settings: "tnum"; }
+.osd .lv-osd-hdr {
+  color: #f0d27a; font-size: 0.72em; font-weight: 700; border-radius: 4px; padding: 0 5px;
+  border: 1px solid #d7b24a;
+}
+.osd .lv-osd-audio.lv-off { opacity: 0.55; }
+.osd .lv-osd-layout { font-size: 0.75em; font-weight: 700; }
+.osd .lv-osd-codec {
+  color: @lv_text_dim; font-size: 0.7em; font-weight: 600; font-family: monospace;
+  border-radius: 4px; padding: 0 4px; border: 1px solid alpha(@lv_line, 0.22);
+}
+.osd .lv-osd-audio.lv-current .lv-osd-codec { color: @lv_text; border-color: @lv_accent; }
+.osd .lv-osd-icon { color: @lv_text_dim; }
+.osd .lv-osd-left { font-size: 0.85em; }
 .osd progressbar trough { min-height: 4px; border-radius: 2px; background: alpha(@lv_line, 0.12); }
 .osd progressbar progress { min-height: 4px; border-radius: 2px; background: @lv_accent; }
 /* signal quality strip: empty = no signal, then red, orange, yellow, green */
@@ -263,6 +286,12 @@ _LIGHT_OSD = """
 .osd .lv-osd-time, .osd .lv-osd-next, .osd .lv-osd-meta, .osd .lv-osd-tag { color: #A3A3AD; }
 .osd .lv-osd-tag { border-color: alpha(white, 0.22); }
 .osd .lv-osd-tag.lv-current { color: #F2F2F5; border-color: @lv_accent; }
+.osd .lv-osd-tech { border-top-color: alpha(white, 0.10); }
+.osd .lv-osd-src { color: #F2F2F5; }
+.osd .lv-osd-res { border-color: alpha(#F2F2F5, 0.85); }
+.osd .lv-osd-res-lines, .osd .lv-osd-codec, .osd .lv-osd-icon { color: #A3A3AD; }
+.osd .lv-osd-codec { border-color: alpha(white, 0.22); }
+.osd .lv-osd-audio.lv-current .lv-osd-codec { color: #F2F2F5; }
 .osd progressbar trough { background: alpha(white, 0.12); }
 .osd progressbar.lv-osd-quality trough { background: alpha(white, 0.10); }
 """

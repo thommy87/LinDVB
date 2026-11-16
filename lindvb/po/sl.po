@@ -3406,8 +3406,8 @@ msgstr "Ime A–Ž"
 msgid "Name Z–A"
 msgstr "Ime Ž–A"
 
-msgid "Picture quality"
-msgstr "Kakovost slike"
+msgid "Video resolution"
+msgstr "Ločljivost videa"
 
 msgid "Sort by"
 msgstr "Razvrsti po"
@@ -4226,3 +4226,9 @@ msgstr "Vse oznake"
 #: lindvb/ui/window.py
 msgid "Tvheadend channel tag"
 msgstr "Oznaka kanala Tvheadend"
+
+msgid "{n} min left"
+msgstr "še {n} min"
+
+msgid "Audio description"
+msgstr "Zvočni opis"
