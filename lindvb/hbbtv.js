@@ -217,6 +217,7 @@
     hasCapability: function (name) { return capsXml.indexOf(name) >= 0; }
   };
   Object.defineProperty(capabilities, "xmlCapabilities", {
+    configurable: true,
     get: function () { return new DOMParser().parseFromString(capsXml, "text/xml"); }
   });
 
@@ -1083,7 +1084,7 @@
       el.getText = configuration.getText; el.setText = configuration.setText;
     },
     "application/oipfcapabilities": function (el) {
-      el.hasCapability = capabilities.hasCapability;
+      el.hasCapability = function (n) { return capabilities.hasCapability(n); };
       el.extraSDVideoDecodes = 0; el.extraHDVideoDecodes = 0; el.extraUHDVideoDecodes = 0;
       Object.defineProperty(el, "xmlCapabilities", { get: function () { return capabilities.xmlCapabilities; } });
     },
@@ -1216,6 +1217,60 @@
       el.setAttribute("type", "application/oipfSearchManager"); augment(el); return el;
     }
   };
+
+  /* Diagnostic log (Preferences ▸ HbbTV): what the application asks the
+   * terminal and what it reports, so "your device is not compatible" can be
+   * traced to the question that got the answer it did not like. */
+  if (cfg.debug) { try {
+    var clip = function (v) {
+      var t;
+      try { t = typeof v === "string" ? v : JSON.stringify(v); } catch (e) { t = String(v); }
+      return String(t).slice(0, 300);
+    };
+    var probe = function (what, fn, self) {
+      return function () {
+        var r = fn.apply(self || this, arguments);
+        post({ cmd: "probe", what: what, args: Array.prototype.slice.call(arguments).map(clip),
+               result: clip(r) });
+        return r;
+      };
+    };
+    ["log", "info", "warn", "error"].forEach(function (level) {
+      var orig = console[level];
+      console[level] = function () {
+        post({ cmd: "console", level: level,
+               text: Array.prototype.slice.call(arguments).map(clip).join(" ") });
+        return orig.apply(console, arguments);
+      };
+    });
+    window.addEventListener("error", function (e) {
+      if (e && e.message) {
+        post({ cmd: "console", level: "exception",
+               text: e.message + " (" + (e.filename || "") + ":" + (e.lineno || 0) + ")" });
+      }
+    });
+    window.addEventListener("unhandledrejection", function (e) {
+      post({ cmd: "console", level: "rejection", text: clip(e && e.reason && (e.reason.message || e.reason)) });
+    });
+    window.oipfObjectFactory.isObjectSupported = probe("isObjectSupported", window.oipfObjectFactory.isObjectSupported);
+    capabilities.hasCapability = probe("hasCapability", capabilities.hasCapability, capabilities);
+    var capsGet = Object.getOwnPropertyDescriptor(capabilities, "xmlCapabilities").get;
+    Object.defineProperty(capabilities, "xmlCapabilities", { get: function () {
+      post({ cmd: "probe", what: "xmlCapabilities", args: [], result: "" });
+      return capsGet.call(capabilities);
+    } });
+    HTMLMediaElement.prototype.canPlayType = probe("canPlayType", HTMLMediaElement.prototype.canPlayType);
+    if (navigator.requestMediaKeySystemAccess) {
+      var rk = navigator.requestMediaKeySystemAccess;
+      navigator.requestMediaKeySystemAccess = function (ks) {
+        post({ cmd: "probe", what: "requestMediaKeySystemAccess", args: [clip(ks)], result: "" });
+        return rk.apply(navigator, arguments);
+      };
+    }
+    if (window.MediaSource && MediaSource.isTypeSupported) {
+      MediaSource.isTypeSupported = probe("MediaSource.isTypeSupported", MediaSource.isTypeSupported, MediaSource);
+    }
+  } catch (e) { post({ cmd: "console", level: "error", text: "LinDVB diagnostics: " + e }); } }
 
   /* An app's window.close() ends the app (TS 102 796 6.2.2.10). */
   window.close = function () { application.destroyApplication(); };

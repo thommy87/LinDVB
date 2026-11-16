@@ -258,6 +258,18 @@ window.onload = function () {
 </body></html>
 """
 
+DIAG_APP = b"""<html><head><title>loading</title>
+<script type="text/javascript">
+window.onload = function () {
+  var caps = oipfObjectFactory.createCapabilitiesObject();
+  var drm = caps.hasCapability('+DRM');
+  var mse = oipfObjectFactory.isObjectSupported('application/oipfDrmAgent');
+  console.error('Ihr Geraet ist nicht kompatibel');
+  document.title = 'diag:' + drm + ':' + mse;
+};
+</script></head><body></body></html>
+"""
+
 XML_AIT = b"""<?xml version="1.0" encoding="UTF-8"?>
 <mhp:ServiceDiscovery xmlns:mhp="urn:dvb:mhp:2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <mhp:ApplicationDiscovery DomainName="example.org"><mhp:ApplicationList><mhp:Application>
@@ -300,7 +312,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 TT_LAUNCHER if path.startswith("/ttlauncher") else \
                 TT_PAGE if path.startswith("/ttapp") else \
                 SYNC_APP if path.startswith("/syncapp") else \
-                CORS_APP if path.startswith("/corsapp") else APP
+                CORS_APP if path.startswith("/corsapp") else \
+                DIAG_APP if path.startswith("/diagapp") else APP
             ctype = "application/vnd.hbbtv.xhtml+xml"
         self.send_response(200)
         self.send_header("Content-Type", ctype)
@@ -907,6 +920,7 @@ def test_debug_log_survives_an_ascii_terminal(monkeypatch, tmp_path):
     the terminal drop the AIT."""
     import io
     import lindvb.ui.hbbtv as ui
+    monkeypatch.setattr(ui, "ENV_DEBUG", True)
     monkeypatch.setattr(ui, "DEBUG", True)
     monkeypatch.setattr(ui, "CACHE_DIR", tmp_path)
     monkeypatch.setattr(ui, "_log_file", None)
@@ -923,3 +937,34 @@ def test_debug_log_survives_an_ascii_terminal(monkeypatch, tmp_path):
     assert hbb.has_app
     assert "Übersicht" in (tmp_path / "hbbtv.log").read_text(encoding="utf-8")
     ui._log_file.close()
+
+
+def test_diagnostic_log_records_what_the_app_asks(monkeypatch, tmp_path):
+    """Preferences ▸ HbbTV ▸ Diagnostic log: the app's capability questions and
+    console messages land in hbbtv.log, without any environment variable."""
+    import lindvb.ui.hbbtv as ui
+    monkeypatch.setattr(ui, "CACHE_DIR", tmp_path)
+    monkeypatch.setattr(ui, "_log_file", None)
+    monkeypatch.setattr(ui, "ENV_DEBUG", False)
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.settings["hbbtv_debug_log"] = True
+        win.window.present()
+        hbb = ui.HbbTV(win)
+        _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "diagapp")
+        assert _wait(lambda: (hbb.view.get_title() or "").startswith("diag:"), timeout=30)
+        assert hbb.view.get_title() == "diag:false:true"
+        log = lambda: (tmp_path / "hbbtv.log").read_text(encoding="utf-8")  # noqa: E731
+        assert _wait(lambda: "nicht kompatibel" in log(), timeout=5), log()
+        text = log()
+        assert '"what": "hasCapability", "args": ["+DRM"], "result": "false"' in text, text
+        assert '"isObjectSupported"' in text and "AIT v1" in text and "launch http" in text
+        win.window.destroy()
+    finally:
+        server.shutdown()
+        if ui._log_file is not None:
+            ui._log_file.close()
+        monkeypatch.setattr(ui, "DEBUG", False)

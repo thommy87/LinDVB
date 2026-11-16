@@ -80,12 +80,13 @@ _views = weakref.WeakKeyDictionary()     # WebView -> HbbTV
 _schemes = set()
 
 
-DEBUG = bool(os.environ.get("LINDVB_HBBTV_DEBUG"))
+ENV_DEBUG = bool(os.environ.get("LINDVB_HBBTV_DEBUG"))
+DEBUG = ENV_DEBUG               # or Preferences ▸ HbbTV ▸ Diagnostic log
 _log_file = None
 
 
 def log(*parts):
-    """With LINDVB_HBBTV_DEBUG=1: what the terminal does, on stdout and in
+    """With the diagnostic log on (or LINDVB_HBBTV_DEBUG=1): what the terminal does, on stdout and in
     ~/.cache/lindvb/hbbtv.log (to send along with a bug report)."""
     global _log_file
     if not DEBUG:
@@ -257,6 +258,10 @@ class HbbTV:
 
     # -- channel -------------------------------------------------------------
 
+    def _update_debug(self):
+        global DEBUG
+        DEBUG = ENV_DEBUG or bool(self.settings.get("hbbtv_debug_log", False))
+
     @property
     def enabled(self):
         return available() and self.settings.get("hbbtv_enabled", True)
@@ -268,6 +273,11 @@ class HbbTV:
                 self.capture.disconnect(self._cap_handler)
             except TypeError:
                 pass
+        self._update_debug()
+        if DEBUG and channel is not None:
+            log("channel", channel.name, f"sid={channel.sid}", "tuner" if capture is not None else "no tuner",
+                "" if available() else f"HbbTV unavailable: {unavailable_reason()}",
+                "" if self.settings.get("hbbtv_enabled", True) else "HbbTV switched off")
         same = channel is not None and channel.key == self._channel_key
         self._channel_key = channel.key if channel is not None else None
         if capture is not self.capture or (self.dsmcc is not None and
@@ -739,7 +749,8 @@ class HbbTV:
                        "country": self.settings.get("hbbtv_country", "DEU"),
                        "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
                        "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
-                       "ageLimit": self.age_limit, "hasPin": self.pin.has_pin},
+                       "ageLimit": self.age_limit, "hasPin": self.pin.has_pin,
+                       "debug": DEBUG},
             "app": {"org": app.org_id, "id": app.app_id} if app else None,
             "cs": self._cs_init(app),
         }

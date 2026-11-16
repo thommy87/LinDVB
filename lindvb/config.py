@@ -54,6 +54,7 @@ DEFAULTS = {
     "hbbtv_age_limit": 0,               # youth protection: age of the youngest viewer, 0 = off
     "hbbtv_pin": "",                    # PBKDF2 of the youth protection PIN
     "hbbtv_pin_salt": "",
+    "hbbtv_debug_log": False,           # write ~/.cache/lindvb/hbbtv.log (for bug reports)
     "hbbtv_companion": False,           # DIAL, app to app and sync on the network (off: local only)
     "hbbtv_device_uuid": "",            # DIAL/UPnP device id, made on first use
     # timeshift buffer (lindvb.timeshift): "disk" (in timeshift_dir), "ram"
