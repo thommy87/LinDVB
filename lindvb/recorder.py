@@ -135,6 +135,10 @@ class Recording:
                  channel=None, extras=tuple(e for e in EXTRAS if EXTRA_DEFAULTS[e]), audio_mode="all", language="",
                  full_capture=False):
         path = Path(path)
+        from . import debuglog
+        debuglog.write("Recording", f"start {fmt} {path} from "
+                                    f"{'adapter %s' % capture.adapter if capture is not None else url}"
+                                    f", extras {sorted(extras)}, audio {audio_mode}")
         path.parent.mkdir(parents=True, exist_ok=True)
         self.fmt = fmt
         self.extras = set(extras)
@@ -247,6 +251,8 @@ class Recording:
             self.reader.close()
 
     def stop(self):
+        from . import debuglog
+        debuglog.write("Recording", "stop")
         self.running = False
         if self.remux is not None and self.capture is None:
             self.remux.stop()

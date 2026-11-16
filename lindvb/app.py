@@ -44,6 +44,8 @@ class LinDVBApp(Gtk.Application):
         opts = options.end().unpack()
         Gst.init(None)
         self.settings = Settings()
+        from . import debuglog
+        debuglog.configure(self.settings)
         i18n.setup(self.settings.get("language", ""))
         if i18n.is_rtl():
             Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
@@ -164,6 +166,8 @@ class LinDVBApp(Gtk.Application):
         self.window.play_files(uris)
 
     def do_shutdown(self):
+        from . import debuglog
+        debuglog.log("shutting down")
         self.plugins.emit("shutdown")
         from . import en50221
         en50221.close_all()

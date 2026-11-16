@@ -8,7 +8,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, dvbi, logothumbs, satip
+from .. import chansort, debuglog, dvbi, logothumbs, satip
 from ..favourites import fav_index, filter_keys, filter_setting
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
@@ -1833,6 +1833,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _start_stream(self, c):
         """Play channel *c* (a list channel, or another instance of it)."""
+        debuglog.write("Channel", "switch to " + debuglog.describe_channel(c))
         self._nolock_since = None
         # DVB-I services without a stream (an HbbTV application) have nothing to measure
         # Tvheadend: the server measures the signal, LinDVB gets the stream only
@@ -2808,6 +2809,8 @@ class MainWindow(Gtk.ApplicationWindow):
         GLib.timeout_add(1200, lambda: self.numlabel.set_visible(False) or False)
 
     def set_status(self, text):
+        if text:
+            debuglog.write("Status", text)
         self.status.set_text(text)
 
     def _update_quality_bar(self):

@@ -4287,3 +4287,35 @@ msgstr "id-diska hija kważi mimlija"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "It-timeshift huwa mitfi (Preferenzi › Riproduzzjoni)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "Debugging"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "Meta xi ħaġa ma taħdimx: ixgħel il-mod tad-debugging, erġa’ agħmel dak li ma rnexxiex u ehmeż il-log mar-rapport tal-iżball."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "Mod tad-debugging"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "Jirreġistra f’fajl tal-log il-bidliet tal-istazzjon, l-intunar, id-daqq, ir-reġistrazzjonijiet, l-HbbTV, il-messaġġi tal-istatus u t-twissijiet u l-iżbalji ta’ GStreamer. Il-passwords, il-PINs, l-isem tal-utent tiegħek u l-folder personali tiegħek jitħallew barra. Jidħol fis-seħħ meta tissejvja; itfih meta l-problema tissolva."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "Fajl tal-log"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "Iftaħ il-folder"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "{size} issa, l-aktar {max}. Issejvja… tagħmel kopja biex teħmeż ma’ rapport tal-iżball."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "Għad m’hemmx log."

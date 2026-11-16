@@ -4287,3 +4287,35 @@ msgstr "de schijf is bijna vol"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "Timeshift staat uit (Voorkeuren › Afspelen)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "Foutopsporing"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "Als iets niet werkt: zet de debugmodus aan, herhaal wat misging en voeg het logbestand toe aan het foutrapport."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "Debugmodus"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "Legt zenderwissels, afstemmen, afspelen, opnames, HbbTV, statusmeldingen en waarschuwingen en fouten van GStreamer vast in een logbestand. Wachtwoorden, pincodes, je gebruikersnaam en je persoonlijke map worden weggelaten. Werkt bij opslaan; zet hem weer uit als het probleem is opgelost."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "Logbestand"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "Map openen"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "Nu {size}, hoogstens {max}. Opslaan… maakt een kopie om aan een foutrapport toe te voegen."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "Nog geen log."

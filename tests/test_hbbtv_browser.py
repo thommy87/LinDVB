@@ -920,10 +920,11 @@ def test_debug_log_survives_an_ascii_terminal(monkeypatch, tmp_path):
     the terminal drop the AIT."""
     import io
     import lindvb.ui.hbbtv as ui
+    from lindvb import debuglog
     monkeypatch.setattr(ui, "ENV_DEBUG", True)
     monkeypatch.setattr(ui, "DEBUG", True)
-    monkeypatch.setattr(ui, "CACHE_DIR", tmp_path)
-    monkeypatch.setattr(ui, "_log_file", None)
+    monkeypatch.setattr(debuglog, "ENV", True)
+    debuglog.configure({}, log_path=tmp_path / "debug.log")
     out = io.TextIOWrapper(io.BytesIO(), encoding="ascii")
     monkeypatch.setattr(sys, "stdout", out)
     a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, ["http://tv.example/"])])
@@ -935,29 +936,32 @@ def test_debug_log_survives_an_ascii_terminal(monkeypatch, tmp_path):
     cap.ait = a
     hbb.channel_changed(ch, cap)
     assert hbb.has_app
-    assert "Übersicht" in (tmp_path / "hbbtv.log").read_text(encoding="utf-8")
-    ui._log_file.close()
+    assert "Übersicht" in (tmp_path / "debug.log").read_text(encoding="utf-8")
+    monkeypatch.setattr(debuglog, "ENV", False)
+    debuglog.configure({})
+    debuglog._path = None
 
 
 def test_diagnostic_log_records_what_the_app_asks(monkeypatch, tmp_path):
-    """Preferences ▸ HbbTV ▸ Diagnostic log: the app's capability questions and
-    console messages land in hbbtv.log, without any environment variable."""
+    """Preferences ▸ Debug ▸ Debug mode: the app's capability questions and
+    console messages land in debug.log, without any environment variable."""
     import lindvb.ui.hbbtv as ui
-    monkeypatch.setattr(ui, "CACHE_DIR", tmp_path)
-    monkeypatch.setattr(ui, "_log_file", None)
+    from lindvb import debuglog
     monkeypatch.setattr(ui, "ENV_DEBUG", False)
+    monkeypatch.setattr(debuglog, "ENV", False)
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     try:
         ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
         win = FakeWindow(ch)
-        win.settings["hbbtv_debug_log"] = True
+        win.settings["debug_mode"] = True
+        debuglog.configure(win.settings, log_path=tmp_path / "debug.log")
         win.window.present()
         hbb = ui.HbbTV(win)
         _start(win, hbb, f"http://127.0.0.1:{server.server_address[1]}/", "diagapp")
         assert _wait(lambda: (hbb.view.get_title() or "").startswith("diag:"), timeout=30)
         assert hbb.view.get_title() == "diag:false:true"
-        log = lambda: (tmp_path / "hbbtv.log").read_text(encoding="utf-8")  # noqa: E731
+        log = lambda: (tmp_path / "debug.log").read_text(encoding="utf-8")  # noqa: E731
         assert _wait(lambda: "nicht kompatibel" in log(), timeout=5), log()
         text = log()
         assert '"what": "hasCapability", "args": ["+DRM"], "result": "false"' in text, text
@@ -965,6 +969,6 @@ def test_diagnostic_log_records_what_the_app_asks(monkeypatch, tmp_path):
         win.window.destroy()
     finally:
         server.shutdown()
-        if ui._log_file is not None:
-            ui._log_file.close()
+        debuglog.configure({})
+        debuglog._path = None
         monkeypatch.setattr(ui, "DEBUG", False)

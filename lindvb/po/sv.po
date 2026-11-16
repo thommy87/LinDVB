@@ -4287,3 +4287,35 @@ msgstr "disken är nästan full"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "Timeshift är av (Inställningar › Uppspelning)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "Felsökning"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "När något inte fungerar: slå på felsökningsläget, upprepa det som gick fel och bifoga loggen till felrapporten."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "Felsökningsläge"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "Registrerar kanalbyten, inställning, uppspelning, inspelningar, HbbTV, statusmeddelanden samt varningar och fel från GStreamer i en loggfil. Lösenord, PIN-koder, ditt användarnamn och din hemmapp utelämnas. Gäller när du sparar; stäng av det igen när problemet är löst."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "Loggfil"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "Öppna mapp"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "{size} nu, högst {max}. Spara… gör en kopia att bifoga till en felrapport."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "Ingen logg ännu."

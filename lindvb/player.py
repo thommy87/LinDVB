@@ -23,7 +23,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_name, preferred_track)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import hwaccel  # noqa: E402
+from . import debuglog, hwaccel  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
@@ -863,6 +863,8 @@ class Player(GObject.Object):
 
     def play_capture(self, capture, sid, offset=None):
         """Play a DVB capture, starting at the live end or at a byte offset."""
+        debuglog.write("Player", f"play adapter {getattr(capture, 'adapter', '?')} sid {sid}"
+                                 f"{'' if offset is None else f' from byte {offset}'}")
         self._cancel_reconnect()
         if capture is not self.capture or sid != self.sid:
             self._reset_metadata()
@@ -883,6 +885,8 @@ class Player(GObject.Object):
     def play_uri(self, uri, live=False):
         """Play a file or an address; *live*: a channel's stream, opened again
         when its connection breaks (files and archives play to their end)."""
+        debuglog.write("Player", f"play {'live stream' if live else 'file / address'} {uri} "
+                                 f"(engine {self.settings.get('stream_engine', 'auto')})")
         self._cancel_reconnect()
         self._retry = Retry() if live else None
         self.capture, self.sid = None, 0
@@ -924,6 +928,7 @@ class Player(GObject.Object):
 
     def _start_uri(self, pb3):
         uri = self.uri
+        debuglog.write("Player", f"open with {'playbin3' if pb3 else 'playbin'}")
         real, self._ssm_source = ssm_rtp_to_udp(uri) if uri.startswith(("rtp://", "udp://")) \
             else (uri, None)
         pb = self._build(pb3)
@@ -970,6 +975,7 @@ class Player(GObject.Object):
         self._reconnecting = True
         token = self._token
         self._reconnect_timer = GLib.timeout_add(int(delay * 1000), self._reconnect, token)
+        debuglog.write("Player", f"connection broke ({reason}), reconnecting in {delay:.0f} s")
         self.emit("reconnecting", int(delay), reason)
         return True
 
@@ -992,6 +998,7 @@ class Player(GObject.Object):
             self.playbin.set_property("av-offset", -self.audio_delay_ms * Gst.MSECOND)
 
     def stop(self):
+        debuglog.write("Player", "stop")
         self._cancel_reconnect()
         self._token += 1
         self._teardown()
@@ -1501,6 +1508,8 @@ class Player(GObject.Object):
         t = msg.type
         if t == Gst.MessageType.ERROR:
             err, _dbg = msg.parse_error()
+            debuglog.write("Player", f"error from {msg.src.get_name() if msg.src else '?'}: "
+                                     f"{err.message} ({_dbg})")
             if self._from_visualizer(msg.src):
                 # the visualiser (e.g. one without a usable OpenGL) must not
                 # stop the radio: drop it and play on
@@ -1537,6 +1546,7 @@ class Player(GObject.Object):
                 self._error_token = self._token
             self.emit("error", describe_error(err, _dbg))
         elif t == Gst.MessageType.EOS:
+            debuglog.write("Player", "end of stream")
             if self._network_stream() and self._live_stream() and \
                     self._try_reconnect(_("the server ended the stream")):
                 return
@@ -1544,6 +1554,7 @@ class Player(GObject.Object):
         elif t == Gst.MessageType.STATE_CHANGED and msg.src == self.playbin:
             _old, new, _p = msg.parse_state_changed()
             if new == Gst.State.PLAYING:
+                debuglog.write("Player", "playing")
                 self._played = True
                 if self._retry is not None:
                     self._retry.running()

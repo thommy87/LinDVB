@@ -96,5 +96,6 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Remote controls and key mapping | **Partly**: keyboard shortcuts; Linux IR receivers map to keys through the kernel's rc-core, so they work as keyboards |
 | Media server client, RTSP/UPnP/web | **No** |
 | Script hooks on events | **Yes**: executable files in `~/.config/lindvb/hooks/` named after the event (`channel-tuned`, `recording-started`, `recording-stopped`, `reminder`, ...) get the details in `LINDVB_*` variables; see `lindvb/hooks.py` |
+| Debug log for bug reports | **Yes**: Preferences ▸ Debug ▸ Debug mode writes `~/.cache/lindvb/debug.log` (at most 2 × 2 MB): versions, channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors, terminal output and unhandled exceptions, without passwords, PINs, user name and home folder. Buttons to open the folder, save a copy and delete it; `LINDVB_DEBUG=1` does the same from a terminal |
 | Tasks, standby/hibernate/wake-on-LAN commands | **Partly**: after-recording power actions |
 | OSD skins, HTPC home screen, weather, news (RSS) | **No** |

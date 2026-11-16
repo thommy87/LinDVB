@@ -4287,3 +4287,35 @@ msgstr "القرص ممتلئ تقريبًا"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "الإزاحة الزمنية متوقفة (التفضيلات › التشغيل)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "تصحيح الأخطاء"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "عندما لا يعمل شيء ما: شغّل وضع تصحيح الأخطاء، وكرّر ما فشل، وأرفق السجل بتقرير الخطأ."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "وضع تصحيح الأخطاء"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "يسجّل في ملف سجل تبديل القنوات والتوليف والتشغيل والتسجيلات وHbbTV ورسائل الحالة وتحذيرات GStreamer وأخطاءه. تُستبعد كلمات المرور وأرقام PIN واسم المستخدم ومجلد المنزل. يسري عند الحفظ؛ أوقفه مجددًا عند حل المشكلة."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "ملف السجل"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "فتح المجلد"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "الآن {size}، بحد أقصى {max}. ينشئ «حفظ…» نسخة لإرفاقها بتقرير خطأ."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "لا يوجد سجل بعد."
