@@ -1,0 +1,4653 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: hy\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Ներմուծել ալիքների ցանկ (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Սկսել այս ալիքով (անուն կամ համար)"
+
+msgid "{channel} at {time}"
+msgstr "{channel}, {time}"
+
+msgid "Watch"
+msgstr "Դիտել"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Հիշեցում՝ {title}, {channel}, {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Նախ կարգավորումներում նշեք XMLTV-ի URL-ը"
+
+msgid "Downloading XMLTV guide…"
+msgstr "XMLTV ուղեցույցի ներբեռնում…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched}՝ առանց ուղեցույցի (Կարգավորումներ ▸ EPG ▸ Համադրել IPTV ալիքները)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I. ծառայությունների ցանկի բեռնում…"
+
+msgid "Search the web"
+msgstr "Որոնել համացանցում"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Տելետեքստ (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Ենթագրեր (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "EPG տվյալներ (TS)"
+
+msgid "All audio tracks"
+msgstr "Բոլոր աուդիո ուղիները"
+
+msgid "Preferred language only"
+msgstr "Միայն նախընտրելի լեզուն"
+
+msgid "First audio track only"
+msgstr "Միայն առաջին աուդիո ուղին"
+
+msgid "Record"
+msgstr "Ձայնագրել"
+
+msgid "Record and tune"
+msgstr "Ձայնագրել և միացնել ալիքը"
+
+msgid "Tune only"
+msgstr "Միայն միացնել ալիքը"
+
+msgid "Hibernate"
+msgstr "Քնի ռեժիմ (hibernate)"
+
+msgid "None"
+msgstr "Ոչինչ"
+
+msgid "Power off"
+msgstr "Անջատել համակարգիչը"
+
+msgid "Quit LinDVB"
+msgstr "Փակել LinDVB-ն"
+
+msgid "Standby"
+msgstr "Սպասման ռեժիմ"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Համացանցային հոսքերը չունեն տելետեքստի, ենթագրերի կամ EPG տվյալների հոսքեր։"
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4-ը պահում է մեկ աուդիո ուղի (նախընտրելի լեզուն, եթե այն եթերում է)։"
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Աուդիո ֆայլը պահում է մեկ ուղի (նախընտրելի լեզուն, եթե այն եթերում է)։"
+
+msgid "Fr"
+msgstr "Ուրբ"
+
+msgid "Mo"
+msgstr "Երկ"
+
+msgid "Sa"
+msgstr "Շբթ"
+
+msgid "Su"
+msgstr "Կիր"
+
+msgid "Th"
+msgstr "Հնգ"
+
+msgid "Tu"
+msgstr "Երք"
+
+msgid "We"
+msgstr "Չրք"
+
+msgid "Scheduled"
+msgstr "Պլանավորված"
+
+msgid "Done"
+msgstr "Ավարտված"
+
+msgid "Channel missing"
+msgstr "Ալիքը բացակայում է"
+
+msgid "Tuned"
+msgstr "Միացված"
+
+msgid "Recording"
+msgstr "Ձայնագրվում է"
+
+msgid "Failed"
+msgstr "Ձախողվեց"
+
+msgid "Missed"
+msgstr "Բաց թողնված"
+
+msgid "After recording: {action}"
+msgstr "Ձայնագրումից հետո՝ {action}"
+
+msgid "The module was removed or reset."
+msgstr "Մոդուլը հեռացվել կամ վերագործարկվել է։"
+
+msgid "CAM Menu"
+msgstr "CAM ընտրացանկ"
+
+msgid "Cancel"
+msgstr "Չեղարկել"
+
+msgid "OK"
+msgstr "Լավ"
+
+msgid "Open CAM Menu"
+msgstr "Բացել CAM ընտրացանկը"
+
+msgid "Select"
+msgstr "Ընտրել"
+
+msgid "Back"
+msgstr "Հետ"
+
+msgid "Close Menu"
+msgstr "Փակել ընտրացանկը"
+
+msgid "Device: {path} – {state}"
+msgstr "Սարք՝ {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Բացեք CAM ընտրացանկը՝ մոդուլի կարգավորումները, սմարթ քարտի տեղեկությունները և ծնողական վերահսկողությունը տեսնելու համար։"
+
+msgid "The module has not finished starting yet."
+msgstr "Մոդուլը դեռ չի ավարտել գործարկումը։"
+
+msgid "Custom colour"
+msgstr "Սեփական գույն"
+
+msgid "LinDVB blue (default)"
+msgstr "LinDVB կապույտ (լռելյայն)"
+
+msgid "System accent colour"
+msgstr "Համակարգի շեշտադրման գույն"
+
+msgid "Preferences"
+msgstr "Կարգավորումներ"
+
+msgid "Save"
+msgstr "Պահպանել"
+
+msgid "Appearance"
+msgstr "Արտաքին տեսք"
+
+msgid "Language"
+msgstr "Լեզու"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Ուժի մեջ է մտնում LinDVB-ի հաջորդ գործարկման ժամանակ։"
+
+msgid "Accent colour"
+msgstr "Շեշտադրման գույն"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Օգտագործվում է ընդգծումների, ընտրությունների և կոճակների համար բոլոր պատուհաններում։"
+
+msgid "On-screen display"
+msgstr "Էկրանային ցուցադրում (OSD)"
+
+msgid "OSD display time (s)"
+msgstr "OSD-ի ցուցադրման ժամանակը (վ)"
+
+msgid "Visualisation"
+msgstr "Վիզուալիզացիա"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Ինչ է ցուցադրվում ռադիոյի վիզուալիզացիայի վրա, երբ հնչում է ռադիոալիք կամ աուդիո ֆայլ։ Երգի տվյալները վերցվում են DVB ռադիոյի RadioText-ից, համացանցային ռադիոյի հոսքի վերնագրից և աուդիո ֆայլերի պիտակներից։"
+
+msgid "Overlay"
+msgstr "Վերադրում"
+
+msgid "Station logo tile"
+msgstr "Կայանի լոգոյի սալիկ"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Ալիքի լոգոն, իսկ եթե այն չկա՝ կայանի անունով սալիկ։"
+
+msgid "Album cover"
+msgstr "Ալբոմի շապիկ"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Եթերում հնչող երգի շապիկը՝ ֆայլից կամ որոնված առցանց։"
+
+msgid "Song information"
+msgstr "Երգի տեղեկություններ"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Կատարող, ալբոմ և տարի, համար և վերնագիր։ Առանց երգի տվյալների ցուցադրվում են կայանը և եթերում ընթացող հաղորդումը։"
+
+msgid "Clock in the top right corner"
+msgstr "Ժամացույց վերին աջ անկյունում"
+
+msgid "Sources"
+msgstr "Աղբյուրներ"
+
+msgid "Look up covers online"
+msgstr "Որոնել շապիկներն առցանց"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Եթերում հնչող երգի կատարողն ու վերնագիրն ուղարկում է iTunes Search API-ին՝ ալբոմը, տարին և շապիկը գտնելու համար։"
+
+msgid "Station logo folder"
+msgstr "Կայանների լոգոների թղթապանակ"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Պատկերային ֆայլեր (PNG, SVG, JPG)՝ անվանված ալիքի անունով, օր.՝ «Bayern 3.png»։ Ալիքի անունով լոգոները, ինչպես դրանք պահում է DVBViewer-ը, աշխատում են առանց փոփոխության։ Դատարկ՝ {v0}"
+
+msgid "Playback"
+msgstr "Նվագարկում"
+
+msgid "Deinterlace video"
+msgstr "Ապամիահյուսել (deinterlace) տեսանյութը"
+
+msgid "Screenshot folder"
+msgstr "Էկրանի նկարների թղթապանակ"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Timeshift-ի թղթապանակ"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Timeshift-ի բուֆեր (ՄԲ)"
+
+msgid "Tuner and Channels"
+msgstr "Թյուներ և ալիքներ"
+
+msgid "DVB hardware"
+msgstr "DVB սարքավորում"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Ադապտերների համարներ, որոնք LinDVB-ն կարող է օգտագործել՝ ստորակետով բաժանված։"
+
+msgid "DVB adapters"
+msgstr "DVB ադապտերներ"
+
+msgid "Frontend"
+msgstr "Ֆրոնտենդ"
+
+msgid "Capture whole transponder"
+msgstr "Ընդունել ամբողջ տրանսպոնդերը"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Անհրաժեշտ է բոլոր աուդիո ուղիների համար, երբ ալիքների ցանկը գիտի միայն մեկ աուդիո PID։"
+
+msgid "Satellite LNB"
+msgstr "Արբանյակային LNB"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF ցածր տիրույթ (կՀց)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF բարձր տիրույթ (կՀց)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Անցման հաճախություն (կՀց)"
+
+msgid "Channels"
+msgstr "Ալիքներ"
+
+msgid "Channel Search…"
+msgstr "Ալիքների որոնում…"
+
+msgid "Channel search"
+msgstr "Ալիքների որոնում"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Որոնել ալիքներ ալեհավաքով, մալուխով կամ արբանյակով (Shift+Ctrl+S)։"
+
+msgid "Channel Editor / Favourites"
+msgstr "Ալիքների խմբագրիչ / Ընտրյալներ"
+
+msgid "Channel editor"
+msgstr "Ալիքների խմբագրիչ"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Վերանվանել, դասավորել, ջնջել և ավելացնել ալիքներ, նշել ընտրյալները (Shift+Ctrl+E)։"
+
+msgid "Internet"
+msgstr "Համացանց"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Ալիքների ցանկեր համացանցից՝ ձեր տարածաշրջանի DVB-I ցանկը և IPTV երգացանկեր։ Այս կարգավորումները կիրառվում են անմիջապես։"
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Ձայնագրում"
+
+msgid "Recording folder"
+msgstr "Ձայնագրությունների թղթապանակ"
+
+msgid "File naming scheme"
+msgstr "Ֆայլերի անվանման սխեմա"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Տեղապահներ՝ %year %date %time %end %station %name, / ենթաթղթապանակների համար"
+
+msgid "Timer padding"
+msgstr "Թայմերի պաշար"
+
+msgid "Start earlier by (min)"
+msgstr "Սկսել ավելի շուտ (րոպե)"
+
+msgid "Stop later by (min)"
+msgstr "Ավարտել ավելի ուշ (րոպե)"
+
+msgid "Timers"
+msgstr "Թայմերներ"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Թայմեր ստեղծելուց հետո բացել թայմերների պատուհանը"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Հաղորդումների ուղեցույցում «Ձայնագրել» սեղմելուց հետո անմիջապես խմբագրել նոր թայմերը։"
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Հաղորդումների ուղեցույց՝ եթերային EPG, համացանցային EPG (XMLTV) և այլ մատակարարների EPG։"
+
+msgid "Conditional access"
+msgstr "Պայմանական մուտք"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Ձեր բաժանորդագրված կոդավորված ալիքների ապակոդավորում՝ ձեր սեփական քարտով softcam-ում կամ CI մոդուլում։"
+
+msgid "None (leave scrambled)"
+msgstr "Ոչինչ (թողնել կոդավորված)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Արտաքին softcam (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Ապարատային CI / CI+ մոդուլ"
+
+msgid "Descrambling via"
+msgstr "Ապակոդավորում միջոցով՝"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "DVBAPI սոկետ"
+
+msgid "Unix socket path, or host:port."
+msgstr "Unix սոկետի ուղի կամ host:port։"
+
+msgid "CI module"
+msgstr "CI մոդուլ"
+
+msgid "CI adapter number"
+msgstr "CI ադապտերի համար"
+
+msgid "CA device number"
+msgstr "CA սարքի համար"
+
+msgid "Plugins"
+msgstr "Հավելումներ"
+
+msgid "Load plugins at startup"
+msgstr "Բեռնել հավելումները գործարկման ժամանակ"
+
+msgid "Manage Plugins…"
+msgstr "Կառավարել հավելումները…"
+
+msgid "Format and tracks"
+msgstr "Ձևաչափ և ուղիներ"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Լռելյայն արժեքներ նոր թայմերների և «Ձայնագրել» կոճակի համար։ Յուրաքանչյուր թայմեր, ինչպես նաև «Ձայնագրել ընտրանքներով…»-ով սկսված ձայնագրությունը կարող է դրանք փոխել։\nTS՝ տեսանյութ, բոլոր աուդիո ուղիները, ենթագրերը, տելետեքստը և EPG տվյալները։ MKV՝ տեսանյութ, մի քանի աուդիո ուղի և ենթագրեր։ MPG՝ տեսանյութ և մի քանի աուդիո ուղի։ MP4՝ տեսանյութ և մեկ աուդիո ուղի։ Համացանցային հոսքերը չունեն տելետեքստ, ենթագրեր կամ EPG տվյալներ, HLS և DASH հոսքերը ձայնագրվում են մեկ աուդիո ուղով։"
+
+msgid "TV format"
+msgstr "TV ձևաչափ"
+
+msgid "Radio format"
+msgstr "Ռադիոյի ձևաչափ"
+
+msgid "Audio tracks"
+msgstr "Աուդիո ուղիներ"
+
+msgid "Preferred audio language"
+msgstr "Նախընտրելի աուդիո լեզու"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Օգտագործվում է «Միայն նախընտրելի լեզուն» տարբերակի և MP4-ի կողմից, որը պահում է մեկ ուղի։ Աուդիոնկարագրության ուղիները բաց են թողնվում։ Համընկնում չլինելու դեպքում ձայնագրվում է առաջին ուղին։"
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}. {items} կարող են պահվել միայն MPEG-TS-ում, ուստի ձայնագրությունները պահվում են որպես TS։"
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}. {items} կարող են պահվել միայն TS-ում կամ MKV-ում, ուստի ձայնագրությունները պահվում են որպես TS։"
+
+msgid " and "
+msgstr " և "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Նախընտրելի աուդիո լեզու նշված չէ, ուստի ձայնագրվում է միայն առաջին աուդիո ուղին։"
+
+msgid "Desktop accent: {found}"
+msgstr "Աշխատասեղանի շեշտադրման գույն՝ {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Աշխատասեղանի շեշտադրման գույն չգտնվեց, օգտագործվում է LinDVB կապույտը։"
+
+msgid "Current accent: {color}"
+msgstr "Ընթացիկ շեշտադրման գույն՝ {color}"
+
+msgid "Channel Editor"
+msgstr "Ալիքների խմբագրիչ"
+
+msgid "Name"
+msgstr "Անուն"
+
+msgid "Category"
+msgstr "Կատեգորիա"
+
+msgid "Group"
+msgstr "Խումբ"
+
+msgid "Fav"
+msgstr "Ընտր."
+
+msgid "Type"
+msgstr "Տեսակ"
+
+msgid "Filter channels"
+msgstr "Զտել ալիքները"
+
+msgid "General"
+msgstr "Ընդհանուր"
+
+msgid "Stream URL"
+msgstr "Հոսքի URL"
+
+msgid "Favourite"
+msgstr "Ընտրյալ"
+
+msgid "Radio"
+msgstr "Ռադիո"
+
+msgid "Encrypted"
+msgstr "Կոդավորված"
+
+msgid "Tuning"
+msgstr "Միացում"
+
+msgid "System"
+msgstr "Համակարգ"
+
+msgid "Polarity"
+msgstr "Բևեռացում"
+
+msgid "Modulation"
+msgstr "Մոդուլյացիա"
+
+msgid "Frequency (kHz)"
+msgstr "Հաճախություն (կՀց)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Սիմվոլային արագություն (կԲդ)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Թողունակություն (Հց)"
+
+msgid "Stream ID"
+msgstr "Հոսքի ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "DiSEqC պորտ (-1՝ ոչ մեկը)"
+
+msgid "Service and PIDs"
+msgstr "Ծառայություն և PID-եր"
+
+msgid "Service ID"
+msgstr "Ծառայության ID"
+
+msgid "Transport ID"
+msgstr "Տրանսպորտի ID"
+
+msgid "Video PID"
+msgstr "Տեսա PID"
+
+msgid "Audio PIDs"
+msgstr "Աուդիո PID-եր"
+
+msgid "Teletext PID"
+msgstr "Տելետեքստի PID"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Կիրառել փոփոխությունները (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Նոր ալիք"
+
+msgid "Delete channel"
+msgstr "Ջնջել ալիքը"
+
+msgid "Move up"
+msgstr "Տեղափոխել վեր"
+
+msgid "Move down"
+msgstr "Տեղափոխել վար"
+
+msgid "Sort by group and name"
+msgstr "Դասավորել ըստ խմբի և անվան"
+
+msgid "No channel selected"
+msgstr "Ալիք ընտրված չէ"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Ընտրեք ալիքը ցանկում՝ այն խմբագրելու համար։"
+
+msgid "Unnamed channel"
+msgstr "Անանուն ալիք"
+
+msgid "Recording and Device Statistics"
+msgstr "Ձայնագրությունների և սարքերի վիճակագրություն"
+
+msgid "Active recordings:"
+msgstr "Ակտիվ ձայնագրություններ՝"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nՀաջորդ թայմերը՝ {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Տելետեքստ – {name}"
+
+msgid "Find on page"
+msgstr "Գտնել էջում"
+
+msgid "Copy page"
+msgstr "Պատճենել էջը"
+
+msgid "Save page"
+msgstr "Պահպանել էջը"
+
+msgid "Waiting for teletext…"
+msgstr "Սպասում ենք տելետեքստին…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "teletextdec-ը բացակայում է (gst-plugins-bad libzvbi-ով)։"
+
+msgid "Searching page {page}…"
+msgstr "Էջի որոնում {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Ապակոդավորում կարգավորված չէ։ Կոդավորված ալիքները, որոնց իրավունքն ունեք, կարող են ապակոդավորվել, եթե կարգավորումներում LinDVB-ին ցույց տաք ձեր սեփական softcam-ը կամ CI մոդուլը։"
+
+msgid "Provider '{v0}' is not available."
+msgstr "«{v0}» մատակարարը հասանելի չէ։"
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Մատակարար՝ CI մոդուլ – {status}\nՄոդուլն ապակոդավորում է թյուների մեջ տեղադրված ձեր քարտով։"
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Մատակարար՝ {name}\nLinDVB-ն ECM բաժինները փոխանցում է ձեր սեփական քարտային կլիենտին և կիրառում վերադարձված կառավարման բառերը, ինքը ոչ մի բանալի չի պահում։"
+
+msgid "Open CAM Menu…"
+msgstr "Բացել CAM ընտրացանկը…"
+
+msgid "Failed to load: {v0}"
+msgstr "Չհաջողվեց բեռնել՝ {v0}"
+
+msgid "Switched off"
+msgstr "Անջատված"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Փոփոխություններն ուժի մեջ են մտնում LinDVB-ի հաջորդ գործարկման ժամանակ։"
+
+msgid "No plugins installed."
+msgstr "Հավելումներ տեղադրված չեն։"
+
+msgid "Plugin actions"
+msgstr "Հավելումների գործողություններ"
+
+msgid "Plugin folder: {path}"
+msgstr "Հավելումների թղթապանակ՝ {path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Պատճենեք հավելումներն այս թղթապանակ՝ Python ֆայլ (.py) կամ __init__.py պարունակող թղթապանակ։"
+
+msgid "Open Plugin Folder"
+msgstr "Բացել հավելումների թղթապանակը"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I-ն համացանցից ստանում է ձեր տարածաշրջանի ալիքների ցանկը՝ համարակալումը, անունները և լոգոները, և յուրաքանչյուր ալիքի համար՝ այն ընդունելու եղանակները։ LinDVB-ն հնարավորության դեպքում օգտագործում է ալիքների որոնման արդյունքում գտնված ալեհավաքային, մալուխային կամ արբանյակային ալիքները, հակառակ դեպքում՝ համացանցային հոսքը։"
+
+msgid "Privacy"
+msgstr "Գաղտնիություն"
+
+msgid "I have read the privacy notice"
+msgstr "Ես կարդացել եմ գաղտնիության ծանուցումը"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Բեռնել DVB-I ալիքների հաղորդումների ուղեցույցը (EPG)"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Անցնել ընդունման այլ ուղու (համացանց, ալեհավաք, մալուխ, արբանյակ), երբ մեկը ձախողվում է"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Միացնել արբանյակային ալիքները ցանկից առանց ալիքների որոնման (անհրաժեշտ են արբանյակային ալիքներ ձեր ցանկում)"
+
+msgid "Service list"
+msgstr "Ծառայությունների ցանկ"
+
+msgid "Load Lists from Registry"
+msgstr "Բեռնել ցանկերը ռեեստրից"
+
+msgid "In use: {current}"
+msgstr "Օգտագործվում է՝ {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "DVB-I ցանկ դեռ չի օգտագործվում։"
+
+msgid "Region"
+msgstr "Տարածաշրջան"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Ձեր փոստային ինդեքսն ընտրում է տարածաշրջանային ալիքները և դրանց համարակալումը։ Այն ուղարկվում է միայն ծառայությունների ցանկի սերվերին։"
+
+msgid "Postcode"
+msgstr "Փոստային ինդեքս"
+
+msgid "No postcode: nationwide list"
+msgstr "Առանց փոստային ինդեքսի՝ համազգային ցանկ"
+
+msgid "Remove DVB-I Channels"
+msgstr "Հեռացնել DVB-I ալիքները"
+
+msgid "Update Now"
+msgstr "Թարմացնել հիմա"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Կրկին բեռնել ընտրված ցանկը (այն նաև ստուգվում է ամեն օր)"
+
+msgid "Install Channel List"
+msgstr "Տեղադրել ալիքների ցանկը"
+
+msgid "Asking the service list registry…"
+msgstr "Հարցում ծառայությունների ցանկերի ռեեստրին…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Ռեեստրը հասանելի չէ՝ {error}"
+
+msgid "Default"
+msgstr "Լռելյայն"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} ծառայությունների ցանկ {netloc}-ից"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Ռեեստրը Գերմանիայի համար ծառայությունների ցանկ չի առաջարկում։"
+
+msgid "Loading the service list…"
+msgstr "Ծառայությունների ցանկի բեռնում…"
+
+msgid "In use: {v0}"
+msgstr "Օգտագործվում է՝ {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nԸնտրեք ձեր տարածաշրջանը և կրկին սեղմեք «Տեղադրել»։"
+
+msgid "Enter Again"
+msgstr "Մուտքագրել կրկին"
+
+msgid "The service list does not know this postcode."
+msgstr "Ծառայությունների ցանկը չգիտի այս փոստային ինդեքսը։"
+
+msgid "The service list server answered {code}."
+msgstr "Ծառայությունների ցանկի սերվերը պատասխանեց {code}։"
+
+msgid "Try Again"
+msgstr "Փորձել կրկին"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Կարող եք կրկին փորձել կամ օգտագործել համազգային ցանկը առանց փոստային ինդեքսի։"
+
+msgid "Nationwide List"
+msgstr "Համազգային ցանկ"
+
+msgid "No DVB-I list is in use."
+msgstr "DVB-I ցանկ չի օգտագործվում։"
+
+msgid "{removed} DVB-I channels removed"
+msgstr "Հեռացվել է {removed} DVB-I ալիք"
+
+msgid "All programmes"
+msgstr "Բոլոր հաղորդումները"
+
+msgid "With audio description"
+msgstr "Աուդիոնկարագրությամբ"
+
+msgid "With subtitles"
+msgstr "Ենթագրերով"
+
+msgid "Programme Guide"
+msgstr "Հաղորդումների ուղեցույց"
+
+msgid "Now / Next"
+msgstr "Հիմա / Հաջորդը"
+
+msgid "Per Channel"
+msgstr "Ըստ ալիքի"
+
+msgid "TV Guide"
+msgstr "TV ուղեցույց"
+
+msgid "Search"
+msgstr "Որոնում"
+
+msgid "Record Series"
+msgstr "Ձայնագրել սերիան"
+
+msgid "Remind Me"
+msgstr "Հիշեցնել ինձ"
+
+msgid "Search Web"
+msgstr "Որոնել համացանցում"
+
+msgid "Export the guide as XMLTV"
+msgstr "Արտահանել ուղեցույցը որպես XMLTV"
+
+msgid "Next"
+msgstr "Հաջորդը"
+
+msgid "Now"
+msgstr "Հիմա"
+
+msgid "Only favourites"
+msgstr "Միայն ընտրյալները"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Մատչելիության հնարավորություններ (DVB-I հաղորդումների ուղեցույց)"
+
+msgid "Show:"
+msgstr "Ցույց տալ՝"
+
+msgid "Channel"
+msgstr "Ալիք"
+
+msgid "Start"
+msgstr "Սկիզբ"
+
+msgid "End"
+msgstr "Ավարտ"
+
+msgid "Title"
+msgstr "Վերնագիր"
+
+msgid "Genre"
+msgstr "Ժանր"
+
+msgid "Day"
+msgstr "Օր"
+
+msgid "Duration"
+msgstr "Տևողություն"
+
+msgid "Subheading"
+msgstr "Ենթավերնագիր"
+
+msgid "Title or description"
+msgstr "Վերնագիր կամ նկարագրություն"
+
+msgid "Include description"
+msgstr "Ներառել նկարագրությունը"
+
+msgid "Case sensitive"
+msgstr "Հաշվի առնել մեծատառերը"
+
+msgid "Series recording: {title}"
+msgstr "Սերիայի ձայնագրում՝ {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Հիշեցումը հեռացվեց՝ {title}"
+
+msgid "{title} has already started"
+msgstr "{title}-ն արդեն սկսվել է"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Հիշեցումը սահմանված է՝ {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Հեռացնել հիշեցումը"
+
+msgid "Save EPG data"
+msgstr "Պահպանել EPG տվյալները"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Պահում է ուղեցույցը սկավառակի վրա LinDVB-ն փակելուց հետո։"
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Ցույց տալ EPG տեղեկությունը ալիքը փոխելիս (վ)"
+
+msgid "0 = do not show it."
+msgstr "0՝ չցուցադրել։"
+
+msgid "Remind before start (min)"
+msgstr "Հիշեցնել մեկնարկից առաջ (րոպե)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Հաղորդումների ուղեցույցում սահմանված հիշեցումները ծանուցում են այսքան շուտ։"
+
+msgid "Preferred language"
+msgstr "Նախընտրելի լեզու"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Օգտագործվում է, երբ հաղորդումը հեռարձակվում է մի քանի լեզուներով։"
+
+msgid "Time zone"
+msgstr "Ժամային գոտի"
+
+msgid "Set time zone automatically"
+msgstr "Ավտոմատ սահմանել ժամային գոտին"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Անջատված՝ օգտագործել GMT-ի նկատմամբ ֆիքսված տեղաշարժ ուղեցույցի, թայմերների և ժամացույցի համար։"
+
+msgid "Offset to GMT"
+msgstr "Տեղաշարժ GMT-ի նկատմամբ"
+
+msgid "Internet EPG (IPTV)"
+msgstr "Համացանցային EPG (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Համացանցային EPG-ի աղբյուր, որն օգտագործվում է եթերային EPG-ին զուգահեռ։"
+
+msgid "Match IPTV Channels…"
+msgstr "Համադրել IPTV ալիքները…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Ստուգել կամ ուղղել, թե ուղեցույցի որ ալիքն է համապատասխանում M3U-ի որ ալիքին։"
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "MediaHighway / Freesat հաճախություններ"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Երբ միացված ալիքը գտնվում է այս տրանսպոնդերներից մեկի վրա, LinDVB-ն կարդում է նաև այդ մատակարարի EPG-ն։ Փոփոխությունները կիրառվում են ալիքի հաջորդ միացման ժամանակ։"
+
+msgid "Frequency (MHz)"
+msgstr "Հաճախություն (ՄՀց)"
+
+msgid "Add"
+msgstr "Ավելացնել"
+
+msgid "Polarisation"
+msgstr "Բևեռացում"
+
+msgid "Defaults"
+msgstr "Լռելյայն արժեքներ"
+
+msgid "Delete"
+msgstr "Ջնջել"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Մուտքագրեք տրանսպոնդերի հաճախությունը ՄՀց-ով։"
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "IPTV ալիքների ցանկեր (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Բոլոր ֆայլերը"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Ներմուծեք մեկ կամ մի քանի M3U երգացանկ կամ համացանցային հոսքերով ալիքների այլ ցանկեր։ Ձեր ցանկում արդեն առկա ալիքները թարմացվում են, մյուսներն ավելացվում են։"
+
+msgid "Import Files…"
+msgstr "Ներմուծել ֆայլեր…"
+
+msgid "From files"
+msgstr "Ֆայլերից"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV կամ dvbv5։ Կարելի է միանգամից ընտրել մի քանի ֆայլ։"
+
+msgid "Import"
+msgstr "Ներմուծել"
+
+msgid "From a web address"
+msgstr "Վեբ հասցեից"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "M3U երգացանկի հասցեն։ Ներմուծեք այն կրկին՝ ալիքները թարմացնելու համար։"
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "IPTV ալիքներ ձեր ալիքների ցանկում՝ {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Ներմուծել IPTV ալիքների ցանկեր"
+
+msgid "Downloading {url}…"
+msgstr "{url}-ի ներբեռնում…"
+
+msgid "Could not import {name}"
+msgstr "Չհաջողվեց ներմուծել {name}-ը"
+
+msgid "The address has no channels."
+msgstr "Հասցեում ալիքներ չկան։"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "Ներմուծվել է {total_a} նոր և {total_u} թարմացված ալիք"
+
+msgid "Cover lookup failed: {e}"
+msgstr "Շապիկի որոնումը ձախողվեց՝ {e}"
+
+msgid "Swap with the main picture"
+msgstr "Փոխանակել հիմնական պատկերի հետ"
+
+msgid "Close picture in picture"
+msgstr "Փակել պատկեր պատկերի մեջ"
+
+msgid "Picture in picture: {error}"
+msgstr "Պատկեր պատկերի մեջ՝ {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Պատկեր պատկերի մեջն աշխատում է համացանցային ալիքների հետ, DVB ալիքների համար անհրաժեշտ է երկրորդ թյուներ։"
+
+msgid "Channel Mosaic"
+msgstr "Ալիքների խճանկար"
+
+msgid "Previous channels"
+msgstr "Նախորդ ալիքները"
+
+msgid "Next channels"
+msgstr "Հաջորդ ալիքները"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Խճանկարը ցույց է տալիս համացանցային ալիքներ։ Ընթացիկ տեսքում ցանկը չունի դրանցից։"
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Էջ {page}՝ {pages}-ից · {n} համացանցային ալիք"
+
+msgid "Click to watch {name}"
+msgstr "Սեղմեք՝ {name}-ը դիտելու համար"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "Ընդլայնված"
+
+msgid "None / not satellite"
+msgstr "Ոչ մեկը / ոչ արբանյակային"
+
+msgid "Port 1 (A/A)"
+msgstr "Պորտ 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Պորտ 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Պորտ 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Պորտ 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Հաճախություն"
+
+msgid "Initial letter"
+msgstr "Սկզբնատառ"
+
+msgid "Provider"
+msgstr "Մատակարար"
+
+msgid "Channel Search"
+msgstr "Ալիքների որոնում"
+
+msgid "Device"
+msgstr "Սարք"
+
+msgid "(choose…)"
+msgstr "(ընտրել…)"
+
+msgid "Add folder…"
+msgstr "Ավելացնել թղթապանակ…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Տրանսպոնդերների ցանկերով թղթապանակ (dtv-scan-tables կամ DVBViewer ոճի .ini)"
+
+msgid "Transponder list"
+msgstr "Տրանսպոնդերների ցանկ"
+
+msgid "LNB type"
+msgstr "LNB-ի տեսակ"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Նպատակային խումբ"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "օր.՝ Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Որոնել լրացուցիչ հաճախություններ (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Ավելացնել միայն ազատ հեռարձակվող ալիքները"
+
+msgid "Only update existing channels"
+msgstr "Միայն թարմացնել առկա ալիքները"
+
+msgid "Update channel names"
+msgstr "Թարմացնել ալիքների անունները"
+
+msgid "Group by"
+msgstr "Խմբավորել ըստ"
+
+msgid "Start Search"
+msgstr "Սկսել որոնումը"
+
+msgid "Stop"
+msgstr "Կանգնեցնել"
+
+msgid "Folder with transponder lists"
+msgstr "Տրանսպոնդերների ցանկերով թղթապանակ"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Տրանսպոնդերների ցանկ ընտրված չէ։ Տեղադրեք dtv-scan-tables կամ ավելացրեք թղթապանակ։\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nԱլիքներ չգտնվեցին։\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nԱվարտված է՝ {added} նոր, {updated} թարմացված ալիք։\n"
+
+msgid "HH:MM"
+msgstr "ԺԺ:ՐՐ"
+
+msgid "Recording Timers"
+msgstr "Ձայնագրման թայմերներ"
+
+msgid "Search channels"
+msgstr "Որոնել ալիքներ"
+
+msgid "  (Radio)"
+msgstr "  (Ռադիո)"
+
+msgid "Date"
+msgstr "Ամսաթիվ"
+
+msgid "Repeat"
+msgstr "Կրկնել"
+
+msgid "Once"
+msgstr "Մեկ անգամ"
+
+msgid "Series"
+msgstr "Սերիա"
+
+msgid "Action"
+msgstr "Գործողություն"
+
+msgid "Format"
+msgstr "Ձևաչափ"
+
+msgid "After"
+msgstr "Հետո"
+
+msgid "Disabled"
+msgstr "Անջատված"
+
+msgid "Status"
+msgstr "Կարգավիճակ"
+
+msgid "Repeat every {day}"
+msgstr "Կրկնել ամեն {day}"
+
+msgid "_Date"
+msgstr "_Ամսաթիվ"
+
+msgid "_Lead (min)"
+msgstr "_Նախապաշար (րոպե)"
+
+msgid "_End"
+msgstr "_Ավարտ"
+
+msgid "_Start"
+msgstr "_Սկիզբ"
+
+msgid "Repeat on"
+msgstr "Կրկնել օրերին"
+
+msgid "_Follow (min)"
+msgstr "_Հետպաշար (րոպե)"
+
+msgid "Pick a channel on the left"
+msgstr "Ընտրեք ալիքը ձախ կողմում"
+
+msgid "_Name"
+msgstr "_Անուն"
+
+msgid "_Timer action"
+msgstr "_Թայմերի գործողություն"
+
+msgid "_After recording"
+msgstr "_Ձայնագրումից հետո"
+
+msgid "T_V format"
+msgstr "_TV ձևաչափ"
+
+msgid "_Radio format"
+msgstr "_Ռադիոյի ձևաչափ"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Միայն նախընտրելի լեզուն՝ կարգավորումներում նշված աուդիո լեզվով ուղիները՝ առանց աուդիոնկարագրության։ MP4-ը և ռադիոյի աուդիո ֆայլը պահում են մեկ ուղի։"
+
+msgid "Audi_o tracks"
+msgstr "_Աուդիո ուղիներ"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Տելետեքստը գոյություն ունի միայն MPEG-TS-ում, ուստի օգտագործվում է TS։"
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "EPG տվյալները (EIT) գոյություն ունեն միայն MPEG-TS-ում, ուստի օգտագործվում է TS։"
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS-ը պահում է ենթագրերի բոլոր հոսքերը։ MKV-ն ստանում է տելետեքստի ենթագրերի էջը որպես տեքստային ուղի, DVB բիթքարտեզային ենթագրերը պահվում են միայն TS-ում։"
+
+msgid "Tracks"
+msgstr "Ուղիներ"
+
+msgid "File _naming scheme"
+msgstr "Ֆայլերի _անվանման սխեմա"
+
+msgid "Folder…"
+msgstr "Թղթապանակ…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Օգտագործել կարգավորումներում նշված ձայնագրությունների թղթապանակը"
+
+msgid "Placeholders"
+msgstr "Տեղապահներ"
+
+msgid "Folder: "
+msgstr "Թղթապանակ՝ "
+
+msgid "Clear the editor"
+msgstr "Մաքրել խմբագրիչը"
+
+msgid "New"
+msgstr "Նոր"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Ավելացնել խմբագրիչի կարգավորումները որպես նոր թայմեր"
+
+msgid "Apply"
+msgstr "Կիրառել"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Պահպանել խմբագրիչի կարգավորումներն ընտրված թայմերում"
+
+msgid "Delete the selected timer"
+msgstr "Ջնջել ընտրված թայմերը"
+
+msgid "Enable/Disable"
+msgstr "Միացնել/Անջատել"
+
+msgid "Switch the selected timer on or off"
+msgstr "Միացնել կամ անջատել ընտրված թայմերը"
+
+msgid "Save as default"
+msgstr "Պահպանել որպես լռելյայն"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Օգտագործել այս ձևաչափերը և լրացուցիչ հոսքերը նոր թայմերների և ձեռքով ձայնագրումների համար"
+
+msgid "Close"
+msgstr "Փակել"
+
+msgid "Series title"
+msgstr "Սերիայի վերնագիր"
+
+msgid "Delete series rule"
+msgstr "Ջնջել սերիայի կանոնը"
+
+msgid "Series recordings"
+msgstr "Սերիաների ձայնագրումներ"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Ենթագրերը տեղավորվում են TS-ում կամ MKV-ում։"
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Կարգավորումներում նախընտրելի աուդիո լեզու չկա՝ ձայնագրվում է առաջին ուղին։"
+
+msgid "File: {v0}"
+msgstr "Ֆայլ՝ {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Անվավեր սկզբի կամ ավարտի ժամ"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Օգտագործեք ԺԺ:ՐՐ, օրինակ՝ 20:15։"
+
+msgid "No channel"
+msgstr "Ալիք չկա"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Ընտրեք ձայնագրվող ալիքը ձախ կողմի ցանկում։"
+
+msgid "Recording defaults saved"
+msgstr "Ձայնագրման լռելյայն արժեքները պահպանվեցին"
+
+msgid "Record with Options"
+msgstr "Ձայնագրել ընտրանքներով"
+
+msgid "_Format"
+msgstr "_Ձևաչափ"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Տելետեքստը և EPG տվյալները կարող են պահվել միայն MPEG-TS-ում, ուստի օգտագործվում է TS։"
+
+msgid "Preferred audio language: {lang}."
+msgstr "Նախընտրելի աուդիո լեզու՝ {lang}։"
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "«{v0}» վիզուալիզացիան ձախողվեց՝ {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor}-ը չափազանց հին է"
+
+msgid "Playback error: "
+msgstr "Նվագարկման սխալ՝ "
+
+msgid "All channels"
+msgstr "Բոլոր ալիքները"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Ընտրյալներ (TV + Ռադիո)"
+
+msgid "Free to air"
+msgstr "Ազատ հեռարձակվող"
+
+msgid "Internet streams"
+msgstr "Համացանցային հոսքեր"
+
+msgid "Fill (crop)"
+msgstr "Լրացնել (կտրել)"
+
+msgid "Fit"
+msgstr "Տեղավորել"
+
+msgid "Stretch"
+msgstr "Ձգել"
+
+msgid "Playback error: {m}"
+msgstr "Նվագարկման սխալ՝ {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Հավելման գործողությունը ձախողվեց՝ {e}"
+
+msgid "Open Media File…"
+msgstr "Բացել մեդիա ֆայլ…"
+
+msgid "Open URL…"
+msgstr "Բացել URL…"
+
+msgid "Import Channel List…"
+msgstr "Ներմուծել ալիքների ցանկ…"
+
+msgid "Export Channel List…"
+msgstr "Արտահանել ալիքների ցանկը…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Արտահանել հաղորդումների ուղեցույցը (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Փոխարկել TV / Ռադիո"
+
+msgid "Recordings"
+msgstr "Ձայնագրություններ"
+
+msgid "Programme Guide (EPG)"
+msgstr "Հաղորդումների ուղեցույց (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Թայմերով ձայնագրումներ"
+
+msgid "Record with Options…"
+msgstr "Ձայնագրել ընտրանքներով…"
+
+msgid "Teletext"
+msgstr "Տելետեքստ"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "CAM ընտրացանկ (CI մոդուլ)…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Թարմացնել համացանցային EPG-ն (XMLTV)"
+
+msgid "Audio Track"
+msgstr "Աուդիո ուղի"
+
+msgid "Subtitles"
+msgstr "Ենթագրեր"
+
+msgid "Play Rate"
+msgstr "Նվագարկման արագություն"
+
+msgid "Back 10 s"
+msgstr "Հետ 10 վ"
+
+msgid "Forward 10 s"
+msgstr "Առաջ 10 վ"
+
+msgid "Back 1 min"
+msgstr "Հետ 1 րոպե"
+
+msgid "Forward 1 min"
+msgstr "Առաջ 1 րոպե"
+
+msgid "Back to Live"
+msgstr "Վերադառնալ ուղիղ եթեր"
+
+msgid "Jump"
+msgstr "Անցնել"
+
+msgid "Previous"
+msgstr "Նախորդը"
+
+msgid "Random Order"
+msgstr "Պատահական կարգ"
+
+msgid "Endless Playback"
+msgstr "Անվերջ նվագարկում"
+
+msgid "Playlist"
+msgstr "Երգացանկ"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Պահել Timeshift-ը որպես ձայնագրություն"
+
+msgid "Rebuild Playback"
+msgstr "Վերակառուցել նվագարկումը"
+
+msgid "Video Off (audio only)"
+msgstr "Անջատել տեսանյութը (միայն ձայն)"
+
+msgid "Show Selected Channel"
+msgstr "Ցույց տալ ընտրված ալիքը"
+
+msgid "Swap Pictures"
+msgstr "Փոխանակել պատկերները"
+
+msgid "Picture in Picture"
+msgstr "Պատկեր պատկերի մեջ"
+
+msgid "Channel Mosaic…"
+msgstr "Ալիքների խճանկար…"
+
+msgid "Stop in {mins} min"
+msgstr "Կանգնեցնել {mins} րոպեից"
+
+msgid "Stop after current programme"
+msgstr "Կանգնեցնել ընթացիկ հաղորդումից հետո"
+
+msgid "Sleep Timer"
+msgstr "Քնի թայմեր"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Ձայնը ավելի ուշ (+{AUDIO_DELAY_STEP} մվ, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Ձայնը ավելի շուտ (−{AUDIO_DELAY_STEP} մվ, J)"
+
+msgid "Reset"
+msgstr "Զրոյացնել"
+
+msgid "Audio Delay (this channel)"
+msgstr "Ձայնի ուշացում (այս ալիքի համար)"
+
+msgid "Full Screen"
+msgstr "Լիաէկրան"
+
+msgid "Show/Hide Channel List"
+msgstr "Ցույց տալ/թաքցնել ալիքների ցանկը"
+
+msgid "Aspect / Zoom"
+msgstr "Կողմերի հարաբերակցություն / Մեծացում"
+
+msgid "Window Size"
+msgstr "Պատուհանի չափ"
+
+msgid "Picture Settings…"
+msgstr "Պատկերի կարգավորումներ…"
+
+msgid "Equalizer…"
+msgstr "Հավասարարիչ…"
+
+msgid "Radio Visualisation"
+msgstr "Ռադիոյի վիզուալիզացիա"
+
+msgid "Screenshot"
+msgstr "Էկրանի նկար"
+
+msgid "Plugins…"
+msgstr "Հավելումներ…"
+
+msgid "About LinDVB"
+msgstr "LinDVB-ի մասին"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Ցույց տալ/թաքցնել ալիքների ցանկը (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Գլխավոր ընտրացանկ (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Հաղորդումների ուղեցույց (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Տելետեքստ (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Ցույց տալ TV ալիքները (Ctrl+M՝ փոխարկում)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Ցույց տալ ռադիոկայանները (Ctrl+M՝ փոխարկում)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Ցույց տալ ձեր ձայնագրությունները (կրկնակի սեղմումը նվագարկում է)"
+
+msgid "Search name or number"
+msgstr "Որոնել անուն կամ համար"
+
+msgid "All groups"
+msgstr "Բոլոր խմբերը"
+
+msgid "Previous channel (Page Down)"
+msgstr "Նախորդ ալիքը (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Դադար / Timeshift (Բացատ)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Կանգնեցնել (անջատել ալիքը)"
+
+msgid "Next channel (Page Up)"
+msgstr "Հաջորդ ալիքը (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Ձայնագրել ընթացիկ ալիքը (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Ընտրել ձևաչափը և ուղիները այս ձայնագրման համար"
+
+msgid "Seek"
+msgstr "Տեղափոխվել"
+
+msgid "LIVE"
+msgstr "ՈՒՂԻՂ"
+
+msgid "Back to live (L)"
+msgstr "Վերադառնալ ուղիղ եթեր (L)"
+
+msgid "Mute (M)"
+msgstr "Անջատել ձայնը (M)"
+
+msgid "Volume"
+msgstr "Ձայնի ուժգնություն"
+
+msgid "Audio track"
+msgstr "Աուդիո ուղի"
+
+msgid "Playback and picture settings"
+msgstr "Նվագարկման և պատկերի կարգավորումներ"
+
+msgid "Full screen (F)"
+msgstr "Լիաէկրան (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nՀիմա՝ {title}"
+
+msgid "{n} of {total}"
+msgstr "{n}՝ {total}-ից"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Ցուցադրված է {n}՝ {total} ձայնագրությունից"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Ցուցադրված է {n}՝ {total} ընտրյալից"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Ցուցադրված է {n}՝ {total} ռադիոկայանից"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Ցուցադրված է {n}՝ {total} TV ալիքից"
+
+msgid "Add to Favourites"
+msgstr "Ավելացնել ընտրյալներին"
+
+msgid "Remove from Favourites"
+msgstr "Հեռացնել ընտրյալներից"
+
+msgid "Edit…"
+msgstr "Խմբագրել…"
+
+msgid "Show as Picture in Picture"
+msgstr "Ցույց տալ որպես պատկեր պատկերի մեջ"
+
+msgid "Select a channel in the list first"
+msgstr "Նախ ընտրեք ալիքը ցանկում"
+
+msgid "By channel"
+msgstr "Ըստ ալիքի"
+
+msgid "By title"
+msgstr "Ըստ վերնագրի"
+
+msgid "Newest first"
+msgstr "Նախ նորերը"
+
+msgid "Oldest first"
+msgstr "Նախ հները"
+
+msgid "Largest first"
+msgstr "Նախ մեծերը"
+
+msgid "Sort the recordings"
+msgstr "Դասավորել ձայնագրությունները"
+
+msgid "Open the recording folder"
+msgstr "Բացել ձայնագրությունների թղթապանակը"
+
+msgid "Look for new recordings"
+msgstr "Փնտրել նոր ձայնագրություններ"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Ձայնագրություններ դեռ չկան։\n\nՁայնագրությունները պահվում են՝\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Կարգավորումներում ձայնագրությունների թղթապանակ նշված չէ։"
+
+msgid "Recording in progress"
+msgstr "Ձայնագրումն ընթացքում է"
+
+msgid "Watched"
+msgstr "Դիտված"
+
+msgid "Watched up to {pos}"
+msgstr "Դիտված է մինչև {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Ձայնագրությունը չգտնվեց՝ {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Շարունակվում է {pos}-ից"
+
+msgid "Folder not found: {folder}"
+msgstr "Թղթապանակը չգտնվեց՝ {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "Հնարավոր չէ բացել {folder}-ը՝ {message}"
+
+msgid "Play"
+msgstr "Նվագարկել"
+
+msgid "Play from the Beginning"
+msgstr "Նվագարկել սկզբից"
+
+msgid "Details…"
+msgstr "Մանրամասներ…"
+
+msgid "Mark as Unwatched"
+msgstr "Նշել որպես չդիտված"
+
+msgid "Mark as Watched"
+msgstr "Նշել որպես դիտված"
+
+msgid "Show in Folder"
+msgstr "Ցույց տալ թղթապանակում"
+
+msgid "Delete…"
+msgstr "Ջնջել…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Կանգնեցրեք ձայնագրումը՝ այն ջնջելուց առաջ"
+
+msgid "Delete “{title}”?"
+msgstr "Ջնջե՞լ «{title}»-ը"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nՖայլը հեռացվում է սկավառակից։"
+
+msgid "Deleted {name}"
+msgstr "{name}-ը ջնջվեց"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "Հնարավոր չէ ջնջել {name}-ը՝ {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "{name}-ի միացում…"
+
+msgid "Search recordings"
+msgstr "Որոնել ձայնագրություններում"
+
+msgid "No radio stations in the channel list"
+msgstr "Ալիքների ցանկում ռադիոկայաններ չկան"
+
+msgid "No TV channels in the channel list"
+msgstr "Ալիքների ցանկում TV ալիքներ չկան"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}՝ {v1} – փոխարկվեց {kind}-ի"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name}-ն այս պահին եթերում չէ"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "Ուղիղ TV-ն կանգնեցվեց՝ թյուները անհրաժեշտ է թայմերով ձայնագրման համար"
+
+msgid "Stopped"
+msgstr "Կանգնեցված"
+
+msgid "Sound {ms} ms later"
+msgstr "Ձայնը {ms} մվ ավելի ուշ"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Ձայնը {v0} մվ ավելի շուտ"
+
+msgid "Audio delay off"
+msgstr "Ձայնի ուշացումն անջատված է"
+
+msgid "Playing {item}"
+msgstr "Նվագարկվում է {item}"
+
+msgid "Open media files"
+msgstr "Բացել մեդիա ֆայլեր"
+
+msgid "Open URL"
+msgstr "Բացել URL"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Բացել"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Ներմուծել ալիքների ցանկ (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Արտահանել ալիքները (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "Արտահանվեց՝ {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Արտահանել հաղորդումների ուղեցույցը (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "Հնարավոր չէ գրել {path}-ը՝ {error}"
+
+msgid "Nothing to record"
+msgstr "Ձայնագրելու բան չկա"
+
+msgid "This channel is already being recorded"
+msgstr "Այս ալիքն արդեն ձայնագրվում է"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Տելետեքստ՝ ապակոդավորիչը բացակայում է (gst-plugins-bad libzvbi-ով)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Տելետեքստ՝ այս ալիքում հասանելի չէ"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Տելետեքստի համար անհրաժեշտ է DVB ալիք"
+
+msgid "Volume {v0}%"
+msgstr "Ձայնի ուժգնություն {v0}%"
+
+msgid "Off"
+msgstr "Անջատված"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Փակ ենթագրեր (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} լեզու"
+
+msgid "{n} audio tracks"
+msgstr "{n} աուդիո ուղի"
+
+msgid "Screenshot saved: {path}"
+msgstr "Էկրանի նկարը պահպանվեց՝ {path}"
+
+msgid "Screenshot failed"
+msgstr "Էկրանի նկարը ձախողվեց"
+
+msgid "Picture Settings"
+msgstr "Պատկերի կարգավորումներ"
+
+msgid "Restore Defaults"
+msgstr "Վերականգնել լռելյայնները"
+
+msgid "Equalizer"
+msgstr "Հավասարարիչ"
+
+msgid "Leave full screen (F)"
+msgstr "Դուրս գալ լիաէկրանից (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Վիզուալիզացիան ձախողվեց՝ {e}"
+
+msgid "Radio visualisation"
+msgstr "Ռադիոյի վիզուալիզացիա"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Ռադիոյի վիզուալիզացիա (միայն ռադիոյի և աուդիոյի համար)"
+
+msgid "Playback stops at {v0}"
+msgstr "Նվագարկումը կկանգնի {v0}-ին"
+
+msgid "No programme information for the sleep timer"
+msgstr "Քնի թայմերի համար հաղորդման տեղեկություն չկա"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Քնի թայմեր՝ նվագարկումը կանգնեցվեց"
+
+msgid "No programme information"
+msgstr "Հաղորդման տեղեկություն չկա"
+
+msgid "Next: {v0}  {title}"
+msgstr "Հաջորդը՝ {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Ազդանշան {v0}%"
+
+msgid "Signal quality {v0}%"
+msgstr "Ազդանշանի որակ {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "Հոսքի որակ {v0}%"
+
+msgid "No signal"
+msgstr "Ազդանշան չկա"
+
+msgid "● REC {n}"
+msgstr "● ՁԱՅՆ. {n}"
+
+msgid "Live"
+msgstr "Ուղիղ"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Դիտեք և ձայնագրեք DVB-S/S2, DVB-C, DVB-T/T2, ATSC և համացանցային TV՝ Linux DVB API-ով և GStreamer-ով։"
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Համադրել IPTV ալիքները XMLTV-ի հետ"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "XMLTV ուղեցույց դեռ բեռնված չէ։ Նշեք XMLTV-ի URL-ը EPG-ի կարգավորումներում և նախ ներբեռնեք ուղեցույցը, համադրումն ինքնաբերաբար սկսվում է ներբեռնումից հետո։"
+
+msgid "Download XMLTV guide now"
+msgstr "Ներբեռնել XMLTV ուղեցույցը հիմա"
+
+msgid "Only channels without guide"
+msgstr "Միայն առանց ուղեցույցի ալիքները"
+
+msgid "Match"
+msgstr "Համադրել"
+
+msgid "Guide channel:"
+msgstr "Ուղեցույցի ալիք՝"
+
+msgid "Assign"
+msgstr "Նշանակել"
+
+msgid "Suggest"
+msgstr "Առաջարկել"
+
+msgid "Auto-match all"
+msgstr "Ավտոմատ համադրել բոլորը"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Համադրել յուրաքանչյուր ալիք, որը ձեռքով չի նշանակվել"
+
+msgid "Reset to automatic"
+msgstr "Վերադարձնել ավտոմատի"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Թող ավտոմատ համադրումը կրկին որոշի ընտրված ալիքի համար"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{v1} ալիքից {done}-ն ունի ուղեցույցի ալիք"
+
+msgid "No suggestion for {name}"
+msgstr "{name}-ի համար առաջարկ չկա"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name}-ը չհաջողվեց գործարկել ({m}), փոխարենը ցուցադրվում է {other}-ը"
+
+msgid "Off (station name only)"
+msgstr "Անջատված (միայն կայանի անունը)"
+
+msgid "Spectrum analyser (classic)"
+msgstr "Սպեկտրի վերլուծիչ (դասական)"
+
+msgid "VU meters (classic)"
+msgstr "VU չափիչներ (դասական)"
+
+msgid "Oscilloscope (classic)"
+msgstr "Օսցիլոսկոպ (դասական)"
+
+msgid "Glow waves (modern)"
+msgstr "Լուսավոր ալիքներ (ժամանակակից)"
+
+msgid "Nebula particles (modern)"
+msgstr "Միգամածության մասնիկներ (ժամանակակից)"
+
+msgid "Light ribbons (modern)"
+msgstr "Լուսային ժապավեններ (ժամանակակից)"
+
+msgid "Pulsar (modern)"
+msgstr "Պուլսար (ժամանակակից)"
+
+msgid "Supernova (modern)"
+msgstr "Գերնոր աստղ (ժամանակակից)"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis (ժամանակակից)"
+
+msgid "Aurora borealis (modern)"
+msgstr "Հյուսիսափայլ (ժամանակակից)"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "Բոլոր նախադրվածքները (խառը)"
+
+msgid "All of {name}"
+msgstr "{name}-ի բոլորը"
+
+msgid "Dancer"
+msgstr "Պարող"
+
+msgid "Drawing"
+msgstr "Նկարչություն"
+
+msgid "Fractal"
+msgstr "Ֆրակտալ"
+
+msgid "Geometric"
+msgstr "Երկրաչափական"
+
+msgid "Hypnotic"
+msgstr "Հիպնոսային"
+
+msgid "Particles"
+msgstr "Մասնիկներ"
+
+msgid "Reaction"
+msgstr "Ռեակցիա"
+
+msgid "Sparkle"
+msgstr "Փայլ"
+
+msgid "Supernova"
+msgstr "Գերնոր աստղ"
+
+msgid "Waveform"
+msgstr "Ալիքաձև"
+
+msgid "! Transition"
+msgstr "! Անցում"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Ինտերակտիվ ծառայություններ (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Մեդիադարաններ, տելետեքստի իրավահաջորդներ և այլն՝ կարմիր կոճակի հետևում (F5)։"
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Անհրաժեշտ է WebKitGTK 6 (gir1.2-webkit-6.0), որը տեղադրված չէ։"
+
+msgid "Start automatically"
+msgstr "Գործարկել ավտոմատ"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Անջատված՝ հավելվածը գործարկվում է միայն կարմիր կոճակով։ Ալիքների հավելվածները օգտագործման տվյալներ են ուղարկում հեռարձակողին։"
+
+msgid "Allow third-party cookies"
+msgstr "Թույլատրել երրորդ կողմի cookie-ները"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Գովազդային ցանցերն օգտագործում են դրանք՝ ձեզ ալիքից ալիք հետևելու համար։"
+
+msgid "Delete HbbTV Data"
+msgstr "Ջնջել HbbTV տվյալները"
+
+msgid "Cookies and storage"
+msgstr "Cookie-ներ և պահոց"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Հեռացնում է այն, ինչ պահել են HbbTV հավելվածները, օրինակ՝ cookie-ներ և կարգավորումներ։"
+
+msgid "HbbTV data deleted"
+msgstr "HbbTV տվյալները ջնջվեցին"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV՝ {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "HbbTV հավելվածը չհաջողվեց բեռնել՝ {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (կարմիր կոճակ)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Ալիքի ինտերակտիվ ծառայություն (կարմիր կոճակ, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Փակել ինտերակտիվ ծառայությունը (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "Ենթագրեր մեդիադարաններում"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Հավելվածները ցուցադրում են ենթագրեր իրենց տեսանյութերում ի սկզբանե։"
+
+msgid "Audio description in media libraries"
+msgstr "Աուդիոնկարագրություն մեդիադարաններում"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Հավելվածները նախընտրում են պատկերը նկարագրող ձայնային ուղին։"
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "WebKit-ի ավազարկղը այստեղ չի կարող ստեղծել օգտատիրոջ անվանատարածքներ (Ubuntu-ի AppArmor սահմանափակում), ուստի հավելվածները չեն կարող անվտանգ գործարկվել։ Տես docs/HBBTV.md։"
+
+msgid "This interactive service is rated {age}+."
+msgstr "Այս ինտերակտիվ ծառայությունը նախատեսված է {age}+ տարիքի համար։"
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Արգելափակված է անչափահասների պաշտպանությամբ։ Սահմանեք PIN կարգավորումներում։"
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Չափազանց շատ սխալ PIN-եր։ Փորձեք կրկին մի քանի րոպեից։"
+
+msgid "Youth protection"
+msgstr "Անչափահասների պաշտպանություն"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Ապակողպել"
+
+msgid "Wrong PIN."
+msgstr "Սխալ PIN։"
+
+msgid "This video is rated {age}+."
+msgstr "Այս տեսանյութը նախատեսված է {age}+ տարիքի համար։"
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Ալիքի ինտերակտիվ ծառայության տելետեքստ (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Տելետեքստ ինտերակտիվ ծառայությունից"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "TXT կոճակը բացում է ալիքի HbbTV տելետեքստը, եթե այն կա։"
+
+msgid "Viewers from {age} years"
+msgstr "Դիտողներ {age} տարեկանից"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Այս տարիքից բարձր գնահատված հավելվածների և դրանց տեսանյութերի համար անհրաժեշտ է PIN։"
+
+msgid "Current PIN"
+msgstr "Ընթացիկ PIN"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Անհրաժեշտ է անչափահասների պաշտպանությունը կամ PIN-ը փոխելու համար։"
+
+msgid "New PIN"
+msgstr "Նոր PIN"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Թողեք դատարկ՝ ընթացիկ PIN-ը պահելու համար։"
+
+msgid "Youth protection not changed"
+msgstr "Անչափահասների պաշտպանությունը չի փոխվել"
+
+msgid "The current PIN is wrong."
+msgstr "Ընթացիկ PIN-ը սխալ է։"
+
+msgid "Youth protection needs a PIN"
+msgstr "Անչափահասների պաշտպանության համար անհրաժեշտ է PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Սահմանեք PIN՝ անչափահասների պաշտպանությունը միացնելու համար։"
+
+msgid "Companion screens on the network"
+msgstr "Ուղեկից էկրաններ ցանցում"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Ձեր ցանցի հեռախոսներն ու պլանշետները կարող են գտնել LinDVB-ն, հաղորդակցվել հավելվածների հետ, համաժամանակյա հետևել պատկերին և խնդրել գործարկել հավելվածներ։ Անջատված՝ ոչինչ չի լսում ցանցում։"
+
+msgid "Start an application from another device?"
+msgstr "Գործարկե՞լ հավելված այլ սարքից"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Ձեր ցանցի սարքերից մեկն ուզում է գործարկել «{name}»-ը ({url})։"
+
+msgid "an HbbTV application"
+msgstr "HbbTV հավելված"
+
+msgid "Refuse"
+msgstr "Մերժել"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Այս տեսանյութը կոդավորված է {drm}-ով։ LinDVB-ն չի աջակցում DRM, ուստի այն հնարավոր չէ նվագարկել։"
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Այս տեսանյութը կոդավորված է։ LinDVB-ն չի աջակցում DRM, ուստի այն հնարավոր չէ նվագարկել։"
+
+msgid "Contains code from"
+msgstr "Պարունակում է կոդ՝"
+
+msgid "Built with"
+msgstr "Կառուցված է՝"
+
+msgid "Visualisations"
+msgstr "Վիզուալիզացիաներ"
+
+msgid "Broadcast (EIT)"
+msgstr "Եթեր (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "Մատակարարի EPG (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "DVB-I բովանդակության ուղեցույց"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV (համացանց)"
+
+msgid "Advanced"
+msgstr "Ընդլայնված"
+
+msgid "Priority of the EPG sources"
+msgstr "EPG աղբյուրների առաջնահերթություն"
+
+msgid "Automatic (recommended)"
+msgstr "Ավտոմատ (առաջարկվում է)"
+
+msgid "Custom order"
+msgstr "Սեփական հերթականություն"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Ավտոմատ՝ «հիմա»-ն և «հաջորդը» գալիս են եթերից, ավելի հեռու՝ հաղթում է առավել ամբողջական աղբյուրը, իսկ բացերը լրացվում են այլ աղբյուրներից։ Հաղորդումը երբեք երկու անգամ չի ցուցադրվում։"
+
+msgid "Order of the EPG sources"
+msgstr "EPG աղբյուրների հերթականություն"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Վերևի աղբյուրը հաղթում է, երբ երկու աղբյուր չեն համընկնում, մյուսները լրացնում են բացերը։ Սեփական հերթականություն ունեցող ալիքը միշտ օգտագործում է այն, օրինակ՝ երբ նրա եթերային EPG-ն թույլ է։"
+
+msgid "Applies to"
+msgstr "Կիրառվում է"
+
+msgid "Remove Channel"
+msgstr "Հեռացնել ալիքը"
+
+msgid "Move Up"
+msgstr "Տեղափոխել վեր"
+
+msgid "Move Down"
+msgstr "Տեղափոխել վար"
+
+msgid "Own Order for Channel"
+msgstr "Սեփական հերթականություն ալիքի համար"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "Ավտոմատ (հնարավորության դեպքում՝ վիդեոքարտ)"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (ARM տախտակներ)"
+
+msgid "Software (processor)"
+msgstr "Ծրագրային (պրոցեսոր)"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "Գտնված վիդեոքարտի ապակոդավորիչներ՝ {list}"
+
+msgid "none"
+msgstr "ոչ մեկը"
+
+msgid "Switched off after an error: {list}"
+msgstr "Անջատվել է սխալից հետո՝ {list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "Այժմ ապակոդավորում է՝ {decoder}"
+
+msgid "Video decoding"
+msgstr "Տեսանյութի ապակոդավորում"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Միահյուսված TV պատկերներ (SD և 1080i ալիքների մեծ մասը)։ Կատարվում է վիդեոքարտի վրա, երբ ապակոդավորում է VA-API-ն, հակառակ դեպքում՝ պրոցեսորով։"
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "{name} տեսանյութի ապակոդավորումը ձախողվեց, նվագարկվում է հաջորդ ապակոդավորիչով"
+
+msgid "Tuners"
+msgstr "Թյուներներ"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB-ն ձայնագրում և նվագարկում է միաժամանակ մի քանի թյուներով և նախ օգտագործում ամենաբարձր առաջնահերթությամբ թյուներները։ Մեկ տրանսպոնդերի ալիքները կիսում են մեկ թյուներ։"
+
+msgid "Reception types unknown"
+msgstr "Ընդունման տեսակներն անհայտ են"
+
+msgid "not connected"
+msgstr "միացված չէ"
+
+msgid "Priority"
+msgstr "Առաջնահերթություն"
+
+msgid "Higher numbers are used first."
+msgstr "Ավելի մեծ թվերն օգտագործվում են առաջինը։"
+
+msgid "Shared antenna cable"
+msgstr "Ընդհանուր ալեհավաքի մալուխ"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "Միացրեք այն թյուներների համար, որոնք այլ թյուներների հետ միացված են մեկ մալուխի (loop-through կամ ճյուղավորիչ մեկ LNB ելքի վրա)։ Առանց Unicable-ի դրանք այդ դեպքում միաժամանակ ընդունում են միայն մեկ տիրույթ և բևեռացում։"
+
+msgid "Cable name"
+msgstr "Մալուխի անուն"
+
+msgid "Tuners with the same name share one cable."
+msgstr "Նույն անունով թյուներները կիսում են մեկ մալուխ։"
+
+msgid "For all tuners without an LNB of their own."
+msgstr "Բոլոր այն թյուներների համար, որոնք սեփական LNB չունեն։"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Պատկերի սխալներ՝ {n} բլոկ հնարավոր չեղավ ուղղել"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Թույլ ընդունում՝ միայն {db} դԲ պաշար"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} չուղղվող բլոկ"
+
+msgid "Lock lost"
+msgstr "Կողպումը կորավ"
+
+msgid "{n} continuity errors"
+msgstr "{n} անընդհատության սխալ"
+
+msgid "PCR jump"
+msgstr "PCR թռիչք"
+
+msgid "New table version (0x{tid})"
+msgstr "Աղյուսակի նոր տարբերակ (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Բարձրության թռիչք {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Վերաբուֆերացում"
+
+msgid "Measured since {time}"
+msgstr "Չափված է {time}-ից"
+
+msgid "Delivery"
+msgstr "Առաքում"
+
+msgid "Frame rate"
+msgstr "Կադրերի հաճախություն"
+
+msgid "Average bit rate"
+msgstr "Միջին բիթային արագություն"
+
+msgid "Peak bit rate"
+msgstr "Գագաթնային բիթային արագություն"
+
+msgid "Margin"
+msgstr "Պաշար"
+
+msgid "Loudness"
+msgstr "Բարձրություն"
+
+msgid "Bit rate"
+msgstr "Բիթային արագություն"
+
+msgid "Events"
+msgstr "Իրադարձություններ"
+
+msgid "1 minute"
+msgstr "1 րոպե"
+
+msgid "15 minutes"
+msgstr "15 րոպե"
+
+msgid "5 minutes"
+msgstr "5 րոպե"
+
+msgid "hard of hearing"
+msgstr "լսողության խնդիրներ ունեցողների համար"
+
+msgid "Data"
+msgstr "Տվյալներ"
+
+msgid "Level"
+msgstr "Մակարդակ"
+
+msgid "Carrier"
+msgstr "Կրող"
+
+msgid "Uncorrectable blocks"
+msgstr "Չուղղվող բլոկներ"
+
+msgid "Lock losses"
+msgstr "Կողպման կորուստներ"
+
+msgid "C/N history"
+msgstr "C/N պատմություն"
+
+msgid "Errors"
+msgstr "Սխալներ"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / պիլոտներ"
+
+msgid "Protocol"
+msgstr "Արձանագրություն"
+
+msgid "Response time"
+msgstr "Պատասխանի ժամանակ"
+
+msgid "Bad"
+msgstr "Վատ"
+
+msgid "Fair"
+msgstr "Բավարար"
+
+msgid "Good"
+msgstr "Լավ"
+
+msgid "Poor"
+msgstr "Թույլ"
+
+msgid "NO LOCK"
+msgstr "ԿՈՂՊՈՒՄ ՉԿԱ"
+
+msgid "Buffer"
+msgstr "Բուֆեր"
+
+msgid "Download"
+msgstr "Ներբեռնում"
+
+msgid "Buffer history"
+msgstr "Բուֆերի պատմություն"
+
+msgid "(driver value)"
+msgstr "(դրայվերի արժեք)"
+
+msgid "since start"
+msgstr "սկզբից"
+
+msgid "required"
+msgstr "պահանջվող"
+
+msgid "Quality history"
+msgstr "Որակի պատմություն"
+
+msgid "horizontal"
+msgstr "հորիզոնական"
+
+msgid "left"
+msgstr "ձախ"
+
+msgid "vertical"
+msgstr "ուղղահայաց"
+
+msgid "right"
+msgstr "աջ"
+
+msgid "Port {n}"
+msgstr "Պորտ {n}"
+
+msgid "(theoretical)"
+msgstr "(տեսական)"
+
+msgid "Overview"
+msgstr "Ամփոփում"
+
+msgid "Bit rate of the channel"
+msgstr "Ալիքի բիթային արագություն"
+
+msgid "Average"
+msgstr "Միջին"
+
+msgid "Peak"
+msgstr "Գագաթ"
+
+msgid "Codec"
+msgstr "Կոդեկ"
+
+msgid "Decoder"
+msgstr "Ապակոդավորիչ"
+
+msgid "Dropped frames"
+msgstr "Բաց թողնված կադրեր"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Ինքնագործարկում"
+
+msgid "PCR arrival jitter"
+msgstr "PCR-ի ժամանման ջիտեր"
+
+msgid "PCR interval"
+msgstr "PCR միջակայք"
+
+msgid "PAT / PMT interval"
+msgstr "PAT / PMT միջակայք"
+
+msgid "Teletext / subtitles / data"
+msgstr "Տելետեքստ / ենթագրեր / տվյալներ"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "պրոգրեսիվ"
+
+msgid "only for the channel on screen"
+msgstr "միայն էկրանին ցուցադրվող ալիքի համար"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Բարձրություն (ընթացիկ ուղի)՝ {lufs} · գագաթ {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Բարձրություն՝ միայն էկրանին ցուցադրվող ալիքի համար"
+
+msgid "scrambled packets"
+msgstr "կոդավորված փաթեթներ"
+
+msgid "no CA descriptors in the PMT"
+msgstr "PMT-ում CA նկարագրիչներ չկան"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} էջ"
+
+msgid "Quality"
+msgstr "Որակ"
+
+msgid "Carrier to noise ratio"
+msgstr "Կրող/աղմուկ հարաբերակցություն"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Բիթային սխալների հաճախականություն (log₁₀)"
+
+msgid "Address"
+msgstr "Հասցե"
+
+msgid "HTTP status"
+msgstr "HTTP կարգավիճակ"
+
+msgid "Content type"
+msgstr "Բովանդակության տեսակ"
+
+msgid "Download speed"
+msgstr "Ներբեռնման արագություն"
+
+msgid "Segments"
+msgstr "Սեգմենտներ"
+
+msgid "Error"
+msgstr "Սխալ"
+
+msgid "Variants"
+msgstr "Տարբերակներ"
+
+msgid "Codecs"
+msgstr "Կոդեկներ"
+
+msgid "Error timeline"
+msgstr "Սխալների ժամանակագրություն"
+
+msgid "uncorrectable blocks"
+msgstr "չուղղվող բլոկներ"
+
+msgid "lock lost"
+msgstr "կողպումը կորավ"
+
+msgid "rebuffering"
+msgstr "վերաբուֆերացում"
+
+msgid "loudness jump"
+msgstr "բարձրության թռիչք"
+
+msgid "table version"
+msgstr "աղյուսակի տարբերակ"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Միացման պարամետրեր (ֆրոնտենդից)"
+
+msgid "Delivery system"
+msgstr "Առաքման համակարգ"
+
+msgid "Code rate"
+msgstr "Կոդի արագություն"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Պաշտպանիչ միջակայք"
+
+msgid "Pilots"
+msgstr "Պիլոտներ"
+
+msgid "Carriers"
+msgstr "Կրողներ"
+
+msgid "C/N needed"
+msgstr "Անհրաժեշտ C/N"
+
+msgid "Dish alignment aid…"
+msgstr "Ափսեի ուղղորդման օգնական…"
+
+msgid "Logging and warnings"
+msgstr "Գրանցամատյան և նախազգուշացումներ"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Գրանցել ընդունումը (րոպեում մեկ տող, պահվում է 31 օր)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Նախազգուշացնել այս պաշարից ցածր (դԲ)"
+
+msgid "Reception over the last days"
+msgstr "Ընդունումը վերջին օրերին"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · նվազ. {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · գագաթ {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× հոսքի արագությունը"
+
+msgid "Download and stream rate"
+msgstr "Ներբեռնման և հոսքի արագություն"
+
+msgid "HLS with {n} variants"
+msgstr "HLS {n} տարբերակով"
+
+msgid "HLS media playlist"
+msgstr "HLS մեդիա երգացանկ"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "ուղիղ"
+
+msgid "on demand"
+msgstr "ըստ պահանջի"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} սեգմենտ՝ Ø {s} (նպատակ {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Տարբերակների ցանկ չկա՝ հասցեն մեկ հոսք է։"
+
+msgid "No events so far."
+msgstr "Իրադարձություններ առայժմ չկան։"
+
+msgid "{n} minutes logged for this channel."
+msgstr "Այս ալիքի համար գրանցված է {n} րոպե։"
+
+msgid "Nothing logged for this channel yet."
+msgstr "Այս ալիքի համար դեռ ոչինչ գրանցված չէ։"
+
+msgid "min {min} · max {max}"
+msgstr "նվազ. {min} · առավ. {max}"
+
+msgid "needs {db}"
+msgstr "պահանջվում է {db}"
+
+msgid "relative (driver)"
+msgstr "հարաբերական (դրայվեր)"
+
+msgid "post FEC {v}"
+msgstr "FEC-ից հետո {v}"
+
+msgid "needed for a clean picture"
+msgstr "անհրաժեշտ է մաքուր պատկերի համար"
+
+msgid "DVB API v5 statistics"
+msgstr "DVB API v5 վիճակագրություն"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (դրայվերի սանդղակ)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Տարրական հոսքեր և PID-եր"
+
+msgid "Whole stream"
+msgstr "Ամբողջ հոսքը"
+
+msgid "Sort by PID"
+msgstr "Դասավորել ըստ PID-ի"
+
+msgid "Sort by bit rate"
+msgstr "Դասավորել ըստ բիթային արագության"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "CC սխալներ"
+
+msgid "Scrambled"
+msgstr "Կոդավորված"
+
+msgid "Last 60 s"
+msgstr "Վերջին 60 վ"
+
+msgid "Packets"
+msgstr "Փաթեթներ"
+
+msgid "Sync losses"
+msgstr "Սինքի կորուստներ"
+
+msgid "Null packets"
+msgstr "Զրոյական փաթեթներ"
+
+msgid "PCR jumps"
+msgstr "PCR թռիչքներ"
+
+msgid "PID filter"
+msgstr "PID զտիչ"
+
+msgid "unknown"
+msgstr "անհայտ"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "Այլ"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Ընդամենը ({n} PID)՝ {rate} · {cc} անընդհատության սխալ"
+
+msgid "Measuring…"
+msgstr "Չափում…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "ազատ / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "Օգտագործված է {used}՝ {cap}-ից · չափված է {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Ստացվում են միայն այս ալիքի PID-երը։ Չափեք ամբողջ տրանսպոնդերը՝ դրա վրա գտնվող մյուս ալիքները տեսնելու համար։"
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Պրոֆիլ / մակարդակ"
+
+msgid "Scan"
+msgstr "Վերծանում"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Ֆիլմ (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Ցուցադրված / բաց թողնված կադրեր"
+
+msgid "Measured bit rate"
+msgstr "Չափված բիթային արագություն"
+
+msgid "Nominal bit rate"
+msgstr "Անվանական բիթային արագություն"
+
+msgid "VBV buffer"
+msgstr "VBV բուֆեր"
+
+msgid "Frame sizes"
+msgstr "Կադրերի չափեր"
+
+msgid "B frame"
+msgstr "B կադր"
+
+msgid "I frame"
+msgstr "I կադր"
+
+msgid "P frame"
+msgstr "P կադր"
+
+msgid "GOP length"
+msgstr "GOP-ի երկարություն"
+
+msgid "I frame average"
+msgstr "I կադրերի միջին"
+
+msgid "P/B frame average"
+msgstr "P/B կադրերի միջին"
+
+msgid "Nominal"
+msgstr "Անվանական"
+
+msgid "Sample rate"
+msgstr "Նմուշառման հաճախություն"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "Չափված"
+
+msgid "Notes"
+msgstr "Նշումներ"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Բարձրություն (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Ակնթարթային"
+
+msgid "Short term"
+msgstr "Կարճաժամկետ"
+
+msgid "Loudness range"
+msgstr "Բարձրության տիրույթ"
+
+msgid "Sample peak"
+msgstr "Նմուշի գագաթ"
+
+msgid "level {l}"
+msgstr "մակարդակ {l}"
+
+msgid "tier {t}"
+msgstr "աստիճան {t}"
+
+msgid "fields"
+msgstr "դաշտեր"
+
+msgid "mixed"
+msgstr "խառը"
+
+msgid "not sent"
+msgstr "չի ուղարկվում"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % վերևում և ներքևում"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % կողքերում"
+
+msgid "picture {ratio}:1"
+msgstr "պատկեր {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "այո, կրկնվող դաշտեր"
+
+msgid "mastering display data"
+msgstr "mastering display տվյալներ"
+
+msgid "(maximum)"
+msgstr "(առավելագույն)"
+
+msgid "not signalled (variable)"
+msgstr "ազդանշանավորված չէ (փոփոխական)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "հիմա {now} · Ø {avg} · գագաթ {max}"
+
+msgid "clean audio"
+msgstr "մաքուր ձայն"
+
+msgid "EBU target −23 LUFS"
+msgstr "EBU նպատակ −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Չափվում է էկրանին ցուցադրվող ալիքի ապակոդավորված ձայնի վրա՝ հավասարարիչից առաջ։"
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} բարձրության թռիչք 6 LU կամ ավելի (հաղորդում ↔ գովազդ)։"
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Բարձրությունը չափվում է միայն էկրանին ցուցադրվող ալիքի համար։"
+
+msgid "index"
+msgstr "ինդեքս"
+
+msgid "info"
+msgstr "տեղեկություն"
+
+msgid "subtitles (hard of hearing)"
+msgstr "ենթագրեր (լսողության խնդիրներ ունեցողների համար)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "DVB ենթագրեր PID {pid}՝"
+
+msgid "Tables & EPG"
+msgstr "Աղյուսակներ և EPG"
+
+msgid "SI tables"
+msgstr "SI աղյուսակներ"
+
+msgid "Version"
+msgstr "Տարբերակ"
+
+msgid "Events in the guide"
+msgstr "Իրադարձություններ ուղեցույցում"
+
+msgid "EIT now/next"
+msgstr "EIT հիմա/հաջորդը"
+
+msgid "Difference to this computer"
+msgstr "Տարբերություն այս համակարգչից"
+
+msgid "Local time offset"
+msgstr "Տեղական ժամի տեղաշարժ"
+
+msgid "Network"
+msgstr "Ցանց"
+
+msgid "Raw view"
+msgstr "Հում տեսք"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "լավ"
+
+msgid "slow"
+msgstr "դանդաղ"
+
+msgid "(all services)"
+msgstr "(բոլոր ծառայությունները)"
+
+msgid "not seen"
+msgstr "չի երևացել"
+
+msgid "seen {s} s ago"
+msgstr "երևացել է {s} վ առաջ"
+
+msgid "timers may start early or late"
+msgstr "թայմերները կարող են սկսվել շուտ կամ ուշ"
+
+msgid "no TDT/TOT"
+msgstr "TDT/TOT չկա"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Կոդավորված փաթեթներ"
+
+msgid "CA system ID"
+msgstr "CA համակարգի ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "ECM հաճախություն"
+
+msgid "Scrambling per stream"
+msgstr "Կոդավորում ըստ հոսքի"
+
+msgid "Crypto period"
+msgstr "Կրիպտո ժամանակաշրջան"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Բանալու փոփոխությունը զույգ և կենտ կառավարման բառերի միջև փոխարկումն է, կրիպտո ժամանակաշրջանը դրանցից երկուսի միջև ընկած ժամանակն է։"
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "PMT-ում պայմանական մուտք և կոդավորված փաթեթներ չկան։"
+
+msgid "free"
+msgstr "ազատ"
+
+msgid "all streams"
+msgstr "բոլոր հոսքերը"
+
+msgid "not received"
+msgstr "չի ստացվել"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT)՝ {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "EMM հոսքերով CAT չի ստացվել։"
+
+msgid "Applications (AIT)"
+msgstr "Հավելվածներ (AIT)"
+
+msgid "Organisation / app"
+msgstr "Կազմակերպություն / հավելված"
+
+msgid "Control"
+msgstr "Կառավարում"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Տվյալների կարուսելներ (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Բաղադրիչի պիտակ"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT տարբերակ {v} PID {pid}-ի վրա"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Ալիքը հայտարարում է AIT PID {pid}-ի վրա, այն դեռ չի ժամանել։"
+
+msgid "Channel Analysis – {name}"
+msgstr "Ալիքի վերլուծություն – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Սառեցնել չափումը"
+
+msgid "Copy report as text"
+msgstr "Պատճենել հաշվետվությունը որպես տեքստ"
+
+msgid "Save report as text…"
+msgstr "Պահպանել հաշվետվությունը որպես տեքստ…"
+
+msgid "Save report as JSON…"
+msgstr "Պահպանել հաշվետվությունը որպես JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Պահպանել պատմությունը որպես CSV…"
+
+msgid "Save window as picture…"
+msgstr "Պահպանել պատուհանը որպես պատկեր…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Պահպանել հոսքի 30 վ…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Ալիքի վերլուծություն · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Ուղիղ · չափում {t}"
+
+msgid "Paused"
+msgstr "Դադարեցված"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Այս ալիքի համար ազատ թյուներ չկա։ Դիտեք այն կամ փորձեք կրկին, երբ թյուներ ազատվի։"
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Այս ալիքի թյուները փոխարկվեց այլ ալիքի։"
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Չափվում է ֆոնային ռեժիմում՝ առանձին թյուների վրա, պատկերը, ձայնը և բարձրությունը չափվում են միայն էկրանին ցուցադրվող ալիքի համար։"
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Այս համացանցային ալիքը ստացվում է ֆոնային ռեժիմում՝ առանց ապակոդավորման, դիտեք այն՝ պատկերի, ձայնի և բուֆերի ցուցանիշների համար։"
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Աղբյուր՝ DVB ադապտեր {a}, ֆրոնտենդ {f}"
+
+msgid "dvbsrc statistics"
+msgstr "dvbsrc վիճակագրություն"
+
+msgid "Source: background download"
+msgstr "Աղբյուր՝ ֆոնային ներբեռնում"
+
+msgid "Source: the player's stream"
+msgstr "Աղբյուր՝ նվագարկչի հոսքը"
+
+msgid "updated every second"
+msgstr "թարմացվում է ամեն վայրկյան"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Պահպանելու բան չկա՝ ալիքը չի ստացվում։"
+
+msgid "Compare {name} with"
+msgstr "Համեմատել {name}-ը՝"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Ցուցանիշներ յուրաքանչյուր վերլուծության ժամանակային պատուհանի համար, պատկերը և բարձրությունը՝ միայն էկրանին ցուցադրվող ալիքի համար։"
+
+msgid "Dish alignment aid"
+msgstr "Ափսեի ուղղորդման օգնական"
+
+msgid "Tone"
+msgstr "Ձայնային ազդանշան"
+
+msgid "Reset best value"
+msgstr "Զրոյացնել լավագույն արժեքը"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Դանդաղ պտտեք ափսեն, ձայնը բարձրանում է ավելի լավ ազդանշանի դեպքում։"
+
+msgid "% quality"
+msgstr "% որակ"
+
+msgid "Best so far: {v}"
+msgstr "Լավագույնն առայժմ՝ {v}"
+
+msgid "Signal lost"
+msgstr "Ազդանշանը կորավ"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Թյուները անհրաժեշտ էր դիտելու կամ ձայնագրելու համար։"
+
+msgid "Channel analysis: {name}"
+msgstr "Ալիքի վերլուծություն՝ {name}"
+
+msgid "Resolution"
+msgstr "Լուծաչափ"
+
+msgid "Audio"
+msgstr "Աուդիո"
+
+msgid "Video"
+msgstr "Տեսանյութ"
+
+msgid "Signal quality"
+msgstr "Ազդանշանի որակ"
+
+msgid "Continuity errors"
+msgstr "Անընդհատության սխալներ"
+
+msgid "Content"
+msgstr "Բովանդակություն"
+
+msgid "audio description"
+msgstr "աուդիոնկարագրություն"
+
+msgid "DVB subtitles"
+msgstr "DVB ենթագրեր"
+
+msgid "Signal"
+msgstr "Ազդանշան"
+
+msgid "Reception"
+msgstr "Ընդունում"
+
+msgid "Symbol rate"
+msgstr "Սիմվոլային արագություն"
+
+msgid "Transponder capacity"
+msgstr "Տրանսպոնդերի տարողություն"
+
+msgid "Server"
+msgstr "Սերվեր"
+
+msgid "Stream"
+msgstr "Հոսք"
+
+msgid "Share of transponder"
+msgstr "Տրանսպոնդերի բաժին"
+
+msgid "Aspect ratio"
+msgstr "Կողմերի հարաբերակցություն"
+
+msgid "Colour"
+msgstr "Գույն"
+
+msgid "Track"
+msgstr "Ուղի"
+
+msgid "Now & next"
+msgstr "Հիմա և հաջորդը"
+
+msgid "Encryption"
+msgstr "Կոդավորում"
+
+msgid "Interactive"
+msgstr "Ինտերակտիվ"
+
+msgid "Stream health"
+msgstr "Հոսքի վիճակ"
+
+msgid "Transport errors"
+msgstr "Տրանսպորտի սխալներ"
+
+msgid "Timeshift buffer"
+msgstr "Timeshift-ի բուֆեր"
+
+msgid "interlaced"
+msgstr "միահյուսված"
+
+msgid "Hardware"
+msgstr "Ապարատային"
+
+msgid "Software"
+msgstr "Ծրագրային"
+
+msgid "{n} tracks"
+msgstr "{n} ուղի"
+
+msgid "Free-to-air"
+msgstr "Ազատ հեռարձակվող"
+
+msgid "Signal level"
+msgstr "Ազդանշանի մակարդակ"
+
+msgid "Internet stream"
+msgstr "Համացանցային հոսք"
+
+msgid "continuity errors"
+msgstr "անընդհատության սխալներ"
+
+msgid "Stream / PLP"
+msgstr "Հոսք / PLP"
+
+msgid "Source of the figures"
+msgstr "Ցուցանիշների աղբյուր"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Նախազգուշացնել էկրանին, երբ ընդունումը թուլանում է"
+
+msgid "Open log folder"
+msgstr "Բացել գրանցամատյանների թղթապանակը"
+
+msgid "stream"
+msgstr "հոսք"
+
+msgid "none (a plain stream)"
+msgstr "ոչ մեկը (պարզ հոսք)"
+
+msgid "internet stream"
+msgstr "համացանցային հոսք"
+
+msgid "Transport Stream"
+msgstr "Տրանսպորտային հոսք"
+
+msgid "This channel only"
+msgstr "Միայն այս ալիքը"
+
+msgid "Transponder"
+msgstr "Տրանսպոնդեր"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Չափել ամբողջ տրանսպոնդերը (10 վ)"
+
+msgid "Internet channels have no transponder."
+msgstr "Համացանցային ալիքները տրանսպոնդեր չունեն։"
+
+msgid "whole transponder"
+msgstr "ամբողջ տրանսպոնդերը"
+
+msgid "Video & Audio"
+msgstr "Տեսանյութ և աուդիո"
+
+msgid "Black bars"
+msgstr "Սև շերտեր"
+
+msgid "Click a track to listen to it."
+msgstr "Սեղմեք ուղու վրա՝ այն լսելու համար։"
+
+msgid "Integrated"
+msgstr "Ներկառուցված"
+
+msgid "Teletext and subtitles"
+msgstr "Տելետեքստ և ենթագրեր"
+
+msgid "interlaced capable"
+msgstr "միահյուսման ունակ"
+
+msgid "no"
+msgstr "ոչ"
+
+msgid "{n} frames"
+msgstr "{n} կադր"
+
+msgid "schedule"
+msgstr "ժամանակացույց"
+
+msgid "subtitles"
+msgstr "ենթագրեր"
+
+msgid "Teletext PID {pid}:"
+msgstr "Տելետեքստի PID {pid}՝"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Այս ալիքում տելետեքստ կամ ենթագրեր չկան։"
+
+msgid "Table"
+msgstr "Աղյուսակ"
+
+msgid "Changes"
+msgstr "Փոփոխություններ"
+
+msgid "Repetition"
+msgstr "Կրկնություն"
+
+msgid "Sections"
+msgstr "Բաժիններ"
+
+msgid "Programme guide and clock"
+msgstr "Հաղորդումների ուղեցույց և ժամացույց"
+
+msgid "Guide reaches"
+msgstr "Ուղեցույցը հասնում է մինչև"
+
+msgid "Clock of the channel"
+msgstr "Ալիքի ժամացույցը"
+
+msgid "EIT schedule"
+msgstr "EIT ժամանակացույց"
+
+msgid "missing"
+msgstr "բացակայում է"
+
+msgid "(other services)"
+msgstr "(այլ ծառայություններ)"
+
+msgid "{n} sections"
+msgstr "{n} բաժին"
+
+msgid "Descrambling"
+msgstr "Ապակոդավորում"
+
+msgid "Descrambler state"
+msgstr "Ապակոդավորիչի վիճակ"
+
+msgid "Conditional access systems"
+msgstr "Պայմանական մուտքի համակարգեր"
+
+msgid "For"
+msgstr "Համար"
+
+msgid "Key changes"
+msgstr "Բանալիների փոփոխություններ"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Այս ալիքը կոդավորված է։ LinDVB-ն այն ապակոդավորում է միայն ձեր սեփական բաժանորդային քարտով (softcam կամ CI մոդուլ)։"
+
+msgid "scrambled"
+msgstr "կոդավորված"
+
+msgid "Profile"
+msgstr "Պրոֆիլ"
+
+msgid "test application"
+msgstr "փորձնական հավելված"
+
+msgid "This channel has no HbbTV application."
+msgstr "Այս ալիքը HbbTV հավելված չունի։"
+
+msgid "No object carousel in this channel."
+msgstr "Այս ալիքում օբյեկտային կարուսել չկա։"
+
+msgid "Export"
+msgstr "Արտահանել"
+
+msgid "Compare with another channel…"
+msgstr "Համեմատել այլ ալիքի հետ…"
+
+msgid "Analyse another channel…"
+msgstr "Վերլուծել այլ ալիք…"
+
+msgid "Window: {w}"
+msgstr "Պատուհան՝ {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Հետևել էկրանին ցուցադրվող ալիքին"
+
+msgid "Watch this channel"
+msgstr "Դիտել այս ալիքը"
+
+msgid "Try again"
+msgstr "Փորձել կրկին"
+
+msgid "Copy as text"
+msgstr "Պատճենել որպես տեքստ"
+
+msgid "Export report…"
+msgstr "Արտահանել հաշվետվությունը…"
+
+msgid "Source: none"
+msgstr "Աղբյուր՝ չկա"
+
+msgid "Saved {path}"
+msgstr "Պահպանվեց՝ {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Հաջորդ 30 վայրկյանի ձայնագրում…"
+
+msgid "Choose a channel"
+msgstr "Ընտրեք ալիք"
+
+msgid "Channel name"
+msgstr "Ալիքի անուն"
+
+msgid "Compare channels"
+msgstr "Համեմատել ալիքները"
+
+msgid "Comparison"
+msgstr "Համեմատություն"
+
+msgid "Close (Esc)"
+msgstr "Փակել (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Ալիքի վերլուծություն…"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "Առանց Unicable-ի"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "Օգտատիրոջ տիրույթ"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "Մալուխի վրա յուրաքանչյուր թյուներին անհրաժեշտ է տարբեր օգտատիրոջ տիրույթ։ Միացրեք վերևի ընդհանուր ալեհավաքի մալուխը դրանց բոլորի համար։"
+
+msgid "User band frequency (MHz)"
+msgstr "Օգտատիրոջ տիրույթի հաճախություն (ՄՀց)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "LNB-ի կամ մուլտիսվիչի պիտակից կամ ձեռնարկից։"
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "Միայն պաշտպանված օգտատիրոջ տիրույթի համար (0-255)։ Սովորաբար դատարկ։"
+
+msgid "Fill in from"
+msgstr "Լրացնել ըստ"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "Տարածված սարքեր՝ սահմանում է վերևի օգտատիրոջ տիրույթի տեսակն ու հաճախությունը։"
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Տրանսպոնդերների այս ցանկը արբանյակային տրանսպոնդերներ չունի։\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Թյուները զբաղված է (ձայնագրում կամ ալիքի վերլուծություն)։\n"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "Կիրառել բոլոր խմբագրված ալիքների փոփոխությունները (Ctrl+S)"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "Ալիքների խմբագրիչ – {n} ալիք դեռ կիրառված չէ"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "Կիրառե՞լ փոփոխությունները {n} ալիքի համար"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "Խմբագրումները դեռ կիրառված չեն։ Առանց կիրառելու դրանք կկորչեն։"
+
+msgid "Discard"
+msgstr "Չեղարկել փոփոխությունները"
+
+msgid "Germany"
+msgstr "Գերմանիա"
+
+msgid "Italy"
+msgstr "Իտալիա"
+
+msgid "New Zealand"
+msgstr "Նոր Զելանդիա"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "Freeview տարածաշրջան"
+
+msgid "Country"
+msgstr "Երկիր"
+
+msgid "Options"
+msgstr "Ընտրանքներ"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "Հարցվում են այս հերթականությամբ՝ բացատներով բաժանված։ Սեղմեք Enter՝ փոփոխությունը պահելու համար, դատարկը վերադարձնում է երկրի ռեեստրները։"
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "Նախընտրել ալեհավաքը, մալուխը և արբանյակը համացանցային հոսքից, երբ ալիքն ունի երկուսն էլ"
+
+msgid "Registry address"
+msgstr "Ռեեստրի հասցե"
+
+msgid "Region in the list"
+msgstr "Տարածաշրջան ցանկում"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "Ձեր տարածաշրջանն ընտրում է տարածաշրջանային ալիքները և դրանց համարակալումը։"
+
+msgid "Settings follow: {profile}"
+msgstr "Կարգավորումները համապատասխանում են՝ {profile}"
+
+msgid "Choose…"
+msgstr "Ընտրել…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "Ըստ ցանկության։ Ձեր {label}-ն ուղարկվում է միայն ծառայությունների ցանկի սերվերին։"
+
+msgid "e.g. {example}"
+msgstr "օր.՝ {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "Նախորդ երկրի DVB-I ալիքները մնում են, մինչև տեղադրեք ցանկ {country}-ի համար կամ հեռացնեք դրանք։"
+
+msgid "The registry offers no service list for {country}."
+msgstr "Ռեեստրը {country}-ի համար ծառայությունների ցանկ չի առաջարկում։"
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "Մուտքագրեք {n} թվանշանից բաղկացած փոստային ինդեքս"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I-ն բեռնում է ալիքների ցանկը համացանցից։ Դրա համար LinDVB-ն կապվում է գերմանական ծառայությունների ցանկերի ռեեստրի (csr.dvb-i-slr.de), ձեր ընտրած ծառայությունների ցանկի սերվերի, ալիքների լոգոները պահող սերվերների, իսկ երբ հաղորդումների ուղեցույցը միացված է՝ նաև հեռարձակողների հաղորդումների ուղեցույցի սերվերների հետ։ Այս սերվերները տեսնում են ձեր IP հասցեն և հարցման ժամանակը։ Եթե մուտքագրեք փոստային ինդեքս, այն ուղարկվում է ծառայությունների ցանկի սերվերին, որպեսզի այն վերադարձնի ձեր տարածաշրջանի ալիքները։ LinDVB-ն այլ անձնական տվյալներ չի ուղարկում և ցանկն ու լոգոները պահում է միայն այս համակարգչում։ Համացանցային ալիքները հոսում են հեռարձակողների սերվերներից, որոնք կարող են գրանցել ձեր հարցումները՝ իրենց սեփական գաղտնիության քաղաքականությունների համաձայն։"
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "Ալեհավաքային, արբանյակային և համացանցային ալիքները միավորվում են մեկ ցանկում՝ առանց կրկնօրինակների, ալեհավաքով կամ ափսեով ստացվող ալիքը նախ օգտագործում է դա։"
+
+msgid "Update the channel list automatically (daily)"
+msgstr "Թարմացնել ալիքների ցանկն ավտոմատ (ամեն օր)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "Ուշադրություն։ Սա անջատված լինելու դեպքում LinDVB-ն այլևս չի կարող ձեր ալիքների ցանկը համապատասխանեցնել եթերում գտնվող ալիքներին։"
+
+msgid "Package"
+msgstr "Փաթեթ"
+
+msgid "Free channels only"
+msgstr "Միայն ազատ ալիքները"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "Կրկին սեղմեք «Տեղադրել»՝ այս փաթեթի ալիքների համարներն օգտագործելու համար։"
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "Տարածաշրջանն ընտրում է ձեր տարածքի LCN աղյուսակը՝ տեղական ալիքներով, ինչպես դա անում է վերգետնյա ալիքների որոնումը։ Առանց համարի ալիքները տեղափոխվում են 850-999։"
+
+msgid "No screen saver during playback"
+msgstr "Առանց էկրանապահի նվագարկման ժամանակ"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Էկրանը միացված է պահում, մինչ նվագարկվում է TV, ռադիո կամ ֆայլ։"
+
+msgid "Playing TV or radio"
+msgstr "Նվագարկվում է TV կամ ռադիո"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV՝ այս ալիքում հասանելի չէ"
+
+msgid "OSD and Visualisations"
+msgstr "OSD և վիզուալիզացիաներ"
+
+msgid "OSD size (%)"
+msgstr "OSD-ի չափ (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Հաղորդման տեղեկությունը պատկերի վրա և ալիքի համարը։"
+
+msgid "Font"
+msgstr "Տառատեսակ"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Տելետեքստի ենթագրերը և ֆայլերի ու հոսքերի տեքստային ենթագրերը։"
+
+msgid "Size (%)"
+msgstr "Չափ (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Պատկերների տեսքով ենթագրերը (DVB ենթագրեր) պահում են ալիքի ուղարկած չափը։"
+
+msgid "Subtitle font"
+msgstr "Ենթագրերի տառատեսակ"
+
+msgid "Default font"
+msgstr "Լռելյայն տառատեսակ"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Ցուցադրվում է ռադիո կամ աուդիո նվագարկելիս, նաև վիզուալիզացիայի կոճակում։"
+
+msgid "Draw on the graphics card"
+msgstr "Նկարել վիդեոքարտի վրա"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL ներկառուցված վիզուալիզացիաների համար։ Ուժի մեջ է մտնում LinDVB-ի հաջորդ գործարկման ժամանակ։"
+
+msgid "Service list address"
+msgstr "Ծառայությունների ցանկի հասցե"
+
+msgid "Use This List"
+msgstr "Օգտագործել այս ցանկը"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Բեռնում է այս ծառայությունների ցանկն ուղղակիորեն՝ առանց ռեեստրին հարցնելու։"
+
+msgid "Please enter a web address (https://…)."
+msgstr "Մուտքագրեք վեբ հասցե (https://…)։"
+
+msgid "Please confirm the privacy notice first."
+msgstr "Նախ հաստատեք գաղտնիության ծանուցումը։"
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Մուտքագրեք ռեեստրի կամ ծառայությունների ցանկի հասցեն։"
+
+msgid "Pause / play"
+msgstr "Դադար / նվագարկում"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "Հետ / առաջ 10 վայրկյան (Timeshift, ֆայլեր)"
+
+msgid "Back to live"
+msgstr "Վերադառնալ ուղիղ եթեր"
+
+msgid "Mute"
+msgstr "Անջատել ձայնը"
+
+msgid "Volume up / down"
+msgstr "Ձայնը բարձր / ցածր"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Ձայնը ավելի շուտ / ուշ (ալիքի ձայնի ուշացում)"
+
+msgid "Next radio visualisation"
+msgstr "Հաջորդ ռադիոյի վիզուալիզացիան"
+
+msgid "Next / previous playlist entry"
+msgstr "Երգացանկի հաջորդ / նախորդ տարրը"
+
+msgid "Previous / next channel"
+msgstr "Նախորդ / հաջորդ ալիքը"
+
+msgid "Next / previous channel"
+msgstr "Հաջորդ / նախորդ ալիքը"
+
+msgid "Channel by number (type the digits)"
+msgstr "Ալիք ըստ համարի (մուտքագրեք թվանշանները)"
+
+msgid "Last channel"
+msgstr "Վերջին ալիքը"
+
+msgid "Switch TV / radio"
+msgstr "Փոխարկել TV / ռադիո"
+
+msgid "Show / hide the channel list"
+msgstr "Ցույց տալ / թաքցնել ալիքների ցանկը"
+
+msgid "Programme guide and recording"
+msgstr "Հաղորդումների ուղեցույց և ձայնագրում"
+
+msgid "Programme guide (EPG)"
+msgstr "Հաղորդումների ուղեցույց (EPG)"
+
+msgid "Timer recordings"
+msgstr "Թայմերով ձայնագրումներ"
+
+msgid "Programme info (OSD)"
+msgstr "Հաղորդման տեղեկություն (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Տելետեքստ և ինտերակտիվ ծառայություններ"
+
+msgid "View"
+msgstr "Տեսք"
+
+msgid "Full screen"
+msgstr "Լիաէկրան"
+
+msgid "Leave full screen"
+msgstr "Դուրս գալ լիաէկրանից"
+
+msgid "Application"
+msgstr "Հավելված"
+
+msgid "Main menu"
+msgstr "Գլխավոր ընտրացանկ"
+
+msgid "Open media file"
+msgstr "Բացել մեդիա ֆայլ"
+
+msgid "Keyboard shortcuts"
+msgstr "Ստեղնաշարի դյուրանցումներ"
+
+msgid "Keyboard Shortcuts"
+msgstr "Ստեղնաշարի դյուրանցումներ"
+
+msgid "Time"
+msgstr "Ժամ"
+
+msgid "Programme"
+msgstr "Հաղորդում"
+
+msgid "File"
+msgstr "Ֆայլ"
+
+msgid "Other (own registry or list)"
+msgstr "Այլ (սեփական ռեեստր կամ ցանկ)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I-ն բեռնում է ալիքների ցանկը համացանցից։ Դրա համար LinDVB-ն կապվում է այն ռեեստրի կամ ծառայությունների ցանկի սերվերի հետ, որի հասցեն մուտքագրում եք, ալիքների լոգոները պահող սերվերների, իսկ երբ հաղորդումների ուղեցույցը միացված է՝ նաև հեռարձակողների հաղորդումների ուղեցույցի սերվերների հետ։ Այս սերվերները տեսնում են ձեր IP հասցեն և հարցման ժամանակը։ Եթե մուտքագրեք փոստային ինդեքս, այն ուղարկվում է ծառայությունների ցանկի սերվերին։"
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Ստորև մուտքագրեք ծառայությունների ցանկերի ռեեստրի կամ ուղղակիորեն ծառայությունների ցանկի հասցեն։"
+
+msgid "Preferred audio format"
+msgstr "Նախընտրելի աուդիո ձևաչափ"
+
+msgid "As broadcast"
+msgstr "Ինչպես հեռարձակվում է"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Ստերեո (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Երբ ալիքը կամ ֆայլը նույն լեզվով ունի այս ձայնը, այն նվագարկվում է առաջինը։"
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Համար"
+
+msgid "Name A–Z"
+msgstr "Անուն Ա–Ֆ"
+
+msgid "Name Z–A"
+msgstr "Անուն Ֆ–Ա"
+
+msgid "Video resolution"
+msgstr "Տեսանյութի լուծաչափ"
+
+msgid "Sort by"
+msgstr "Դասավորել ըստ"
+
+msgid "All"
+msgstr "Բոլորը"
+
+msgid "General settings"
+msgstr "Ընդհանուր կարգավորումներ"
+
+msgid "For this recording"
+msgstr "Այս ձայնագրման համար"
+
+msgid "Formats and _tracks"
+msgstr "Ձևաչափեր և _ուղիներ"
+
+msgid "Whole series"
+msgstr "Ամբողջ սերիան"
+
+msgid "Next recording only"
+msgstr "Միայն հաջորդ ձայնագրումը"
+
+msgid "_Apply to"
+msgstr "_Կիրառել"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Ընդհանուր կարգավորումներ՝ ձևաչափերը, աուդիո ուղիները և լրացուցիչ հոսքերը վերցվում են կարգավորումներից ձայնագրումը սկսվելիս։"
+
+msgid "All streams of the channel (TS)"
+msgstr "Ալիքի բոլոր հոսքերը (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Ձայնագրում է ալիքի հայտարարած յուրաքանչյուր հոսք, նաև HbbTV տվյալները և նոր աուդիո ուղիները՝ միայն այս ալիքի համար հաղորդումների աղյուսակով։ Դա կարող է պահել միայն MPEG-TS-ը, ուստի օգտագործվում է TS։"
+
+msgid "Web address"
+msgstr "Վեբ հասցե"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "M3U երգացանկի կամ մեկ HLS հոսքի (.m3u8) հասցեն։"
+
+msgid "User name"
+msgstr "Օգտանուն"
+
+msgid "Password"
+msgstr "Գաղտնաբառ"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Xtream Codes հաշվի ուղիղ ալիքները։ Գաղտնաբառը պահվում է ցանկի հասցեում՝ LinDVB-ի կարգավորումներում։"
+
+msgid "Your lists"
+msgstr "Ձեր ցանկերը"
+
+msgid "Source"
+msgstr "Աղբյուր"
+
+msgid "Updated"
+msgstr "Թարմացված"
+
+msgid "Update"
+msgstr "Թարմացնել"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Կրկին բեռնել ցանկը՝ ընտրյալները, ալիքների համարները և ուղեցույցի համադրումները մնում են, ցանկում այլևս չեղած ալիքները հեռացվում են։"
+
+msgid "Remove"
+msgstr "Հեռացնել"
+
+msgid "Remove the list and its channels"
+msgstr "Հեռացնել ցանկը և դրա ալիքները"
+
+msgid "{n} removed"
+msgstr "{n}-ը հեռացվեց"
+
+msgid "The file has no channels."
+msgstr "Ֆայլում ալիքներ չկան։"
+
+msgid "{n} channels removed"
+msgstr "Հեռացվել է {n} ալիք"
+
+msgid "Colour scheme"
+msgstr "Գունային սխեմա"
+
+msgid "Dark"
+msgstr "Մուգ"
+
+msgid "Light"
+msgstr "Բաց"
+
+msgid "Same as the system"
+msgstr "Ինչպես համակարգում"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Պատկերը միշտ պահում է իր մուգ շրջանակը։"
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Ցուցադրվում են միայն այժմ միացված թյուներները, մյուսների կարգավորումները պահվում են «Միացված չէ» բաժնում։"
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Ստանում է այն ամենը, ինչ ուղարկում է տրանսպոնդերը, և ոչ միայն ալիքի սեփական հոսքերը։ USB թյուներների վրա դա ավելի շատ թողունակություն է պահանջում, բայց նվագարկում և ձայնագրում է բոլոր աուդիո ուղիները, նույնիսկ երբ ալիքների ցանկը գիտի միայն մեկը։ Կիրառվում է ուղիղ TV-ի և ձայնագրումների համար։"
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Ձեր սեփական անունը այս թյուների համար։ Դատարկ՝ սարքի անունը։"
+
+msgid "Satellite"
+msgstr "Արբանյակ"
+
+msgid "Antenna (terrestrial)"
+msgstr "Ալեհավաք (վերգետնյա)"
+
+msgid "Cable"
+msgstr "Մալուխ"
+
+msgid "Connected to"
+msgstr "Միացված է՝"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Համակցված թյուները միաժամանակ ընդունում է մեկ տեսակ՝ այն բնիկով, որին միացված է։ Այդ դեպքում LinDVB-ն այն օգտագործում է միայն այդ տեսակի ալիքների համար։"
+
+msgid "No tuner is connected."
+msgstr "Ոչ մի թյուներ միացված չէ։"
+
+msgid "Not connected ({n})"
+msgstr "Միացված չէ ({n})"
+
+msgid "All its reception types"
+msgstr "Դրա բոլոր ընդունման տեսակները"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Պատկերային ֆայլեր (PNG, SVG, JPG)՝ անվանված ալիքի անունով, օր.՝ «Bayern 3.png», կամ picon հավաքածու, ինչպես այն օգտագործում են Enigma2-ը, Kodi-ն և VDR-ը (անվանված ըստ service reference-ի կամ SNP անվան)։ Դրանք ցուցադրվում են նաև ալիքների ցանկում։ LinDVB-ն լոգոներ չի տրամադրում, քանի որ դրանք պատկանում են հեռարձակողներին։ Դատարկ՝ {v0}"
+
+msgid "Picons for my channels"
+msgstr "Picon-ներ իմ ալիքների համար"
+
+msgid "Download Logos"
+msgstr "Ներբեռնել լոգոները"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Picons նախագծից (github.com/picons/picons) լոգոների թղթապանակ է ներբեռնում միայն ձեր ցանկի ալիքների լոգոները։ Այն ալիքները, որոնք արդեն լոգո ունեն այնտեղ, անփոփոխ են մնում։"
+
+msgid "Looking up…"
+msgstr "Որոնում…"
+
+msgid "{done} of {total}"
+msgstr "{done}՝ {total}-ից"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "Ներբեռնվել է {got} լոգո, {have}-ն արդեն կար, {missing}-ը picon հավաքածուում չկա։"
+
+msgid "Download failed: {error}"
+msgstr "Ներբեռնումը ձախողվեց՝ {error}"
+
+msgid "Provider / category"
+msgstr "Մատակարար / կատեգորիա"
+
+msgid "Extra streams"
+msgstr "Լրացուցիչ հոսքեր"
+
+msgid "New timer"
+msgstr "Նոր թայմեր"
+
+msgid "Edit timer"
+msgstr "Խմբագրել թայմերը"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (կարգավորումներից)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} կարող են պահվել միայն MPEG-TS-ում, ուստի օգտագործվում է TS։"
+
+msgid "Privacy Notice"
+msgstr "Գաղտնիության ծանուցում"
+
+msgid "Show Privacy Notice…"
+msgstr "Ցույց տալ գաղտնիության ծանուցումը…"
+
+msgid "Agree"
+msgstr "Համաձայն եմ"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Կարդացեք գաղտնիության ծանուցումը մինչև վերջ։"
+
+msgid "Andorra"
+msgstr "Անդորրա"
+
+msgid "Argentina"
+msgstr "Արգենտինա"
+
+msgid "Austria"
+msgstr "Ավստրիա"
+
+msgid "Australia"
+msgstr "Ավստրալիա"
+
+msgid "Åland Islands"
+msgstr "Ալանդյան կղզիներ"
+
+msgid "Belgium"
+msgstr "Բելգիա"
+
+msgid "Bulgaria"
+msgstr "Բուլղարիա"
+
+msgid "Brazil"
+msgstr "Բրազիլիա"
+
+msgid "Canada"
+msgstr "Կանադա"
+
+msgid "Switzerland"
+msgstr "Շվեյցարիա"
+
+msgid "China"
+msgstr "Չինաստան"
+
+msgid "Colombia"
+msgstr "Կոլումբիա"
+
+msgid "Czechia"
+msgstr "Չեխիա"
+
+msgid "Denmark"
+msgstr "Դանիա"
+
+msgid "Estonia"
+msgstr "Էստոնիա"
+
+msgid "Spain"
+msgstr "Իսպանիա"
+
+msgid "Finland"
+msgstr "Ֆինլանդիա"
+
+msgid "France"
+msgstr "Ֆրանսիա"
+
+msgid "Greece"
+msgstr "Հունաստան"
+
+msgid "Hong Kong"
+msgstr "Հոնկոնգ"
+
+msgid "Croatia"
+msgstr "Խորվաթիա"
+
+msgid "Hungary"
+msgstr "Հունգարիա"
+
+msgid "Ireland"
+msgstr "Իռլանդիա"
+
+msgid "Israel"
+msgstr "Իսրայել"
+
+msgid "Iran"
+msgstr "Իրան"
+
+msgid "Iceland"
+msgstr "Իսլանդիա"
+
+msgid "Kenya"
+msgstr "Քենիա"
+
+msgid "South Korea"
+msgstr "Հարավային Կորեա"
+
+msgid "Liechtenstein"
+msgstr "Լիխտենշտեյն"
+
+msgid "Lithuania"
+msgstr "Լիտվա"
+
+msgid "Luxembourg"
+msgstr "Լյուքսեմբուրգ"
+
+msgid "Latvia"
+msgstr "Լատվիա"
+
+msgid "Netherlands"
+msgstr "Նիդեռլանդներ"
+
+msgid "Norway"
+msgstr "Նորվեգիա"
+
+msgid "Poland"
+msgstr "Լեհաստան"
+
+msgid "Portugal"
+msgstr "Պորտուգալիա"
+
+msgid "Romania"
+msgstr "Ռումինիա"
+
+msgid "Russia"
+msgstr "Ռուսաստան"
+
+msgid "Sweden"
+msgstr "Շվեդիա"
+
+msgid "Slovenia"
+msgstr "Սլովենիա"
+
+msgid "Slovakia"
+msgstr "Սլովակիա"
+
+msgid "Taiwan"
+msgstr "Թայվան"
+
+msgid "Ukraine"
+msgstr "Ուկրաինա"
+
+msgid "Uganda"
+msgstr "Ուգանդա"
+
+msgid "United Kingdom"
+msgstr "Միացյալ Թագավորություն"
+
+msgid "United States"
+msgstr "Միացյալ Նահանգներ"
+
+msgid "Vietnam"
+msgstr "Վիետնամ"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Բոլոր հաճախությունները, 7/8 ՄՀց (Եվրոպա, Աֆրիկա, Ասիա)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Բոլոր հաճախությունները, 7 ՄՀց (Ավստրալիա)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Բոլոր հաճախությունները, 6 ՄՀց (Ամերիկաներ)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Բոլոր հաճախությունները, 6 ՄՀց (Թայվան)"
+
+msgid "Whole country"
+msgstr "Ամբողջ երկիրը"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Վիրտուալ թյուներ (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Այլ երկիր (առանց ցանկի)"
+
+msgid "Own lists"
+msgstr "Սեփական ցանկեր"
+
+msgid "All frequencies (blind scan)"
+msgstr "Բոլոր հաճախությունները (կույր որոնում)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Բոլոր հաճախությունները, 6 ՄՀց (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Բոլոր հաճախությունները (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Բոլոր հաճախությունները, 8 ՄՀց (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Վերգետնյա"
+
+msgid "Satellites"
+msgstr "Արբանյակներ"
+
+msgid "Add satellite"
+msgstr "Ավելացնել արբանյակ"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Միանգամից որոնել ափսեի մի քանի դիրքեր DiSEqC անջատիչի հետևում"
+
+msgid "More options"
+msgstr "Լրացուցիչ ընտրանքներ"
+
+msgid "Receives: {systems}"
+msgstr "Ընդունում է՝ {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Թյուները չի հայտնում, թե ինչ է ընդունում, ուստի առաջարկվում են բոլոր ցանկերը։"
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Այս թյուների միամալուխ կարգավորում՝ {setup}"
+
+msgid "(no lists found)"
+msgstr "(ցանկեր չգտնվեցին)"
+
+msgid "DiSEqC port"
+msgstr "DiSEqC պորտ"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Յուրաքանչյուր արբանյակին անհրաժեշտ է սեփական DiSEqC պորտ։"
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} տրանսպոնդեր այս դիրքերի ցանկերից, որոնումն ավելացնում է ցանցի հայտարարածները (NIT)։"
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Կույր որոնում՝ փորձում է {n} հաճախություն, մոտ {minutes} րոպե։"
+
+msgid "{n} frequencies from the list."
+msgstr "{n} հաճախություն ցանկից։"
+
+msgid "Transponder lists"
+msgstr "Տրանսպոնդերների ցանկեր"
+
+msgid "Favourites"
+msgstr "Ընտրյալներ"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "Ստեղծեք, վերանվանեք, ջնջեք և վերադասավորեք ձեր ընտրյալների ցանկերը։"
+
+msgid "Delete list"
+msgstr "Ջնջել ցանկը"
+
+msgid "Delete the list “{name}”?"
+msgstr "Ջնջե՞լ «{name}» ցանկը"
+
+msgid "Favourites Lists"
+msgstr "Ընտրյալների ցանկեր"
+
+msgid "Favourites Lists…"
+msgstr "Ընտրյալների ցանկեր…"
+
+msgid "Favourites lists"
+msgstr "Ընտրյալների ցանկեր"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "Զտիչ, ընտրյալների ցանկերը ցույց են տալիս TV և ռադիո"
+
+msgid "In no favourites list"
+msgstr "Ոչ մի ընտրյալների ցանկում"
+
+msgid "Manage favourites lists"
+msgstr "Կառավարել ընտրյալների ցանկերը"
+
+msgid "Manage favourites lists…"
+msgstr "Կառավարել ընտրյալների ցանկերը…"
+
+msgid "Move to the bottom"
+msgstr "Տեղափոխել ներքև"
+
+msgid "Move to the top"
+msgstr "Տեղափոխել վերև"
+
+msgid "Name of the favourites list"
+msgstr "Ընտրյալների ցանկի անուն"
+
+msgid "New Favourites List"
+msgstr "Ընտրյալների նոր ցանկ"
+
+msgid "New list"
+msgstr "Նոր ցանկ"
+
+msgid "New list…"
+msgstr "Նոր ցանկ…"
+
+msgid "Only the channels of a favourites list"
+msgstr "Միայն ընտրյալների ցանկի ալիքները"
+
+msgid "Order in this list"
+msgstr "Հերթականություն այս ցանկում"
+
+msgid "Remove from “{name}”"
+msgstr "Հեռացնել «{name}»-ից"
+
+msgid "Rename Favourites List"
+msgstr "Վերանվանել ընտրյալների ցանկը"
+
+msgid "Rename"
+msgstr "Վերանվանել"
+
+msgid "The channels stay in the channel list."
+msgstr "Ալիքները մնում են ալիքների ցանկում։"
+
+msgid "{n} channels"
+msgstr "{n} ալիք"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "Յուրաքանչյուր ցանկ պահում է իր սեփական հերթականությունը։ Ցանկի ալիքները դասավորեք ալիքների ցանկում՝ ընտրեք ցանկը, ապա քաշեք ալիքները կամ օգտագործեք աջ սեղմման ընտրացանկը։"
+
+msgid "Indonesia"
+msgstr "Ինդոնեզիա"
+
+msgid "North Macedonia"
+msgstr "Հյուսիսային Մակեդոնիա"
+
+msgid "South Africa"
+msgstr "Հարավաֆրիկյան Հանրապետություն"
+
+msgid "(no tuner)"
+msgstr "(թյուներ չկա)"
+
+msgid "1 tuner"
+msgstr "1 թյուներ"
+
+msgid "{n} tuners"
+msgstr "{n} թյուներ"
+
+msgid "Add Server"
+msgstr "Ավելացնել սերվեր"
+
+msgid "Add by address"
+msgstr "Ավելացնել ըստ հասցեի"
+
+msgid "Find SAT>IP servers"
+msgstr "Գտնել SAT>IP սերվերներ"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Այն սերվերի համար, որը որոնումը չի գտնում (այլ ցանց կամ առանց multicast-ի)։"
+
+msgid "No SAT>IP server added."
+msgstr "SAT>IP սերվեր ավելացված չէ։"
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Ոչ մի SAT>IP սերվեր չպատասխանեց։ Ավելացրեք այն ստորև՝ իր հասցեով։"
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "SAT>IP տուփեր և LNB-ներ, minisatip, FRITZ!Box Cable և DVB over IP այլ սերվերներ տեղական ցանցում։ Դրանց թյուներները ցուցադրվում են ստորև, երբ կարգավորումները պահպանվեն և կրկին բացվեն։"
+
+msgid "SAT>IP servers"
+msgstr "SAT>IP սերվերներ"
+
+msgid "Search Network"
+msgstr "Որոնել ցանցում"
+
+msgid "Searching…"
+msgstr "Որոնում…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (RTSP կապի ներսում)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP-ն աշխատում է այն firewall-ների միջով, որոնք արգելափակում են UDP հոսքը։"
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "Գտնվել է {n} սերվեր, {new}-ը՝ նոր։"
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Աղբյուր՝ SAT>IP սերվեր {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "SAT>IP ազդանշանի հաշվետվություն (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP՝ որոնումն օգտագործում է ցանկի հաճախությունները (առանց NIT որոնման)։"
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "SAT>IP սերվերը կառավարում է LNB-ն և DiSEqC անջատիչը, DiSEqC պորտն ընտրում է դրա աղբյուրը (1-ից 4)։"
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Տրանսպոնդերների այս ցանկը տրանսպոնդերներ չունի այս թյուների համար։\n"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB-ն չի կարող գտնել այս GStreamer տարրերը՝ {elements}։ Ուղիղ TV-ն կամ որոշ ալիքներ կարող են չնվագարկվել։"
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package}-ը պետք է պարունակի դրանք։ Խնդրում ենք հաղորդել սա որպես սխալ։"
+
+msgid "Install them with:"
+msgstr "Տեղադրեք դրանք՝"
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "Տեղադրեք GStreamer plugins base, bad և libav փաթեթները ձեր դիստրիբուտիվից։"
+
+msgid "GStreamer plugins are missing"
+msgstr "GStreamer հավելումները բացակայում են"
+
+msgid "At start"
+msgstr "Գործարկման ժամանակ"
+
+msgid "Channel at start"
+msgstr "Ալիքը գործարկման ժամանակ"
+
+msgid "Last channel watched"
+msgstr "Վերջին դիտված ալիքը"
+
+msgid "First channel of the current list"
+msgstr "Ընթացիկ ցանկի առաջին ալիքը"
+
+msgid "A chosen channel"
+msgstr "Ընտրված ալիք"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Ընթացիկ ցանկն ալիքների ցանկն է այնպես, ինչպես թողել եք այն՝ TV կամ ռադիո, զտիչ, խումբ և դասավորության կարգ։"
+
+msgid "Channel list"
+msgstr "Ալիքների ցանկ"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Բոլոր ալիքները կամ ձեր ընտրյալների ցանկերից մեկը։"
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Միացվում է յուրաքանչյուր գործարկման ժամանակ՝ անկախ նրանից, թե որ ալիքն եք վերջին անգամ դիտել։"
+
+msgid "No channel (black screen)"
+msgstr "Առանց ալիքի (սև էկրան)"
+
+msgid "Lock"
+msgstr "Կողպում"
+
+msgid "Search this satellite"
+msgstr "Որոնել այս արբանյակը"
+
+msgid "Tick the satellites to search."
+msgstr "Նշեք որոնվող արբանյակները։"
+
+msgid "Horizontal"
+msgstr "Հորիզոնական"
+
+msgid "Vertical"
+msgstr "Ուղղահայաց"
+
+msgid "Left (circular)"
+msgstr "Ձախ (շրջանային)"
+
+msgid "Right (circular)"
+msgstr "Աջ (շրջանային)"
+
+msgid "Auto"
+msgstr "Ավտո"
+
+msgid "Add…"
+msgstr "Ավելացնել…"
+
+msgid "Tick all"
+msgstr "Նշել բոլորը"
+
+msgid "Tick none"
+msgstr "Հանել բոլոր նշումները"
+
+msgid "Back to the lists"
+msgstr "Վերադառնալ ցանկերին"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Մոռանալ այս դիրքի փոփոխությունները և կրկին օգտագործել տրանսպոնդերների ցանկերը"
+
+msgid "The changed list is kept for this position."
+msgstr "Փոփոխված ցանկը պահվում է այս դիրքի համար։"
+
+msgid "This transponder is already in the list."
+msgstr "Այս տրանսպոնդերն արդեն ցանկում է։"
+
+msgid "Tick the transponders to search."
+msgstr "Նշեք որոնվող տրանսպոնդերները։"
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S-ն օգտագործում է միայն QPSK, 8PSK-ի, 16APSK-ի և 32APSK-ի համար ընտրեք DVB-S2։"
+
+msgid "This transponder is not valid."
+msgstr "Այս տրանսպոնդերն անվավեր է։"
+
+msgid "All {n} transponders are searched."
+msgstr "Որոնվում են բոլոր {n} տրանսպոնդերները։"
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Որոնվում է {on}՝ {n} տրանսպոնդերից։ Առանձին տրանսպոնդերների որոնումը չի ավելացնում ցանցի հայտարարածները (NIT)։"
+
+msgid "Edit transponder"
+msgstr "Խմբագրել տրանսպոնդերը"
+
+msgid "Add transponder"
+msgstr "Ավելացնել տրանսպոնդեր"
+
+msgid "Transponders of {position}"
+msgstr "{position}-ի տրանսպոնդերները"
+
+msgid "The list could not be saved."
+msgstr "Ցանկը չհաջողվեց պահպանել։"
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Տրանսպոնդերներ՝ որոնել առանձինները, ավելացնել, փոխել կամ հեռացնել դրանք"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} տրանսպոնդեր, եթե նշված են միայն որոշները, որոնվում են միայն դրանք։"
+
+msgid "Own transponder list: {positions}."
+msgstr "Տրանսպոնդերների սեփական ցանկ՝ {positions}։"
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Սերվերի տրամադրած հոսքի ձևաչափը։ Ընտրեք HLS, երբ ալիքները չեն նվագարկվում որպես MPEG-TS։"
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Տվեք ցանկին սեփական անուն (նաև դրա ալիքների խմբի անունը)"
+
+msgid "List renamed to {name}"
+msgstr "Ցանկը վերանվանվեց՝ {name}"
+
+msgid "Add Channels…"
+msgstr "Ավելացնել ալիքներ…"
+
+msgid "Add channels"
+msgstr "Ավելացնել ալիքներ"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Ձեռքով միացրեք մեկ հաճախություն և համեմատեք դրա ալիքներն ալիքների ցանկի հետ՝ ավելացրեք նորերը, թարմացրեք փոխվածները, հեռացրեք հները։"
+
+msgid "Unchanged"
+msgstr "Անփոփոխ"
+
+msgid "Changed"
+msgstr "Փոփոխված"
+
+msgid "No longer broadcast"
+msgstr "Այլևս չի հեռարձակվում"
+
+msgid "Bandwidth"
+msgstr "Թողունակություն"
+
+msgid "yes"
+msgstr "այո"
+
+msgid "Add Channels"
+msgstr "Ավելացնել ալիքներ"
+
+msgid "Tune Channel"
+msgstr "Միացնել ալիքը"
+
+msgid "No tuner found."
+msgstr "Թյուներ չգտնվեց։"
+
+msgid "Log"
+msgstr "Գրանցամատյան"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "DVB-T2 մուլտիպլեքսի PLP-ն, որը ուղարկում է մի քանիսը, -1-ը ընտրությունը թողնում է թյուներին"
+
+msgid "Enter by hand"
+msgstr "Մուտքագրել ձեռքով"
+
+msgid "Tuning…"
+msgstr "Միացում…"
+
+msgid "The tuner could not be used."
+msgstr "Թյուները հնարավոր չեղավ օգտագործել։"
+
+msgid "No channels found on this frequency."
+msgstr "Այս հաճախության վրա ալիքներ չգտնվեցին։"
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} անփոփոխ, {changed} փոփոխված, {new} նոր, {gone} այլևս չի հեռարձակվում։"
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "Պահպանված է՝ {added} ավելացված, {updated} թարմացված, {removed} հեռացված։"
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "Արբանյակ · DiSEqC պորտ {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "Աղբյուր՝ արբանյակային, մալուխային, վերգետնյա կամ համացանցային հոսքեր, DiSEqC պորտ կամ արբանյակ, ցանց, ներմուծման ֆայլ կամ IPTV ցանկ"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "LinDVB ալիքների ֆայլ (.json)՝ ամեն ինչ, ընտրյալների ցանկերով"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "M3U երգացանկ (.m3u)՝ համացանցային ալիքներ և DVB-I հոսքեր"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "dvbv5 ալիքների ֆայլ (.conf)՝ թյուների ալիքներ"
+
+msgid "CSV table (.csv): every channel"
+msgstr "CSV աղյուսակ (.csv)՝ յուրաքանչյուր ալիք"
+
+msgid "Export Channel List"
+msgstr "Արտահանել ալիքների ցանկը"
+
+msgid "TV channels only"
+msgstr "Միայն TV ալիքները"
+
+msgid "Radio stations only"
+msgstr "Միայն ռադիոկայանները"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Ցանկում ցուցադրված ալիքները ({n})"
+
+msgid "Save…"
+msgstr "Պահպանել…"
+
+msgid "There are no channels to export."
+msgstr "Արտահանելու ալիքներ չկան։"
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Այս {total} ալիքներից ոչ մեկը չի կարող պահվել այս ձևաչափով, համացանցային ալիքները գնում են M3U, թյուների ալիքները՝ dvbv5, յուրաքանչյուր ալիք՝ CSV կամ LinDVB ալիքների ֆայլ։"
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Կպահպանվի {n}՝ {total} ալիքից, մնացած {skipped}-ը չի կարող պահվել այս ձևաչափով։"
+
+msgid "{n} channels will be saved."
+msgstr "Կպահպանվի {n} ալիք։"
+
+msgid "Could not save {name}"
+msgstr "Չհաջողվեց պահպանել {name}-ը"
+
+msgid "{n} channels exported to {path}"
+msgstr "{n} ալիք արտահանվեց {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Ներմուծել ալիքների ցանկ (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Սերվեր (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Tvheadend սերվերի ալիքները՝ իր ալիքների պիտակներով որպես խմբեր և իր հաղորդումների ուղեցույցով։ Թողեք օգտանունը և գաղտնաբառը դատարկ, երբ սերվերը դրանք չի պահանջում։ Գաղտնաբառը պահվում է LinDVB-ի կարգավորումներում։"
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend՝ բեռնվել է {n} հաղորդում"
+
+msgid "Hardware Tuners"
+msgstr "Ապարատային թյուներներ"
+
+msgid "No hardware tuner found."
+msgstr "Ապարատային թյուներ չգտնվեց։"
+
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "Snap փաթեթը կարող է օգտագործել թյուներները միայն այն բանից հետո, երբ դրա DVB ինտերֆեյսը միացված է՝ գործարկեք «sudo snap connect lindvb:dvb» և կրկին գործարկեք LinDVB-ն։"
+
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux-ը DVB սարք չի կարգավորել (/dev/dvb-ն բացակայում է)։ Հավանաբար բացակայում է թյուների դրայվերը կամ միկրոծրագիրը, «dmesg | grep -i dvb»-ն ցույց է տալիս, թե ինչ է հաղորդում միջուկը։"
+
+msgid "Connect a tuner and open the preferences again."
+msgstr "Միացրեք թյուներ և կրկին բացեք կարգավորումները։"
+
+msgid "{n} tuners found in this computer."
+msgstr "Այս համակարգչում գտնվել է {n} թյուներ։"
+
+msgid "1 tuner found in this computer."
+msgstr "Այս համակարգչում գտնվել է 1 թյուներ։"
+
+msgid "Tuner {n}: {name}"
+msgstr "Թյուներ {n}՝ {name}"
+
+msgid "Internet stream {host}"
+msgstr "Համացանցային հոսք {host}"
+
+msgid "the server ended the stream"
+msgstr "սերվերն ավարտեց հոսքը"
+
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}՝ {reason} – կրկին միացում {s} վ-ից"
+
+msgid "{host}: connected again"
+msgstr "{host}՝ կրկին միացված է"
+
+msgid "could not open the stream"
+msgstr "չհաջողվեց բացել հոսքը"
+
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}՝ հոսքը նվագարկվում է ուղղակիորեն՝ առանց Timeshift-ի ({reason})"
+
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Կապը կորավ ({reason}) – կրկին միացում {s} վ-ից"
+
+msgid "Connected again"
+msgstr "Կրկին միացված է"
+
+msgid "{name} has no catch-up"
+msgstr "{name}-ը catch-up չունի"
+
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Catch-up՝ {title} ({name}, {time})"
+
+msgid "Timeshift for internet channels"
+msgstr "Timeshift համացանցային ալիքների համար"
+
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "Համացանցային TV ալիքներն անցնում են Timeshift-ի բուֆերով՝ թյուների ալիքների նման՝ դադար, հետ անցում և բուֆերի պահպանում որպես ձայնագրություն։ Ռադիոհոսքերը նվագարկվում են ուղղակիորեն։"
+
+msgid "Quality of HLS / DASH streams"
+msgstr "HLS / DASH հոսքերի որակ"
+
+msgid "Automatic (follows the connection)"
+msgstr "Ավտոմատ (հետևում է կապին)"
+
+msgid "Always the best"
+msgstr "Միշտ լավագույնը"
+
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Ավտոմատը անցնում է ավելի ցածր որակի, երբ կապը դանդաղում է, բուֆերը պահում է ժամանածը։ «Միշտ լավագույնը» միշտ նույնն է երևում, բայց դանդաղ կապի դեպքում կանգ է առնում սպասելու։"
+
+msgid "Reconnect internet streams"
+msgstr "Վերամիացնել համացանցային հոսքերը"
+
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Երբ համացանցային կամ Tvheadend ալիքի կապը խզվում է, այն կրկին բացվում է մի քանի վայրկյան հետո՝ մինչև երեք րոպե։"
+
+msgid "Watch from the Start"
+msgstr "Դիտել սկզբից"
+
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Նվագարկում է հաղորդումն իր սկզբից՝ մատակարարի արխիվից (catch-up)"
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr "HLS և DASH համացանցային հոսքերը ձայնագրվում են մեկ աուդիո ուղով (նախընտրելի լեզուն, եթե այն առաջարկվում է)։"
+
+msgid "margin"
+msgstr "պաշար"
+
+msgid "pixel"
+msgstr "պիքսել"
+
+msgid "TV"
+msgstr "TV"
+
+msgid "Filter"
+msgstr "Զտիչ"
+
+msgid "Source or group"
+msgstr "Աղբյուր կամ խումբ"
+
+msgid "Favourites list"
+msgstr "Ընտրյալների ցանկ"
+
+msgid "For channels whose type was guessed wrong, e.g. internet streams or imported lists"
+msgstr "Այն ալիքների համար, որոնց տեսակը սխալ է կռահվել, օր.՝ համացանցային հոսքեր կամ ներմուծված ցանկեր"
+
+msgid "Sort by number to move channels"
+msgstr "Դասավորեք ըստ համարի՝ ալիքները տեղափոխելու համար"
+
+msgid "Move up in the channel list (Alt+Up)"
+msgstr "Տեղափոխել վեր ալիքների ցանկում (Alt+Up)"
+
+msgid "Move down in the channel list (Alt+Down)"
+msgstr "Տեղափոխել վար ալիքների ցանկում (Alt+Down)"
+
+msgid "Add to the favourites list"
+msgstr "Ավելացնել ընտրյալների ցանկին"
+
+msgid "Remove from the favourites list"
+msgstr "Հեռացնել ընտրյալների ցանկից"
+
+msgid "Move up in the favourites list (Alt+Up)"
+msgstr "Տեղափոխել վեր ընտրյալների ցանկում (Alt+Up)"
+
+msgid "Move down in the favourites list (Alt+Down)"
+msgstr "Տեղափոխել վար ընտրյալների ցանկում (Alt+Down)"
+
+msgid "Empty. Drag channels here or use the arrow button."
+msgstr "Դատարկ է։ Քաշեք ալիքներն այստեղ կամ օգտագործեք սլաքով կոճակը։"
+
+msgid "No favourites list yet. Use the star of a channel to make one."
+msgstr "Ընտրյալների ցանկ դեռ չկա։ Օգտագործեք ալիքի աստղը՝ այն ստեղծելու համար։"
+
+msgid "Sort the channel list"
+msgstr "Դասավորել ալիքների ցանկը"
+
+msgid "By group and name"
+msgstr "Ըստ խմբի և անվան"
+
+msgid "By the numbers of the DVB-I list"
+msgstr "Ըստ DVB-I ցանկի համարների"
+
+msgid "{n} channels · drag to reorder"
+msgstr "{n} ալիք · քաշեք՝ վերադասավորելու համար"
+
+msgid "Shown as the source in the channel list filter. Empty: the name the list gives itself."
+msgstr "Ցուցադրվում է որպես աղբյուր ալիքների ցանկի զտիչում։ Դատարկ՝ այն անունը, որ ցանկն ինքն իրեն է տալիս։"
+
+msgid "The name the list gives itself"
+msgstr "Այն անունը, որ ցանկն ինքն իրեն է տալիս"
+
+msgid "Name in the channel list"
+msgstr "Անունը ալիքների ցանկում"
+
+msgid "All tags"
+msgstr "Բոլոր պիտակները"
+
+msgid "Tvheadend channel tag"
+msgstr "Tvheadend ալիքի պիտակ"
+
+msgid "{n} min left"
+msgstr "Մնաց {n} րոպե"
+
+msgid "Audio description"
+msgstr "Աուդիոնկարագրություն"
+
+msgid "Black and white"
+msgstr "Սև ու սպիտակ"
+
+msgid "In memory (RAM)"
+msgstr "Հիշողության մեջ (RAM)"
+
+msgid "On disk as a file"
+msgstr "Սկավառակի վրա՝ որպես ֆայլ"
+
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "Անջատված՝ ուղիղ TV-ն չի կարող դադարեցվել կամ հետ անցնել։ Հիշողության մեջ՝ սկավառակի վրա ոչինչ չի գրվում, բայց բուֆերը զբաղեցնում է RAM։ Սկավառակի վրա՝ ամենամեծ բուֆերը։"
+
+msgid "Timeshift buffer in memory (MB)"
+msgstr "Timeshift-ի բուֆեր հիշողության մեջ (ՄԲ)"
+
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "Առավելագույնը հիշողության կեսը ({mb} ՄԲ), ավելի քիչ, երբ այլ ծրագրերին է այն անհրաժեշտ։"
+
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "Ավելի քիչ, երբ սկավառակը գրեթե լիքն է ({mb} ՄԲ մնում է ազատ)։"
+
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+msgid "{m} min"
+msgstr "{m} րոպե"
+
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "Timeshift-ի բուֆերը կրճատվեց մինչև {mb} ՄԲ՝ {reason}"
+
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "Timeshift-ն անջատված է այս ալիքի համար՝ {reason}"
+
+msgid "not enough free memory"
+msgstr "բավարար ազատ հիշողություն չկա"
+
+msgid "the disk is almost full"
+msgstr "սկավառակը գրեթե լիքն է"
+
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "Timeshift-ն անջատված է (Կարգավորումներ › Նվագարկում)"
+
+msgid "HbbTV: the application is not signalled on this channel"
+msgstr "HbbTV՝ հավելվածը այս ալիքում ազդանշանավորված չէ"
+
+msgid "HbbTV video could not be played: {msg}"
+msgstr "HbbTV տեսանյութը չհաջողվեց նվագարկել՝ {msg}"
+
+msgid "unknown error"
+msgstr "անհայտ սխալ"
+
+msgid "Diagnostic log"
+msgstr "Ախտորոշման գրանցամատյան"
+
+msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
+msgstr "Գրանցում է, թե ինչ են անում հավելվածները և ինչ են պահանջում LinDVB-ից {path}-ում՝ սխալի հաշվետվությանը կցելու համար։ Ուժի մեջ է մտնում ալիքի հաջորդ փոխման ժամանակ։"
