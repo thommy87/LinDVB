@@ -35,8 +35,12 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 | Current PIN / New PIN | – | The youth protection PIN. Once set, changing the age or the PIN needs the current PIN |
 | Companion screens on the network | off | DIAL discovery, app to app with phones and tablets, inter-device sync, starting applications from a companion. Off: only the local app-to-app endpoint on 127.0.0.1 runs |
 | Allow third-party cookies | off | Advertising networks use them to follow viewers across channels |
-| Diagnostic log | off | Writes `~/.cache/lindvb/hbbtv.log`: the AIT, launched URLs, createApplication, navigations, keys, video errors, the application's console messages and what it asks the terminal (hasCapability, isObjectSupported, canPlayType …). For bug reports; same as `LINDVB_HBBTV_DEBUG=1` |
 | Delete HbbTV Data | – | Removes cookies, local storage and cache of all applications |
+
+The HbbTV side of a bug report (the AIT, launched URLs, createApplication,
+navigations, keys, video errors, the application's console messages and what it
+asks the terminal: hasCapability, isObjectSupported, canPlayType …) is in the
+log of **Preferences ▸ Debug ▸ Debug mode**, `~/.cache/lindvb/debug.log`.
 
 **DVB-I internet channels** have no broadcast AIT. Their service list links the
 applications instead (an XML AIT or an application page), and LinDVB starts
@@ -161,7 +165,7 @@ Tune a channel with that service id. `LINDVB_HBBTV_DEBUG=1` writes the
 application's console messages to the terminal and enables the WebKit
 inspector. It also logs what the terminal does (the AIT, launched URLs,
 createApplication, navigations, keys, video errors) to the terminal and to
-`~/.cache/lindvb/hbbtv.log`, the file to attach to a bug report. A recording of a real channel in TS format also works, since it
+`~/.cache/lindvb/debug.log`, the file to attach to a bug report. A recording of a real channel in TS format also works, since it
 keeps the AIT.
 
 **Videos of an application.** DASH plays through dash.js (MSE). When dash.js

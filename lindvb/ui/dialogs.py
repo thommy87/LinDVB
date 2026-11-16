@@ -350,10 +350,6 @@ class PrefsWindow(Gtk.Window):
                  "on the network."))
         switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
                _("Advertising networks use them to follow you across channels."))
-        switch(g, "hbbtv_debug_log", _("Diagnostic log"),
-               _("Records what the applications do and ask of LinDVB in {path}, to attach to "
-                 "a bug report. Takes effect on the next channel change.").format(
-                   path="~/.cache/lindvb/hbbtv.log"))
         clear = Gtk.Button(label=_("Delete HbbTV Data"))
         clear.connect("clicked", lambda *_: hbbtv_ui.clear_data(app))
         _row(g, _("Cookies and storage"), clear,
@@ -423,10 +419,79 @@ class PrefsWindow(Gtk.Window):
         manage.connect("clicked", lambda *_: app.show_plugins())
         pg.append(manage)
 
+        # -- Debug (last page: only needed for bug reports)
+        self._build_debug(page("debug", _("Debug"),
+                               _("When something does not work: switch on the debug mode, "
+                                 "repeat what went wrong and attach the log to the bug "
+                                 "report.")), group, switch)
+
         self._preview_accent()
         self.connect("close-request", self._on_close)
         if page_name and self.stack.get_child_by_name(page_name) is not None:
             self.stack.set_visible_child_name(page_name)
+
+    # debug mode ---------------------------------------------------------------
+    def _build_debug(self, pg, group, switch):
+        g = group(pg)
+        switch(g, "debug_mode", _("Debug mode"),
+               _("Records channel changes, tuning, playback, recordings, HbbTV, status "
+                 "messages, GStreamer warnings and errors in a log file. Passwords, PINs, "
+                 "your user name and your home folder are left out. Takes effect when you "
+                 "save; switch it off again when the problem is solved."))
+        g = group(pg)
+        buttons = Gtk.Box(spacing=6)
+        folder = Gtk.Button(label=_("Open Folder"))
+        folder.connect("clicked", lambda *_: self._open_log_folder())
+        self._log_save = Gtk.Button(label=_("Save…"))
+        self._log_save.connect("clicked", lambda *_: self._save_log())
+        self._log_clear = Gtk.Button(label=_("Delete"))
+        self._log_clear.connect("clicked", lambda *_: self._clear_log())
+        for b in (folder, self._log_save, self._log_clear):
+            buttons.append(b)
+        _row(g, _("Log file"), buttons, " ")
+        # the hint label of that row, filled by _update_log_size
+        self._log_size = buttons.get_parent().get_first_child().get_last_child()
+        self._update_log_size()
+
+    def _update_log_size(self):
+        from .. import debuglog
+        from ..recordings import human_size
+        total = sum(f.stat().st_size for f in debuglog.files() if f.exists())
+        where = str(debuglog.path()).replace(str(Path.home()), "~", 1)
+        self._log_size.set_text(where + "\n" + (
+            _("{size} now, at most {max}. Save… makes a copy to attach to a bug report.").format(
+                size=human_size(total), max=human_size(2 * debuglog.MAX_BYTES))
+            if total else _("No log yet.")))
+        self._log_save.set_sensitive(bool(total))
+        self._log_clear.set_sensitive(bool(total))
+
+    def _open_log_folder(self):
+        from .. import debuglog
+        folder = debuglog.path().parent
+        folder.mkdir(parents=True, exist_ok=True)
+        Gtk.FileLauncher.new(Gio.File.new_for_path(str(folder))).launch(self, None, None)
+
+    def _save_log(self):
+        dlg = Gtk.FileDialog(title=_("Log file"),
+                             initial_name=time.strftime("lindvb-debug-%Y%m%d-%H%M.log"))
+
+        def done(d, res):
+            try:
+                target = d.save_finish(res).get_path()
+            except GLib.Error:
+                return
+            from .. import debuglog
+            try:
+                debuglog.save_as(target)
+            except OSError as e:
+                from .common import message
+                message(self, _("Could not save {name}").format(name=Path(target).name), str(e))
+        dlg.save(self, None, done)
+
+    def _clear_log(self):
+        from .. import debuglog
+        debuglog.clear()
+        self._update_log_size()
 
     # channel at start -------------------------------------------------------
     def _build_startup(self, g, s):
@@ -1151,6 +1216,10 @@ class PrefsWindow(Gtk.Window):
         self._epg.save(s)
         s.save()
         self._saved = True
+        from .. import debuglog
+        debuglog.configure(s)
+        from . import hbbtv as hbbtv_ui
+        hbbtv_ui.DEBUG = hbbtv_ui.ENV_DEBUG or debuglog.enabled()
         from .. import channels as channels_mod
         channels_mod.IPTV_TIMESHIFT = bool(s.get("iptv_timeshift", True))
         apply_accent(s)

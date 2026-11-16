@@ -10,7 +10,6 @@ window of its own.
 
 import json
 import os
-import sys
 import tempfile
 import threading
 import urllib.request
@@ -21,7 +20,7 @@ import time
 import weakref
 
 from ..config import CACHE_DIR, DATA_DIR
-from .. import dsmcc
+from .. import debuglog, dsmcc
 from .. import hbbtv as hb
 from ..i18n import _
 
@@ -81,40 +80,33 @@ _schemes = set()
 
 
 ENV_DEBUG = bool(os.environ.get("LINDVB_HBBTV_DEBUG"))
-DEBUG = ENV_DEBUG               # or Preferences ▸ HbbTV ▸ Diagnostic log
-_log_file = None
+DEBUG = ENV_DEBUG               # or Preferences ▸ Debug ▸ Debug mode (lindvb.debuglog)
 
 
 def log(*parts):
-    """With the diagnostic log on (or LINDVB_HBBTV_DEBUG=1): what the terminal does, on stdout and in
-    ~/.cache/lindvb/hbbtv.log (to send along with a bug report)."""
-    global _log_file
+    """In debug mode (or with LINDVB_HBBTV_DEBUG=1): what the terminal does, in
+    ~/.cache/lindvb/debug.log (to send along with a bug report) and on stdout."""
     if not DEBUG:
         return
     try:
-        line = time.strftime("%H:%M:%S ") + "HbbTV: " + " ".join(str(p) for p in parts)
+        text = " ".join(str(p) for p in parts)
     except Exception:  # noqa: BLE001 - logging must never break the terminal
         return
-    try:
-        if _log_file is None:
-            CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            _log_file = open(CACHE_DIR / "hbbtv.log", "a", encoding="utf-8")
-        _log_file.write(line + "\n")
-        _log_file.flush()
-    except OSError:
-        pass
-    _print(line)
+    debuglog.write("HbbTV", text)
+    if ENV_DEBUG:
+        _print(time.strftime("%H:%M:%S ") + "HbbTV: " + text)
 
 
 def _print(line):
     """Print to a terminal of any encoding: the AppImage's Python may run with
     an ASCII stdout, and an application name with an umlaut must not raise."""
+    out = debuglog.terminal()           # the log has the line already
     try:
-        print(line, flush=True)
+        print(line, flush=True, file=out)
     except UnicodeEncodeError:
-        enc = getattr(sys.stdout, "encoding", None) or "ascii"
+        enc = getattr(out, "encoding", None) or "ascii"
         try:
-            print(line.encode(enc, "replace").decode(enc), flush=True)
+            print(line.encode(enc, "replace").decode(enc), flush=True, file=out)
         except (OSError, ValueError, LookupError):
             pass
     except (OSError, ValueError):
@@ -260,7 +252,7 @@ class HbbTV:
 
     def _update_debug(self):
         global DEBUG
-        DEBUG = ENV_DEBUG or bool(self.settings.get("hbbtv_debug_log", False))
+        DEBUG = ENV_DEBUG or debuglog.enabled()
 
     @property
     def enabled(self):

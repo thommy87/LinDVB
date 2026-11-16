@@ -4651,3 +4651,35 @@ msgstr "დისკი თითქმის სავსეა"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "დროის გადაწევა გამორთულია (პარამეტრები › დაკვრა)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "გამართვა"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "როცა რამე არ მუშაობს: ჩართეთ გამართვის რეჟიმი, გაიმეორეთ ის, რაც ვერ მოხერხდა, და დაურთეთ ჟურნალი შეცდომის ანგარიშს."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "გამართვის რეჟიმი"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "ჟურნალის ფაილში იწერს არხების გადართვას, მომართვას, დაკვრას, ჩანაწერებს, HbbTV-ს, სტატუსის შეტყობინებებს და GStreamer-ის გაფრთხილებებსა და შეცდომებს. პაროლები, PIN-კოდები, თქვენი მომხმარებლის სახელი და საწყისი საქაღალდე არ იწერება. მოქმედებს შენახვისას; გამორთეთ, როცა პრობლემა მოგვარდება."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "ჟურნალის ფაილი"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "საქაღალდის გახსნა"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "ახლა {size}, მაქსიმუმ {max}. „შენახვა…“ ქმნის ასლს შეცდომის ანგარიშზე დასართავად."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "ჟურნალი ჯერ არ არის."

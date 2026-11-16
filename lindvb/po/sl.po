@@ -4287,3 +4287,35 @@ msgstr "disk je skoraj poln"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "Časovni zamik je izklopljen (Nastavitve › Predvajanje)"
+
+#: lindvb/ui/dialogs.py
+msgid "Debug"
+msgstr "Razhroščevanje"
+
+#: lindvb/ui/dialogs.py
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "Ko nekaj ne deluje: vklopite način razhroščevanja, ponovite, kar ni uspelo, in priložite dnevnik poročilu o napaki."
+
+#: lindvb/ui/dialogs.py
+msgid "Debug mode"
+msgstr "Način razhroščevanja"
+
+#: lindvb/ui/dialogs.py
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "V dnevniško datoteko zapisuje preklope kanalov, uglaševanje, predvajanje, snemanja, HbbTV, sporočila o stanju ter opozorila in napake GStreamerja. Gesla, kode PIN, vaše uporabniško ime in domača mapa so izpuščeni. Učinkuje ob shranjevanju; izklopite ga, ko je težava rešena."
+
+#: lindvb/ui/dialogs.py
+msgid "Log file"
+msgstr "Dnevniška datoteka"
+
+#: lindvb/ui/dialogs.py
+msgid "Open Folder"
+msgstr "Odpri mapo"
+
+#: lindvb/ui/dialogs.py
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "Zdaj {size}, največ {max}. Shrani… naredi kopijo, ki jo priložite poročilu o napaki."
+
+#: lindvb/ui/dialogs.py
+msgid "No log yet."
+msgstr "Dnevnika še ni."

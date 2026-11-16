@@ -20,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
+from . import debuglog, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -967,6 +967,24 @@ class TunerManager(GObject.Object):
                 self.settings.get("ca_provider", "none") not in ("none", ""))
 
     def acquire(self, channel, user):
+        debuglog.write("Tuner", f"acquire for {user}: {debuglog.describe_channel(channel)}")
+        try:
+            cap = self._acquire(channel, user)
+        except Exception as e:
+            debuglog.write("Tuner", f"no tuner for {user}: {e}")
+            raise
+        if debuglog.enabled() and not getattr(cap, "_debug_traced", False):
+            cap._debug_traced = True
+            a = cap.adapter
+            cap.connect("error", lambda _c, m: debuglog.write("Tuner", f"adapter {a} error: {m}"))
+            cap.connect("connection", lambda _c, kind, m: debuglog.write(
+                "Tuner", f"adapter {a} connection {kind}: {m}"))
+        debuglog.write("Tuner", f"{user} uses adapter {cap.adapter} "
+                                f"({getattr(cap, 'source_label', '') or '?'}), "
+                                f"users now {sorted(cap.users)}")
+        return cap
+
+    def _acquire(self, channel, user):
         if channel.tvh_server:
             return self._acquire_tvheadend(channel, user)
         if channel.is_iptv:
@@ -1046,6 +1064,8 @@ class TunerManager(GObject.Object):
         return cap
 
     def release(self, cap, user):
+        debuglog.write("Tuner", f"{user} releases adapter {cap.adapter}, "
+                                f"left: {sorted(set(cap.users) - {user}) or 'none'}")
         cap.users.discard(user)
         if not cap.users:
             self.captures.pop(cap.adapter, None)

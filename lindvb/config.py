@@ -54,9 +54,10 @@ DEFAULTS = {
     "hbbtv_age_limit": 0,               # youth protection: age of the youngest viewer, 0 = off
     "hbbtv_pin": "",                    # PBKDF2 of the youth protection PIN
     "hbbtv_pin_salt": "",
-    "hbbtv_debug_log": False,           # write ~/.cache/lindvb/hbbtv.log (for bug reports)
     "hbbtv_companion": False,           # DIAL, app to app and sync on the network (off: local only)
     "hbbtv_device_uuid": "",            # DIAL/UPnP device id, made on first use
+    # Preferences ▸ Debug: write ~/.cache/lindvb/debug.log (lindvb.debuglog, for bug reports)
+    "debug_mode": False,
     # timeshift buffer (lindvb.timeshift): "disk" (in timeshift_dir), "ram"
     # (tmpfs, at most half of the memory) or "off" (no pause / jumping back)
     "timeshift_mode": "disk",
@@ -276,6 +277,9 @@ class Settings(dict):
         if "rec_all_audio" in saved and "rec_audio_mode" not in saved:
             saved["rec_audio_mode"] = "all" if saved["rec_all_audio"] else "first"
         saved.pop("rec_all_audio", None)
+        # the HbbTV-only diagnostic log became the debug mode of all of LinDVB
+        if saved.pop("hbbtv_debug_log", False):
+            saved.setdefault("debug_mode", True)
         self.update(saved)
 
     def save(self):
