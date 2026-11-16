@@ -4599,3 +4599,55 @@ msgstr "აუდიოაღწერა"
 
 msgid "Black and white"
 msgstr "შავ-თეთრი"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "In memory (RAM)"
+msgstr "მეხსიერებაში (RAM)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "On disk as a file"
+msgstr "დისკზე ფაილად"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "გამორთული: პირდაპირ ეთერს ვერ დააპაუზებთ და ვერც უკან გადაახვევთ. მეხსიერებაში: დისკზე არაფერი იწერება, მაგრამ ბუფერი RAM-ს იკავებს. დისკზე: ყველაზე დიდი ბუფერი."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer in memory (MB)"
+msgstr "დროის გადაწევის ბუფერი მეხსიერებაში (MB)"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "მაქსიმუმ მეხსიერების ნახევარი ({mb} MB); ნაკლები, როცა ის სხვა პროგრამებს სჭირდება."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "ნაკლები, როცა დისკი თითქმის სავსეა ({mb} MB თავისუფალი რჩება)."
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "{m} min"
+msgstr "{m} წთ"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "დროის გადაწევის ბუფერი შემცირდა {mb} MB-მდე: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "დროის გადაწევა ამ არხისთვის გამორთულია: {reason}"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "not enough free memory"
+msgstr "თავისუფალი მეხსიერება არ არის საკმარისი"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "the disk is almost full"
+msgstr "დისკი თითქმის სავსეა"
+
+#: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "დროის გადაწევა გამორთულია (პარამეტრები › დაკვრა)"

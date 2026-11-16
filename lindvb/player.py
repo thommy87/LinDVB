@@ -1001,8 +1001,12 @@ class Player(GObject.Object):
 
     # -- transport ----------------------------------------------------------
 
+    def can_timeshift(self):
+        """False for live TV whose capture has no timeshift buffer (off)."""
+        return not self.capture or getattr(self.capture, "timeshift", True)
+
     def toggle_pause(self):
-        if not self.playbin:
+        if not self.playbin or not self.can_timeshift():
             return
         self.paused = not self.paused
         if self.paused:
@@ -1030,6 +1034,8 @@ class Player(GObject.Object):
         return max(0, end - int(self.timeshift_delay() * self.capture.byte_rate()))
 
     def jump(self, seconds):
+        if self.capture and not self.can_timeshift():
+            return
         if self.capture:
             start, end = self.capture.store.bounds()
             off = self.played_offset() + int(seconds * self.capture.byte_rate())
