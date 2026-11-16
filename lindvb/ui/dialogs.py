@@ -350,6 +350,10 @@ class PrefsWindow(Gtk.Window):
                  "on the network."))
         switch(g, "hbbtv_third_party_cookies", _("Allow third-party cookies"),
                _("Advertising networks use them to follow you across channels."))
+        switch(g, "hbbtv_debug_log", _("Diagnostic log"),
+               _("Records what the applications do and ask of LinDVB in {path}, to attach to "
+                 "a bug report. Takes effect on the next channel change.").format(
+                   path="~/.cache/lindvb/hbbtv.log"))
         clear = Gtk.Button(label=_("Delete HbbTV Data"))
         clear.connect("clicked", lambda *_: hbbtv_ui.clear_data(app))
         _row(g, _("Cookies and storage"), clear,

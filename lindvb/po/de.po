@@ -4739,3 +4739,11 @@ msgstr "die Festplatte ist fast voll"
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr "Timeshift ist aus (Einstellungen › Wiedergabe)"
+
+#: lindvb/ui/dialogs.py
+msgid "Diagnostic log"
+msgstr "Diagnose-Protokoll"
+
+#: lindvb/ui/dialogs.py
+msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
+msgstr "Zeichnet in {path} auf, was die Anwendungen tun und von LinDVB abfragen, zum Anhängen an eine Fehlermeldung. Wirkt ab dem nächsten Senderwechsel."

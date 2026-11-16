@@ -35,6 +35,7 @@ Preferences ▸ Tuner and Channels ▸ HbbTV:
 | Current PIN / New PIN | – | The youth protection PIN. Once set, changing the age or the PIN needs the current PIN |
 | Companion screens on the network | off | DIAL discovery, app to app with phones and tablets, inter-device sync, starting applications from a companion. Off: only the local app-to-app endpoint on 127.0.0.1 runs |
 | Allow third-party cookies | off | Advertising networks use them to follow viewers across channels |
+| Diagnostic log | off | Writes `~/.cache/lindvb/hbbtv.log`: the AIT, launched URLs, createApplication, navigations, keys, video errors, the application's console messages and what it asks the terminal (hasCapability, isObjectSupported, canPlayType …). For bug reports; same as `LINDVB_HBBTV_DEBUG=1` |
 | Delete HbbTV Data | – | Removes cookies, local storage and cache of all applications |
 
 **DVB-I internet channels** have no broadcast AIT. Their service list links the

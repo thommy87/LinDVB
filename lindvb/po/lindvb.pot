@@ -5881,3 +5881,11 @@ msgstr ""
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
 msgid "Timeshift is off (Preferences › Playback)"
 msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Diagnostic log"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
+msgstr ""
