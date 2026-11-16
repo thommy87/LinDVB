@@ -47,9 +47,12 @@ from .i18n import _
 # /dev/dvb adapter, SAT>IP server (100+) or Tvheadend stream (2000+) uses them.
 ADAPTER_BASE = 3000
 CHUNK = 188 * 348                # about 64 KiB of transport stream packets
-USER_AGENT = "LinDVB"
+CLIENT_NAME = "LinDVB"
 TS_PACKET = 188
 TS_SYNC = 0x47
+REDIRECT_TIMEOUT = 8             # seconds for resolving a gateway redirect
+# HTTP answers that mean "not for you": the stream itself is there
+REFUSED_CODES = (401, 403, 451)
 
 RECONNECT_DELAYS = (1, 2, 4, 8, 15, 30)     # seconds before each new attempt
 RECONNECT_GIVE_UP = 180                     # seconds without a stream before giving up
@@ -66,6 +69,97 @@ ADAPTIVE_DEMUX_SETTINGS = {"start-bitrate": 5_000_000,              # bit/s
                            "low-watermark-time": 3_000_000_000}     # ns
 ADAPTIVE_DEMUXERS = ("hlsdemux", "dashdemux", "hlsdemux2", "dashdemux2", "mssdemux",
                      "mssdemux2")
+
+
+# -- identifying ourselves to a broadcaster -----------------------------------
+
+_user_agent = None
+
+
+def user_agent():
+    """The user agent for stream requests: the same HbbTV terminal agent the
+    built-in browser sends (TS 102 796 7.3.2.4).
+
+    A DVB-I service list points at the broadcasters' own CDNs, and several of
+    them (ARD's among them) answer 403 Forbidden to a client they do not
+    recognise. "LinDVB" alone, or GStreamer's default agent, is such a client;
+    the HbbTV agent says what LinDVB is: a TV terminal playing a DVB-I service.
+    """
+    global _user_agent
+    if _user_agent is None:
+        try:
+            from . import hbbtv
+            _user_agent = hbbtv.user_agent(hbbtv.terminal_version())
+        except (ImportError, AttributeError):                # pragma: no cover
+            _user_agent = CLIENT_NAME
+    return _user_agent
+
+
+def http_headers(extra=None):
+    """Request headers for a stream or manifest over HTTP."""
+    headers = {"User-Agent": user_agent()}
+    headers.update(extra or {})
+    return headers
+
+
+def setup_http_source(src):
+    """A GStreamer HTTP source (souphttpsrc, curlhttpsrc) for a stream: send
+    our user agent and follow the redirects of a DVB-I gateway."""
+    if src.find_property("user-agent") is not None:
+        src.set_property("user-agent", user_agent())
+    if src.find_property("automatic-redirect") is not None:
+        src.set_property("automatic-redirect", True)
+
+
+class _KeepMethod(urllib.request.HTTPRedirectHandler):
+    """Collects the redirect chain instead of swallowing it."""
+
+    def __init__(self, seen):
+        self.seen = seen
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        self.seen.append(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def resolve_redirects(url, timeout=REDIRECT_TIMEOUT, prefer_https=True):
+    """The address a DVB-I gateway URL ends at, following its redirects
+    ourselves, or *url* when it does not redirect.
+
+    DVB-I services point at a gateway (``https://itv.ard.de/dvbi/dash/36/…``)
+    that redirects to the CDN carrying the stream, often to plain ``http``.
+    Resolving the chain here keeps the player on a single hop, and with
+    *prefer_https* a target that also answers over https is used encrypted.
+    """
+    seen = []
+    opener = urllib.request.build_opener(_KeepMethod(seen))
+    req = urllib.request.Request(url, headers=http_headers(), method="GET")
+    try:
+        with opener.open(req, timeout=timeout) as resp:
+            final = resp.geturl()
+    except urllib.error.HTTPError as e:
+        final = seen[-1] if seen else url
+        e.close()
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        raise OSError(str(getattr(e, "reason", e)) or e.__class__.__name__) from None
+    if not final:
+        return url
+    if prefer_https and final.startswith("http://") and url.startswith("https://"):
+        secure = "https://" + final[len("http://"):]
+        if _answers(secure, timeout):
+            return secure
+    return final
+
+
+def _answers(url, timeout=REDIRECT_TIMEOUT):
+    """True when *url* can be read (one request, headers and a first read)."""
+    req = urllib.request.Request(url, headers=http_headers(), method="GET")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            resp.read(1)
+            return True
+    except (urllib.error.URLError, OSError, ValueError):
+        return False
 
 
 # -- what a channel is ---------------------------------------------------------
@@ -138,6 +232,10 @@ class NotTransportStream(Exception):
     """The address answers with something else than a transport stream."""
 
 
+class Refused(OSError):
+    """The server refused the request (HTTP 401, 403 or 451)."""
+
+
 class Retry:
     """The reconnect delays of one stream: ``next()`` gives the delay before
     the next attempt, or None when it is time to give up."""
@@ -206,11 +304,30 @@ class StreamReader:
 
     # subclasses: open the connection (a response with read()/read1())
     def _open(self):
-        req = urllib.request.Request(self.url, headers={"User-Agent": USER_AGENT})
+        try:
+            return self._request(self.url)
+        except Refused as e:
+            # a gateway that redirects to a CDN refusing us: follow the
+            # redirect ourselves and ask the CDN straight away (DVB-I)
+            try:
+                target = resolve_redirects(self.url)
+            except OSError:
+                raise OSError(str(e)) from None
+            if target == self.url:
+                raise OSError(str(e)) from None
+            self.url = target
+            return self._request(target)
+
+    def _request(self, url):
+        req = urllib.request.Request(url, headers=http_headers())
         try:
             return urllib.request.urlopen(req, timeout=20)
         except urllib.error.HTTPError as e:
-            raise OSError(f"HTTP {e.code} {e.reason}") from None
+            text = f"HTTP {e.code} {e.reason}"
+            e.close()
+            if e.code in REFUSED_CODES:
+                raise Refused(text) from None
+            raise OSError(text) from None
         except urllib.error.URLError as e:
             raise OSError(str(e.reason)) from None
 
@@ -408,8 +525,8 @@ class GstReader:
             if rtp:
                 source.set_property("caps", Gst.Caps.from_string(
                     "application/x-rtp,media=video,clock-rate=90000,encoding-name=MP2T"))
-        elif source.find_property("user-agent") is not None:
-            source.set_property("user-agent", USER_AGENT)
+        else:
+            setup_http_source(source)
 
     def _on_element(self, _pl, _bin, element):
         """The adaptive demuxer: the variant choice (auto or the best one)."""
