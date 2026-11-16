@@ -20,6 +20,7 @@ of the memory; it grows when the live view joins it (Capture.set_live).
 import os
 import re
 import shutil
+import stat
 import time
 from pathlib import Path
 
@@ -82,17 +83,43 @@ def ram_limit_mb():
     return max(MIN_MB, int(total * RAM_SHARE)) if total else 8192
 
 
+def private_dir(path):
+    """*path* as a folder only this user can enter, or None when it cannot be
+    one. /dev/shm is writable by everyone: another user could have put a
+    folder or a symbolic link there first, under the name LinDVB uses."""
+    path = Path(path)
+    try:
+        os.mkdir(path, 0o700)
+    except FileExistsError:
+        pass
+    except OSError:
+        return None
+    try:
+        st = os.lstat(path)
+        if not stat.S_ISDIR(st.st_mode) or st.st_uid != os.getuid():
+            return None
+        if st.st_mode & 0o077:
+            os.chmod(path, 0o700)
+    except OSError:
+        return None
+    return path
+
+
 def ram_dir():
-    """A tmpfs folder of this user for buffers in memory."""
+    """A tmpfs folder of this user for buffers in memory (created 0700), or
+    None. /dev/shm is a tmpfs of up to half of the memory; the per-user
+    XDG_RUNTIME_DIR is private but usually only a tenth of it."""
     uid = os.getuid()
-    shm = Path("/dev/shm")
+    shm = Path("/dev") / "shm"
     snap = os.environ.get("SNAP_INSTANCE_NAME") or os.environ.get("SNAP_NAME")
     if shm.is_dir() and os.access(shm, os.W_OK):
         # strict snaps may only use names that start with snap.<name>.
-        return shm / (f"snap.{snap}.lindvb-{uid}" if snap else f"lindvb-{uid}")
+        d = private_dir(shm / (f"snap.{snap}.lindvb-{uid}" if snap else f"lindvb-{uid}"))
+        if d is not None:
+            return d
     run = os.environ.get("XDG_RUNTIME_DIR")
     if run and os.path.isdir(run):
-        return Path(run) / "lindvb-timeshift"
+        return private_dir(Path(run) / "lindvb-timeshift")
     return None
 
 

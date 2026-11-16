@@ -131,3 +131,18 @@ def test_capture_in_ram_grows_when_the_live_view_joins(tmp_path, monkeypatch):
         assert cap._sink.get_property("max-files") == 1024 * MB // timeshift.SEGMENT_BYTES
     finally:
         cap.destroy()
+
+
+def test_private_dir_refuses_a_symlink_and_tightens_the_mode(tmp_path):
+    target = tmp_path / "elsewhere"
+    target.mkdir()
+    link = tmp_path / "lindvb-link"
+    link.symlink_to(target)
+    assert timeshift.private_dir(link) is None
+    d = tmp_path / "lindvb-1000"
+    d.mkdir(mode=0o777)
+    os.chmod(d, 0o777)
+    assert timeshift.private_dir(d) == d
+    assert d.stat().st_mode & 0o777 == 0o700
+    new = timeshift.private_dir(tmp_path / "fresh")
+    assert new is not None and new.stat().st_mode & 0o777 == 0o700
