@@ -4232,3 +4232,6 @@ msgstr "zostáva {n} min"
 
 msgid "Audio description"
 msgstr "Zvukový popis"
+
+msgid "Black and white"
+msgstr "Čiernobiely"

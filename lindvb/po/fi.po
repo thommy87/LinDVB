@@ -4232,3 +4232,6 @@ msgstr "{n} min jäljellä"
 
 msgid "Audio description"
 msgstr "Kuvailutulkkaus"
+
+msgid "Black and white"
+msgstr "Mustavalkoinen"

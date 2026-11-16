@@ -4596,3 +4596,6 @@ msgstr "剩餘 {n} 分鐘"
 
 msgid "Audio description"
 msgstr "口述影像"
+
+msgid "Black and white"
+msgstr "黑白"

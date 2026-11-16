@@ -4596,3 +4596,6 @@ msgstr "დარჩა {n} წთ"
 
 msgid "Audio description"
 msgstr "აუდიოაღწერა"
+
+msgid "Black and white"
+msgstr "შავ-თეთრი"

@@ -38,6 +38,7 @@ class Event:
     image: str = ""
     min_age: int = 0
     access: list = field(default_factory=list)
+    bw: bool = False      # black and white (EIT content 0xB1, XMLTV <colour>no)
 
     @property
     def end(self):
@@ -245,7 +246,7 @@ def parse_eit_section(section, GstMpegts, language=""):
         start = _gst_dt_to_unix(ev.start_time) if ev.start_time else 0
         if not start:
             continue
-        genre = ""
+        genre, bw = "", False
         shorts, ext = [], {}
         for d in ev.descriptors:
             tag = d.tag
@@ -262,6 +263,8 @@ def parse_eit_section(section, GstMpegts, language=""):
                     ok, contents = d.parse_dvb_content()
                     if ok and contents:
                         genre = GENRES.get(contents[0].content_nibble_1, "")
+                        bw = any(c.content_nibble_1 == 0xB and c.content_nibble_2 == 0x1
+                                 for c in contents)
             except (TypeError, ValueError, AttributeError):
                 pass
         title, sub = pick_language(shorts, language) or ("", "")
@@ -269,7 +272,7 @@ def parse_eit_section(section, GstMpegts, language=""):
         if len(sub) > 80 and not desc:
             sub, desc = "", sub
         if title:
-            events.append(Event(start, ev.duration, title, sub, desc, genre, ev.event_id))
+            events.append(Event(start, ev.duration, title, sub, desc, genre, ev.event_id, bw=bw))
     return key, events
 
 
@@ -319,7 +322,8 @@ def read_xmltv(data: bytes, language=""):
             _pick_text(p, "sub-title", language), _pick_text(p, "desc", language),
             _pick_text(p, "category", language).strip(),
             country=(p.findtext("country") or "").strip(),
-            year=int(date[:4]) if date[:4].isdigit() else 0)))
+            year=int(date[:4]) if date[:4].isdigit() else 0,
+            bw=(p.findtext("video/colour") or "").strip().lower() == "no")))
     return channels, items
 
 

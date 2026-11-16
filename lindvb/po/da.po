@@ -4232,3 +4232,6 @@ msgstr "{n} min tilbage"
 
 msgid "Audio description"
 msgstr "Synstolkning"
+
+msgid "Black and white"
+msgstr "Sort-hvid"

@@ -4232,3 +4232,6 @@ msgstr "fadal {n} min"
 
 msgid "Audio description"
 msgstr "Deskrizzjoni awdjo"
+
+msgid "Black and white"
+msgstr "Iswed u abjad"

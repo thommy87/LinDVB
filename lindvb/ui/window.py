@@ -2449,6 +2449,11 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.osd_video.append(Gtk.Label(label=ar, css_classes=["lv-osd-tag", "lv-osd-ar"]))
             if is_hdr(info.get("colorimetry")):
                 self.osd_video.append(Gtk.Label(label="HDR", css_classes=["lv-osd-hdr"]))
+            now = self.app.epg.now_next(c.epg_key)[0]
+            if now is not None and now.bw:
+                self.osd_video.append(Gtk.Image(icon_name="lindvb-black-white-symbolic", pixel_size=18,
+                                                css_classes=["lv-osd-icon"],
+                                                tooltip_text=_("Black and white")))
         if self.player.playbin:
             tracks, cur = self.player.audio_track_info()
             badges, langs = audio_badges(tracks, cur)
@@ -2472,7 +2477,7 @@ class MainWindow(Gtk.ApplicationWindow):
                                                pixel_size=18, css_classes=["lv-osd-icon"],
                                                tooltip_text=_("Audio description")))
             if self.player.subtitle_tracks()[0] or self.player.has_closed_captions():
-                self.osd_tags.append(Gtk.Image(icon_name="lindvb-subtitles-symbolic",
+                self.osd_tags.append(Gtk.Image(icon_name="lindvb-hearing-impaired-symbolic",
                                                pixel_size=18, css_classes=["lv-osd-icon"],
                                                tooltip_text=_("Subtitles")))
         self.osd_tech.set_visible(bool(list(_children(self.osd_video)) or list(_children(self.osd_tags))))

@@ -4232,3 +4232,6 @@ msgstr "még {n} perc"
 
 msgid "Audio description"
 msgstr "Hangos narráció"
+
+msgid "Black and white"
+msgstr "Fekete-fehér"

@@ -4232,3 +4232,6 @@ msgstr "{n} nóim fágtha"
 
 msgid "Audio description"
 msgstr "Closchur"
+
+msgid "Black and white"
+msgstr "Dubh agus bán"

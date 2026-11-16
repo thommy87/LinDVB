@@ -4232,3 +4232,6 @@ msgstr "απομένουν {n} λεπ."
 
 msgid "Audio description"
 msgstr "Ακουστική περιγραφή"
+
+msgid "Black and white"
+msgstr "Ασπρόμαυρο"

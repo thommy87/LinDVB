@@ -4275,3 +4275,6 @@ msgstr "{n} دقیقه مانده"
 
 msgid "Audio description"
 msgstr "توصیف صوتی"
+
+msgid "Black and white"
+msgstr "سیاه و سفید"

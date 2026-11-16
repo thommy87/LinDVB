@@ -4692,3 +4692,6 @@ msgstr "noch {n} Min."
 
 msgid "Audio description"
 msgstr "Audiodeskription"
+
+msgid "Black and white"
+msgstr "Schwarz-Weiß"

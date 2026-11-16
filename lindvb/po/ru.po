@@ -4232,3 +4232,6 @@ msgstr "осталось {n} мин"
 
 msgid "Audio description"
 msgstr "Тифлокомментарий"
+
+msgid "Black and white"
+msgstr "Чёрно-белый"

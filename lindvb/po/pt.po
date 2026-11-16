@@ -4232,3 +4232,6 @@ msgstr "faltam {n} min"
 
 msgid "Audio description"
 msgstr "Audiodescrição"
+
+msgid "Black and white"
+msgstr "Preto e branco"

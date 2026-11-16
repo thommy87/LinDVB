@@ -334,7 +334,7 @@ def parse_eit_raw(section, language=""):
         dlen = ((section[pos + 10] & 0x0F) << 8) | section[pos + 11]
         dpos, dend = pos + 12, min(pos + 12 + dlen, end)
         pos = dend
-        shorts, extended, genre = [], {}, ""
+        shorts, extended, genre, bw = [], {}, "", False
         while dpos + 2 <= dend:
             tag, ln = section[dpos], section[dpos + 1]
             body = section[dpos + 2:dpos + 2 + ln]
@@ -355,6 +355,8 @@ def parse_eit_raw(section, language=""):
                     (body[0] >> 4, dvb_text(body[tpos + 1:tpos + 1 + tl])))
             elif tag == 0x54 and body:
                 genre = GENRES.get(body[0] >> 4, "")
+                # content 0xB1: "black and white" (EN 300 468 table 29)
+                bw = bw or any(body[i] == 0xB1 for i in range(0, len(body), 2))
         if not start or not shorts:
             continue
         title, sub = pick_language(shorts, language)
@@ -363,7 +365,7 @@ def parse_eit_raw(section, language=""):
         if len(sub) > 80 and not desc:
             sub, desc = "", sub
         if title:
-            events.append(Event(start, dur, title, sub, desc, genre, event_id))
+            events.append(Event(start, dur, title, sub, desc, genre, event_id, bw=bw))
     return f"{tsid}:{sid}", events
 
 

@@ -4232,3 +4232,6 @@ msgstr "encore {n} min"
 
 msgid "Audio description"
 msgstr "Audiodescription"
+
+msgid "Black and white"
+msgstr "Noir et blanc"

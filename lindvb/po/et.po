@@ -4232,3 +4232,6 @@ msgstr "jäänud {n} min"
 
 msgid "Audio description"
 msgstr "Kirjeldustõlge"
+
+msgid "Black and white"
+msgstr "Mustvalge"

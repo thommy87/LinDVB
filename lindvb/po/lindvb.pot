@@ -5833,3 +5833,7 @@ msgstr ""
 #: lindvb/ui/window.py
 msgid "Audio description"
 msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Black and white"
+msgstr ""

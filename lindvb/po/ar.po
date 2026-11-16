@@ -4232,3 +4232,6 @@ msgstr "متبقٍ {n} د"
 
 msgid "Audio description"
 msgstr "وصف صوتي"
+
+msgid "Black and white"
+msgstr "أبيض وأسود"

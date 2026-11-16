@@ -4232,3 +4232,6 @@ msgstr "nog {n} min"
 
 msgid "Audio description"
 msgstr "Audiodescriptie"
+
+msgid "Black and white"
+msgstr "Zwart-wit"

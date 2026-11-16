@@ -4232,3 +4232,6 @@ msgstr "še {n} min"
 
 msgid "Audio description"
 msgstr "Zvočni opis"
+
+msgid "Black and white"
+msgstr "Črno-belo"
