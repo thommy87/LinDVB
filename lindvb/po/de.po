@@ -4671,14 +4671,6 @@ msgstr "HbbTV-Video konnte nicht abgespielt werden: {msg}"
 msgid "unknown error"
 msgstr "unbekannter Fehler"
 
-#: lindvb/ui/epg.py
-msgid "Show more"
-msgstr "Mehr anzeigen"
-
-#: lindvb/ui/epg.py
-msgid "Show less"
-msgstr "Weniger anzeigen"
-
 #: lindvb/ui/window.py
 msgid "All tags"
 msgstr "Alle Tags"

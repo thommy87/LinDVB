@@ -15,7 +15,6 @@ from .common import day, dropdown, fill, hm, make_column_view, scrolled, selecte
 from ..i18n import _
 
 ROW_H = 34
-DESC_LINES = 3      # description lines before "Show more"
 IMAGE_DIR = CACHE_DIR / "dvbi" / "images"
 # Now/next filter (DTVP IT-16: let viewers find programmes with these features)
 ACCESS_FILTERS = [(_("All programmes"), None), (_("With audio description"), AUDIO_DESCRIPTION),
@@ -32,12 +31,13 @@ COL_WIDTHS = {"now": [180, 60, 60, 380, 160],
               "channel": [110, 60, 80, 320, 260],
               "search": [180, 110, 60, 420]}
 WIDTHS_KEY = "epg_column_widths"
+PANE_KEY = "epg_details_divider"
 
 
 class EPGWindow(Gtk.Window):
     def __init__(self, app, parent, channel=None):
         super().__init__(title=_("Programme Guide"), transient_for=parent,
-                         default_width=1000, default_height=640)
+                         default_width=1000, default_height=720)
         self.app = app
         self.parent = parent
         self.selected_event = None      # (channel, event)
@@ -63,7 +63,13 @@ class EPGWindow(Gtk.Window):
 
         _install_css()
         self.insert_action_group("epg", self._actions())
-        paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL, position=420)
+        # the guide on top, the details below; the divider stays where the
+        # user put it (the details keep room for a few lines of text)
+        pos = app.settings.get(PANE_KEY)
+        paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL,
+                          position=pos if isinstance(pos, int) and pos > 100 else 380,
+                          shrink_end_child=False)
+        self.paned = paned
         paned.set_start_child(nb)
         lower = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8,
                         margin_start=10, margin_end=10, margin_top=8, margin_bottom=8)
@@ -81,6 +87,10 @@ class EPGWindow(Gtk.Window):
     def _on_close(self, *_):
         self.app.epg.listeners.remove(self.refresh)
         self._save_widths()
+        pos = self.paned.get_position()
+        if pos > 100 and pos != self.app.settings.get(PANE_KEY):
+            self.app.settings[PANE_KEY] = pos
+            self.app.settings.save()
         return False
 
     def _widths(self, name):
@@ -190,35 +200,20 @@ class EPGWindow(Gtk.Window):
                                  row_spacing=6, homogeneous=False, max_children_per_line=12,
                                  margin_top=8, valign=Gtk.Align.START)
         text.append(self.chips)
+        # the whole description, scrolling on its own below the heading
         self.desc_lbl = Gtk.Label(xalign=0, yalign=0, wrap=True, selectable=True,
-                                  wrap_mode=Pango.WrapMode.WORD_CHAR, margin_top=10,
-                                  lines=DESC_LINES, ellipsize=Pango.EllipsizeMode.END,
-                                  css_classes=["epg-desc"])
-        text.append(self.desc_lbl)
-        self.more_btn = Gtk.Button(label=_("Show more"), halign=Gtk.Align.START,
-                                   css_classes=["flat", "epg-more"], visible=False)
-        self.more_btn.connect("clicked", lambda _b: self._toggle_description())
-        text.append(self.more_btn)
-        self._desc_open = False
-        box = Gtk.Box(spacing=16)
-        box.append(self.image)
-        box.append(text)
-        det = scrolled(box)
-        det.set_size_request(-1, 150)
-        return det
-
-    def _toggle_description(self):
-        self._desc_open = not self._desc_open
-        self.desc_lbl.set_lines(-1 if self._desc_open else DESC_LINES)
-        self.desc_lbl.set_ellipsize(Pango.EllipsizeMode.NONE if self._desc_open
-                                    else Pango.EllipsizeMode.END)
-        self.more_btn.set_label(_("Show less") if self._desc_open else _("Show more"))
-
-    def _check_description(self):
-        """Offer "Show more" only when the description does not fit."""
-        if not self._desc_open:
-            self.more_btn.set_visible(self.desc_lbl.get_layout().is_ellipsized())
-        return False
+                                  wrap_mode=Pango.WrapMode.WORD_CHAR, valign=Gtk.Align.START,
+                                  css_classes=["epg-desc"], margin_end=12)
+        self.desc_sw = Gtk.ScrolledWindow(hexpand=True, vexpand=True, margin_top=10,
+                                          hscrollbar_policy=Gtk.PolicyType.NEVER,
+                                          overlay_scrolling=False)
+        self.desc_sw.set_child(self.desc_lbl)
+        grid = Gtk.Grid(column_spacing=16)
+        grid.attach(self.image, 0, 0, 1, 2)
+        grid.attach(text, 1, 0, 1, 1)
+        grid.attach(self.desc_sw, 1, 1, 1, 1)
+        grid.set_size_request(-1, 200)
+        return grid
 
     # -- pages ------------------------------------------------------------------
     def _now_page(self):
@@ -414,12 +409,9 @@ class EPGWindow(Gtk.Window):
         for i, fact in enumerate([c.name] + facts):
             css = ["epg-chip"] + (["epg-chip-accent"] if i == 0 else [])
             self.chips.append(Gtk.Label(label=fact, halign=Gtk.Align.START, css_classes=css))
-        if self._desc_open:
-            self._toggle_description()
         self.desc_lbl.set_text(e.description or "")
         self.desc_lbl.set_visible(bool(e.description))
-        self.more_btn.set_visible(False)
-        GLib.idle_add(self._check_description)
+        self.desc_sw.get_vadjustment().set_value(0)
         self._show_image(e.image)
 
     def _show_image(self, url):
@@ -610,7 +602,6 @@ CSS = """
   font-size: 0.92em; }
 .epg-chip-accent { background: alpha(@theme_selected_bg_color, 0.45); }
 .epg-thumb { border-radius: 8px; }
-.epg-more { margin-left: -10px; }
 """
 _css_done = False
 
