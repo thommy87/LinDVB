@@ -4367,3 +4367,35 @@ msgstr "Rādīt izlases sarakstus (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Rediģēt šo izlases sarakstu"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Apgabals"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filtrs"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Visi avoti"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Visi apgabali"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC ports {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Attēla kvalitāte"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Birkas"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Atiestatīt filtru un meklēšanu"

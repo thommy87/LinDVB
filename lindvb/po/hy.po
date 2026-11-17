@@ -4699,3 +4699,31 @@ msgstr "Ցույց տալ ընտրյալների ցանկերը (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Խմբագրել ընտրյալների այս ցանկը"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Տարածք"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Բոլոր աղբյուրները"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Բոլոր տարածքները"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC պորտ {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Պատկերի որակ"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Պիտակներ"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Վերակայել զտիչը և որոնումը"

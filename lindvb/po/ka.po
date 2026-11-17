@@ -4731,3 +4731,31 @@ msgstr "რჩეულების სიების ჩვენება (Ct
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "ამ რჩეულების სიის რედაქტირება"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "არეალი"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "ყველა წყარო"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "ყველა არეალი"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC პორტი {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "გამოსახულების ხარისხი"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "ტეგები"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "ფილტრისა და ძიების გადაყენება"

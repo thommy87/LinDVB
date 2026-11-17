@@ -105,16 +105,12 @@ DEFAULTS = {
     "last_radio_channel": None,
     "mode": "tv",                    # the kind of channel watched: "tv" or "radio"
     "list_tab": "",                  # "favourites": the favourites tab was shown last
-    # Channel list filter ("all", "fta", "enc", "hd", "iptv"; see
-    # lindvb.favourites) and group ("" = all groups) last chosen, shown again
-    # at the next start.
-    "list_filter": "all",
-    "list_group": "",
+    # The channel list's filter steps and sort order last chosen, for "tv"
+    # and "radio" (lindvb.listfilter), shown again at the next start.
+    "list_filters": {},
     "fav_last": 0,                   # favourites list shown last (and favourite zapping)
     "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
     "channel_order_manual": False,  # the channel editor's own order, not the DVB-I LCNs
-    "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)
-    "list_sort_value": "",          # the provider / transponder / quality shown
     # Radio visualisation: a built-in style (glow, nebula, ribbons, pulsar, supernova, sunset, aurora,
     # goomhd, bars, vu, scope, off) or "plugin:<name>" for one registered by a plugin.
     "visualizer": "glow",

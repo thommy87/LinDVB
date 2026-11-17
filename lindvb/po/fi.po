@@ -4367,3 +4367,35 @@ msgstr "Näytä suosikkiluettelot (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Muokkaa tätä suosikkiluetteloa"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Alue"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Suodatin"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Kaikki lähteet"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Kaikki alueet"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC-portti {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Kuvanlaatu"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Tunnisteet"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Nollaa suodatin ja haku"

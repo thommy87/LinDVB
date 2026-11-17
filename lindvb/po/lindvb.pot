@@ -5961,3 +5961,35 @@ msgstr ""
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr ""
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr ""

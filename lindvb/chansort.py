@@ -42,18 +42,9 @@ def group_value(c, sort):
     return ""
 
 
-def group_values(c, sort):
-    """All values of *c* the list groups by for *sort*: a Tvheadend channel
-    can be in several groups (its channel tags), the others in one."""
-    if sort == "provider" and c.groups:
-        return list(c.groups)
-    v = group_value(c, sort)
-    return [v] if v else []
-
-
 def in_group(c, sort, value):
     """True when *c* belongs to the group *value* of *sort*."""
-    return value in group_values(c, sort)
+    return group_value(c, sort) == value
 
 
 _QUALITY_ORDER = {"UHD": 0, "HD": 1, "SD": 2, "": 3}
@@ -78,7 +69,8 @@ def values(channels, sort):
     """The distinct group values among *channels*, in list order of *sort*."""
     seen = {}
     for c in sorted(channels, key=lambda c: sort_key(c, sort)):
-        for v in group_values(c, sort):
+        v = group_value(c, sort)
+        if v:
             seen.setdefault(v, True)
     if sort == "provider":
         return sorted(seen, key=str.casefold)
@@ -86,10 +78,10 @@ def values(channels, sort):
 
 
 # -- sources ------------------------------------------------------------------
-# Besides the groups (the satellite, network, import file or IPTV list a
-# channel came from) the group dropdown offers the reception paths when the
-# list mixes several: satellite / cable / terrestrial / internet streams, and
-# the DiSEqC ports of a dish switch. Their keys start with "src:".
+# The channel editor's group dropdown offers the reception paths when the list
+# mixes several: satellite / cable / terrestrial / internet streams, and the
+# DiSEqC ports of a dish switch. Their keys start with "src:". (The channel
+# list has its own filter steps, lindvb.listfilter.)
 SOURCE_PREFIX = "src:"
 _KINDS = ("sat", "cable", "terr", "iptv")
 
@@ -137,31 +129,3 @@ def in_source(c, key):
     if source_kind(c) != kind:
         return False
     return not port or c.diseqc == int(port)
-
-
-def in_list_group(c, key):
-    """Whether *c* belongs to the entry *key* of the group dropdown: a source
-    entry (see ``sources``) or a group by name (the channel's root)."""
-    if key.startswith(SOURCE_PREFIX):
-        return in_source(c, key)
-    return c.root == key
-
-
-# -- Tvheadend channel tags -----------------------------------------------------
-# A Tvheadend server's channels carry the user tags of the server
-# (``Channel.groups``, see lindvb.tvheadend). When the group dropdown shows
-# one server, the list offers its tags in a dropdown of their own.
-
-def tags(channels):
-    """The distinct Tvheadend tags among *channels*, sorted by name."""
-    seen = {}
-    for c in channels:
-        if c.tvh_server:
-            for t in c.groups:
-                seen.setdefault(t, True)
-    return sorted(seen, key=str.casefold)
-
-
-def has_tag(c, tag):
-    """True when *c* carries the Tvheadend tag *tag*."""
-    return tag in c.groups

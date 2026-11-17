@@ -9,7 +9,7 @@ import urllib.parse
 
 from gi.repository import GLib, Gtk
 
-from .. import channels, dvbi
+from .. import channels, dvbi, listfilter
 from .. import dvbi_countries as countries
 from .common import message
 from ..i18n import _
@@ -690,8 +690,7 @@ class DVBIPanel(Gtk.Box):
             for c in db.channels:
                 if c.dvbi_id:
                     c.root = new
-            if self.s.get("list_group") in old:
-                self.s["list_group"] = new          # the filter stays on the list
+            listfilter.rename_group(self.s, "dvbi", old, new)   # the filter stays on the list
             db.save()
             if self.app.window:
                 self.app.window.reload_channels()

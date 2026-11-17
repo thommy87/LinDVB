@@ -4,12 +4,12 @@
 import functools
 import random
 import time
+from dataclasses import replace
 from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, debuglog, dvbi, logothumbs, satip
-from ..favourites import FILTER_KEYS, filter_setting
+from .. import chansort, debuglog, dvbi, listfilter, logothumbs, satip
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
@@ -21,12 +21,22 @@ from ..recordings import find_recordings, sort_recordings
 from ..signalq import Meter as QualityMeter, NONE as Q_NONE
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
+from .stepmenu import Section, StepMenu
 from .theme import OSD_WIDTH, apply_accent, apply_display, apply_theme, resolve_accent
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
 from ..i18n import _
 
 NO_LOCK_SECONDS = 8          # DVB-I failover after this long without a signal lock
+
+
+def _summary(items, chosen, none):
+    """What a filter step shows: *none*, the one entry ticked, or the first
+    of them and how many more ("Satellite +2")."""
+    labels = [label for key, label in items if key in chosen]
+    if not labels:
+        return none
+    return labels[0] if len(labels) == 1 else f"{labels[0]} +{len(labels) - 1}"
 
 
 def _tuning_sig(c):
@@ -49,8 +59,7 @@ def _short(text, n=90):
     return text if len(text) <= n else text[:n - 1] + "…"
 
 # The channel list shows either TV or radio channels; the favourites lists mix both.
-FILTER_LABELS = {"all": _("All channels"), "fta": _("Free to air"), "enc": _("Encrypted"),
-                 "hd": "HD channels", "iptv": _("Internet streams")}
+RECEPTIONS = (("all", _("All")), ("fta", _("Free to air")), ("enc", _("Encrypted")))
 MODES = ("tv", "radio")
 # The list tabs: TV channels, radio stations, and the recordings on disk.
 TABS = MODES + ("favourites", "recordings")
@@ -524,55 +533,37 @@ class MainWindow(Gtk.ApplicationWindow):
         self.side_stack = Gtk.Stack(vexpand=True,
                                     transition_type=Gtk.StackTransitionType.CROSSFADE)
         chan_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
-        # the list filter and group last used come back at the next start
-        self._filters = list(FILTER_KEYS)
-        self.filter_dd = Gtk.DropDown.new_from_strings([FILTER_LABELS[k] for k in self._filters])
-        key = filter_setting(self.settings.get("list_filter"))
-        self.filter_dd.set_selected(self._filters.index(key) if key in self._filters else 0)
+        # the filter in four linked steps (lindvb.listfilter): source and area
+        # above, filter and sort order below; the choices of TV and radio
+        # come back at the next start
         self._list_fav = None        # favourites list the store holds (None: all channels)
         self._fav_pos = {}           # id(channel) -> place in that list (1, 2, ...)
-        self.filter_dd.connect("notify::selected", lambda *_: self._on_list_filter())
-        self.filter_dd.set_hexpand(True)
-        self.filter_dd.set_tooltip_text(_("Filter"))
-        self._group_sync = False     # set while reload_channels rebuilds the group list
-        self.group_dd = Gtk.DropDown.new_from_strings([_("All groups")])
-        self.group_dd.connect("notify::selected", lambda *_: self._on_list_group())
-        self.group_dd.set_hexpand(True)
-        self.group_dd.set_tooltip_text(
-            _("Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, "
-              "or a satellite, network, import file or IPTV list"))
-        row.append(self.filter_dd)
-        row.append(self.group_dd)
-        chan_page.append(row)
-        self.filter_row = row
-        # the channel tags of a Tvheadend server, shown when the group
-        # dropdown picks one (the server's channels carry its user tags)
-        self._tags = [""]
-        self._tag_sync = False
-        self.tag_row = Gtk.Box(spacing=8, margin_start=10, margin_end=10, visible=False)
-        self.tag_dd = Gtk.DropDown.new_from_strings([_("All tags")])
-        self.tag_dd.set_hexpand(True)
-        self.tag_dd.set_tooltip_text(_("Tvheadend channel tag"))
-        self.tag_dd.connect("notify::selected", lambda *_: self._on_list_tag())
-        self.tag_row.append(self.tag_dd)
-        chan_page.append(self.tag_row)
-        # sort order, and for grouping orders (provider …) one value to show
-        row2 = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
-        self._sorts = [k for k, _l in chansort.SORTS]
-        self.sort_dd = Gtk.DropDown.new_from_strings([lbl for _k, lbl in chansort.SORTS])
-        self.sort_dd.set_tooltip_text(_("Sort by"))
-        srt = self.settings.get("list_sort", "number")
-        self.sort_dd.set_selected(self._sorts.index(srt) if srt in self._sorts else 0)
-        self.sort_dd.set_hexpand(True)
-        self._values = [""]
-        self._value_sync = False
-        self.value_dd = Gtk.DropDown.new_from_strings([_("All")])
-        self.value_dd.set_hexpand(True)
-        row2.append(self.sort_dd)
-        row2.append(self.value_dd)
-        chan_page.append(row2)
-        self.sort_row = row2
+        self._infos = {}             # id(channel) -> listfilter.Info, cleared on reload
+        self._catalogues = {}        # mode -> (channels, Infos, Catalogue), cleared on reload
+        self._lstate = listfilter.load(self.settings, self.mode)
+        self.steps = [StepMenu(n, name, self._on_step) for n, name in enumerate(
+            (_("Source"), _("Area"), _("Filter"), _("Sort by")), 1)]
+        same_width = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
+        rows = []
+        for pair in (self.steps[:2], self.steps[2:]):
+            row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
+            steps = Gtk.Box(spacing=8, homogeneous=True, hexpand=True)
+            for step in pair:
+                steps.append(step)
+            row.append(steps)
+            chan_page.append(row)
+            rows.append(row)
+        self.filter_row, self.sort_row = rows
+        reset = Gtk.Button(icon_name="edit-clear-all-symbolic", css_classes=["flat"],
+                           tooltip_text=_("Reset the filter and the search"))
+        reset.update_property([Gtk.AccessibleProperty.LABEL],
+                              [_("Reset the filter and the search")])
+        reset.connect("clicked", lambda *_: self.reset_list_filter())
+        self.sort_row.append(reset)
+        spacer = Gtk.Box()           # the steps above as wide as the ones below
+        self.filter_row.append(spacer)
+        same_width.add_widget(reset)
+        same_width.add_widget(spacer)
         # the favourites tab: which list (when there are several) and a button
         # to edit it in the channel editor; no other filters
         self.fav_row = Gtk.Box(spacing=8, margin_start=10, margin_end=10, visible=False)
@@ -598,8 +589,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.filter = Gtk.CustomFilter.new(self._filter_func)
         self._filter_model = Gtk.FilterListModel(model=self.store, filter=self.filter)
         self.filtered = Gtk.SortListModel(model=self._filter_model)
-        self.sort_dd.connect("notify::selected", lambda *_: self._on_list_sort())
-        self.value_dd.connect("notify::selected", lambda *_: self._on_list_value())
         self.selection = Gtk.SingleSelection(model=self.filtered, autoselect=False)
         fac = Gtk.SignalListItemFactory()
         fac.connect("setup", self._row_setup)
@@ -931,44 +920,25 @@ class MainWindow(Gtk.ApplicationWindow):
         return picons.find(c, dict.fromkeys(folders)) or c.logo or ""
 
     def _filter_state(self):
-        """What the list is filtered by, read from the widgets. A favourites
-        list is only searched: TV and radio together, no other filters."""
+        """What the list is filtered by; the filter steps None when they show
+        all. A favourites list is only searched: TV and radio together, no
+        other filters."""
         raw = self.search.get_text().strip()
-        if self._list_fav is not None:
-            return raw, raw.lower(), True, "all", False, None, None, None, "number"
-        v = self.value_dd.get_selected()
-        return (raw, raw.lower(), False, self._filter_key(), self.mode == "radio",
-                self._group(), self._tag(),
-                self._values[v] if 0 < v < len(self._values) else None, self._sort())
+        fav = self._list_fav is not None
+        st = None if fav or self._lstate == listfilter.State() else self._lstate
+        return raw, raw.lower(), fav, self.mode == "radio", st
 
-    def _group(self):
-        """The group dropdown's key, None for all groups."""
-        g = self.group_dd.get_selected()
-        return self._groups[g] if 0 < g < len(self._groups) else None
-
-    def _tag(self):
-        """The Tvheadend tag chosen, None for all (or no tag dropdown)."""
-        t = self.tag_dd.get_selected()
-        return self._tags[t] if 0 < t < len(self._tags) else None
-
-    def _scope(self, tag=True):
-        """The channels of the list in the TV or radio mode, the group and
-        (with *tag*) the tag chosen: what the tag and value dropdowns offer."""
-        group, tg = self._group(), self._tag() if tag else None
-        fav, radio = self._list_fav is not None, self.mode == "radio"
-        out = []
-        for i in range(self.store.get_n_items()):
-            c = self.store.get_item(i).data
-            if (fav or c.radio == radio) and \
-                    (group is None or chansort.in_list_group(c, group)) and \
-                    (tg is None or chansort.has_tag(c, tg)):
-                out.append(c)
-        return out
+    def _info(self, c):
+        """What *c* brings to the filter steps, worked out once per channel."""
+        i = self._infos.get(id(c))
+        if i is None:
+            i = self._infos[id(c)] = listfilter.info(c)
+        return i
 
     def _filter_func(self, item):
         # _refilter reads the widgets once for the whole list, GTK asking for
         # single new rows reads them here
-        raw, q, fav, f, radio, group, tag, value, srt = self._fstate or self._filter_state()
+        raw, q, fav, radio, st = self._fstate or self._filter_state()
         c = item.data
         if not c.visible or c.dvbi_periods and id(c) in self._off_air:
             # DVB-I: hidden services and pop-up channels off air (IT-4), still
@@ -976,20 +946,11 @@ class MainWindow(Gtk.ApplicationWindow):
             return bool(raw) and raw.isdigit() and str(c.number) == raw
         if not fav and c.radio != radio:
             return False             # (a favourites list: the store holds just its channels)
-        if f == "fta" and c.encrypted:
-            return False
-        if f == "enc" and not c.encrypted:
-            return False
-        if f == "hd" and "HD" not in c.name and "HEVC" not in c.name and "UHD" not in c.name:
-            return False
-        if f == "iptv" and not c.is_iptv:
-            return False
-        if group is not None and not chansort.in_list_group(c, group):
-            return False
-        if tag is not None and not chansort.has_tag(c, tag):
-            return False
-        if value is not None and not chansort.in_group(c, srt, value):
-            return False
+        if st is not None:
+            if not listfilter.matches(self._info(c), st):
+                return False
+            if st.value and not chansort.in_group(c, st.sort, st.value):
+                return False
         if q:
             if q.isdigit():
                 if fav:              # a favourites list is numbered 1, 2, 3 ...
@@ -1005,30 +966,19 @@ class MainWindow(Gtk.ApplicationWindow):
         self.app.epg.relink()
         self._logo_paths.clear()
         self._off_air = self._channels_off_air()
+        self._infos.clear()
+        self._catalogues.clear()
+        self._lstate = listfilter.load(self.settings, self.mode)   # (a group renamed)
         self._fill_store()
-        # the group entries: all, the reception paths / DiSEqC ports when the
-        # list mixes several (see chansort.sources), then the groups by name
-        srcs = chansort.sources(self.app.db.channels)
-        roots = self.app.db.roots()
-        self._groups = [""] + [k for k, _l in srcs] + roots
-        self._group_sync = True
-        self.group_dd.set_model(Gtk.StringList.new(
-            [_("All groups")] + [lbl for _k, lbl in srcs] + roots))
-        group = self.settings.get("list_group") or ""
-        self.group_dd.set_selected(self._groups.index(group) if group in self._groups[1:] else 0)
-        self._group_sync = False
         self._show_filters()
-        self._update_sort()
+        self._apply_sort()
         self._refilter()
         if self.current is not None:
             self._select_in_list(self.current)
 
     def _sort(self):
         """The sort order chosen; a favourites list keeps its own order."""
-        if self._list_fav is not None:
-            return "number"
-        i = self.sort_dd.get_selected()
-        return self._sorts[i] if 0 <= i < len(self._sorts) else "number"
+        return "number" if self._list_fav is not None else self._lstate.sort
 
     def _rank_rows(self, srt):
         """Number the rows in the order of *srt* for the sorter."""
@@ -1037,8 +987,8 @@ class MainWindow(Gtk.ApplicationWindow):
         for i, r in enumerate(rows):
             r.rank = i
 
-    def _update_sort(self):
-        """Apply the sort order and offer the values of a grouping order."""
+    def _apply_sort(self):
+        """Sort the list in the order chosen."""
         srt = self._sort()
         sorter = None
         if srt != "number":
@@ -1047,62 +997,109 @@ class MainWindow(Gtk.ApplicationWindow):
             sorter = Gtk.NumericSorter.new(
                 Gtk.PropertyExpression.new(_ChannelRow.__gtype__, None, "rank"))
         self.filtered.set_sorter(sorter)
-        self._update_choices()
 
-    def _update_choices(self):
-        """Offer the tags and the values of a grouping order the channels in
-        the group (and mode) chosen have; the choices in the settings stay
-        chosen when they are among them."""
-        self._update_tags()
-        self._update_values()
+    # -- the four filter steps (lindvb.listfilter)
+    def _set_list_mode(self, mode):
+        """TV or radio: the list's mode, with the filter choices kept for it."""
+        self.mode = mode
+        self.settings["mode"] = mode
+        self._lstate = listfilter.load(self.settings, mode)
 
-    def _update_tags(self):
-        """The tag dropdown: shown for a group that is one Tvheadend server
-        whose channels have tags (not in the favourites tab)."""
+    def _mode_catalogue(self):
+        """The channels of the list mode, their Infos and what they offer to
+        the steps, gathered once per mode until the list is reloaded."""
+        hit = self._catalogues.get(self.mode)
+        if hit is None:
+            radio = self.mode == "radio"
+            chans = [c for c in self.app.db.channels if c.radio == radio]
+            infos = [self._info(c) for c in chans]
+            hit = self._catalogues[self.mode] = (chans, infos,
+                                                 listfilter.catalogue(chans, infos, radio))
+        return hit
+
+    def _update_steps(self):
+        """Offer in each step what suits the choices before it, drop the
+        choices no longer offered, and keep the choices in the settings."""
         if self.tab == "favourites":
-            self.tag_row.set_visible(False)
             return
-        group = self._group()
-        chans = (self._scope(tag=False)
-                 if group is not None and not group.startswith(chansort.SOURCE_PREFIX) else [])
-        tags = chansort.tags(chans)
-        keep = self.settings.get("list_tag", "")
-        self._tags = [""] + tags
-        self._tag_sync = True
-        self.tag_dd.set_model(Gtk.StringList.new([_("All tags")] + tags))
-        self.tag_dd.set_selected(self._tags.index(keep) if keep in tags else 0)
-        self._tag_sync = False
-        self.tag_row.set_visible(bool(tags))
+        chans, infos, cat = self._mode_catalogue()
+        st = listfilter.fit(self._lstate, cat)
+        values = []
+        if st.sort in chansort.GROUPED:
+            values = chansort.values([c for c, i in zip(chans, infos)
+                                      if listfilter.matches(i, st)], st.sort)
+        if st.value not in values:
+            st = replace(st, value="")
+        self._lstate = st
+        listfilter.save(self.settings, self.mode, st)
+        self._show_steps(cat, st, values)
 
-    def _update_values(self):
-        srt = self._sort()
-        grouped = srt in chansort.GROUPED
-        keep = self.settings.get("list_sort_value", "")
-        self._values = [""] + (chansort.values(self._scope(), srt) if grouped else [])
-        self._value_sync = True
-        self.value_dd.set_model(Gtk.StringList.new([_("All")] + self._values[1:]))
-        self.value_dd.set_selected(self._values.index(keep) if keep in self._values[1:] else 0)
-        self._value_sync = False
-        self.value_dd.set_visible(grouped)
+    def _show_steps(self, cat, st, values):
+        """The entries, choices and summaries of the four steps; a step with
+        nothing to choose is hidden (the row of steps 1 and 2 when both are)."""
+        s1, s2, s3, s4 = self.steps
+        srcs = cat.sources
+        s1.set_sections([Section("sources", "", tuple(srcs))], {"sources": st.sources})
+        s1.set_summary(_summary(srcs, st.sources, _("All sources")))
+        s1.set_visible(len(srcs) > 1)
+        areas = listfilter.areas(cat, st.sources)
+        s2.set_sections([Section(f"areas:{n}", head if len(areas) > 1 else "", tuple(items))
+                         for n, (head, items) in enumerate(areas)],
+                        {f"areas:{n}": st.areas for n in range(len(areas))})
+        s2.set_summary(_summary([(k, listfilter.area_label(k)) for _h, items in areas
+                                 for k, _l in items], st.areas, _("All areas")))
+        s2.set_visible(bool(areas))
+        self.filter_row.set_visible(s1.get_visible() or s2.get_visible())
+        o = listfilter.offer(cat, st.sources)
+        sections = []
+        if o.reception:
+            sections.append(Section("reception", _("Reception"), RECEPTIONS, radio=True))
+        if o.qualities:
+            sections.append(Section("qualities", _("Picture quality"),
+                                    tuple((q, q) for q in listfilter.QUALITIES)))
+        if o.tags:
+            sections.append(Section("tags", _("Tags"), tuple((t, t) for t in o.tags)))
+        s3.set_sections(sections, {"reception": st.reception, "qualities": st.qualities,
+                                   "tags": st.tags})
+        shown = ([dict(RECEPTIONS)[st.reception]] if st.reception != "all" else []) + \
+            [q for q in listfilter.QUALITIES if q in st.qualities] + sorted(st.tags)
+        s3.set_summary(", ".join(shown) or _("All channels"))
+        s3.set_visible(not o.empty)
+        sorts = listfilter.sorts(cat, st.sources)
+        sections = [Section("sort", "", tuple(sorts), radio=True)]
+        if values:
+            sections.append(Section("value", dict(sorts)[st.sort],
+                                    (("", _("All")),) + tuple((v, v) for v in values),
+                                    radio=True))
+        s4.set_sections(sections, {"sort": st.sort, "value": st.value})
+        s4.set_summary(st.value or dict(sorts)[st.sort])
 
-    def _on_list_sort(self):
-        self.settings["list_sort"] = self._sort()
-        self.settings["list_sort_value"] = ""
-        self._update_sort()
+    def _on_step(self, section, value):
+        """The user changed a section of a step: the steps after it follow,
+        then the list is filtered once."""
+        st = self._lstate
+        if section.sid.startswith("areas:"):
+            st = replace(st, areas=(st.areas - {k for k, _l in section.items}) | value)
+        elif section.sid == "sort":
+            st = replace(st, sort=value, value="")
+        else:
+            st = replace(st, **{section.sid: value})
+        self._set_list_state(st)
+
+    def _set_list_state(self, st):
+        sort = self._lstate.sort
+        self._lstate = st
+        self._update_steps()
+        if self._lstate.sort != sort:
+            self._apply_sort()
         self._refilter()
 
-    def _on_list_value(self):
-        if not self._value_sync:
-            v = self.value_dd.get_selected()
-            self.settings["list_sort_value"] = (self._values[v] if 0 < v < len(self._values)
-                                                else "")
-            self._refilter()
+    def reset_list_filter(self):
+        """All channels of the mode again: the four steps and the search reset."""
+        self.search.set_text("")
+        self._set_list_state(listfilter.State())
 
     # -- the filter and the favourites lists
-    def _filter_key(self):
-        i = self.filter_dd.get_selected()
-        return self._filters[i] if 0 <= i < len(self._filters) else "all"
-
     def current_fav_list(self):
         """The favourites list shown, else the one used last (or None)."""
         favs = self.app.favs
@@ -1139,20 +1136,19 @@ class MainWindow(Gtk.ApplicationWindow):
             chans = [] if self.tab == "favourites" else self.app.db.channels
             self._list_fav = None
             self._fav_pos = {}
-        self.store.remove_all()
-        self.store.splice(0, 0, [_ChannelRow(c) for c in chans])
+        self._fstate = self._filter_state()      # read once for all the new rows
+        try:
+            self.store.splice(0, self.store.get_n_items(), [_ChannelRow(c) for c in chans])
+        finally:
+            self._fstate = None
 
     def _show_list(self):
         """Fill, sort and filter the list again and keep the channel watched selected."""
         self._fill_store()
-        self._update_sort()
+        self._apply_sort()
         self._refilter()
         if self.current is not None:
             self._select_in_list(self.current)
-
-    def _on_list_filter(self):
-        self.settings["list_filter"] = self._filter_key()
-        self._refilter()
 
     def _on_fav_list(self):
         if self._fav_sync:
@@ -1166,20 +1162,6 @@ class MainWindow(Gtk.ApplicationWindow):
         """Favourites lists or their channels changed: list dropdown, list and stars."""
         self._rebuild_fav_lists()
         self._show_list()
-
-    def _on_list_group(self):
-        if not self._group_sync:
-            g = self.group_dd.get_selected()
-            self.settings["list_group"] = (self._groups[g] if 0 < g < len(self._groups)
-                                           else "")
-            self._update_choices()
-        self._refilter()
-
-    def _on_list_tag(self):
-        if not self._tag_sync:
-            self.settings["list_tag"] = self._tag() or ""
-            self._update_values()
-            self._refilter()
 
     def _refilter(self):
         self._fstate = self._filter_state()
@@ -1718,8 +1700,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.tab in MODES and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
         elif self.tab not in MODES:
-            self.mode = "radio" if c.radio else "tv"
-            self.settings["mode"] = self.mode
+            self._set_list_mode("radio" if c.radio else "tv")
         self._select_in_list(c)
         if not off_air:
             self.set_status(_("Tuning {name}…").format(name=c.name))
@@ -1755,8 +1736,7 @@ class MainWindow(Gtk.ApplicationWindow):
         if self.tab in MODES and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
         elif self.tab not in MODES:
-            self.mode = "radio" if c.radio else "tv"
-            self.settings["mode"] = self.mode
+            self._set_list_mode("radio" if c.radio else "tv")
         self._select_in_list(c)
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
         if secs > 0:
@@ -1818,17 +1798,14 @@ class MainWindow(Gtk.ApplicationWindow):
             return
         self.side_stack.set_visible_child_name("channels")
         self.settings["list_tab"] = "favourites" if mode == "favourites" else ""
+        refill = mode == "favourites" or self._list_fav is not None
+        if mode != "favourites":
+            self._set_list_mode(mode)
         self._show_filters()
-        if mode == "favourites":
-            self._show_list()
-            return
-        was_fav = self._list_fav is not None
-        self.mode = mode
-        self.settings["mode"] = mode
-        if was_fav:
+        if refill:                   # the store changes between a favourites list and all
             self._show_list()
         else:
-            self._update_choices()
+            self._apply_sort()
             self._refilter()
         if not tune or (self.current is not None and self.current.radio == (mode == "radio")):
             return
@@ -1845,14 +1822,13 @@ class MainWindow(Gtk.ApplicationWindow):
     def _show_filters(self):
         """The filter rows for TV and radio, the list choice for the favourites."""
         fav = self.tab == "favourites"
-        self.filter_row.set_visible(not fav)
         self.sort_row.set_visible(not fav)
         self.fav_row.set_visible(fav)
         if fav:
-            self.tag_row.set_visible(False)
+            self.filter_row.set_visible(False)
             self._rebuild_fav_lists()
         else:
-            self._update_tags()
+            self._update_steps()
 
     def _select_in_list(self, c):
         for i in range(self.filtered.get_n_items()):

@@ -4367,3 +4367,35 @@ msgstr "Rodyti mėgstamųjų sąrašus (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Redaguoti šį mėgstamųjų sąrašą"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Sritis"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filtras"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Visi šaltiniai"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Visos sritys"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC prievadas {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Vaizdo kokybė"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Žymės"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Atstatyti filtrą ir paiešką"

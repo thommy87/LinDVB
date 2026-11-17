@@ -4367,3 +4367,35 @@ msgstr "Zobraziť zoznamy obľúbených (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Upraviť tento zoznam obľúbených"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Oblasť"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filter"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Všetky zdroje"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Všetky oblasti"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Port DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Kvalita obrazu"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Štítky"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Obnoviť filter a vyhľadávanie"

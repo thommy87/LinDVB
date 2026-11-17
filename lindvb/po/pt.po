@@ -4367,3 +4367,35 @@ msgstr "Mostrar as suas listas de favoritos (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Editar esta lista de favoritos"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Área"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filtro"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Todas as fontes"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Todas as áreas"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Porta DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Qualidade de imagem"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Repor o filtro e a pesquisa"
