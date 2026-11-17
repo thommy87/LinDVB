@@ -9,7 +9,7 @@ from pathlib import Path
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import chansort, debuglog, dvbi, logothumbs, satip
-from ..favourites import fav_index, filter_keys, filter_setting
+from ..favourites import FILTER_KEYS, filter_setting
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
@@ -53,7 +53,7 @@ FILTER_LABELS = {"all": _("All channels"), "fta": _("Free to air"), "enc": _("En
                  "hd": "HD channels", "iptv": _("Internet streams")}
 MODES = ("tv", "radio")
 # The list tabs: TV channels, radio stations, and the recordings on disk.
-TABS = MODES + ("recordings",)
+TABS = MODES + ("favourites", "recordings")
 ZOOM = [(_("Fit"), Gtk.ContentFit.CONTAIN), (_("Fill (crop)"), Gtk.ContentFit.COVER),
         (_("Stretch"), Gtk.ContentFit.FILL)]
 SLEEP_MINUTES = [15, 30, 45, 60, 90, 120, 180]
@@ -119,7 +119,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.quality = QualityMeter()  # the OSD's signal quality bar
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
         self._mode_sync = False      # set while the TV/Radio buttons follow the code
-        self.tab = self.mode         # list tab shown: "tv", "radio" or "recordings"
+        # list tab shown: "tv", "radio", "favourites" or "recordings"
+        self.tab = "favourites" if self.settings.get("list_tab") == "favourites" else self.mode
         # recording library: where each file was left, preview pictures
         self.mpris = None
         if self.settings.get("mpris", True):
@@ -236,9 +237,10 @@ class MainWindow(Gtk.ApplicationWindow):
             "audio-later": lambda: self.shift_audio(AUDIO_DELAY_STEP),
             "audio-earlier": lambda: self.shift_audio(-AUDIO_DELAY_STEP),
             "audio-delay-reset": lambda: self.shift_audio(None),
-            "toggle-mode": lambda: self.set_mode(self.mode if self.tab == "recordings" else
+            "toggle-mode": lambda: self.set_mode(self.mode if self.tab not in MODES else
                                                  "tv" if self.tab == "radio" else "radio"),
             "mode-tv": lambda: self.set_mode("tv"), "mode-radio": lambda: self.set_mode("radio"),
+            "mode-favourites": lambda: self.set_mode("favourites"),
             "mode-recordings": lambda: self.set_mode("recordings"),
             "rec-refresh": self.reload_recordings, "rec-folder": self.open_recording_folder,
             "vis-next": self.cycle_visualizer,
@@ -319,7 +321,8 @@ class MainWindow(Gtk.ApplicationWindow):
             "win.teletext": ["<Ctrl><Shift>t"], "win.screenshot": ["<Ctrl><Shift>p"],
             "win.ch-next": ["Page_Up"], "win.ch-prev": ["Page_Down"],
             "win.last-channel": ["<Ctrl>BackSpace"], "win.editor": ["<Ctrl><Shift>e"],
-            "win.toggle-mode": ["<Ctrl>m"], "win.shortcuts": ["<Ctrl>question"],
+            "win.toggle-mode": ["<Ctrl>m"], "win.mode-favourites": ["<Ctrl>d"],
+            "win.shortcuts": ["<Ctrl>question"],
         }
         for k, v in accels.items():
             self.app.set_accels_for_action(k, v)
@@ -484,21 +487,22 @@ class MainWindow(Gtk.ApplicationWindow):
         side = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, css_classes=["lv-sidebar"])
         side.set_size_request(260, -1)
         head = Gtk.Box(spacing=8, margin_start=10, margin_end=10, margin_top=12)
-        # TV / Radio / Recordings tabs: the list shows one kind at a time
-        seg = Gtk.Box(css_classes=["linked", "lv-mode"], hexpand=True)
+        # TV / Radio / Favourites / Recordings tabs: the list shows one kind at
+        # a time; the buttons show a symbol, the tooltip says what it is
+        seg = Gtk.Box(css_classes=["linked", "lv-mode"], hexpand=True, homogeneous=True)
         self.mode_btns = {}
         group = None
         for mode, label, icon, tip in (
-                ("tv", "TV", "video-display-symbolic", _("Show TV channels (Ctrl+M switches)")),
-                ("radio", _("Radio"), "audio-x-generic-symbolic",
+                ("tv", "TV", "lindvb-tv-symbolic", _("Show TV channels (Ctrl+M switches)")),
+                ("radio", _("Radio"), "lindvb-radio-symbolic",
                  _("Show radio stations (Ctrl+M switches)")),
-                ("recordings", _("Recordings"), "media-record-symbolic",
+                ("favourites", _("Favourites"), "starred-symbolic",
+                 _("Show your favourites lists (Ctrl+D)")),
+                ("recordings", _("Recordings"), "lindvb-cassette-symbolic",
                  _("Show your recordings (double-click plays one)"))):
-            content = Gtk.Box(spacing=6, halign=Gtk.Align.CENTER)
-            content.append(Gtk.Image(icon_name=icon))
-            content.append(Gtk.Label(label=label))
-            b = Gtk.ToggleButton(child=content, active=mode == self.tab, hexpand=True,
+            b = Gtk.ToggleButton(icon_name=icon, active=mode == self.tab, hexpand=True,
                                  tooltip_text=tip)
+            b.update_property([Gtk.AccessibleProperty.LABEL], [label])
             if group is None:
                 group = b
             else:
@@ -522,16 +526,15 @@ class MainWindow(Gtk.ApplicationWindow):
         chan_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         row = Gtk.Box(spacing=8, margin_start=10, margin_end=10)
         # the list filter and group last used come back at the next start
-        # (the favourites lists are entries of the filter, see _rebuild_filters)
-        self.filter_dd = Gtk.DropDown.new_from_strings([FILTER_LABELS["all"]])
-        self._filters = ["all"]
-        self._filter_sync = False
+        self._filters = list(FILTER_KEYS)
+        self.filter_dd = Gtk.DropDown.new_from_strings([FILTER_LABELS[k] for k in self._filters])
+        key = filter_setting(self.settings.get("list_filter"))
+        self.filter_dd.set_selected(self._filters.index(key) if key in self._filters else 0)
         self._list_fav = None        # favourites list the store holds (None: all channels)
         self._fav_pos = {}           # id(channel) -> place in that list (1, 2, ...)
-        self._rebuild_filters()
         self.filter_dd.connect("notify::selected", lambda *_: self._on_list_filter())
         self.filter_dd.set_hexpand(True)
-        self.filter_dd.set_tooltip_text(_("Filter; the favourites lists show TV and radio"))
+        self.filter_dd.set_tooltip_text(_("Filter"))
         self._group_sync = False     # set while reload_channels rebuilds the group list
         self.group_dd = Gtk.DropDown.new_from_strings([_("All groups")])
         self.group_dd.connect("notify::selected", lambda *_: self._on_list_group())
@@ -540,13 +543,9 @@ class MainWindow(Gtk.ApplicationWindow):
             _("Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, "
               "or a satellite, network, import file or IPTV list"))
         row.append(self.filter_dd)
-        favs_btn = Gtk.Button(icon_name="starred-symbolic", css_classes=["flat"],
-                              tooltip_text=_("Manage favourites lists"))
-        favs_btn.update_property([Gtk.AccessibleProperty.LABEL], [_("Manage favourites lists")])
-        favs_btn.connect("clicked", lambda *_: self.app.show_favourites())
-        row.append(favs_btn)
         row.append(self.group_dd)
         chan_page.append(row)
+        self.filter_row = row
         # the channel tags of a Tvheadend server, shown when the group
         # dropdown picks one (the server's channels carry its user tags)
         self._tags = [""]
@@ -573,6 +572,27 @@ class MainWindow(Gtk.ApplicationWindow):
         row2.append(self.sort_dd)
         row2.append(self.value_dd)
         chan_page.append(row2)
+        self.sort_row = row2
+        # the favourites tab: which list (when there are several) and a button
+        # to edit it in the channel editor; no other filters
+        self.fav_row = Gtk.Box(spacing=8, margin_start=10, margin_end=10, visible=False)
+        self._fav_sync = False
+        self.fav_dd = Gtk.DropDown.new_from_strings([""])
+        self.fav_dd.set_hexpand(True)
+        self.fav_dd.set_tooltip_text(_("Favourites list"))
+        self.fav_dd.update_property([Gtk.AccessibleProperty.LABEL], [_("Favourites list")])
+        self.fav_dd.connect("notify::selected", lambda *_: self._on_fav_list())
+        self.fav_row.append(self.fav_dd)
+        self.fav_hint = Gtk.Label(label=_("No favourites list yet. Use the star of a channel "
+                                          "to make one."), wrap=True, xalign=0, hexpand=True,
+                                  css_classes=["dim-label"])
+        self.fav_row.append(self.fav_hint)
+        fav_edit = Gtk.Button(icon_name="document-edit-symbolic", css_classes=["flat"],
+                              tooltip_text=_("Edit this favourites list"))
+        fav_edit.update_property([Gtk.AccessibleProperty.LABEL], [_("Edit this favourites list")])
+        fav_edit.connect("clicked", lambda *_: self.app.show_editor(fav_list=self._list_fav))
+        self.fav_row.append(fav_edit)
+        chan_page.append(self.fav_row)
 
         self.store = Gio.ListStore(item_type=Row)
         self.filter = Gtk.CustomFilter.new(self._filter_func)
@@ -911,10 +931,13 @@ class MainWindow(Gtk.ApplicationWindow):
         return picons.find(c, dict.fromkeys(folders)) or c.logo or ""
 
     def _filter_state(self):
-        """What the list is filtered by, read from the widgets."""
-        v = self.value_dd.get_selected()
+        """What the list is filtered by, read from the widgets. A favourites
+        list is only searched: TV and radio together, no other filters."""
         raw = self.search.get_text().strip()
-        return (raw, raw.lower(), self._filter_key(), self.mode == "radio",
+        if self._list_fav is not None:
+            return raw, raw.lower(), True, "all", False, None, None, None, "number"
+        v = self.value_dd.get_selected()
+        return (raw, raw.lower(), False, self._filter_key(), self.mode == "radio",
                 self._group(), self._tag(),
                 self._values[v] if 0 < v < len(self._values) else None, self._sort())
 
@@ -945,13 +968,12 @@ class MainWindow(Gtk.ApplicationWindow):
     def _filter_func(self, item):
         # _refilter reads the widgets once for the whole list, GTK asking for
         # single new rows reads them here
-        raw, q, f, radio, group, tag, value, srt = self._fstate or self._filter_state()
+        raw, q, fav, f, radio, group, tag, value, srt = self._fstate or self._filter_state()
         c = item.data
         if not c.visible or c.dvbi_periods and id(c) in self._off_air:
             # DVB-I: hidden services and pop-up channels off air (IT-4), still
             # tunable by number
             return bool(raw) and raw.isdigit() and str(c.number) == raw
-        fav = f.startswith("fav:")
         if not fav and c.radio != radio:
             return False             # (a favourites list: the store holds just its channels)
         if f == "fta" and c.encrypted:
@@ -995,12 +1017,16 @@ class MainWindow(Gtk.ApplicationWindow):
         group = self.settings.get("list_group") or ""
         self.group_dd.set_selected(self._groups.index(group) if group in self._groups[1:] else 0)
         self._group_sync = False
+        self._show_filters()
         self._update_sort()
         self._refilter()
         if self.current is not None:
             self._select_in_list(self.current)
 
     def _sort(self):
+        """The sort order chosen; a favourites list keeps its own order."""
+        if self._list_fav is not None:
+            return "number"
         i = self.sort_dd.get_selected()
         return self._sorts[i] if 0 <= i < len(self._sorts) else "number"
 
@@ -1032,7 +1058,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _update_tags(self):
         """The tag dropdown: shown for a group that is one Tvheadend server
-        whose channels have tags."""
+        whose channels have tags (not in the favourites tab)."""
+        if self.tab == "favourites":
+            self.tag_row.set_visible(False)
+            return
         group = self._group()
         chans = (self._scope(tag=False)
                  if group is not None and not group.startswith(chansort.SOURCE_PREFIX) else [])
@@ -1074,68 +1103,69 @@ class MainWindow(Gtk.ApplicationWindow):
         i = self.filter_dd.get_selected()
         return self._filters[i] if 0 <= i < len(self._filters) else "all"
 
-    def _rebuild_filters(self):
-        """The filter entries with one per favourites list; the filter in the
-        settings stays chosen."""
-        favs = self.app.favs
-        self._filters = filter_keys(len(favs))
-        labels = [FILTER_LABELS.get(k) or "★ " + favs.names()[fav_index(k)]
-                  for k in self._filters]
-        key = filter_setting(self.settings.get("list_filter"))
-        if key not in self._filters:
-            key = "all"
-        self._filter_sync = True
-        self.filter_dd.set_model(Gtk.StringList.new(labels))
-        self.filter_dd.set_selected(self._filters.index(key))
-        self._filter_sync = False
-
     def current_fav_list(self):
         """The favourites list shown, else the one used last (or None)."""
         favs = self.app.favs
-        i = fav_index(self._filter_key())
+        i = self._list_fav
         if i is None:
             i = self.settings.get("fav_last", 0)
         return i if favs.valid(i) else (0 if len(favs) else None)
 
+    def _rebuild_fav_lists(self):
+        """The favourites tab's list dropdown, shown when there are several
+        lists; the list used last stays chosen."""
+        names = self.app.favs.names()
+        self._fav_sync = True
+        self.fav_dd.set_model(Gtk.StringList.new(["★ " + n for n in names]))
+        i = self.current_fav_list()
+        if i is not None:
+            self.fav_dd.set_selected(i)
+        self._fav_sync = False
+        self.fav_dd.set_visible(len(names) > 1)
+        self.fav_hint.set_visible(not names)
+
     def _fill_store(self):
-        """All channels, or the channels of the favourites list chosen in the
-        list's own order."""
-        i = fav_index(self._filter_key())
-        favs = self.app.favs
-        if i is not None and favs.valid(i):
-            chans = favs.channels(i)
+        """All channels, or in the favourites tab the channels of the list
+        chosen in the list's own order."""
+        i = None
+        if self.tab == "favourites":
+            favs, i = self.app.favs, self.settings.get("fav_last", 0)
+            i = i if favs.valid(i) else (0 if len(favs) else None)
+        if i is not None:
+            chans = self.app.favs.channels(i)
             self._list_fav = i
             self._fav_pos = {id(c): n for n, c in enumerate(chans, 1)}
         else:
-            chans = self.app.db.channels
+            chans = [] if self.tab == "favourites" else self.app.db.channels
             self._list_fav = None
             self._fav_pos = {}
         self.store.remove_all()
         self.store.splice(0, 0, [_ChannelRow(c) for c in chans])
 
-    def _on_list_filter(self):
-        if self._filter_sync:
-            return
-        key = self._filter_key()
-        self.settings["list_filter"] = key
-        i = fav_index(key)
-        if i is not None:
-            self.settings["fav_last"] = i
-        if i != self._list_fav:
-            self._fill_store()
-            self._update_sort()
-        self._refilter()
-        if self.current is not None:
-            self._select_in_list(self.current)
-
-    def favourites_changed(self):
-        """Favourites lists or their channels changed: filter entries, list and stars."""
-        self._rebuild_filters()
+    def _show_list(self):
+        """Fill, sort and filter the list again and keep the channel watched selected."""
         self._fill_store()
         self._update_sort()
         self._refilter()
         if self.current is not None:
             self._select_in_list(self.current)
+
+    def _on_list_filter(self):
+        self.settings["list_filter"] = self._filter_key()
+        self._refilter()
+
+    def _on_fav_list(self):
+        if self._fav_sync:
+            return
+        i = self.fav_dd.get_selected()
+        if self.app.favs.valid(i):
+            self.settings["fav_last"] = i
+            self._show_list()
+
+    def favourites_changed(self):
+        """Favourites lists or their channels changed: list dropdown, list and stars."""
+        self._rebuild_fav_lists()
+        self._show_list()
 
     def _on_list_group(self):
         if not self._group_sync:
@@ -1685,10 +1715,11 @@ class MainWindow(Gtk.ApplicationWindow):
                     return
         self._update_teletext()
         self._remember(c)
-        if self.tab != "recordings" and (self.mode == "radio") != c.radio:
+        if self.tab in MODES and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
-        elif self.tab == "recordings":
+        elif self.tab not in MODES:
             self.mode = "radio" if c.radio else "tv"
+            self.settings["mode"] = self.mode
         self._select_in_list(c)
         if not off_air:
             self.set_status(_("Tuning {name}…").format(name=c.name))
@@ -1721,10 +1752,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.play_capture(cap, c.sid, offset=None)
         self._update_teletext()
         self._remember(c)
-        if self.tab != "recordings" and (self.mode == "radio") != c.radio:
+        if self.tab in MODES and (self.mode == "radio") != c.radio:
             self.set_mode("radio" if c.radio else "tv", tune=False)
-        elif self.tab == "recordings":
+        elif self.tab not in MODES:
             self.mode = "radio" if c.radio else "tv"
+            self.settings["mode"] = self.mode
         self._select_in_list(c)
         secs = int(self.settings.get("epg_info_seconds", self.settings["osd_seconds"]))
         if secs > 0:
@@ -1785,10 +1817,19 @@ class MainWindow(Gtk.ApplicationWindow):
             self.reload_recordings()
             return
         self.side_stack.set_visible_child_name("channels")
+        self.settings["list_tab"] = "favourites" if mode == "favourites" else ""
+        self._show_filters()
+        if mode == "favourites":
+            self._show_list()
+            return
+        was_fav = self._list_fav is not None
         self.mode = mode
         self.settings["mode"] = mode
-        self._update_choices()
-        self._refilter()
+        if was_fav:
+            self._show_list()
+        else:
+            self._update_choices()
+            self._refilter()
         if not tune or (self.current is not None and self.current.radio == (mode == "radio")):
             return
         radio = mode == "radio"
@@ -1800,6 +1841,18 @@ class MainWindow(Gtk.ApplicationWindow):
                             else _("No TV channels in the channel list"))
             return
         self.zap(target)
+
+    def _show_filters(self):
+        """The filter rows for TV and radio, the list choice for the favourites."""
+        fav = self.tab == "favourites"
+        self.filter_row.set_visible(not fav)
+        self.sort_row.set_visible(not fav)
+        self.fav_row.set_visible(fav)
+        if fav:
+            self.tag_row.set_visible(False)
+            self._rebuild_fav_lists()
+        else:
+            self._update_tags()
 
     def _select_in_list(self, c):
         for i in range(self.filtered.get_n_items()):

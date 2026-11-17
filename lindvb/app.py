@@ -68,7 +68,8 @@ class LinDVBApp(Gtk.Application):
             added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
-        from .favourites import FavouriteLists
+        from .favourites import FavouriteLists, migrate_list_filter
+        migrate_list_filter(self.settings)
         self.favs = FavouriteLists(self.db)
         self._start_channel = opts.get("channel")
         return -1
@@ -529,9 +530,10 @@ class LinDVBApp(Gtk.Application):
         from .ui.dialogs import PrefsWindow
         PrefsWindow(self, self.window, page).present()
 
-    def show_editor(self, channel=None):
+    def show_editor(self, channel=None, fav_list=None):
+        """The channel editor; *fav_list* picks the favourites list it shows."""
         from .ui.dialogs import EditorWindow
-        EditorWindow(self, self.window, channel).present()
+        EditorWindow(self, self.window, channel, fav_list).present()
 
     def show_favourites(self):
         """The window to create, rename, delete and reorder favourites lists."""
@@ -543,11 +545,6 @@ class LinDVBApp(Gtk.Application):
         *remap* maps old list indexes to new ones (None: deleted) after lists
         were moved or deleted, so the list chosen stays chosen."""
         if remap:
-            from .favourites import fav_index, filter_setting
-            i = fav_index(filter_setting(self.settings.get("list_filter")))
-            if i in remap:
-                new = remap[i]
-                self.settings["list_filter"] = "all" if new is None else f"fav:{new}"
             last = self.settings.get("fav_last", 0)
             if last in remap:
                 self.settings["fav_last"] = remap[last] or 0

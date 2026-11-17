@@ -47,8 +47,9 @@ them.
 
 ### Watching and listening
 
-* Separate TV and radio: a TV/Radio switch (Ctrl+M) above the channel list, which
-  shows one kind at a time; favourites lists mix both. LinDVB remembers the last channel
+* Separate TV and radio: TV, Radio, Favourites and Recordings tabs above the channel
+  list (Ctrl+M switches TV / radio, Ctrl+D opens the favourites); the favourites tab
+  shows one favourites list with TV and radio mixed. LinDVB remembers the last channel
   of each kind. At start it tunes the last channel watched, the first channel of the
   list, a channel you choose or no channel at all (Preferences › Channels)
 * Channel list with search, several freely sorted favourites lists,

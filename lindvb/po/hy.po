@@ -4691,3 +4691,11 @@ msgstr "DiSEqC 1.1 փոխարկիչ. մինչև 16 արբանյակ (միայն 
 #: lindvb/diseqc.py
 msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
 msgstr "DiSEqC 1.0 փոխարկիչ. մինչև 4 արբանյակ։ DiSEqC 1.1-ը (մինչև 16 արբանյակ) և Unicable-ը (մինչև 64 դիրք) ընտրվում են թյուների կարգավորումներում։"
+
+#: lindvb/ui/window.py
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "Ցույց տալ ընտրյալների ցանկերը (Ctrl+D)"
+
+#: lindvb/ui/window.py
+msgid "Edit this favourites list"
+msgstr "Խմբագրել ընտրյալների այս ցանկը"

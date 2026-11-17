@@ -1271,7 +1271,7 @@ class EditorWindow(Gtk.Window):
                ("fta", _("Free to air")), ("enc", _("Encrypted")), ("hd", "HD channels"),
                ("iptv", _("Internet streams")))
 
-    def __init__(self, app, parent, channel=None):
+    def __init__(self, app, parent, channel=None, fav_list=None):
         super().__init__(title=_("Channel Editor"), transient_for=parent,
                          default_width=1320, default_height=680)
         self.app = app
@@ -1282,7 +1282,8 @@ class EditorWindow(Gtk.Window):
         self.manual = bool(db.manual_order)     # own order instead of the DVB-I numbers
         self.fav_keys = [list(f["keys"]) for f in app.favs.lists]   # favourites (draft)
         self.touched = set()         # id(channel): moved or in other favourites lists
-        self.fav_index = 0 if self.fav_keys else -1
+        self.fav_index = (fav_list if fav_list is not None and 0 <= fav_list < len(self.fav_keys)
+                          else 0 if self.fav_keys else -1)
         self._num = {}               # id(channel) -> channel number in the draft order
         self._filling = False        # set while a list is rebuilt
         self._close_ok = False

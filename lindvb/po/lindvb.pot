@@ -5953,3 +5953,11 @@ msgstr ""
 #: lindvb/diseqc.py
 msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
 msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Edit this favourites list"
+msgstr ""

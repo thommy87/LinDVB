@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- a radio with a telescopic antenna: the radio stations -->
+  <path fill="#222222" d="M10.3 6 L14.2 0.5 L15.2 1.2 L11.8 6 Z"/>
+  <path fill="#222222" fill-rule="evenodd" d="M2 6 H14 A1.5 1.5 0 0 1 15.5 7.5 V13.5 A1.5 1.5 0 0 1 14 15 H2 A1.5 1.5 0 0 1 0.5 13.5 V7.5 A1.5 1.5 0 0 1 2 6 Z M7.4 10.5 A2.4 2.4 0 1 0 2.6 10.5 A2.4 2.4 0 1 0 7.4 10.5 Z M6 10.5 A1 1 0 1 1 4 10.5 A1 1 0 1 1 6 10.5 Z M9 8.5 V9.5 H13.5 V8.5 Z M9 11 V12 H13.5 V11 Z"/>
+</svg>

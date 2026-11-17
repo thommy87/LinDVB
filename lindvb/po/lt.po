@@ -4359,3 +4359,11 @@ msgstr "DiSEqC 1.1 jungiklis: iki 16 palydovų (tik uncommitted)."
 #: lindvb/diseqc.py
 msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
 msgstr "DiSEqC 1.0 jungiklis: iki 4 palydovų. DiSEqC 1.1 (iki 16 palydovų) ir Unicable (iki 64 pozicijų) pasirenkami imtuvo nustatymuose."
+
+#: lindvb/ui/window.py
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "Rodyti mėgstamųjų sąrašus (Ctrl+D)"
+
+#: lindvb/ui/window.py
+msgid "Edit this favourites list"
+msgstr "Redaguoti šį mėgstamųjų sąrašą"

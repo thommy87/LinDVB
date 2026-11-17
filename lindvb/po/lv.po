@@ -4359,3 +4359,11 @@ msgstr "DiSEqC 1.1 slēdzis: līdz 16 satelītiem (tikai uncommitted)."
 #: lindvb/diseqc.py
 msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
 msgstr "DiSEqC 1.0 slēdzis: līdz 4 satelītiem. DiSEqC 1.1 (līdz 16 satelītiem) un Unicable (līdz 64 pozīcijām) izvēlas uztvērēja iestatījumos."
+
+#: lindvb/ui/window.py
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "Rādīt izlases sarakstus (Ctrl+D)"
+
+#: lindvb/ui/window.py
+msgid "Edit this favourites list"
+msgstr "Rediģēt šo izlases sarakstu"
