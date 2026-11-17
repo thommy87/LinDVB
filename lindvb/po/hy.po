@@ -4651,3 +4651,43 @@ msgstr "Ախտորոշման գրանցամատյան"
 
 msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
 msgstr "Գրանցում է, թե ինչ են անում հավելվածները և ինչ են պահանջում LinDVB-ից {path}-ում՝ սխալի հաշվետվությանը կցելու համար։ Ուժի մեջ է մտնում ալիքի հաջորդ փոխման ժամանակ։"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC փոխարկիչ"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (մինչև 4 արբանյակ)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (մինչև 16 արբանյակ)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, միայն uncommitted (մինչև 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1՝ 4-ից ավելի մուտք ունեցող փոխարկիչների կամ DiSEqC 1.0 փոխարկիչների առջև դրված uncommitted փոխարկիչի համար։ «Միայն uncommitted»՝ այն փոխարկիչի համար, որը չի ընդունում DiSEqC 1.0 հրամաններ։"
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP. մինչև 4 արբանյակ (աղբյուր 1-ից 4)։"
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Մեկ մալուխ. մինչև {n} արբանյակային դիրք։"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 փոխարկիչ. մինչև 16 արբանյակ (uncommitted և committed)։"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 փոխարկիչ. մինչև 16 արբանյակ (միայն uncommitted)։"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 փոխարկիչ. մինչև 4 արբանյակ։ DiSEqC 1.1-ը (մինչև 16 արբանյակ) և Unicable-ը (մինչև 64 դիրք) ընտրվում են թյուների կարգավորումներում։"

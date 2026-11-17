@@ -4362,3 +4362,43 @@ msgstr "اکنون {size}، حداکثر {max}. «ذخیره…» یک نسخه 
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "هنوز گزارشی نیست."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "سوئیچ DiSEqC"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (تا ۴ ماهواره)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (تا ۱۶ ماهواره)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1، فقط uncommitted (تا ۱۶)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 برای سوئیچ‌های با بیش از ۴ ورودی، یا یک سوئیچ uncommitted جلوی سوئیچ‌های DiSEqC 1.0. «فقط uncommitted» برای سوئیچی که فرمان‌های DiSEqC 1.0 را نمی‌پذیرد."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: تا ۴ ماهواره (منبع ۱ تا ۴)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "تک‌کابل: تا {n} موقعیت ماهواره."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "سوئیچ DiSEqC 1.1: تا ۱۶ ماهواره (uncommitted و committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "سوئیچ DiSEqC 1.1: تا ۱۶ ماهواره (فقط uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "سوئیچ DiSEqC 1.0: تا ۴ ماهواره. DiSEqC 1.1 (تا ۱۶ ماهواره) و Unicable (تا ۶۴ موقعیت) در تنظیمات تیونر انتخاب می‌شوند."

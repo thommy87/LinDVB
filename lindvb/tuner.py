@@ -20,7 +20,7 @@ from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
-from . import debuglog, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
+from . import debuglog, diseqc, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
 
 try:
     gi.require_version("GstMpegts", "1.0")
@@ -243,7 +243,10 @@ class Capture(GObject.Object):
         self.channels = {channel.key: channel}
         # Unicable / JESS: LinDVB tunes the frontend itself (lindvb.directtune)
         # and reads the stream from the DVR device instead of dvbsrc.
-        self._uc = unicable.config(self.tuner) if channel.is_sat else None
+        # A DiSEqC 1.1 switch (lindvb.diseqc) is driven the same way.
+        self._uc = None
+        if channel.is_sat:
+            self._uc = unicable.config(self.tuner) or diseqc.config(self.tuner, channel.diseqc)
         # SAT>IP: a server on the network tunes; the stream comes over RTP
         self._satip = None
         # Tvheadend: the server tunes; LinDVB reads the service's stream over HTTP
@@ -589,7 +592,8 @@ class Capture(GObject.Object):
         except (OSError, ValueError) as e:
             self._direct.close()
             msg = e.strerror if isinstance(e, OSError) else str(e)
-            self.emit("error", f"Could not tune adapter {self.adapter} (single cable): {msg}")
+            kind = "DiSEqC 1.1" if diseqc.is_switch(self._uc) else "single cable"
+            self.emit("error", f"Could not tune adapter {self.adapter} ({kind}): {msg}")
             return False
         self._uc_tries = 1
         import threading

@@ -31,6 +31,8 @@ import time
 
 STANDARDS = ("en50494", "en50607")
 SLOTS = {"en50494": 8, "en50607": 32}
+# satellite positions the standard tells apart (A/B, or 64)
+POSITIONS = {"en50494": 2, "en50607": 64}
 
 # User band frequencies (MHz) of common devices, in slot order. The device's
 # label or manual has the real ones.
@@ -91,7 +93,8 @@ def command(uc, channel, lnb):
     return bytes([0x70, d1, t & 0xFF, d3])
 
 
-def _master_cmd(msg):
+def master_cmd(msg):
+    """*msg* as a struct dvb_diseqc_master_cmd (6 message bytes and the length)."""
     buf = bytearray(7)
     buf[:len(msg)] = msg
     buf[6] = len(msg)
@@ -109,7 +112,7 @@ def send(fd, msg, repeats=2, ioctl=fcntl.ioctl, sleep=time.sleep):
     ioctl(fd, FE_SET_TONE, SEC_TONE_OFF)
     ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13)
     sleep(0.05)
-    cmd = _master_cmd(msg)
+    cmd = master_cmd(msg)
     for i in range(1 + max(0, repeats)):
         if i:
             sleep(random.uniform(0.068, 0.118))

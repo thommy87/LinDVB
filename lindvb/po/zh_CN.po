@@ -4683,3 +4683,43 @@ msgstr "当前 {size}，最多 {max}。“保存…”可生成一份副本附�
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "尚无日志。"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC 切换器"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0（最多 4 颗卫星）"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1（最多 16 颗卫星）"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1，仅 uncommitted（最多 16）"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 用于输入多于 4 个的切换器，或放在 DiSEqC 1.0 切换器前面的 uncommitted 切换器。“仅 uncommitted”用于不接受 DiSEqC 1.0 命令的切换器。"
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP：最多 4 颗卫星（信号源 1 到 4）。"
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "单线：最多 {n} 个卫星位置。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 切换器：最多 16 颗卫星（uncommitted 和 committed）。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 切换器：最多 16 颗卫星（仅 uncommitted）。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 切换器：最多 4 颗卫星。DiSEqC 1.1（最多 16 颗卫星）和 Unicable（最多 64 个位置）在调谐器设置中选择。"

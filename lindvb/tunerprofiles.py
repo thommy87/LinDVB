@@ -14,6 +14,8 @@ A profile describes one DVB frontend LinDVB may use::
   receive the same satellite band, polarisation and DiSEqC port at a time,
   unless they use Unicable / JESS: then each needs a user band of its own.
 * ``unicable``: the single-cable setup (see lindvb.unicable), or missing.
+* ``diseqc``: the DiSEqC switch, "1.1" or "1.1u" (see lindvb.diseqc), or
+  missing for DiSEqC 1.0 (up to 4 satellites).
 * ``lnb``: the tuner's own LNB oscillators (low, high, switch frequency in kHz),
   or missing for the global LNB settings.
 * ``type``: ``"satip"`` for a tuner of a SAT>IP server on the network

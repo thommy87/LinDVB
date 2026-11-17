@@ -4607,3 +4607,43 @@ msgstr "現在 {size}、最大 {max}。「保存…」でバグ報告に添付�
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "ログはまだありません。"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC スイッチ"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (最大 4 衛星)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (最大 16 衛星)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1、uncommitted のみ (最大 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "入力が 4 つより多いスイッチ、または DiSEqC 1.0 スイッチの前に置いた uncommitted スイッチには DiSEqC 1.1。DiSEqC 1.0 のコマンドを受け付けないスイッチには「uncommitted のみ」。"
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: 最大 4 衛星 (ソース 1 から 4)。"
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "シングルケーブル: 最大 {n} 衛星位置。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 スイッチ: 最大 16 衛星 (uncommitted と committed)。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 スイッチ: 最大 16 衛星 (uncommitted のみ)。"
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 スイッチ: 最大 4 衛星。DiSEqC 1.1 (最大 16 衛星) と Unicable (最大 64 位置) はチューナーの設定で選びます。"

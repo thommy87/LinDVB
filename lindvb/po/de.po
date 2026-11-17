@@ -4771,3 +4771,43 @@ msgstr "Jetzt {size}, höchstens {max}. Speichern… legt eine Kopie zum Anhäng
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Noch kein Protokoll."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC-Schalter"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (bis 4 Satelliten)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (bis 16 Satelliten)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, nur uncommitted (bis 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 für Schalter mit mehr als 4 Eingängen oder einen uncommitted Schalter vor DiSEqC-1.0-Schaltern. „Nur uncommitted“ für einen Schalter, der keine DiSEqC-1.0-Befehle annimmt."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: bis 4 Satelliten (Quelle 1 bis 4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Einkabel: bis {n} Satellitenpositionen."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC-1.1-Schalter: bis 16 Satelliten (uncommitted und committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC-1.1-Schalter: bis 16 Satelliten (nur uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC-1.0-Schalter: bis 4 Satelliten. DiSEqC 1.1 (bis 16 Satelliten) und Unicable (bis 64 Positionen) werden in den Tuner-Einstellungen gewählt."

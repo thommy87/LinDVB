@@ -4319,3 +4319,43 @@ msgstr "Acum {size}, cel mult {max}. Salvare… face o copie de atașat la un ra
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Încă nu există jurnal."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "Comutator DiSEqC"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (până la 4 sateliți)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (până la 16 sateliți)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, doar uncommitted (până la 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 pentru comutatoare cu mai mult de 4 intrări sau un comutator uncommitted în fața comutatoarelor DiSEqC 1.0. „Doar uncommitted” pentru un comutator care nu acceptă comenzi DiSEqC 1.0."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: până la 4 sateliți (sursa 1–4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Cablu unic: până la {n} poziții de satelit."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "Comutator DiSEqC 1.1: până la 16 sateliți (uncommitted și committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "Comutator DiSEqC 1.1: până la 16 sateliți (doar uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "Comutator DiSEqC 1.0: până la 4 sateliți. DiSEqC 1.1 (până la 16 sateliți) și Unicable (până la 64 de poziții) se aleg în setările tunerului."

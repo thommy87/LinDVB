@@ -4319,3 +4319,43 @@ msgstr "Teraz {size}, najviac {max}. Uložiť… vytvorí kópiu na priloženie 
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Zatiaľ žiadny protokol."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "Prepínač DiSEqC"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (až 4 satelity)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (až 16 satelitov)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, iba uncommitted (až 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 pre prepínače s viac ako 4 vstupmi alebo prepínač uncommitted pred prepínačmi DiSEqC 1.0. „Iba uncommitted“ pre prepínač, ktorý neprijíma príkazy DiSEqC 1.0."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: až 4 satelity (zdroj 1 až 4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Jeden kábel: až {n} satelitných pozícií."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "Prepínač DiSEqC 1.1: až 16 satelitov (uncommitted a committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "Prepínač DiSEqC 1.1: až 16 satelitov (iba uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "Prepínač DiSEqC 1.0: až 4 satelity. DiSEqC 1.1 (až 16 satelitov) a Unicable (až 64 pozícií) sa volia v nastaveniach tunera."

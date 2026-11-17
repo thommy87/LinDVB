@@ -4319,3 +4319,43 @@ msgstr "Praegu {size}, kõige rohkem {max}. Salvesta… teeb koopia veateatele l
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Logi veel pole."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC-lüliti"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (kuni 4 satelliiti)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (kuni 16 satelliiti)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, ainult uncommitted (kuni 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 lülititele, millel on üle 4 sisendi, või uncommitted-lülitile DiSEqC 1.0 lülitite ees. „Ainult uncommitted“ lülitile, mis DiSEqC 1.0 käske vastu ei võta."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: kuni 4 satelliiti (allikas 1 kuni 4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Üks kaabel: kuni {n} satelliidipositsiooni."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 lüliti: kuni 16 satelliiti (uncommitted ja committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 lüliti: kuni 16 satelliiti (ainult uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 lüliti: kuni 4 satelliiti. DiSEqC 1.1 (kuni 16 satelliiti) ja Unicable (kuni 64 positsiooni) valitakse tuuneri seadetes."

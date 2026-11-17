@@ -125,6 +125,8 @@ them.
   a channel goes to a tuner that can receive it, channels of one transponder share a
   tuner, tuners on one antenna cable (loop-through) keep to one band and
   polarisation, and each tuner can have an LNB of its own
+* DiSEqC switches: DiSEqC 1.0 (up to 4 satellites) and DiSEqC 1.1 (up to 16 satellites,
+  uncommitted switches alone or in front of 1.0 switches), set per tuner
 * Single cable: Unicable I (EN 50494) and Unicable II / JESS (EN 50607) with a user
   band per tuner, optional PIN and templates of common devices
 * SAT>IP (DVB over IP): servers in the network found by a search (SSDP) or added by
@@ -345,6 +347,8 @@ Your user needs access to `/dev/dvb` (usually the `video` group).
    with its reception types. Switch tuners on or off, set a priority, switch on "Shared
    antenna cable" for tuners on one cable (loop-through, splitter; with more than two
    satellite tuners also give them a cable name), and set an LNB per tuner.
+   With more than 4 satellites choose "DiSEqC switch: DiSEqC 1.1" for the tuner; the
+   channel search then offers ports 1 to 16.
    For a single-cable system (Unicable I / EN 50494, Unicable II / JESS / EN 50607) set
    the type, user band and its frequency per tuner; the channel search works on it too.
    SAT>IP servers (FRITZ!Box Cable, minisatip, SAT>IP boxes) are added on the same page
