@@ -97,6 +97,13 @@ def remember(sources, kind, location, root, count, now=None, **extra):
     return [s for s in sources if s.get("location") != location] + [entry]
 
 
+def touch(sources, location, count, now=None):
+    """*sources* with the list at *location* marked as fetched again, in its place."""
+    date = int(now if now is not None else time.time())
+    return [dict(s, count=int(count), date=date) if s.get("location") == location else s
+            for s in sources]
+
+
 def forget(sources, location):
     return [s for s in sources if s.get("location") != location]
 

@@ -252,6 +252,42 @@ def test_credentials_and_logos(server, tmp_path):
     assert open(chans[0].logo, "rb").read() == b"\x89PNG logo"
 
 
+def test_lists_due():
+    day = tvheadend.LIST_MAX_AGE
+    fresh = {"kind": "tvheadend", "location": "http://a:9981", "date": 1000 * day}
+    old = {"kind": "tvheadend", "location": "http://b:9981", "date": 998 * day}
+    other = {"kind": "url", "location": "http://c/list.m3u", "date": 0}
+    settings = {"iptv_sources": [fresh, old, other], "tvh_lists_version": "1.0"}
+    now = 1000 * day + 60
+    assert tvheadend.lists_due(settings, "1.0", now) == [old]
+    # after an update every server's list is fetched again (issue 111)
+    assert tvheadend.lists_due(settings, "1.1", now) == [fresh, old]
+    assert tvheadend.lists_due({"iptv_sources": [other]}, "1.1", now) == []
+
+
+def test_apply_lists_renews_channels_in_place(server, monkeypatch, tmp_path):
+    from lindvb.channels import ChannelDB
+    monkeypatch.setattr(ChannelDB, "path", tmp_path / "channels.json")
+    db = ChannelDB()
+    stale = Channel(name="Das Erste HD", delsys="iptv", root="Tvheadend",
+                    url=f"{server}/stream/channel/{U1}?profile=pass", tvh_server=server,
+                    tvg_id=U1, groups=["HDTV"], favourite=True)
+    gone = Channel(name="Weg", delsys="iptv", root="Tvheadend", url=f"{server}/stream/x",
+                   tvh_server=server)
+    db.channels[:] = [stale, gone]
+    src = {"kind": "tvheadend", "location": server, "root": "Tvheadend", "count": 2,
+           "date": 0, "user": "alex", "password": "geheim"}
+    first = {"kind": "url", "location": "http://c/list.m3u", "root": "C", "date": 5}
+    chans = tvheadend.load_channels(server, "alex", "geheim", "Tvheadend")
+    sources = tvheadend.apply_lists(db, [src, first], [(src, chans)], now=777)
+    assert [s["location"] for s in sources] == [server, "http://c/list.m3u"]   # order kept
+    assert sources[0]["count"] == 3 and sources[0]["date"] == 777
+    assert sources[0]["password"] == "geheim" and sources[1] == first
+    erste = db.by_key(stale.key)
+    assert erste.groups == ["Öffentlich-rechtlich"] and erste.favourite
+    assert [c.name for c in db.channels] == ["Das Erste HD", "ZDF HD", "Bayern 3"]
+
+
 def test_set_login():
     class Src:
         props = {}
