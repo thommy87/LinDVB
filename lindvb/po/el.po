@@ -4319,3 +4319,43 @@ msgstr "Τώρα {size}, το πολύ {max}. Η Αποθήκευση… δημ�
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Δεν υπάρχει ακόμη αρχείο καταγραφής."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "Διακόπτης DiSEqC"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (έως 4 δορυφόροι)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (έως 16 δορυφόροι)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, μόνο uncommitted (έως 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 για διακόπτες με περισσότερες από 4 εισόδους ή διακόπτη uncommitted μπροστά από διακόπτες DiSEqC 1.0. «Μόνο uncommitted» για διακόπτη που δεν δέχεται εντολές DiSEqC 1.0."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: έως 4 δορυφόροι (πηγή 1 έως 4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Μονό καλώδιο: έως {n} δορυφορικές θέσεις."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "Διακόπτης DiSEqC 1.1: έως 16 δορυφόροι (uncommitted και committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "Διακόπτης DiSEqC 1.1: έως 16 δορυφόροι (μόνο uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "Διακόπτης DiSEqC 1.0: έως 4 δορυφόροι. Το DiSEqC 1.1 (έως 16 δορυφόροι) και το Unicable (έως 64 θέσεις) επιλέγονται στις ρυθμίσεις του δέκτη."

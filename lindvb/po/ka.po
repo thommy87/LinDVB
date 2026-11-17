@@ -4683,3 +4683,43 @@ msgstr "ახლა {size}, მაქსიმუმ {max}. „შენახ�
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "ჟურნალი ჯერ არ არის."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC გადამრთველი"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (4 თანამგზავრამდე)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (16 თანამგზავრამდე)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, მხოლოდ uncommitted (16-მდე)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 გადამრთველებისთვის 4-ზე მეტი შესასვლელით, ან uncommitted გადამრთველისთვის DiSEqC 1.0 გადამრთველების წინ. „მხოლოდ uncommitted“ გადამრთველისთვის, რომელიც DiSEqC 1.0 ბრძანებებს არ იღებს."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: 4 თანამგზავრამდე (წყარო 1-დან 4-მდე)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "ერთი კაბელი: {n} თანამგზავრულ პოზიციამდე."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 გადამრთველი: 16 თანამგზავრამდე (uncommitted და committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 გადამრთველი: 16 თანამგზავრამდე (მხოლოდ uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 გადამრთველი: 4 თანამგზავრამდე. DiSEqC 1.1 (16 თანამგზავრამდე) და Unicable (64 პოზიციამდე) ტიუნერის პარამეტრებში აირჩევა."

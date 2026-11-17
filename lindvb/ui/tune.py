@@ -283,6 +283,12 @@ class TuneWindow(ScanEngine, Gtk.Window):
                        default=0))
         self._filling = False
         if fam == sl.SAT:
+            from .. import diseqc
+            port = w["port"].get_selected()
+            _set_model(w["port"], diseqc.port_labels(self.max_ports), port)
+            if self.unicable is None and self.satip is None:
+                self.uc_label.set_text(self.switch_text)     # how many satellites
+                self.uc_label.set_visible(True)
             self._fill_positions()
         if fam not in self._restored:
             self._restored.add(fam)
@@ -438,7 +444,7 @@ class TuneWindow(ScanEngine, Gtk.Window):
         if fam == sl.SAT:
             choice = self._choice()
             if choice is None or self._scan_port(choice.position) is None:
-                w["port"].set_selected(min(max(t.diseqc, -1), 3) + 1)
+                w["port"].set_selected(min(max(t.diseqc, -1), self.max_ports - 1) + 1)
             self._set_sat(t)
             return
         w["freq"].set_value(t.frequency / 1000)
@@ -495,7 +501,7 @@ class TuneWindow(ScanEngine, Gtk.Window):
                "out": tmp / "channels.conf", "nit": False, "file_only": True}
         self._tuned, self._group = t, root
         # single-cable and SAT>IP tuners read the stream themselves: they know more PIDs
-        self._detailed = self.satip is not None or (sat and self.unicable is not None)
+        self._detailed = self.satip is not None or self._direct_setup([job]) is not None
         self._remember(t)
         self._found = []
         self.store.remove_all()

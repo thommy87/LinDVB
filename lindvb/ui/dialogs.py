@@ -948,7 +948,7 @@ class PrefsWindow(Gtk.Window):
                     _("Higher numbers are used first."))
         prio.set_value(int(prof.get("priority", 0) or 0))
         row = {"profile": prof, "on": on, "label": label, "prio": prio, "group": None,
-               "lnb": None, "uc": None, "use": None, "uses": []}
+               "lnb": None, "uc": None, "switch": None, "use": None, "uses": []}
         fams = tp.families(prof)
         names = {"sat": _("Satellite"), "ter": _("Antenna (terrestrial)"), "cab": _("Cable")}
         sat_rows = []
@@ -984,6 +984,15 @@ class PrefsWindow(Gtk.Window):
                 sp = _row(g, lbl, Gtk.SpinButton.new_with_range(0, 20000000, 1))
                 sp.set_value(value)
                 row["lnb"].append(sp)
+            from .. import diseqc
+            row["switch"] = _row(g, _("DiSEqC switch"), dropdown(
+                [_("DiSEqC 1.0 (up to 4 satellites)"),
+                 _("DiSEqC 1.1 (up to 16 satellites)"),
+                 _("DiSEqC 1.1, uncommitted only (up to 16)")],
+                diseqc.MODES.index(diseqc.mode(prof))),
+                _("DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted "
+                  "switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a "
+                  "switch that does not take DiSEqC 1.0 commands."))
             row["uc"] = self._single_cable_rows(g, prof)
             sat_rows = _children(g)[first:]
         if not sat_rows:
@@ -1082,6 +1091,10 @@ class PrefsWindow(Gtk.Window):
                 lnb = tuple(int(sp.get_value()) for sp in row["lnb"])
                 if lnb != glob and all(lnb):
                     prof["lnb"] = list(lnb)
+            prof.pop("diseqc", None)
+            if row.get("switch") is not None and row["switch"].get_selected() > 0:
+                from .. import diseqc
+                prof["diseqc"] = diseqc.MODES[row["switch"].get_selected()]
             prof.pop("unicable", None)
             uc = row.get("uc")
             if uc and uc["std"].get_selected() > 0:

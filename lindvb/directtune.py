@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""Tuning a frontend without dvbsrc, for single-cable (Unicable / JESS) tuners.
+"""Tuning a frontend without dvbsrc, for single-cable (Unicable / JESS) tuners
+and DiSEqC 1.1 switches (lindvb.diseqc), whose commands dvbsrc cannot send.
 
 The tuner keeps ``/dev/dvb/adapterN/frontendM`` open for as long as it
-receives (closing it switches the LNB power off), sends the single-cable
-command, tunes the user band with FE_SET_PROPERTY, sets the PID filters on the
+receives (closing it switches the LNB power off), sends the single-cable or
+switch command, tunes the user band or the LNB's intermediate frequency with
+FE_SET_PROPERTY, sets the PID filters on the
 demux device and reads the transport stream from the DVR device in a thread
 (:meth:`DirectTuner.read_loop`), which hands it to a GStreamer appsrc.
 
@@ -18,7 +20,7 @@ import os
 import select
 import time
 
-from . import festats, unicable
+from . import diseqc, festats, unicable
 
 FE_SET_PROPERTY = (1 << 30) | (ctypes.sizeof(festats.DtvProperties) << 16) | (ord("o") << 8) | 82
 
@@ -87,7 +89,7 @@ def dvb_stats(fe):
 
 
 class DirectTuner:
-    """One single-cable tuner, open from :meth:`open` to :meth:`close`."""
+    """One single-cable or DiSEqC 1.1 tuner, open from :meth:`open` to :meth:`close`."""
 
     def __init__(self, adapter, frontend=0, root="/dev/dvb", opener=os.open, closer=os.close,
                  ioctl=fcntl.ioctl, sleep=time.sleep):
@@ -112,14 +114,22 @@ class DirectTuner:
         except OSError:
             pass                      # the driver's default buffer then
 
-    def tune(self, uc, channel, lnb):
-        """Send the single-cable command and tune the user band. Raises OSError/ValueError."""
-        msg = unicable.command(uc, channel, lnb)
+    def tune(self, setup, channel, lnb):
+        """Send the single-cable command and tune the user band, or (a DiSEqC 1.1
+        setup from lindvb.diseqc.config) switch to the channel's port and tune
+        the LNB's intermediate frequency. Raises OSError/ValueError."""
         clear = festats.DtvProperty(cmd=DTV_CLEAR)
-        self._set([clear])
-        unicable.send(self.fe, msg, ioctl=self._ioctl, sleep=self._sleep)
+        if diseqc.is_switch(setup):
+            if_khz = diseqc.band(channel, lnb)[0]
+            self._set([clear])
+            diseqc.send(self.fe, setup, channel, lnb, ioctl=self._ioctl, sleep=self._sleep)
+        else:
+            msg = unicable.command(setup, channel, lnb)
+            if_khz = int(setup["frequency"])
+            self._set([clear])
+            unicable.send(self.fe, msg, ioctl=self._ioctl, sleep=self._sleep)
         arr = []
-        for cmd, value in tuning_properties(channel, int(uc["frequency"])):
+        for cmd, value in tuning_properties(channel, if_khz):
             p = festats.DtvProperty(cmd=cmd)
             p.u.data = value & 0xFFFFFFFF
             arr.append(p)

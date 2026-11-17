@@ -4319,3 +4319,43 @@ msgstr "Зараз {size}, щонайбільше {max}. «Зберегти…»
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Журналу ще немає."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "Перемикач DiSEqC"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (до 4 супутників)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (до 16 супутників)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, лише uncommitted (до 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 для перемикачів з понад 4 входами або перемикача uncommitted перед перемикачами DiSEqC 1.0. «Лише uncommitted» — для перемикача, який не приймає команди DiSEqC 1.0."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: до 4 супутників (джерело 1–4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Один кабель: до {n} супутникових позицій."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "Перемикач DiSEqC 1.1: до 16 супутників (uncommitted і committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "Перемикач DiSEqC 1.1: до 16 супутників (лише uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "Перемикач DiSEqC 1.0: до 4 супутників. DiSEqC 1.1 (до 16 супутників) і Unicable (до 64 позицій) вибираються в налаштуваннях тюнера."

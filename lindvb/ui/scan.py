@@ -54,6 +54,11 @@ class ScanEngine:
     ``progress`` and ``log``, the methods ``_family_changed()`` and
     ``_search_done(channels)``, and calls ``_begin(jobs, adapter, frontend)``."""
 
+    max_ports = 4                # DiSEqC ports the tuner tells apart (lindvb.diseqc)
+    switch_text = ""
+    unicable = None              # the tuner's single-cable setup
+    satip = None                 # the SAT>IP server profile
+
     def _list_adapters(self, configured=True):
         """Fill ``adapters`` [(adapter, frontend, name)] and ``satip_profiles``: the
         tuners found and one entry per SAT>IP server (the server picks a free tuner).
@@ -107,14 +112,28 @@ class ScanEngine:
             self._start_satip(jobs)
             return
         self._meter_start_frontend(a, f)
-        if self.family == sl.SAT and self.unicable is not None:
-            self._start_single_cable(jobs, a, f)
+        setup = self._direct_setup(jobs)
+        if setup is not None:
+            self._start_single_cable(jobs, a, f, setup)
             return
         self.jobs = jobs
         self.total = sum(j["total"] for j in jobs)
         self.done = 0
         self.found = []
         self._run_next()
+
+    def _direct_setup(self, jobs):
+        """The setup lindvb.directtune tunes with: the single-cable one, or a
+        DiSEqC 1.1 switch (also for a port above 4 on a DiSEqC 1.0 tuner).
+        None when dvbv5-scan can search."""
+        if self.family != sl.SAT:
+            return None
+        if self.unicable is not None:
+            return self.unicable
+        from .. import diseqc
+        a, f = self._current_adapter()
+        top = max((j["diseqc"] for j in jobs), default=-1)
+        return diseqc.config(self._profile(a, f), top)
 
     def _current_adapter(self):
         if not self.adapters:
@@ -131,9 +150,12 @@ class ScanEngine:
         return None
 
     def _tuner_changed(self):
-        from .. import tunerprofiles, unicable
+        from .. import diseqc, tunerprofiles, unicable
         a, f = self._current_adapter()
         prof = self._profile(a, f)
+        # how many satellites the tuner's switch or single cable tells apart
+        self.max_ports = diseqc.max_ports(prof)
+        self.switch_text = diseqc.describe(prof)
         systems = list((prof or {}).get("systems") or [])
         if not systems:
             systems = tunerprofiles.probe_delivery_systems(a, f)
@@ -217,10 +239,11 @@ class ScanEngine:
         self.start_btn.set_sensitive(False)
         self.stop_btn.set_sensitive(True)
 
-    def _start_single_cable(self, jobs, a, f):
-        """Unicable / JESS: LinDVB tunes each transponder itself (lindvb.scscan)."""
+    def _start_single_cable(self, jobs, a, f, setup):
+        """Unicable / JESS and DiSEqC 1.1: LinDVB tunes each transponder itself
+        (lindvb.scscan)."""
         import threading
-        from .. import directtune, scscan, tunerprofiles, unicable
+        from .. import diseqc, directtune, scscan, tunerprofiles, unicable
         from ..festats import Frontend
         work = [(scscan.transponders(j["tpl"]), j) for j in jobs]
         work = [(tps, j) for tps, j in work if tps]
@@ -232,10 +255,11 @@ class ScanEngine:
             self._meter_stop()
             self.log_line(_("The tuner is busy (recording or channel analysis).\n"))
             return
-        uc = self.unicable
+        uc = setup
         self.total, self.done = sum(len(tps) for tps, _j in work), 0
         self._cancel = False
-        self.log_line(unicable.describe(uc) + "\n")
+        self.log_line((f"DiSEqC {uc['switch']}" if diseqc.is_switch(uc)
+                       else unicable.describe(uc)) + "\n")
         lnb = tunerprofiles.tuner_lnb(self._profile(a, f), self.app.settings)
         self.start_btn.set_sensitive(False)
         self.stop_btn.set_sensitive(True)
@@ -465,7 +489,12 @@ class ScanWindow(ScanEngine, Gtk.Window):
                              tooltip_text=_("Search several dish positions behind a DiSEqC "
                                             "switch in one go"))
         add_sat.connect("clicked", lambda *_a: self._add_sat_row())
-        sat.attach(add_sat, 1, 1, 1, 1)
+        add_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        add_box.append(add_sat)
+        # how many satellites the tuner's DiSEqC switch or single cable supports
+        self.switch_label = Gtk.Label(xalign=0, wrap=True, css_classes=["dim-label"])
+        add_box.append(self.switch_label)
+        sat.attach(add_box, 1, 1, 1, 1)
         self.lnb_label = Gtk.Label(label=_("LNB type"), xalign=0)
         self.lnb = dropdown([n for n, _unused in LNB_TYPES])
         self.lnb.set_hexpand(True)
@@ -563,6 +592,7 @@ class ScanWindow(ScanEngine, Gtk.Window):
     # -- satellites -------------------------------------------------------------------
 
     def _fill_positions(self):
+        self.switch_label.set_text(self.switch_text)
         self.position_choices = sl.positions(self._usable(), self.systems)
         labels = [c.label for c in self.position_choices] or [_("(no lists found)")]
         for row in list(self.sat_rows):
@@ -580,14 +610,16 @@ class ScanWindow(ScanEngine, Gtk.Window):
         check = Gtk.CheckButton(active=active, valign=Gtk.Align.CENTER,
                                 tooltip_text=_("Search this satellite"))
         check.connect("toggled", lambda *_a: self._show_info())
-        dd_port = dropdown(DISEQC)
+        from .. import diseqc
+        dd_port = dropdown(diseqc.port_labels(self.max_ports))
         dd_port.set_tooltip_text(_("DiSEqC port"))
         if port is None:                 # a new row: the next free port
             used = {r[1].get_selected() for r in self.sat_rows}
-            port = next((p for p in range(4) if p + 1 not in used), 0)
+            port = next((p for p in range(self.max_ports) if p + 1 not in used), 0)
             if self.sat_rows and self.sat_rows[0][1].get_selected() == 0:
                 self.sat_rows[0][1].set_selected(1)
                 port = 1
+        port = min(port, self.max_ports - 1)
         dd_port.set_selected(port + 1)
         dd_pos = _search_dropdown(labels)
         if pos is None:

@@ -4319,3 +4319,43 @@ msgstr "Most {size}, legfeljebb {max}. A Mentés… másolatot készít a hibaje
 #: lindvb/ui/dialogs.py
 msgid "No log yet."
 msgstr "Még nincs napló."
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC switch"
+msgstr "DiSEqC kapcsoló"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (legfeljebb 4 műhold)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (legfeljebb 16 műhold)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, csak uncommitted (legfeljebb 16)"
+
+#: lindvb/ui/dialogs.py
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 a 4-nél több bemenetű kapcsolókhoz, vagy DiSEqC 1.0 kapcsolók előtti uncommitted kapcsolóhoz. „Csak uncommitted” olyan kapcsolóhoz, amely nem fogad DiSEqC 1.0 parancsokat."
+
+#: lindvb/diseqc.py
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: legfeljebb 4 műhold (forrás 1–4)."
+
+#: lindvb/diseqc.py
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Egykábeles: legfeljebb {n} műholdpozíció."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "DiSEqC 1.1 kapcsoló: legfeljebb 16 műhold (uncommitted és committed)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "DiSEqC 1.1 kapcsoló: legfeljebb 16 műhold (csak uncommitted)."
+
+#: lindvb/diseqc.py
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "DiSEqC 1.0 kapcsoló: legfeljebb 4 műhold. A DiSEqC 1.1 (legfeljebb 16 műhold) és a Unicable (legfeljebb 64 pozíció) a tuner beállításaiban választható."
