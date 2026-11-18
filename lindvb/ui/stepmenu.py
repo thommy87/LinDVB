@@ -1,18 +1,21 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """A numbered step of the channel list filter (lindvb.listfilter): a button
 with the step's number and a summary of its choices, opening a popover with
-sections of ticks (any number) or of radio entries (one)."""
+sections of ticks (any number, children indented below their parent) or of
+radio entries (one)."""
 
 from dataclasses import dataclass
 
 from gi.repository import GLib, Gtk, Pango
+
+from ..listfilter import tick, tick_state
 
 
 @dataclass(frozen=True)
 class Section:
     sid: str                         # the step's name for it ("sources", "reception" …)
     heading: str                     # "" for none
-    items: tuple                     # ((key, label), …)
+    items: tuple                     # ((key, label[, parent key]), …)
     radio: bool = False              # one entry (the value is a key), else ticks (a frozenset)
 
 
@@ -25,9 +28,11 @@ class StepMenu(Gtk.MenuButton):
         self._on_change = on_change
         self._sections = ()
         self._buttons = {}           # sid -> {key: CheckButton}
+        self._values = {}            # sid -> the value shown
         self._sync = False
         box = Gtk.Box(spacing=6)
-        box.append(Gtk.Label(label=str(number), css_classes=["lv-step-num"], valign=Gtk.Align.CENTER))
+        box.append(Gtk.Label(label=str(number), css_classes=["lv-step-num"],
+                             valign=Gtk.Align.CENTER))
         self._summary = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END)
         box.append(self._summary)
         self.set_child(box)
@@ -50,11 +55,17 @@ class StepMenu(Gtk.MenuButton):
         sections = tuple(sections)
         if sections != self._sections:
             self._build(sections)
+        self._values = {s.sid: values.get(s.sid) for s in sections}
         self._sync = True
         for s in sections:
-            v = values.get(s.sid)
+            v = self._values[s.sid]
             for key, b in self._buttons[s.sid].items():
-                b.set_active(key == v if s.radio else key in (v or ()))
+                if s.radio:
+                    b.set_active(key == v)
+                    continue
+                state = tick_state(s.items, v or frozenset(), key)
+                b.set_active(state == "on")
+                b.set_inconsistent(state == "part")
         self._sync = False
 
     def _build(self, sections):
@@ -68,8 +79,8 @@ class StepMenu(Gtk.MenuButton):
                                                css_classes=["lv-step-head"] +
                                                (["lv-step-first"] if n == 0 else [])))
             group, buttons = None, {}
-            for key, label in s.items:
-                b = Gtk.CheckButton(label=label)
+            for key, label, *parent in s.items:
+                b = Gtk.CheckButton(label=label, margin_start=22 if any(parent) else 0)
                 if s.radio:
                     if group is None:
                         group = b
@@ -86,6 +97,8 @@ class StepMenu(Gtk.MenuButton):
         if section.radio:
             value = key
         else:
-            value = frozenset(k for k, b in self._buttons[section.sid].items() if b.get_active())
+            value = tick(section.items, self._values.get(section.sid) or frozenset(), key,
+                         button.get_active())
+        self._values[section.sid] = value
         # after the toggle: the change may build this popover's entries again
         GLib.idle_add(lambda: self._on_change(section, value) and False)
