@@ -120,6 +120,9 @@ window.onload = function () {
   av.onPlayStateChange = function () {
     if (av.playState !== 1 || av.__done) { return; }
     av.__done = true;
+    // the stream and its one cue last 6 s: hold the picture at the start, or a slow
+    // machine plays past the cue before the subtitle layer has drawn it
+    av.play(0);
     setTimeout(function () {
       var subs = av.getComponents(2);
       var first = document.querySelector('[data-lindvb=subtitles]');
