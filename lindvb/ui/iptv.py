@@ -10,7 +10,7 @@ import urllib.request
 
 from gi.repository import Gio, GLib, Gtk
 
-from .. import iptvsources, tvheadend
+from .. import iptvsources, listfilter, tvheadend
 from ..channels import download_name, import_data, import_file
 from ..config import CACHE_DIR
 from .common import dropdown, fill, make_column_view, message, selected
@@ -369,6 +369,7 @@ class IPTVPanel(Gtk.Box):
         def done(name):
             sources, used = iptvsources.rename(self.app.db, self._sources(),
                                                src.get("location"), name)
+            listfilter.rename_group(self.app.settings, "iptv", {src.get("root", "")}, used)
             self.app.db.save()
             self._set_sources(sources)
             if self.app.window is not None:

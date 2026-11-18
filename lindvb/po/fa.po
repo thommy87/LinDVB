@@ -4410,3 +4410,35 @@ msgstr "نمایش فهرست‌های علاقه‌مندی (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "ویرایش این فهرست علاقه‌مندی"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "ناحیه"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "پالایه"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "همه منابع"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "همه ناحیه‌ها"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "درگاه DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "کیفیت تصویر"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "برچسب‌ها"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "بازنشانی پالایه و جستجو"

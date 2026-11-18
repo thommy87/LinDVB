@@ -4367,3 +4367,35 @@ msgstr "Uri l-listi tal-favoriti tiegħek (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Editja din il-lista tal-favoriti"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Żona"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filtru"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Is-sorsi kollha"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Iż-żoni kollha"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Port DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Kwalità tal-istampa"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Tikketti"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Erġa’ ssettja l-filtru u t-tfittxija"

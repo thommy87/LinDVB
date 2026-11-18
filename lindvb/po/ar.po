@@ -4367,3 +4367,35 @@ msgstr "عرض قوائم المفضلة (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "تحرير قائمة المفضلة هذه"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "المنطقة"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "التصفية"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "كل المصادر"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "كل المناطق"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "منفذ DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "جودة الصورة"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "الوسوم"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "إعادة تعيين التصفية والبحث"

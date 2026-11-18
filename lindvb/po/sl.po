@@ -4367,3 +4367,35 @@ msgstr "Prikaži sezname priljubljenih (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Uredi ta seznam priljubljenih"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Območje"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filter"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Vsi viri"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Vsa območja"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Vrata DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Kakovost slike"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Oznake"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Ponastavi filter in iskanje"

@@ -4367,3 +4367,35 @@ msgstr "Εμφάνιση των λιστών αγαπημένων (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Επεξεργασία αυτής της λίστας αγαπημένων"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Περιοχή"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Φίλτρο"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Όλες οι πηγές"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Όλες οι περιοχές"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Θύρα DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Ποιότητα εικόνας"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Ετικέτες"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Επαναφορά φίλτρου και αναζήτησης"

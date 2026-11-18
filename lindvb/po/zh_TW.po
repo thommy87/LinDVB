@@ -4731,3 +4731,31 @@ msgstr "顯示我的最愛清單 (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "編輯此我的最愛清單"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "區域"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "所有來源"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "所有區域"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC 連接埠 {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "畫質"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "標籤"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "重設篩選和搜尋"

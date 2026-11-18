@@ -4367,3 +4367,35 @@ msgstr "Taispeáin do liostaí ceanán (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Cuir an liosta ceanán seo in eagar"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Limistéar"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Scagaire"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Gach foinse"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Gach limistéar"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "Port DiSEqC {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Cáilíocht pictiúir"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Clibeanna"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Athshocraigh an scagaire agus an cuardach"

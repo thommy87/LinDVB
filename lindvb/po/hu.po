@@ -4367,3 +4367,35 @@ msgstr "Kedvenclisták megjelenítése (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "A kedvenclista szerkesztése"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Terület"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Szűrő"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Minden forrás"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Minden terület"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC port {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Képminőség"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Címkék"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Szűrő és keresés visszaállítása"

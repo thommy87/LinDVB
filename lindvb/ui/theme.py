@@ -85,6 +85,17 @@ progressbar.lv-rec-progress progress { background: @lv_accent; }
 }
 .lv-mode > button:hover { color: @lv_text; background: alpha(@lv_line, 0.05); }
 .lv-mode > button:checked { background: @lv_accent; color: @lv_on_accent; }
+/* the numbered filter steps of the channel list */
+.lv-sidebar menubutton.lv-step > button {
+  background: @lv_surface_2; color: @lv_text; border-radius: 8px; box-shadow: none;
+  border: 1px solid alpha(@lv_line, 0.06); min-height: 32px; padding: 0 8px;
+}
+.lv-step-num {
+  min-width: 18px; min-height: 18px; border-radius: 9px; font-size: 0.8em; font-weight: 700;
+  background: alpha(@lv_accent, 0.22); color: @lv_accent;
+}
+.lv-step-head { font-weight: 700; font-size: 0.9em; color: @lv_text_dim; margin: 8px 4px 2px; }
+.lv-step-head.lv-step-first { margin-top: 2px; }
 .lv-visualizer { background: black; }
 paned.lv-paned > separator { background: transparent; min-width: 1px; }
 

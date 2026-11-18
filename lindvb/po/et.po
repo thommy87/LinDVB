@@ -4367,3 +4367,35 @@ msgstr "Näita lemmikute loendeid (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Muuda seda lemmikute loendit"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Piirkond"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filter"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Kõik allikad"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Kõik piirkonnad"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC port {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Pildikvaliteet"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Sildid"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Lähtesta filter ja otsing"

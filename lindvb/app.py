@@ -68,8 +68,9 @@ class LinDVBApp(Gtk.Application):
             added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
-        from .favourites import FavouriteLists, migrate_list_filter
-        migrate_list_filter(self.settings)
+        from .favourites import FavouriteLists
+        from .listfilter import migrate
+        migrate(self.settings, self.db.channels)
         self.favs = FavouriteLists(self.db)
         self._start_channel = opts.get("channel")
         return -1

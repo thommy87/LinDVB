@@ -4367,3 +4367,35 @@ msgstr "Je favorietenlijsten tonen (Ctrl+D)"
 #: lindvb/ui/window.py
 msgid "Edit this favourites list"
 msgstr "Deze favorietenlijst bewerken"
+
+#: lindvb/ui/window.py
+msgid "Area"
+msgstr "Gebied"
+
+#: lindvb/ui/window.py
+msgid "Filter"
+msgstr "Filter"
+
+#: lindvb/ui/window.py
+msgid "All sources"
+msgstr "Alle bronnen"
+
+#: lindvb/ui/window.py
+msgid "All areas"
+msgstr "Alle gebieden"
+
+#: lindvb/listfilter.py
+msgid "DiSEqC port {n}"
+msgstr "DiSEqC-poort {n}"
+
+#: lindvb/ui/window.py
+msgid "Picture quality"
+msgstr "Beeldkwaliteit"
+
+#: lindvb/ui/window.py
+msgid "Tags"
+msgstr "Tags"
+
+#: lindvb/ui/window.py
+msgid "Reset the filter and the search"
+msgstr "Filter en zoekopdracht herstellen"

@@ -195,16 +195,17 @@ def test_user_tags_are_groups(tag):
     assert not tvheadend.is_type_tag(tag)
 
 
-def test_channel_in_several_groups():
-    from lindvb import chansort
-    a = Channel("ZDF HD", delsys="iptv", category="ARD", groups=["ARD", "News"])
-    b = Channel("n-tv", delsys="iptv", category="News", groups=["News"])
+def test_tags_filter_the_list_and_providers_group_it():
+    from lindvb import chansort, listfilter
+    tvh = dict(delsys="iptv", tvh_server="http://tvh:9981")
+    a = Channel("ZDF HD", category="ZDF", groups=["ARD", "News"], **tvh)
+    b = Channel("n-tv", category="RTL", groups=["News"], **tvh)
     c = Channel("Sat 1", category="ProSiebenSat.1")
-    assert chansort.values([a, b, c], "provider") == ["ARD", "News", "ProSiebenSat.1"]
-    assert chansort.in_group(a, "provider", "News") and chansort.in_group(b, "provider", "News")
-    assert not chansort.in_group(c, "provider", "News")
-    assert chansort.in_group(c, "provider", "ProSiebenSat.1")
-    assert chansort.group_values(a, "quality") == ["HD"]
+    news = listfilter.State(tags=frozenset({"News"}))
+    assert [x.name for x in (a, b) if listfilter.matches(listfilter.info(x), news)] == \
+        ["ZDF HD", "n-tv"]
+    assert chansort.values([a, b, c], "provider") == ["ProSiebenSat.1", "RTL", "ZDF"]
+    assert chansort.in_group(a, "provider", "ZDF") and not chansort.in_group(a, "provider", "News")
 
 
 def test_wrong_password(server):
