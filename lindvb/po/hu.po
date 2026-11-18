@@ -4403,3 +4403,23 @@ msgstr "Szűrő és keresés visszaállítása"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Visszajelzés"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Hang továbbítása (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Ezt a hangot dekódolatlanul küldi HDMI-n vagy S/PDIF-en, így az AV-erősítő dekódolja. A hangerő és a hangszínszabályzó ekkor az erősítőnél marad. A rádió mindig dekódolva szól."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Kimeneti eszköz"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Üres: a hangkiszolgáló (PulseAudio vagy PipeWire), ahol a formátumok be vannak kapcsolva a HDMI- vagy S/PDIF-kimenethez (pavucontrol: Kimeneti eszközök, Speciális). Vagy egy ALSA-eszköz, például hdmi:CARD=PCH,DEV=0 (az aplay -L listázza őket). Ha a kimenet egyik formátumot sem fogadja, a hang dekódolva szól."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Hangkiszolgáló"

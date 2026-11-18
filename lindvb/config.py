@@ -178,6 +178,12 @@ DEFAULTS = {
     # language: "off", "ac3" (Dolby Digital first), "eac3" (Dolby Digital Plus
     # first) or "stereo" (the MPEG / AAC sound).
     "audio_prefer": "off",
+    # Audio passthrough (lindvb.passthrough): formats sent undecoded to an AV
+    # receiver ("ac3", "eac3", "dts"; empty = off) and the output: "" is the
+    # sound server (PulseAudio / PipeWire), else an ALSA device such as
+    # "hdmi:CARD=PCH,DEV=0" or "iec958:CARD=PCH". Radio is always decoded.
+    "audio_passthrough": [],
+    "audio_passthrough_device": "",
     # Video decoder (lindvb.hwaccel): "auto" (VA-API, NVDEC, V4L2, then
     # software), one interface ("vaapi", "nvdec", "vulkan", "v4l2") or
     # "software". A GPU decoder that fails falls back to the next one.

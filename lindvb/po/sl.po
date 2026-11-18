@@ -4403,3 +4403,23 @@ msgstr "Ponastavi filter in iskanje"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Povratne informacije"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Prepuščanje zvoka"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Pošlje ta zvok nedekodiran prek HDMI ali S/PDIF, da ga dekodira AV sprejemnik. Glasnost in izenačevalnik sta tedaj na sprejemniku. Radio je vedno dekodiran."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Izhodna naprava"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Prazno: zvočni strežnik (PulseAudio ali PipeWire), kjer so formati vklopljeni za izhod HDMI ali S/PDIF (pavucontrol: Izhodne naprave, Napredno). Ali naprava ALSA, npr. hdmi:CARD=PCH,DEV=0 (aplay -L jih izpiše). Če izhod ne sprejme nobenega formata, je zvok dekodiran."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Zvočni strežnik"

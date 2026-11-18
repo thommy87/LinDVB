@@ -4403,3 +4403,23 @@ msgstr "Atstatyti filtrą ir paiešką"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Atsiliepimai"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Garso perdavimas"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Siunčia šį garsą neiškoduotą per HDMI arba S/PDIF, o AV imtuvas jį iškoduoja. Garsumas ir glodintuvas tada lieka imtuve. Radijas visada iškoduojamas."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Išvesties įrenginys"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Tuščia: garso serveris (PulseAudio arba PipeWire), kuriame formatai įjungti HDMI arba S/PDIF išvesčiai (pavucontrol: Išvesties įrenginiai, Išplėstiniai). Arba ALSA įrenginys, pvz., hdmi:CARD=PCH,DEV=0 (aplay -L juos išvardija). Jei išvestis nepriima nė vieno formato, garsas iškoduojamas."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Garso serveris"

@@ -4403,3 +4403,23 @@ msgstr "Επαναφορά φίλτρου και αναζήτησης"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Σχόλια"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Διέλευση ήχου (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Στέλνει αυτόν τον ήχο χωρίς αποκωδικοποίηση μέσω HDMI ή S/PDIF, ώστε να τον αποκωδικοποιεί ο δέκτης AV. Η ένταση και ο ισοσταθμιστής μένουν τότε στον δέκτη. Το ραδιόφωνο αποκωδικοποιείται πάντα."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Συσκευή εξόδου"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Κενό: ο διακομιστής ήχου (PulseAudio ή PipeWire), με τις μορφές ενεργές εκεί για την έξοδο HDMI ή S/PDIF (pavucontrol: Συσκευές εξόδου, Για προχωρημένους). Ή μια συσκευή ALSA όπως hdmi:CARD=PCH,DEV=0 (το aplay -L τις απαριθμεί). Αν η έξοδος δεν δέχεται καμία από τις μορφές, ο ήχος αποκωδικοποιείται."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Διακομιστής ήχου"

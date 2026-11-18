@@ -4403,3 +4403,23 @@ msgstr "Скинути фільтр і пошук"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Зворотний зв’язок"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Наскрізне виведення звуку (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Передає цей звук без декодування через HDMI або S/PDIF, і його декодує AV-ресивер. Гучність і еквалайзер тоді залишаються за ресивером. Радіо завжди декодується."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Пристрій виведення"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Порожньо: звуковий сервер (PulseAudio або PipeWire), де формати увімкнено для виходу HDMI або S/PDIF (pavucontrol: Пристрої виведення, Додатково). Або пристрій ALSA, наприклад hdmi:CARD=PCH,DEV=0 (aplay -L показує їх список). Якщо вихід не приймає жодного з форматів, звук декодується."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Звуковий сервер"

@@ -4446,3 +4446,23 @@ msgstr "بازنشانی پالایه و جستجو"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "بازخورد"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "عبور صدا (Passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "این صدا را بدون رمزگشایی از طریق HDMI یا S/PDIF می‌فرستد تا گیرنده AV آن را رمزگشایی کند. در این حالت بلندی صدا و اکولایزر با گیرنده است. رادیو همیشه رمزگشایی می‌شود."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "دستگاه خروجی"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "خالی: سرور صدا (PulseAudio یا PipeWire) که قالب‌ها در آن برای خروجی HDMI یا S/PDIF روشن شده‌اند (pavucontrol: دستگاه‌های خروجی، پیشرفته). یا یک دستگاه ALSA مانند hdmi:CARD=PCH,DEV=0 (aplay -L آن‌ها را فهرست می‌کند). اگر خروجی هیچ‌یک از قالب‌ها را نپذیرد، صدا رمزگشایی می‌شود."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "سرور صدا"

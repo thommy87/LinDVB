@@ -24,7 +24,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_name, preferred_track)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import debuglog, hwaccel  # noqa: E402
+from . import debuglog, hwaccel, passthrough  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
@@ -336,6 +336,8 @@ class Player(GObject.Object):
         self.playbin = None
         self.video_off = False          # "Video Off (audio only)": kept across rebuilds
         self._audio_pref_done = False   # preferred audio format applied for this stream
+        self.radio = False              # a radio channel plays: no passthrough (visualisations)
+        self.passthrough_formats = ()   # formats going undecoded to the receiver now
         self.feeder = None
         self.capture = None
         self.sid = 0
@@ -439,7 +441,17 @@ class Player(GObject.Object):
         vf.add_pad(Gst.GhostPad.new("sink", first))
         vf.add_pad(Gst.GhostPad.new("src", chain[-1].get_static_pad("src")))
         pb.set_property("video-filter", vf)
-        pb.set_property("audio-filter", self._audio_filter())
+        asink = self._passthrough_sink()
+        if asink is not None:
+            # no audio filter: playsink keeps it in the chain when a track
+            # changes from PCM to AC-3, and the compressed caps then fail
+            self.eq = self.spectrum = None
+            self._level_elements = []
+            pb.set_property("audio-sink", asink)
+            if pb3:
+                self._passthrough_pb3(pb)
+        else:
+            pb.set_property("audio-filter", self._audio_filter())
         if self.vis_factory is not None:
             try:
                 vis = self.vis_factory()
@@ -497,6 +509,65 @@ class Player(GObject.Object):
         bin_.add_pad(Gst.GhostPad.new("src", src))
         src.add_probe(Gst.PadProbeType.BUFFER, self._on_audio_buffer)
         return bin_
+
+    def _passthrough_sink(self):
+        """The audio sink for passthrough (lindvb.passthrough), or None to play
+        decoded sound as usual: passthrough off, a radio channel, or a sink that
+        takes none of the chosen formats."""
+        self.passthrough_formats = ()
+        wanted = passthrough.codecs(self.settings)
+        if not wanted or self.radio:
+            return None
+        factory, device = passthrough.sink_spec(self.settings.get("audio_passthrough_device", ""))
+        sink = Gst.ElementFactory.make(factory)
+        if sink is None:
+            debuglog.write("Player", f"passthrough: no {factory}")
+            return None
+        if device:
+            sink.set_property("device", device)
+        accepted = self._sink_accepts(sink, wanted)
+        if not accepted:
+            debuglog.write("Player", f"passthrough: {factory} {device or ''} takes none of "
+                                     f"{passthrough.describe(wanted)}, decoding")
+            return None
+        bin_ = Gst.Bin.new("passthrough-sink")
+        caps = Gst.ElementFactory.make("capsfilter")
+        caps.set_property("caps", Gst.Caps.from_string(passthrough.caps_string(accepted)))
+        bin_.add(caps)
+        bin_.add(sink)
+        caps.link(sink)
+        bin_.add_pad(Gst.GhostPad.new("sink", caps.get_static_pad("sink")))
+        self.passthrough_formats = tuple(accepted)
+        debuglog.write("Player", f"passthrough: {passthrough.describe(accepted)} to "
+                                 f"{factory} {device or ''}")
+        return bin_
+
+    @staticmethod
+    def _sink_accepts(sink, wanted):
+        """The formats of *wanted* the sink takes; it is asked in READY, where
+        pulsesink and alsasink know what the output can do."""
+        if sink.set_state(Gst.State.READY) == Gst.StateChangeReturn.FAILURE:
+            sink.set_state(Gst.State.NULL)
+            return []
+        try:
+            caps = sink.get_static_pad("sink").query_caps(None)
+            return [c for c in wanted
+                    if caps.can_intersect(Gst.Caps.from_string(passthrough.CAPS[c]))]
+        finally:
+            sink.set_state(Gst.State.NULL)
+
+    def _passthrough_pb3(self, pb):
+        """playbin3 decodes everything its uridecodebin3 is not told to stop
+        at: add the passthrough formats to its caps."""
+        dec = pb.get_by_name("uridecodebin3")
+        if dec is None or dec.find_property("caps") is None:
+            return
+        caps = dec.get_property("caps")
+        caps = caps.copy() if caps is not None else Gst.Caps.from_string(
+            "video/x-raw(ANY); audio/x-raw(ANY); text/x-raw(ANY)")
+        caps.append(Gst.Caps.from_string(passthrough.caps_string(self.passthrough_formats,
+                                                                 raw=False)))
+        dec.set_property("caps", caps)
 
     def _add_loudness_branch(self, bin_, tee):
         """tee ! queue ! audioconvert ! level (peak) ! K-weighting ! level ! fakesink:

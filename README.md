@@ -72,6 +72,10 @@ them.
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer
+* Audio passthrough (Preferences ▸ Playback ▸ Audio passthrough): Dolby Digital
+  (AC-3), Dolby Digital Plus (E-AC-3) and DTS go undecoded over HDMI or S/PDIF to
+  an AV receiver, through PulseAudio / PipeWire or straight to an ALSA device;
+  formats the output does not take are decoded as before
 * Hardware video decoding on the graphics card (Preferences ▸ Playback ▸ Video
   decoding): automatic VA-API (Intel, AMD), NVDEC (NVIDIA) or V4L2 (ARM boards)
   with a fallback to the next decoder and finally software when a driver fails;
@@ -431,7 +435,6 @@ print or single-colour uses.
 * CI+ host authentication
 * DiSEqC motors (positioners)
 * Streaming to other devices (media server, UPnP, RTSP, SAT>IP)
-* Audio passthrough (AC-3/DTS to an AV receiver)
 * OSD skins
 
 See [docs/FEATURES.md](docs/FEATURES.md).

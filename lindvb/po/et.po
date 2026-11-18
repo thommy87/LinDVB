@@ -4403,3 +4403,23 @@ msgstr "Lähtesta filter ja otsing"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Tagasiside"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Heli läbilaskmine"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Saadab selle heli dekodeerimata HDMI või S/PDIF kaudu, nii et AV-vastuvõtja dekodeerib selle. Helitugevus ja ekvalaiser jäävad siis vastuvõtjale. Raadio dekodeeritakse alati."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Väljundseade"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Tühi: heliserver (PulseAudio või PipeWire), kus vormingud on HDMI või S/PDIF väljundi jaoks sisse lülitatud (pavucontrol: Väljundseadmed, Täpsemalt). Või ALSA seade, näiteks hdmi:CARD=PCH,DEV=0 (aplay -L loetleb need). Kui väljund ei võta ühtki vormingut vastu, heli dekodeeritakse."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Heliserver"

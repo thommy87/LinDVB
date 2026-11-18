@@ -4403,3 +4403,23 @@ msgstr "إعادة تعيين التصفية والبحث"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "ملاحظات"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "تمرير الصوت"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "يرسل هذا الصوت دون فك ترميزه عبر HDMI أو S/PDIF ليفك جهاز الاستقبال الصوتي ترميزه. يبقى مستوى الصوت والمعادل عندها في جهاز الاستقبال. يُفك ترميز الراديو دائمًا."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "جهاز الإخراج"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "فارغ: خادم الصوت (PulseAudio أو PipeWire) مع تفعيل الصيغ هناك لمخرج HDMI أو S/PDIF (pavucontrol: أجهزة الإخراج، متقدم). أو جهاز ALSA مثل hdmi:CARD=PCH,DEV=0 (يعرضها aplay -L). إذا لم يقبل المخرج أيًا من الصيغ يُفك ترميز الصوت."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "خادم الصوت"

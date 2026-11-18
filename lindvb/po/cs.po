@@ -4403,3 +4403,23 @@ msgstr "Obnovit filtr a hledání"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Zpětná vazba"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Průchod zvuku (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Posílá tento zvuk nedekódovaný přes HDMI nebo S/PDIF a AV receiver ho dekóduje. Hlasitost a ekvalizér pak zůstávají na receiveru. Rádio se vždy dekóduje."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Výstupní zařízení"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Prázdné: zvukový server (PulseAudio nebo PipeWire), kde jsou formáty zapnuté pro výstup HDMI nebo S/PDIF (pavucontrol: Výstupní zařízení, Pokročilé). Nebo zařízení ALSA, např. hdmi:CARD=PCH,DEV=0 (aplay -L je vypíše). Pokud výstup nepřijme žádný z formátů, zvuk se dekóduje."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Zvukový server"

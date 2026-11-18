@@ -246,6 +246,7 @@ class PrefsWindow(Gtk.Window):
         switch(g, "inhibit_screensaver", _("No screen saver during playback"),
                _("Keeps the screen on while TV, radio or a file plays."))
         entry(g, "screenshot_dir", _("Screenshot folder"))
+        self._build_passthrough(group(pg, _("Audio passthrough")), s, entry)
         g = group(pg, _("Subtitles"))
         self._sub_font = _row(g, _("Font"), self._font_button(s.get("subtitle_font", "")),
                               _("Teletext subtitles and the text subtitles of files and streams."))
@@ -1189,6 +1190,32 @@ class PrefsWindow(Gtk.Window):
                 mb=timeshift.DISK_RESERVE_MB)
         self._ts_hint_label(spin).set_text(hint)
 
+    def _build_passthrough(self, g, s, entry):
+        """Formats sent undecoded to an AV receiver (lindvb.passthrough)."""
+        from .. import passthrough
+        on = set(passthrough.codecs(s))
+        labels = {"ac3": _("Dolby Digital (AC-3)"), "eac3": _("Dolby Digital Plus (E-AC-3)"),
+                  "dts": "DTS"}
+        hint = _("Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver "
+                 "decodes it. Volume and equaliser then stay with the receiver. Radio is "
+                 "always decoded.")
+        self._pt_switches = {}
+        for i, code in enumerate(passthrough.CODECS):
+            self._pt_switches[code] = _row(g, labels[code], Gtk.Switch(active=code in on),
+                                           hint if i == 0 else None)
+        entry(g, "audio_passthrough_device", _("Output device"),
+              _("Empty: the sound server (PulseAudio or PipeWire), with the formats switched "
+                "on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, "
+                "Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists "
+                "them). If the output takes none of the formats, the sound is decoded."),
+              stacked=True)
+        self.w["audio_passthrough_device"][0].set_placeholder_text(_("Sound server"))
+
+    def _passthrough_values(self):
+        from .. import passthrough
+        return {"audio_passthrough": [c for c in passthrough.CODECS
+                                      if self._pt_switches[c].get_active()]}
+
     def _on_timeshift_mode(self):
         mode = self._ts_modes[self._ts_mode_drop.get_selected()]
         self.w["timeshift_dir"][0].get_parent().set_visible(mode == "disk")
@@ -1203,6 +1230,8 @@ class PrefsWindow(Gtk.Window):
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
         video_before = (s.get("video_decoder", "auto"), bool(s.get("deinterlace")))
+        audio_before = (list(s.get("audio_passthrough") or []),
+                        s.get("audio_passthrough_device", ""))
         s["video_decoder"] = self._dec_codes[self._dec_drop.get_selected()]
         self._save_youth_protection(s)
         s.update(self._accent_settings())
@@ -1210,6 +1239,7 @@ class PrefsWindow(Gtk.Window):
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
         s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
+        s.update(self._passthrough_values())
         s["iptv_timeshift_quality"] = self._ts_qualities[self._ts_quality_drop.get_selected()]
         s.update(self._startup_values())
         vis_before = s.get("visualizer", "")
@@ -1246,10 +1276,13 @@ class PrefsWindow(Gtk.Window):
             win.apply_display_settings()
             if s.get("visualizer") != vis_before:
                 win.set_visualizer(s["visualizer"])
+            audio_after = (s["audio_passthrough"], s.get("audio_passthrough_device", ""))
             if (s["video_decoder"], bool(s["deinterlace"])) != video_before:
                 win.player.apply_decoder_setting()
                 if win.player.playbin is not None:
                     win.player.restart()
+            elif audio_after != audio_before and win.player.playbin is not None:
+                win.player.restart()        # the audio sink is chosen when playback starts
         self.close()
 
 

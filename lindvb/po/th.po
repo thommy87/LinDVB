@@ -4736,3 +4736,23 @@ msgstr "ยังไม่มีล็อก"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "ข้อเสนอแนะ"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "ส่งผ่านเสียง (Passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "ส่งเสียงนี้โดยไม่ถอดรหัสผ่าน HDMI หรือ S/PDIF เพื่อให้เครื่องรับ AV ถอดรหัสเอง ระดับเสียงและอีควอไลเซอร์จะอยู่ที่เครื่องรับ วิทยุจะถูกถอดรหัสเสมอ"
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "อุปกรณ์เอาต์พุต"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "ว่าง: เซิร์ฟเวอร์เสียง (PulseAudio หรือ PipeWire) โดยเปิดรูปแบบเหล่านี้สำหรับเอาต์พุต HDMI หรือ S/PDIF ที่นั่น (pavucontrol: อุปกรณ์เอาต์พุต, ขั้นสูง) หรืออุปกรณ์ ALSA เช่น hdmi:CARD=PCH,DEV=0 (aplay -L แสดงรายการ) ถ้าเอาต์พุตไม่รับรูปแบบใดเลย เสียงจะถูกถอดรหัส"
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "เซิร์ฟเวอร์เสียง"

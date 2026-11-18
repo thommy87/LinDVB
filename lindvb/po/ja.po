@@ -4691,3 +4691,23 @@ msgstr "フィルターと検索をリセット"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "フィードバック"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "オーディオパススルー"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "この音声をデコードせずに HDMI または S/PDIF で送り、AV アンプがデコードします。音量とイコライザーはアンプ側になります。ラジオは常にデコードされます。"
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "出力デバイス"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "空欄: サウンドサーバー (PulseAudio または PipeWire)。そこで HDMI または S/PDIF 出力のフォーマットを有効にしてください (pavucontrol: 出力デバイス、詳細)。または hdmi:CARD=PCH,DEV=0 のような ALSA デバイス (aplay -L で一覧表示)。出力がどのフォーマットも受け付けない場合、音声はデコードされます。"
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "サウンドサーバー"

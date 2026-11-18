@@ -4731,3 +4731,23 @@ msgstr "Վերակայել զտիչը և որոնումը"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Հետադարձ կապ"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Ձայնի անցում (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Ուղարկում է այս ձայնը առանց վերծանման HDMI-ով կամ S/PDIF-ով, և AV ընդունիչն է այն վերծանում։ Ձայնի ուժգնությունն ու էկվալայզերն այդ դեպքում ընդունիչում են։ Ռադիոն միշտ վերծանվում է։"
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Ելքային սարք"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Դատարկ՝ ձայնային սերվերը (PulseAudio կամ PipeWire), որտեղ ձևաչափերը միացված են HDMI կամ S/PDIF ելքի համար (pavucontrol՝ Ելքային սարքեր, Լրացուցիչ)։ Կամ ALSA սարք, օրինակ՝ hdmi:CARD=PCH,DEV=0 (aplay -L-ը թվարկում է դրանք)։ Եթե ելքը ձևաչափերից ոչ մեկը չի ընդունում, ձայնը վերծանվում է։"
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Ձայնային սերվեր"
