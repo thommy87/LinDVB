@@ -4624,8 +4624,8 @@ msgid "Timeshift for internet channels"
 msgstr "Timeshift für Internetsender"
 
 #: lindvb/ui/dialogs.py
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "Internet-TV-Sender laufen wie ein Tuner durch den Timeshift-Puffer: pausieren, zurückspringen und den Puffer als Aufnahme behalten. Radiostreams laufen direkt."
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "Internet-TV- und Radiosender laufen wie ein Tuner durch den Timeshift-Puffer: pausieren, zurückspringen und den Puffer als Aufnahme behalten. Radiosender behalten ihre Songtitel."
 
 #: lindvb/ui/dialogs.py
 msgid "Quality of HLS / DASH streams"

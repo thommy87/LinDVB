@@ -45,8 +45,8 @@ PLAY_FLAGS_VIS = 8
 SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
-from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, REFUSED_CODES, Retry,  # noqa: E402
-                       host_addresses, http_headers, resolve_redirects,
+from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, META_REPEAT, REFUSED_CODES, Retry,  # noqa: E402
+                       find_meta, host_addresses, http_headers, resolve_redirects,
                        setup_http_source)
 from .i18n import _  # noqa: E402
 
@@ -187,11 +187,15 @@ def ssm_rtp_to_udp(url):
 
 
 class Feeder(threading.Thread):
-    """Pushes TS data from a SegmentReader into an appsrc, blocking when full."""
+    """Pushes TS data from a SegmentReader into an appsrc, blocking when full.
 
-    def __init__(self, reader, appsrc):
+    *on_meta(offset, fields)* gets the song title packets of internet radio
+    (lindvb.ipstream.META_PID) with their byte offset in the capture."""
+
+    def __init__(self, reader, appsrc, on_meta=None):
         super().__init__(daemon=True)
         self.reader, self.appsrc = reader, appsrc
+        self.on_meta = on_meta
         self.running = True
 
     def run(self):
@@ -203,6 +207,10 @@ class Feeder(threading.Thread):
             if not data:
                 time.sleep(0.03)
                 continue
+            if self.on_meta is not None:
+                start = self.reader.offset - len(data)
+                for pos, fields in find_meta(data):
+                    self.on_meta(start + pos, fields)
             if self.appsrc.emit("push-buffer", Gst.Buffer.new_wrapped(data)) != Gst.FlowReturn.OK:
                 break
         self.reader.close()
@@ -385,6 +393,11 @@ class Player(GObject.Object):
         self._retry = None
         self._reconnecting = False
         self._reconnect_timer = 0
+        # song titles of internet radio from the buffer: (offset, fields) the
+        # feeder found ahead of what plays, shown once playback gets there
+        self._meta_queue = []
+        self._meta_lock = threading.Lock()
+        self._meta_timer = 0
 
     # -- pipeline -----------------------------------------------------------
 
@@ -657,6 +670,7 @@ class Player(GObject.Object):
         if self.feeder:
             self.feeder.stop()
             self.feeder = None
+        self._stop_meta()
         if self.playbin:
             self.playbin.set_state(Gst.State.NULL)
             self.playbin.get_bus().remove_signal_watch()
@@ -690,7 +704,12 @@ class Player(GObject.Object):
             src.set_property("format", Gst.Format.BYTES)
             src.set_property("block", True)
             src.set_property("max-bytes", TS_PACKET * 512 * 16)
-            self.feeder = Feeder(SegmentReader(self.capture.store, self._start_offset), src)
+            on_meta = None
+            if getattr(self.capture, "meta_titles", False):
+                token = self._token
+                on_meta = lambda off, fields: self._queue_meta(off, fields, token)
+            self.feeder = Feeder(SegmentReader(self.capture.store, self._start_offset), src,
+                                 on_meta)
             self.feeder.start()
         elif name == "udpsrc" and self._ssm_source:
             if src.find_property("multicast-source"):
@@ -804,6 +823,62 @@ class Player(GObject.Object):
             return Gst.PadProbeReturn.OK
         pad.add_probe(Gst.PadProbeType.BUFFER, probe)
 
+    # internet radio in the buffer: the song titles at the place that plays
+
+    def _start_meta(self, capture, offset):
+        """Show the title that ran at *offset* now (the last title packet
+        before it), and the later ones as playback reaches them."""
+        window = int(capture.byte_rate() * (META_REPEAT + 2))
+        start, _end = capture.store.bounds()
+        reader = SegmentReader(capture.store, max(start, offset - window))
+        last = None
+        try:
+            while reader.offset < offset:
+                data = reader.read(min(TS_PACKET * 512, offset - reader.offset + TS_PACKET))
+                if not data:
+                    break
+                for _pos, fields in find_meta(data):
+                    last = fields
+        finally:
+            reader.close()
+        if last:
+            self._update_metadata(dict(last), self._token)
+        self._meta_timer = GLib.timeout_add(250, self._apply_meta, self._token)
+
+    def _stop_meta(self):
+        if self._meta_timer:
+            GLib.source_remove(self._meta_timer)
+            self._meta_timer = 0
+        with self._meta_lock:
+            self._meta_queue = []
+
+    def _queue_meta(self, offset, fields, token):
+        """Feeder thread: a title packet ahead of what plays."""
+        with self._meta_lock:
+            if token != self._token:
+                return                       # the feeder of an earlier start
+            q = self._meta_queue
+            if q and q[-1][1] == fields:
+                return                       # a repeat: the title did not change
+            q.append((offset, fields))
+            del q[:-64]
+
+    def _apply_meta(self, token):
+        """Main thread: show the title of the place playback reached."""
+        if token != self._token:
+            return False                     # removed with its playback (_stop_meta)
+        if not self.capture:
+            self._meta_timer = 0
+            return False
+        now, fields = self.played_offset(), None
+        with self._meta_lock:
+            q = self._meta_queue
+            while q and q[0][0] <= now:
+                fields = q.pop(0)[1]
+        if fields:
+            self._update_metadata(dict(fields), token)
+        return True
+
     def _on_tags(self, msg):
         tags = msg.parse_tag()
         new = {}
@@ -905,6 +980,8 @@ class Player(GObject.Object):
         self._delay = max(0.0, (end - offset) / capture.byte_rate())
         self._paused_at = None
         pb = self._build()
+        if getattr(capture, "meta_titles", False):
+            self._start_meta(capture, offset)
         pb.set_property("uri", "appsrc://")
         self.paused = False
         pb.set_state(Gst.State.PLAYING)

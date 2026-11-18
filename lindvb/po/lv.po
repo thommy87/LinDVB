@@ -4184,8 +4184,8 @@ msgid "Timeshift for internet channels"
 msgstr "Laika nobīde interneta kanāliem"
 
 #: lindvb/ui/dialogs.py
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "Interneta TV kanāli iet caur laika nobīdes buferi kā uztvērējs: pauze, lēciens atpakaļ un bufera saglabāšana kā ieraksts. Radio straumes tiek atskaņotas tieši."
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "Interneta TV un radio kanāli iet caur laika nobīdes buferi kā uztvērējs: pauze, lēciens atpakaļ un bufera saglabāšana kā ieraksts. Radiostacijas saglabā dziesmu nosaukumus."
 
 #: lindvb/ui/dialogs.py
 msgid "Quality of HLS / DASH streams"

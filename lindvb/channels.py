@@ -110,10 +110,10 @@ class Channel:
 
     @property
     def buffered(self):
-        """An internet TV channel that LinDVB reads into a capture itself
-        (lindvb.ipstream) for timeshift. Radio stays with playbin, which
-        shows the station's now-playing titles."""
-        if not (IPTV_TIMESHIFT and self.is_iptv and self.url) or self.tvh_server or self.radio:
+        """An internet TV or radio channel that LinDVB reads into a capture
+        itself (lindvb.ipstream) for timeshift. The song titles of a radio
+        station go into the buffer with it (ipstream.META_PID)."""
+        if not (IPTV_TIMESHIFT and self.is_iptv and self.url) or self.tvh_server:
             return False
         scheme = self.url.split("://", 1)[0].lower() if "://" in self.url else ""
         return scheme in ("http", "https", "udp", "rtp")
