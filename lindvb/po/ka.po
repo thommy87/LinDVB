@@ -4759,3 +4759,7 @@ msgstr "ტეგები"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "ფილტრისა და ძიების გადაყენება"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "უკუკავშირი"

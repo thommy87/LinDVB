@@ -4732,3 +4732,7 @@ msgstr "ตอนนี้ {size} สูงสุด {max} บันทึก…
 
 msgid "No log yet."
 msgstr "ยังไม่มีล็อก"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "ข้อเสนอแนะ"

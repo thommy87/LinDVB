@@ -4399,3 +4399,7 @@ msgstr "Etiquetas"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Restablecer el filtro y la búsqueda"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Comentarios"

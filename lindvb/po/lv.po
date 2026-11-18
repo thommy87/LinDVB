@@ -4399,3 +4399,7 @@ msgstr "Birkas"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Atiestatīt filtru un meklēšanu"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Atsauksmes"

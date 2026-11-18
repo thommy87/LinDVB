@@ -4399,3 +4399,7 @@ msgstr "Clibeanna"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Athshocraigh an scagaire agus an cuardach"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Aiseolas"

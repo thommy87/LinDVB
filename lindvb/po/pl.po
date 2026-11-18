@@ -4399,3 +4399,7 @@ msgstr "Tagi"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Wyzeruj filtr i wyszukiwanie"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Opinie"

@@ -4727,3 +4727,7 @@ msgstr "Պիտակներ"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Վերակայել զտիչը և որոնումը"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Հետադարձ կապ"

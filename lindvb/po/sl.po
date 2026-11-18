@@ -4399,3 +4399,7 @@ msgstr "Oznake"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Ponastavi filter in iskanje"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Povratne informacije"
