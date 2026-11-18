@@ -4184,8 +4184,8 @@ msgid "Timeshift for internet channels"
 msgstr "Athrú ama do chainéil Idirlín"
 
 #: lindvb/ui/dialogs.py
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "Téann cainéil teilifíse Idirlín tríd an maolán athraithe ama ar nós tiúnóra: sos, léim siar agus coinnigh an maolán mar thaifeadadh. Seinntear sruthanna raidió go díreach."
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "Téann cainéil teilifíse agus raidió Idirlín tríd an maolán athraithe ama ar nós tiúnóra: sos, léim siar agus coinnigh an maolán mar thaifeadadh. Coinníonn stáisiúin raidió teidil na n-amhrán."
 
 #: lindvb/ui/dialogs.py
 msgid "Quality of HLS / DASH streams"

@@ -33,6 +33,14 @@ back (DVB-I: another instance, otherwise playing it directly).
 
 ``StreamReader`` is the reconnecting HTTP reader; lindvb.tvheadend builds
 its stream reader (with the server login) on it.
+
+Internet radio goes through the buffer too. The station's song titles (ICY
+``StreamTitle``, which GStreamer hands on as tags) would get lost in the
+transport stream mpegtsmux makes, so ``GstReader`` writes them into it
+itself: one packet on a PID of its own (``META_PID``) whenever the title
+changes and again every ``META_REPEAT`` seconds. The player reads them
+back at the place it plays (lindvb.player), so a jump back in the buffer
+shows the song that ran then. Players that do not know the PID skip it.
 """
 
 import socket
@@ -61,6 +69,13 @@ RECONNECT_GIVE_UP = 180                     # seconds without a stream before gi
 STABLE_SECONDS = 30
 
 QUALITIES = ("auto", "best")
+
+# song titles in the buffer (see the module notes); mpegtsmux uses low PIDs
+META_PID = 0x1FF0
+META_MAGIC = b"LinDVB-meta\x01"
+META_REPEAT = 2.0               # seconds between repeats of the same title
+META_FIELDS = ("title", "organization")
+_META_HEAD = bytes((TS_SYNC, 0x40 | META_PID >> 8, META_PID & 0xFF))
 
 # hlsdemux2 / dashdemux2: start on a good quality instead of climbing up
 # through every variant (each switch can stall the picture), and only stop
@@ -253,6 +268,72 @@ def looks_like_ts(data):
         if len(positions) >= 2 and all(data[i] == TS_SYNC for i in positions):
             return True
     return False
+
+
+# -- song titles in the buffer -------------------------------------------------
+
+def meta_packet(fields, cc=0):
+    """One transport stream packet that carries *fields* (title, organization).
+
+    The payload is ``META_MAGIC``, one length byte and ``key=value`` lines in
+    UTF-8; a title too long for the packet is cut short."""
+    room = TS_PACKET - 4 - len(META_MAGIC) - 1
+    lines = []
+    for key in META_FIELDS:
+        value = " ".join(str(fields.get(key) or "").split())
+        if value:
+            lines.append(f"{key}={value}")
+    body = "\n".join(lines).encode("utf-8")
+    if len(body) > room:
+        body = body[:room].decode("utf-8", "ignore").encode("utf-8")
+    payload = META_MAGIC + bytes((len(body),)) + body
+    payload += b"\xff" * (TS_PACKET - 4 - len(payload))
+    return _META_HEAD + bytes((0x10 | (cc & 0x0F),)) + payload
+
+
+def parse_meta_packet(packet):
+    """The fields of a packet made by meta_packet(), or None."""
+    if len(packet) < TS_PACKET or packet[:3] != _META_HEAD:
+        return None
+    start = 4
+    if packet[start:start + len(META_MAGIC)] != META_MAGIC:
+        return None
+    start += len(META_MAGIC)
+    n = packet[start]
+    body = bytes(packet[start + 1:start + 1 + n]).decode("utf-8", "replace")
+    fields = {}
+    for line in body.split("\n"):
+        key, sep, value = line.partition("=")
+        if sep and key in META_FIELDS and value:
+            fields[key] = value
+    return fields
+
+
+def find_meta(data):
+    """[(position, fields)] of the song title packets in *data* (a piece of
+    transport stream, aligned to its packets or not)."""
+    found = []
+    i = data.find(_META_HEAD)
+    while 0 <= i <= len(data) - TS_PACKET:
+        fields = parse_meta_packet(data[i:i + TS_PACKET])
+        if fields is not None:
+            found.append((i, fields))
+            i += TS_PACKET
+        else:
+            i += 1
+        i = data.find(_META_HEAD, i)
+    return found
+
+
+def tag_fields(taglist):
+    """Title and station name from a GStreamer tag list (Gst.TAG_TITLE and
+    Gst.TAG_ORGANIZATION are "title" and "organization")."""
+    out = {}
+    for key in META_FIELDS:
+        ok, value = taglist.get_string(key)
+        if ok and value and value.strip():
+            out[key] = value.strip()
+    return out
 
 
 def multicast_source(url):
@@ -484,10 +565,14 @@ class GstReader:
     Same callbacks as StreamReader; errors and the end of the stream lead to
     a new pipeline after the reconnect delays. The bus is watched on the
     GLib main loop.
+
+    With *meta* set (internet radio), the song title and station name the
+    stream sends as tags go into the packed transport stream as packets of
+    their own (meta_packet).
     """
 
     def __init__(self, url, on_data, on_error=None, on_status=None, quality="auto",
-                 reconnect=True, retry=None):
+                 reconnect=True, retry=None, meta=False):
         import gi
         gi.require_version("Gst", "1.0")
         from gi.repository import GLib, Gst
@@ -509,6 +594,11 @@ class GstReader:
         self._gen = 0                    # pipeline generation (stale bus messages)
         self._timer = 0
         self._lock = threading.Lock()
+        self.meta = meta
+        self.meta_fields = {}            # the latest title and station name
+        self._meta_due = False           # changed since the last packet
+        self._meta_sent = 0.0            # time.monotonic() of the last packet
+        self._meta_cc = 0
 
     @property
     def host(self):
@@ -604,9 +694,37 @@ class GstReader:
         caps = pad.get_current_caps() or pad.query_caps(None)
         return caps.get_structure(0).get_name() if caps and caps.get_size() else ""
 
+    def _on_tag_event(self, _pad, info):
+        """Streaming thread: keep the song title and station name of the stream."""
+        ev = info.get_event()
+        if ev is not None and ev.type == self.Gst.EventType.TAG:
+            new = tag_fields(ev.parse_tag())
+            with self._lock:
+                fields = dict(self.meta_fields, **new)
+                if fields != self.meta_fields:
+                    self.meta_fields = fields
+                    self._meta_due = True
+        return self.Gst.PadProbeReturn.OK
+
+    def _meta_out(self, data):
+        """*data* with a song title packet in front when one is due."""
+        if not self.meta or self.passthrough is not False or not data or \
+                data[0] != TS_SYNC or len(data) % TS_PACKET:
+            return data
+        now = time.monotonic()
+        with self._lock:
+            fields = self.meta_fields
+            if not fields or not (self._meta_due or now - self._meta_sent >= META_REPEAT):
+                return data
+            self._meta_due, self._meta_sent = False, now
+            cc, self._meta_cc = self._meta_cc, (self._meta_cc + 1) & 0x0F
+        return meta_packet(fields, cc) + data
+
     def _on_parsed_pad(self, _parse, pad, pl):
         Gst = self.Gst
         name = self._caps_name(pad)
+        if self.meta:
+            pad.add_probe(Gst.PadProbeType.EVENT_DOWNSTREAM, self._on_tag_event)
         with self._lock:
             if name == "video/mpegts" and self.passthrough is None:
                 self.passthrough = True
@@ -681,12 +799,14 @@ class GstReader:
             return Gst.FlowReturn.FLUSHING
         buf = sample.get_buffer()
         data = buf.extract_dup(0, buf.get_size())
+        received = len(data)
+        data = self._meta_out(data)
         if self.retry.up_since is None:
             self.retry.running()
             if self.reconnects:
                 self.GLib.idle_add(self._status, "reconnected",
                                    _("{host}: connected again").format(host=self.host))
-        self.received += len(data)
+        self.received += received
         self.on_data(data)
         return Gst.FlowReturn.OK
 
@@ -751,11 +871,13 @@ class GstReader:
 class StreamSource:
     """What a capture reads an internet channel with: picks the reader for
     the address and switches from HTTP to GStreamer when an HTTP address is
-    not a transport stream. Same interface as the readers."""
+    not a transport stream. Same interface as the readers. *meta*: write the
+    song titles into the stream (internet radio; see GstReader)."""
 
     def __init__(self, url, on_data, on_error=None, on_status=None, quality="auto",
-                 reconnect=True):
+                 reconnect=True, meta=False):
         self.url = url
+        self.meta = meta
         self.on_data = on_data
         self.on_error = on_error
         self.on_status = on_status
@@ -783,7 +905,8 @@ class StreamSource:
             return False
         try:
             self.reader = GstReader(self.url, self.on_data, self.on_error, self.on_status,
-                                    quality=self.quality, reconnect=self.reconnect)
+                                    quality=self.quality, reconnect=self.reconnect,
+                                    meta=self.meta)
         except (ImportError, ValueError) as e:
             if self.on_error is not None:
                 self.on_error(str(e))

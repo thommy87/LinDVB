@@ -4484,8 +4484,8 @@ msgstr "ดูย้อนหลัง: {title} ({name}, {time})"
 msgid "Timeshift for internet channels"
 msgstr "ไทม์ชิฟต์สำหรับช่องอินเทอร์เน็ต"
 
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "ช่องทีวีอินเทอร์เน็ตผ่านบัฟเฟอร์ไทม์ชิฟต์เหมือนช่องจากจูนเนอร์: หยุดชั่วคราว ย้อนกลับ และเก็บบัฟเฟอร์เป็นรายการบันทึก สตรีมวิทยุเล่นโดยตรง"
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "ช่องทีวีและวิทยุอินเทอร์เน็ตผ่านบัฟเฟอร์ไทม์ชิฟต์เหมือนช่องจากจูนเนอร์: หยุดชั่วคราว ย้อนกลับ และเก็บบัฟเฟอร์เป็นรายการบันทึก สถานีวิทยุยังคงแสดงชื่อเพลง"
 
 msgid "Quality of HLS / DASH streams"
 msgstr "คุณภาพของสตรีม HLS / DASH"

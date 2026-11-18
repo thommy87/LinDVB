@@ -4484,8 +4484,8 @@ msgstr "არქივი: {title} ({name}, {time})"
 msgid "Timeshift for internet channels"
 msgstr "დროის გადაწევა ინტერნეტ-არხებისთვის"
 
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "ინტერნეტ TV არხები დროის გადაწევის ბუფერში გადის ისევე, როგორც ტიუნერისა: პაუზა, უკან გადასვლა და ბუფერის ჩანაწერად შენახვა. რადიონაკადები პირდაპირ იკვრება."
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "ინტერნეტ TV და რადიო არხები დროის გადაწევის ბუფერში გადის ისევე, როგორც ტიუნერისა: პაუზა, უკან გადასვლა და ბუფერის ჩანაწერად შენახვა. რადიოსადგურები სიმღერების სათაურებს ინარჩუნებენ."
 
 msgid "Quality of HLS / DASH streams"
 msgstr "HLS / DASH ნაკადების ხარისხი"

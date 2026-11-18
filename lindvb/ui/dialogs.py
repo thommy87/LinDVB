@@ -254,9 +254,9 @@ class PrefsWindow(Gtk.Window):
         g = group(pg, _("Timeshift"))
         self._timeshift_rows(g, s, entry, spin)
         switch(g, "iptv_timeshift", _("Timeshift for internet channels"),
-               _("Internet TV channels go through the timeshift buffer like a tuner's: "
-                 "pause, jump back and keep the buffer as a recording. Radio streams "
-                 "play directly."))
+               _("Internet TV and radio channels go through the timeshift buffer like a "
+                 "tuner's: pause, jump back and keep the buffer as a recording. Radio "
+                 "stations keep their song titles."))
         self._iptv_ts_rows = [self.w["iptv_timeshift"][0].get_parent()]
         from ..ipstream import QUALITIES
         self._ts_qualities = list(QUALITIES)

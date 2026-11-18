@@ -4484,8 +4484,8 @@ msgstr "Catch-up՝ {title} ({name}, {time})"
 msgid "Timeshift for internet channels"
 msgstr "Timeshift համացանցային ալիքների համար"
 
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "Համացանցային TV ալիքներն անցնում են Timeshift-ի բուֆերով՝ թյուների ալիքների նման՝ դադար, հետ անցում և բուֆերի պահպանում որպես ձայնագրություն։ Ռադիոհոսքերը նվագարկվում են ուղղակիորեն։"
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "Համացանցային TV և ռադիո ալիքներն անցնում են Timeshift-ի բուֆերով՝ թյուների ալիքների նման՝ դադար, հետ անցում և բուֆերի պահպանում որպես ձայնագրություն։ Ռադիոկայանները պահպանում են երգերի անունները։"
 
 msgid "Quality of HLS / DASH streams"
 msgstr "HLS / DASH հոսքերի որակ"

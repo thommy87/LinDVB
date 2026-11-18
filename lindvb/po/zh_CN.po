@@ -4484,8 +4484,8 @@ msgstr "回看：{title}（{name}，{time}）"
 msgid "Timeshift for internet channels"
 msgstr "网络频道的时移"
 
-msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
-msgstr "网络电视频道像调谐器频道一样经过时移缓冲区：可暂停、回退并将缓冲区保存为录像。广播流直接播放。"
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "网络电视和广播频道像调谐器频道一样经过时移缓冲区：可暂停、回退并将缓冲区保存为录像。广播电台保留歌曲标题。"
 
 msgid "Quality of HLS / DASH streams"
 msgstr "HLS / DASH 流的质量"

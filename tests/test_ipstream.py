@@ -45,13 +45,43 @@ def test_channel_kinds():
     try:
         channels_mod.IPTV_TIMESHIFT = True
         assert web.buffered and not web.via_url and web.plays_url
-        assert not radio.buffered and radio.via_url          # now-playing titles: playbin
+        assert radio.buffered and not radio.via_url          # titles go into the buffer
         assert not tvh.buffered and not tvh.via_url and not tvh.plays_url
         assert not dvbi_app.buffered and dvbi_app.via_url
         channels_mod.IPTV_TIMESHIFT = False
         assert not web.buffered and web.via_url and web.plays_url
+        assert not radio.buffered and radio.via_url
     finally:
         channels_mod.IPTV_TIMESHIFT = True
+
+
+# -- song titles in the buffer -----------------------------------------------------
+
+def test_meta_packet_round_trip():
+    pkt = ipstream.meta_packet({"title": "Künstler - Lied", "organization": "Test FM"}, cc=17)
+    assert len(pkt) == 188 and pkt[0] == 0x47 and pkt[3] == 0x11          # cc wraps
+    pid = (pkt[1] & 0x1F) << 8 | pkt[2]
+    assert pid == ipstream.META_PID and pkt[1] & 0x40                     # unit start
+    assert ipstream.parse_meta_packet(pkt) == {"title": "Künstler - Lied",
+                                              "organization": "Test FM"}
+    # a title too long for one packet is cut short on a character boundary
+    long = ipstream.meta_packet({"title": "ä" * 200})
+    title = ipstream.parse_meta_packet(long)["title"]
+    assert len(long) == 188 and 0 < len(title) < 200 and set(title) == {"ä"}
+    # line breaks in a title cannot split it into fields
+    assert ipstream.parse_meta_packet(ipstream.meta_packet({"title": "a\norganization=x"})) == \
+        {"title": "a organization=x"}
+    assert ipstream.parse_meta_packet(b"\x47\x1f\xf0\x10" + b"\xff" * 184) is None
+
+
+def test_find_meta():
+    null = b"\x47\x1f\xff\x10" + b"\xff" * 184
+    one = ipstream.meta_packet({"title": "One"})
+    two = ipstream.meta_packet({"title": "Two"}, cc=1)
+    data = b"\x00" * 5 + null + one + null * 3 + two + null[:40]
+    assert ipstream.find_meta(data) == [(5 + 188, {"title": "One"}),
+                                        (5 + 188 * 5, {"title": "Two"})]
+    assert ipstream.find_meta(one[:100]) == [] and ipstream.find_meta(null * 4) == []
 
 
 def test_retry_delays():
@@ -534,3 +564,171 @@ def test_player_reconnects():
     p.uri, p.settings["stream_reconnect"] = "http://example.invalid/live.ts", False
     assert not p._try_reconnect("gone")
     p.stop()
+
+
+# -- internet radio: the song titles go into the buffer -------------------------------
+
+@pytest.fixture
+def icy_radio(tmp_path):
+    """An Icecast-like MP3 station that changes the song title every second."""
+    _gst("audiotestsrc", "lamemp3enc", "icydemux", "souphttpsrc", "mpegtsmux", "appsink")
+    gst_launch = shutil.which("gst-launch-1.0")
+    if gst_launch is None:
+        pytest.skip("gst-launch-1.0 missing")
+    mp3 = tmp_path / "radio.mp3"
+    subprocess.run([gst_launch, "-q", "audiotestsrc", "num-buffers=430", "!", "audioconvert",
+                    "!", "lamemp3enc", "target=bitrate", "bitrate=64", "cbr=true", "!",
+                    "filesink", f"location={mp3}"], check=True, timeout=60, capture_output=True)
+    data = mp3.read_bytes()
+    metaint = 8000                       # 64 kbit/s: one second of sound
+
+    class Station(http.server.BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_GET(self):
+            icy = self.headers.get("Icy-MetaData") == "1"
+            self.send_response(200)
+            self.send_header("Content-Type", "audio/mpeg")
+            self.send_header("icy-name", "Test FM")
+            if icy:
+                self.send_header("icy-metaint", str(metaint))
+            self.end_headers()
+            n = 0
+            try:
+                for pos in range(0, len(data), metaint):
+                    self.wfile.write(data[pos:pos + metaint])
+                    if icy:
+                        m = f"StreamTitle='Artist {n} - Song {n}';".encode()
+                        m += b"\0" * (-len(m) % 16)
+                        self.wfile.write(bytes([len(m) // 16]) + m)
+                    n += 1
+                    time.sleep(0.25)
+            except OSError:
+                pass
+
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Station)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        yield f"http://127.0.0.1:{srv.server_address[1]}/live"
+    finally:
+        srv.shutdown()
+
+
+def test_radio_titles_into_the_stream(icy_radio, tmp_path):
+    r, data, errors = _read_all(ipstream.StreamSource, icy_radio, seconds=6, meta=True)
+    assert not errors and isinstance(r.reader, ipstream.GstReader) and \
+        r.reader.passthrough is False
+    found = ipstream.find_meta(data)
+    titles = []
+    for _pos, fields in found:
+        if not titles or titles[-1] != fields.get("title"):
+            titles.append(fields.get("title"))
+    assert len(titles) >= 3 and titles[1] == "Artist 0 - Song 0"
+    assert titles[2] == "Artist 1 - Song 1"
+    # the titles come in order, each once a change and then as repeats
+    assert all(t is None or t.startswith("Artist ") for t in titles)
+    assert [p for p, _f in found] == sorted(p for p, _f in found)
+    assert all(p % 188 == 0 for p, _f in found)            # whole packets
+    # the packed stream with the title packets still plays
+    out = tmp_path / "radio.ts"
+    out.write_bytes(data)
+    GLib, Gst = _gst("tsdemux", "decodebin")
+    pl = Gst.parse_launch(f'filesrc location="{out}" ! decodebin ! audioconvert ! '
+                          'fakesink sync=false')
+    pl.set_state(Gst.State.PLAYING)
+    msg = pl.get_bus().timed_pop_filtered(20 * Gst.SECOND,
+                                          Gst.MessageType.ERROR | Gst.MessageType.EOS)
+    pl.set_state(Gst.State.NULL)
+    assert msg is not None and msg.type == Gst.MessageType.EOS
+
+
+def test_without_meta_no_title_packets(icy_radio):
+    _r, data, errors = _read_all(ipstream.StreamSource, icy_radio, seconds=3)
+    assert not errors and data and ipstream.find_meta(data) == []
+
+
+def test_capture_of_an_internet_radio(icy_radio, tmp_path):
+    GLib, Gst = _gst("appsrc", "tsparse", "multifilesink")
+    from lindvb.config import DEFAULTS
+    from lindvb.tuner import SegmentReader, TunerManager
+    settings = dict(DEFAULTS, timeshift_dir=str(tmp_path), timeshift_max_mb=64)
+    tm = TunerManager(settings, probe=lambda a, f: [])
+    ch = Channel(name="Test FM", delsys="iptv", url=icy_radio, radio=True)
+    assert ch.buffered
+    cap = tm.acquire(ch, "live")
+    assert cap.meta_titles
+    loop = GLib.MainLoop()
+    GLib.timeout_add_seconds(5, lambda: (loop.quit(), False)[1])
+    loop.run()
+    start, end = cap.store.bounds()
+    reader = SegmentReader(cap.store, start)
+    data = b""
+    while True:
+        piece = reader.read()
+        if not piece:
+            break
+        data += piece
+    reader.close()
+    tm.release(cap, "live")
+    titles = {f.get("title") for _p, f in ipstream.find_meta(data)}
+    assert end > 10_000 and "Artist 1 - Song 1" in titles      # tsparse kept the PID
+
+
+def test_player_shows_the_title_of_the_place_it_plays(tmp_path):
+    """After a jump back the title that ran there shows at once, and the
+    later ones as playback reaches them, not when the feeder reads them."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    try:
+        gi.require_version("Gtk", "4.0")
+    except ValueError:
+        pytest.skip("GTK 4 missing")
+    from gi.repository import Gst, Gtk
+    Gst.init(None)
+    if not Gtk.init_check():
+        pytest.skip("no display")
+    from lindvb.config import DEFAULTS
+    from lindvb.player import Player
+    from lindvb.tuner import SegmentStore
+
+    null = b"\x47\x1f\xff\x10" + b"\xff" * 184
+    store = SegmentStore(tmp_path / "buf")
+    seg = bytearray()
+    for i in range(10):                  # a title every 100 packets
+        seg += ipstream.meta_packet({"title": f"Song {i}", "organization": "Test FM"})
+        seg += null * 99
+    store.path(0).write_bytes(bytes(seg))
+
+    class Cap:
+        meta_titles = True
+        timeshift = True
+
+        def __init__(self):
+            self.store = store
+
+        def byte_rate(self):
+            return 188 * 50.0            # two seconds between titles
+
+    p = Player(Gtk.Picture(), dict(DEFAULTS, deinterlace=False, video_decoder="software"))
+    cap = Cap()
+    shown = []
+    p.connect("metadata", lambda _p, md: shown.append(md.get("title")))
+    p.capture, p._token = cap, 5
+    p._start_meta(cap, 188 * 450)        # in the middle of song 4
+    assert p.metadata == {"title": "Song 4", "organization": "Test FM"}
+    assert p._meta_timer
+    # the feeder reads ahead; what it finds shows when playback gets there
+    p._queue_meta(188 * 500, {"title": "Song 5"}, 5)
+    p._queue_meta(188 * 500 + 188 * 100, {"title": "Song 6"}, 5)
+    p._queue_meta(188 * 700, {"title": "Old feeder"}, 4)            # an earlier start
+    now = [188 * 480]
+    p.played_offset = lambda: now[0]
+    assert p._apply_meta(5) and p.metadata["title"] == "Song 4"
+    now[0] = 188 * 650
+    assert p._apply_meta(5) and p.metadata["title"] == "Song 6"
+    assert shown == ["Song 4", "Song 6"] and p._meta_queue == []
+    assert not p._apply_meta(4)                                     # a stale timer stops
+    p._stop_meta()
+    assert not p._meta_timer

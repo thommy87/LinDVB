@@ -255,6 +255,8 @@ class Capture(GObject.Object):
         self._tvh_sid = None
         # internet streams (lindvb.ipstream) and Tvheadend: the reader of the stream
         self._net = None
+        # internet radio: the song titles go into the buffer (ipstream.META_PID)
+        self.meta_titles = bool(channel.radio and ipstream.is_stream(self.tuner))
         if satip.is_satip(self.tuner) or tvheadend.is_tvheadend(self.tuner) or \
                 ipstream.is_stream(self.tuner):
             self._uc = None
@@ -314,7 +316,8 @@ class Capture(GObject.Object):
                 self._net = ipstream.StreamSource(
                     channel.url, on_data=self._push_direct, on_error=self._on_net_error,
                     on_status=self._on_net_status, reconnect=reconnect,
-                    quality=settings.get("iptv_timeshift_quality", "auto"))
+                    quality=settings.get("iptv_timeshift_quality", "auto"),
+                    meta=self.meta_titles)
             elif satip.is_satip(self.tuner):
                 src = self._appsrc()
                 self._satip = satip.Session(self.tuner["host"], self.tuner.get("port"),
