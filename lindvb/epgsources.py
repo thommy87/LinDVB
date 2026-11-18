@@ -105,7 +105,7 @@ _LANG_2TO3 = {
     "pt": "por", "pl": "pol", "cs": "ces", "sk": "slk", "hu": "hun", "da": "dan",
     "sv": "swe", "no": "nor", "nb": "nor", "nn": "nor", "fi": "fin", "tr": "tur",
     "el": "ell", "ru": "rus", "ar": "ara", "ja": "jpn", "ka": "kat",
-    "hy": "hye", "zh": "zho",
+    "hy": "hye", "th": "tha", "zh": "zho",
 }
 
 
