@@ -637,6 +637,11 @@ class HbbTV:
 
     # -- keys ----------------------------------------------------------------
 
+    @property
+    def app_running(self):
+        """An application is running and may take keys."""
+        return bool(self.enabled and self.life.active)
+
     def handle_key(self, gdk_name):
         """Called by the window first. True when HbbTV took the key."""
         if not self.enabled:
@@ -899,11 +904,23 @@ class HbbTV:
             self._carousel_tag = t.component_tag
         self._ste_clear()
         view.set_visible(True)
+        self._release_button_focus()
         log("launch", url, f"app={app.org_id:x}.{app.app_id:x}" if app else "app=-")
         self._launch_url, self._launch_committed, self._launch_retried = url, False, False
         view.load_uri(url)
         name = app.name(("deu", "ger", "eng")) if app else ""
         self.win.set_status(_("HbbTV: {name}").format(name=name or url))
+
+    def _release_button_focus(self):
+        """The HbbTV or teletext button that started the app keeps no focus:
+        Enter and the arrows are the application's now, and a key it did not
+        ask for must not press that button again."""
+        try:
+            focus = self.win.get_focus()
+        except AttributeError:
+            return
+        if isinstance(focus, Gtk.Button):
+            self.win.set_focus(None)
 
     def _ste_clear(self):
         if self.dsmcc is not None:
