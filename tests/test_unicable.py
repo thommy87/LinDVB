@@ -167,6 +167,14 @@ def test_transponder_scan_builds_channels():
     assert (tv.service_type, radio.service_type) == (1, 2)    # from the SDT
 
 
+def test_service_type_from_the_sdt():
+    from lindvb.tsanalysis import sdt_service_type
+    sdt = _section(0x42, 1101, _service(28, b"Das Erste HD", b"ARD", stype=0x19) +
+                   _service(29, b"Radio", b"ARD", stype=2), extra=bytes([0, 1, 0xFF]))
+    assert [sdt_service_type(sdt, sid) for sid in (28, 29, 30)] == [0x19, 2, 0]
+    assert sdt_service_type(sdt[:12], 28) == 0                  # cut off
+
+
 def test_transponders_from_lists(tmp_path):
     from lindvb.scan import Transponder, TransponderList
     tpl = TransponderList("x", "sat", [Transponder("dvb-s2", 11494000, "h", 22000),
@@ -179,3 +187,20 @@ def test_transponders_from_lists(tmp_path):
                  "\tPOLARIZATION = HORIZONTAL\n\tSYMBOL_RATE = 22000000\n")
     tps = scscan.transponders(TransponderList("y", "sat", [], str(f)))
     assert [(t.frequency, t.symbol_rate) for t in tps] == [(10744000, 22000)]
+
+
+def test_capture_learns_the_service_type_from_the_sdt():
+    """A channel found by dvbv5-scan has no service type: the SDT of the
+    transport stream gives it when the channel plays (once, not again)."""
+    import types
+    pytest.importorskip("gi")
+    from lindvb.tuner import Capture
+    sdt = _section(0x42, 1101, _service(28, b"Das Erste HD", b"ARD", stype=0x19),
+                   extra=bytes([0, 1, 0xFF]))
+    emitted = []
+    cap = types.SimpleNamespace(channel=Channel("Das Erste HD", sid=28),
+                                emit=lambda *a: emitted.append(a))
+    section = types.SimpleNamespace(get_data=lambda: sdt)
+    Capture._learn_service_type(cap, section)
+    Capture._learn_service_type(cap, section)
+    assert cap.channel.service_type == 0x19 and emitted == [("service-type", 0x19)]

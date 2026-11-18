@@ -19,6 +19,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import GLib, GObject, Gst  # noqa: E402
 
 from .epg import parse_eit_section  # noqa: E402
+from .tsanalysis import sdt_service_type  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
 from . import debuglog, diseqc, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
 
@@ -221,6 +222,8 @@ class Capture(GObject.Object):
         "provider-epg": (GObject.SignalFlags.RUN_LAST, None, (str, object)),
         # the transport stream id from the PAT, when the channel list lacks it
         "tsid": (GObject.SignalFlags.RUN_LAST, None, (int,)),
+        # the service type of the channel from the SDT, when it is new to the channel
+        "service-type": (GObject.SignalFlags.RUN_LAST, None, (int,)),
         # HbbTV: a new version of the service's AIT (lindvb.ait.Ait)
         "ait": (GObject.SignalFlags.RUN_LAST, None, (object,)),
         # HbbTV: the AIT PID from the PMT, when it is not yet in the channel list
@@ -698,6 +701,16 @@ class Capture(GObject.Object):
             self.tsid = tsid
             self.emit("tsid", tsid)
 
+    def _learn_service_type(self, section):
+        """The SDT of the transport stream gives the channel's service type
+        (lindvb.chansort.quality): the channel search with dvbv5-scan keeps none."""
+        data = section.get_data()
+        raw = data.get_data() if hasattr(data, "get_data") else bytes(data)
+        stype = sdt_service_type(raw, self.channel.sid)
+        if stype and stype != self.channel.service_type:
+            self.channel.service_type = stype
+            self.emit("service-type", stype)
+
     def _tvh_eit_key(self, section):
         """Tvheadend: the store key of an EIT section of the stream, or None to drop it.
 
@@ -854,6 +867,9 @@ class Capture(GObject.Object):
                     elif section.section_type == GstMpegts.SectionType.PAT and not self.tsid:
                         self.tsid = section.subtable_extension
                         self.emit("tsid", self.tsid)
+                    elif section.section_type == GstMpegts.SectionType.SDT and \
+                            section.table_id == 0x42:
+                        self._learn_service_type(section)
                     if self._atsc is not None:
                         for key, events in self._atsc.feed(section, GstMpegts):
                             self.emit("eit", key, events)

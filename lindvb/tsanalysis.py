@@ -285,6 +285,14 @@ def parse_sdt(sec):
     return out
 
 
+def sdt_service_type(sec, sid):
+    """The service type the SDT section *sec* gives the service *sid* (0: none)."""
+    try:
+        return parse_sdt(sec).get(sid, {}).get("type", 0)
+    except IndexError:
+        return 0
+
+
 def parse_nit_name(sec):
     nl = ((sec[8] & 0x0F) << 8) | sec[9]
     for tag, body in descriptors(sec[10:10 + nl]):

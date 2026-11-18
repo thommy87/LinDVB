@@ -5,13 +5,16 @@
    and each Tvheadend server. Nothing ticked is all sources.
 2. **Area** of the sources ticked, ticked: the orbital positions (else the
    DiSEqC ports) of the satellite channels with their satellites, the
-   regions of the terrestrial ones with their channels, the networks of a
-   Tvheadend server (lindvb.htsp), the lists of the others. An area narrows only the channels of its own source. Which
-   satellite a channel is on comes from the transponder lists of the channel
-   search (lindvb.scanlists.satellites).
+   regions of the terrestrial ones with their channels (ATSC and ISDB-T:
+   their stations, by the major virtual channel number), the networks of a
+   Tvheadend server (lindvb.htsp), the lists of the others. An area narrows
+   only the channels of its own source. Which satellite a channel is on comes
+   from the transponder lists of the channel search
+   (lindvb.scanlists.satellites).
 3. **Filter**: reception (all, free to air, encrypted; offered with
    broadcast channels, internet streams count as free to air), picture
-   quality (UHD, HD, SD; TV only) and the Tvheadend tags. Within a section a
+   quality (UHD, HD, SD, and 1seg when there are ISDB-T services for phones;
+   TV only) and the Tvheadend tags. Within a section a
    channel needs one of the entries ticked, across the sections all of them.
 4. **Sort** order, and for a grouping order one value (lindvb.chansort).
 
@@ -33,7 +36,7 @@ from .i18n import _
 from .scanlists import format_position, parse_position, satellites
 
 BROADCAST = ("sat", "cable", "terr")
-QUALITIES = ("UHD", "HD", "SD")
+QUALITIES = ("UHD", "HD", "SD", "1seg")
 RECEPTIONS = ("all", "fta", "enc")
 MODES = ("tv", "radio")
 TVH = "tvh:"                     # a Tvheadend server's source key: "tvh:<server address>"
@@ -102,9 +105,10 @@ def area_keys(c, source):
     channel's orbital position from its group name with the satellites whose
     transponder list has its transponder ("sat/sat:<position>:<name>"), else
     its DiSEqC port, else its group; a terrestrial channel's group (the region
-    searched) with its channel ("terr/mux:<kHz>:<group>"); the networks of
-    a Tvheadend channel's services; the group (list, network, import) of the
-    others."""
+    searched) with its station ("terr/stn:<major>:<group>", ATSC and ISDB-T
+    channels numbered "7.1") or else its channel ("terr/mux:<kHz>:<group>");
+    the networks of a Tvheadend channel's services; the group (list, network,
+    import) of the others."""
     if source.startswith(TVH):
         return frozenset(f"{source}/net:{n}" for n in c.tvh_networks)
     if source == "sat":
@@ -116,9 +120,18 @@ def area_keys(c, source):
             return frozenset({f"sat/port:{c.diseqc}"})
     if not c.root:
         return frozenset()
-    if source == "terr" and c.frequency:
-        return frozenset({f"terr/root:{c.root}", f"terr/mux:{c.frequency}:{c.root}"})
+    if source == "terr" and (c.frequency or c.vchannel):
+        major = _major(c.vchannel)
+        child = f"terr/stn:{major}:{c.root}" if major is not None else \
+            f"terr/mux:{c.frequency}:{c.root}"
+        return frozenset({f"terr/root:{c.root}", child})
     return frozenset({f"{source}/root:{c.root}"})
+
+
+def _major(vchannel):
+    """7 of the virtual channel "7.1" (None without one)."""
+    major, dot, minor = (vchannel or "").partition(".")
+    return int(major) if dot and major.isdigit() and minor.isdigit() else None
 
 
 def info(c):
@@ -165,20 +178,38 @@ class Catalogue:
     areas: dict = field(default_factory=dict)    # source -> {area: {group names}}
     tags: dict = field(default_factory=dict)     # source -> {tags}
     radio: bool = False
+    labels: dict = field(default_factory=dict)   # area -> label, where the key alone
+    #                                              does not tell it (stations, channels)
+    qualities: frozenset = frozenset()
 
 
 def catalogue(channels, infos, radio):
-    names, areas, tags = {}, {}, {}
+    names, areas, tags, labels, stations, qualities = {}, {}, {}, {}, {}, set()
     for c, i in zip(channels, infos):
         src = i.source
         if src not in names:
             names[src] = c.root
         for a in i.areas:
             areas.setdefault(src, {}).setdefault(a, set()).add(c.root)
+            if a.startswith("terr/mux:") and a not in labels:
+                labels[a] = channel_label(c.frequency, c.delsys)
+            elif a.startswith("terr/stn:"):
+                # a station is named after its first channel: "7 · WABC" for 7.1 WABC
+                minor = int(c.vchannel.partition(".")[2])
+                if a not in stations or minor < stations[a][0]:
+                    stations[a] = (minor, c.name)
         if i.tags:
             tags.setdefault(src, set()).update(i.tags)
+        qualities.add(i.quality)
+    labels.update((a, f"{area_label(a)} · {name}") for a, (_m, name) in stations.items())
     keys = [k for k in _ORDER if k in names] + sorted(k for k in names if k.startswith(TVH))
-    return Catalogue(tuple((k, source_label(k, names)) for k in keys), areas, tags, radio)
+    return Catalogue(tuple((k, source_label(k, names)) for k in keys), areas, tags, radio,
+                     labels, frozenset(qualities))
+
+
+def label(cat, key):
+    """The label of the area *key* in step 2."""
+    return cat.labels.get(key) or area_label(key)
 
 
 def _chosen(cat, chosen):
@@ -200,10 +231,10 @@ def areas(cat, chosen):
                           key=_area_order):
             kids = sorted((k for k in entries if parent_of(k) == key), key=_area_order)
             if len(kids) > 1:
-                items += [(key, area_label(key), "")] + [(k, area_label(k), key) for k in kids]
+                items += [(key, label(cat, key), "")] + [(k, label(cat, k), key) for k in kids]
             else:
-                names = [area_label(k) for k in kids] or _group_names(key, entries[key])
-                items.append((key, _named(area_label(key), names), ""))
+                names = [label(cat, k) for k in kids] or _group_names(key, entries[key])
+                items.append((key, _named(label(cat, key), names), ""))
         if len(items) >= 2:
             out.append((labels[src], items))
     return out
@@ -243,15 +274,30 @@ def parent_of(key):
     terrestrial channel's, else ""."""
     if key.startswith("sat/sat:"):
         return "sat/pos:" + key[len("sat/sat:"):].partition(":")[0]
-    if key.startswith("terr/mux:"):
+    if key.startswith(("terr/mux:", "terr/stn:")):
         return "terr/root:" + key[len("terr/mux:"):].partition(":")[2]
     return ""
 
 
-def channel_label(khz):
-    """"K 23 · 490 MHz" for the European UHF / VHF band III raster, else "490 MHz"."""
+# the 6 MHz channel rasters of ATSC (USA, Canada, Mexico, South Korea) and
+# ISDB-T (Brazil and the other countries of South America, the Philippines;
+# Japan counts one lower): (first channel, its centre in MHz, last channel)
+_RASTERS = {"atsc": ((2, 57, 4), (5, 79, 6), (7, 177, 13), (14, 473, 69)),
+            "isdb-t": ((7, 177 + 1 / 7, 13), (14, 473 + 1 / 7, 69))}
+
+
+def channel_label(khz, delsys=""):
+    """"RF 14 · 473 MHz" for an ATSC or ISDB-T channel of the 6 MHz raster,
+    "K 23 · 490 MHz" for a DVB-T one of the European UHF / VHF band III
+    raster, else "490 MHz" (DTMB: China counts its channels otherwise)."""
     mhz = khz / 1000
+    for first, centre, last in _RASTERS.get(delsys, ()):
+        n = round((mhz - centre) / 6)
+        if 0 <= n <= last - first and abs(mhz - centre - 6 * n) < 0.25:
+            return f"RF {first + n} · {centre + 6 * n:g} MHz"
     text = f"{mhz:g} MHz"
+    if delsys in _RASTERS or delsys == "dtmb":
+        return text
     if 474 <= mhz <= 858 and (mhz - 306) % 8 == 0:
         return f"K {int((mhz - 306) / 8)} · {text}"
     if 177.5 <= mhz <= 226.5 and (mhz - 142.5) % 7 == 0:
@@ -282,10 +328,12 @@ def area_label(key):
         return value.partition(":")[2]
     if kind == "mux":
         return channel_label(int(value.partition(":")[0]))
+    if kind == "stn":
+        return value.partition(":")[0]
     return value                     # "root", "net": the name
 
 
-_AREA = re.compile(r"/(pos|port|sat|mux|root|net):")
+_AREA = re.compile(r"/(pos|port|sat|mux|stn|root|net):")
 
 
 def _kind_value(key):
@@ -302,7 +350,7 @@ def _area_order(key):
     if kind == "sat":
         pos, _sep, name = value.partition(":")
         return (0, -int(pos), name.casefold())
-    if kind == "mux":
+    if kind in ("mux", "stn"):
         return (3, int(value.partition(":")[0]), "")
     return (0 if kind == "pos" else 1, -int(value) if kind == "pos" else int(value), "")
 
@@ -311,7 +359,7 @@ def _area_order(key):
 class Offer:
     """Step 3: the sections the filter shows."""
     reception: bool = False
-    qualities: bool = False
+    qualities: tuple = ()
     tags: list = field(default_factory=list)
 
     @property
@@ -321,13 +369,15 @@ class Offer:
 
 def offer(cat, chosen):
     """Step 3 for the sources ticked (all when none is): reception when there
-    are broadcast channels, quality for TV, the tags of the Tvheadend servers
+    are broadcast channels, quality for TV (1seg when there are such
+    services), the tags of the Tvheadend servers
     (without the tags named like one of their networks, which step 2 has)."""
     srcs = _chosen(cat, chosen)
     tags = set().union(*(cat.tags.get(k, ()) for k in srcs))
     tags -= {area_label(a) for k in srcs for a in cat.areas.get(k, ()) if "/net:" in a}
-    return Offer(any(k in BROADCAST for k in srcs), not cat.radio,
-                 sorted(tags, key=str.casefold))
+    qualities = () if cat.radio else \
+        tuple(q for q in QUALITIES if q != "1seg" or q in cat.qualities)
+    return Offer(any(k in BROADCAST for k in srcs), qualities, sorted(tags, key=str.casefold))
 
 
 def sorts(cat, chosen):
@@ -347,7 +397,7 @@ def fit(st, cat):
     srt = st.sort if st.sort in {k for k, _l in sorts(cat, chosen)} else "number"
     return replace(st, sources=frozenset(chosen), areas=st.areas & offered,
                    reception=st.reception if o.reception else "all",
-                   qualities=st.qualities if o.qualities else frozenset(),
+                   qualities=st.qualities & frozenset(o.qualities),
                    tags=st.tags & frozenset(o.tags), sort=srt,
                    value=st.value if srt == st.sort else "")
 

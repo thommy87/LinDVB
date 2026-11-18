@@ -1056,7 +1056,7 @@ class MainWindow(Gtk.ApplicationWindow):
         s2.set_sections([Section(f"areas:{n}", head if len(areas) > 1 else "", tuple(items))
                          for n, (head, items) in enumerate(areas)],
                         {f"areas:{n}": st.areas for n in range(len(areas))})
-        s2.set_summary(_summary([(k, listfilter.area_label(k)) for _h, items in areas
+        s2.set_summary(_summary([(k, listfilter.label(cat, k)) for _h, items in areas
                                  for k, *_rest in items], st.areas, _("All areas")))
         s2.set_visible(bool(areas))
         self.filter_row.set_visible(s1.get_visible() or s2.get_visible())
@@ -1066,7 +1066,7 @@ class MainWindow(Gtk.ApplicationWindow):
             sections.append(Section("reception", _("Reception"), RECEPTIONS, radio=True))
         if o.qualities:
             sections.append(Section("qualities", _("Picture quality"),
-                                    tuple((q, q) for q in listfilter.QUALITIES)))
+                                    tuple((q, q) for q in o.qualities)))
         if o.tags:
             sections.append(Section("tags", _("Tags"), tuple((t, t) for t in o.tags)))
         s3.set_sections(sections, {"reception": st.reception, "qualities": st.qualities,
@@ -1896,6 +1896,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.capture.connect("eit", self.app.on_eit)
             self.capture.connect("provider-epg", self.app.on_provider_epg)
             self.capture.connect("tsid", self.app.on_tsid)
+            self.capture.connect("service-type", self._on_service_type)
             self.capture.connect("ait-pid", self.app.on_ait_pid)
             # HbbTV follows the AIT of the channel the tuner was tuned for; a
             # channel that only shares its transponder starts without signalling.
@@ -2900,11 +2901,24 @@ class MainWindow(Gtk.ApplicationWindow):
             return False
         info = self.player.video_info()
         if chansort.learn_video(c, info.get("width"), info.get("height")):
-            self._infos.pop(id(c), None)          # the filter sees it from its next change
-            self._catalogues.clear()
-            if not self._channels_due:
-                self._channels_due = GLib.timeout_add_seconds(30, self._save_channels)
+            self._channel_learnt(c)
         return False
+
+    def _on_service_type(self, cap, stype):
+        """The SDT told the service type of the channel playing (the capture's
+        channel is the DVB-I instance of a DVB-I channel)."""
+        c = self.current
+        if c is not None and any(cap.channel is x for x in (c, self._tuned)):
+            c.service_type = stype
+            self._channel_learnt(c)
+
+    def _channel_learnt(self, c):
+        """*c* told more about itself: the filter sees it from its next
+        change, the channels are saved a little later (not on every zap)."""
+        self._infos.pop(id(c), None)
+        self._catalogues.clear()
+        if not self._channels_due:
+            self._channels_due = GLib.timeout_add_seconds(30, self._save_channels)
 
     def _save_channels(self):
         if self._channels_due:

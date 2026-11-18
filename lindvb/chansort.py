@@ -30,11 +30,21 @@ def named_quality(name):
     return "SD"
 
 
+def is_one_seg(c):
+    """An ISDB-T "1seg" service: the small picture for phones each station
+    sends besides its own. Its service id says so (ARIB TR-B14, ABNT NBR
+    15603: the service type bits 4-3 are 3, partial reception)."""
+    return c.delsys == "isdb-t" and c.sid > 0 and (c.sid >> 3) & 3 == 3
+
+
 def quality(c):
-    """"UHD", "HD", "SD" for a TV channel, "" for radio: the picture seen
-    while watching it, else its service type, else its name."""
+    """"UHD", "HD", "SD" ("1seg" for an ISDB-T service for phones) for a TV
+    channel, "" for radio: the picture seen while watching it, else its
+    service type, else its name."""
     if c.radio:
         return ""
+    if is_one_seg(c):
+        return "1seg"
     if c.seen_video:
         return c.seen_video
     named = named_quality(c.name)
@@ -79,7 +89,7 @@ def in_group(c, sort, value):
     return group_value(c, sort) == value
 
 
-_QUALITY_ORDER = {"UHD": 0, "HD": 1, "SD": 2, "": 3}
+_QUALITY_ORDER = {"UHD": 0, "HD": 1, "SD": 2, "1seg": 3, "": 4}
 
 
 def sort_key(c, sort):
