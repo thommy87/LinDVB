@@ -35,6 +35,7 @@ back (DVB-I: another instance, otherwise playing it directly).
 its stream reader (with the server login) on it.
 """
 
+import socket
 import threading
 import time
 import urllib.error
@@ -112,17 +113,18 @@ def setup_http_source(src):
 
 
 class _KeepMethod(urllib.request.HTTPRedirectHandler):
-    """Collects the redirect chain instead of swallowing it."""
+    """Notes the redirect chain instead of swallowing it."""
 
-    def __init__(self, seen):
-        self.seen = seen
+    def __init__(self, seen, steps):
+        self.seen, self.steps = seen, steps
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         self.seen.append(newurl)
+        self.steps.append(f"{code} -> {newurl}")
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def resolve_redirects(url, timeout=REDIRECT_TIMEOUT, prefer_https=True):
+def resolve_redirects(url, timeout=REDIRECT_TIMEOUT, prefer_https=True, trace=None):
     """The address a DVB-I gateway URL ends at, following its redirects
     ourselves, or *url* when it does not redirect.
 
@@ -130,36 +132,71 @@ def resolve_redirects(url, timeout=REDIRECT_TIMEOUT, prefer_https=True):
     that redirects to the CDN carrying the stream, often to plain ``http``.
     Resolving the chain here keeps the player on a single hop, and with
     *prefer_https* a target that also answers over https is used encrypted.
+
+    *trace* is a list that collects the status of every request made, so a
+    debug log says which hop refuses the stream and over which scheme.
     """
+    steps = trace if trace is not None else []
     seen = []
-    opener = urllib.request.build_opener(_KeepMethod(seen))
+    opener = urllib.request.build_opener(_KeepMethod(seen, steps))
     req = urllib.request.Request(url, headers=http_headers(), method="GET")
     try:
         with opener.open(req, timeout=timeout) as resp:
             final = resp.geturl()
+            steps.append(f"{getattr(resp, 'status', 200)} {final}")
     except urllib.error.HTTPError as e:
         final = seen[-1] if seen else url
+        steps.append(f"{e.code} {final}")
         e.close()
     except (urllib.error.URLError, OSError, ValueError) as e:
+        steps.append(f"failed {url}")
         raise OSError(str(getattr(e, "reason", e)) or e.__class__.__name__) from None
     if not final:
         return url
     if prefer_https and final.startswith("http://") and url.startswith("https://"):
         secure = "https://" + final[len("http://"):]
-        if _answers(secure, timeout):
+        ok, status = _answers(secure, timeout)
+        steps.append(f"{status} {secure}")
+        if ok:
             return secure
     return final
 
 
+def host_addresses(url, limit=4):
+    """The addresses a stream's host resolves to, as text for a debug log.
+
+    A refusal that only hits the country-restricted variants of a stream
+    (ZDF's ``/de/`` while ``/dach/`` plays) is about where the connection
+    appears to come from, so the next log should say whether it went out
+    over IPv6 or IPv4.
+    """
+    host = urllib.parse.urlsplit(url or "").hostname
+    if not host:
+        return ""
+    try:
+        infos = socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)
+    except OSError as e:
+        return f"{host}: {e}"
+    seen = []
+    for info in infos:
+        addr = info[4][0]
+        if addr not in seen:
+            seen.append(addr)
+    return f"{host}: " + ", ".join(seen[:limit])
+
+
 def _answers(url, timeout=REDIRECT_TIMEOUT):
-    """True when *url* can be read (one request, headers and a first read)."""
+    """(can *url* be read?, the status or reason of that one request)."""
     req = urllib.request.Request(url, headers=http_headers(), method="GET")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             resp.read(1)
-            return True
-    except (urllib.error.URLError, OSError, ValueError):
-        return False
+            return True, getattr(resp, "status", 200)
+    except urllib.error.HTTPError as e:
+        e.close()
+        return False, e.code
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        return False, str(getattr(e, "reason", e)) or e.__class__.__name__
 
 
 # -- what a channel is ---------------------------------------------------------

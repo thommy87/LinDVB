@@ -262,10 +262,21 @@ def test_reader_sends_the_user_agent(gateway):
 
 
 def test_resolve_redirects_follows_a_gateway(gateway):
-    target = ipstream.resolve_redirects(gateway + "/dvbi/dash/36/dash.mpd")
+    trace = []
+    target = ipstream.resolve_redirects(gateway + "/dvbi/dash/36/dash.mpd", trace=trace)
     assert target == gateway + "/cdn/manifest.ts"
+    # the trace tells a debug log which hop refused the stream
+    assert trace[0].startswith("302 -> /cdn/manifest.ts") or "302" in trace[0]
+    assert trace[-1].startswith("403")
     assert ipstream.resolve_redirects(gateway + "/cdn/manifest.ts") == \
         gateway + "/cdn/manifest.ts"                       # no redirect: unchanged
+
+
+def test_host_addresses(gateway):
+    text = ipstream.host_addresses(gateway + "/cdn/manifest.ts")
+    assert text.startswith("127.0.0.1: ") and "127.0.0.1" in text.split(": ", 1)[1]
+    assert ipstream.host_addresses("") == ""
+    assert "nowhere.invalid" in ipstream.host_addresses("https://nowhere.invalid/a.mpd")
 
 
 def test_resolve_redirects_reports_an_unreachable_address():

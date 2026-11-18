@@ -9,7 +9,8 @@ from gi.repository import GLib  # noqa: E402
 import types  # noqa: E402
 
 from lindvb import player as player_mod  # noqa: E402
-from lindvb.player import describe_error, http_status, redirect_target  # noqa: E402
+from lindvb.player import (describe_error, http_status, redirect_target,  # noqa: E402
+                           refused_host)
 
 
 def _err(message):
@@ -21,6 +22,7 @@ def test_forbidden_after_redirect():
            "Redirect to: http://daserste-live.ard-mcdn.de/daserste/replay/dash/de/manifest.mpd")
     text = describe_error(_err("Forbidden"), dbg)
     assert "HTTP 403" in text and "countries" in text
+    assert text.startswith("itv.ard.de")              # the host that refused us
 
 
 def test_not_found_and_other_errors():
@@ -37,6 +39,14 @@ ARD_DEBUG = ("../ext/soup/gstsouphttpsrc.c(1729): gst_soup_http_src_parse_status
              "Redirect to: http://mcdn.br.de/br/fs/ard_alpha/replay/de/manifest.mpd")
 
 
+def test_refused_host():
+    assert refused_host(ARD_DEBUG) == "itv.ard.de"
+    assert refused_host("Forbidden (403), URL: http://mcdn.br.de/br/fs/x/manifest.mpd, "
+                        "Redirect to: (NULL)") == "mcdn.br.de"
+    assert refused_host("no url here") is None
+    assert "The server refused" in describe_error(_err("Forbidden"), "Forbidden (403)")
+
+
 def test_http_status_and_redirect_target():
     assert http_status(_err("Forbidden"), ARD_DEBUG) == 403
     assert redirect_target(ARD_DEBUG) == "http://mcdn.br.de/br/fs/ard_alpha/replay/de/manifest.mpd"
@@ -47,6 +57,7 @@ def test_http_status_and_redirect_target():
 def _player_stub(uri="https://itv.ard.de/dvbi/dash/36/dash.mpd"):
     """Just the state the resolving path touches."""
     return types.SimpleNamespace(capture=None, uri=uri, _token=1, _resolve_token=-1,
+                                 _refused_token=-1, _error_token=-1,
                                  _played=True, _fallback_done=True, _pb3=False,
                                  started=[], errors=[],
                                  _start_uri=lambda pb3: None, emit=lambda *a: None,
@@ -59,15 +70,26 @@ def test_refused_stream_is_resolved_once(monkeypatch):
                         lambda target, args, daemon: types.SimpleNamespace(
                             start=lambda: runs.append(args)))
     p = _player_stub()
-    assert player_mod.Player._resolve_refused(p, _err("Forbidden"), ARD_DEBUG)
+    p.emit = lambda *a: p.errors.append(a)
+    assert player_mod.Player._on_refused(p, _err("Forbidden"), ARD_DEBUG)
     assert runs and runs[0][0] == p.uri
-    # one attempt per playback, and only for an HTTP refusal
-    assert not player_mod.Player._resolve_refused(p, _err("Forbidden"), ARD_DEBUG)
-    p._resolve_token = -1
-    assert not player_mod.Player._resolve_refused(p, _err("Not Found"),
-                                                  "Not Found (404), URL: https://x/a.mpd")
-    p.uri, p._resolve_token = "udp://239.0.0.1:1234", -1
-    assert not player_mod.Player._resolve_refused(p, _err("Forbidden"), ARD_DEBUG)
+    # while the address is being resolved, the errors that follow stay quiet
+    assert p.errors == [] and p._error_token == p._token
+
+    # the address behind the gateway refuses us too: reported once, with the host
+    cdn = ("Forbidden (403), URL: http://mcdn.br.de/br/fs/ard_alpha/replay/de/manifest.mpd, "
+           "Redirect to: (NULL)")
+    assert player_mod.Player._on_refused(p, _err("Forbidden"), cdn)
+    assert len(p.errors) == 1 and p.errors[0][1].startswith("mcdn.br.de")
+    assert player_mod.Player._on_refused(p, _err("Forbidden"), cdn)
+    assert len(p.errors) == 1 and len(runs) == 1
+
+    # only for an HTTP refusal of an address LinDVB can resolve
+    p2 = _player_stub()
+    assert not player_mod.Player._on_refused(p2, _err("Not Found"),
+                                             "Not Found (404), URL: https://x/a.mpd")
+    p2.uri = "udp://239.0.0.1:1234"
+    assert not player_mod.Player._on_refused(p2, _err("Forbidden"), ARD_DEBUG)
 
 
 def test_the_resolved_address_is_played(monkeypatch):
