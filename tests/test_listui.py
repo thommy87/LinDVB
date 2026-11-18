@@ -113,6 +113,7 @@ def test_the_picture_seen_sets_the_quality():
         _infos={id(c): listfilter.info(c)}, _catalogues={"tv": ()},
         app=types.SimpleNamespace(db=types.SimpleNamespace(save=lambda: saved.append(1))))
     win._save_channels = lambda: MainWindow._save_channels(win)
+    win._channel_learnt = lambda ch: MainWindow._channel_learnt(win, ch)
     assert MainWindow._check_video(win) is False
     assert c.seen_video == "SD" and listfilter.info(c).quality == "SD"
     assert win._infos == {} and win._catalogues == {} and win._channels_due
@@ -125,3 +126,18 @@ def test_the_picture_seen_sets_the_quality():
     win.player.video_info = lambda: {"width": 1920, "height": 1080}
     MainWindow._check_video(win)
     assert c.seen_video == "SD" and win._channels_due is None
+
+
+def test_the_sdt_sets_the_service_type():
+    """The service type the SDT gives the channel playing reaches the list
+    channel, also when a DVB-I instance plays it; another channel's capture
+    changes nothing."""
+    from lindvb.ui.window import MainWindow
+    c, instance, other = Channel(name="A"), Channel(name="A (DVB-T)"), Channel(name="B")
+    learnt = []
+    win = types.SimpleNamespace(current=c, _tuned=instance,
+                                _channel_learnt=learnt.append)
+    MainWindow._on_service_type(win, types.SimpleNamespace(channel=other), 0x19)
+    assert c.service_type == 0 and learnt == []
+    MainWindow._on_service_type(win, types.SimpleNamespace(channel=instance), 0x19)
+    assert c.service_type == 0x19 and learnt == [c]

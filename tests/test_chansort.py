@@ -34,6 +34,16 @@ def test_quality_seen_before_service_type_before_name():
     assert chansort.quality(sd_name) == "SD"
 
 
+def test_one_seg():
+    # ISDB-T service ids with the service type bits 4-3 = 3 are 1seg services
+    phone = ch("NHK 1seg", delsys="isdb-t", sid=0x0598)
+    assert chansort.is_one_seg(phone) and chansort.quality(phone) == "1seg"
+    assert not chansort.is_one_seg(ch("NHK", delsys="isdb-t", sid=0x0400))
+    assert not chansort.is_one_seg(ch("X", delsys="dvb-t2", sid=0x0598))
+    assert chansort.values([phone, ch("NHK HD", delsys="isdb-t", sid=0x0400)], "quality") \
+        == ["HD", "1seg"]
+
+
 def test_learn_video():
     c = ch("Das Erste HD")
     assert not chansort.learn_video(c, 1920, 1080)      # HD, as the name said

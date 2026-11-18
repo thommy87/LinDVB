@@ -100,6 +100,52 @@ def test_terrestrial_regions_and_their_channels():
     assert lf.channel_label(522250) == "522.25 MHz"
 
 
+def test_atsc_and_isdb_t_stations():
+    # channels numbered "7.1" sit under their station (the major number), named
+    # after its first channel; without a number they stay under their channel
+    chans = [ch("WABC-SD", delsys="atsc", root="New York", frequency=623028, vchannel="7.2"),
+             ch("WABC-HD", delsys="atsc", root="New York", frequency=623028, vchannel="7.1"),
+             ch("WNBC", delsys="atsc", root="New York", frequency=581028, vchannel="4.1"),
+             ch("Test", delsys="atsc", root="New York", frequency=473028),
+             ch("Globo", delsys="isdb-t", root="br-sp-SaoPaulo", frequency=599143,
+                vchannel="5.1")]
+    infos = [lf.info(c) for c in chans]
+    assert infos[0].areas == {"terr/root:New York", "terr/stn:7:New York"}
+    cat = lf.catalogue(chans, infos, radio=False)
+    items = lf.areas(cat, frozenset())[0][1]
+    assert items == [("terr/root:br-sp-SaoPaulo", "br-sp-SaoPaulo (5 · Globo)", ""),
+                     ("terr/root:New York", "New York", ""),
+                     ("terr/stn:4:New York", "4 · WNBC", "terr/root:New York"),
+                     ("terr/stn:7:New York", "7 · WABC-HD", "terr/root:New York"),
+                     ("terr/mux:473028:New York", "RF 14 · 473 MHz", "terr/root:New York")]
+    st = State(areas=frozenset({"terr/stn:7:New York"}))
+    assert [c.name for c, i in zip(chans, infos) if lf.matches(i, st)] == ["WABC-SD", "WABC-HD"]
+    assert lf.label(cat, "terr/stn:7:New York") == "7 · WABC-HD"
+
+
+@pytest.mark.parametrize("khz, delsys, label", [
+    (473028, "atsc", "RF 14 · 473 MHz"), (57028, "atsc", "RF 2 · 57 MHz"),
+    (79000, "atsc", "RF 5 · 79 MHz"), (177000, "atsc", "RF 7 · 177 MHz"),
+    (515000, "atsc", "RF 21 · 515 MHz"), (475000, "atsc", "475 MHz"),
+    (473143, "isdb-t", "RF 14 · 473.143 MHz"), (177143, "isdb-t", "RF 7 · 177.143 MHz"),
+    (474000, "dtmb", "474 MHz"), (474000, "dvb-t2", "K 21 · 474 MHz"),
+    (474000, "", "K 21 · 474 MHz")])
+def test_channel_labels_by_system(khz, delsys, label):
+    assert lf.channel_label(khz, delsys) == label
+
+
+def test_one_seg_is_offered_when_there_is_some():
+    full = ch("Globo HD", delsys="isdb-t", root="SP", frequency=599143, sid=0x4010)
+    phone = ch("Globo 1seg", delsys="isdb-t", root="SP", frequency=599143, sid=0x4019)
+    assert [lf.info(c).quality for c in (full, phone)] == ["HD", "1seg"]
+    cat = lf.catalogue([full, phone], [lf.info(full), lf.info(phone)], radio=False)
+    assert lf.offer(cat, frozenset()).qualities == ("UHD", "HD", "SD", "1seg")
+    assert lf.offer(CAT, frozenset()).qualities == ("UHD", "HD", "SD")
+    st = State(qualities=frozenset({"HD", "1seg"}))
+    assert lf.fit(st, CAT) == State(qualities=frozenset({"HD"}))
+    assert shown(State(qualities=frozenset({"UHD", "HD", "SD"})), [full, phone]) == ["Globo HD"]
+
+
 def test_tvheadend_networks_are_areas_and_hide_their_tags():
     tvh = dict(TVH, groups=["13E", "Sport"])
     chans = [ch("Rai 1", tvh_networks=["13E"], **tvh), ch("Sport1", tvh_networks=["19.2E"], **tvh),
