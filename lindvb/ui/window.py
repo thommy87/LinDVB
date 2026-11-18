@@ -1691,6 +1691,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_title(f"{c.name} – {APP_NAME}")
         self._show_picture(True)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
+        self.player.radio = bool(c.radio)
         self._tuned = c
         self._tried = {_tuning_sig(c)}
         self.oos.set_visible(False)
@@ -1733,6 +1734,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_title(f"{c.name} – {APP_NAME}")
         self._show_picture(True)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(c.key, 0)
+        self.player.radio = bool(c.radio)
         self._tuned = c
         self._tried = {_tuning_sig(c)}
         self.oos.set_visible(False)
@@ -2184,6 +2186,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stopped = None
         self._show_picture(True)
         self.player.audio_delay_ms = self.settings.get("audio_delays", {}).get(channel.key, 0)
+        self.player.radio = bool(channel.radio)
         self.playlist, self.playlist_pos = [url], 0
         self.player.play_uri(url)
         self.set_title(f"{event.title} – {channel.name} – {APP_NAME}")
@@ -2195,6 +2198,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stop_playback()
         self.stopped = None
         self._show_picture(True)
+        self.player.radio = False
         self.player.audio_delay_ms = 0
         self.playlist, self.playlist_pos = list(paths), -1
         self.playlist_step(1)
@@ -2251,6 +2255,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.stop_playback()
                 self.stopped = None
                 self._show_picture(True)
+                self.player.radio = False
                 self.player.audio_delay_ms = 0
                 self.playlist = [url]
                 self.playlist_pos = 0
@@ -2268,6 +2273,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def open_any(self, arg):
         if "://" in arg:
             self._show_picture(True)
+            self.player.radio = False
             self.player.play_uri(arg)
         else:
             self.play_files([arg])

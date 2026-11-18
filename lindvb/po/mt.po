@@ -4403,3 +4403,23 @@ msgstr "Erġa’ ssettja l-filtru u t-tfittxija"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Rispons"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Passthrough tal-awdjo"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Jibgħat dan il-ħoss mhux dekodifikat permezz ta' HDMI jew S/PDIF, biex ir-riċevitur AV jiddekodifikah. Il-volum u l-ekwalizzatur imbagħad jibqgħu mar-riċevitur. Ir-radju dejjem jiġi dekodifikat."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Apparat tal-ħruġ"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Vojt: is-server tal-ħoss (PulseAudio jew PipeWire), bil-formati mixgħula hemm għall-ħruġ HDMI jew S/PDIF (pavucontrol: Apparati tal-Ħruġ, Avvanzat). Jew apparat ALSA bħal hdmi:CARD=PCH,DEV=0 (aplay -L jelenkahom). Jekk il-ħruġ ma jaċċetta l-ebda wieħed mill-formati, il-ħoss jiġi dekodifikat."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Server tal-ħoss"

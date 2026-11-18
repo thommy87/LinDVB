@@ -4403,3 +4403,23 @@ msgstr "Athshocraigh an scagaire agus an cuardach"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Aiseolas"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Fuaim a sheoladh tríd"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Seolann sé an fhuaim seo gan díchódú thar HDMI nó S/PDIF, ionas go ndíchódaíonn an glacadóir AV í. Fanann an airde agus an cothromóir leis an nglacadóir ansin. Díchódaítear an raidió i gcónaí."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Gléas aschuir"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Folamh: an freastalaí fuaime (PulseAudio nó PipeWire), leis na formáidí casta air don aschur HDMI nó S/PDIF ansin (pavucontrol: Gléasanna Aschuir, Ardroghanna). Nó gléas ALSA ar nós hdmi:CARD=PCH,DEV=0 (liostaíonn aplay -L iad). Mura nglacann an t-aschur le haon cheann de na formáidí, díchódaítear an fhuaim."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Freastalaí fuaime"

@@ -4763,3 +4763,23 @@ msgstr "ფილტრისა და ძიების გადაყენ
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "უკუკავშირი"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "ხმის გატარება (passthrough)"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "აგზავნის ამ ხმას გაუშიფრავად HDMI-ით ან S/PDIF-ით, რომ AV მიმღებმა გაშიფროს. ხმის სიმძლავრე და ეკვალაიზერი მაშინ მიმღებზეა. რადიო ყოველთვის იშიფრება."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "გამოტანის მოწყობილობა"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "ცარიელი: ხმის სერვერი (PulseAudio ან PipeWire), სადაც ფორმატები ჩართულია HDMI ან S/PDIF გამოსასვლელისთვის (pavucontrol: გამოტანის მოწყობილობები, დამატებით). ან ALSA მოწყობილობა, მაგალითად hdmi:CARD=PCH,DEV=0 (aplay -L ჩამოთვლის მათ). თუ გამოსასვლელი არცერთ ფორმატს არ იღებს, ხმა იშიფრება."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "ხმის სერვერი"

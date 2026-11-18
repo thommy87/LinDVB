@@ -4403,3 +4403,23 @@ msgstr "Nollaa suodatin ja haku"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Palaute"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Äänen läpivienti"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Lähettää tämän äänen purkamattomana HDMI- tai S/PDIF-liitännän kautta, ja AV-vahvistin purkaa sen. Äänenvoimakkuus ja taajuuskorjain ovat silloin vahvistimessa. Radio puretaan aina."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Lähtölaite"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Tyhjä: äänipalvelin (PulseAudio tai PipeWire), jossa muodot on otettu käyttöön HDMI- tai S/PDIF-lähdölle (pavucontrol: Ulostulolaitteet, Lisäasetukset). Tai ALSA-laite, kuten hdmi:CARD=PCH,DEV=0 (aplay -L luettelee ne). Jos lähtö ei hyväksy mitään muodoista, ääni puretaan."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Äänipalvelin"

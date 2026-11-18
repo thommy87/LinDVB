@@ -4403,3 +4403,23 @@ msgstr "Resetează filtrul și căutarea"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Păreri"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Passthrough audio"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Trimite acest sunet nedecodat prin HDMI sau S/PDIF, iar receptorul AV îl decodează. Volumul și egalizatorul rămân atunci la receptor. Radioul este întotdeauna decodat."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Dispozitiv de ieșire"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Gol: serverul de sunet (PulseAudio sau PipeWire), cu formatele activate acolo pentru ieșirea HDMI sau S/PDIF (pavucontrol: Dispozitive de ieșire, Avansat). Sau un dispozitiv ALSA precum hdmi:CARD=PCH,DEV=0 (aplay -L le listează). Dacă ieșirea nu acceptă niciunul dintre formate, sunetul este decodat."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Server de sunet"

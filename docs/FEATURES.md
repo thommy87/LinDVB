@@ -39,6 +39,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Play rate | **Yes** (files) |
 | Audio track and subtitle selection | **Yes**: playbin audio/text streams with readable names ("German, Stereo", "German, 5.1"), DVB subtitles, teletext subtitles (pages from the PMT teletext descriptor, decoded with `teletextdec` in the playback pipeline and drawn over the video) |
 | Audio channel (stereo/left/right), second audio output | **No** |
+| Audio passthrough (AC-3 / E-AC-3 / DTS to an AV receiver) | **Yes**: Preferences › Playback › Audio passthrough sends the chosen formats undecoded over HDMI or S/PDIF, through the sound server (PulseAudio / PipeWire, formats switched on for the output there) or straight to an ALSA device (`hdmi:…`, `iec958:…`); the output is asked first and a format it does not take is decoded as usual; radio is always decoded, so visualisations keep working; see `lindvb/passthrough.py` |
 | Equalizer | **Yes**: 10-band equalizer |
 | Brightness, contrast, saturation, hue | **Yes**: `videobalance` with reset |
 | Aspect ratio, zoom, window size presets | **Yes**: fit/fill/stretch, 50/75/100/200 % |

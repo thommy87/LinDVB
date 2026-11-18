@@ -4403,3 +4403,23 @@ msgstr "Repor o filtro e a pesquisa"
 #: lindvb/ui/window.py
 msgid "Feedback"
 msgstr "Comentários"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Passthrough de áudio"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "Envia este som sem descodificar por HDMI ou S/PDIF, e o recetor AV descodifica-o. O volume e o equalizador ficam então no recetor. A rádio é sempre descodificada."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Dispositivo de saída"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Vazio: o servidor de som (PulseAudio ou PipeWire), com os formatos ativados aí para a saída HDMI ou S/PDIF (pavucontrol: Dispositivos de saída, Avançado). Ou um dispositivo ALSA como hdmi:CARD=PCH,DEV=0 (aplay -L lista-os). Se a saída não aceitar nenhum dos formatos, o som é descodificado."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Servidor de som"
