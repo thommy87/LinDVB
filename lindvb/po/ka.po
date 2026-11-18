@@ -4723,3 +4723,11 @@ msgstr "DiSEqC 1.1 გადამრთველი: 16 თანამგზ�
 #: lindvb/diseqc.py
 msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
 msgstr "DiSEqC 1.0 გადამრთველი: 4 თანამგზავრამდე. DiSEqC 1.1 (16 თანამგზავრამდე) და Unicable (64 პოზიციამდე) ტიუნერის პარამეტრებში აირჩევა."
+
+#: lindvb/ui/window.py
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "რჩეულების სიების ჩვენება (Ctrl+D)"
+
+#: lindvb/ui/window.py
+msgid "Edit this favourites list"
+msgstr "ამ რჩეულების სიის რედაქტირება"

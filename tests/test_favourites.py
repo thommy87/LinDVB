@@ -2,8 +2,10 @@
 
 import json
 
+import pytest
+
 from lindvb.channels import Channel, ChannelDB
-from lindvb.favourites import FavouriteLists, fav_index, filter_keys, filter_setting
+from lindvb.favourites import FavouriteLists, fav_index, filter_setting, migrate_list_filter
 
 
 def _db(tmp_path, monkeypatch, n=5, favs=()):
@@ -87,8 +89,18 @@ def test_rekey_and_missing_channels(tmp_path, monkeypatch):
 
 
 def test_filter_settings():
-    assert filter_keys(2) == ["all", "fav:0", "fav:1", "fta", "enc", "hd", "iptv"]
     assert filter_setting(1) == "fav:0" and filter_setting(2) == "fta"   # old index
     assert filter_setting(99) == "all" and filter_setting(None) == "all"
     assert filter_setting("fav:3") == "fav:3"
     assert fav_index("fav:3") == 3 and fav_index("hd") is None
+
+
+@pytest.mark.parametrize("old, tab, last, key", [
+    ("fav:2", "favourites", 2, "all"),       # a favourites list filter: the favourites tab
+    (1, "favourites", 0, "all"),             # the old index of the one favourites list
+    ("fta", None, 5, "fta"),
+    ("gone", None, 5, "all")])
+def test_favourites_filter_moves_to_the_tab(old, tab, last, key):
+    s = {"list_filter": old, "fav_last": 5}
+    migrate_list_filter(s)
+    assert s.get("list_tab") == tab and s["fav_last"] == last and s["list_filter"] == key

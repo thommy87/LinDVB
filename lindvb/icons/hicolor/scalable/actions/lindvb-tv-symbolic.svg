@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- a TV set with a rabbit-ear antenna: the TV channels -->
+  <path fill="#222222" d="M7.1 5.5 L3.6 1.2 L4.6 0.4 L8 4.6 L11.4 0.4 L12.4 1.2 L8.9 5.5 Z"/>
+  <path fill="#222222" fill-rule="evenodd" d="M2 5.5 H14 A1.5 1.5 0 0 1 15.5 7 V12 A1.5 1.5 0 0 1 14 13.5 H2 A1.5 1.5 0 0 1 0.5 12 V7 A1.5 1.5 0 0 1 2 5.5 Z M2 7 V12 H14 V7 Z"/>
+  <rect fill="#222222" x="3" y="13.5" width="2" height="2" rx="0.5"/>
+  <rect fill="#222222" x="11" y="13.5" width="2" height="2" rx="0.5"/>
+</svg>

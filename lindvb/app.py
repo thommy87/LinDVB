@@ -68,7 +68,8 @@ class LinDVBApp(Gtk.Application):
             added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
-        from .favourites import FavouriteLists
+        from .favourites import FavouriteLists, migrate_list_filter
+        migrate_list_filter(self.settings)
         self.favs = FavouriteLists(self.db)
         self._start_channel = opts.get("channel")
         return -1
@@ -96,9 +97,11 @@ class LinDVBApp(Gtk.Application):
         self._dvbi_busy = False
         self._guide_busy = False
         GLib.timeout_add_seconds(15, self._dvbi_check)
-        # Tvheadend servers: their guide, at the start and every few hours
+        # Tvheadend servers: their channel list when due and the guide at the
+        # start, the guide again every few hours
         self._tvh_busy = False
-        GLib.timeout_add_seconds(20, lambda: (self.update_tvheadend_guide(), False)[1])
+        GLib.timeout_add_seconds(20, lambda: (self.refresh_tvheadend_lists(
+            done=self.update_tvheadend_guide), False)[1])
         GLib.timeout_add_seconds(GUIDE_INTERVAL, lambda: (self.update_tvheadend_guide(), True)[1])
         # programme reminders from the guide
         from .reminders import ReminderStore
@@ -289,6 +292,47 @@ class LinDVBApp(Gtk.Application):
         return False
 
     # -- Tvheadend ---------------------------------------------------------------
+    def refresh_tvheadend_lists(self, done=None):
+        """Fetch the channel lists of the Tvheadend servers that are due (see
+        tvheadend.lists_due) in the background; *done()* runs afterwards on
+        the main thread, also when nothing was due."""
+        from . import __version__, tvheadend
+        due = tvheadend.lists_due(self.settings, __version__)
+        if not due:
+            if done:
+                done()
+            return
+
+        def work():
+            results, failed = [], False
+            for src in due:
+                try:
+                    results.append((src, tvheadend.load_channels(
+                        src.get("location", ""), src.get("user", ""),
+                        src.get("password", ""), src.get("root", ""))))
+                except tvheadend.TvheadendError:
+                    failed = True        # offline: tried again at the next start
+            GLib.idle_add(self._apply_tvheadend_lists, results, failed, done)
+        threading.Thread(target=work, daemon=True).start()
+
+    def _apply_tvheadend_lists(self, results, failed, done):
+        from . import __version__, tvheadend
+        if results:
+            self.settings["iptv_sources"] = tvheadend.apply_lists(
+                self.db, list(self.settings.get("iptv_sources") or []), results)
+            self.db.save()
+            if self.window is not None:
+                self.window.reload_channels()
+        if not failed:
+            self.settings["tvh_lists_version"] = __version__
+        try:
+            self.settings.save()
+        except OSError:
+            pass
+        if done:
+            done()
+        return False
+
     def update_tvheadend_guide(self, done=None):
         """Load the XMLTV guide of every Tvheadend server in the background.
         *done(message)* runs on the main thread when all are loaded."""
@@ -486,9 +530,10 @@ class LinDVBApp(Gtk.Application):
         from .ui.dialogs import PrefsWindow
         PrefsWindow(self, self.window, page).present()
 
-    def show_editor(self, channel=None):
+    def show_editor(self, channel=None, fav_list=None):
+        """The channel editor; *fav_list* picks the favourites list it shows."""
         from .ui.dialogs import EditorWindow
-        EditorWindow(self, self.window, channel).present()
+        EditorWindow(self, self.window, channel, fav_list).present()
 
     def show_favourites(self):
         """The window to create, rename, delete and reorder favourites lists."""
@@ -500,11 +545,6 @@ class LinDVBApp(Gtk.Application):
         *remap* maps old list indexes to new ones (None: deleted) after lists
         were moved or deleted, so the list chosen stays chosen."""
         if remap:
-            from .favourites import fav_index, filter_setting
-            i = fav_index(filter_setting(self.settings.get("list_filter")))
-            if i in remap:
-                new = remap[i]
-                self.settings["list_filter"] = "all" if new is None else f"fav:{new}"
             last = self.settings.get("fav_last", 0)
             if last in remap:
                 self.settings["fav_last"] = remap[last] or 0

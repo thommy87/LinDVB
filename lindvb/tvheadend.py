@@ -120,6 +120,30 @@ def servers(settings):
     return [s for s in (settings.get("iptv_sources") or []) if s.get("kind") == "tvheadend"]
 
 
+LIST_MAX_AGE = 24 * 3600       # a server's channel list is fetched again after a day
+
+
+def lists_due(settings, version, now=None):
+    """The servers whose channel list is fetched again at the start: all of
+    them after an update of LinDVB (a new version may read the tags
+    differently), else those not fetched for a day."""
+    srcs = servers(settings)
+    if settings.get("tvh_lists_version") != version:
+        return srcs
+    now = time.time() if now is None else now
+    return [s for s in srcs if now - int(s.get("date", 0) or 0) >= LIST_MAX_AGE]
+
+
+def apply_lists(db, sources, results, now=None):
+    """Put the channel lists fetched again (*results*: [(source, channels)])
+    into *db*; returns the IPTV lists with their count and date renewed."""
+    from . import iptvsources
+    for src, chans in results:
+        iptvsources.replace(db, src.get("root", ""), chans)
+        sources = iptvsources.touch(sources, src.get("location", ""), len(chans), now)
+    return sources
+
+
 def configure(settings):
     """Remember the servers and their logins, for credentials()."""
     _servers.clear()

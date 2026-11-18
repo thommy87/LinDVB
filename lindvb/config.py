@@ -103,13 +103,14 @@ DEFAULTS = {
     "startup_channel_key": None,
     "last_tv_channel": None,
     "last_radio_channel": None,
-    "mode": "tv",                    # channel list shows "tv" or "radio"
-    # Channel list filter ("all", "fta", "enc", "hd", "iptv" or "fav:<n>" for
-    # favourites list n; see lindvb.favourites) and group ("" = all groups)
-    # last chosen, shown again at the next start.
+    "mode": "tv",                    # the kind of channel watched: "tv" or "radio"
+    "list_tab": "",                  # "favourites": the favourites tab was shown last
+    # Channel list filter ("all", "fta", "enc", "hd", "iptv"; see
+    # lindvb.favourites) and group ("" = all groups) last chosen, shown again
+    # at the next start.
     "list_filter": "all",
     "list_group": "",
-    "fav_last": 0,                   # favourites list used last (favourite zapping)
+    "fav_last": 0,                   # favourites list shown last (and favourite zapping)
     "iptv_sources": [],             # imported IPTV lists (lindvb.iptvsources)
     "channel_order_manual": False,  # the channel editor's own order, not the DVB-I LCNs
     "list_sort": "number",          # channel list order (lindvb.chansort.SORTS)

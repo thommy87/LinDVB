@@ -24,6 +24,7 @@ SHORTCUTS = [
         ("0 9", _("Channel by number (type the digits)")),
         ("BackSpace <Ctrl>BackSpace", _("Last channel")),
         ("<Ctrl>m", _("Switch TV / radio")),
+        ("<Ctrl>d", _("Favourites")),
         ("F9", _("Show / hide the channel list")),
     ]),
     (_("Programme guide and recording"), [

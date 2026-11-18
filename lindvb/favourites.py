@@ -211,15 +211,11 @@ class FavouriteLists:
 
 
 # -- the channel list filter ------------------------------------------------------
-# Filter keys of the channel list: the plain filters and one per favourites
-# list ("fav:<index>"). Before the favourites lists the setting held the index
-# into a fixed list where 1 was the one favourites list.
+# Filter keys of the channel list. The favourites lists have a tab of their
+# own; older settings held a favourites list as filter "fav:<index>" or, before
+# that, an index into a fixed list where 1 was the one favourites list.
 _OLD_FILTERS = ("all", "fav:0", "fta", "enc", "hd", "iptv")
-
-
-def filter_keys(n_lists):
-    """The channel list filters in dropdown order."""
-    return ["all"] + [f"fav:{i}" for i in range(n_lists)] + ["fta", "enc", "hd", "iptv"]
+FILTER_KEYS = ("all", "fta", "enc", "hd", "iptv")
 
 
 def filter_setting(value):
@@ -232,7 +228,18 @@ def filter_setting(value):
 
 
 def fav_index(key):
-    """The favourites list index of a filter key, None for the other filters."""
+    """The favourites list index of an old filter key "fav:<index>", else None."""
     if isinstance(key, str) and key.startswith("fav:") and key[4:].isdigit():
         return int(key[4:])
     return None
+
+
+def migrate_list_filter(settings):
+    """A favourites list kept as the channel list filter (before the
+    favourites tab) opens that list in the favourites tab instead."""
+    key = filter_setting(settings.get("list_filter"))
+    i = fav_index(key)
+    if i is not None:
+        settings["fav_last"] = i
+        settings["list_tab"] = "favourites"
+    settings["list_filter"] = key if key in FILTER_KEYS else "all"
