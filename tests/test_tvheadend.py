@@ -180,6 +180,8 @@ def test_load_channels_with_login(server, mode):
     assert erste.groups == ["Öffentlich-rechtlich"]          # not "HDTV" / "TV channels"
     assert zdf.groups == ["Öffentlich-rechtlich", "Nachrichten"]
     assert b3.radio and b3.category == "" and b3.groups == []
+    # Tvheadend's type tag "HDTV" is the service type
+    assert [c.service_type for c in chans] == [0x19, 0x19, 0]
     assert erste.root == "Tvheadend 127.0.0.1"
     assert erste.logo_url == f"{server}/imagecache/7"
 
@@ -193,6 +195,13 @@ def test_type_tags_are_not_groups(tag):
 @pytest.mark.parametrize("tag", ["Nachrichten", "Sport", "HD+", "ARD", "Kinder-TV", "Other"])
 def test_user_tags_are_groups(tag):
     assert not tvheadend.is_type_tag(tag)
+
+
+@pytest.mark.parametrize("kind, stype", [("SDTV", 0x01), ("HDTV", 0x19), ("FHDTV", 0x19),
+                                         ("UHDTV", 0x20), ("4K", 0x20), ("Radio", 0),
+                                         ("TV channels", 0), ("Other", 0), ("Sport", 0)])
+def test_service_type_of(kind, stype):
+    assert tvheadend.service_type_of(kind) == stype
 
 
 def test_tags_filter_the_list_and_providers_group_it():

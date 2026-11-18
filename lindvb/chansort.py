@@ -2,6 +2,7 @@
 """Sorting and grouping of the channel list (no GTK)."""
 
 from .i18n import _
+from .media_info import video_class
 
 # the "Sort by" choices of the channel list: (setting value, label)
 SORTS = (("number", _("Number")), ("az", _("Name A–Z")), ("za", _("Name Z–A")),
@@ -10,16 +11,47 @@ SORTS = (("number", _("Number")), ("az", _("Name A–Z")), ("za", _("Name Z–A"
 GROUPED = ("provider", "transponder", "quality")   # these offer a value to pick
 
 
-def quality(c):
-    """"UHD", "HD", "SD" from the name (as the HD filter), "" for radio."""
-    if c.radio:
-        return ""
-    n = c.name.upper()
+# DVB service types (EN 300 468, service_descriptor) that tell the picture:
+# MPEG-2 and H.264 SD, MPEG-2 and H.264 HD (with their NVOD and 3D kinds),
+# HEVC (HD or better) and HEVC UHD
+HEVC = 0x1F
+SERVICE_QUALITY = {0x01: "SD", 0x16: "SD", 0x17: "SD", 0x18: "SD",
+                   0x11: "HD", 0x19: "HD", 0x1A: "HD", 0x1B: "HD", 0x1C: "HD", 0x1D: "HD",
+                   0x1E: "HD", HEVC: "HD", 0x20: "UHD"}
+
+
+def named_quality(name):
+    """"UHD", "HD", "SD" from a channel name alone."""
+    n = name.upper()
     if "UHD" in n or "4K" in n:
         return "UHD"
     if "HD" in n or "HEVC" in n:
         return "HD"
     return "SD"
+
+
+def quality(c):
+    """"UHD", "HD", "SD" for a TV channel, "" for radio: the picture seen
+    while watching it, else its service type, else its name."""
+    if c.radio:
+        return ""
+    if c.seen_video:
+        return c.seen_video
+    named = named_quality(c.name)
+    if c.service_type == HEVC and named == "UHD":
+        return "UHD"
+    return SERVICE_QUALITY.get(c.service_type) or named
+
+
+def learn_video(c, width, height):
+    """Remember the class of the picture *c* shows (width x height). True
+    when that changes what ``quality`` says."""
+    vc = video_class(width, height)
+    if c.radio or not vc or vc[0] == c.seen_video:
+        return False
+    before = quality(c)
+    c.seen_video = vc[0]
+    return quality(c) != before
 
 
 def transponder(c):

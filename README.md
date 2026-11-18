@@ -56,7 +56,8 @@ them.
   four linked steps: source (satellite, cable, terrestrial, internet streams, DVB-I,
   each Tvheadend server), area (orbital positions and their satellites, terrestrial
   regions and channels, Tvheadend networks, lists), filter (free to air or encrypted,
-  UHD/HD/SD, Tvheadend tags) and sort order; channel number entry, last channel,
+  UHD/HD/SD as seen while watching, else from the service type, Tvheadend tags) and
+  sort order; channel number entry, last channel,
   channel and favourite zapping
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)

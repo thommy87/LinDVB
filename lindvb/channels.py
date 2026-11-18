@@ -61,6 +61,8 @@ class Channel:
     ait_pid: int = 0                 # HbbTV application signalling (learnt from the PMT)
     encrypted: bool = False
     radio: bool = False
+    service_type: int = 0            # DVB service_type (SDT, or Tvheadend's), 0 = unknown
+    seen_video: str = ""             # "UHD" / "HD" / "SD": the picture last seen on it
     url: str = ""                    # for IPTV
     tvg_id: str = ""                 # IPTV: tvg-id / tvg-name from the M3U
     tvg_name: str = ""
@@ -249,6 +251,7 @@ class ChannelDB:
                     c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
                 if not c.logo:
                     c.logo = prev.logo
+                c.seen_video = c.seen_video or prev.seen_video
                 updated += 1
             else:
                 added += 1
@@ -285,8 +288,15 @@ class ChannelDB:
             if old:
                 fav, name, num = old.favourite, old.name, old.number
                 xid, xman = old.xmltv_id, old.xmltv_manual
+                seen, stype = old.seen_video, old.service_type
                 old.__dict__.update(asdict(c))
                 old.favourite, old.number = fav, num
+                # what was seen while watching stays, unless the service
+                # type changed (the channel went HD); so does a service type
+                # the new source does not know
+                same = c.service_type in (0, stype)
+                old.seen_video = c.seen_video or (seen if same else "")
+                old.service_type = c.service_type or stype
                 if xman or not c.xmltv_id:       # keep the guide match
                     old.xmltv_id, old.xmltv_manual = xid, xman
                 if not update_names:
@@ -501,7 +511,7 @@ def parse_lamedb(text, root="Enigma2"):
             tp = tps.get(f"{ns:08x}:{tsid:04x}:{onid:04x}", "")
             c = Channel(name=name, root=root, sid=sid, tsid=tsid, onid=onid,
                         category=dict(x.split(":", 1) for x in prov.split(",") if ":" in x).get("p", ""),
-                        radio=stype == 2)
+                        radio=stype == 2, service_type=stype)
             vals = tp[2:].split(":")
             if tp.startswith("s") and len(vals) >= 6:
                 c.frequency, c.symbol_rate = int(vals[0]), int(vals[1]) // 1000
