@@ -164,6 +164,7 @@ def test_transponder_scan_builds_channels():
         (28, 1101, 1, 0x100, 0x101, [0x102])
     assert tv.category == "ARD" and tv.root == "Astra" and not tv.radio
     assert radio.radio and radio.frequency == 11494000 and radio.polarity == "h"
+    assert (tv.service_type, radio.service_type) == (1, 2)    # from the SDT
 
 
 def test_transponders_from_lists(tmp_path):

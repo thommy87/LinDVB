@@ -15,7 +15,7 @@ CHALLENGE = b"0123456789abcdef0123456789abcdef"
 CHANNELS = [
     {"method": "channelAdd", "channelId": 1, "channelNumber": 1, "channelName": "Das Erste HD",
      "services": [{"name": "Astra 19.2E/11494H/Das Erste HD", "type": "HDTV"},
-                  {"name": "Kabel/450MHz/Das Erste HD", "type": "HDTV"}]},
+                  {"name": "Kabel/450MHz/Das Erste HD", "type": "UHDTV"}]},
     {"method": "channelAdd", "channelId": 2, "channelNumber": 2, "channelName": "ZDF HD",
      "services": [{"name": "Astra 19.2E/11362H/ZDF HD", "type": "HDTV"}]},
     {"method": "channelAdd", "channelId": 3, "channelNumber": 100, "channelName": "Bayern 3",
@@ -111,6 +111,8 @@ def test_network_of():
 def test_load_channels_takes_the_networks_over_htsp(server, fake_htsp):  # noqa: F811
     chans = tvheadend.load_channels(server, "alex", "geheim", htsp_port=fake_htsp)
     assert [c.tvh_networks for c in chans] == [["Astra 19.2E", "Kabel"], ["Astra 19.2E"], []]
+    # and the service types: the best service counts, radio has none
+    assert [c.service_type for c in chans] == [0x20, 0x19, 0]
 
 
 def test_load_channels_without_htsp(server, fake_htsp, monkeypatch):  # noqa: F811

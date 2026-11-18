@@ -350,6 +350,21 @@ TYPE_TAG = re.compile(r"^(?:(?:u|f)?hd|sd|uhd|4k|8k)(?:[ -]?tv)?(?: channels)?$"
                       r"|^tv(?: channels)?$|^tv-?sender$", re.I)
 
 
+# the picture of these kinds as a DVB service type (lindvb.chansort; the
+# numbers grow with the picture): from a type tag, or the "type" of a service
+# over HTSP (SDTV, HDTV, FHDTV, UHDTV)
+_TYPE_SERVICE = ((re.compile(r"^(?:uhd|4k|8k)", re.I), 0x20),
+                 (re.compile(r"^f?hd", re.I), 0x19), (re.compile(r"^sd", re.I), 0x01))
+
+
+def service_type_of(kind):
+    """The DVB service type a type tag or an HTSP service type stands for (0: none)."""
+    kind = (kind or "").strip()
+    if not TYPE_TAG.match(kind):
+        return 0
+    return next((t for rx, t in _TYPE_SERVICE if rx.match(kind)), 0)
+
+
 def is_type_tag(tag):
     """True for a tag that only tells the kind of service (radio, TV, HDTV,
     SDTV, UHDTV ...), not a group."""
@@ -376,6 +391,7 @@ def channels_from_playlist(raw, base, tags=None, root=""):
         mine = tags.get(cid, [])
         if any(RADIO_TAG.search(t) for t in mine):
             c.radio = True
+        c.service_type = max(map(service_type_of, [*mine, c.category]), default=0)
         groups = []
         for t in mine:
             if not is_type_tag(t) and t not in groups:
@@ -405,24 +421,30 @@ def load_channels(base, user="", password="", root="", opener=None, htsp_port=ht
                              "channels this user may watch.")
     if htsp_port:
         try:
-            add_networks(chans, htsp.channels(urllib.parse.urlsplit(base).hostname, user,
+            add_services(chans, htsp.channels(urllib.parse.urlsplit(base).hostname, user,
                                               password, htsp_port))
         except htsp.HtspError:
             pass                     # no HTSP: the channels have no networks
     return chans
 
 
-def add_networks(chans, htsp_channels):
-    """Give *chans* the networks of their services from the server's HTSP
-    channel list, matched by name (the M3U has the same names)."""
-    nets = {}
+def add_services(chans, htsp_channels):
+    """Give *chans* the networks and the service type of their services from
+    the server's HTSP channel list, matched by name (the M3U has the same
+    names). The best service type counts (an HD and an SD service: HD)."""
+    nets, types = {}, {}
     for h in htsp_channels:
+        name = h.get("channelName", "")
         for s in h.get("services", []):
-            if isinstance(s, dict) and htsp.network_of(s.get("name", "")):
-                nets.setdefault(h.get("channelName", ""), set()).add(
-                    htsp.network_of(s["name"]))
+            if not isinstance(s, dict):
+                continue
+            if htsp.network_of(s.get("name", "")):
+                nets.setdefault(name, set()).add(htsp.network_of(s["name"]))
+            types.setdefault(name, set()).add(service_type_of(s.get("type", "")))
     for c in chans:
         c.tvh_networks = sorted(nets.get(c.name, ()), key=str.casefold)
+        # 0x01 < 0x19 < 0x20: SD, HD, UHD
+        c.service_type = max(types.get(c.name, ()), default=0) or c.service_type
 
 
 def load_guide(base, user="", password="", language="", opener=None):

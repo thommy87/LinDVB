@@ -100,7 +100,8 @@ class TransponderScan:
                         polarity=tp.polarity, symbol_rate=tp.symbol_rate,
                         modulation=tp.modulation, fec=tp.fec, stream_id=tp.stream_id,
                         diseqc=diseqc, sid=sid, tsid=self.tsid, onid=self.onid,
-                        pmt_pid=pmt_pid, encrypted=bool(info.get("scrambled")))
+                        pmt_pid=pmt_pid, encrypted=bool(info.get("scrambled")),
+                        service_type=info.get("type", 0))
             if pmt:
                 c.pcr_pid = pmt["pcr_pid"]
                 c.encrypted = c.encrypted or bool(pmt["ca"])

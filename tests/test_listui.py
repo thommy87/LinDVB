@@ -97,3 +97,31 @@ def test_scrolling_reads_each_logo_once(monkeypatch):
         for c in chans:
             MainWindow._list_logo(win, c)
     assert len(looked) == len(chans)
+
+
+def test_the_picture_seen_sets_the_quality():
+    """A few seconds after a channel starts, its picture size is its quality:
+    the list forgets what it had worked out for it and saves the channels
+    once, a little later (not for every channel zapped through)."""
+    from lindvb.ui.window import MainWindow
+    c = Channel(name="Das Erste HD")
+    saved = []
+    win = types.SimpleNamespace(
+        current=c, playlist=[], _channels_due=None,
+        player=types.SimpleNamespace(playbin=object(),
+                                     video_info=lambda: {"width": 720, "height": 576}),
+        _infos={id(c): listfilter.info(c)}, _catalogues={"tv": ()},
+        app=types.SimpleNamespace(db=types.SimpleNamespace(save=lambda: saved.append(1))))
+    win._save_channels = lambda: MainWindow._save_channels(win)
+    assert MainWindow._check_video(win) is False
+    assert c.seen_video == "SD" and listfilter.info(c).quality == "SD"
+    assert win._infos == {} and win._catalogues == {} and win._channels_due
+    due = win._channels_due
+    MainWindow._check_video(win)                 # nothing new: no second save planned
+    assert win._channels_due == due and saved == []
+    win._save_channels()
+    assert saved == [1] and win._channels_due is None
+    c.radio = True                               # radio has no picture to learn from
+    win.player.video_info = lambda: {"width": 1920, "height": 1080}
+    MainWindow._check_video(win)
+    assert c.seen_video == "SD" and win._channels_due is None

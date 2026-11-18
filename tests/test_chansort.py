@@ -18,6 +18,34 @@ def test_quality_and_values():
     assert chansort.sort_key(a, "number") is None
 
 
+def test_quality_seen_before_service_type_before_name():
+    named = ch("Das Erste HD")
+    assert chansort.quality(named) == "HD"
+    named.service_type = 0x01                    # MPEG-2 SD, whatever the name says
+    assert chansort.quality(named) == "SD"
+    sd_name = ch("arte", service_type=0x19)      # H.264 HD
+    assert chansort.quality(sd_name) == "HD"
+    assert chansort.quality(ch("ZDF", service_type=0x20)) == "UHD"
+    # HEVC is HD or better: the name tells UHD apart
+    assert [chansort.quality(ch(n, service_type=chansort.HEVC)) for n in ("RTL", "RTL UHD")] \
+        == ["HD", "UHD"]
+    assert chansort.quality(ch("Teleshopping", service_type=0x0C)) == "SD"   # data: the name
+    sd_name.seen_video = "SD"                    # seen while watching: counts first
+    assert chansort.quality(sd_name) == "SD"
+
+
+def test_learn_video():
+    c = ch("Das Erste HD")
+    assert not chansort.learn_video(c, 1920, 1080)      # HD, as the name said
+    assert c.seen_video == "HD"
+    assert chansort.learn_video(c, 720, 576)            # now SD
+    assert chansort.quality(c) == "SD"
+    assert not chansort.learn_video(c, 0, 0)            # no picture yet
+    assert not chansort.learn_video(c, 720, 576) and c.seen_video == "SD"
+    r = ch("Radio 1", radio=True)
+    assert not chansort.learn_video(r, 1920, 1080) and r.seen_video == ""
+
+
 def test_sort_orders():
     xs = [ch("b", category="Y"), ch("A", category="X"), ch("c", category="")]
     by = lambda s: [c.name for c in sorted(xs, key=lambda c: chansort.sort_key(c, s))]  # noqa: E731

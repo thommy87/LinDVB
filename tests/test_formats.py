@@ -121,6 +121,23 @@ def test_merge_keeps_favourites(tmp_path, monkeypatch):
     assert ChannelDB().channels[0].favourite
 
 
+def test_merge_keeps_what_was_seen(tmp_path, monkeypatch):
+    # a new search keeps the picture seen while watching and a service type
+    # the new list does not have; a new service type (the channel went HD)
+    # makes the picture seen count no more
+    monkeypatch.setattr(ChannelDB, "path", tmp_path / "c.json")
+    db = ChannelDB()
+    db.merge(parse_dvbv5(DVBV5))
+    first = db.channels[0]
+    first.seen_video, first.service_type = "SD", 0x01
+    db.merge(parse_dvbv5(DVBV5))
+    assert (first.seen_video, first.service_type) == ("SD", 0x01)
+    again = parse_dvbv5(DVBV5)
+    again[0].service_type = 0x19
+    db.merge(again)
+    assert (first.seen_video, first.service_type) == ("", 0x19)
+
+
 def test_transponder_list(tmp_path):
     p = tmp_path / "DVB-S_0192.ini"
     p.write_text("[SATTYPE]\n1=0192\n2=Test Sat\n\n[DVB]\n0=2\n1=10744000,H,22000,56,1,|A\n"

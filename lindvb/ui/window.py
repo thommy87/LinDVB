@@ -124,6 +124,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._tuned = None           # the channel or DVB-I instance actually playing
         self._tried = set()          # DVB-I instances tried since the last channel change
         self._direct_fallback = False  # the internet channel plays without timeshift
+        self._video_check = None     # looks at the picture size once the channel plays
+        self._channels_due = None    # saves the channels a little later (learnt picture)
         self._nolock_since = None
         self.quality = QualityMeter()  # the OSD's signal quality bar
         self.mode = self.settings.get("mode") if self.settings.get("mode") in MODES else "tv"
@@ -192,6 +194,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.connect("reconnecting", self._on_player_reconnecting)
         self.player.connect("reconnected", self._on_player_reconnected)
         self.player.connect("state", self._on_stream_state)
+        self.player.connect("state", self._on_playing_video)
         # no screen saver while something plays (Preferences › Playback)
         self._inhibit_cookie = 0
         self.player.connect("state", lambda _p, st: self.update_inhibit(st == "playing"))
@@ -2873,6 +2876,36 @@ class MainWindow(Gtk.ApplicationWindow):
             self.quality.stream_playing()
             self._update_quality_bar()
 
+    def _on_playing_video(self, _p, state):
+        """A channel plays: a few seconds on, when its first pictures are
+        decoded, its picture size tells its quality (UHD, HD, SD) better
+        than its service type or name do."""
+        if self._video_check:
+            GLib.source_remove(self._video_check)
+            self._video_check = None
+        if state == "playing":
+            self._video_check = GLib.timeout_add_seconds(3, self._check_video)
+
+    def _check_video(self):
+        self._video_check = None
+        c = self.current
+        if c is None or self.playlist or not self.player.playbin:
+            return False
+        info = self.player.video_info()
+        if chansort.learn_video(c, info.get("width"), info.get("height")):
+            self._infos.pop(id(c), None)          # the filter sees it from its next change
+            self._catalogues.clear()
+            if not self._channels_due:
+                self._channels_due = GLib.timeout_add_seconds(30, self._save_channels)
+        return False
+
+    def _save_channels(self):
+        if self._channels_due:
+            GLib.source_remove(self._channels_due)
+        self._channels_due = None
+        self.app.db.save()
+        return False
+
     def _on_stream_failed(self):
         if self.quality.kind == "iptv":
             self.quality.stream_failed()
@@ -3103,6 +3136,8 @@ class MainWindow(Gtk.ApplicationWindow):
         dlg.present()
 
     def _on_close(self, *_):
+        if self._channels_due:
+            self._save_channels()
         self.pip.close()
         self._track_position()
         self._save_positions()
