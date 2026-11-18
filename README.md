@@ -444,6 +444,9 @@ attach that file when you report a freeze.
 
 Copyright (C) 2026 thommy87.
 
+*Feedback:
+lindvb.feedback@gmail.com*
+
 LinDVB is free software under the GNU General Public License version 2 or (at your
 option) any later version. See [LICENSE](LICENSE).
 
