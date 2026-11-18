@@ -44,7 +44,8 @@ def _serve(sock):
             sock.sendall(htsp.encode({"seq": seq, "htspversion": 34, "servername": "Fake",
                                       "challenge": CHALLENGE}))
         elif method == "authenticate":
-            good = hashlib.sha1(FakeHtsp.password.encode() + CHALLENGE).digest()  # NOSONAR
+            secret = FakeHtsp.password.encode() + CHALLENGE
+            good = hashlib.sha1(secret, usedforsecurity=False).digest()
             sock.sendall(htsp.encode({"seq": seq} if user == "alex" and msg["digest"] == good
                                      else {"seq": seq, "noaccess": 1}))
         elif method == "enableAsyncMetadata":

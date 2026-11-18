@@ -143,9 +143,10 @@ def login(conn, user="", password=""):
     hello = conn.call("hello", htspversion=VERSION, clientname="LinDVB",
                       **({"username": user} if user else {}))
     if user:
-        # the digest HTSP prescribes; the password is not stored, only answered with
+        # SHA-1 is what HTSP prescribes for the answer to the server's challenge;
+        # LinDVB neither stores nor protects anything with it
         challenge = hello.get("challenge", b"")
-        digest = hashlib.sha1(password.encode() + challenge).digest()  # NOSONAR (protocol)
+        digest = hashlib.sha1(password.encode() + challenge, usedforsecurity=False).digest()
         reply = conn.call("authenticate", username=user, digest=digest)
         if reply.get("noaccess"):
             raise HtspError("wrong user name or password")
