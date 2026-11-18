@@ -9,6 +9,7 @@ and internet streams go to playbin directly.
 import re
 import threading
 import time
+import urllib.parse
 import urllib.request
 
 import gi
@@ -45,7 +46,8 @@ SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
 from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, REFUSED_CODES, Retry,  # noqa: E402
-                       http_headers, resolve_redirects, setup_http_source)
+                       host_addresses, http_headers, resolve_redirects,
+                       setup_http_source)
 from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
@@ -151,6 +153,12 @@ def http_status(err, debug=""):
     return int(m.group(1)) if m else None
 
 
+def refused_host(debug=""):
+    """The host of the address a GStreamer HTTP error names, or None."""
+    m = re.search(r"URL:\s*(\S+?)(?:,|\s|$)", debug or "")
+    return urllib.parse.urlsplit(m.group(1)).hostname if m else None
+
+
 def redirect_target(debug=""):
     """The address souphttpsrc names in "Redirect to: …", or None."""
     m = re.search(r"Redirect to:\s*(\S+?)\)?\s*$", (debug or "").strip(), re.M)
@@ -162,7 +170,9 @@ def describe_error(err, debug=""):
     code = http_status(err, debug)
     if code is not None:
         if code in REFUSED_CODES:
-            return (f"The server refused the stream (HTTP {code}). It may be "
+            host = refused_host(debug)
+            who = host or "The server"
+            return (f"{who} refused the stream (HTTP {code}). It may be "
                     "limited to certain countries or devices.")
         return f"The stream was not found on the server (HTTP {code})."
     return err.message
@@ -348,6 +358,7 @@ class Player(GObject.Object):
         self._fallback_done = False
         self._error_token = -1          # playback that already reported an error
         self._resolve_token = -1        # playback whose address was resolved once
+        self._refused_token = -1        # playback whose refusal was reported
         self._hw_error_token = -1       # playback whose GPU decoder failed
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
@@ -953,39 +964,57 @@ class Player(GObject.Object):
         pb.set_state(Gst.State.PLAYING)
 
     # -- a refused stream: ask the CDN behind the gateway ------------------
-    def _resolve_refused(self, err, debug=""):
-        """A DVB-I gateway URL refused with 401/403/451: resolve its redirect
-        and play what it points at, once per playback. The gateway redirects
-        to the broadcaster's CDN, and the hop through GStreamer can lose the
-        request (an https address answering with a plain http target among
-        other reasons)."""
-        if self.capture or not self.uri or self._resolve_token == self._token:
+    def _on_refused(self, err, debug=""):
+        """401, 403 or 451 for an internet stream.
+
+        The first refusal of a playback is answered by resolving the address
+        (a DVB-I gateway redirects to the broadcaster's CDN) and playing what
+        it points at. Until that answer comes, the errors that follow from the
+        refusal ("Internal data stream error", "Can't typefind stream") are
+        kept out of the way, so the message the user sees names the refusal
+        and the host that sent it, not the noise after it.
+        """
+        if self.capture or not self.uri:
             return False
         if http_status(err, debug) not in REFUSED_CODES:
             return False
         if not self.uri.startswith(("http://", "https://")):
             return False
-        self._resolve_token = self._token
         text = describe_error(err, debug)
-        hint = redirect_target(debug)
-        debuglog.write("Player", f"refused ({text}); resolving {self.uri}"
-                                 + (f" (redirect to {hint})" if hint else ""))
-        threading.Thread(target=self._resolve_worker, args=(self.uri, self._token, text),
-                         daemon=True).start()
+        if self._resolve_token != self._token:
+            self._resolve_token = self._token
+            self._error_token = self._token         # keep the follow-up errors quiet
+            hint = redirect_target(debug)
+            debuglog.write("Player", f"refused ({text}); resolving {self.uri}"
+                                     + (f" (redirect to {hint})" if hint else ""))
+            threading.Thread(target=self._resolve_worker, args=(self.uri, self._token, text),
+                             daemon=True).start()
+            return True
+        # the address behind the gateway refuses us too: say so, once
+        if self._refused_token != self._token:
+            self._refused_token = self._token
+            self.emit("error", text)
         return True
 
     def _resolve_worker(self, uri, token, text):
+        trace = []
         try:
-            target = resolve_redirects(uri)
+            target = resolve_redirects(uri, trace=trace)
         except OSError as e:
             debuglog.write("Player", f"resolving {uri} failed: {e}")
             target = uri
+        if trace:
+            debuglog.write("Player", f"resolve {uri}: " + "; ".join(trace))
+        where = host_addresses(target)
+        if where:
+            debuglog.write("Player", f"addresses of {where}")
         GLib.idle_add(self._resolved, token, uri, target, text)
 
     def _resolved(self, token, uri, target, text):
         if token != self._token or self.uri != uri or self.capture:
             return False
         if target == uri:
+            self._refused_token = self._token
             self.emit("error", text)
             return False
         debuglog.write("Player", f"playing the resolved address {target}")
@@ -1595,7 +1624,7 @@ class Player(GObject.Object):
                 self._fallback_done = True
                 GLib.idle_add(self._fallback_to_playbin, self._token)
                 return
-            if self._resolve_refused(err, _dbg):
+            if self._on_refused(err, _dbg):
                 return
             if self._try_reconnect(describe_error(err, _dbg)):
                 return
