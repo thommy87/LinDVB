@@ -87,6 +87,7 @@ class Channel:
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
     tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
     groups: list = field(default_factory=list)   # Tvheadend: all channel tags that are groups
+    tvh_networks: list = field(default_factory=list)  # Tvheadend: the networks of its services
     # catch-up (lindvb.catchup): the provider's archive of the last days
     catchup: str = ""                # "", "default", "append", "shift", "flussonic", "xc"
     catchup_days: int = 0

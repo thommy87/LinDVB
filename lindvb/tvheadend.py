@@ -13,7 +13,10 @@ user enters the server, a user name and a password once, and LinDVB fetches
   and for TV / radio are not groups),
 * the guide: ``/xmltv/channels`` (XMLTV whose channel ids are the same UUIDs),
 * the streams: ``/stream/channel/<uuid>?profile=pass``, the unchanged MPEG
-  transport stream of the service.
+  transport stream of the service,
+* the networks of the channels' services, over HTSP (lindvb.htsp, port
+  9982): HTTP gives them only to admins. Without HTSP (port closed, HTSP off)
+  the channels just have no networks.
 
 Tvheadend asks for HTTP digest authentication (MD5, or SHA-256 / SHA-512-256
 when the server is set so) or plain (basic) authentication. Python's urllib
@@ -41,7 +44,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from . import ipstream
+from . import htsp, ipstream
 
 DEFAULT_PORT = 9981
 PROFILE = "pass"                 # the unchanged transport stream of the service
@@ -387,8 +390,9 @@ def channels_from_playlist(raw, base, tags=None, root=""):
     return out
 
 
-def load_channels(base, user="", password="", root="", opener=None):
-    """Fetch the channel list (and the tags, when the server gives them)."""
+def load_channels(base, user="", password="", root="", opener=None, htsp_port=htsp.PORT):
+    """Fetch the channel list (and the tags, when the server gives them),
+    and the networks over HTSP when it answers on *htsp_port* (None: not)."""
     raw = fetch(playlist_url(base), user, password, opener=opener)
     try:
         tags = parse_e2_tags(fetch(tags_url(base), user, password, opener=opener)
@@ -399,7 +403,26 @@ def load_channels(base, user="", password="", root="", opener=None):
     if not chans:
         raise TvheadendError(f"{urllib.parse.urlsplit(base).netloc}: the server has no "
                              "channels this user may watch.")
+    if htsp_port:
+        try:
+            add_networks(chans, htsp.channels(urllib.parse.urlsplit(base).hostname, user,
+                                              password, htsp_port))
+        except htsp.HtspError:
+            pass                     # no HTSP: the channels have no networks
     return chans
+
+
+def add_networks(chans, htsp_channels):
+    """Give *chans* the networks of their services from the server's HTSP
+    channel list, matched by name (the M3U has the same names)."""
+    nets = {}
+    for h in htsp_channels:
+        for s in h.get("services", []):
+            if isinstance(s, dict) and htsp.network_of(s.get("name", "")):
+                nets.setdefault(h.get("channelName", ""), set()).add(
+                    htsp.network_of(s["name"]))
+    for c in chans:
+        c.tvh_networks = sorted(nets.get(c.name, ()), key=str.casefold)
 
 
 def load_guide(base, user="", password="", language="", opener=None):
