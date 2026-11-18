@@ -4687,3 +4687,7 @@ msgstr "タグ"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "フィルターと検索をリセット"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "フィードバック"

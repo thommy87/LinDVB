@@ -4399,3 +4399,7 @@ msgstr "Ετικέτες"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Επαναφορά φίλτρου και αναζήτησης"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Σχόλια"

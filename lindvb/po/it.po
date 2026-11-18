@@ -4471,3 +4471,7 @@ msgstr "Tag"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Ripristina filtro e ricerca"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Segnalazioni"

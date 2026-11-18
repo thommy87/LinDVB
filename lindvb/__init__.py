@@ -8,3 +8,6 @@ Copyright (C) 2026 thommy87 (https://github.com/thommy87)
 __version__ = "0.18.0"
 COPYRIGHT = "© 2026 thommy87"
 WEBSITE = "https://github.com/thommy87/LinDVB"
+ISSUES = WEBSITE + "/issues"
+DISCUSSIONS = WEBSITE + "/discussions"
+FEEDBACK_MAIL = "lindvb.feedback@gmail.com"

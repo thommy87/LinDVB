@@ -4399,3 +4399,7 @@ msgstr "Tikketti"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Erġa’ ssettja l-filtru u t-tfittxija"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Rispons"

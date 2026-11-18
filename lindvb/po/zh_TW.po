@@ -4759,3 +4759,7 @@ msgstr "標籤"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "重設篩選和搜尋"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "意見回饋"

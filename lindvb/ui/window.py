@@ -3140,13 +3140,16 @@ class MainWindow(Gtk.ApplicationWindow):
         ShortcutsWindow(self).present()
 
     def on_about(self):
-        from .. import COPYRIGHT, WEBSITE, __version__
+        from .. import COPYRIGHT, DISCUSSIONS, FEEDBACK_MAIL, ISSUES, WEBSITE, __version__
         from ..credits import CREDITS
         dlg = Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version=__version__,
                               comments=_("Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
                                          "internet TV with the Linux DVB API and GStreamer."),
                               copyright=COPYRIGHT, website=WEBSITE, authors=["thommy87"],
                               license_type=Gtk.License.GPL_2_0, logo_icon_name="lindvb")
+        # "Name <mail>" and "Name https://…" turn into clickable links
+        dlg.add_credit_section(_("Feedback"), [f"{FEEDBACK_MAIL} <{FEEDBACK_MAIL}>"] + [
+            f"{url.split('://', 1)[1]} {url}" for url in (ISSUES, DISCUSSIONS)])
         for title, people in CREDITS:
             dlg.add_credit_section(_(title), list(people))
         dlg.present()

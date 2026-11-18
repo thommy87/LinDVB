@@ -4399,3 +4399,7 @@ msgstr "Метки"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Сбросить фильтр и поиск"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Обратная связь"

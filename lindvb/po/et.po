@@ -4399,3 +4399,7 @@ msgstr "Sildid"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Lähtesta filter ja otsing"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Tagasiside"

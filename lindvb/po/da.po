@@ -4399,3 +4399,7 @@ msgstr "Mærker"
 #: lindvb/ui/window.py
 msgid "Reset the filter and the search"
 msgstr "Nulstil filter og søgning"
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Tilbagemeldinger"
