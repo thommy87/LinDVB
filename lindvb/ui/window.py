@@ -736,6 +736,13 @@ class MainWindow(Gtk.ApplicationWindow):
         keys = Gtk.EventControllerKey()
         keys.connect("key-pressed", self._on_key)
         self.add_controller(keys)
+        # A running HbbTV application gets its keys ahead of the focused
+        # widget: after a click on the HbbTV or teletext button, Enter would
+        # press that button again (ending the teletext, or starting the
+        # launcher bar) and the arrows would move the focus in the header bar.
+        app_keys = Gtk.EventControllerKey(propagation_phase=Gtk.PropagationPhase.CAPTURE)
+        app_keys.connect("key-pressed", self._on_app_key)
+        self.add_controller(app_keys)
         # Space is play / pause only. A focused button, toggle or list row
         # would otherwise take it as "activate" before the handler above
         # sees it (e.g. a clicked "previous channel" button zapping on), so
@@ -3073,7 +3080,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.ALT_MASK):
             return False
         name = Gdk.keyval_name(keyval) or ""
-        if self.hbbtv.handle_key(name):              # keys the HbbTV app asked for
+        if not self.hbbtv.app_running and self.hbbtv.handle_key(name):    # red: start the app
             return True
         if name.isdigit() or name.startswith("KP_") and name[3:].isdigit():
             self.number_buffer += name[-1]
@@ -3099,6 +3106,15 @@ class MainWindow(Gtk.ApplicationWindow):
             self.activate_action(f"win.{act}", None)
             return True
         return False
+
+    def _on_app_key(self, _ctl, keyval, _code, state):
+        """Capture phase: the keys a running HbbTV application asked for."""
+        if not self.hbbtv.app_running or keyval in (Gdk.KEY_space, Gdk.KEY_KP_Space):
+            return False                             # Space: _on_space
+        if state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.ALT_MASK) or \
+                not _space_is_free(self.get_focus()):
+            return False                             # typing, a menu, a shortcut
+        return self.hbbtv.handle_key(Gdk.keyval_name(keyval) or "")
 
     def _on_space(self, _ctl, keyval, _code, state):
         if keyval not in (Gdk.KEY_space, Gdk.KEY_KP_Space) or state & (

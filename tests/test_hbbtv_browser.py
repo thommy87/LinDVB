@@ -420,6 +420,12 @@ class FakeWindow:
     def zap_relative(self, step):
         pass
 
+    def get_focus(self):
+        return self.window.get_focus()
+
+    def set_focus(self, widget):
+        self.window.set_focus(widget)
+
 
 @pytest.fixture(autouse=True)
 def _no_zap_delay(monkeypatch):
@@ -879,6 +885,41 @@ def test_teletext_link_survives_the_launcher_leaving(how):
     or stops itself while the (slow) teletext page is still loading: the
     teletext still opens instead of the application ending."""
     _teletext_link("ttleaves?" + how, "ttapp?slow=1", lambda hbb, title: None)
+
+
+def test_teletext_button_gives_up_the_focus():
+    """The teletext started by a click on the TXT button: that button keeps no
+    focus, so the next Enter goes to the teletext instead of pressing the
+    button again (which ended the teletext, or started the launcher bar)."""
+    from lindvb.ui.hbbtv import HbbTV
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_address[1]}/"
+    try:
+        ch = Channel("Das Erste", delsys="dvb-s2", sid=28106, onid=1, tsid=1019)
+        win = FakeWindow(ch)
+        win.settings["hbbtv_autostart"] = False
+        button = Gtk.Button(label="TXT")
+        win.overlay.add_overlay(button)
+        win.window.present()
+        hbb = HbbTV(win)
+        cap = FakeCapture()
+        hbb.channel_changed(ch, cap)
+        a = Ait(0x10, 1, transports=[Transport(ait.PROTOCOL_HTTP, 1, [url])])
+        a.apps = [AitApp(0x13, 1, ait.AUTOSTART, labels=[1], location="index.html"),
+                  AitApp(0x13, 2, ait.PRESENT, labels=[1], location="ttapp", usage=ait.USAGE_TELETEXT)]
+        cap.ait = a
+        cap.emit("ait", a)
+        assert not hbb.app_running
+        button.grab_focus()
+        assert _wait(lambda: win.window.get_focus() is button)
+        assert hbb.teletext_button() is True
+        assert hbb.app_running and hbb.life.running.app_id == 2
+        assert win.window.get_focus() is not button
+        win.window.destroy()
+    finally:
+        server.shutdown()
 
 
 def test_objects_work_before_the_observer_ran():

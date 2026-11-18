@@ -15,7 +15,8 @@ over the live picture, and talks to LinDVB through the OIPF objects in
   `XF86Yellow`, `XF86Blue` from a remote).
 * **Arrows, Enter, Backspace (back), digits, media keys** go to the
   application while it asks for them (its key set); otherwise LinDVB uses them
-  as usual.
+  as usual. They reach the application even when a button or the channel list
+  has the focus, e.g. after a click on the HbbTV or TXT button.
 * **Esc** closes the application. It stays closed on this channel until you
   press red again or change the channel.
 * **TXT** (Ctrl+Shift+T, the TXT button) opens the channel's digital teletext
