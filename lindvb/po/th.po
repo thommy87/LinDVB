@@ -1,0 +1,4734 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: th\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "นำเข้ารายการช่อง (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "เริ่มด้วยช่องนี้ (ชื่อหรือหมายเลข)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} เวลา {time}"
+
+msgid "Watch"
+msgstr "ดู"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "แจ้งเตือน: {title} ทาง {channel} เวลา {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "โปรดตั้ง URL ของ XMLTV ในการตั้งค่าก่อน"
+
+msgid "Downloading XMLTV guide…"
+msgstr "กำลังดาวน์โหลดผังรายการ XMLTV…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} ช่องไม่มีผังรายการ (การตั้งค่า ▸ EPG ▸ จับคู่ช่อง IPTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: กำลังโหลดรายการบริการ…"
+
+msgid "Search the web"
+msgstr "ค้นหาบนเว็บ"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "เทเลเท็กซ์ (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "คำบรรยาย (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "ข้อมูล EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "แทร็กเสียงทั้งหมด"
+
+msgid "Preferred language only"
+msgstr "เฉพาะภาษาที่ต้องการ"
+
+msgid "First audio track only"
+msgstr "เฉพาะแทร็กเสียงแรก"
+
+msgid "Record"
+msgstr "บันทึก"
+
+msgid "Record and tune"
+msgstr "บันทึกและจูน"
+
+msgid "Tune only"
+msgstr "จูนเท่านั้น"
+
+msgid "Hibernate"
+msgstr "ไฮเบอร์เนต"
+
+msgid "None"
+msgstr "ไม่มี"
+
+msgid "Power off"
+msgstr "ปิดเครื่อง"
+
+msgid "Quit LinDVB"
+msgstr "ออกจาก LinDVB"
+
+msgid "Standby"
+msgstr "สแตนด์บาย"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "สตรีมอินเทอร์เน็ตไม่มีสตรีมข้อมูลเทเลเท็กซ์ คำบรรยาย หรือ EPG"
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 เก็บแทร็กเสียงได้เพียงแทร็กเดียว (ภาษาที่ต้องการเมื่อมีออกอากาศ)"
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "ไฟล์เสียงเก็บได้เพียงแทร็กเดียว (ภาษาที่ต้องการเมื่อมีออกอากาศ)"
+
+msgid "Fr"
+msgstr "ศ."
+
+msgid "Mo"
+msgstr "จ."
+
+msgid "Sa"
+msgstr "ส."
+
+msgid "Su"
+msgstr "อา."
+
+msgid "Th"
+msgstr "พฤ."
+
+msgid "Tu"
+msgstr "อ."
+
+msgid "We"
+msgstr "พ."
+
+msgid "Scheduled"
+msgstr "ตั้งเวลาไว้"
+
+msgid "Done"
+msgstr "เสร็จสิ้น"
+
+msgid "Channel missing"
+msgstr "ไม่พบช่อง"
+
+msgid "Tuned"
+msgstr "จูนแล้ว"
+
+msgid "Recording"
+msgstr "กำลังบันทึก"
+
+msgid "Failed"
+msgstr "ล้มเหลว"
+
+msgid "Missed"
+msgstr "พลาดไป"
+
+msgid "After recording: {action}"
+msgstr "หลังบันทึก: {action}"
+
+msgid "The module was removed or reset."
+msgstr "โมดูลถูกถอดออกหรือรีเซ็ต"
+
+msgid "CAM Menu"
+msgstr "เมนู CAM"
+
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+msgid "OK"
+msgstr "ตกลง"
+
+msgid "Open CAM Menu"
+msgstr "เปิดเมนู CAM"
+
+msgid "Select"
+msgstr "เลือก"
+
+msgid "Back"
+msgstr "ย้อนกลับ"
+
+msgid "Close Menu"
+msgstr "ปิดเมนู"
+
+msgid "Device: {path} – {state}"
+msgstr "อุปกรณ์: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "เปิดเมนู CAM เพื่อดูการตั้งค่าของโมดูล ข้อมูลสมาร์ทการ์ด และการควบคุมโดยผู้ปกครอง"
+
+msgid "The module has not finished starting yet."
+msgstr "โมดูลยังเริ่มทำงานไม่เสร็จ"
+
+msgid "Custom colour"
+msgstr "สีกำหนดเอง"
+
+msgid "LinDVB blue (default)"
+msgstr "สีน้ำเงิน LinDVB (ค่าเริ่มต้น)"
+
+msgid "System accent colour"
+msgstr "สีเน้นของระบบ"
+
+msgid "Preferences"
+msgstr "การตั้งค่า"
+
+msgid "Save"
+msgstr "บันทึก"
+
+msgid "Appearance"
+msgstr "รูปลักษณ์"
+
+msgid "Language"
+msgstr "ภาษา"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "มีผลเมื่อเริ่ม LinDVB ใหม่"
+
+msgid "Accent colour"
+msgstr "สีเน้น"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "ใช้สำหรับไฮไลต์ การเลือก และปุ่มในทุกหน้าต่าง"
+
+msgid "On-screen display"
+msgstr "การแสดงผลบนหน้าจอ (OSD)"
+
+msgid "OSD display time (s)"
+msgstr "เวลาแสดง OSD (วินาที)"
+
+msgid "Visualisation"
+msgstr "ภาพประกอบเสียง"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "สิ่งที่แสดงบนภาพประกอบเสียงวิทยุขณะเล่นช่องวิทยุหรือไฟล์เสียง รายละเอียดเพลงมาจาก RadioText ของวิทยุ DVB ชื่อสตรีมของวิทยุอินเทอร์เน็ต และแท็กของไฟล์เสียง"
+
+msgid "Overlay"
+msgstr "ภาพซ้อนทับ"
+
+msgid "Station logo tile"
+msgstr "ไทล์โลโก้สถานี"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "โลโก้ของช่อง หรือไทล์ที่มีชื่อสถานีเมื่อไม่มีโลโก้"
+
+msgid "Album cover"
+msgstr "ปกอัลบั้ม"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "ปกของเพลงที่กำลังออกอากาศ จากไฟล์หรือค้นหาทางออนไลน์"
+
+msgid "Song information"
+msgstr "ข้อมูลเพลง"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "ศิลปิน อัลบั้มและปี แทร็กและชื่อเพลง หากไม่มีรายละเอียดเพลงจะแสดงสถานีและรายการที่กำลังออกอากาศ"
+
+msgid "Clock in the top right corner"
+msgstr "นาฬิกาที่มุมขวาบน"
+
+msgid "Sources"
+msgstr "แหล่งที่มา"
+
+msgid "Look up covers online"
+msgstr "ค้นหาปกทางออนไลน์"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "ส่งชื่อศิลปินและชื่อเพลงที่กำลังออกอากาศไปยัง iTunes Search API เพื่อค้นหาอัลบั้ม ปี และปก"
+
+msgid "Station logo folder"
+msgstr "โฟลเดอร์โลโก้สถานี"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "ไฟล์ภาพ (PNG, SVG, JPG) ที่ตั้งชื่อตามช่อง เช่น \"Bayern 3.png\" โลโก้ที่ตั้งชื่อตามช่องแบบที่ DVBViewer เก็บไว้ใช้ได้ทันที ว่างไว้: {v0}"
+
+msgid "Playback"
+msgstr "การเล่น"
+
+msgid "Deinterlace video"
+msgstr "ดีอินเทอร์เลซวิดีโอ"
+
+msgid "Screenshot folder"
+msgstr "โฟลเดอร์ภาพหน้าจอ"
+
+msgid "Timeshift"
+msgstr "ไทม์ชิฟต์"
+
+msgid "Timeshift folder"
+msgstr "โฟลเดอร์ไทม์ชิฟต์"
+
+msgid "Timeshift buffer (MB)"
+msgstr "บัฟเฟอร์ไทม์ชิฟต์ (MB)"
+
+msgid "Tuner and Channels"
+msgstr "จูนเนอร์และช่อง"
+
+msgid "DVB hardware"
+msgstr "ฮาร์ดแวร์ DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "หมายเลขอะแดปเตอร์ที่ LinDVB ใช้ได้ คั่นด้วยจุลภาค"
+
+msgid "DVB adapters"
+msgstr "อะแดปเตอร์ DVB"
+
+msgid "Frontend"
+msgstr "ฟรอนต์เอนด์"
+
+msgid "Capture whole transponder"
+msgstr "รับทรานสพอนเดอร์ทั้งหมด"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "จำเป็นสำหรับแทร็กเสียงทั้งหมดเมื่อรายการช่องรู้จัก PID เสียงเพียงตัวเดียว"
+
+msgid "Satellite LNB"
+msgstr "LNB ดาวเทียม"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF ย่านต่ำ (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF ย่านสูง (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "ความถี่สลับ (kHz)"
+
+msgid "Channels"
+msgstr "ช่อง"
+
+msgid "Channel Search…"
+msgstr "ค้นหาช่อง…"
+
+msgid "Channel search"
+msgstr "การค้นหาช่อง"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "ค้นหาช่องจากเสาอากาศ เคเบิล หรือดาวเทียม (Shift+Ctrl+S)"
+
+msgid "Channel Editor / Favourites"
+msgstr "ตัวแก้ไขช่อง / รายการโปรด"
+
+msgid "Channel editor"
+msgstr "ตัวแก้ไขช่อง"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "เปลี่ยนชื่อ เรียงลำดับ ลบ และเพิ่มช่อง และทำเครื่องหมายรายการโปรด (Shift+Ctrl+E)"
+
+msgid "Internet"
+msgstr "อินเทอร์เน็ต"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "รายการช่องจากอินเทอร์เน็ต: รายการ DVB-I ของภูมิภาคของคุณและเพลย์ลิสต์ IPTV การตั้งค่าเหล่านี้มีผลทันที"
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "การบันทึก"
+
+msgid "Recording folder"
+msgstr "โฟลเดอร์บันทึก"
+
+msgid "File naming scheme"
+msgstr "รูปแบบการตั้งชื่อไฟล์"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "ตัวแทน: %year %date %time %end %station %name ใช้ / สำหรับโฟลเดอร์ย่อย"
+
+msgid "Timer padding"
+msgstr "เวลาเผื่อของตัวตั้งเวลา"
+
+msgid "Start earlier by (min)"
+msgstr "เริ่มก่อน (นาที)"
+
+msgid "Stop later by (min)"
+msgstr "หยุดหลัง (นาที)"
+
+msgid "Timers"
+msgstr "ตัวตั้งเวลา"
+
+msgid "Open the timer window after creating a timer"
+msgstr "เปิดหน้าต่างตัวตั้งเวลาหลังสร้างตัวตั้งเวลา"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "หลังกดบันทึกในผังรายการ ให้แก้ไขตัวตั้งเวลาใหม่ทันที"
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "ผังรายการ: EPG จากการออกอากาศ EPG จากอินเทอร์เน็ต (XMLTV) และ EPG ของผู้ให้บริการอื่น"
+
+msgid "Conditional access"
+msgstr "การเข้าถึงแบบมีเงื่อนไข"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "การถอดรหัสช่องที่เข้ารหัสซึ่งคุณสมัครสมาชิกไว้ ด้วยการ์ดของคุณเองในซอฟต์แคมหรือโมดูล CI"
+
+msgid "None (leave scrambled)"
+msgstr "ไม่มี (คงการเข้ารหัสไว้)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "ซอฟต์แคมภายนอก (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "โมดูลฮาร์ดแวร์ CI / CI+"
+
+msgid "Descrambling via"
+msgstr "ถอดรหัสผ่าน"
+
+msgid "Softcam"
+msgstr "ซอฟต์แคม"
+
+msgid "DVBAPI socket"
+msgstr "ซ็อกเก็ต DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "พาธซ็อกเก็ต Unix หรือ host:port"
+
+msgid "CI module"
+msgstr "โมดูล CI"
+
+msgid "CI adapter number"
+msgstr "หมายเลขอะแดปเตอร์ CI"
+
+msgid "CA device number"
+msgstr "หมายเลขอุปกรณ์ CA"
+
+msgid "Plugins"
+msgstr "ปลั๊กอิน"
+
+msgid "Load plugins at startup"
+msgstr "โหลดปลั๊กอินเมื่อเริ่มโปรแกรม"
+
+msgid "Manage Plugins…"
+msgstr "จัดการปลั๊กอิน…"
+
+msgid "Format and tracks"
+msgstr "รูปแบบและแทร็ก"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "ค่าเริ่มต้นสำหรับตัวตั้งเวลาใหม่และปุ่มบันทึก แต่ละตัวตั้งเวลา และการบันทึกที่เริ่มด้วย \"บันทึกพร้อมตัวเลือก…\" สามารถเปลี่ยนได้\nTS: วิดีโอ แทร็กเสียงทั้งหมด คำบรรยาย เทเลเท็กซ์ และข้อมูล EPG  MKV: วิดีโอ แทร็กเสียงหลายแทร็ก และคำบรรยาย  MPG: วิดีโอและแทร็กเสียงหลายแทร็ก  MP4: วิดีโอและแทร็กเสียงหนึ่งแทร็ก สตรีมอินเทอร์เน็ตไม่มีเทเลเท็กซ์ คำบรรยาย หรือข้อมูล EPG สตรีม HLS และ DASH บันทึกด้วยแทร็กเสียงหนึ่งแทร็ก"
+
+msgid "TV format"
+msgstr "รูปแบบทีวี"
+
+msgid "Radio format"
+msgstr "รูปแบบวิทยุ"
+
+msgid "Audio tracks"
+msgstr "แทร็กเสียง"
+
+msgid "Preferred audio language"
+msgstr "ภาษาเสียงที่ต้องการ"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "ใช้โดย \"เฉพาะภาษาที่ต้องการ\" และโดย MP4 ซึ่งเก็บได้แทร็กเดียว ข้ามแทร็กเสียงบรรยายภาพ หากไม่ตรงกันจะบันทึกแทร็กแรก"
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} เก็บได้เฉพาะใน MPEG-TS จึงบันทึกเป็น TS"
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} เก็บได้เฉพาะใน TS หรือ MKV จึงบันทึกเป็น TS"
+
+msgid " and "
+msgstr " และ "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "ไม่ได้ตั้งภาษาเสียงที่ต้องการ จึงบันทึกเฉพาะแทร็กเสียงแรก"
+
+msgid "Desktop accent: {found}"
+msgstr "สีเน้นของเดสก์ท็อป: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "ไม่พบสีเน้นของเดสก์ท็อป ใช้สีน้ำเงิน LinDVB"
+
+msgid "Current accent: {color}"
+msgstr "สีเน้นปัจจุบัน: {color}"
+
+msgid "Channel Editor"
+msgstr "ตัวแก้ไขช่อง"
+
+msgid "Name"
+msgstr "ชื่อ"
+
+msgid "Category"
+msgstr "หมวดหมู่"
+
+msgid "Group"
+msgstr "กลุ่ม"
+
+msgid "Fav"
+msgstr "โปรด"
+
+msgid "Type"
+msgstr "ประเภท"
+
+msgid "Filter channels"
+msgstr "กรองช่อง"
+
+msgid "General"
+msgstr "ทั่วไป"
+
+msgid "Stream URL"
+msgstr "URL สตรีม"
+
+msgid "Favourite"
+msgstr "รายการโปรด"
+
+msgid "Radio"
+msgstr "วิทยุ"
+
+msgid "Encrypted"
+msgstr "เข้ารหัส"
+
+msgid "Tuning"
+msgstr "การจูน"
+
+msgid "System"
+msgstr "ระบบ"
+
+msgid "Polarity"
+msgstr "โพลาไรซ์"
+
+msgid "Modulation"
+msgstr "การมอดูเลต"
+
+msgid "Frequency (kHz)"
+msgstr "ความถี่ (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "อัตราสัญลักษณ์ (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "แบนด์วิดท์ (Hz)"
+
+msgid "Stream ID"
+msgstr "Stream ID"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "พอร์ต DiSEqC (-1 ไม่มี)"
+
+msgid "Service and PIDs"
+msgstr "บริการและ PID"
+
+msgid "Service ID"
+msgstr "Service ID"
+
+msgid "Transport ID"
+msgstr "Transport ID"
+
+msgid "Video PID"
+msgstr "PID วิดีโอ"
+
+msgid "Audio PIDs"
+msgstr "PID เสียง"
+
+msgid "Teletext PID"
+msgstr "PID เทเลเท็กซ์"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "ใช้การเปลี่ยนแปลง (Ctrl+S)"
+
+msgid "New channel"
+msgstr "ช่องใหม่"
+
+msgid "Delete channel"
+msgstr "ลบช่อง"
+
+msgid "Move up"
+msgstr "เลื่อนขึ้น"
+
+msgid "Move down"
+msgstr "เลื่อนลง"
+
+msgid "Sort by group and name"
+msgstr "เรียงตามกลุ่มและชื่อ"
+
+msgid "No channel selected"
+msgstr "ไม่ได้เลือกช่อง"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "เลือกช่องในรายการเพื่อแก้ไข"
+
+msgid "Unnamed channel"
+msgstr "ช่องไม่มีชื่อ"
+
+msgid "Recording and Device Statistics"
+msgstr "สถิติการบันทึกและอุปกรณ์"
+
+msgid "Active recordings:"
+msgstr "การบันทึกที่กำลังทำงาน:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nตัวตั้งเวลาถัดไป: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "เทเลเท็กซ์ – {name}"
+
+msgid "Find on page"
+msgstr "ค้นหาในหน้า"
+
+msgid "Copy page"
+msgstr "คัดลอกหน้า"
+
+msgid "Save page"
+msgstr "บันทึกหน้า"
+
+msgid "Waiting for teletext…"
+msgstr "กำลังรอเทเลเท็กซ์…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "ไม่พบ teletextdec (gst-plugins-bad พร้อม libzvbi)"
+
+msgid "Searching page {page}…"
+msgstr "กำลังค้นหาหน้า {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "ยังไม่ได้ตั้งค่าการถอดรหัส ช่องที่เข้ารหัสซึ่งคุณมีสิทธิ์รับชมสามารถถอดรหัสได้โดยชี้ LinDVB ไปยังซอฟต์แคมหรือโมดูล CI ของคุณเองในการตั้งค่า"
+
+msgid "Provider '{v0}' is not available."
+msgstr "ผู้ให้บริการ '{v0}' ไม่พร้อมใช้งาน"
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "ผู้ให้บริการ: โมดูล CI – {status}\nโมดูลถอดรหัสด้วยการ์ดของคุณภายในจูนเนอร์"
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "ผู้ให้บริการ: {name}\nLinDVB ส่งต่อส่วน ECM ไปยังไคลเอนต์การ์ดของคุณเองและใช้ control word ที่ได้รับกลับมา โปรแกรมไม่ได้เก็บคีย์ใด ๆ เอง"
+
+msgid "Open CAM Menu…"
+msgstr "เปิดเมนู CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "โหลดไม่สำเร็จ: {v0}"
+
+msgid "Switched off"
+msgstr "ปิดอยู่"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "การเปลี่ยนแปลงมีผลเมื่อเริ่ม LinDVB ใหม่"
+
+msgid "No plugins installed."
+msgstr "ไม่ได้ติดตั้งปลั๊กอิน"
+
+msgid "Plugin actions"
+msgstr "การทำงานของปลั๊กอิน"
+
+msgid "Plugin folder: {path}"
+msgstr "โฟลเดอร์ปลั๊กอิน: {path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "คัดลอกปลั๊กอินลงในโฟลเดอร์นี้: ไฟล์ Python (.py) หรือโฟลเดอร์ที่มี __init__.py"
+
+msgid "Open Plugin Folder"
+msgstr "เปิดโฟลเดอร์ปลั๊กอิน"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I รับรายการช่องของภูมิภาคของคุณจากอินเทอร์เน็ต: ลำดับหมายเลข ชื่อ และโลโก้ รวมถึงวิธีรับสัญญาณของแต่ละช่อง LinDVB ใช้ช่องจากเสาอากาศ เคเบิล หรือดาวเทียมที่ได้จากการค้นหาช่องเมื่อทำได้ และใช้สตรีมอินเทอร์เน็ตในกรณีอื่น"
+
+msgid "Privacy"
+msgstr "ความเป็นส่วนตัว"
+
+msgid "I have read the privacy notice"
+msgstr "ฉันได้อ่านประกาศความเป็นส่วนตัวแล้ว"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "โหลดผังรายการ (EPG) ของช่อง DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "สลับไปใช้ช่องทางรับสัญญาณอื่น (อินเทอร์เน็ต เสาอากาศ เคเบิล ดาวเทียม) เมื่อช่องทางหนึ่งล้มเหลว"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "จูนช่องดาวเทียมจากรายการโดยไม่ต้องค้นหาช่อง (ต้องมีช่องดาวเทียมในรายการของคุณ)"
+
+msgid "Service list"
+msgstr "รายการบริการ"
+
+msgid "Load Lists from Registry"
+msgstr "โหลดรายการจาก Registry"
+
+msgid "In use: {current}"
+msgstr "กำลังใช้: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "ยังไม่ได้ใช้รายการ DVB-I"
+
+msgid "Region"
+msgstr "ภูมิภาค"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "รหัสไปรษณีย์ของคุณใช้เลือกช่องท้องถิ่นและลำดับหมายเลข โดยส่งไปยังเซิร์ฟเวอร์รายการบริการเท่านั้น"
+
+msgid "Postcode"
+msgstr "รหัสไปรษณีย์"
+
+msgid "No postcode: nationwide list"
+msgstr "ไม่มีรหัสไปรษณีย์: รายการทั่วประเทศ"
+
+msgid "Remove DVB-I Channels"
+msgstr "ลบช่อง DVB-I"
+
+msgid "Update Now"
+msgstr "อัปเดตตอนนี้"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "โหลดรายการที่เลือกอีกครั้ง (มีการตรวจสอบทุกวันด้วย)"
+
+msgid "Install Channel List"
+msgstr "ติดตั้งรายการช่อง"
+
+msgid "Asking the service list registry…"
+msgstr "กำลังสอบถาม Registry ของรายการบริการ…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "ไม่สามารถเชื่อมต่อ Registry ได้: {error}"
+
+msgid "Default"
+msgstr "ค่าเริ่มต้น"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "รายการบริการ {v0} รายการจาก {netloc}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Registry ไม่มีรายการบริการสำหรับเยอรมนี"
+
+msgid "Loading the service list…"
+msgstr "กำลังโหลดรายการบริการ…"
+
+msgid "In use: {v0}"
+msgstr "กำลังใช้: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nเลือกภูมิภาคของคุณแล้วกดติดตั้งอีกครั้ง"
+
+msgid "Enter Again"
+msgstr "ป้อนอีกครั้ง"
+
+msgid "The service list does not know this postcode."
+msgstr "รายการบริการไม่รู้จักรหัสไปรษณีย์นี้"
+
+msgid "The service list server answered {code}."
+msgstr "เซิร์ฟเวอร์รายการบริการตอบกลับ {code}"
+
+msgid "Try Again"
+msgstr "ลองอีกครั้ง"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "คุณสามารถลองอีกครั้ง หรือใช้รายการทั่วประเทศโดยไม่ใช้รหัสไปรษณีย์"
+
+msgid "Nationwide List"
+msgstr "รายการทั่วประเทศ"
+
+msgid "No DVB-I list is in use."
+msgstr "ไม่ได้ใช้รายการ DVB-I"
+
+msgid "{removed} DVB-I channels removed"
+msgstr "ลบช่อง DVB-I แล้ว {removed} ช่อง"
+
+msgid "All programmes"
+msgstr "รายการทั้งหมด"
+
+msgid "With audio description"
+msgstr "มีเสียงบรรยายภาพ"
+
+msgid "With subtitles"
+msgstr "มีคำบรรยาย"
+
+msgid "Programme Guide"
+msgstr "ผังรายการ"
+
+msgid "Now / Next"
+msgstr "ตอนนี้ / ถัดไป"
+
+msgid "Per Channel"
+msgstr "ตามช่อง"
+
+msgid "TV Guide"
+msgstr "ผังรายการทีวี"
+
+msgid "Search"
+msgstr "ค้นหา"
+
+msgid "Record Series"
+msgstr "บันทึกทั้งชุด"
+
+msgid "Remind Me"
+msgstr "แจ้งเตือนฉัน"
+
+msgid "Search Web"
+msgstr "ค้นหาบนเว็บ"
+
+msgid "Export the guide as XMLTV"
+msgstr "ส่งออกผังรายการเป็น XMLTV"
+
+msgid "Next"
+msgstr "ถัดไป"
+
+msgid "Now"
+msgstr "ตอนนี้"
+
+msgid "Only favourites"
+msgstr "เฉพาะรายการโปรด"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "คุณสมบัติการช่วยการเข้าถึง (ผังรายการ DVB-I)"
+
+msgid "Show:"
+msgstr "แสดง:"
+
+msgid "Channel"
+msgstr "ช่อง"
+
+msgid "Start"
+msgstr "เริ่ม"
+
+msgid "End"
+msgstr "สิ้นสุด"
+
+msgid "Title"
+msgstr "ชื่อเรื่อง"
+
+msgid "Genre"
+msgstr "ประเภท"
+
+msgid "Day"
+msgstr "วัน"
+
+msgid "Duration"
+msgstr "ความยาว"
+
+msgid "Subheading"
+msgstr "หัวข้อรอง"
+
+msgid "Title or description"
+msgstr "ชื่อเรื่องหรือรายละเอียด"
+
+msgid "Include description"
+msgstr "รวมรายละเอียด"
+
+msgid "Case sensitive"
+msgstr "ตรงตามตัวพิมพ์"
+
+msgid "Series recording: {title}"
+msgstr "บันทึกทั้งชุด: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "ลบการแจ้งเตือนแล้ว: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} เริ่มไปแล้ว"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "ตั้งการแจ้งเตือนแล้ว: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "ลบการแจ้งเตือน"
+
+msgid "Save EPG data"
+msgstr "บันทึกข้อมูล EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "เก็บผังรายการไว้ในดิสก์หลังปิด LinDVB"
+
+msgid "Show EPG info on channel change (s)"
+msgstr "แสดงข้อมูล EPG เมื่อเปลี่ยนช่อง (วินาที)"
+
+msgid "0 = do not show it."
+msgstr "0 = ไม่แสดง"
+
+msgid "Remind before start (min)"
+msgstr "แจ้งเตือนก่อนเริ่ม (นาที)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "การแจ้งเตือนที่ตั้งในผังรายการจะแจ้งคุณล่วงหน้าเท่านี้"
+
+msgid "Preferred language"
+msgstr "ภาษาที่ต้องการ"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "ใช้เมื่อรายการออกอากาศหลายภาษา"
+
+msgid "Time zone"
+msgstr "เขตเวลา"
+
+msgid "Set time zone automatically"
+msgstr "ตั้งเขตเวลาอัตโนมัติ"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "ปิด: ใช้ค่าชดเชยคงที่จาก GMT สำหรับผังรายการ ตัวตั้งเวลา และนาฬิกา"
+
+msgid "Offset to GMT"
+msgstr "ค่าชดเชยจาก GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG จากอินเทอร์เน็ต (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "แหล่ง EPG จากอินเทอร์เน็ต ใช้เพิ่มเติมจาก EPG ที่ออกอากาศ"
+
+msgid "Match IPTV Channels…"
+msgstr "จับคู่ช่อง IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "ตรวจสอบหรือแก้ไขว่าช่องในผังรายการใดเป็นของช่อง M3U ใด"
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "ความถี่ MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "เมื่อช่องที่จูนอยู่บนทรานสพอนเดอร์เหล่านี้ LinDVB จะอ่าน EPG ของผู้ให้บริการนั้นด้วย การเปลี่ยนแปลงมีผลในครั้งถัดไปที่จูนช่อง"
+
+msgid "Frequency (MHz)"
+msgstr "ความถี่ (MHz)"
+
+msgid "Add"
+msgstr "เพิ่ม"
+
+msgid "Polarisation"
+msgstr "โพลาไรเซชัน"
+
+msgid "Defaults"
+msgstr "ค่าเริ่มต้น"
+
+msgid "Delete"
+msgstr "ลบ"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "ป้อนความถี่ทรานสพอนเดอร์เป็น MHz"
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "รายการช่อง IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "ไฟล์ทั้งหมด"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "นำเข้าเพลย์ลิสต์ M3U หนึ่งรายการขึ้นไปหรือรายการช่องอื่นที่มีสตรีมอินเทอร์เน็ต ช่องที่มีอยู่ในรายการแล้วจะได้รับการอัปเดต ช่องอื่นจะถูกเพิ่ม"
+
+msgid "Import Files…"
+msgstr "นำเข้าไฟล์…"
+
+msgid "From files"
+msgstr "จากไฟล์"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV หรือ dvbv5 เลือกได้หลายไฟล์พร้อมกัน"
+
+msgid "Import"
+msgstr "นำเข้า"
+
+msgid "From a web address"
+msgstr "จากที่อยู่เว็บ"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "ที่อยู่ของเพลย์ลิสต์ M3U นำเข้าอีกครั้งเพื่ออัปเดตช่อง"
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "ช่อง IPTV ในรายการช่องของคุณ: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "นำเข้ารายการช่อง IPTV"
+
+msgid "Downloading {url}…"
+msgstr "กำลังดาวน์โหลด {url}…"
+
+msgid "Could not import {name}"
+msgstr "ไม่สามารถนำเข้า {name}"
+
+msgid "The address has no channels."
+msgstr "ที่อยู่นี้ไม่มีช่อง"
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "นำเข้าช่องใหม่ {total_a} ช่องและอัปเดต {total_u} ช่อง"
+
+msgid "Cover lookup failed: {e}"
+msgstr "ค้นหาปกไม่สำเร็จ: {e}"
+
+msgid "Swap with the main picture"
+msgstr "สลับกับภาพหลัก"
+
+msgid "Close picture in picture"
+msgstr "ปิดภาพซ้อนภาพ"
+
+msgid "Picture in picture: {error}"
+msgstr "ภาพซ้อนภาพ: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "ภาพซ้อนภาพใช้ได้กับช่องอินเทอร์เน็ต ช่อง DVB ต้องใช้จูนเนอร์ตัวที่สอง"
+
+msgid "Channel Mosaic"
+msgstr "โมเสกช่อง"
+
+msgid "Previous channels"
+msgstr "ช่องก่อนหน้า"
+
+msgid "Next channels"
+msgstr "ช่องถัดไป"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "โมเสกแสดงช่องอินเทอร์เน็ต มุมมองปัจจุบันของรายการไม่มีช่องดังกล่าว"
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "หน้า {page} จาก {pages} · ช่องอินเทอร์เน็ต {n} ช่อง"
+
+msgid "Click to watch {name}"
+msgstr "คลิกเพื่อดู {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "ขยาย"
+
+msgid "None / not satellite"
+msgstr "ไม่มี / ไม่ใช่ดาวเทียม"
+
+msgid "Port 1 (A/A)"
+msgstr "พอร์ต 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "พอร์ต 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "พอร์ต 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "พอร์ต 4 (B/B)"
+
+msgid "Frequency"
+msgstr "ความถี่"
+
+msgid "Initial letter"
+msgstr "อักษรตัวแรก"
+
+msgid "Provider"
+msgstr "ผู้ให้บริการ"
+
+msgid "Channel Search"
+msgstr "การค้นหาช่อง"
+
+msgid "Device"
+msgstr "อุปกรณ์"
+
+msgid "(choose…)"
+msgstr "(เลือก…)"
+
+msgid "Add folder…"
+msgstr "เพิ่มโฟลเดอร์…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "โฟลเดอร์ที่มีรายการทรานสพอนเดอร์ (dtv-scan-tables หรือ .ini แบบ DVBViewer)"
+
+msgid "Transponder list"
+msgstr "รายการทรานสพอนเดอร์"
+
+msgid "LNB type"
+msgstr "ชนิด LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "กลุ่มเป้าหมาย"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "เช่น Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "ค้นหาความถี่เพิ่มเติม (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "เพิ่มเฉพาะช่องฟรีทีวี"
+
+msgid "Only update existing channels"
+msgstr "อัปเดตเฉพาะช่องที่มีอยู่"
+
+msgid "Update channel names"
+msgstr "อัปเดตชื่อช่อง"
+
+msgid "Group by"
+msgstr "จัดกลุ่มตาม"
+
+msgid "Start Search"
+msgstr "เริ่มค้นหา"
+
+msgid "Stop"
+msgstr "หยุด"
+
+msgid "Folder with transponder lists"
+msgstr "โฟลเดอร์ที่มีรายการทรานสพอนเดอร์"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "ไม่ได้เลือกรายการทรานสพอนเดอร์ โปรดติดตั้ง dtv-scan-tables หรือเพิ่มโฟลเดอร์\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nไม่พบช่อง\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nเสร็จสิ้น: ช่องใหม่ {added} ช่อง อัปเดต {updated} ช่อง\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "ตัวตั้งเวลาบันทึก"
+
+msgid "Search channels"
+msgstr "ค้นหาช่อง"
+
+msgid "  (Radio)"
+msgstr "  (วิทยุ)"
+
+msgid "Date"
+msgstr "วันที่"
+
+msgid "Repeat"
+msgstr "ทำซ้ำ"
+
+msgid "Once"
+msgstr "ครั้งเดียว"
+
+msgid "Series"
+msgstr "ทั้งชุด"
+
+msgid "Action"
+msgstr "การทำงาน"
+
+msgid "Format"
+msgstr "รูปแบบ"
+
+msgid "After"
+msgstr "หลังจากนั้น"
+
+msgid "Disabled"
+msgstr "ปิดใช้งาน"
+
+msgid "Status"
+msgstr "สถานะ"
+
+msgid "Repeat every {day}"
+msgstr "ทำซ้ำทุก {day}"
+
+msgid "_Date"
+msgstr "วันที่(_D)"
+
+msgid "_Lead (min)"
+msgstr "เผื่อก่อน (นาที)(_L)"
+
+msgid "_End"
+msgstr "สิ้นสุด(_E)"
+
+msgid "_Start"
+msgstr "เริ่ม(_S)"
+
+msgid "Repeat on"
+msgstr "ทำซ้ำในวัน"
+
+msgid "_Follow (min)"
+msgstr "เผื่อหลัง (นาที)(_F)"
+
+msgid "Pick a channel on the left"
+msgstr "เลือกช่องทางด้านซ้าย"
+
+msgid "_Name"
+msgstr "ชื่อ(_N)"
+
+msgid "_Timer action"
+msgstr "การทำงานของตัวตั้งเวลา(_T)"
+
+msgid "_After recording"
+msgstr "หลังบันทึก(_A)"
+
+msgid "T_V format"
+msgstr "รูปแบบทีวี(_V)"
+
+msgid "_Radio format"
+msgstr "รูปแบบวิทยุ(_R)"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "เฉพาะภาษาที่ต้องการ: แทร็กในภาษาเสียงจากการตั้งค่า โดยไม่มีเสียงบรรยายภาพ MP4 และไฟล์เสียงวิทยุเก็บได้แทร็กเดียว"
+
+msgid "Audi_o tracks"
+msgstr "แทร็กเสียง(_O)"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "เทเลเท็กซ์มีเฉพาะใน MPEG-TS จึงใช้ TS"
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "ข้อมูล EPG (EIT) มีเฉพาะใน MPEG-TS จึงใช้ TS"
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS เก็บสตรีมคำบรรยายทั้งหมด MKV ได้หน้าคำบรรยายเทเลเท็กซ์เป็นแทร็กข้อความ คำบรรยายแบบบิตแมปของ DVB เก็บได้เฉพาะใน TS"
+
+msgid "Tracks"
+msgstr "แทร็ก"
+
+msgid "File _naming scheme"
+msgstr "รูปแบบการตั้งชื่อไฟล์(_N)"
+
+msgid "Folder…"
+msgstr "โฟลเดอร์…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "ใช้โฟลเดอร์บันทึกจากการตั้งค่า"
+
+msgid "Placeholders"
+msgstr "ตัวแทน"
+
+msgid "Folder: "
+msgstr "โฟลเดอร์: "
+
+msgid "Clear the editor"
+msgstr "ล้างตัวแก้ไข"
+
+msgid "New"
+msgstr "ใหม่"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "เพิ่มการตั้งค่าในตัวแก้ไขเป็นตัวตั้งเวลาใหม่"
+
+msgid "Apply"
+msgstr "ใช้"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "บันทึกการตั้งค่าในตัวแก้ไขลงในตัวตั้งเวลาที่เลือก"
+
+msgid "Delete the selected timer"
+msgstr "ลบตัวตั้งเวลาที่เลือก"
+
+msgid "Enable/Disable"
+msgstr "เปิด/ปิดใช้งาน"
+
+msgid "Switch the selected timer on or off"
+msgstr "เปิดหรือปิดตัวตั้งเวลาที่เลือก"
+
+msgid "Save as default"
+msgstr "บันทึกเป็นค่าเริ่มต้น"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "ใช้รูปแบบและสตรีมเพิ่มเติมเหล่านี้สำหรับตัวตั้งเวลาใหม่และการบันทึกด้วยตนเอง"
+
+msgid "Close"
+msgstr "ปิด"
+
+msgid "Series title"
+msgstr "ชื่อชุดรายการ"
+
+msgid "Delete series rule"
+msgstr "ลบกฎการบันทึกทั้งชุด"
+
+msgid "Series recordings"
+msgstr "การบันทึกทั้งชุด"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "คำบรรยายเก็บได้ใน TS หรือ MKV"
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "ไม่มีภาษาเสียงที่ต้องการในการตั้งค่า: จะบันทึกแทร็กแรก"
+
+msgid "File: {v0}"
+msgstr "ไฟล์: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "เวลาเริ่มหรือสิ้นสุดไม่ถูกต้อง"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "ใช้รูปแบบ HH:MM เช่น 20:15"
+
+msgid "No channel"
+msgstr "ไม่มีช่อง"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "เลือกช่องที่จะบันทึกในรายการทางด้านซ้าย"
+
+msgid "Recording defaults saved"
+msgstr "บันทึกค่าเริ่มต้นการบันทึกแล้ว"
+
+msgid "Record with Options"
+msgstr "บันทึกพร้อมตัวเลือก"
+
+msgid "_Format"
+msgstr "รูปแบบ(_F)"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "เทเลเท็กซ์และข้อมูล EPG เก็บได้เฉพาะใน MPEG-TS จึงใช้ TS"
+
+msgid "Preferred audio language: {lang}."
+msgstr "ภาษาเสียงที่ต้องการ: {lang}"
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "ภาพประกอบเสียง '{v0}' ล้มเหลว: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} เก่าเกินไป"
+
+msgid "Playback error: "
+msgstr "ข้อผิดพลาดในการเล่น: "
+
+msgid "All channels"
+msgstr "ช่องทั้งหมด"
+
+msgid "Favourites (TV + Radio)"
+msgstr "รายการโปรด (ทีวี + วิทยุ)"
+
+msgid "Free to air"
+msgstr "ฟรีทีวี"
+
+msgid "Internet streams"
+msgstr "สตรีมอินเทอร์เน็ต"
+
+msgid "Fill (crop)"
+msgstr "เต็มจอ (ครอบตัด)"
+
+msgid "Fit"
+msgstr "พอดี"
+
+msgid "Stretch"
+msgstr "ยืด"
+
+msgid "Playback error: {m}"
+msgstr "ข้อผิดพลาดในการเล่น: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "การทำงานของปลั๊กอินล้มเหลว: {e}"
+
+msgid "Open Media File…"
+msgstr "เปิดไฟล์สื่อ…"
+
+msgid "Open URL…"
+msgstr "เปิด URL…"
+
+msgid "Import Channel List…"
+msgstr "นำเข้ารายการช่อง…"
+
+msgid "Export Channel List…"
+msgstr "ส่งออกรายการช่อง…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "ส่งออกผังรายการ (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "สลับทีวี / วิทยุ"
+
+msgid "Recordings"
+msgstr "รายการที่บันทึก"
+
+msgid "Programme Guide (EPG)"
+msgstr "ผังรายการ (EPG)"
+
+msgid "Timer Recordings"
+msgstr "การบันทึกตามเวลา"
+
+msgid "Record with Options…"
+msgstr "บันทึกพร้อมตัวเลือก…"
+
+msgid "Teletext"
+msgstr "เทเลเท็กซ์"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "เมนู CAM (โมดูล CI)…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "อัปเดต EPG จากอินเทอร์เน็ต (XMLTV)"
+
+msgid "Audio Track"
+msgstr "แทร็กเสียง"
+
+msgid "Subtitles"
+msgstr "คำบรรยาย"
+
+msgid "Play Rate"
+msgstr "ความเร็วการเล่น"
+
+msgid "Back 10 s"
+msgstr "ถอยหลัง 10 วินาที"
+
+msgid "Forward 10 s"
+msgstr "เดินหน้า 10 วินาที"
+
+msgid "Back 1 min"
+msgstr "ถอยหลัง 1 นาที"
+
+msgid "Forward 1 min"
+msgstr "เดินหน้า 1 นาที"
+
+msgid "Back to Live"
+msgstr "กลับสู่การถ่ายทอดสด"
+
+msgid "Jump"
+msgstr "ข้ามไป"
+
+msgid "Previous"
+msgstr "ก่อนหน้า"
+
+msgid "Random Order"
+msgstr "สุ่มลำดับ"
+
+msgid "Endless Playback"
+msgstr "เล่นวนไม่สิ้นสุด"
+
+msgid "Playlist"
+msgstr "เพลย์ลิสต์"
+
+msgid "Keep Timeshift as Recording"
+msgstr "เก็บไทม์ชิฟต์เป็นรายการบันทึก"
+
+msgid "Rebuild Playback"
+msgstr "สร้างการเล่นใหม่"
+
+msgid "Video Off (audio only)"
+msgstr "ปิดวิดีโอ (เสียงเท่านั้น)"
+
+msgid "Show Selected Channel"
+msgstr "แสดงช่องที่เลือก"
+
+msgid "Swap Pictures"
+msgstr "สลับภาพ"
+
+msgid "Picture in Picture"
+msgstr "ภาพซ้อนภาพ"
+
+msgid "Channel Mosaic…"
+msgstr "โมเสกช่อง…"
+
+msgid "Stop in {mins} min"
+msgstr "หยุดใน {mins} นาที"
+
+msgid "Stop after current programme"
+msgstr "หยุดหลังรายการปัจจุบัน"
+
+msgid "Sleep Timer"
+msgstr "ตั้งเวลาปิด"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "เสียงช้าลง (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "เสียงเร็วขึ้น (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "รีเซ็ต"
+
+msgid "Audio Delay (this channel)"
+msgstr "หน่วงเสียง (ช่องนี้)"
+
+msgid "Full Screen"
+msgstr "เต็มหน้าจอ"
+
+msgid "Show/Hide Channel List"
+msgstr "แสดง/ซ่อนรายการช่อง"
+
+msgid "Aspect / Zoom"
+msgstr "อัตราส่วน / ซูม"
+
+msgid "Window Size"
+msgstr "ขนาดหน้าต่าง"
+
+msgid "Picture Settings…"
+msgstr "การตั้งค่าภาพ…"
+
+msgid "Equalizer…"
+msgstr "อีควอไลเซอร์…"
+
+msgid "Radio Visualisation"
+msgstr "ภาพประกอบเสียงวิทยุ"
+
+msgid "Screenshot"
+msgstr "ภาพหน้าจอ"
+
+msgid "Plugins…"
+msgstr "ปลั๊กอิน…"
+
+msgid "About LinDVB"
+msgstr "เกี่ยวกับ LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "แสดง/ซ่อนรายการช่อง (F9)"
+
+msgid "Main menu (F10)"
+msgstr "เมนูหลัก (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "ผังรายการ (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "เทเลเท็กซ์ (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "แสดงช่องทีวี (Ctrl+M เพื่อสลับ)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "แสดงสถานีวิทยุ (Ctrl+M เพื่อสลับ)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "แสดงรายการที่บันทึกของคุณ (ดับเบิลคลิกเพื่อเล่น)"
+
+msgid "Search name or number"
+msgstr "ค้นหาชื่อหรือหมายเลข"
+
+msgid "All groups"
+msgstr "ทุกกลุ่ม"
+
+msgid "Previous channel (Page Down)"
+msgstr "ช่องก่อนหน้า (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "หยุดชั่วคราว / ไทม์ชิฟต์ (Space)"
+
+msgid "Stop (switch the channel off)"
+msgstr "หยุด (ปิดช่อง)"
+
+msgid "Next channel (Page Up)"
+msgstr "ช่องถัดไป (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "บันทึกช่องปัจจุบัน (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "เลือกรูปแบบและแทร็กสำหรับการบันทึกนี้"
+
+msgid "Seek"
+msgstr "เลื่อนตำแหน่ง"
+
+msgid "LIVE"
+msgstr "สด"
+
+msgid "Back to live (L)"
+msgstr "กลับสู่การถ่ายทอดสด (L)"
+
+msgid "Mute (M)"
+msgstr "ปิดเสียง (M)"
+
+msgid "Volume"
+msgstr "ระดับเสียง"
+
+msgid "Audio track"
+msgstr "แทร็กเสียง"
+
+msgid "Playback and picture settings"
+msgstr "การตั้งค่าการเล่นและภาพ"
+
+msgid "Full screen (F)"
+msgstr "เต็มหน้าจอ (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nตอนนี้: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} จาก {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "แสดงรายการที่บันทึก {n} จาก {total} รายการ"
+
+msgid "{n} of {total} favourites shown"
+msgstr "แสดงรายการโปรด {n} จาก {total} รายการ"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "แสดงสถานีวิทยุ {n} จาก {total} สถานี"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "แสดงช่องทีวี {n} จาก {total} ช่อง"
+
+msgid "Add to Favourites"
+msgstr "เพิ่มในรายการโปรด"
+
+msgid "Remove from Favourites"
+msgstr "ลบออกจากรายการโปรด"
+
+msgid "Edit…"
+msgstr "แก้ไข…"
+
+msgid "Show as Picture in Picture"
+msgstr "แสดงเป็นภาพซ้อนภาพ"
+
+msgid "Select a channel in the list first"
+msgstr "โปรดเลือกช่องในรายการก่อน"
+
+msgid "By channel"
+msgstr "ตามช่อง"
+
+msgid "By title"
+msgstr "ตามชื่อเรื่อง"
+
+msgid "Newest first"
+msgstr "ใหม่สุดก่อน"
+
+msgid "Oldest first"
+msgstr "เก่าสุดก่อน"
+
+msgid "Largest first"
+msgstr "ใหญ่สุดก่อน"
+
+msgid "Sort the recordings"
+msgstr "เรียงลำดับรายการที่บันทึก"
+
+msgid "Open the recording folder"
+msgstr "เปิดโฟลเดอร์บันทึก"
+
+msgid "Look for new recordings"
+msgstr "ค้นหารายการบันทึกใหม่"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "ยังไม่มีรายการที่บันทึก\n\nรายการบันทึกจะถูกเก็บไว้ใน\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "ไม่ได้ตั้งโฟลเดอร์บันทึกในการตั้งค่า"
+
+msgid "Recording in progress"
+msgstr "กำลังบันทึกอยู่"
+
+msgid "Watched"
+msgstr "ดูแล้ว"
+
+msgid "Watched up to {pos}"
+msgstr "ดูถึง {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "ไม่พบรายการที่บันทึก: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "เล่นต่อที่ {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "ไม่พบโฟลเดอร์: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "ไม่สามารถเปิด {folder}: {message}"
+
+msgid "Play"
+msgstr "เล่น"
+
+msgid "Play from the Beginning"
+msgstr "เล่นตั้งแต่ต้น"
+
+msgid "Details…"
+msgstr "รายละเอียด…"
+
+msgid "Mark as Unwatched"
+msgstr "ทำเครื่องหมายว่ายังไม่ได้ดู"
+
+msgid "Mark as Watched"
+msgstr "ทำเครื่องหมายว่าดูแล้ว"
+
+msgid "Show in Folder"
+msgstr "แสดงในโฟลเดอร์"
+
+msgid "Delete…"
+msgstr "ลบ…"
+
+msgid "Stop the recording before deleting it"
+msgstr "หยุดการบันทึกก่อนลบ"
+
+msgid "Delete “{title}”?"
+msgstr "ลบ “{title}” หรือไม่?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nไฟล์จะถูกลบออกจากดิสก์"
+
+msgid "Deleted {name}"
+msgstr "ลบ {name} แล้ว"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "ไม่สามารถลบ {name}: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "กำลังจูน {name}…"
+
+msgid "Search recordings"
+msgstr "ค้นหารายการที่บันทึก"
+
+msgid "No radio stations in the channel list"
+msgstr "ไม่มีสถานีวิทยุในรายการช่อง"
+
+msgid "No TV channels in the channel list"
+msgstr "ไม่มีช่องทีวีในรายการช่อง"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – สลับไปยัง {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} ไม่ได้ออกอากาศในขณะนี้"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "หยุดทีวีสดแล้ว: ต้องใช้จูนเนอร์สำหรับการบันทึกตามเวลา"
+
+msgid "Stopped"
+msgstr "หยุดแล้ว"
+
+msgid "Sound {ms} ms later"
+msgstr "เสียงช้าลง {ms} ms"
+
+msgid "Sound {v0} ms earlier"
+msgstr "เสียงเร็วขึ้น {v0} ms"
+
+msgid "Audio delay off"
+msgstr "ปิดการหน่วงเสียง"
+
+msgid "Playing {item}"
+msgstr "กำลังเล่น {item}"
+
+msgid "Open media files"
+msgstr "เปิดไฟล์สื่อ"
+
+msgid "Open URL"
+msgstr "เปิด URL"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "เปิด"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "นำเข้ารายการช่อง (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "ส่งออกช่อง (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "ส่งออกไปยัง {path} แล้ว"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "ส่งออกผังรายการ (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "ไม่สามารถเขียน {path}: {error}"
+
+msgid "Nothing to record"
+msgstr "ไม่มีสิ่งที่จะบันทึก"
+
+msgid "This channel is already being recorded"
+msgstr "ช่องนี้กำลังถูกบันทึกอยู่แล้ว"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "เทเลเท็กซ์: ไม่พบตัวถอดรหัส (gst-plugins-bad พร้อม libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "เทเลเท็กซ์: ไม่มีในช่องนี้"
+
+msgid "Teletext needs a DVB channel"
+msgstr "เทเลเท็กซ์ต้องใช้ช่อง DVB"
+
+msgid "Volume {v0}%"
+msgstr "ระดับเสียง {v0}%"
+
+msgid "Off"
+msgstr "ปิด"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "คำบรรยายปิด (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} ภาษา"
+
+msgid "{n} audio tracks"
+msgstr "แทร็กเสียง {n} แทร็ก"
+
+msgid "Screenshot saved: {path}"
+msgstr "บันทึกภาพหน้าจอแล้ว: {path}"
+
+msgid "Screenshot failed"
+msgstr "จับภาพหน้าจอไม่สำเร็จ"
+
+msgid "Picture Settings"
+msgstr "การตั้งค่าภาพ"
+
+msgid "Restore Defaults"
+msgstr "คืนค่าเริ่มต้น"
+
+msgid "Equalizer"
+msgstr "อีควอไลเซอร์"
+
+msgid "Leave full screen (F)"
+msgstr "ออกจากเต็มหน้าจอ (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "ภาพประกอบเสียงล้มเหลว: {e}"
+
+msgid "Radio visualisation"
+msgstr "ภาพประกอบเสียงวิทยุ"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "ภาพประกอบเสียงวิทยุ (เฉพาะวิทยุและเสียง)"
+
+msgid "Playback stops at {v0}"
+msgstr "การเล่นจะหยุดเวลา {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "ไม่มีข้อมูลรายการสำหรับการตั้งเวลาปิด"
+
+msgid "Sleep timer: playback stopped"
+msgstr "ตั้งเวลาปิด: หยุดการเล่นแล้ว"
+
+msgid "No programme information"
+msgstr "ไม่มีข้อมูลรายการ"
+
+msgid "Next: {v0}  {title}"
+msgstr "ถัดไป: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "สัญญาณ {v0}%"
+
+msgid "Signal quality {v0}%"
+msgstr "คุณภาพสัญญาณ {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "คุณภาพสตรีม {v0}%"
+
+msgid "No signal"
+msgstr "ไม่มีสัญญาณ"
+
+msgid "● REC {n}"
+msgstr "● REC {n}"
+
+msgid "Live"
+msgstr "สด"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "ไทม์ชิฟต์ −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "ดูและบันทึก DVB-S/S2, DVB-C, DVB-T/T2, ATSC และทีวีอินเทอร์เน็ตด้วย Linux DVB API และ GStreamer"
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "จับคู่ช่อง IPTV กับ XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "ยังไม่ได้โหลดผังรายการ XMLTV โปรดตั้ง URL ของ XMLTV ในการตั้งค่า EPG และดาวน์โหลดผังรายการก่อน การจับคู่จะเริ่มโดยอัตโนมัติหลังดาวน์โหลด"
+
+msgid "Download XMLTV guide now"
+msgstr "ดาวน์โหลดผังรายการ XMLTV ตอนนี้"
+
+msgid "Only channels without guide"
+msgstr "เฉพาะช่องที่ไม่มีผังรายการ"
+
+msgid "Match"
+msgstr "จับคู่"
+
+msgid "Guide channel:"
+msgstr "ช่องในผังรายการ:"
+
+msgid "Assign"
+msgstr "กำหนด"
+
+msgid "Suggest"
+msgstr "แนะนำ"
+
+msgid "Auto-match all"
+msgstr "จับคู่ทั้งหมดอัตโนมัติ"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "จับคู่ทุกช่องที่ไม่ได้กำหนดด้วยตนเอง"
+
+msgid "Reset to automatic"
+msgstr "รีเซ็ตเป็นอัตโนมัติ"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "ให้การจับคู่อัตโนมัติตัดสินใจสำหรับช่องที่เลือกอีกครั้ง"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} จาก {v1} ช่องมีช่องในผังรายการ"
+
+msgid "No suggestion for {name}"
+msgstr "ไม่มีคำแนะนำสำหรับ {name}"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} เริ่มไม่ได้ ({m}) จึงแสดง {other} แทน"
+
+msgid "Off (station name only)"
+msgstr "ปิด (ชื่อสถานีเท่านั้น)"
+
+msgid "Spectrum analyser (classic)"
+msgstr "ตัววิเคราะห์สเปกตรัม (คลาสสิก)"
+
+msgid "VU meters (classic)"
+msgstr "มาตรวัด VU (คลาสสิก)"
+
+msgid "Oscilloscope (classic)"
+msgstr "ออสซิลโลสโคป (คลาสสิก)"
+
+msgid "Glow waves (modern)"
+msgstr "คลื่นเรืองแสง (โมเดิร์น)"
+
+msgid "Nebula particles (modern)"
+msgstr "อนุภาคเนบิวลา (โมเดิร์น)"
+
+msgid "Light ribbons (modern)"
+msgstr "ริบบิ้นแสง (โมเดิร์น)"
+
+msgid "Pulsar (modern)"
+msgstr "พัลซาร์ (โมเดิร์น)"
+
+msgid "Supernova (modern)"
+msgstr "ซูเปอร์โนวา (โมเดิร์น)"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis (โมเดิร์น)"
+
+msgid "Aurora borealis (modern)"
+msgstr "แสงเหนือ (โมเดิร์น)"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "พรีเซ็ตทั้งหมด (สุ่ม)"
+
+msgid "All of {name}"
+msgstr "ทั้งหมดของ {name}"
+
+msgid "Dancer"
+msgstr "นักเต้น"
+
+msgid "Drawing"
+msgstr "ภาพวาด"
+
+msgid "Fractal"
+msgstr "แฟร็กทัล"
+
+msgid "Geometric"
+msgstr "เรขาคณิต"
+
+msgid "Hypnotic"
+msgstr "สะกดจิต"
+
+msgid "Particles"
+msgstr "อนุภาค"
+
+msgid "Reaction"
+msgstr "ปฏิกิริยา"
+
+msgid "Sparkle"
+msgstr "ประกายแสง"
+
+msgid "Supernova"
+msgstr "ซูเปอร์โนวา"
+
+msgid "Waveform"
+msgstr "รูปคลื่น"
+
+msgid "! Transition"
+msgstr "! การเปลี่ยนภาพ"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "บริการแบบโต้ตอบ (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "คลังสื่อ บริการสืบทอดเทเลเท็กซ์ และอื่น ๆ หลังปุ่มสีแดง (F5)"
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "ต้องใช้ WebKitGTK 6 (gir1.2-webkit-6.0) ซึ่งยังไม่ได้ติดตั้ง"
+
+msgid "Start automatically"
+msgstr "เริ่มโดยอัตโนมัติ"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "ปิด: แอปพลิเคชันจะเริ่มเฉพาะเมื่อกดปุ่มสีแดง แอปพลิเคชันของช่องส่งข้อมูลการใช้งานไปยังผู้แพร่ภาพ"
+
+msgid "Allow third-party cookies"
+msgstr "อนุญาตคุกกี้ของบุคคลที่สาม"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "เครือข่ายโฆษณาใช้คุกกี้เหล่านี้เพื่อติดตามคุณข้ามช่อง"
+
+msgid "Delete HbbTV Data"
+msgstr "ลบข้อมูล HbbTV"
+
+msgid "Cookies and storage"
+msgstr "คุกกี้และพื้นที่จัดเก็บ"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "ลบสิ่งที่แอปพลิเคชัน HbbTV จัดเก็บไว้ เช่น คุกกี้และการตั้งค่า"
+
+msgid "HbbTV data deleted"
+msgstr "ลบข้อมูล HbbTV แล้ว"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "ไม่สามารถโหลดแอปพลิเคชัน HbbTV ได้: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (ปุ่มสีแดง)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "บริการแบบโต้ตอบของช่อง (ปุ่มสีแดง, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "ปิดบริการแบบโต้ตอบ (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "คำบรรยายในคลังสื่อ"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "แอปพลิเคชันจะแสดงคำบรรยายในวิดีโอตั้งแต่เริ่มต้น"
+
+msgid "Audio description in media libraries"
+msgstr "เสียงบรรยายภาพในคลังสื่อ"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "แอปพลิเคชันจะเลือกแทร็กเสียงที่บรรยายภาพก่อน"
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "แซนด์บ็อกซ์ของ WebKit อาจสร้าง user namespace ที่นี่ไม่ได้ (ข้อจำกัด AppArmor ของ Ubuntu) แอปพลิเคชันจึงเริ่มอย่างปลอดภัยไม่ได้ ดู docs/HBBTV.md"
+
+msgid "This interactive service is rated {age}+."
+msgstr "บริการแบบโต้ตอบนี้จัดเรตไว้ที่ {age}+"
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "ถูกบล็อกโดยการคุ้มครองเยาวชน โปรดตั้ง PIN ในการตั้งค่า"
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "ป้อน PIN ผิดหลายครั้งเกินไป โปรดลองอีกครั้งในอีกไม่กี่นาที"
+
+msgid "Youth protection"
+msgstr "การคุ้มครองเยาวชน"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "ปลดล็อก"
+
+msgid "Wrong PIN."
+msgstr "PIN ไม่ถูกต้อง"
+
+msgid "This video is rated {age}+."
+msgstr "วิดีโอนี้จัดเรตไว้ที่ {age}+"
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "เทเลเท็กซ์ของบริการแบบโต้ตอบของช่อง (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "เทเลเท็กซ์จากบริการแบบโต้ตอบ"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "ปุ่ม TXT จะเปิดเทเลเท็กซ์ HbbTV ของช่องเมื่อมี"
+
+msgid "Viewers from {age} years"
+msgstr "ผู้ชมอายุ {age} ปีขึ้นไป"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "แอปพลิเคชันและวิดีโอที่จัดเรตสูงกว่าอายุนี้ต้องใช้ PIN"
+
+msgid "Current PIN"
+msgstr "PIN ปัจจุบัน"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "จำเป็นสำหรับการเปลี่ยนการคุ้มครองเยาวชนหรือ PIN"
+
+msgid "New PIN"
+msgstr "PIN ใหม่"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "เว้นว่างไว้เพื่อใช้ PIN ปัจจุบันต่อ"
+
+msgid "Youth protection not changed"
+msgstr "ไม่ได้เปลี่ยนการคุ้มครองเยาวชน"
+
+msgid "The current PIN is wrong."
+msgstr "PIN ปัจจุบันไม่ถูกต้อง"
+
+msgid "Youth protection needs a PIN"
+msgstr "การคุ้มครองเยาวชนต้องใช้ PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "ตั้ง PIN เพื่อเปิดการคุ้มครองเยาวชน"
+
+msgid "Companion screens on the network"
+msgstr "หน้าจอคู่หูบนเครือข่าย"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "โทรศัพท์และแท็บเล็ตในเครือข่ายของคุณสามารถค้นหา LinDVB สื่อสารกับแอปพลิเคชัน ติดตามภาพแบบซิงค์ และขอเริ่มแอปพลิเคชันได้ ปิด: ไม่มีสิ่งใดรอรับการเชื่อมต่อบนเครือข่าย"
+
+msgid "Start an application from another device?"
+msgstr "เริ่มแอปพลิเคชันจากอุปกรณ์อื่นหรือไม่?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "อุปกรณ์ในเครือข่ายของคุณต้องการเริ่ม “{name}” ({url})"
+
+msgid "an HbbTV application"
+msgstr "แอปพลิเคชัน HbbTV"
+
+msgid "Refuse"
+msgstr "ปฏิเสธ"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "วิดีโอนี้เข้ารหัสด้วย {drm} LinDVB ไม่รองรับ DRM จึงเล่นไม่ได้"
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "วิดีโอนี้ถูกเข้ารหัส LinDVB ไม่รองรับ DRM จึงเล่นไม่ได้"
+
+msgid "Contains code from"
+msgstr "มีโค้ดจาก"
+
+msgid "Built with"
+msgstr "สร้างด้วย"
+
+msgid "Visualisations"
+msgstr "ภาพประกอบเสียง"
+
+msgid "Broadcast (EIT)"
+msgstr "การออกอากาศ (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG ของผู้ให้บริการ (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "ผังเนื้อหา DVB-I"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV (อินเทอร์เน็ต)"
+
+msgid "Advanced"
+msgstr "ขั้นสูง"
+
+msgid "Priority of the EPG sources"
+msgstr "ลำดับความสำคัญของแหล่ง EPG"
+
+msgid "Automatic (recommended)"
+msgstr "อัตโนมัติ (แนะนำ)"
+
+msgid "Custom order"
+msgstr "ลำดับกำหนดเอง"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "อัตโนมัติ: รายการตอนนี้และถัดไปมาจากการออกอากาศ ช่วงเวลาที่ไกลออกไปใช้แหล่งที่สมบูรณ์ที่สุด และช่องว่างจะเติมจากแหล่งอื่น รายการจะไม่แสดงซ้ำสองครั้ง"
+
+msgid "Order of the EPG sources"
+msgstr "ลำดับของแหล่ง EPG"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "แหล่งที่อยู่บนสุดจะชนะเมื่อสองแหล่งไม่ตรงกัน แหล่งอื่นจะเติมช่องว่าง ช่องที่มีลำดับของตัวเองจะใช้ลำดับนั้นเสมอ เช่น เมื่อ EPG จากการออกอากาศมีคุณภาพต่ำ"
+
+msgid "Applies to"
+msgstr "ใช้กับ"
+
+msgid "Remove Channel"
+msgstr "ลบช่อง"
+
+msgid "Move Up"
+msgstr "เลื่อนขึ้น"
+
+msgid "Move Down"
+msgstr "เลื่อนลง"
+
+msgid "Own Order for Channel"
+msgstr "ลำดับเฉพาะสำหรับช่อง"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "อัตโนมัติ (การ์ดจอเมื่อเป็นไปได้)"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (บอร์ด ARM)"
+
+msgid "Software (processor)"
+msgstr "ซอฟต์แวร์ (โปรเซสเซอร์)"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "พบตัวถอดรหัสของการ์ดจอ: {list}"
+
+msgid "none"
+msgstr "ไม่มี"
+
+msgid "Switched off after an error: {list}"
+msgstr "ปิดหลังเกิดข้อผิดพลาด: {list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "กำลังถอดรหัสด้วย: {decoder}"
+
+msgid "Video decoding"
+msgstr "การถอดรหัสวิดีโอ"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "ภาพทีวีแบบอินเทอร์เลซ (ช่อง SD และ 1080i ส่วนใหญ่) ทำบนการ์ดจอเมื่อถอดรหัสด้วย VA-API มิฉะนั้นจะทำโดยโปรเซสเซอร์"
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "การถอดรหัสวิดีโอ {name} ล้มเหลว กำลังเล่นด้วยตัวถอดรหัสถัดไป"
+
+msgid "Tuners"
+msgstr "จูนเนอร์"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB บันทึกและเล่นบนจูนเนอร์หลายตัวพร้อมกัน และใช้จูนเนอร์ที่มีลำดับความสำคัญสูงสุดก่อน ช่องบนทรานสพอนเดอร์เดียวกันใช้จูนเนอร์ร่วมกัน"
+
+msgid "Reception types unknown"
+msgstr "ไม่ทราบชนิดการรับสัญญาณ"
+
+msgid "not connected"
+msgstr "ไม่ได้เชื่อมต่อ"
+
+msgid "Priority"
+msgstr "ลำดับความสำคัญ"
+
+msgid "Higher numbers are used first."
+msgstr "ตัวเลขสูงกว่าจะถูกใช้ก่อน"
+
+msgid "Shared antenna cable"
+msgstr "สายอากาศร่วม"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "เปิดสำหรับจูนเนอร์ที่ต่ออยู่บนสายเดียวกับจูนเนอร์อื่น (loop-through หรือตัวแยกสัญญาณบนเอาต์พุต LNB เดียว) หากไม่มี Unicable จะรับได้ครั้งละหนึ่งย่านและหนึ่งโพลาไรเซชันเท่านั้น"
+
+msgid "Cable name"
+msgstr "ชื่อสาย"
+
+msgid "Tuners with the same name share one cable."
+msgstr "จูนเนอร์ที่มีชื่อเดียวกันใช้สายเดียวกัน"
+
+msgid "For all tuners without an LNB of their own."
+msgstr "สำหรับจูนเนอร์ทั้งหมดที่ไม่มี LNB ของตัวเอง"
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "ภาพผิดพลาด: แก้ไขบล็อกไม่ได้ {n} บล็อก"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "สัญญาณอ่อน: มีค่าเผื่อเพียง {db} dB"
+
+msgid "{n} uncorrectable blocks"
+msgstr "บล็อกที่แก้ไขไม่ได้ {n} บล็อก"
+
+msgid "Lock lost"
+msgstr "สัญญาณหลุด"
+
+msgid "{n} continuity errors"
+msgstr "ข้อผิดพลาดความต่อเนื่อง {n} ครั้ง"
+
+msgid "PCR jump"
+msgstr "PCR กระโดด"
+
+msgid "New table version (0x{tid})"
+msgstr "เวอร์ชันตารางใหม่ (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "ความดังกระโดด {lu} LU"
+
+msgid "Rebuffering"
+msgstr "กำลังบัฟเฟอร์ใหม่"
+
+msgid "Measured since {time}"
+msgstr "วัดตั้งแต่ {time}"
+
+msgid "Delivery"
+msgstr "การส่ง"
+
+msgid "Frame rate"
+msgstr "อัตราเฟรม"
+
+msgid "Average bit rate"
+msgstr "บิตเรตเฉลี่ย"
+
+msgid "Peak bit rate"
+msgstr "บิตเรตสูงสุด"
+
+msgid "Margin"
+msgstr "ค่าเผื่อ"
+
+msgid "Loudness"
+msgstr "ความดัง"
+
+msgid "Bit rate"
+msgstr "บิตเรต"
+
+msgid "Events"
+msgstr "เหตุการณ์"
+
+msgid "1 minute"
+msgstr "1 นาที"
+
+msgid "15 minutes"
+msgstr "15 นาที"
+
+msgid "5 minutes"
+msgstr "5 นาที"
+
+msgid "hard of hearing"
+msgstr "สำหรับผู้บกพร่องทางการได้ยิน"
+
+msgid "Data"
+msgstr "ข้อมูล"
+
+msgid "Level"
+msgstr "ระดับ"
+
+msgid "Carrier"
+msgstr "คลื่นพาห์"
+
+msgid "Uncorrectable blocks"
+msgstr "บล็อกที่แก้ไขไม่ได้"
+
+msgid "Lock losses"
+msgstr "สัญญาณหลุด"
+
+msgid "C/N history"
+msgstr "ประวัติ C/N"
+
+msgid "Errors"
+msgstr "ข้อผิดพลาด"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / ไพลอต"
+
+msgid "Protocol"
+msgstr "โปรโตคอล"
+
+msgid "Response time"
+msgstr "เวลาตอบสนอง"
+
+msgid "Bad"
+msgstr "แย่"
+
+msgid "Fair"
+msgstr "พอใช้"
+
+msgid "Good"
+msgstr "ดี"
+
+msgid "Poor"
+msgstr "ต่ำ"
+
+msgid "NO LOCK"
+msgstr "ไม่มีสัญญาณล็อก"
+
+msgid "Buffer"
+msgstr "บัฟเฟอร์"
+
+msgid "Download"
+msgstr "ดาวน์โหลด"
+
+msgid "Buffer history"
+msgstr "ประวัติบัฟเฟอร์"
+
+msgid "(driver value)"
+msgstr "(ค่าจากไดรเวอร์)"
+
+msgid "since start"
+msgstr "ตั้งแต่เริ่ม"
+
+msgid "required"
+msgstr "ที่ต้องการ"
+
+msgid "Quality history"
+msgstr "ประวัติคุณภาพ"
+
+msgid "horizontal"
+msgstr "แนวนอน"
+
+msgid "left"
+msgstr "ซ้าย"
+
+msgid "vertical"
+msgstr "แนวตั้ง"
+
+msgid "right"
+msgstr "ขวา"
+
+msgid "Port {n}"
+msgstr "พอร์ต {n}"
+
+msgid "(theoretical)"
+msgstr "(ตามทฤษฎี)"
+
+msgid "Overview"
+msgstr "ภาพรวม"
+
+msgid "Bit rate of the channel"
+msgstr "บิตเรตของช่อง"
+
+msgid "Average"
+msgstr "เฉลี่ย"
+
+msgid "Peak"
+msgstr "สูงสุด"
+
+msgid "Codec"
+msgstr "ตัวแปลงสัญญาณ"
+
+msgid "Decoder"
+msgstr "ตัวถอดรหัส"
+
+msgid "Dropped frames"
+msgstr "เฟรมที่ตกหล่น"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "เริ่มอัตโนมัติ"
+
+msgid "PCR arrival jitter"
+msgstr "ความคลาดเคลื่อนการมาถึงของ PCR"
+
+msgid "PCR interval"
+msgstr "ช่วงเวลา PCR"
+
+msgid "PAT / PMT interval"
+msgstr "ช่วงเวลา PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "เทเลเท็กซ์ / คำบรรยาย / ข้อมูล"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "โปรเกรสซีฟ"
+
+msgid "only for the channel on screen"
+msgstr "เฉพาะช่องที่แสดงบนหน้าจอ"
+
+msgid "AD"
+msgstr "AD"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "ความดัง (แทร็กปัจจุบัน): {lufs} · สูงสุด {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "ความดัง: เฉพาะช่องที่แสดงบนหน้าจอ"
+
+msgid "scrambled packets"
+msgstr "แพ็กเก็ตที่เข้ารหัส"
+
+msgid "no CA descriptors in the PMT"
+msgstr "ไม่มี CA descriptor ใน PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} หน้า"
+
+msgid "Quality"
+msgstr "คุณภาพ"
+
+msgid "Carrier to noise ratio"
+msgstr "อัตราส่วนคลื่นพาห์ต่อสัญญาณรบกวน"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "อัตราบิตผิดพลาด (log₁₀)"
+
+msgid "Address"
+msgstr "ที่อยู่"
+
+msgid "HTTP status"
+msgstr "สถานะ HTTP"
+
+msgid "Content type"
+msgstr "ชนิดเนื้อหา"
+
+msgid "Download speed"
+msgstr "ความเร็วดาวน์โหลด"
+
+msgid "Segments"
+msgstr "เซกเมนต์"
+
+msgid "Error"
+msgstr "ข้อผิดพลาด"
+
+msgid "Variants"
+msgstr "รูปแบบย่อย"
+
+msgid "Codecs"
+msgstr "ตัวแปลงสัญญาณ"
+
+msgid "Error timeline"
+msgstr "ลำดับเวลาข้อผิดพลาด"
+
+msgid "uncorrectable blocks"
+msgstr "บล็อกที่แก้ไขไม่ได้"
+
+msgid "lock lost"
+msgstr "สัญญาณหลุด"
+
+msgid "rebuffering"
+msgstr "บัฟเฟอร์ใหม่"
+
+msgid "loudness jump"
+msgstr "ความดังกระโดด"
+
+msgid "table version"
+msgstr "เวอร์ชันตาราง"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "พารามิเตอร์ที่จูน (จากฟรอนต์เอนด์)"
+
+msgid "Delivery system"
+msgstr "ระบบการส่ง"
+
+msgid "Code rate"
+msgstr "อัตรารหัส"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "ช่วงป้องกัน"
+
+msgid "Pilots"
+msgstr "ไพลอต"
+
+msgid "Carriers"
+msgstr "คลื่นพาห์"
+
+msgid "C/N needed"
+msgstr "C/N ที่ต้องการ"
+
+msgid "Dish alignment aid…"
+msgstr "ตัวช่วยปรับจานดาวเทียม…"
+
+msgid "Logging and warnings"
+msgstr "การบันทึกล็อกและคำเตือน"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "บันทึกการรับสัญญาณ (หนึ่งบรรทัดต่อนาที เก็บไว้ 31 วัน)"
+
+msgid "Warn below this margin (dB)"
+msgstr "เตือนเมื่อค่าเผื่อต่ำกว่า (dB)"
+
+msgid "Reception over the last days"
+msgstr "การรับสัญญาณในช่วงหลายวันที่ผ่านมา"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · ต่ำสุด {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · สูงสุด {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× ของอัตราสตรีม"
+
+msgid "Download and stream rate"
+msgstr "อัตราดาวน์โหลดและอัตราสตรีม"
+
+msgid "HLS with {n} variants"
+msgstr "HLS มี {n} รูปแบบย่อย"
+
+msgid "HLS media playlist"
+msgstr "เพลย์ลิสต์สื่อ HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "สด"
+
+msgid "on demand"
+msgstr "ตามต้องการ"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} เซกเมนต์ ยาว Ø {s} (เป้าหมาย {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "ไม่มีรายการรูปแบบย่อย: ที่อยู่นี้เป็นสตรีมเดียว"
+
+msgid "No events so far."
+msgstr "ยังไม่มีเหตุการณ์"
+
+msgid "{n} minutes logged for this channel."
+msgstr "บันทึกไว้ {n} นาทีสำหรับช่องนี้"
+
+msgid "Nothing logged for this channel yet."
+msgstr "ยังไม่มีการบันทึกสำหรับช่องนี้"
+
+msgid "min {min} · max {max}"
+msgstr "ต่ำสุด {min} · สูงสุด {max}"
+
+msgid "needs {db}"
+msgstr "ต้องการ {db}"
+
+msgid "relative (driver)"
+msgstr "สัมพัทธ์ (ไดรเวอร์)"
+
+msgid "post FEC {v}"
+msgstr "หลัง FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "ที่ต้องการสำหรับภาพที่สะอาด"
+
+msgid "DVB API v5 statistics"
+msgstr "สถิติ DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (สเกลของไดรเวอร์)"
+
+msgid "Elementary streams and PIDs"
+msgstr "สตรีมพื้นฐานและ PID"
+
+msgid "Whole stream"
+msgstr "สตรีมทั้งหมด"
+
+msgid "Sort by PID"
+msgstr "เรียงตาม PID"
+
+msgid "Sort by bit rate"
+msgstr "เรียงตามบิตเรต"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "ข้อผิดพลาด CC"
+
+msgid "Scrambled"
+msgstr "เข้ารหัส"
+
+msgid "Last 60 s"
+msgstr "60 วินาทีล่าสุด"
+
+msgid "Packets"
+msgstr "แพ็กเก็ต"
+
+msgid "Sync losses"
+msgstr "การซิงค์หลุด"
+
+msgid "Null packets"
+msgstr "แพ็กเก็ตว่าง"
+
+msgid "PCR jumps"
+msgstr "PCR กระโดด"
+
+msgid "PID filter"
+msgstr "ตัวกรอง PID"
+
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "อื่น ๆ"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "รวม ({n} PID): {rate} · ข้อผิดพลาดความต่อเนื่อง {cc} ครั้ง"
+
+msgid "Measuring…"
+msgstr "กำลังวัด…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "ว่าง / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "ใช้ {used} จาก {cap} · วัดเมื่อ {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "รับเฉพาะ PID ของช่องนี้ วัดทั้งทรานสพอนเดอร์เพื่อดูช่องอื่นบนทรานสพอนเดอร์นั้น"
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "โปรไฟล์ / ระดับ"
+
+msgid "Scan"
+msgstr "การสแกน"
+
+msgid "Film (3:2 pulldown)"
+msgstr "ภาพยนตร์ (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "เฟรมที่แสดง / ตกหล่น"
+
+msgid "Measured bit rate"
+msgstr "บิตเรตที่วัดได้"
+
+msgid "Nominal bit rate"
+msgstr "บิตเรตตามกำหนด"
+
+msgid "VBV buffer"
+msgstr "บัฟเฟอร์ VBV"
+
+msgid "Frame sizes"
+msgstr "ขนาดเฟรม"
+
+msgid "B frame"
+msgstr "เฟรม B"
+
+msgid "I frame"
+msgstr "เฟรม I"
+
+msgid "P frame"
+msgstr "เฟรม P"
+
+msgid "GOP length"
+msgstr "ความยาว GOP"
+
+msgid "I frame average"
+msgstr "ค่าเฉลี่ยเฟรม I"
+
+msgid "P/B frame average"
+msgstr "ค่าเฉลี่ยเฟรม P/B"
+
+msgid "Nominal"
+msgstr "ตามกำหนด"
+
+msgid "Sample rate"
+msgstr "อัตราการสุ่มตัวอย่าง"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "ที่วัดได้"
+
+msgid "Notes"
+msgstr "หมายเหตุ"
+
+msgid "Loudness (EBU R 128)"
+msgstr "ความดัง (EBU R 128)"
+
+msgid "Momentary"
+msgstr "ชั่วขณะ"
+
+msgid "Short term"
+msgstr "ระยะสั้น"
+
+msgid "Loudness range"
+msgstr "ช่วงความดัง"
+
+msgid "Sample peak"
+msgstr "ค่าสูงสุดของตัวอย่าง"
+
+msgid "level {l}"
+msgstr "ระดับ {l}"
+
+msgid "tier {t}"
+msgstr "ชั้น {t}"
+
+msgid "fields"
+msgstr "ฟิลด์"
+
+msgid "mixed"
+msgstr "ผสม"
+
+msgid "not sent"
+msgstr "ไม่ได้ส่ง"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "แถบดำ {pct} % ด้านบนและด้านล่าง"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "แถบดำ {pct} % ด้านข้าง"
+
+msgid "picture {ratio}:1"
+msgstr "ภาพ {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "ใช่ ฟิลด์ซ้ำ"
+
+msgid "mastering display data"
+msgstr "ข้อมูลจอแสดงผลมาสเตอร์ริง"
+
+msgid "(maximum)"
+msgstr "(สูงสุด)"
+
+msgid "not signalled (variable)"
+msgstr "ไม่ได้ส่งสัญญาณ (แปรผัน)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "ตอนนี้ {now} · Ø {avg} · สูงสุด {max}"
+
+msgid "clean audio"
+msgstr "เสียงชัด"
+
+msgid "EBU target −23 LUFS"
+msgstr "เป้าหมาย EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "วัดจากเสียงที่ถอดรหัสแล้วของช่องที่แสดงบนหน้าจอ ก่อนอีควอไลเซอร์"
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "ความดังกระโดด 6 LU ขึ้นไป {n} ครั้ง (รายการ ↔ โฆษณา)"
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "วัดความดังเฉพาะช่องที่แสดงบนหน้าจอ"
+
+msgid "index"
+msgstr "ดัชนี"
+
+msgid "info"
+msgstr "ข้อมูล"
+
+msgid "subtitles (hard of hearing)"
+msgstr "คำบรรยาย (ผู้บกพร่องทางการได้ยิน)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "คำบรรยาย DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "ตารางและ EPG"
+
+msgid "SI tables"
+msgstr "ตาราง SI"
+
+msgid "Version"
+msgstr "เวอร์ชัน"
+
+msgid "Events in the guide"
+msgstr "เหตุการณ์ในผังรายการ"
+
+msgid "EIT now/next"
+msgstr "EIT ตอนนี้/ถัดไป"
+
+msgid "Difference to this computer"
+msgstr "ส่วนต่างกับคอมพิวเตอร์เครื่องนี้"
+
+msgid "Local time offset"
+msgstr "ค่าชดเชยเวลาท้องถิ่น"
+
+msgid "Network"
+msgstr "เครือข่าย"
+
+msgid "Raw view"
+msgstr "มุมมองดิบ"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ปกติ"
+
+msgid "slow"
+msgstr "ช้า"
+
+msgid "(all services)"
+msgstr "(ทุกบริการ)"
+
+msgid "not seen"
+msgstr "ไม่พบ"
+
+msgid "seen {s} s ago"
+msgstr "พบเมื่อ {s} วินาทีที่แล้ว"
+
+msgid "timers may start early or late"
+msgstr "ตัวตั้งเวลาอาจเริ่มเร็วหรือช้ากว่ากำหนด"
+
+msgid "no TDT/TOT"
+msgstr "ไม่มี TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "แพ็กเก็ตที่เข้ารหัส"
+
+msgid "CA system ID"
+msgstr "CA system ID"
+
+msgid "ECM PID"
+msgstr "ECM PID"
+
+msgid "ECM rate"
+msgstr "อัตรา ECM"
+
+msgid "Scrambling per stream"
+msgstr "การเข้ารหัสต่อสตรีม"
+
+msgid "Crypto period"
+msgstr "ช่วงเวลาการเข้ารหัส"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "การเปลี่ยนคีย์คือการสลับระหว่าง control word คู่และคี่ ช่วงเวลาการเข้ารหัสคือเวลาระหว่างการสลับสองครั้ง"
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "ไม่มีการเข้าถึงแบบมีเงื่อนไขใน PMT และไม่มีแพ็กเก็ตที่เข้ารหัส"
+
+msgid "free"
+msgstr "ฟรี"
+
+msgid "all streams"
+msgstr "ทุกสตรีม"
+
+msgid "not received"
+msgstr "ไม่ได้รับ"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "ไม่ได้รับ CAT ที่มีสตรีม EMM"
+
+msgid "Applications (AIT)"
+msgstr "แอปพลิเคชัน (AIT)"
+
+msgid "Organisation / app"
+msgstr "องค์กร / แอป"
+
+msgid "Control"
+msgstr "การควบคุม"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "ข้อมูลแบบวนรอบ (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Component tag"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "AIT เวอร์ชัน {v} บน PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "ช่องประกาศ AIT บน PID {pid} แต่ยังไม่ได้รับ"
+
+msgid "Channel Analysis – {name}"
+msgstr "การวิเคราะห์ช่อง – {name}"
+
+msgid "Freeze the measurement"
+msgstr "หยุดการวัดไว้"
+
+msgid "Copy report as text"
+msgstr "คัดลอกรายงานเป็นข้อความ"
+
+msgid "Save report as text…"
+msgstr "บันทึกรายงานเป็นข้อความ…"
+
+msgid "Save report as JSON…"
+msgstr "บันทึกรายงานเป็น JSON…"
+
+msgid "Save history as CSV…"
+msgstr "บันทึกประวัติเป็น CSV…"
+
+msgid "Save window as picture…"
+msgstr "บันทึกหน้าต่างเป็นภาพ…"
+
+msgid "Save 30 s of the stream…"
+msgstr "บันทึกสตรีม 30 วินาที…"
+
+msgid "Channel Analysis · {name}"
+msgstr "การวิเคราะห์ช่อง · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "สด · กำลังวัดมา {t}"
+
+msgid "Paused"
+msgstr "หยุดชั่วคราว"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "ไม่มีจูนเนอร์ว่างสำหรับช่องนี้ โปรดดูช่องนี้ หรือลองอีกครั้งเมื่อมีจูนเนอร์ว่าง"
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "จูนเนอร์ของช่องนี้ถูกสลับไปยังช่องอื่น"
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "วัดในเบื้องหลังบนจูนเนอร์ของตัวเอง ภาพ เสียง และความดังวัดเฉพาะช่องที่แสดงบนหน้าจอ"
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "ช่องอินเทอร์เน็ตนี้ถูกดึงข้อมูลในเบื้องหลังโดยไม่ถอดรหัส โปรดดูช่องนี้เพื่อดูค่าภาพ เสียง และบัฟเฟอร์"
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "แหล่ง: อะแดปเตอร์ DVB {a} ฟรอนต์เอนด์ {f}"
+
+msgid "dvbsrc statistics"
+msgstr "สถิติ dvbsrc"
+
+msgid "Source: background download"
+msgstr "แหล่ง: ดาวน์โหลดในเบื้องหลัง"
+
+msgid "Source: the player's stream"
+msgstr "แหล่ง: สตรีมของเครื่องเล่น"
+
+msgid "updated every second"
+msgstr "อัปเดตทุกวินาที"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "ไม่มีสิ่งที่จะบันทึก: ไม่ได้รับสัญญาณช่องนี้"
+
+msgid "Compare {name} with"
+msgstr "เปรียบเทียบ {name} กับ"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "ค่าตลอดช่วงเวลาของการวิเคราะห์แต่ละครั้ง ภาพและความดังเฉพาะช่องที่แสดงบนหน้าจอ"
+
+msgid "Dish alignment aid"
+msgstr "ตัวช่วยปรับจานดาวเทียม"
+
+msgid "Tone"
+msgstr "เสียงสัญญาณ"
+
+msgid "Reset best value"
+msgstr "รีเซ็ตค่าที่ดีที่สุด"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "หมุนจานช้า ๆ เสียงจะสูงขึ้นเมื่อสัญญาณดีขึ้น"
+
+msgid "% quality"
+msgstr "% คุณภาพ"
+
+msgid "Best so far: {v}"
+msgstr "ดีที่สุดจนถึงตอนนี้: {v}"
+
+msgid "Signal lost"
+msgstr "สัญญาณหาย"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "จูนเนอร์ถูกใช้สำหรับการรับชมหรือการบันทึก"
+
+msgid "Channel analysis: {name}"
+msgstr "การวิเคราะห์ช่อง: {name}"
+
+msgid "Resolution"
+msgstr "ความละเอียด"
+
+msgid "Audio"
+msgstr "เสียง"
+
+msgid "Video"
+msgstr "วิดีโอ"
+
+msgid "Signal quality"
+msgstr "คุณภาพสัญญาณ"
+
+msgid "Continuity errors"
+msgstr "ข้อผิดพลาดความต่อเนื่อง"
+
+msgid "Content"
+msgstr "เนื้อหา"
+
+msgid "audio description"
+msgstr "เสียงบรรยายภาพ"
+
+msgid "DVB subtitles"
+msgstr "คำบรรยาย DVB"
+
+msgid "Signal"
+msgstr "สัญญาณ"
+
+msgid "Reception"
+msgstr "การรับสัญญาณ"
+
+msgid "Symbol rate"
+msgstr "อัตราสัญลักษณ์"
+
+msgid "Transponder capacity"
+msgstr "ความจุทรานสพอนเดอร์"
+
+msgid "Server"
+msgstr "เซิร์ฟเวอร์"
+
+msgid "Stream"
+msgstr "สตรีม"
+
+msgid "Share of transponder"
+msgstr "สัดส่วนของทรานสพอนเดอร์"
+
+msgid "Aspect ratio"
+msgstr "อัตราส่วนภาพ"
+
+msgid "Colour"
+msgstr "สี"
+
+msgid "Track"
+msgstr "แทร็ก"
+
+msgid "Now & next"
+msgstr "ตอนนี้และถัดไป"
+
+msgid "Encryption"
+msgstr "การเข้ารหัส"
+
+msgid "Interactive"
+msgstr "แบบโต้ตอบ"
+
+msgid "Stream health"
+msgstr "สุขภาพของสตรีม"
+
+msgid "Transport errors"
+msgstr "ข้อผิดพลาดการส่ง"
+
+msgid "Timeshift buffer"
+msgstr "บัฟเฟอร์ไทม์ชิฟต์"
+
+msgid "interlaced"
+msgstr "อินเทอร์เลซ"
+
+msgid "Hardware"
+msgstr "ฮาร์ดแวร์"
+
+msgid "Software"
+msgstr "ซอฟต์แวร์"
+
+msgid "{n} tracks"
+msgstr "{n} แทร็ก"
+
+msgid "Free-to-air"
+msgstr "ฟรีทีวี"
+
+msgid "Signal level"
+msgstr "ระดับสัญญาณ"
+
+msgid "Internet stream"
+msgstr "สตรีมอินเทอร์เน็ต"
+
+msgid "continuity errors"
+msgstr "ข้อผิดพลาดความต่อเนื่อง"
+
+msgid "Stream / PLP"
+msgstr "สตรีม / PLP"
+
+msgid "Source of the figures"
+msgstr "แหล่งที่มาของค่า"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "เตือนบนหน้าจอเมื่อการรับสัญญาณอ่อน"
+
+msgid "Open log folder"
+msgstr "เปิดโฟลเดอร์ล็อก"
+
+msgid "stream"
+msgstr "สตรีม"
+
+msgid "none (a plain stream)"
+msgstr "ไม่มี (สตรีมธรรมดา)"
+
+msgid "internet stream"
+msgstr "สตรีมอินเทอร์เน็ต"
+
+msgid "Transport Stream"
+msgstr "Transport Stream"
+
+msgid "This channel only"
+msgstr "เฉพาะช่องนี้"
+
+msgid "Transponder"
+msgstr "ทรานสพอนเดอร์"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "วัดทั้งทรานสพอนเดอร์ (10 วินาที)"
+
+msgid "Internet channels have no transponder."
+msgstr "ช่องอินเทอร์เน็ตไม่มีทรานสพอนเดอร์"
+
+msgid "whole transponder"
+msgstr "ทั้งทรานสพอนเดอร์"
+
+msgid "Video & Audio"
+msgstr "วิดีโอและเสียง"
+
+msgid "Black bars"
+msgstr "แถบดำ"
+
+msgid "Click a track to listen to it."
+msgstr "คลิกแทร็กเพื่อฟัง"
+
+msgid "Integrated"
+msgstr "ในตัว"
+
+msgid "Teletext and subtitles"
+msgstr "เทเลเท็กซ์และคำบรรยาย"
+
+msgid "interlaced capable"
+msgstr "รองรับอินเทอร์เลซ"
+
+msgid "no"
+msgstr "ไม่"
+
+msgid "{n} frames"
+msgstr "{n} เฟรม"
+
+msgid "schedule"
+msgstr "ตารางรายการ"
+
+msgid "subtitles"
+msgstr "คำบรรยาย"
+
+msgid "Teletext PID {pid}:"
+msgstr "เทเลเท็กซ์ PID {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "ช่องนี้ไม่มีเทเลเท็กซ์หรือคำบรรยาย"
+
+msgid "Table"
+msgstr "ตาราง"
+
+msgid "Changes"
+msgstr "การเปลี่ยนแปลง"
+
+msgid "Repetition"
+msgstr "การส่งซ้ำ"
+
+msgid "Sections"
+msgstr "ส่วน"
+
+msgid "Programme guide and clock"
+msgstr "ผังรายการและนาฬิกา"
+
+msgid "Guide reaches"
+msgstr "ผังรายการครอบคลุมถึง"
+
+msgid "Clock of the channel"
+msgstr "นาฬิกาของช่อง"
+
+msgid "EIT schedule"
+msgstr "ตารางรายการ EIT"
+
+msgid "missing"
+msgstr "ขาดหาย"
+
+msgid "(other services)"
+msgstr "(บริการอื่น)"
+
+msgid "{n} sections"
+msgstr "{n} ส่วน"
+
+msgid "Descrambling"
+msgstr "การถอดรหัส"
+
+msgid "Descrambler state"
+msgstr "สถานะตัวถอดรหัส"
+
+msgid "Conditional access systems"
+msgstr "ระบบการเข้าถึงแบบมีเงื่อนไข"
+
+msgid "For"
+msgstr "สำหรับ"
+
+msgid "Key changes"
+msgstr "การเปลี่ยนคีย์"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "ช่องนี้ถูกเข้ารหัส LinDVB ถอดรหัสได้เฉพาะด้วยการ์ดสมาชิกของคุณเอง (ซอฟต์แคมหรือโมดูล CI)"
+
+msgid "scrambled"
+msgstr "เข้ารหัส"
+
+msgid "Profile"
+msgstr "โปรไฟล์"
+
+msgid "test application"
+msgstr "แอปพลิเคชันทดสอบ"
+
+msgid "This channel has no HbbTV application."
+msgstr "ช่องนี้ไม่มีแอปพลิเคชัน HbbTV"
+
+msgid "No object carousel in this channel."
+msgstr "ช่องนี้ไม่มี object carousel"
+
+msgid "Export"
+msgstr "ส่งออก"
+
+msgid "Compare with another channel…"
+msgstr "เปรียบเทียบกับช่องอื่น…"
+
+msgid "Analyse another channel…"
+msgstr "วิเคราะห์ช่องอื่น…"
+
+msgid "Window: {w}"
+msgstr "ช่วงเวลา: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "ติดตามช่องที่แสดงบนหน้าจอ"
+
+msgid "Watch this channel"
+msgstr "ดูช่องนี้"
+
+msgid "Try again"
+msgstr "ลองอีกครั้ง"
+
+msgid "Copy as text"
+msgstr "คัดลอกเป็นข้อความ"
+
+msgid "Export report…"
+msgstr "ส่งออกรายงาน…"
+
+msgid "Source: none"
+msgstr "แหล่ง: ไม่มี"
+
+msgid "Saved {path}"
+msgstr "บันทึก {path} แล้ว"
+
+msgid "Recording the next 30 seconds…"
+msgstr "กำลังบันทึก 30 วินาทีถัดไป…"
+
+msgid "Choose a channel"
+msgstr "เลือกช่อง"
+
+msgid "Channel name"
+msgstr "ชื่อช่อง"
+
+msgid "Compare channels"
+msgstr "เปรียบเทียบช่อง"
+
+msgid "Comparison"
+msgstr "การเปรียบเทียบ"
+
+msgid "Close (Esc)"
+msgstr "ปิด (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "การวิเคราะห์ช่อง…"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "ไม่มี Unicable"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "User band"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "จูนเนอร์แต่ละตัวบนสายต้องใช้ user band ที่ต่างกัน เปิดสายอากาศร่วมด้านบนสำหรับจูนเนอร์ทั้งหมด"
+
+msgid "User band frequency (MHz)"
+msgstr "ความถี่ user band (MHz)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "ดูจากฉลากหรือคู่มือของ LNB หรือมัลติสวิตช์"
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "เฉพาะ user band ที่มีการป้องกัน (0-255) ปกติเว้นว่างไว้"
+
+msgid "Fill in from"
+msgstr "กรอกข้อมูลจาก"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "อุปกรณ์ทั่วไป: ตั้งค่าชนิดและความถี่ของ user band ด้านบน"
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "รายการทรานสพอนเดอร์นี้ไม่มีทรานสพอนเดอร์ดาวเทียม\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "จูนเนอร์ไม่ว่าง (กำลังบันทึกหรือวิเคราะห์ช่อง)\n"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "ใช้การเปลี่ยนแปลงของช่องที่แก้ไขทั้งหมด (Ctrl+S)"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "ตัวแก้ไขช่อง – ยังไม่ได้ใช้การเปลี่ยนแปลง {n} ช่อง"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "ใช้การเปลี่ยนแปลงกับ {n} ช่องหรือไม่?"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "ยังไม่ได้ใช้การแก้ไข หากไม่ใช้การแก้ไขจะสูญหาย"
+
+msgid "Discard"
+msgstr "ละทิ้ง"
+
+msgid "Germany"
+msgstr "เยอรมนี"
+
+msgid "Italy"
+msgstr "อิตาลี"
+
+msgid "New Zealand"
+msgstr "นิวซีแลนด์"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "ภูมิภาค Freeview"
+
+msgid "Country"
+msgstr "ประเทศ"
+
+msgid "Options"
+msgstr "ตัวเลือก"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "สอบถามตามลำดับนี้ คั่นด้วยช่องว่าง กด Enter เพื่อเก็บการเปลี่ยนแปลง เว้นว่างเพื่อกลับไปใช้ Registry ของประเทศ"
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "เลือกเสาอากาศ เคเบิล และดาวเทียมก่อนสตรีมอินเทอร์เน็ตเมื่อช่องมีทั้งสองแบบ"
+
+msgid "Registry address"
+msgstr "ที่อยู่ Registry"
+
+msgid "Region in the list"
+msgstr "ภูมิภาคในรายการ"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "ภูมิภาคของคุณใช้เลือกช่องท้องถิ่นและลำดับหมายเลข"
+
+msgid "Settings follow: {profile}"
+msgstr "การตั้งค่าเป็นไปตาม: {profile}"
+
+msgid "Choose…"
+msgstr "เลือก…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "ไม่บังคับ {label} ของคุณจะส่งไปยังเซิร์ฟเวอร์รายการบริการเท่านั้น"
+
+msgid "e.g. {example}"
+msgstr "เช่น {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "ช่อง DVB-I ของประเทศก่อนหน้าจะยังคงอยู่จนกว่าคุณจะติดตั้งรายการสำหรับ {country} หรือลบออก"
+
+msgid "The registry offers no service list for {country}."
+msgstr "Registry ไม่มีรายการบริการสำหรับ {country}"
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "โปรดป้อนรหัสไปรษณีย์ {n} หลัก"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I โหลดรายการช่องจากอินเทอร์เน็ต ในการทำเช่นนี้ LinDVB จะติดต่อ Registry ของรายการบริการเยอรมนี (csr.dvb-i-slr.de) เซิร์ฟเวอร์ของรายการบริการที่คุณเลือก เซิร์ฟเวอร์ที่โฮสต์โลโก้ช่อง และเมื่อเปิดผังรายการไว้ จะติดต่อเซิร์ฟเวอร์ผังรายการของผู้แพร่ภาพด้วย เซิร์ฟเวอร์เหล่านี้จะเห็นที่อยู่ IP ของคุณและเวลาที่ส่งคำขอ หากคุณป้อนรหัสไปรษณีย์ จะถูกส่งไปยังเซิร์ฟเวอร์รายการบริการเพื่อให้ส่งช่องของภูมิภาคของคุณกลับมา LinDVB ไม่ส่งข้อมูลส่วนบุคคลอื่นใด และเก็บรายการและโลโก้ไว้บนคอมพิวเตอร์เครื่องนี้เท่านั้น ช่องอินเทอร์เน็ตสตรีมจากเซิร์ฟเวอร์ของผู้แพร่ภาพ ซึ่งอาจบันทึกคำขอของคุณตามนโยบายความเป็นส่วนตัวของตนเอง"
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "ช่องจากเสาอากาศ ดาวเทียม และอินเทอร์เน็ตจะรวมเป็นรายการเดียวโดยไม่ซ้ำกัน ช่องที่คุณรับได้ทางเสาอากาศหรือจานดาวเทียมจะใช้ช่องทางนั้นก่อน"
+
+msgid "Update the channel list automatically (daily)"
+msgstr "อัปเดตรายการช่องโดยอัตโนมัติ (ทุกวัน)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "คำเตือน! หากปิดตัวเลือกนี้ LinDVB จะไม่สามารถอัปเดตรายการช่องของคุณให้ตรงกับช่องที่ออกอากาศได้อีก"
+
+msgid "Package"
+msgstr "แพ็กเกจ"
+
+msgid "Free channels only"
+msgstr "เฉพาะช่องฟรี"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "กดติดตั้งอีกครั้งเพื่อใช้หมายเลขช่องของแพ็กเกจนี้"
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "ภูมิภาคใช้เลือกตาราง LCN ของพื้นที่ของคุณพร้อมช่องท้องถิ่น เช่นเดียวกับการค้นหาช่องภาคพื้นดิน ช่องที่ไม่มีหมายเลขจะอยู่ที่ 850-999"
+
+msgid "No screen saver during playback"
+msgstr "ไม่ใช้โปรแกรมรักษาหน้าจอระหว่างการเล่น"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "เปิดหน้าจอไว้ขณะเล่นทีวี วิทยุ หรือไฟล์"
+
+msgid "Playing TV or radio"
+msgstr "กำลังเล่นทีวีหรือวิทยุ"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: ไม่มีในช่องนี้"
+
+msgid "OSD and Visualisations"
+msgstr "OSD และภาพประกอบเสียง"
+
+msgid "OSD size (%)"
+msgstr "ขนาด OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "ข้อมูลรายการบนภาพและหมายเลขช่อง"
+
+msgid "Font"
+msgstr "ฟอนต์"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "คำบรรยายเทเลเท็กซ์และคำบรรยายแบบข้อความของไฟล์และสตรีม"
+
+msgid "Size (%)"
+msgstr "ขนาด (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "คำบรรยายที่วาดเป็นภาพ (คำบรรยาย DVB) คงขนาดตามที่ช่องส่งมา"
+
+msgid "Subtitle font"
+msgstr "ฟอนต์คำบรรยาย"
+
+msgid "Default font"
+msgstr "ฟอนต์เริ่มต้น"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "แสดงขณะเล่นวิทยุหรือเสียง รวมถึงในปุ่มภาพประกอบเสียง"
+
+msgid "Draw on the graphics card"
+msgstr "วาดบนการ์ดจอ"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL สำหรับภาพประกอบเสียงในตัว มีผลเมื่อเริ่ม LinDVB ใหม่"
+
+msgid "Service list address"
+msgstr "ที่อยู่รายการบริการ"
+
+msgid "Use This List"
+msgstr "ใช้รายการนี้"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "โหลดรายการบริการนี้โดยตรงโดยไม่ต้องสอบถาม Registry"
+
+msgid "Please enter a web address (https://…)."
+msgstr "โปรดป้อนที่อยู่เว็บ (https://…)"
+
+msgid "Please confirm the privacy notice first."
+msgstr "โปรดยืนยันประกาศความเป็นส่วนตัวก่อน"
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "ป้อนที่อยู่ของ Registry หรือของรายการบริการ"
+
+msgid "Pause / play"
+msgstr "หยุดชั่วคราว / เล่น"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "ถอยหลัง / เดินหน้า 10 วินาที (ไทม์ชิฟต์ ไฟล์)"
+
+msgid "Back to live"
+msgstr "กลับสู่การถ่ายทอดสด"
+
+msgid "Mute"
+msgstr "ปิดเสียง"
+
+msgid "Volume up / down"
+msgstr "เพิ่ม / ลดระดับเสียง"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "เสียงเร็วขึ้น / ช้าลง (การหน่วงเสียงของช่อง)"
+
+msgid "Next radio visualisation"
+msgstr "ภาพประกอบเสียงวิทยุถัดไป"
+
+msgid "Next / previous playlist entry"
+msgstr "รายการถัดไป / ก่อนหน้าในเพลย์ลิสต์"
+
+msgid "Previous / next channel"
+msgstr "ช่องก่อนหน้า / ถัดไป"
+
+msgid "Next / previous channel"
+msgstr "ช่องถัดไป / ก่อนหน้า"
+
+msgid "Channel by number (type the digits)"
+msgstr "ช่องตามหมายเลข (พิมพ์ตัวเลข)"
+
+msgid "Last channel"
+msgstr "ช่องล่าสุด"
+
+msgid "Switch TV / radio"
+msgstr "สลับทีวี / วิทยุ"
+
+msgid "Show / hide the channel list"
+msgstr "แสดง / ซ่อนรายการช่อง"
+
+msgid "Programme guide and recording"
+msgstr "ผังรายการและการบันทึก"
+
+msgid "Programme guide (EPG)"
+msgstr "ผังรายการ (EPG)"
+
+msgid "Timer recordings"
+msgstr "การบันทึกตามเวลา"
+
+msgid "Programme info (OSD)"
+msgstr "ข้อมูลรายการ (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "เทเลเท็กซ์และบริการแบบโต้ตอบ"
+
+msgid "View"
+msgstr "มุมมอง"
+
+msgid "Full screen"
+msgstr "เต็มหน้าจอ"
+
+msgid "Leave full screen"
+msgstr "ออกจากเต็มหน้าจอ"
+
+msgid "Application"
+msgstr "แอปพลิเคชัน"
+
+msgid "Main menu"
+msgstr "เมนูหลัก"
+
+msgid "Open media file"
+msgstr "เปิดไฟล์สื่อ"
+
+msgid "Keyboard shortcuts"
+msgstr "แป้นพิมพ์ลัด"
+
+msgid "Keyboard Shortcuts"
+msgstr "แป้นพิมพ์ลัด"
+
+msgid "Time"
+msgstr "เวลา"
+
+msgid "Programme"
+msgstr "รายการ"
+
+msgid "File"
+msgstr "ไฟล์"
+
+msgid "Other (own registry or list)"
+msgstr "อื่น ๆ (Registry หรือรายการของคุณเอง)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I โหลดรายการช่องจากอินเทอร์เน็ต ในการทำเช่นนี้ LinDVB จะติดต่อเซิร์ฟเวอร์ Registry หรือรายการบริการตามที่อยู่ที่คุณป้อน เซิร์ฟเวอร์ที่โฮสต์โลโก้ช่อง และเมื่อเปิดผังรายการไว้ จะติดต่อเซิร์ฟเวอร์ผังรายการของผู้แพร่ภาพด้วย เซิร์ฟเวอร์เหล่านี้จะเห็นที่อยู่ IP ของคุณและเวลาที่ส่งคำขอ หากคุณป้อนรหัสไปรษณีย์ จะถูกส่งไปยังเซิร์ฟเวอร์รายการบริการ"
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "ป้อนที่อยู่ของ Registry ของรายการบริการ หรือของรายการบริการโดยตรงด้านล่าง"
+
+msgid "Preferred audio format"
+msgstr "รูปแบบเสียงที่ต้องการ"
+
+msgid "As broadcast"
+msgstr "ตามที่ออกอากาศ"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "สเตอริโอ (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "เมื่อช่องหรือไฟล์มีเสียงแบบนี้ในภาษาเดียวกัน จะเล่นก่อน"
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "หมายเลข"
+
+msgid "Name A–Z"
+msgstr "ชื่อ ก–ฮ"
+
+msgid "Name Z–A"
+msgstr "ชื่อ ฮ–ก"
+
+msgid "Video resolution"
+msgstr "ความละเอียดวิดีโอ"
+
+msgid "Sort by"
+msgstr "เรียงตาม"
+
+msgid "All"
+msgstr "ทั้งหมด"
+
+msgid "General settings"
+msgstr "การตั้งค่าทั่วไป"
+
+msgid "For this recording"
+msgstr "สำหรับการบันทึกนี้"
+
+msgid "Formats and _tracks"
+msgstr "รูปแบบและแทร็ก(_T)"
+
+msgid "Whole series"
+msgstr "ทั้งชุด"
+
+msgid "Next recording only"
+msgstr "เฉพาะการบันทึกครั้งถัดไป"
+
+msgid "_Apply to"
+msgstr "ใช้กับ(_A)"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "การตั้งค่าทั่วไป: รูปแบบ แทร็กเสียง และสตรีมเพิ่มเติมจะมาจากการตั้งค่าเมื่อเริ่มบันทึก"
+
+msgid "All streams of the channel (TS)"
+msgstr "สตรีมทั้งหมดของช่อง (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "บันทึกทุกสตรีมที่ช่องประกาศ รวมถึงข้อมูล HbbTV และแทร็กเสียงใหม่ พร้อมตารางรายการสำหรับช่องนี้เท่านั้น เก็บได้เฉพาะใน MPEG-TS จึงใช้ TS"
+
+msgid "Web address"
+msgstr "ที่อยู่เว็บ"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "ที่อยู่ของเพลย์ลิสต์ M3U หรือของสตรีม HLS เดี่ยว (.m3u8)"
+
+msgid "User name"
+msgstr "ชื่อผู้ใช้"
+
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "ช่องสดของบัญชี Xtream Codes รหัสผ่านจะถูกเก็บไว้ในที่อยู่ของรายการในการตั้งค่า LinDVB"
+
+msgid "Your lists"
+msgstr "รายการของคุณ"
+
+msgid "Source"
+msgstr "แหล่งที่มา"
+
+msgid "Updated"
+msgstr "อัปเดตเมื่อ"
+
+msgid "Update"
+msgstr "อัปเดต"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "โหลดรายการอีกครั้ง: รายการโปรด หมายเลขช่อง และการจับคู่ผังรายการจะคงอยู่ ช่องที่ไม่มีในรายการแล้วจะถูกลบ"
+
+msgid "Remove"
+msgstr "ลบ"
+
+msgid "Remove the list and its channels"
+msgstr "ลบรายการและช่องในรายการ"
+
+msgid "{n} removed"
+msgstr "ลบแล้ว {n}"
+
+msgid "The file has no channels."
+msgstr "ไฟล์นี้ไม่มีช่อง"
+
+msgid "{n} channels removed"
+msgstr "ลบช่องแล้ว {n} ช่อง"
+
+msgid "Colour scheme"
+msgstr "ชุดสี"
+
+msgid "Dark"
+msgstr "มืด"
+
+msgid "Light"
+msgstr "สว่าง"
+
+msgid "Same as the system"
+msgstr "เหมือนระบบ"
+
+msgid "The picture always keeps its dark frame."
+msgstr "ภาพจะมีกรอบสีเข้มเสมอ"
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "แสดงเฉพาะจูนเนอร์ที่เชื่อมต่ออยู่ในขณะนี้ การตั้งค่าของจูนเนอร์อื่นจะเก็บไว้ใน “ไม่ได้เชื่อมต่อ”"
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "รับทุกอย่างที่ทรานสพอนเดอร์ส่ง แทนที่จะรับเฉพาะสตรีมของช่อง ใช้แบนด์วิดท์มากขึ้นบนจูนเนอร์ USB แต่เล่นและบันทึกแทร็กเสียงทั้งหมดได้แม้รายการช่องจะรู้จักเพียงแทร็กเดียว ใช้กับทีวีสดและการบันทึก"
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "ชื่อที่คุณตั้งเองสำหรับจูนเนอร์นี้ ว่างไว้: ใช้ชื่อของอุปกรณ์"
+
+msgid "Satellite"
+msgstr "ดาวเทียม"
+
+msgid "Antenna (terrestrial)"
+msgstr "เสาอากาศ (ภาคพื้นดิน)"
+
+msgid "Cable"
+msgstr "เคเบิล"
+
+msgid "Connected to"
+msgstr "เชื่อมต่อกับ"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "จูนเนอร์แบบรวมรับได้ครั้งละหนึ่งประเภท ผ่านช่องเสียบที่เชื่อมต่ออยู่ LinDVB จะใช้จูนเนอร์นี้เฉพาะช่องประเภทนั้น"
+
+msgid "No tuner is connected."
+msgstr "ไม่มีจูนเนอร์เชื่อมต่ออยู่"
+
+msgid "Not connected ({n})"
+msgstr "ไม่ได้เชื่อมต่อ ({n})"
+
+msgid "All its reception types"
+msgstr "ชนิดการรับสัญญาณทั้งหมดของจูนเนอร์"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "ไฟล์ภาพ (PNG, SVG, JPG) ที่ตั้งชื่อตามช่อง เช่น \"Bayern 3.png\" หรือชุด picon แบบที่ Enigma2, Kodi และ VDR ใช้ (ตั้งชื่อตาม service reference หรือชื่อ SNP) โลโก้จะแสดงในรายการช่องด้วย LinDVB ไม่ได้แจกโลโก้มาด้วยเพราะเป็นของผู้แพร่ภาพ ว่างไว้: {v0}"
+
+msgid "Picons for my channels"
+msgstr "Picon สำหรับช่องของฉัน"
+
+msgid "Download Logos"
+msgstr "ดาวน์โหลดโลโก้"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "ดึงเฉพาะโลโก้ของช่องในรายการของคุณจากโครงการ picons (github.com/picons/picons) มาไว้ในโฟลเดอร์โลโก้ ช่องที่มีโลโก้อยู่แล้วจะไม่ถูกแตะต้อง"
+
+msgid "Looking up…"
+msgstr "กำลังค้นหา…"
+
+msgid "{done} of {total}"
+msgstr "{done} จาก {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "ดาวน์โหลดโลโก้ {got} รายการ มีอยู่แล้ว {have} รายการ ไม่มีในชุด picon {missing} รายการ"
+
+msgid "Download failed: {error}"
+msgstr "ดาวน์โหลดไม่สำเร็จ: {error}"
+
+msgid "Provider / category"
+msgstr "ผู้ให้บริการ / หมวดหมู่"
+
+msgid "Extra streams"
+msgstr "สตรีมเพิ่มเติม"
+
+msgid "New timer"
+msgstr "ตัวตั้งเวลาใหม่"
+
+msgid "Edit timer"
+msgstr "แก้ไขตัวตั้งเวลา"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (จากการตั้งค่า)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} เก็บได้เฉพาะใน MPEG-TS จึงใช้ TS"
+
+msgid "Privacy Notice"
+msgstr "ประกาศความเป็นส่วนตัว"
+
+msgid "Show Privacy Notice…"
+msgstr "แสดงประกาศความเป็นส่วนตัว…"
+
+msgid "Agree"
+msgstr "ยอมรับ"
+
+msgid "Please read the privacy notice to the end."
+msgstr "โปรดอ่านประกาศความเป็นส่วนตัวจนจบ"
+
+msgid "Andorra"
+msgstr "อันดอร์รา"
+
+msgid "Argentina"
+msgstr "อาร์เจนตินา"
+
+msgid "Austria"
+msgstr "ออสเตรีย"
+
+msgid "Australia"
+msgstr "ออสเตรเลีย"
+
+msgid "Åland Islands"
+msgstr "หมู่เกาะโอลันด์"
+
+msgid "Belgium"
+msgstr "เบลเยียม"
+
+msgid "Bulgaria"
+msgstr "บัลแกเรีย"
+
+msgid "Brazil"
+msgstr "บราซิล"
+
+msgid "Canada"
+msgstr "แคนาดา"
+
+msgid "Switzerland"
+msgstr "สวิตเซอร์แลนด์"
+
+msgid "China"
+msgstr "จีน"
+
+msgid "Colombia"
+msgstr "โคลอมเบีย"
+
+msgid "Czechia"
+msgstr "เช็กเกีย"
+
+msgid "Denmark"
+msgstr "เดนมาร์ก"
+
+msgid "Estonia"
+msgstr "เอสโตเนีย"
+
+msgid "Spain"
+msgstr "สเปน"
+
+msgid "Finland"
+msgstr "ฟินแลนด์"
+
+msgid "France"
+msgstr "ฝรั่งเศส"
+
+msgid "Greece"
+msgstr "กรีซ"
+
+msgid "Hong Kong"
+msgstr "ฮ่องกง"
+
+msgid "Croatia"
+msgstr "โครเอเชีย"
+
+msgid "Hungary"
+msgstr "ฮังการี"
+
+msgid "Ireland"
+msgstr "ไอร์แลนด์"
+
+msgid "Israel"
+msgstr "อิสราเอล"
+
+msgid "Iran"
+msgstr "อิหร่าน"
+
+msgid "Iceland"
+msgstr "ไอซ์แลนด์"
+
+msgid "Kenya"
+msgstr "เคนยา"
+
+msgid "South Korea"
+msgstr "เกาหลีใต้"
+
+msgid "Liechtenstein"
+msgstr "ลิกเตนสไตน์"
+
+msgid "Lithuania"
+msgstr "ลิทัวเนีย"
+
+msgid "Luxembourg"
+msgstr "ลักเซมเบิร์ก"
+
+msgid "Latvia"
+msgstr "ลัตเวีย"
+
+msgid "Netherlands"
+msgstr "เนเธอร์แลนด์"
+
+msgid "Norway"
+msgstr "นอร์เวย์"
+
+msgid "Poland"
+msgstr "โปแลนด์"
+
+msgid "Portugal"
+msgstr "โปรตุเกส"
+
+msgid "Romania"
+msgstr "โรมาเนีย"
+
+msgid "Russia"
+msgstr "รัสเซีย"
+
+msgid "Sweden"
+msgstr "สวีเดน"
+
+msgid "Slovenia"
+msgstr "สโลวีเนีย"
+
+msgid "Slovakia"
+msgstr "สโลวาเกีย"
+
+msgid "Taiwan"
+msgstr "ไต้หวัน"
+
+msgid "Ukraine"
+msgstr "ยูเครน"
+
+msgid "Uganda"
+msgstr "ยูกันดา"
+
+msgid "United Kingdom"
+msgstr "สหราชอาณาจักร"
+
+msgid "United States"
+msgstr "สหรัฐอเมริกา"
+
+msgid "Vietnam"
+msgstr "เวียดนาม"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "ทุกความถี่ 7/8 MHz (ยุโรป แอฟริกา เอเชีย)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "ทุกความถี่ 7 MHz (ออสเตรเลีย)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "ทุกความถี่ 6 MHz (อเมริกา)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "ทุกความถี่ 6 MHz (ไต้หวัน)"
+
+msgid "Whole country"
+msgstr "ทั้งประเทศ"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "จูนเนอร์เสมือน (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "ประเทศอื่น (ไม่มีรายการ)"
+
+msgid "Own lists"
+msgstr "รายการของคุณเอง"
+
+msgid "All frequencies (blind scan)"
+msgstr "ทุกความถี่ (สแกนแบบ blind scan)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "ทุกความถี่ 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "ทุกความถี่ (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "ทุกความถี่ 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "ภาคพื้นดิน"
+
+msgid "Satellites"
+msgstr "ดาวเทียม"
+
+msgid "Add satellite"
+msgstr "เพิ่มดาวเทียม"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "ค้นหาหลายตำแหน่งจานที่อยู่หลังสวิตช์ DiSEqC ในคราวเดียว"
+
+msgid "More options"
+msgstr "ตัวเลือกเพิ่มเติม"
+
+msgid "Receives: {systems}"
+msgstr "รับ: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "จูนเนอร์ไม่ได้บอกว่ารับสัญญาณอะไรได้ จึงเสนอทุกรายการ"
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "การตั้งค่าสายเดี่ยวของจูนเนอร์นี้: {setup}"
+
+msgid "(no lists found)"
+msgstr "(ไม่พบรายการ)"
+
+msgid "DiSEqC port"
+msgstr "พอร์ต DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "ดาวเทียมแต่ละดวงต้องใช้พอร์ต DiSEqC ของตัวเอง"
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} ทรานสพอนเดอร์จากรายการของตำแหน่งเหล่านี้ การค้นหาจะเพิ่มทรานสพอนเดอร์ที่เครือข่ายประกาศ (NIT)"
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Blind scan: ลอง {n} ความถี่ ใช้เวลาประมาณ {minutes} นาที"
+
+msgid "{n} frequencies from the list."
+msgstr "{n} ความถี่จากรายการ"
+
+msgid "Transponder lists"
+msgstr "รายการทรานสพอนเดอร์"
+
+msgid "Favourites"
+msgstr "รายการโปรด"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "สร้าง เปลี่ยนชื่อ ลบ และจัดลำดับรายการโปรดของคุณ"
+
+msgid "Delete list"
+msgstr "ลบรายการ"
+
+msgid "Delete the list “{name}”?"
+msgstr "ลบรายการ “{name}” หรือไม่?"
+
+msgid "Favourites Lists"
+msgstr "รายการโปรด"
+
+msgid "Favourites Lists…"
+msgstr "รายการโปรด…"
+
+msgid "Favourites lists"
+msgstr "รายการโปรด"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "ตัวกรอง รายการโปรดแสดงทั้งทีวีและวิทยุ"
+
+msgid "In no favourites list"
+msgstr "ไม่อยู่ในรายการโปรดใด"
+
+msgid "Manage favourites lists"
+msgstr "จัดการรายการโปรด"
+
+msgid "Manage favourites lists…"
+msgstr "จัดการรายการโปรด…"
+
+msgid "Move to the bottom"
+msgstr "ย้ายไปล่างสุด"
+
+msgid "Move to the top"
+msgstr "ย้ายไปบนสุด"
+
+msgid "Name of the favourites list"
+msgstr "ชื่อของรายการโปรด"
+
+msgid "New Favourites List"
+msgstr "รายการโปรดใหม่"
+
+msgid "New list"
+msgstr "รายการใหม่"
+
+msgid "New list…"
+msgstr "รายการใหม่…"
+
+msgid "Only the channels of a favourites list"
+msgstr "เฉพาะช่องในรายการโปรด"
+
+msgid "Order in this list"
+msgstr "ลำดับในรายการนี้"
+
+msgid "Remove from “{name}”"
+msgstr "ลบออกจาก “{name}”"
+
+msgid "Rename Favourites List"
+msgstr "เปลี่ยนชื่อรายการโปรด"
+
+msgid "Rename"
+msgstr "เปลี่ยนชื่อ"
+
+msgid "The channels stay in the channel list."
+msgstr "ช่องยังคงอยู่ในรายการช่อง"
+
+msgid "{n} channels"
+msgstr "{n} ช่อง"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "แต่ละรายการมีลำดับของตัวเอง เรียงลำดับช่องของรายการในรายการช่อง: เลือกรายการ แล้วลากช่องหรือใช้เมนูคลิกขวา"
+
+msgid "Indonesia"
+msgstr "อินโดนีเซีย"
+
+msgid "North Macedonia"
+msgstr "มาซิโดเนียเหนือ"
+
+msgid "South Africa"
+msgstr "แอฟริกาใต้"
+
+msgid "(no tuner)"
+msgstr "(ไม่มีจูนเนอร์)"
+
+msgid "1 tuner"
+msgstr "1 จูนเนอร์"
+
+msgid "{n} tuners"
+msgstr "{n} จูนเนอร์"
+
+msgid "Add Server"
+msgstr "เพิ่มเซิร์ฟเวอร์"
+
+msgid "Add by address"
+msgstr "เพิ่มด้วยที่อยู่"
+
+msgid "Find SAT>IP servers"
+msgstr "ค้นหาเซิร์ฟเวอร์ SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "สำหรับเซิร์ฟเวอร์ที่การค้นหาหาไม่พบ (เครือข่ายอื่น หรือไม่มี multicast)"
+
+msgid "No SAT>IP server added."
+msgstr "ยังไม่ได้เพิ่มเซิร์ฟเวอร์ SAT>IP"
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "ไม่มีเซิร์ฟเวอร์ SAT>IP ตอบกลับ เพิ่มด้วยที่อยู่ด้านล่าง"
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "กล่องและ LNB แบบ SAT>IP, minisatip, FRITZ!Box Cable และเซิร์ฟเวอร์ DVB over IP อื่น ๆ ในเครือข่ายท้องถิ่น จูนเนอร์ของอุปกรณ์เหล่านี้จะแสดงด้านล่างเมื่อบันทึกการตั้งค่าและเปิดอีกครั้ง"
+
+msgid "SAT>IP servers"
+msgstr "เซิร์ฟเวอร์ SAT>IP"
+
+msgid "Search Network"
+msgstr "ค้นหาในเครือข่าย"
+
+msgid "Searching…"
+msgstr "กำลังค้นหา…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (ในการเชื่อมต่อ RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP ทำงานผ่านไฟร์วอลล์ที่บล็อกสตรีม UDP ได้"
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "พบเซิร์ฟเวอร์ {n} เครื่อง ใหม่ {new} เครื่อง"
+
+msgid "Source: SAT>IP server {host}"
+msgstr "แหล่ง: เซิร์ฟเวอร์ SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "รายงานสัญญาณ SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: การค้นหาใช้ความถี่ของรายการ (ไม่ค้นหา NIT)"
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "เซิร์ฟเวอร์ SAT>IP ควบคุม LNB และสวิตช์ DiSEqC พอร์ต DiSEqC ใช้เลือกแหล่งสัญญาณ (1 ถึง 4)"
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "รายการทรานสพอนเดอร์นี้ไม่มีทรานสพอนเดอร์สำหรับจูนเนอร์นี้\n"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB ไม่พบองค์ประกอบ GStreamer เหล่านี้: {elements} ทีวีสดหรือบางช่องอาจเล่นไม่ได้"
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package} ควรมีองค์ประกอบเหล่านี้ โปรดรายงานเป็นบั๊ก"
+
+msgid "Install them with:"
+msgstr "ติดตั้งด้วยคำสั่ง:"
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "ติดตั้งปลั๊กอิน GStreamer base, bad และ libav จากดิสทริบิวชันของคุณ"
+
+msgid "GStreamer plugins are missing"
+msgstr "ไม่พบปลั๊กอิน GStreamer"
+
+msgid "At start"
+msgstr "เมื่อเริ่มโปรแกรม"
+
+msgid "Channel at start"
+msgstr "ช่องเมื่อเริ่มโปรแกรม"
+
+msgid "Last channel watched"
+msgstr "ช่องที่ดูล่าสุด"
+
+msgid "First channel of the current list"
+msgstr "ช่องแรกของรายการปัจจุบัน"
+
+msgid "A chosen channel"
+msgstr "ช่องที่เลือกไว้"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "รายการปัจจุบันคือรายการช่องตามที่คุณทิ้งไว้: ทีวีหรือวิทยุ ตัวกรอง กลุ่ม และลำดับการเรียง"
+
+msgid "Channel list"
+msgstr "รายการช่อง"
+
+msgid "All channels or one of your favourites lists."
+msgstr "ช่องทั้งหมดหรือรายการโปรดรายการใดรายการหนึ่ง"
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "จูนทุกครั้งที่เริ่มโปรแกรม ไม่ว่าคุณจะดูช่องใดล่าสุด"
+
+msgid "No channel (black screen)"
+msgstr "ไม่มีช่อง (หน้าจอดำ)"
+
+msgid "Lock"
+msgstr "ล็อกสัญญาณแล้ว"
+
+msgid "Search this satellite"
+msgstr "ค้นหาดาวเทียมดวงนี้"
+
+msgid "Tick the satellites to search."
+msgstr "ติ๊กเลือกดาวเทียมที่จะค้นหา"
+
+msgid "Horizontal"
+msgstr "แนวนอน"
+
+msgid "Vertical"
+msgstr "แนวตั้ง"
+
+msgid "Left (circular)"
+msgstr "ซ้าย (วงกลม)"
+
+msgid "Right (circular)"
+msgstr "ขวา (วงกลม)"
+
+msgid "Auto"
+msgstr "อัตโนมัติ"
+
+msgid "Add…"
+msgstr "เพิ่ม…"
+
+msgid "Tick all"
+msgstr "ติ๊กทั้งหมด"
+
+msgid "Tick none"
+msgstr "ไม่ติ๊กเลย"
+
+msgid "Back to the lists"
+msgstr "กลับไปที่รายการ"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "ลืมการเปลี่ยนแปลงของตำแหน่งนี้และใช้รายการทรานสพอนเดอร์อีกครั้ง"
+
+msgid "The changed list is kept for this position."
+msgstr "เก็บรายการที่เปลี่ยนแปลงไว้สำหรับตำแหน่งนี้"
+
+msgid "This transponder is already in the list."
+msgstr "ทรานสพอนเดอร์นี้มีอยู่ในรายการแล้ว"
+
+msgid "Tick the transponders to search."
+msgstr "ติ๊กเลือกทรานสพอนเดอร์ที่จะค้นหา"
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S ใช้ได้เฉพาะ QPSK เลือก DVB-S2 สำหรับ 8PSK, 16APSK และ 32APSK"
+
+msgid "This transponder is not valid."
+msgstr "ทรานสพอนเดอร์นี้ไม่ถูกต้อง"
+
+msgid "All {n} transponders are searched."
+msgstr "ค้นหาทรานสพอนเดอร์ทั้งหมด {n} ตัว"
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "ค้นหาทรานสพอนเดอร์ {on} จาก {n} ตัว การค้นหาทรานสพอนเดอร์เดี่ยวจะไม่เพิ่มทรานสพอนเดอร์ที่เครือข่ายประกาศ (NIT)"
+
+msgid "Edit transponder"
+msgstr "แก้ไขทรานสพอนเดอร์"
+
+msgid "Add transponder"
+msgstr "เพิ่มทรานสพอนเดอร์"
+
+msgid "Transponders of {position}"
+msgstr "ทรานสพอนเดอร์ของ {position}"
+
+msgid "The list could not be saved."
+msgstr "ไม่สามารถบันทึกรายการได้"
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "ทรานสพอนเดอร์: ค้นหาทีละตัว เพิ่ม เปลี่ยน หรือลบ"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} ทรานสพอนเดอร์ หากติ๊กไว้เพียงบางตัว จะค้นหาเฉพาะตัวที่ติ๊ก"
+
+msgid "Own transponder list: {positions}."
+msgstr "รายการทรานสพอนเดอร์ของคุณเอง: {positions}"
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "รูปแบบสตรีมที่เซิร์ฟเวอร์ส่งมา เลือก HLS เมื่อช่องเล่นแบบ MPEG-TS ไม่ได้"
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "ตั้งชื่อเฉพาะให้รายการ (เป็นชื่อกลุ่มช่องด้วย)"
+
+msgid "List renamed to {name}"
+msgstr "เปลี่ยนชื่อรายการเป็น {name} แล้ว"
+
+msgid "Add Channels…"
+msgstr "เพิ่มช่อง…"
+
+msgid "Add channels"
+msgstr "เพิ่มช่อง"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "จูนความถี่เดียวด้วยตนเองและเปรียบเทียบช่องกับรายการช่อง: เพิ่มช่องใหม่ อัปเดตช่องที่เปลี่ยน ลบช่องเก่า"
+
+msgid "Unchanged"
+msgstr "ไม่เปลี่ยนแปลง"
+
+msgid "Changed"
+msgstr "เปลี่ยนแปลง"
+
+msgid "No longer broadcast"
+msgstr "ไม่ออกอากาศแล้ว"
+
+msgid "Bandwidth"
+msgstr "แบนด์วิดท์"
+
+msgid "yes"
+msgstr "ใช่"
+
+msgid "Add Channels"
+msgstr "เพิ่มช่อง"
+
+msgid "Tune Channel"
+msgstr "จูนช่อง"
+
+msgid "No tuner found."
+msgstr "ไม่พบจูนเนอร์"
+
+msgid "Log"
+msgstr "บันทึกการทำงาน"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP ของมัลติเพล็กซ์ DVB-T2 ที่ส่งหลาย PLP; -1 ให้จูนเนอร์เลือกเอง"
+
+msgid "Enter by hand"
+msgstr "ป้อนด้วยตนเอง"
+
+msgid "Tuning…"
+msgstr "กำลังจูน…"
+
+msgid "The tuner could not be used."
+msgstr "ไม่สามารถใช้จูนเนอร์ได้"
+
+msgid "No channels found on this frequency."
+msgstr "ไม่พบช่องบนความถี่นี้"
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "ไม่เปลี่ยนแปลง {same} เปลี่ยนแปลง {changed} ใหม่ {new} ไม่ออกอากาศแล้ว {gone}"
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "บันทึกแล้ว: เพิ่ม {added} อัปเดต {updated} ลบ {removed}"
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "ดาวเทียม · พอร์ต DiSEqC {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "แหล่ง: ดาวเทียม เคเบิล ภาคพื้นดิน หรือสตรีมอินเทอร์เน็ต พอร์ต DiSEqC หรือดาวเทียม เครือข่าย ไฟล์นำเข้า หรือรายการ IPTV"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "ไฟล์ช่อง LinDVB (.json): ทุกอย่าง พร้อมรายการโปรด"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "เพลย์ลิสต์ M3U (.m3u): ช่องอินเทอร์เน็ตและสตรีม DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "ไฟล์ช่อง dvbv5 (.conf): ช่องของจูนเนอร์"
+
+msgid "CSV table (.csv): every channel"
+msgstr "ตาราง CSV (.csv): ทุกช่อง"
+
+msgid "Export Channel List"
+msgstr "ส่งออกรายการช่อง"
+
+msgid "TV channels only"
+msgstr "เฉพาะช่องทีวี"
+
+msgid "Radio stations only"
+msgstr "เฉพาะสถานีวิทยุ"
+
+msgid "The channels shown in the list ({n})"
+msgstr "ช่องที่แสดงในรายการ ({n})"
+
+msgid "Save…"
+msgstr "บันทึก…"
+
+msgid "There are no channels to export."
+msgstr "ไม่มีช่องที่จะส่งออก"
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "ไม่มีช่องใดใน {total} ช่องนี้ที่เก็บในรูปแบบนี้ได้ ช่องอินเทอร์เน็ตไปที่ M3U ช่องของจูนเนอร์ไปที่ dvbv5 ทุกช่องไปที่ CSV หรือไฟล์ช่อง LinDVB"
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "จะบันทึก {n} จาก {total} ช่อง อีก {skipped} ช่องเก็บในรูปแบบนี้ไม่ได้"
+
+msgid "{n} channels will be saved."
+msgstr "จะบันทึก {n} ช่อง"
+
+msgid "Could not save {name}"
+msgstr "ไม่สามารถบันทึก {name}"
+
+msgid "{n} channels exported to {path}"
+msgstr "ส่งออก {n} ช่องไปยัง {path} แล้ว"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "นำเข้ารายการช่อง (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "เซิร์ฟเวอร์ (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "ช่องของเซิร์ฟเวอร์ Tvheadend พร้อมแท็กช่องเป็นกลุ่มและผังรายการของเซิร์ฟเวอร์ เว้นชื่อผู้ใช้และรหัสผ่านว่างไว้เมื่อเซิร์ฟเวอร์ไม่ได้ขอ รหัสผ่านจะถูกเก็บไว้ในการตั้งค่า LinDVB"
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: โหลดรายการแล้ว {n} รายการ"
+
+msgid "Hardware Tuners"
+msgstr "จูนเนอร์ฮาร์ดแวร์"
+
+msgid "No hardware tuner found."
+msgstr "ไม่พบจูนเนอร์ฮาร์ดแวร์"
+
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "แพ็กเกจ Snap ใช้จูนเนอร์ได้เมื่อเชื่อมต่ออินเทอร์เฟซ DVB แล้วเท่านั้น: รัน “sudo snap connect lindvb:dvb” แล้วเริ่ม LinDVB ใหม่"
+
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux ยังไม่ได้ตั้งค่าอุปกรณ์ DVB (ไม่มี /dev/dvb) อาจขาดไดรเวอร์หรือเฟิร์มแวร์ของจูนเนอร์ “dmesg | grep -i dvb” จะแสดงสิ่งที่เคอร์เนลรายงาน"
+
+msgid "Connect a tuner and open the preferences again."
+msgstr "เชื่อมต่อจูนเนอร์แล้วเปิดการตั้งค่าอีกครั้ง"
+
+msgid "{n} tuners found in this computer."
+msgstr "พบจูนเนอร์ {n} ตัวในคอมพิวเตอร์เครื่องนี้"
+
+msgid "1 tuner found in this computer."
+msgstr "พบจูนเนอร์ 1 ตัวในคอมพิวเตอร์เครื่องนี้"
+
+msgid "Tuner {n}: {name}"
+msgstr "จูนเนอร์ {n}: {name}"
+
+msgid "Internet stream {host}"
+msgstr "สตรีมอินเทอร์เน็ต {host}"
+
+msgid "the server ended the stream"
+msgstr "เซิร์ฟเวอร์สิ้นสุดสตรีม"
+
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – เชื่อมต่อใหม่ใน {s} วินาที"
+
+msgid "{host}: connected again"
+msgstr "{host}: เชื่อมต่อใหม่แล้ว"
+
+msgid "could not open the stream"
+msgstr "ไม่สามารถเปิดสตรีมได้"
+
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: เล่นสตรีมโดยตรงโดยไม่ใช้ไทม์ชิฟต์ ({reason})"
+
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "การเชื่อมต่อขาดหาย ({reason}) – เชื่อมต่อใหม่ใน {s} วินาที"
+
+msgid "Connected again"
+msgstr "เชื่อมต่อใหม่แล้ว"
+
+msgid "{name} has no catch-up"
+msgstr "{name} ไม่มีการดูย้อนหลัง"
+
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "ดูย้อนหลัง: {title} ({name}, {time})"
+
+msgid "Timeshift for internet channels"
+msgstr "ไทม์ชิฟต์สำหรับช่องอินเทอร์เน็ต"
+
+msgid "Internet TV channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio streams play directly."
+msgstr "ช่องทีวีอินเทอร์เน็ตผ่านบัฟเฟอร์ไทม์ชิฟต์เหมือนช่องจากจูนเนอร์: หยุดชั่วคราว ย้อนกลับ และเก็บบัฟเฟอร์เป็นรายการบันทึก สตรีมวิทยุเล่นโดยตรง"
+
+msgid "Quality of HLS / DASH streams"
+msgstr "คุณภาพของสตรีม HLS / DASH"
+
+msgid "Automatic (follows the connection)"
+msgstr "อัตโนมัติ (ตามการเชื่อมต่อ)"
+
+msgid "Always the best"
+msgstr "ดีที่สุดเสมอ"
+
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "อัตโนมัติจะสลับไปใช้คุณภาพต่ำลงเมื่อการเชื่อมต่อช้า บัฟเฟอร์จะเก็บสิ่งที่ได้รับแล้ว ดีที่สุดเสมอจะดูเหมือนเดิมตลอดเวลา แต่จะหยุดรอเมื่อการเชื่อมต่อช้า"
+
+msgid "Reconnect internet streams"
+msgstr "เชื่อมต่อสตรีมอินเทอร์เน็ตใหม่"
+
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "เมื่อการเชื่อมต่อของช่องอินเทอร์เน็ตหรือ Tvheadend ขาด จะเปิดใหม่หลังจากไม่กี่วินาที นานสูงสุดสามนาที"
+
+msgid "Watch from the Start"
+msgstr "ดูตั้งแต่ต้น"
+
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "เล่นรายการตั้งแต่ต้นจากคลังของผู้ให้บริการ (ดูย้อนหลัง)"
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr "สตรีมอินเทอร์เน็ต HLS และ DASH บันทึกด้วยแทร็กเสียงหนึ่งแทร็ก (ภาษาที่ต้องการเมื่อมีให้)"
+
+msgid "margin"
+msgstr "ค่าเผื่อ"
+
+msgid "pixel"
+msgstr "พิกเซล"
+
+msgid "TV"
+msgstr "ทีวี"
+
+msgid "Filter"
+msgstr "ตัวกรอง"
+
+msgid "Source or group"
+msgstr "แหล่งที่มาหรือกลุ่ม"
+
+msgid "Favourites list"
+msgstr "รายการโปรด"
+
+msgid "For channels whose type was guessed wrong, e.g. internet streams or imported lists"
+msgstr "สำหรับช่องที่เดาประเภทผิด เช่น สตรีมอินเทอร์เน็ตหรือรายการที่นำเข้า"
+
+msgid "Sort by number to move channels"
+msgstr "เรียงตามหมายเลขเพื่อย้ายช่อง"
+
+msgid "Move up in the channel list (Alt+Up)"
+msgstr "เลื่อนขึ้นในรายการช่อง (Alt+Up)"
+
+msgid "Move down in the channel list (Alt+Down)"
+msgstr "เลื่อนลงในรายการช่อง (Alt+Down)"
+
+msgid "Add to the favourites list"
+msgstr "เพิ่มในรายการโปรด"
+
+msgid "Remove from the favourites list"
+msgstr "ลบออกจากรายการโปรด"
+
+msgid "Move up in the favourites list (Alt+Up)"
+msgstr "เลื่อนขึ้นในรายการโปรด (Alt+Up)"
+
+msgid "Move down in the favourites list (Alt+Down)"
+msgstr "เลื่อนลงในรายการโปรด (Alt+Down)"
+
+msgid "Empty. Drag channels here or use the arrow button."
+msgstr "ว่างเปล่า ลากช่องมาที่นี่หรือใช้ปุ่มลูกศร"
+
+msgid "No favourites list yet. Use the star of a channel to make one."
+msgstr "ยังไม่มีรายการโปรด ใช้ดาวของช่องเพื่อสร้าง"
+
+msgid "Sort the channel list"
+msgstr "เรียงลำดับรายการช่อง"
+
+msgid "By group and name"
+msgstr "ตามกลุ่มและชื่อ"
+
+msgid "By the numbers of the DVB-I list"
+msgstr "ตามหมายเลขของรายการ DVB-I"
+
+msgid "{n} channels · drag to reorder"
+msgstr "{n} ช่อง · ลากเพื่อจัดลำดับ"
+
+msgid "Shown as the source in the channel list filter. Empty: the name the list gives itself."
+msgstr "แสดงเป็นแหล่งที่มาในตัวกรองรายการช่อง ว่างไว้: ใช้ชื่อที่รายการตั้งให้ตัวเอง"
+
+msgid "The name the list gives itself"
+msgstr "ชื่อที่รายการตั้งให้ตัวเอง"
+
+msgid "Name in the channel list"
+msgstr "ชื่อในรายการช่อง"
+
+msgid "All tags"
+msgstr "ทุกแท็ก"
+
+msgid "Tvheadend channel tag"
+msgstr "แท็กช่อง Tvheadend"
+
+msgid "{n} min left"
+msgstr "เหลืออีก {n} นาที"
+
+msgid "Audio description"
+msgstr "เสียงบรรยายภาพ"
+
+msgid "Black and white"
+msgstr "ขาวดำ"
+
+msgid "In memory (RAM)"
+msgstr "ในหน่วยความจำ (RAM)"
+
+msgid "On disk as a file"
+msgstr "บนดิสก์เป็นไฟล์"
+
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "ปิด: ทีวีสดหยุดชั่วคราวหรือย้อนกลับไม่ได้ ในหน่วยความจำ: ไม่มีการเขียนลงดิสก์ แต่บัฟเฟอร์ใช้ RAM บนดิสก์: บัฟเฟอร์ใหญ่ที่สุด"
+
+msgid "Timeshift buffer in memory (MB)"
+msgstr "บัฟเฟอร์ไทม์ชิฟต์ในหน่วยความจำ (MB)"
+
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "สูงสุดครึ่งหนึ่งของหน่วยความจำ ({mb} MB) น้อยลงเมื่อโปรแกรมอื่นต้องการ"
+
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "น้อยลงเมื่อดิสก์ใกล้เต็ม (เหลือว่าง {mb} MB)"
+
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+msgid "{m} min"
+msgstr "{m} นาที"
+
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "ลดบัฟเฟอร์ไทม์ชิฟต์เหลือ {mb} MB: {reason}"
+
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "ปิดไทม์ชิฟต์สำหรับช่องนี้: {reason}"
+
+msgid "not enough free memory"
+msgstr "หน่วยความจำว่างไม่พอ"
+
+msgid "the disk is almost full"
+msgstr "ดิสก์ใกล้เต็ม"
+
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "ไทม์ชิฟต์ปิดอยู่ (การตั้งค่า › การเล่น)"
+
+msgid "HbbTV: the application is not signalled on this channel"
+msgstr "HbbTV: ช่องนี้ไม่ได้ส่งสัญญาณแอปพลิเคชัน"
+
+msgid "HbbTV video could not be played: {msg}"
+msgstr "ไม่สามารถเล่นวิดีโอ HbbTV ได้: {msg}"
+
+msgid "unknown error"
+msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"
+
+msgid "Diagnostic log"
+msgstr "ล็อกการวินิจฉัย"
+
+msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
+msgstr "บันทึกสิ่งที่แอปพลิเคชันทำและขอจาก LinDVB ไว้ใน {path} เพื่อแนบกับรายงานบั๊ก มีผลเมื่อเปลี่ยนช่องครั้งถัดไป"
+
+msgid "DiSEqC switch"
+msgstr "สวิตช์ DiSEqC"
+
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (สูงสุด 4 ดาวเทียม)"
+
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (สูงสุด 16 ดาวเทียม)"
+
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1 เฉพาะ uncommitted (สูงสุด 16)"
+
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 สำหรับสวิตช์ที่มีอินพุตมากกว่า 4 ช่อง หรือสวิตช์ uncommitted ที่อยู่หน้าสวิตช์ DiSEqC 1.0 \"เฉพาะ uncommitted\" สำหรับสวิตช์ที่ไม่รับคำสั่ง DiSEqC 1.0"
+
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: สูงสุด 4 ดาวเทียม (แหล่ง 1 ถึง 4)"
+
+msgid "Single cable: up to {n} satellite positions."
+msgstr "สายเดี่ยว: สูงสุด {n} ตำแหน่งดาวเทียม"
+
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "สวิตช์ DiSEqC 1.1: สูงสุด 16 ดาวเทียม (uncommitted และ committed)"
+
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "สวิตช์ DiSEqC 1.1: สูงสุด 16 ดาวเทียม (เฉพาะ uncommitted)"
+
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "สวิตช์ DiSEqC 1.0: สูงสุด 4 ดาวเทียม เลือก DiSEqC 1.1 (สูงสุด 16 ดาวเทียม) และ Unicable (สูงสุด 64 ตำแหน่ง) ได้ในการตั้งค่าจูนเนอร์"
+
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "แสดงรายการโปรดของคุณ (Ctrl+D)"
+
+msgid "Edit this favourites list"
+msgstr "แก้ไขรายการโปรดนี้"
+
+msgid "Area"
+msgstr "พื้นที่"
+
+msgid "All sources"
+msgstr "ทุกแหล่งที่มา"
+
+msgid "All areas"
+msgstr "ทุกพื้นที่"
+
+msgid "DiSEqC port {n}"
+msgstr "พอร์ต DiSEqC {n}"
+
+msgid "Picture quality"
+msgstr "คุณภาพภาพ"
+
+msgid "Tags"
+msgstr "แท็ก"
+
+msgid "Reset the filter and the search"
+msgstr "รีเซ็ตตัวกรองและการค้นหา"
+
+msgid "Debug"
+msgstr "ดีบัก"
+
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "เมื่อมีบางอย่างไม่ทำงาน: เปิดโหมดดีบัก ทำซ้ำสิ่งที่ผิดพลาด แล้วแนบล็อกไปกับรายงานบั๊ก"
+
+msgid "Debug mode"
+msgstr "โหมดดีบัก"
+
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "บันทึกการเปลี่ยนช่อง การจูน การเล่น การบันทึก HbbTV ข้อความสถานะ คำเตือนและข้อผิดพลาดของ GStreamer ลงในไฟล์ล็อก โดยไม่รวมรหัสผ่าน PIN ชื่อผู้ใช้ และโฟลเดอร์บ้านของคุณ มีผลเมื่อบันทึก โปรดปิดอีกครั้งเมื่อแก้ปัญหาได้แล้ว"
+
+msgid "Log file"
+msgstr "ไฟล์ล็อก"
+
+msgid "Open Folder"
+msgstr "เปิดโฟลเดอร์"
+
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "ตอนนี้ {size} สูงสุด {max} บันทึก… จะทำสำเนาเพื่อแนบกับรายงานบั๊ก"
+
+msgid "No log yet."
+msgstr "ยังไม่มีล็อก"

@@ -153,7 +153,7 @@ LANG3 = {"de": "deu", "en": "eng", "fr": "fra", "it": "ita", "es": "spa", "nl": 
          "lt": "lit", "lv": "lav", "cs": "ces", "sk": "slk", "sl": "slv", "hr": "hrv",
          "hu": "hun", "ro": "ron", "bg": "bul", "el": "ell", "ga": "gle", "mt": "mlt",
          "ar": "ara", "ru": "rus", "uk": "ukr", "ja": "jpn",
-         "ka": "kat", "hy": "hye", "zh": "zho"}
+         "ka": "kat", "hy": "hye", "th": "tha", "zh": "zho"}
 
 
 def viewer_language(settings, ui_language=""):
