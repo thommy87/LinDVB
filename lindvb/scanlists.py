@@ -473,6 +473,39 @@ def positions(lists, systems, tolerance=3):
     return out
 
 
+@lru_cache(maxsize=1)
+def _satellite_index():
+    """{(position, polarisation, MHz): {satellite names}} of the bundled
+    satellite lists; one name for lists spelt differently ("Hot Bird 13F",
+    "Hotbird 13F")."""
+    index, names = {}, {}
+    for sl in bundled_lists()[0]:
+        if sl.family != SAT or sl.position is None:
+            continue
+        name = names.setdefault(re.sub(r"[\s-]", "", sl.region).casefold(), sl.region)
+        for e in sl.entries():
+            try:
+                mhz = round(int(e.get("FREQUENCY", 0)) / 1000)
+            except ValueError:
+                continue
+            pol = e.get("POLARIZATION", "")[:1].lower()
+            index.setdefault((sl.position, pol, mhz), set()).add(name)
+    return index
+
+
+@lru_cache(maxsize=4096)
+def satellites(pos, frequency, polarity, tolerance=3):
+    """The satellites whose list has the transponder *frequency* (kHz) with
+    *polarity* ("h", "v" …) at the orbital position *pos* (within *tolerance*
+    tenths of a degree, frequencies within 2 MHz), as a sorted tuple; a
+    transponder in the lists of two satellites gives both."""
+    index, mhz, out = _satellite_index(), round(frequency / 1000), set()
+    for p in range(pos - tolerance, pos + tolerance + 1):
+        for f in range(mhz - 2, mhz + 3):
+            out |= index.get((p, polarity, f), set())
+    return tuple(sorted(out, key=str.casefold))
+
+
 def find_position(choices, pos):
     """Index of the Choice for *pos* (tenths of a degree), -1 if none."""
     for i, c in enumerate(choices):

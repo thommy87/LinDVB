@@ -4,8 +4,10 @@
 1. **Source**, ticked: satellite, cable, terrestrial, internet streams, DVB-I
    and each Tvheadend server. Nothing ticked is all sources.
 2. **Area** of the sources ticked, ticked: the orbital positions (else the
-   DiSEqC ports) of the satellite channels, the lists of the others. An area
-   narrows only the channels of its own source.
+   DiSEqC ports) of the satellite channels with their satellites, the lists
+   of the others. An area narrows only the channels of its own source. Which
+   satellite a channel is on comes from the transponder lists of the channel
+   search (lindvb.scanlists.satellites).
 3. **Filter**: reception (all, free to air, encrypted; offered with
    broadcast channels, internet streams count as free to air), picture
    quality (UHD, HD, SD; TV only) and the Tvheadend tags. Within a section a
@@ -27,7 +29,7 @@ from dataclasses import dataclass, field, replace
 
 from . import chansort
 from .i18n import _
-from .scanlists import format_position, parse_position
+from .scanlists import format_position, parse_position, satellites
 
 BROADCAST = ("sat", "cable", "terr")
 QUALITIES = ("UHD", "HD", "SD")
@@ -96,17 +98,25 @@ def source_of(c):
 
 def area_keys(c, source):
     """The areas of *c*, each "<source>/<kind>:<value>": a satellite
-    channel's orbital position from its group name, else its DiSEqC port,
-    else its group; the group (list, network, import) of the others."""
+    channel's orbital position from its group name with the satellites whose
+    transponder list has its transponder ("sat/sat:<position>:<name>"), else
+    its DiSEqC port, else its group; a terrestrial channel's group (the region
+    searched) with its channel ("terr/mux:<kHz>:<group>"); the group (list,
+    network, import) of the others."""
     if source.startswith(TVH):
         return frozenset()
     if source == "sat":
         pos = parse_position(c.root) if c.root else None
         if pos is not None:
-            return frozenset({f"sat/pos:{pos}"})
+            sats = satellites(pos, c.frequency, c.polarity) if c.frequency else ()
+            return frozenset({f"sat/pos:{pos}"} | {f"sat/sat:{pos}:{n}" for n in sats})
         if c.diseqc >= 0:
             return frozenset({f"sat/port:{c.diseqc}"})
-    return frozenset({f"{source}/root:{c.root}"}) if c.root else frozenset()
+    if not c.root:
+        return frozenset()
+    if source == "terr" and c.frequency:
+        return frozenset({f"terr/root:{c.root}", f"terr/mux:{c.frequency}:{c.root}"})
+    return frozenset({f"{source}/root:{c.root}"})
 
 
 def info(c):
@@ -174,27 +184,90 @@ def _chosen(cat, chosen):
 
 
 def areas(cat, chosen):
-    """Step 2: [(heading, [(key, label)])], one section per source ticked
-    (per source when none is) that has at least two areas. An orbital
-    position is named with its satellites: "19.2°E (Astra 1KR)"."""
+    """Step 2: [(heading, [(key, label, parent key or "")])], one section per
+    source ticked (per source when none is) that has at least two entries.
+    The satellites of an orbital position, the channels of a terrestrial
+    region follow it as its children when it has several; one satellite (or
+    the group name) only names the position: "13.0°E (Hot Bird 13F)"."""
     labels = dict(cat.sources)
     out = []
     for src in _chosen(cat, chosen):
         entries = cat.areas.get(src, {})
-        if len(entries) >= 2:
-            out.append((labels[src], [(key, _area_text(key, entries[key]))
-                                      for key in sorted(entries, key=_area_order)]))
+        items = []
+        for key in sorted((k for k in entries if not parent_of(k)),
+                          key=_area_order):
+            kids = sorted((k for k in entries if parent_of(k) == key), key=_area_order)
+            if len(kids) > 1:
+                items += [(key, area_label(key), "")] + [(k, area_label(k), key) for k in kids]
+            else:
+                names = [area_label(k) for k in kids] or _group_names(key, entries[key])
+                items.append((key, _named(area_label(key), names), ""))
+        if len(items) >= 2:
+            out.append((labels[src], items))
     return out
 
 
-def _area_text(key, roots):
-    text = area_label(key)
-    if key.startswith("sat/pos:"):
-        names = sorted({_POS_SUFFIX.sub("", r).replace("-", " ").replace("_", " ").strip()
-                        for r in roots} - {""}, key=str.casefold)
-        if names:
-            text += f" ({', '.join(names[:3])}{', …' if len(names) > 3 else ''})"
+def tick(items, chosen, key, on):
+    """*chosen* with the entry *key* of *items* ((key, label[, parent]), …)
+    ticked or not. A parent ticked stands for all its children; ticking the
+    last child of a parent ticks the parent instead, unticking one child of a
+    parent ticked keeps its siblings."""
+    kids = {}
+    for item in items:
+        if len(item) > 2 and item[2]:
+            kids.setdefault(item[2], set()).add(item[0])
+    parent = next((item[2] for item in items if item[0] == key and len(item) > 2), "")
+    out = set(chosen)
+    if parent and parent in out:
+        out = (out - {parent}) | kids[parent]
+    out = (out | {key}) if on else (out - {key})
+    out -= kids.get(key, set())
+    if parent and kids[parent] <= out:
+        out = (out - kids[parent]) | {parent}
+    return frozenset(out)
+
+
+def tick_state(items, chosen, key):
+    """"on", "off" or "part" (some of its children ticked) for *key*."""
+    parent = next((item[2] for item in items if item[0] == key and len(item) > 2), "")
+    if key in chosen or parent in chosen:
+        return "on"
+    kids = {item[0] for item in items if len(item) > 2 and item[2] == key}
+    return "part" if kids & chosen else "off"
+
+
+def parent_of(key):
+    """The orbital position of a satellite's area key, the region of a
+    terrestrial channel's, else ""."""
+    if key.startswith("sat/sat:"):
+        return "sat/pos:" + key[len("sat/sat:"):].partition(":")[0]
+    if key.startswith("terr/mux:"):
+        return "terr/root:" + key[len("terr/mux:"):].partition(":")[2]
+    return ""
+
+
+def channel_label(khz):
+    """"K 23 · 490 MHz" for the European UHF / VHF band III raster, else "490 MHz"."""
+    mhz = khz / 1000
+    text = f"{mhz:g} MHz"
+    if 474 <= mhz <= 858 and (mhz - 306) % 8 == 0:
+        return f"K {int((mhz - 306) / 8)} · {text}"
+    if 177.5 <= mhz <= 226.5 and (mhz - 142.5) % 7 == 0:
+        return f"K {int((mhz - 142.5) / 7)} · {text}"
     return text
+
+
+def _group_names(key, roots):
+    if not key.startswith("sat/pos:"):
+        return []
+    names = {_POS_SUFFIX.sub("", r).replace("-", " ").replace("_", " ").strip() for r in roots}
+    return sorted(names - {""}, key=str.casefold)
+
+
+def _named(label, names):
+    if not names:
+        return label
+    return f"{label} ({', '.join(names[:3])}{', …' if len(names) > 3 else ''})"
 
 
 def area_label(key):
@@ -203,6 +276,10 @@ def area_label(key):
         return format_position(int(value))
     if kind == "port":
         return _("DiSEqC port {n}").format(n=int(value) + 1)
+    if kind == "sat":
+        return value.partition(":")[2]
+    if kind == "mux":
+        return channel_label(int(value.partition(":")[0]))
     return value
 
 
@@ -210,6 +287,11 @@ def _area_order(key):
     kind, _sep, value = key.partition("/")[2].partition(":")
     if kind == "root":
         return (2, 0, value.casefold())
+    if kind == "sat":
+        pos, _sep, name = value.partition(":")
+        return (0, -int(pos), name.casefold())
+    if kind == "mux":
+        return (3, int(value.partition(":")[0]), "")
     return (0 if kind == "pos" else 1, -int(value) if kind == "pos" else int(value), "")
 
 
@@ -246,7 +328,7 @@ def fit(st, cat):
     streams ticked, a sort order not offered. The sort value is checked by
     the caller against the values of the channels shown."""
     chosen = st.sources & {k for k, _l in cat.sources}
-    offered = {k for _h, items in areas(cat, chosen) for k, _l in items}
+    offered = {item[0] for _h, items in areas(cat, chosen) for item in items}
     o = offer(cat, chosen)
     srt = st.sort if st.sort in {k for k, _l in sorts(cat, chosen)} else "number"
     return replace(st, sources=frozenset(chosen), areas=st.areas & offered,
@@ -301,7 +383,7 @@ def migrate(settings, channels):
                 src = source_of(c)
                 srcs.add(src)
                 if not group.startswith("src:") or group.count(":") == 2:   # a group, a port
-                    ars |= area_keys(c, src)
+                    ars |= {k for k in area_keys(c, src) if not parent_of(k)}
     if f == "iptv":
         srcs |= {"iptv", "dvbi"}
     tag = old.get("list_tag")

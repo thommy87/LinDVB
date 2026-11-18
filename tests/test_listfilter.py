@@ -3,6 +3,7 @@ import time
 import pytest
 
 from lindvb import listfilter as lf
+from lindvb import scanlists
 from lindvb.channels import Channel
 from lindvb.listfilter import State
 
@@ -44,9 +45,89 @@ def test_satellite_areas_are_orbital_positions_then_ports():
     assert lf.info(ASTRA).areas == {"sat/pos:192"} == lf.info(ASTRA_ENC).areas
     assert lf.info(PORT).areas == {"sat/port:2"}
     sections = lf.areas(CAT, frozenset({"sat"}))
-    assert sections == [("Satellite", [("sat/pos:192", "19.2°E (Astra 1KR, Astra 1L)"),
-                                       ("sat/pos:130", "13.0°E (Hotbird)"),
-                                       ("sat/port:2", "DiSEqC port 3")])]
+    assert sections == [("Satellite", [("sat/pos:192", "19.2°E (Astra 1KR, Astra 1L)", ""),
+                                       ("sat/pos:130", "13.0°E (Hotbird)", ""),
+                                       ("sat/port:2", "DiSEqC port 3", "")])]
+
+
+# channels found by a search: the group is the position, the satellites come
+# from the transponder lists of the channel search
+SCANNED = [ch("Das Erste HD", delsys="dvb-s2", root="19.2°E", frequency=11494000, polarity="h"),
+           ch("ZDF HD", delsys="dvb-s2", root="19.2°E", frequency=11362000, polarity="h"),
+           ch("Arte", delsys="dvb-s", root="19.2°E", frequency=10743750, polarity="h"),
+           ch("Unknown", delsys="dvb-s", root="19.2°E", frequency=12999000, polarity="v"),
+           ch("Rai 1", delsys="dvb-s2", root="13.0°E", frequency=10992000, polarity="v")]
+
+
+def test_satellites_come_from_the_transponder_lists(monkeypatch):
+    index = {(192, "h", 11494): {"Astra 1N"}, (192, "h", 11362): {"Astra 1M"},
+             (192, "h", 10744): {"Astra 1M", "Astra 1P"}, (130, "v", 10992): {"Hot Bird 13G"}}
+    monkeypatch.setattr(scanlists, "_satellite_index", lambda: index)
+    scanlists.satellites.cache_clear()
+    try:
+        infos = [lf.info(c) for c in SCANNED]
+        assert infos[2].areas == {"sat/pos:192", "sat/sat:192:Astra 1M", "sat/sat:192:Astra 1P"}
+        assert infos[3].areas == {"sat/pos:192"}          # a transponder no list has
+        cat = lf.catalogue(SCANNED, infos, radio=False)
+        items = lf.areas(cat, frozenset())[0][1]
+        assert items == [("sat/pos:192", "19.2°E", ""),
+                         ("sat/sat:192:Astra 1M", "Astra 1M", "sat/pos:192"),
+                         ("sat/sat:192:Astra 1N", "Astra 1N", "sat/pos:192"),
+                         ("sat/sat:192:Astra 1P", "Astra 1P", "sat/pos:192"),
+                         ("sat/pos:130", "13.0°E (Hot Bird 13G)", "")]
+        one = State(areas=frozenset({"sat/sat:192:Astra 1M"}))
+        assert [c.name for c, i in zip(SCANNED, infos) if lf.matches(i, one)] == \
+            ["ZDF HD", "Arte"]
+        assert lf.fit(one, cat) == one
+    finally:
+        scanlists.satellites.cache_clear()
+
+
+def test_terrestrial_regions_and_their_channels():
+    chans = [ch("Das Erste", delsys="dvb-t2", root="Berlin", frequency=490000),
+             ch("ZDF", delsys="dvb-t2", root="Berlin", frequency=506000),
+             ch("rbb", delsys="dvb-t2", root="Berlin", frequency=490000),
+             ch("NDR", delsys="dvb-t2", root="Hamburg", frequency=226500)]
+    infos = [lf.info(c) for c in chans]
+    assert infos[0].areas == {"terr/root:Berlin", "terr/mux:490000:Berlin"}
+    items = lf.areas(lf.catalogue(chans, infos, radio=False), frozenset())[0][1]
+    assert items == [("terr/root:Berlin", "Berlin", ""),
+                     ("terr/mux:490000:Berlin", "K 23 · 490 MHz", "terr/root:Berlin"),
+                     ("terr/mux:506000:Berlin", "K 25 · 506 MHz", "terr/root:Berlin"),
+                     ("terr/root:Hamburg", "Hamburg (K 12 · 226.5 MHz)", "")]
+    st = State(areas=frozenset({"terr/mux:490000:Berlin"}))
+    assert [c.name for c, i in zip(chans, infos) if lf.matches(i, st)] == ["Das Erste", "rbb"]
+    assert lf.channel_label(522250) == "522.25 MHz"
+
+
+def test_satellites_of_the_bundled_lists():
+    assert "Astra 1P" in scanlists.satellites(192, 10758000, "v")
+    # two spellings of one satellite in the lists are one name
+    assert len([n for n in scanlists.satellites(130, 10727000, "h") if "13F" in n]) == 1
+
+
+ITEMS = (("p", "19.2°E", ""), ("a", "Astra 1M", "p"), ("b", "Astra 1N", "p"),
+         ("c", "Astra 1P", "p"), ("q", "13.0°E", ""))
+
+
+@pytest.mark.parametrize("chosen, key, on, result", [
+    (set(), "p", True, {"p"}),                       # a position stands for its satellites
+    ({"a"}, "p", True, {"p"}),
+    ({"p", "q"}, "p", False, {"q"}),
+    ({"p"}, "b", False, {"a", "c"}),                 # one satellite off: its siblings stay
+    ({"a", "b"}, "c", True, {"p"}),                  # the last one on: the position
+    ({"a"}, "a", False, set()),
+    (set(), "q", True, {"q"}),
+])
+def test_ticking_positions_and_satellites(chosen, key, on, result):
+    assert lf.tick(ITEMS, frozenset(chosen), key, on) == result
+
+
+def test_half_ticked_position():
+    assert lf.tick_state(ITEMS, {"a"}, "p") == "part"
+    assert lf.tick_state(ITEMS, {"p"}, "b") == "on"
+    assert lf.tick_state(ITEMS, set(), "p") == "off"
+    assert lf.tick_state(ITEMS, {"q"}, "q") == "on"
 
 
 def test_areas_leave_out_sources_with_one_area():
@@ -147,8 +228,9 @@ def test_migrate_keeps_new_settings():
 # -- quality gate: a long list stays quick -------------------------------------------
 
 def _many(n=20000):
-    kinds = [dict(delsys="dvb-s2", root=f"Sat-{p / 10:.1f}E", diseqc=p % 4)
-             for p in (192, 130, 235, 282)] + \
+    kinds = [dict(delsys="dvb-s2", root=f"{p / 10:.1f}°E", diseqc=p % 4, polarity=pol,
+                  frequency=f) for p in (192, 130, 235, 282)
+             for f in range(10700000, 12750000, 39000) for pol in "hv"] + \
             [dict(delsys="dvb-c-a", root="Kabel"), dict(delsys="dvb-t2", root="Berlin"),
              dict(delsys="iptv", url="http://x", root="List"),
              dict(TVH, groups=["News", "Sport"])]
@@ -158,6 +240,7 @@ def _many(n=20000):
 
 def test_twenty_thousand_channels_filter_quickly():
     chans = _many()
+    scanlists._satellite_index()             # read once per session, with the channel search
     t = time.perf_counter()
     infos = [lf.info(c) for c in chans]
     cat = lf.catalogue(chans, infos, radio=False)

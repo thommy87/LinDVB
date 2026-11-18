@@ -1047,7 +1047,7 @@ class MainWindow(Gtk.ApplicationWindow):
                          for n, (head, items) in enumerate(areas)],
                         {f"areas:{n}": st.areas for n in range(len(areas))})
         s2.set_summary(_summary([(k, listfilter.area_label(k)) for _h, items in areas
-                                 for k, _l in items], st.areas, _("All areas")))
+                                 for k, *_rest in items], st.areas, _("All areas")))
         s2.set_visible(bool(areas))
         self.filter_row.set_visible(s1.get_visible() or s2.get_visible())
         o = listfilter.offer(cat, st.sources)
@@ -1079,7 +1079,7 @@ class MainWindow(Gtk.ApplicationWindow):
         then the list is filtered once."""
         st = self._lstate
         if section.sid.startswith("areas:"):
-            st = replace(st, areas=(st.areas - {k for k, _l in section.items}) | value)
+            st = replace(st, areas=(st.areas - {item[0] for item in section.items}) | value)
         elif section.sid == "sort":
             st = replace(st, sort=value, value="")
         else:
