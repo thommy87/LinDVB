@@ -355,19 +355,19 @@ class PrefsWindow(Gtk.Window):
         _row(g, _("Cookies and storage"), clear,
              _("Removes what HbbTV applications stored, such as cookies and settings."))
 
-        # -- Internet: DVB-I and IPTV lists
+        # -- Internet: IPTV playlists first, the DVB-I list last
         from .dvbi import DVBIPanel
         from .iptv import IPTVPanel
         pg = page("internet", _("Internet"),
                   _("Channel lists from the internet: the DVB-I list of your region and IPTV "
                   "playlists. These settings apply at once."))
+        pg.append(Gtk.Label(label="IPTV", xalign=0, css_classes=["lv-section-title"],
+                            margin_top=4))
+        pg.append(IPTVPanel(app, _row))
         pg.append(Gtk.Label(label="DVB-I", xalign=0, css_classes=["lv-section-title"],
                             margin_top=4))
         self._dvbi = DVBIPanel(app)
         pg.append(self._dvbi)
-        pg.append(Gtk.Label(label="IPTV", xalign=0, css_classes=["lv-section-title"],
-                            margin_top=4))
-        pg.append(IPTVPanel(app, _row))
         self.stack.connect("notify::visible-child-name", lambda *_: self._page_shown())
 
         # -- Recording
