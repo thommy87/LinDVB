@@ -100,6 +100,22 @@ def test_terrestrial_regions_and_their_channels():
     assert lf.channel_label(522250) == "522.25 MHz"
 
 
+def test_tvheadend_networks_are_areas_and_hide_their_tags():
+    tvh = dict(TVH, groups=["13E", "Sport"])
+    chans = [ch("Rai 1", tvh_networks=["13E"], **tvh), ch("Sport1", tvh_networks=["19.2E"], **tvh),
+             ch("Both", tvh_networks=["13E", "19.2E"], **TVH)]
+    infos = [lf.info(c) for c in chans]
+    src = "tvh:http://tvh:9981"
+    assert infos[2].areas == {f"{src}/net:13E", f"{src}/net:19.2E"}
+    cat = lf.catalogue(chans, infos, radio=False)
+    assert lf.areas(cat, frozenset()) == [("Tvheadend: Home", [(f"{src}/net:13E", "13E", ""),
+                                                               (f"{src}/net:19.2E", "19.2E", "")])]
+    assert lf.area_label(f"{src}/net:13E") == "13E"
+    assert lf.offer(cat, frozenset()).tags == ["Sport"]      # "13E" is a network
+    st = State(areas=frozenset({f"{src}/net:13E"}), tags=frozenset({"Sport"}))
+    assert [c.name for c, i in zip(chans, infos) if lf.matches(i, st)] == ["Rai 1"]
+
+
 def test_satellites_of_the_bundled_lists():
     assert "Astra 1P" in scanlists.satellites(192, 10758000, "v")
     # two spellings of one satellite in the lists are one name

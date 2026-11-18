@@ -4,8 +4,9 @@
 1. **Source**, ticked: satellite, cable, terrestrial, internet streams, DVB-I
    and each Tvheadend server. Nothing ticked is all sources.
 2. **Area** of the sources ticked, ticked: the orbital positions (else the
-   DiSEqC ports) of the satellite channels with their satellites, the lists
-   of the others. An area narrows only the channels of its own source. Which
+   DiSEqC ports) of the satellite channels with their satellites, the
+   regions of the terrestrial ones with their channels, the networks of a
+   Tvheadend server (lindvb.htsp), the lists of the others. An area narrows only the channels of its own source. Which
    satellite a channel is on comes from the transponder lists of the channel
    search (lindvb.scanlists.satellites).
 3. **Filter**: reception (all, free to air, encrypted; offered with
@@ -101,10 +102,11 @@ def area_keys(c, source):
     channel's orbital position from its group name with the satellites whose
     transponder list has its transponder ("sat/sat:<position>:<name>"), else
     its DiSEqC port, else its group; a terrestrial channel's group (the region
-    searched) with its channel ("terr/mux:<kHz>:<group>"); the group (list,
-    network, import) of the others."""
+    searched) with its channel ("terr/mux:<kHz>:<group>"); the networks of
+    a Tvheadend channel's services; the group (list, network, import) of the
+    others."""
     if source.startswith(TVH):
-        return frozenset()
+        return frozenset(f"{source}/net:{n}" for n in c.tvh_networks)
     if source == "sat":
         pos = parse_position(c.root) if c.root else None
         if pos is not None:
@@ -271,7 +273,7 @@ def _named(label, names):
 
 
 def area_label(key):
-    kind, _sep, value = key.partition("/")[2].partition(":")
+    kind, value = _kind_value(key)
     if kind == "pos":
         return format_position(int(value))
     if kind == "port":
@@ -280,12 +282,22 @@ def area_label(key):
         return value.partition(":")[2]
     if kind == "mux":
         return channel_label(int(value.partition(":")[0]))
-    return value
+    return value                     # "root", "net": the name
+
+
+_AREA = re.compile(r"/(pos|port|sat|mux|root|net):")
+
+
+def _kind_value(key):
+    """("pos", "192") of "sat/pos:192"; the source may hold a "/" itself
+    ("tvh:http://tvh:9981/net:13E")."""
+    m = _AREA.search(key)
+    return (m.group(1), key[m.end():]) if m else ("", key)
 
 
 def _area_order(key):
-    kind, _sep, value = key.partition("/")[2].partition(":")
-    if kind == "root":
+    kind, value = _kind_value(key)
+    if kind in ("root", "net"):
         return (2, 0, value.casefold())
     if kind == "sat":
         pos, _sep, name = value.partition(":")
@@ -309,9 +321,11 @@ class Offer:
 
 def offer(cat, chosen):
     """Step 3 for the sources ticked (all when none is): reception when there
-    are broadcast channels, quality for TV, the tags of the Tvheadend servers."""
+    are broadcast channels, quality for TV, the tags of the Tvheadend servers
+    (without the tags named like one of their networks, which step 2 has)."""
     srcs = _chosen(cat, chosen)
     tags = set().union(*(cat.tags.get(k, ()) for k in srcs))
+    tags -= {area_label(a) for k in srcs for a in cat.areas.get(k, ()) if "/net:" in a}
     return Offer(any(k in BROADCAST for k in srcs), not cat.radio,
                  sorted(tags, key=str.casefold))
 
