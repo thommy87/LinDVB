@@ -44,8 +44,9 @@ modules:
         tag: v0.2.44
         commit: 5169a428d51c3ae8ff7b0897e8a687d8e05e37b5
 
-  # Only the teletext and DVB plugins from gst-plugins-bad; the GNOME runtime
-  # does not ship teletextdec, and building dvbsrc here guarantees tuner access.
+  # Only the teletext, DVB and closed caption plugins from gst-plugins-bad; the
+  # GNOME runtime ships none of teletextdec and cc708overlay, and building dvbsrc
+  # here guarantees tuner access.
   - name: gst-plugins-bad-dvb-teletext
     buildsystem: meson
     subdir: subprojects/gst-plugins-bad
@@ -53,6 +54,7 @@ modules:
       - -Dauto_features=disabled
       - -Dteletext=enabled
       - -Ddvb=enabled
+      - -Dclosedcaption=enabled
       - -Dexamples=disabled
       - -Dtests=disabled
       - -Ddoc=disabled
@@ -60,8 +62,8 @@ modules:
       - -Dnls=disabled
       - -Dorc=disabled
     post-install:
-      # keep the two plugins; use the runtime's GStreamer libraries
-      - find ${FLATPAK_DEST}/lib/gstreamer-1.0 -name '*.so' ! -name libgstteletext.so ! -name libgstdvb.so -delete
+      # keep the three plugins; use the runtime's GStreamer libraries
+      - find ${FLATPAK_DEST}/lib/gstreamer-1.0 -name '*.so' ! -name libgstteletext.so ! -name libgstdvb.so ! -name libgstclosedcaption.so -delete
       - rm -f ${FLATPAK_DEST}/lib/libgst*
     sources:
       - type: git
