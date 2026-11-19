@@ -23,6 +23,7 @@ Acquire::http::Timeout "60";
 Acquire::https::Timeout "60";
 Acquire::Languages "none";
 Dpkg::Use-Pty "0";
+APT::Sandbox::User "root";
 CONF
     sudo rm -f /var/lib/man-db/auto-update
     mkdir -p "$cache/partial"
@@ -41,9 +42,24 @@ install)
     done
     echo "::notice title=apt index::refreshed in $((SECONDS - start)) s"
     start=$SECONDS
-    sudo apt-get install -y --no-install-recommends \
-        -o Dir::Cache::Archives="$cache" -o APT::Keep-Downloaded-Packages=true "$@" 2>&1 | tee /tmp/apt-install.log
-    fetched="$(grep -E '^(Need to get|Fetched) ' /tmp/apt-install.log | tail -n1 || true)"
+    opts=(-y --no-install-recommends -o Dir::Cache::Archives="$cache"
+          -o APT::Keep-Downloaded-Packages=true)
+    # Download first, with patience: the Ubuntu mirrors at times answer
+    # "503 Service Unavailable" or time out for minutes (e.g. right after a big
+    # security update). apt gives up after a few seconds of retries and exits
+    # with 100; finished downloads stay in the cache directory, so each new
+    # attempt only fetches what is still missing.
+    : > /tmp/apt-install.log
+    for try in 1 2 3 4 5; do
+        if sudo apt-get install --download-only "${opts[@]}" "$@" 2>&1 | tee -a /tmp/apt-install.log; then
+            break
+        fi
+        [ "$try" -eq 5 ] && { echo "::error::apt could not download the packages (5 attempts)"; exit 100; }
+        echo "::warning::apt download failed (mirror unavailable?), attempt $((try + 1)) in $((try * 30)) s"
+        sleep $((try * 30))
+    done
+    fetched="$(grep -E '^(Need to get|Fetched) ' /tmp/apt-install.log | head -n1 || true)"
+    sudo apt-get install "${opts[@]}" "$@"
     echo "::notice title=apt install::$((SECONDS - start)) s; ${fetched:-nothing downloaded}"
     # Freshness check: every requested package is at the index's candidate version.
     stale=0
