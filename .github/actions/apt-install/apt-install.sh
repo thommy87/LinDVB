@@ -48,6 +48,7 @@ install)
     # Freshness check: every requested package is at the index's candidate version.
     stale=0
     for p in "$@"; do
+        [[ "$p" == */* ]] && continue   # a local .deb file
         p="${p%%=*}"
         inst="$(dpkg-query -W -f='${Version}' "$p" 2>/dev/null || true)"
         cand="$(apt-cache policy "$p" | awk '/Candidate:/{print $2}')"
@@ -56,7 +57,7 @@ install)
             stale=1
         fi
     done
-    [ "$stale" -eq 0 ] && echo "All $# requested packages are at the archive's current version"
+    [ "$stale" -eq 0 ] && echo "All requested packages are at the archive's current version"
     exit "$stale"
     ;;
 prune)

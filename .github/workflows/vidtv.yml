@@ -1,8 +1,7 @@
 name: Virtual tuner tests
 
 # Channel search, tuning and EPG against the kernel's virtual DVB driver
-# (vidtv), so the DVB code paths are tested without tuner hardware. When the
-# runner's kernel has no vidtv module the tests are skipped, not failed.
+# (vidtv), so the DVB code paths are tested without tuner hardware.
 on:
   push:
     branches: [main]
@@ -15,24 +14,59 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Runner kernel
+        id: kernel
+        run: echo "release=$(uname -r)" >> "$GITHUB_OUTPUT"
+
+      # Downloads cached, versions always the archive's current ones (see the action).
+      # The headers are for building vidtv when the kernel does not ship it.
       - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            python3-gi python3-pytest gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 \
-            gir1.2-gst-plugins-bad-1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-bad \
-            dvb-tools
-          sudo apt-get install -y --no-install-recommends "linux-modules-extra-$(uname -r)" || true
+        uses: ./.github/actions/apt-install
+        with:
+          name: vidtv
+          packages: >-
+            python3-gi python3-pytest gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0
+            gir1.2-gst-plugins-bad-1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-bad
+            dvb-tools linux-headers-${{ steps.kernel.outputs.release }}
 
       - name: Load vidtv
+        # The runners' cloud kernels (e.g. 7.0.0-…-aws) have dvb-core but not
+        # vidtv, and no linux-modules-extra package. Then vidtv is built from the
+        # mainline sources of the same kernel version against the runner's
+        # headers and loaded from updates/. Without an adapter the job fails, so
+        # the tests are never skipped silently.
         run: |
-          if sudo modprobe vidtv; then
-            for i in $(seq 20); do [ -e /dev/dvb/adapter0/frontend0 ] && break; sleep 0.5; done
-            sudo chmod -R a+rw /dev/dvb
-            ls -lR /dev/dvb
-          else
-            echo "::notice title=vidtv::The runner kernel $(uname -r) has no vidtv module; the virtual tuner tests are skipped."
+          set -x
+          kver="$(uname -r)"
+          if ! modinfo vidtv >/dev/null 2>&1; then
+            tag="v$(cut -d. -f1,2 <<<"$kver")"
+            git clone -q --depth 1 --filter=blob:none --sparse -b "$tag" \
+              https://github.com/torvalds/linux "$RUNNER_TEMP/linux"
+            git -C "$RUNNER_TEMP/linux" sparse-checkout set drivers/media/test-drivers/vidtv
+            src="$RUNNER_TEMP/linux/drivers/media/test-drivers/vidtv"
+            cc="$(sed -n 's/^CONFIG_CC_VERSION_TEXT="\([^ ]*\).*/\1/p' "/lib/modules/$kver/build/.config")"
+            command -v "$cc" >/dev/null || cc=gcc
+            make -C "/lib/modules/$kver/build" M="$src" CONFIG_DVB_VIDTV=m CC="$cc" modules
+            sudo install -D -m644 -t "/lib/modules/$kver/updates/vidtv" "$src"/*.ko
+            sudo depmod -a "$kver"
+            echo "::notice title=vidtv::built from Linux $tag for $kver"
           fi
+          sudo modprobe vidtv
+          for i in $(seq 20); do [ -e /dev/dvb/adapter0/frontend0 ] && break; sleep 0.5; done
+          if [ ! -e /dev/dvb/adapter0/frontend0 ]; then
+            sudo dmesg | tail -n 30
+            echo "::error title=vidtv::no vidtv adapter on kernel $kver"
+            exit 1
+          fi
+          # udev sets the device permissions after the nodes appear; let it
+          # finish first, or it undoes the chmod
+          sudo udevadm settle || true
+          sudo chmod -R a+rw /dev/dvb
+          ls -lR /dev/dvb
+          for d in /sys/class/dvb/*; do
+            echo "$d -> $(readlink -f "$d/device") driver=$(readlink -f "$d/device/driver")"
+          done
+          python3 -c 'from lindvb.scan import find_adapters, is_virtual_adapter as v; print([(a, f, n, v(a, f)) for a, f, n in find_adapters()])'
 
       - name: Run tests
         run: python3 -m pytest -v -rs tests/test_vidtv.py
