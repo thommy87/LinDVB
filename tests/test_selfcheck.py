@@ -42,14 +42,14 @@ def test_every_package_runs_it():
 def test_offline_skips_network_checks(monkeypatch):
     calls = []
     for name in ("check_gtk", "check_elements", "check_playback", "check_hbbtv",
-                 "check_tls", "check_proxy", "check_stream"):
+                 "check_tls", "check_proxy", "check_stream", "check_iptv"):
         monkeypatch.setattr(selfcheck, name, lambda r, n=name: calls.append(n))
     out = io.StringIO()
     assert selfcheck.run(["--offline"], out) == 0
-    assert not {"check_tls", "check_proxy", "check_stream"} & set(calls)
+    assert not {"check_tls", "check_proxy", "check_stream", "check_iptv"} & set(calls)
     calls.clear()
     assert selfcheck.run([], io.StringIO()) == 0
-    assert {"check_tls", "check_proxy", "check_stream"} <= set(calls)
+    assert {"check_tls", "check_proxy", "check_stream", "check_iptv"} <= set(calls)
 
 
 def test_warn_does_not_fail():
@@ -67,3 +67,22 @@ def test_snap_uses_libproxy_resolver():
     text = (ROOT / "snap" / "snapcraft.yaml").read_text()
     assert "GIO_USE_PROXY_RESOLVER: libproxy" in text
     assert "- network-status" in text
+
+
+def test_appimage_bundles_the_checked_plugins():
+    """The AppImage copies plugins by name: those of the elements the
+    self-check asks for beyond playback (0.20.2 lacked level, so the loudness
+    meter was dead, and debug and closedcaption)."""
+    text = (ROOT / "packaging" / "build-appdir.sh").read_text()
+    plugins = text.split('PLUGINS="', 1)[1].split('"', 1)[0].split()
+    for element, plugin in (("level", "level"), ("capssetter", "debug"),
+                            ("cc708overlay", "closedcaption"), ("aacparse", "audioparsers")):
+        assert element in selfcheck.ELEMENTS
+        assert plugin in plugins, plugin
+
+
+def test_silence_is_noticed():
+    assert selfcheck.silent({"audio": 10, "peak": 0})
+    assert selfcheck.silent({"audio": 10, "peak": 1})            # about -90 dBFS
+    assert not selfcheck.silent({"audio": 10, "peak": 3000})     # about -21 dBFS
+    assert not selfcheck.silent({"audio": 0, "peak": 0})         # no sound at all: elsewhere

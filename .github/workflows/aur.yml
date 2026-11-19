@@ -48,7 +48,7 @@ jobs:
           sudo -u builder makepkg --printsrcinfo > .SRCINFO
           cd / && lindvb --help
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback, proxy, HTTPS HLS, HbbTV)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, audible sound, proxy, HTTPS HLS, IPTV path, HbbTV)
         run: |
           pacman -S --noconfirm --needed xorg-server-xvfb xorg-xauth
           cd / && xvfb-run -a lindvb --self-check

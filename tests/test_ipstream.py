@@ -456,6 +456,71 @@ def _read_all(reader_cls, url, seconds=15, **kw):
     return r, b"".join(got), errors
 
 
+def _make_hls_audio(folder, name, seconds=4, wave="sine"):
+    """An audio-only HLS rendition (AAC in TS segments), as Deluxe Music has one."""
+    d = folder / name
+    d.mkdir()
+    gst_launch = shutil.which("gst-launch-1.0")
+    if gst_launch is None:
+        pytest.skip("gst-launch-1.0 missing")
+    subprocess.run(
+        [gst_launch, "-q", "audiotestsrc", f"wave={wave}", f"num-buffers={seconds * 47}",
+         "!", "audio/x-raw,rate=48000,channels=2", "!", "avenc_aac", "!", "aacparse", "!",
+         "mpegtsmux", "!", "hlssink", f"location={d}/seg%05d.ts",
+         f"playlist-location={d}/index.m3u8", "target-duration=1", "max-files=0",
+         "playlist-length=0"],
+        check=True, timeout=60, capture_output=True)
+    return d
+
+
+@pytest.mark.parametrize("wave,audible", [("sine", True), ("silence", False)])
+def test_hls_with_separate_audio_keeps_the_sound(tmp_path, wave, audible):
+    """Picture and sound in playlists of their own (EXT-X-MEDIA): the sound
+    reaches the transport stream and decodes to what was sent, and the
+    self-check tells a silent one apart."""
+    from lindvb import selfcheck
+    _gst("videotestsrc", "x264enc", "avenc_aac", "mpegtsmux", "hlssink", "urisourcebin",
+         "parsebin", "appsink", "h264parse", "audioconvert")
+    gst_launch = shutil.which("gst-launch-1.0")
+    if gst_launch is None:
+        pytest.skip("gst-launch-1.0 missing")
+    v = tmp_path / "video"
+    v.mkdir()
+    subprocess.run(
+        [gst_launch, "-q", "videotestsrc", "num-buffers=100", "!",
+         "video/x-raw,width=320,height=180,framerate=25/1,format=I420", "!",
+         "x264enc", "key-int-max=25", "speed-preset=ultrafast", "!", "h264parse", "!",
+         "mpegtsmux", "!", "hlssink", f"location={v}/seg%05d.ts",
+         f"playlist-location={v}/index.m3u8", "target-duration=1", "max-files=0",
+         "playlist-length=0"],
+        check=True, timeout=60, capture_output=True)
+    _make_hls_audio(tmp_path, "audio", wave=wave)
+    (tmp_path / "master.m3u8").write_text(
+        "#EXTM3U\n#EXT-X-VERSION:3\n"
+        '#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a",NAME="audio_0",DEFAULT=YES,CHANNELS="2",'
+        'URI="audio/index.m3u8"\n'
+        '#EXT-X-STREAM-INF:BANDWIDTH=500000,RESOLUTION=320x180,'
+        'CODECS="avc1.4d401f,mp4a.40.2",AUDIO="a"\nvideo/index.m3u8\n')
+    old = os.getcwd()
+    os.chdir(tmp_path)
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Files)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        url = f"http://127.0.0.1:{srv.server_address[1]}/master.m3u8"
+        r, data, errors = _read_all(ipstream.GstReader, url,
+                                    retry=ipstream.Retry(delays=(5,), give_up=30))
+    finally:
+        srv.shutdown()
+        os.chdir(old)
+    assert not errors and ipstream.looks_like_ts(data) and r.passthrough is False
+    out = tmp_path / "out.ts"
+    out.write_bytes(data)
+    error, counts, _used = selfcheck._play(out.as_uri())
+    assert not error and counts["video"] >= 50 and counts["audio"] > 0
+    assert selfcheck.silent(counts) is not audible
+
+
 @pytest.mark.parametrize("quality,size", [("best", (640, 360))])
 def test_hls_into_transport_stream(hls, tmp_path, quality, size):
     base, folder = hls

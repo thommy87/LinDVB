@@ -46,5 +46,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends xvfb xauth
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback, proxy, HTTPS HLS, HbbTV)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, audible sound, proxy, HTTPS HLS, IPTV path, HbbTV)
         run: xvfb-run -a lindvb --self-check

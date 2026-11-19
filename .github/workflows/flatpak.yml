@@ -84,7 +84,7 @@ jobs:
           flatpak install --user -y --noninteractive --bundle LinDVB.flatpak
           flatpak list --user
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback, proxy, HTTPS HLS, HbbTV)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, audible sound, proxy, HTTPS HLS, IPTV path, HbbTV)
         run: dbus-run-session -- xvfb-run -a flatpak run io.github.thommy87.LinDVB --self-check
 
       - name: Upload to the draft release
