@@ -33,6 +33,13 @@ jobs:
       - name: Tools
         run: pacman -Syu --noconfirm --needed git openssh pacman-contrib
 
+      - name: TEMP which package has cc708overlay
+        run: |
+          pacman -Fy --noconfirm
+          pacman -F libgstclosedcaption.so || true
+          pacman -Si gst-plugins-bad | sed -n '1,40p'
+          exit 1
+
       - uses: actions/checkout@v4
 
       - name: Build and install the package
