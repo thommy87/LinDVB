@@ -8,7 +8,7 @@ name: Snap Store
 # This workflow tests exactly that build and only then moves it on:
 #   1. test: on an amd64 and an arm64 runner, wait until "edge" carries the
 #      released version, install it from the store as a user would and run
-#      "lindvb --self-check" (GTK, GStreamer elements, H.264 playback).
+#      "lindvb --self-check" (GTK, GStreamer elements, H.264 playback, HTTPS HLS).
 #   2. release: move the tested revisions into a channel. The Release workflow
 #      asks for "candidate". "stable" (what "snap install lindvb" gives
 #      everyone) is only ever set by hand, after a person has tried the
@@ -113,7 +113,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends xvfb xauth
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, HTTPS HLS)
         run: xvfb-run -a "$SNAP_NAME" --self-check
 
   release:

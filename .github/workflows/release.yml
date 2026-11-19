@@ -1,7 +1,7 @@
 name: Release
 
 # Builds the AppImage, Flatpak, .deb and source package, installs and starts each one
-# and runs "lindvb --self-check" in it (GTK, GStreamer elements, H.264 playback), and
+# and runs "lindvb --self-check" in it (GTK, GStreamer elements, H.264 playback, HTTPS HLS), and
 # publishes them together as a GitHub release only when all of them pass. Then it
 # tests the AUR package and Canonical's snap the same way and updates the AUR and the
 # snap's "candidate" channel (once their logins are stored as secrets, see

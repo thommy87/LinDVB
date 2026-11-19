@@ -37,3 +37,26 @@ def test_every_package_runs_it():
     wf = ROOT / ".github" / "workflows"
     for name in ("appimage.yml", "packages.yml", "flatpak.yml", "aur.yml", "snap.yml"):
         assert "--self-check" in (wf / name).read_text(), name
+
+
+def test_offline_skips_network_checks(monkeypatch):
+    calls = []
+    for name in ("check_gtk", "check_elements", "check_playback", "check_hbbtv",
+                 "check_tls", "check_stream"):
+        monkeypatch.setattr(selfcheck, name, lambda r, n=name: calls.append(n))
+    out = io.StringIO()
+    assert selfcheck.run(["--offline"], out) == 0
+    assert "check_tls" not in calls and "check_stream" not in calls
+    calls.clear()
+    assert selfcheck.run([], io.StringIO()) == 0
+    assert "check_tls" in calls and "check_stream" in calls
+
+
+def test_warn_does_not_fail():
+    r = selfcheck.Report(io.StringIO())
+    r.warn("x")
+    assert not r.failed and "WARN  x" in r.out.getvalue()
+
+
+def test_streams_are_https():
+    assert selfcheck.STREAMS and all(u.startswith("https://") for u in selfcheck.STREAMS)
