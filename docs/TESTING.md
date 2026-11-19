@@ -24,7 +24,8 @@ a normal DVB adapter (`/dev/dvb/adapterN`) and sends one radio service,
 Load it and allow your user to open it:
 
 ```sh
-sudo modprobe vidtv          # Ubuntu: needs linux-modules-extra-$(uname -r)
+sudo modprobe vidtv          # Ubuntu: needs linux-modules-extra-$(uname -r);
+                             # cloud kernels without it: see .github/workflows/vidtv.yml
 sudo chmod -R a+rw /dev/dvb  # or add yourself to the "video" group
 ```
 
@@ -37,7 +38,8 @@ a real tuner. Remove it again with `sudo modprobe -r vidtv`.
 
 The automated version of this is `tests/test_vidtv.py`
 (`python3 -m pytest -v tests/test_vidtv.py`); the "Virtual tuner tests"
-workflow runs it on GitHub when the runner kernel has the module.
+workflow runs it on GitHub; when the runner kernel lacks the module it builds
+vidtv from the matching mainline sources, and it fails rather than skip.
 
 What vidtv does not cover: real reception (signal levels, lost lock),
 encrypted channels, DiSEqC, video, teletext and subtitles. Those still need

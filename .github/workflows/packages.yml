@@ -72,18 +72,26 @@ jobs:
       - name: Build the .deb
         run: packaging/build-deb.sh
 
-      - name: Install and start it
-        # apt pulls the Depends from the Ubuntu archive, as on a user's system
+      - name: Find the .deb
+        id: deb
+        run: echo "path=$(ls "$PWD"/build/lindvb_*_all.deb | head -1)" >> "$GITHUB_OUTPUT"
+
+      # apt pulls the Depends from the Ubuntu archive, as on a user's system;
+      # their downloads are cached, the versions are always the archive's
+      # current ones (see the action)
+      - name: Install it
+        uses: ./.github/actions/apt-install
+        with:
+          name: deb
+          packages: ${{ steps.deb.outputs.path }} xvfb xauth
+
+      - name: Start it
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends "$PWD"/build/lindvb_*_all.deb
           dpkg -L lindvb | grep -E 'bin/lindvb|dist-packages/lindvb/app.py|applications/io.github.thommy87.LinDVB.desktop'
           cd / && lindvb --help
 
       - name: Self-check (GTK, GStreamer elements, H.264 playback)
-        run: |
-          sudo apt-get install -y --no-install-recommends xvfb xauth
-          cd / && xvfb-run -a lindvb --self-check
+        run: cd / && xvfb-run -a lindvb --self-check
 
       - name: Upload to the draft release
         if: inputs.release_id != ''

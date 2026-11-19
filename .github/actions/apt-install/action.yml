@@ -6,7 +6,7 @@ description: >
   that are still current. It starts over every week.
 inputs:
   packages:
-    description: Packages to install (whitespace separated)
+    description: Packages to install (whitespace separated); local .deb files as paths
     required: true
   name:
     description: Cache name, one per package set
@@ -25,7 +25,9 @@ runs:
         # of a package is simply downloaded.
         list="$(tr -s ' \n\t' '\n' <<<"$PACKAGES" | sed '/^$/d' | sort -u)"
         echo "packages=$(tr '\n' ' ' <<<"$list")" >> "$GITHUB_OUTPUT"
-        hash="$(sha256sum <<<"$list" | cut -c1-12)"
+        # local .deb files (paths) are installed but left out of the key, so a
+        # new version of the file keeps the cache of its dependencies
+        hash="$(grep -v / <<<"$list" | sha256sum | cut -c1-12)"
         prefix="apt-${{ inputs.name }}-${ImageOS:-ubuntu}-$hash-"
         echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
         echo "key=$prefix$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
