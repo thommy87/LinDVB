@@ -47,10 +47,45 @@ jobs:
           bundle: LinDVB.flatpak
           manifest-path: flatpak/io.github.thommy87.LinDVB.yml
           cache-key: flatpak-builder-${{ github.sha }}
-          # The tag-push release job below needs the artifact; Release-workflow
-          # builds upload straight to the draft release, and the Actions storage
-          # quota is small.
-          upload-artifact: ${{ startsWith(github.ref, 'refs/tags/') }}
+          upload-artifact: false
+
+      # Only for the test job below (and the tag-push release job): about 2 MB,
+      # kept for a day, as the Actions storage quota is small.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lindvb-flatpak
+          path: LinDVB.flatpak
+          retention-days: 1
+
+  # The bundle as a user gets it: installed next to the GNOME runtime from
+  # Flathub (with its codecs-extra extension) on a plain Ubuntu, started, and
+  # "lindvb --self-check" run in it (GTK, GStreamer elements, H.264 playback).
+  # Only a bundle that passes goes into the release.
+  test:
+    needs: flatpak
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: flatpak
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lindvb-flatpak
+
+      - name: Install Flatpak, the GNOME runtime and the bundle
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak xvfb xauth dbus
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          version="$(sed -n "s/^runtime-version: '\(.*\)'/\1/p" flatpak/io.github.thommy87.LinDVB.yml)"
+          # installs the runtime's related extensions (codecs-extra) as for users
+          flatpak install --user -y --noninteractive flathub "org.gnome.Platform//$version"
+          flatpak install --user -y --noninteractive --bundle LinDVB.flatpak
+          flatpak list --user
+
+      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+        run: dbus-run-session -- xvfb-run -a flatpak run io.github.thommy87.LinDVB --self-check
 
       - name: Upload to the draft release
         if: inputs.release_id != ''
@@ -59,7 +94,7 @@ jobs:
           ID: ${{ inputs.release_id }}
           TAG: ${{ inputs.release_tag }}
         run: |
-          f="$(ls *.flatpak | head -1)"
+          f=LinDVB.flatpak
           name="LinDVB-${TAG}-x86_64.flatpak"
           curl -fsS -X POST -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/octet-stream" --data-binary "@$f" \
@@ -67,7 +102,7 @@ jobs:
           echo "Uploaded $f as $name"
 
   release:
-    needs: flatpak
+    needs: test
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
     steps:

@@ -1,0 +1,50 @@
+name: Snap build test
+
+# Builds the snap from any branch with snapcraft on a GitHub runner, installs it
+# and runs "lindvb --self-check" (GTK, GStreamer elements, H.264 playback).
+# Canonical's build farm only builds main, so this is how a change to
+# snap/snapcraft.yaml is tested before it is merged. Started by hand only
+# (Actions -> Snap build test -> Run workflow, pick the branch); the snap that
+# users get is tested again by the Snap Store workflow before it is released.
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  snap:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the snap
+        run: |
+          sudo snap install snapcraft --classic
+          # The runner is Ubuntu 24.04 like core24, so no build VM is needed.
+          sudo snapcraft pack --destructive-mode --verbosity=brief
+          ls -l *.snap
+
+      - name: Install it
+        run: |
+          sudo snap install --dangerous ./*.snap
+          # what the store's default providers would bring
+          sudo snap install gnome-46-2404 gtk-common-themes
+          for plug in gnome-46-2404 gtk-3-themes icon-themes sound-themes; do
+            sudo snap connect "lindvb:$plug" || true
+          done
+          snap connections lindvb
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb xauth
+
+      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+        run: xvfb-run -a lindvb --self-check

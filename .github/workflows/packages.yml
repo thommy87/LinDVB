@@ -80,6 +80,11 @@ jobs:
           dpkg -L lindvb | grep -E 'bin/lindvb|dist-packages/lindvb/app.py|applications/io.github.thommy87.LinDVB.desktop'
           cd / && lindvb --help
 
+      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+        run: |
+          sudo apt-get install -y --no-install-recommends xvfb xauth
+          cd / && xvfb-run -a lindvb --self-check
+
       - name: Upload to the draft release
         if: inputs.release_id != ''
         env:

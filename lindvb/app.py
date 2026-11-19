@@ -615,6 +615,9 @@ class LinDVBApp(Gtk.Application):
 
 
 def main():
+    if "--self-check" in sys.argv[1:]:   # CI package test, see selfcheck.py
+        from . import selfcheck
+        return selfcheck.run()
     from . import watchdog
     from .config import CACHE_DIR
     watchdog.start(CACHE_DIR / "hang.log")

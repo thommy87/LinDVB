@@ -23,9 +23,15 @@ with a free Ubuntu One account.
 ### Moving a release into `stable` (`SNAPCRAFT_STORE_CREDENTIALS`)
 
 `edge` is the development channel; `snap install lindvb` installs from
-`stable`. The **Snap Store** workflow moves a released version from `edge` to
-`stable`, which takes seconds because nothing is built. The Release workflow
-calls it after publishing the release, so a slow store cannot hold it back.
+`stable`. The **Snap Store** workflow first tests Canonical's build: on an amd64
+and an arm64 runner it installs the released version from `edge` and runs
+`lindvb --self-check` (GTK, GStreamer elements, H.264 playback). Only then does
+it move the tested revisions on, which takes seconds because nothing is built.
+The Release workflow calls it after publishing the release with the channel
+`candidate`, so a slow store cannot hold the release back. After trying the
+candidate (`sudo snap refresh lindvb --candidate`), run **Actions → Snap Store →
+Run workflow** with the tag and the channel `stable`; that tests the snap again
+and puts it into `stable`.
 
 The store login is needed for that one step:
 
@@ -40,9 +46,8 @@ The store login is needed for that one step:
    It asks for the Ubuntu One e-mail and password and prints a long text.
 2. Store that text as the secret `SNAPCRAFT_STORE_CREDENTIALS`.
 
-Without the secret the workflow only says so and does nothing. To move an
-earlier release into `stable`, run **Actions → Snap Store → Run workflow**
-with that release's tag.
+Without the secret the workflow still tests the snap, then says so and
+releases nothing.
 
 ### Interfaces the store has to allow
 

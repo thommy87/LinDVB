@@ -72,6 +72,11 @@ jobs:
           chmod +x squashfs-root/AppRunPython
           xvfb-run -a squashfs-root/AppRunPython "$PWD/tools/appimage-webkit-check.py"
 
+      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+        # the AppImage as users start it: GTK lays out text, the elements live TV
+        # needs are there and a short H.264/MPEG audio stream really decodes
+        run: xvfb-run -a squashfs-root/AppRun --self-check
+
       - name: Older systems get a clear message
         # Debian 12 has glibc 2.36: AppRun must stop with a hint to the Flatpak
         # rather than fail inside the dynamic loader.
