@@ -433,9 +433,18 @@ with these keys; use `ir-keytable` to remap buttons.
 Raise the version in `pyproject.toml`, `lindvb/__init__.py` and the metainfo file, and
 write the release notes to `packaging/changelog/v<version>.md`. Then run the **Release**
 workflow from the Actions tab and enter the tag, such as `v0.19.0`. It builds the
-AppImage, Flatpak, Ubuntu `.deb` and Python source package (sdist), publishes them in
-one GitHub release with those notes, moves the snap (built by Canonical) to the stable
-channel and updates the AUR package. Pushes and pull requests build only the AppImage;
+AppImage, Flatpak, Ubuntu `.deb` and Python source package (sdist), installs and starts
+each package and runs `lindvb --self-check` in it, and publishes them in one GitHub
+release with those notes only when every check passes. It then tests the AUR package
+and the snap (built by Canonical, installed from `edge` on amd64 and arm64) the same
+way, updates the AUR package and moves the snap to `candidate`. Try the candidate
+(`sudo snap refresh lindvb --candidate`) and then move it to `stable` by hand:
+**Actions → Snap Store → Run workflow** with the tag and channel `stable`.
+
+`lindvb --self-check` (needs a display; CI uses `xvfb-run`) starts GTK, looks for the
+GStreamer elements live TV needs and plays a short H.264/MPEG audio transport stream
+(`lindvb/selfcheck.ts`) through playbin; it prints one line per check and exits with 1
+when one fails. Pushes and pull requests build only the AppImage;
 the other packages are built only for releases (or by starting their workflows by hand).
 
 ## Development

@@ -5,23 +5,41 @@ name: Snap Store
 # under "platforms" in snap/snapcraft.yaml and released to the "edge" channel
 # (see the Builds tab of https://snapcraft.io/lindvb).
 #
-# This workflow moves a released version from "edge" to "stable", so that
-# "snap install lindvb" gives it to everyone. The Release workflow calls it
-# once the release is published; it can also be run by hand for any tag whose
-# build is in the store. Nothing is built here, so a slow store cannot hold
-# back a release (see docs/STORES.md).
+# This workflow tests exactly that build and only then moves it on:
+#   1. test: on an amd64 and an arm64 runner, wait until "edge" carries the
+#      released version, install it from the store as a user would and run
+#      "lindvb --self-check" (GTK, GStreamer elements, H.264 playback).
+#   2. release: move the tested revisions into a channel. The Release workflow
+#      asks for "candidate". "stable" (what "snap install lindvb" gives
+#      everyone) is only ever set by hand, after a person has tried the
+#      candidate: Actions -> Snap Store -> Run workflow, channel "stable".
+# Nothing is built here, so a slow store cannot hold back a release (see
+# docs/STORES.md).
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Released tag to put into the stable channel, e.g. v0.16.0"
+        description: "Released tag whose snap to test and release, e.g. v0.16.0"
         required: true
         type: string
+      channel:
+        description: "Channel for the tested revisions"
+        required: true
+        default: candidate
+        type: choice
+        options: [candidate, stable]
+      build_test:
+        description: "Instead: build this branch's snap with snapcraft and only test it"
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       release_tag:
         type: string
         required: true
+      channel:
+        type: string
+        default: candidate
     secrets:
       SNAPCRAFT_STORE_CREDENTIALS:
         required: false
@@ -29,21 +47,86 @@ on:
 permissions:
   contents: read
 
+env:
+  SNAP_NAME: lindvb
+  TAG: ${{ inputs.tag || inputs.release_tag }}
+  # Canonical's builds start on the push to main and take a while; the
+  # release is tagged from that same commit.
+  WAIT_MINUTES: "75"
+
 jobs:
-  stable:
+  build-test:
+    if: inputs.build_test == true
+    uses: ./.github/workflows/snap-test.yml
+
+  test:
+    if: inputs.build_test != true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Wait for the ${{ matrix.arch }} build in edge
+        id: wait
+        run: |
+          set -uo pipefail
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml)"
+          if [ "$version" != "${TAG#v}" ]; then
+            echo "::error title=Snap::Tag $TAG carries version $version."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          deadline=$((SECONDS + WAIT_MINUTES * 60))
+          while :; do
+            # "  latest/edge:      0.19.2 2026-11-19 (72) 160MB -"
+            edge="$(snap info "$SNAP_NAME" 2>/dev/null | awk '$1 == "latest/edge:" { print $2 }')"
+            [ "$edge" = "$version" ] && break
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              snap info "$SNAP_NAME" || true
+              echo "::error title=Snap::edge still has ${edge:-nothing} for ${{ matrix.arch }}, not $version. Check https://snapcraft.io/$SNAP_NAME/builds."
+              exit 1
+            fi
+            echo "edge has ${edge:-nothing}, waiting for $version ..."
+            sleep 60
+          done
+
+      - name: Install it from the store
+        env:
+          VERSION: ${{ steps.wait.outputs.version }}
+        run: |
+          sudo snap install "$SNAP_NAME" --channel=edge
+          snap list "$SNAP_NAME" gnome-46-2404
+          installed="$(snap list "$SNAP_NAME" | awk -v n="$SNAP_NAME" '$1 == n { print $2 }')"
+          if [ "$installed" != "$VERSION" ]; then
+            echo "::error title=Snap::edge moved on to $installed while testing $VERSION."
+            exit 1
+          fi
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb xauth
+
+      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+        run: xvfb-run -a "$SNAP_NAME" --self-check
+
+  release:
+    needs: test
     runs-on: ubuntu-24.04
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-      SNAP_NAME: lindvb
-      TAG: ${{ inputs.tag || inputs.release_tag }}
-      # Canonical's builds start on the push to main and take a while; the
-      # release is tagged from that same commit.
-      WAIT_MINUTES: "60"
+      CHANNEL: ${{ inputs.channel || 'candidate' }}
     steps:
       - name: No store login
         if: env.SNAPCRAFT_STORE_CREDENTIALS == ''
         run: |
-          echo "::notice title=Snap Store::SNAPCRAFT_STORE_CREDENTIALS is not set, so ${TAG} was not released to the stable channel (see docs/STORES.md)."
+          echo "::notice title=Snap Store::SNAPCRAFT_STORE_CREDENTIALS is not set, so the tested ${TAG} was not released to ${CHANNEL} (see docs/STORES.md)."
 
       - uses: actions/checkout@v4
         if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
@@ -75,7 +158,7 @@ jobs:
         if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
         run: sudo snap install snapcraft --classic
 
-      - name: Release to the stable channel
+      - name: Release the tested revisions
         if: env.SNAPCRAFT_STORE_CREDENTIALS != ''
         env:
           VERSION: ${{ steps.what.outputs.version }}
@@ -89,7 +172,7 @@ jobs:
           revcmd=revisions
           snapcraft revisions --help >/dev/null 2>&1 || revcmd=list-revisions
           # Wait until Canonical's build of this version is in the store, then
-          # release that revision (one per architecture) to stable.
+          # release that revision (one per architecture) to $CHANNEL.
           deadline=$((SECONDS + WAIT_MINUTES * 60))
           while :; do
             out="$(snapcraft "$revcmd" "$SNAP_NAME" 2>&1)"; rc=$?
@@ -115,9 +198,13 @@ jobs:
             echo "waiting for $VERSION ($missing) ..."
             sleep 60
           done
-          set -e
+          failed=""
           for pair in $revisions; do
-            echo "== revision ${pair##*:} (${pair%%:*})"
-            snapcraft release "$SNAP_NAME" "${pair##*:}" stable
+            echo "== revision ${pair##*:} (${pair%%:*}) -> $CHANNEL"
+            if ! snapcraft release "$SNAP_NAME" "${pair##*:}" "$CHANNEL"; then
+              failed="$failed ${pair%%:*}"
+              echo "::error title=Snap Store::Revision ${pair##*:} (${pair%%:*}) was not released to $CHANNEL."
+            fi
           done
           snapcraft status "$SNAP_NAME" || true
+          [ -z "$failed" ]

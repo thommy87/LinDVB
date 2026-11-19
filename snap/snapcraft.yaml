@@ -45,7 +45,13 @@ apps:
       GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:${GI_TYPELIB_PATH}
       GST_PLUGIN_SYSTEM_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0
       GST_PLUGIN_SCANNER: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
-      LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
+      # blas/ and lapack/: libsphinxbase (libavfilter -> libpocketsphinx) needs
+      # libblas.so.3 and liblapack.so.3. Their packages put them only into these
+      # subdirectories; the usual links in lib/<triplet> come from
+      # update-alternatives, which stage-packages never run. Without them the
+      # gst-libav plugin does not load and avdec_h264 and the other decoders are
+      # missing.
+      LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack
 
 parts:
   lindvb:
@@ -83,9 +89,14 @@ parts:
   # against the old HarfBuzz and fails ("libharfbuzz-subset.so.0: undefined
   # symbol: hb_free"), so "from gi.repository import Gtk" dies on start.
   # This part deletes every shared library from the snap that the content snap
-  # also provides, so only the content snap's copy is used. Python modules are
-  # left alone: the staged PyGObject stays complete. The gnome extension does
-  # the same for core26 and later ("gnome/cleanup"), but not for core24.
+  # also provides, so only the content snap's copy is used. Only the library
+  # directories that are on the library path are cleaned (lib/<triplet>,
+  # usr/lib/<triplet>) plus the GStreamer plugin directory, which is in
+  # GST_PLUGIN_SYSTEM_PATH for both snaps. Libraries in other subdirectories,
+  # such as pulseaudio/libpulsecommon, stay: the content snap's copies there are
+  # not on any search path. Python modules stay too, so the staged PyGObject is
+  # complete. The gnome extension does the same for core26 and later
+  # ("gnome/cleanup"), but not for core24.
   cleanup:
     after: [lindvb]
     plugin: nil
@@ -93,9 +104,12 @@ parts:
     override-prime: |
       set -eu
       platform=/snap/gnome-46-2404/current
+      arch="$CRAFT_ARCH_TRIPLET_BUILD_FOR"
       cd "$platform"
-      find . -path './usr/lib/python3*' -prune -o \
-             \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' \) -print |
+      for dir in "lib/$arch" "usr/lib/$arch" "usr/lib/$arch/gstreamer-1.0"; do
+        [ -d "$dir" ] || continue
+        find "$dir" -maxdepth 1 \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' \)
+      done |
       while IFS= read -r lib; do
         if [ -e "$CRAFT_PRIME/$lib" ] || [ -L "$CRAFT_PRIME/$lib" ]; then
           echo "cleanup: $lib is provided by gnome-46-2404"
