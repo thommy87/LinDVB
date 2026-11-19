@@ -175,12 +175,17 @@ def find_adapters():
     return res
 
 
-def is_virtual_adapter(adapter, frontend=0):
-    """True for the kernel's virtual DVB driver vidtv (a test tuner, no hardware)."""
-    dev = Path(f"/sys/class/dvb/dvb{adapter}.frontend{frontend}/device")
-    for link in (dev / "driver", dev):
+def is_virtual_adapter(adapter, frontend=0, sysfs="/sys"):
+    """True for the kernel's virtual DVB driver vidtv (a test tuner, no hardware).
+
+    The frontend's device is the vidtv platform device itself on older kernels
+    (.../platform/vidtv), and the bridge's I2C adapter below it on newer ones
+    (.../platform/vidtv.0/i2c-0), so the whole device path is checked.
+    """
+    dev = Path(sysfs) / f"class/dvb/dvb{adapter}.frontend{frontend}/device"
+    for link in (dev, dev / "driver"):
         try:
-            if "vidtv" in link.resolve().name:
+            if any("vidtv" in part for part in link.resolve().parts[-3:]):
                 return True
         except OSError:
             pass
