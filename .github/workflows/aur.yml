@@ -35,9 +35,11 @@ jobs:
 
       - name: TEMP which package has cc708overlay
         run: |
-          pacman -Fy --noconfirm
-          pacman -F libgstclosedcaption.so || true
-          pacman -Si gst-plugins-bad | sed -n '1,40p'
+          pacman -S --noconfirm --needed gst-plugins-bad gst-plugins-good
+          gst-inspect-1.0 closedcaption || true
+          GST_DEBUG=2 gst-inspect-1.0 /usr/lib/gstreamer-1.0/libgstclosedcaption.so 2>&1 | tail -30 || true
+          gst-inspect-1.0 -b || true
+          gst-inspect-1.0 | grep -i -E "cc|caption|708|608" || true
           exit 1
 
       - uses: actions/checkout@v4
