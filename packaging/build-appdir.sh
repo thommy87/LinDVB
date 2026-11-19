@@ -47,9 +47,11 @@ done
 echo "== GStreamer plugins"
 mkdir -p "$APPDIR/usr/lib/gstreamer-$GSTVER"
 # Only the plugins LinDVB uses: tuning, demuxing, decoding, network sources, output.
+# level: the loudness meter; debug: capssetter (recordings); closedcaption:
+# cc708overlay (closed captions). lindvb --self-check fails when one is missing.
 PLUGINS="coreelements playback typefindfunctions app autodetect audioconvert audioresample
   volume audiorate videoconvertscale videoconvert videoscale videorate videofilter deinterlace
-  equalizer spectrum pbtypes gio subparse subenc audiofx audiomixer interleave pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
+  equalizer spectrum level debug closedcaption pbtypes gio subparse subenc audiofx audiomixer interleave pango overlaycomposition dvb mpegtsdemux mpegtsmux teletext
   dvbsuboverlay dvdspu libav audioparsers videoparsersbad mpegpsdemux mpeg2dec mpg123 a52dec
   dtsdec faad opus vorbis ogg flac isomp4 matroska id3demux icydemux soup hls dash
   adaptivedemux2 udp rtp rtpmanager rtpmanagerbad rtsp tcp multifile png alsa pulseaudio

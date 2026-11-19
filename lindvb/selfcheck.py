@@ -9,7 +9,14 @@ playbin into fake sinks, so the decoders are not only installed but work.
 
 Then it does what an IPTV channel does: it checks that GIO has a TLS backend
 and plays a public HTTPS HLS stream (H.264 and AAC) until enough frames are
-decoded. ``--offline`` leaves the network checks out.
+decoded. Last it takes the way LinDVB really plays such a channel: the
+stream is read into a transport stream (lindvb.ipstream, as for the
+timeshift buffer) and that is played back. ``--offline`` leaves the network
+checks out.
+
+Decoded sound is measured too: a test stream whose sound comes out silent
+fails, so a decoder or remuxer that only produces buffers of silence is
+noticed, not just one that produces none.
 
 It needs a display (CI uses xvfb-run) but no sound server or tuner. The exit
 status is 0 when everything works and 1 otherwise; WARN lines do not fail it.
@@ -26,7 +33,11 @@ MIN_VIDEO_FRAMES = 40
 TIMEOUT = 60
 
 # Elements live TV needs beyond compat.PLUGINS
-ELEMENTS = ["h264parse", "mpegaudioparse", "videoconvert", "audioconvert", "decodebin3"]
+ELEMENTS = ["h264parse", "mpegaudioparse", "aacparse", "videoconvert", "audioconvert",
+            "decodebin3",
+            "level",           # loudness meter (gst-plugins-good)
+            "capssetter",      # AAC and subtitles in MP4/MKV recordings (good)
+            "cc708overlay"]    # closed captions (gst-plugins-bad)
 # Audio output: one of these must exist; it only plays when a sound server runs
 AUDIO_SINKS = ["pulsesink", "pipewiresink", "alsasink"]
 
@@ -38,6 +49,11 @@ STREAMS = [
 ]
 STREAM_FRAMES = 50
 STREAM_TIMEOUT = 45
+# the IPTV path: seconds of stream read into the transport stream
+IPTV_SECONDS = 8
+# decoded sound quieter than this (peak, dBFS) counts as silence; the test
+# streams have tones and speech far above it
+SILENCE_DB = -60.0
 
 
 class Report:
@@ -115,7 +131,7 @@ def _play(uri, enough=None, timeout=TIMEOUT):
     frames and some audio were decoded. Returns (error or None, counts, decoders).
     """
     from gi.repository import GLib, Gst
-    counts = {"video": 0, "audio": 0}
+    counts = {"video": 0, "audio": 0, "peak": 0}
 
     def sink(kind):
         s = Gst.ElementFactory.make("fakesink", f"{kind}sink")
@@ -124,12 +140,30 @@ def _play(uri, enough=None, timeout=TIMEOUT):
         s.connect("handoff", lambda *a: counts.__setitem__(kind, counts[kind] + 1))
         return s
 
+    def audio_sink():
+        """The sound as 16-bit samples into a fakesink that keeps the peak."""
+        conv = Gst.ElementFactory.make("audioconvert")
+        caps = Gst.ElementFactory.make("capsfilter")
+        if conv is None or caps is None:
+            return sink("audio")
+        caps.set_property("caps", Gst.Caps.from_string("audio/x-raw,format=S16LE"))
+        s = sink("audio")
+        s.connect("handoff", lambda _s, buf, _p: counts.__setitem__(
+            "peak", max(counts["peak"], _peak(buf))))
+        b = Gst.Bin.new("audiocheck")
+        for e in (conv, caps, s):
+            b.add(e)
+        conv.link(caps)
+        caps.link(s)
+        b.add_pad(Gst.GhostPad.new("sink", conv.get_static_pad("sink")))
+        return b
+
     play = Gst.ElementFactory.make("playbin", None)
     if play is None:
         return "playbin cannot be created", counts, []
     play.set_property("uri", uri)
     play.set_property("video-sink", sink("video"))
-    play.set_property("audio-sink", sink("audio"))
+    play.set_property("audio-sink", audio_sink())
     bus = play.get_bus()
     play.set_state(Gst.State.PLAYING)
     error = None
@@ -155,8 +189,28 @@ def _play(uri, enough=None, timeout=TIMEOUT):
     return error, counts, list(dict.fromkeys(used))
 
 
+def _peak(buf):
+    """The highest sample of a buffer of 16-bit samples."""
+    import array
+    data = array.array("h", buf.extract_dup(0, buf.get_size() & ~1))
+    return max(max(data, default=0), -min(data, default=0))
+
+
+def peak_db(counts):
+    """The peak of the decoded sound in dBFS (-inf for digital silence)."""
+    import math
+    p = counts.get("peak", 0)
+    return 20 * math.log10(p / 32768) if p else float("-inf")
+
+
+def silent(counts):
+    return counts["audio"] > 0 and peak_db(counts) < SILENCE_DB
+
+
 def _detail(counts, used):
     detail = f"{counts['video']} video frames, {counts['audio']} audio buffers"
+    if counts["audio"]:
+        detail += f" (peak {peak_db(counts):.0f} dBFS)"
     if used:
         detail += ", decoders: " + ", ".join(used)
     return detail
@@ -172,6 +226,8 @@ def check_playback(report, sample=SAMPLE):
         report.fail(f"playing the H.264 test stream: {error}; {detail}")
     elif counts["video"] < MIN_VIDEO_FRAMES or counts["audio"] == 0:
         report.fail(f"playing the H.264 test stream: too little decoded; {detail}")
+    elif silent(counts):
+        report.fail(f"playing the H.264 test stream: the sound is silent; {detail}")
     else:
         report.ok(f"played the H.264/MPEG audio test stream: {detail}")
 
@@ -216,11 +272,72 @@ def check_stream(report, streams=None):
     problems = []
     for uri in streams:
         error, counts, used = _play(uri, enough=STREAM_FRAMES, timeout=STREAM_TIMEOUT)
+        if not error and silent(counts):
+            error = "the sound is silent"
         if not error:
             report.ok(f"played the HTTPS HLS stream {uri}: {_detail(counts, used)}")
             return
         problems.append(f"{uri}: {error}; {_detail(counts, used)}")
     report.fail("no HTTPS HLS stream played: " + " | ".join(problems))
+
+
+def read_stream(uri, seconds=IPTV_SECONDS, timeout=STREAM_TIMEOUT):
+    """(transport stream bytes, error or None, reader): *uri* read the way an
+    IPTV channel is read into the timeshift buffer (lindvb.ipstream)."""
+    from gi.repository import GLib
+    from . import ipstream
+    got, errors = [], []
+    reader = ipstream.StreamSource(uri, got.append, errors.append, reconnect=False)
+    loop = GLib.MainLoop()
+    start = time.monotonic()
+    first = []
+
+    def tick():
+        now = time.monotonic()
+        if got and not first:
+            first.append(now)
+        if errors or (first and now - first[0] >= seconds) or now - start > timeout:
+            loop.quit()
+            return False
+        return True
+    GLib.timeout_add(100, tick)
+    reader.start()
+    loop.run()
+    reader.close()
+    data = b"".join(got)
+    if not data:
+        return data, errors[0] if errors else f"nothing arrived within {timeout} s", reader
+    return data, None, reader
+
+
+def check_iptv(report, streams=None):
+    """Read an HTTPS HLS stream into a transport stream the way LinDVB records
+    an IPTV channel into the timeshift buffer, and play that back: picture
+    and sound that is not silent."""
+    import tempfile
+    env = os.environ.get("LINDVB_SELFCHECK_STREAM")
+    streams = streams or ([env] if env else STREAMS)
+    problems = []
+    for uri in streams:
+        data, error, reader = read_stream(uri)
+        how = "passed on" if getattr(reader.reader, "passthrough", None) else "remuxed"
+        if error:
+            problems.append(f"{uri}: reading: {error}")
+            continue
+        with tempfile.NamedTemporaryFile(suffix=".ts") as f:
+            f.write(data)
+            f.flush()
+            error, counts, used = _play(Path(f.name).as_uri())
+        detail = f"{len(data) // 1024} KiB {how}, {_detail(counts, used)}"
+        if not error and (counts["video"] < MIN_VIDEO_FRAMES or counts["audio"] == 0):
+            error = "too little decoded"
+        if not error and silent(counts):
+            error = "the sound is silent"
+        if not error:
+            report.ok(f"IPTV path (timeshift buffer) for {uri}: {detail}")
+            return
+        problems.append(f"{uri}: {error}; {detail}")
+    report.fail("IPTV path (timeshift buffer): " + " | ".join(problems))
 
 
 def check_hbbtv(report):
@@ -307,7 +424,7 @@ def run(argv=None, out=None):
     out.write(f"LinDVB {__version__} self-check ({where}, {Gst.version_string()})\n")
     checks = [check_gtk, check_elements, check_playback, check_hbbtv]
     if "--offline" not in argv:
-        checks += [check_tls, check_proxy, check_stream]
+        checks += [check_tls, check_proxy, check_stream, check_iptv]
     for check in checks:
         try:
             check(report)
