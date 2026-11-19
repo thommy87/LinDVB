@@ -29,6 +29,7 @@ apps:
     plugs:
       - dvb              # /dev/dvb tuners
       - network          # internet TV, XMLTV
+      - network-status   # lets the desktop portal answer proxy and network questions
       - network-bind     # HbbTV: app to app (127.0.0.1), DIAL and sync for companion screens
       - audio-playback
       - home             # recordings in ~/Videos
@@ -62,6 +63,18 @@ apps:
       # GIO also loads the modules in GIO_EXTRA_MODULES, which desktop-launch
       # leaves alone: the staged glib-networking (GnuTLS, libproxy) lives here.
       GIO_EXTRA_MODULES: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gio/modules
+      # Proxies: inside a snap GLib asks the desktop portal which proxy to use
+      # before every connection. xdg-desktop-portal refuses that to a snap
+      # without network-status ("NotAllowed: This call is not available inside
+      # the sandbox"), and libsoup then fails every http:// and https:// request
+      # at once (souphttpsrc: "Internal data stream error", -5), so no IPTV
+      # channel plays on a GNOME desktop. CI runners have no portal and never
+      # saw it. Besides plugging network-status, use glib-networking's libproxy
+      # resolver: it reads the proxy from the environment and the desktop's
+      # settings (GNOME, KDE) itself, carries on when the portal says no and
+      # gives a direct connection when no proxy is set. ("gnome" would only be
+      # taken on GNOME; elsewhere GLib would pick the portal again.)
+      GIO_USE_PROXY_RESOLVER: libproxy
       LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack
 
 # WebKit starts its web and network processes from the directory it was built

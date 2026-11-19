@@ -189,6 +189,26 @@ def check_tls(report):
                     f" GIO_EXTRA_MODULES={extra!r})")
 
 
+def check_proxy(report, uri="https://example.com/"):
+    """Every HTTP request first asks GIO's proxy resolver. If that fails
+    (in a snap: the desktop portal refusing the question), every stream fails
+    at once with souphttpsrc's bare "Internal data stream error"."""
+    from gi.repository import Gio, GLib
+    from . import compat
+    resolver = Gio.ProxyResolver.get_default()
+    name = type(resolver).__gtype__.name
+    if compat.bundled() == "Snap" and "Portal" in name:
+        report.fail(f"proxy resolver {name}: the desktop portal refuses it to snaps without"
+                    " network-status; GIO_USE_PROXY_RESOLVER is not in effect")
+        return
+    try:
+        proxies = resolver.lookup(uri, None)
+    except GLib.Error as e:
+        report.fail(f"proxy resolver {name} fails, so every stream fails: {e.message}")
+        return
+    report.ok(f"proxy resolver {name}: {', '.join(proxies)}")
+
+
 def check_stream(report, streams=None):
     """Play an HTTPS HLS stream the way an IPTV channel plays."""
     env = os.environ.get("LINDVB_SELFCHECK_STREAM")
@@ -287,7 +307,7 @@ def run(argv=None, out=None):
     out.write(f"LinDVB {__version__} self-check ({where}, {Gst.version_string()})\n")
     checks = [check_gtk, check_elements, check_playback, check_hbbtv]
     if "--offline" not in argv:
-        checks += [check_tls, check_stream]
+        checks += [check_tls, check_proxy, check_stream]
     for check in checks:
         try:
             check(report)
