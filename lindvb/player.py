@@ -24,7 +24,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_name, preferred_track)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import debuglog, hwaccel, passthrough  # noqa: E402
+from . import captions, debuglog, hwaccel, passthrough  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
@@ -302,7 +302,7 @@ class VideoBin:
 
 
 class Player(GObject.Object):
-    cc = None                    # cc708overlay of the current pipeline
+    cc = None                    # captions.CaptionOverlay of the current pipeline
     __gsignals__ = {
         "state": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         "error": (GObject.SignalFlags.RUN_LAST, None, (str,)),
@@ -415,13 +415,16 @@ class Player(GObject.Object):
         pb.set_property("video-sink", self.video.sink)
         vf = Gst.Bin.new("vfilter")
         chain = [Gst.ElementFactory.make("videoconvert")]
-        # ATSC / US cable closed captions (CEA-608/708 in the video stream);
-        # Subtitles > Closed Captions switches them on and off
+        # ATSC / US cable closed captions (CEA-708 in the video stream);
+        # Subtitles > Closed Captions switches them on and off and is offered
+        # once a frame really carries them (lindvb.captions)
         self.cc = None
-        if Gst.ElementFactory.find("cc708overlay"):
-            self.cc = Gst.ElementFactory.make("cc708overlay")
-            self.cc.set_property("silent", not self.settings.get("closed_captions", False))
-            chain.insert(0, self.cc)
+        if captions.available():
+            self.cc = captions.CaptionOverlay(
+                silent=not self.settings.get("closed_captions", False),
+                on_found=self._tracks_changed,
+                log=lambda msg: debuglog.write("Player", msg))
+            chain.insert(0, self.cc.bin)
         if self.settings["deinterlace"]:
             gpu = hwaccel.preferred(self._decoder_mode(), hwaccel.available())
             deint = hwaccel.make_deinterlacer(gpu)
@@ -1313,10 +1316,11 @@ class Player(GObject.Object):
         """Show the CEA-608/708 captions of the video (ATSC, US cable, some IPTV)."""
         self.settings["closed_captions"] = bool(on)
         if self.cc is not None:
-            self.cc.set_property("silent", not on)
+            self.cc.set_silent(not on)
 
     def has_closed_captions(self):
-        return self.cc is not None
+        """The video of the current stream carries CEA-708 captions."""
+        return self.cc is not None and self.cc.present
 
     def set_rate(self, rate):
         """Play rate for files (0.5 .. 2.0)."""
