@@ -70,8 +70,12 @@ def test_loader_works_in_the_background(tmp_path):
     ready = {}
     loader = logothumbs.Loader(tmp_path / "cache", GdkPixbuf.Pixbuf.new_from_file,
                                lambda path, tex: ready.__setitem__(path, tex), limit=2)
-    for s in srcs:
-        assert loader.get(s) == (False, None)
+    # queue all four before the worker takes the first: the first get() starts
+    # the thread, which could otherwise grab srcs[0] before the rest are queued
+    # (the condition's lock is reentrant, so get() can still take it here)
+    with loader._cond:
+        for s in srcs:
+            assert loader.get(s) == (False, None)
     ctx = GLib.MainContext.default()
     end = time.monotonic() + 10
     while len(ready) < len(srcs) and time.monotonic() < end:

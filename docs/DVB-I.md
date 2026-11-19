@@ -124,8 +124,9 @@ DVB-I channels get their programme guide from the content guide servers named
 in the service list (switch it off in the DVB-I setup). LinDVB asks for
 now/next first and then the schedule of today and the next 7 days, every 6
 hours. Programmes show the long synopsis, genre, age rating and the
-programme image. Audio description, and subtitles on antenna/cable/satellite
-channels, are marked [AD] and [ST] in the guide and can be filtered on the
+programme image. Audio description is marked with the audio description
+symbol (the crossed-out eye of the German "Hörfilm" logo), subtitles on
+antenna/cable/satellite channels with [ST]; both can be filtered on the
 Now/Next page; features LinDVB cannot play yet (subtitles in DASH, sign
 language) are not listed.
 

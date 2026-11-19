@@ -44,6 +44,7 @@ belong to their owners.
 |---|---|---|
 | `lindvb/scantables/dtv-scan-tables.json.gz` (the channel search's transponder lists) | [dtv-scan-tables](https://git.linuxtv.org/dtv-scan-tables.git) by the LinuxTV community, as kept up to date in [Tvheadend's copy](https://github.com/tvheadend/dtv-scan-tables) (branch `tvheadend`, which contains every LinuxTV commit), packed into one file by `tools/update_scantables.py`; the file names the commit it was made from, and a monthly workflow proposes updates; the lists of the system's dtv-scan-tables package are used besides them | GPL-2.0 and LGPL-2.1 ([GPL](lindvb/scantables/dtv-scan-tables-COPYING), [LGPL](lindvb/scantables/dtv-scan-tables-COPYING.LGPL)) |
 | Adwaita and hicolor icon themes | [GNOME](https://gitlab.gnome.org/GNOME/adwaita-icon-theme) | LGPL-3.0-or-later or CC-BY-SA-3.0 |
+| Audio description symbol (`lindvb/icons/hicolor/scalable/actions/lindvb-audio-description-symbolic.svg`, the crossed-out eye of the German "Hörfilm" logo), redrawn as a symbolic icon from [File:Audiodeskriptio.svg](https://commons.wikimedia.org/wiki/File:Audiodeskriptio.svg) (SVG by CennoxX, logo from derdurchblick.at) | Wikimedia Commons | Public domain (PD-shape: simple geometric shapes, no copyright); credited here as a courtesy |
 | Inspiration for the UI | [Juxtopposed](https://www.figma.com/de-de/community/file/1691465999134370980/vlc-redesign) |  CC-BY-4.0 |
 
 LinDVB's own icon, screenshots, test media and translations were made for

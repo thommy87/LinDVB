@@ -15,7 +15,9 @@ class Row(GObject.Object):
 
 
 def make_column_view(columns, on_activate=None, widths=None):
-    """columns: list of (title, fn(data) -> str, expand). Returns (view, store, selection).
+    """columns: list of (title, fn(data) -> str, expand[, icons]). Returns (view, store, selection).
+
+    icons: optional fn(data) -> [(icon name, tooltip)], shown as symbols after the text.
 
     widths: optional fixed start width per column (None = size to content).
     A fixed width keeps the columns from jumping while scrolling, because
@@ -24,12 +26,30 @@ def make_column_view(columns, on_activate=None, widths=None):
     sel = Gtk.SingleSelection(model=store)
     view = Gtk.ColumnView(model=sel)
     view.set_show_column_separators(True)
-    for i, (title, fn, expand) in enumerate(columns):
+    for i, (title, fn, expand, *rest) in enumerate(columns):
+        icons = rest[0] if rest else None
         fac = Gtk.SignalListItemFactory()
-        fac.connect("setup", lambda _f, li: li.set_child(Gtk.Label(xalign=0, ellipsize=3)))
+        if icons:
+            def setup(_f, li):
+                box = Gtk.Box(spacing=6)
+                box.append(Gtk.Label(xalign=0, ellipsize=3))
+                box.append(Gtk.Box(spacing=4, valign=Gtk.Align.CENTER))
+                li.set_child(box)
+            fac.connect("setup", setup)
+        else:
+            fac.connect("setup", lambda _f, li: li.set_child(Gtk.Label(xalign=0, ellipsize=3)))
 
-        def bind(_f, li, fn=fn):
-            li.get_child().set_text(fn(li.get_item().data))
+        def bind(_f, li, fn=fn, icons=icons):
+            data = li.get_item().data
+            if not icons:
+                li.get_child().set_text(fn(data))
+                return
+            lbl, marks = li.get_child().get_first_child(), li.get_child().get_last_child()
+            lbl.set_text(fn(data))
+            while marks.get_first_child():
+                marks.remove(marks.get_first_child())
+            for name, tip in icons(data):
+                marks.append(Gtk.Image(icon_name=name, pixel_size=16, tooltip_text=tip))
 
         fac.connect("bind", bind)
         col = Gtk.ColumnViewColumn(title=title, factory=fac)
