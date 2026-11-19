@@ -1,0 +1,59 @@
+name: Install apt packages (cached downloads)
+description: >
+  apt-get update + install with the downloaded .deb files cached between runs.
+  The package index is refreshed on every run and apt always installs the
+  archive's current versions; the cache only spares downloading .deb files
+  that are still current. It starts over every week.
+inputs:
+  packages:
+    description: Packages to install (whitespace separated)
+    required: true
+  name:
+    description: Cache name, one per package set
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Cache key
+      id: key
+      shell: bash
+      env:
+        PACKAGES: ${{ inputs.packages }}
+      run: |
+        # The package list, the runner image and the ISO week: a new list or a
+        # new week starts a new cache; within the week a newer list version
+        # of a package is simply downloaded.
+        list="$(tr -s ' \n\t' '\n' <<<"$PACKAGES" | sed '/^$/d' | sort -u)"
+        echo "packages=$(tr '\n' ' ' <<<"$list")" >> "$GITHUB_OUTPUT"
+        hash="$(sha256sum <<<"$list" | cut -c1-12)"
+        prefix="apt-${{ inputs.name }}-${ImageOS:-ubuntu}-$hash-"
+        echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
+        echo "key=$prefix$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/cache/restore@v4
+      id: cache
+      with:
+        path: ~/.cache/apt-debs/*.deb
+        key: ${{ steps.key.outputs.key }}
+        restore-keys: ${{ steps.key.outputs.prefix }}
+
+    - name: Restore cached packages
+      shell: bash
+      run: '"$GITHUB_ACTION_PATH/apt-install.sh" restore ~/.cache/apt-debs'
+
+    - name: Refresh the package index and install
+      shell: bash
+      run: '"$GITHUB_ACTION_PATH/apt-install.sh" install ~/.cache/apt-debs ${{ steps.key.outputs.packages }}'
+
+    # Saved once per week and package list (and branch: a pull request's cache
+    # is visible to that pull request alone, main's to every branch).
+    - name: Keep only the installed versions
+      if: steps.cache.outputs.cache-matched-key != steps.key.outputs.key
+      shell: bash
+      run: '"$GITHUB_ACTION_PATH/apt-install.sh" prune ~/.cache/apt-debs'
+
+    - uses: actions/cache/save@v4
+      if: steps.cache.outputs.cache-matched-key != steps.key.outputs.key
+      with:
+        path: ~/.cache/apt-debs/*.deb
+        key: ${{ steps.key.outputs.key }}
