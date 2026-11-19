@@ -187,3 +187,26 @@ def test_v3_stats_supported(monkeypatch):
     monkeypatch.setattr(festats.fcntl, "ioctl", lambda *_a: 0)
     assert fe.v3_stats_supported()
     fe.fd = None
+
+
+def _ext(num, last, lang, text):
+    body = bytes([(num << 4) | last]) + lang.encode() + bytes([0, len(text)]) + text
+    return bytes([0x4E, len(body)]) + body
+
+
+def test_description_split_over_extended_descriptors():
+    """Broadcasters cut the text anywhere, also right next to a space: the
+    pieces are joined as sent (as GStreamer's parser did before)."""
+    sec = _eit(1, 2, [(1, START, 600, [_short("deu", "Film", ""),
+                                       _ext(1, 2, "deu", b"\x05und zwei \xfc"),
+                                       _ext(0, 2, "deu", b"\x05Teil eins "),
+                                       _ext(2, 2, "deu", b"nd drei  ")])])
+    ev, = parse_eit_section(_section(sec), GstMpegts, "deu")[1]
+    assert ev.description == "Teil eins und zwei ünd drei"
+
+
+def test_undefined_start_time_is_skipped():
+    sec = bytearray(_eit(1, 2, [(1, START, 600, [_short("deu", "NVOD", "")])]))
+    sec[16:21] = b"\xff" * 5                 # start_time of the first event
+    sec[-4:] = mpeg_crc(bytes(sec[:-4])).to_bytes(4, "big")
+    assert parse_eit_section(_section(bytes(sec)), GstMpegts)[1] == []

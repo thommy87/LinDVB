@@ -171,42 +171,46 @@ def _iso6937(data):
     return "".join(out)
 
 
-def _clean(text):
+def _clean(text, strip=True):
     # 0x86/0x87 emphasis on/off and 0x8A line break (EN 300 468 control codes)
     text = text.replace("\x8a", "\n").replace("\x86", "").replace("\x87", "")
     text = "".join(ch for ch in text if ch == "\n" or ch >= " ")
-    return re.sub(r" {2,}", " ", text).strip()
+    text = re.sub(r" {2,}", " ", text)
+    return text.strip() if strip else text
 
 
-def dvb_text(data):
-    """Decode a DVB string, including Freesat Huffman compressed ones."""
+def dvb_text(data, strip=True):
+    """Decode a DVB string, including Freesat Huffman compressed ones.
+
+    *strip* False keeps leading and trailing spaces: the text of an event is
+    split over several extended event descriptors, often next to a space."""
     data = bytes(data)
     if not data:
         return ""
     first = data[0]
     try:
         if first >= 0x20:
-            return _clean(_iso6937(data))
+            return _clean(_iso6937(data), strip)
         if first == 0x1F:
-            return _clean(freesat_decode(data))
+            return _clean(freesat_decode(data), strip)
         if 0x01 <= first <= 0x0B:
-            return _clean(data[1:].decode(f"iso8859-{first + 4}", "replace"))
+            return _clean(data[1:].decode(f"iso8859-{first + 4}", "replace"), strip)
         if first == 0x10 and len(data) >= 3:
             n = data[2]
-            return _clean(data[3:].decode(f"iso8859-{n}", "replace"))
+            return _clean(data[3:].decode(f"iso8859-{n}", "replace"), strip)
         if first == 0x11:
-            return _clean(data[1:].decode("utf-16-be", "replace"))
+            return _clean(data[1:].decode("utf-16-be", "replace"), strip)
         if first == 0x15:
-            return _clean(data[1:].decode("utf-8", "replace"))
+            return _clean(data[1:].decode("utf-8", "replace"), strip)
         if first == 0x13:
-            return _clean(data[1:].decode("gb2312", "replace"))
+            return _clean(data[1:].decode("gb2312", "replace"), strip)
         if first == 0x12:
-            return _clean(data[1:].decode("euc-kr", "replace"))
+            return _clean(data[1:].decode("euc-kr", "replace"), strip)
         if first == 0x14:
-            return _clean(data[1:].decode("big5", "replace"))
+            return _clean(data[1:].decode("big5", "replace"), strip)
     except LookupError:
         pass
-    return _clean(data[1:].decode("latin-1"))
+    return _clean(data[1:].decode("latin-1"), strip)
 
 
 # -- Freesat Huffman ------------------------------------------------------------
@@ -329,7 +333,9 @@ def parse_eit_raw(section, language=""):
     while pos + 12 <= end:
         event_id = (section[pos] << 8) | section[pos + 1]
         mjd = (section[pos + 2] << 8) | section[pos + 3]
-        start = mjd_utc(mjd, *section[pos + 4:pos + 7])
+        # all bits set: start time undefined (NVOD reference events)
+        start = mjd_utc(mjd, *section[pos + 4:pos + 7]) \
+            if section[pos + 2:pos + 7] != b"\xff" * 5 else 0
         dur = bcd(section[pos + 7]) * 3600 + bcd(section[pos + 8]) * 60 + bcd(section[pos + 9])
         dlen = ((section[pos + 10] & 0x0F) << 8) | section[pos + 11]
         dpos, dend = pos + 12, min(pos + 12 + dlen, end)
@@ -352,7 +358,7 @@ def parse_eit_raw(section, language=""):
                 tpos = 5 + items_len
                 tl = body[tpos] if len(body) > tpos else 0
                 extended.setdefault(lang, []).append(
-                    (body[0] >> 4, dvb_text(body[tpos + 1:tpos + 1 + tl])))
+                    (body[0] >> 4, dvb_text(body[tpos + 1:tpos + 1 + tl], strip=False)))
             elif tag == 0x54 and body:
                 genre = GENRES.get(body[0] >> 4, "")
                 # content 0xB1: "black and white" (EN 300 468 table 29)
@@ -361,7 +367,7 @@ def parse_eit_raw(section, language=""):
             continue
         title, sub = pick_language(shorts, language)
         ext = pick_language(list(extended.items()), language) or []
-        desc = "".join(t for _n, t in sorted(ext, key=lambda x: x[0]))
+        desc = re.sub(r" {2,}", " ", "".join(t for _n, t in sorted(ext, key=lambda x: x[0]))).strip()
         if len(sub) > 80 and not desc:
             sub, desc = "", sub
         if title:
