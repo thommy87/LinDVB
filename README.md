@@ -62,13 +62,21 @@ them.
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer.
-  Internet TV channels (M3U, Xtream, DVB-I, multicast) go through the same
-  buffer; HLS/DASH keep switching quality with the connection ("automatic") or
+  The buffer lives on disk, in memory (RAM) or is switched off (Preferences ▸
+  Playback ▸ Timeshift). Internet TV channels (M3U, Xtream, DVB-I, multicast) and
+  internet radio go through the same buffer (radio with its song titles, so a
+  jump back shows the song that ran then); HLS/DASH keep switching quality with the connection ("automatic") or
   stay on the best quality (Preferences ▸ Playback ▸ Timeshift). Broken
   internet and Tvheadend streams are opened again after a few seconds, for up
   to three minutes. **Catch-up**: programmes of the last days from the
   provider's archive ("Watch from the Start" in the programme guide), for M3U
   lists with `catchup` attributes and Xtream Codes servers with an archive
+* On-screen display: channel, now/next with genre, country and year, the minutes
+  left, and a technical row with the source (DVB-S/S2, DVB-C, DVB-T/T2, ATSC,
+  ISDB-T, DTMB, SAT>IP, Tvheadend, DVB-I, IPTV), resolution (SD 576i, HD 1080i,
+  UHD 2160p), 16:9 or 4:3, HDR, the sound on offer (mono, stereo, 5.1, 7.1, codec,
+  languages, audio description), subtitles, black and white programmes and a
+  signal or buffer quality bar
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer
@@ -121,7 +129,7 @@ them.
 ### Programme guide
 
 * Programme guide: now/next and prime time, per channel, timeline grid, search,
-  web search links; on-screen now/next display; XMLTV for internet channels
+  web search links, programme details with the full description; XMLTV for internet channels
   with automatic and manual matching of M3U channels to guide channels;
   MediaHighway 1/2 and Freesat EPG; preferred EPG language and time zone
 * Reminders: "Remind Me" in the programme guide sends a desktop notification a few
@@ -182,8 +190,8 @@ them.
   web address or an Xtream Codes login (MPEG-TS or HLS, live channels only), each
   list with its own name (Preferences ▸ Internet ▸ IPTV). A **Tvheadend** server is
   added there with its address, user name and password: LinDVB loads its channels
-  (channel tags, radio apart from TV, the networks of the channels over HTSP without
-  admin rights), logos and programme guide (XMLTV)
+  (channel tags, radio apart from TV, the networks of the channels over HTSP on port
+  9982 without admin rights; fetched again daily), logos and programme guide (XMLTV)
   and logs in with digest or plain authentication. Its streams go through the same
   timeshift buffer as a local tuner's, so pausing, jumping back, LinDVB's own
   recordings and timers, teletext, subtitles, the broadcast EPG and HbbTV work for
@@ -220,6 +228,18 @@ them.
   `LINDVB_TITLE`, `LINDVB_FILE`, ...)
 * Plugins: Python add-ons for channel-list importers, conditional-access
   providers, radio visualisations, life-cycle hooks and menu entries
+* Debug mode for bug reports (Preferences ▸ Debug): a log of versions, tuning,
+  playback, recordings, HbbTV and errors in `~/.cache/lindvb/debug.log`, without
+  passwords, PINs or your user name
+
+### Languages
+
+The interface is translated into 34 languages: English, all official languages of
+the European Union (Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish,
+French, German, Greek, Hungarian, Irish, Italian, Latvian, Lithuanian, Maltese,
+Polish, Portuguese, Romanian, Slovak, Slovenian, Spanish, Swedish), Arabic, Armenian,
+Georgian, Japanese, Persian, Russian, Thai, Ukrainian and Chinese (simplified and
+traditional). It follows the desktop unless Preferences ▸ General sets a language.
 
 ## Plugins and conditional access
 
@@ -379,11 +399,16 @@ Command line: `lindvb [-i LIST …] [-c CHANNEL] [FILE|URL …]`
 | L | Back to live | ↑ ↓, Page Up/Down | Channel minus / plus |
 | 0–9 | Channel number | Backspace | Last channel |
 | + / − | Volume | M | Mute |
+| J / K | Sound earlier / later | V | Next radio visualisation |
+| Ctrl+M | Switch TV / radio | Ctrl+D | Favourites |
 | F, F11 | Full screen | F9 | Show/hide channel list |
 | E, Ctrl+E | Programme guide | R, Ctrl+R | Record |
-| T | Teletext | S | Screenshot |
-| I, O | On-screen info | N / P | Playlist next / previous |
-| Ctrl+T | Timers | Ctrl+O / Ctrl+U | Open file / URL |
+| T | Teletext | F5 | HbbTV (red button) |
+| I, O | On-screen info | S | Screenshot |
+| N / P | Playlist next / previous | Ctrl+T | Timers |
+| Ctrl+O / Ctrl+U | Open file / URL | Shift+Ctrl+S | Channel search |
+| Shift+Ctrl+E | Channel editor | Ctrl+, | Preferences |
+| F10 | Main menu | Ctrl+? | All keyboard shortcuts |
 
 IR remotes supported by the kernel (rc-core) send ordinary key events, so they work
 with these keys; use `ir-keytable` to remap buttons.
@@ -396,6 +421,8 @@ with these keys; use `ir-keytable` to remap buttons.
   (`/dev/shm`, at most half of the RAM, nothing written to the disk) or switched
   off (no pause or jumping back). On disk, the buffer shrinks when the disk is
   almost full (2 GB stay free); in memory, when the free RAM runs low.
+* `~/.cache/lindvb/debug.log` (and `debug.log.1`, 2 MB each) when the debug mode is
+  on, `~/.cache/lindvb/hang.log` after a freeze or crash
 * `~/.local/share/lindvb/reception/` the reception log of the channel analysis (one
   CSV file a day, kept 31 days; off unless switched on)
 * Recordings go to `~/Videos/LinDVB` as `.ts` by default (naming scheme with
@@ -403,10 +430,13 @@ with these keys; use `ir-keytable` to remap buttons.
 
 ## Releasing
 
-Run the **Release** workflow from the Actions tab and enter a tag such as `v0.9.0`. It
-builds the AppImage, Flatpak, Snap, Ubuntu `.deb` and Python source package (sdist) and
-publishes them in one GitHub release. Pushes and pull requests build only the AppImage; the
-other packages are built only for releases (or by starting their workflows by hand).
+Raise the version in `pyproject.toml`, `lindvb/__init__.py` and the metainfo file, and
+write the release notes to `packaging/changelog/v<version>.md`. Then run the **Release**
+workflow from the Actions tab and enter the tag, such as `v0.19.0`. It builds the
+AppImage, Flatpak, Ubuntu `.deb` and Python source package (sdist), publishes them in
+one GitHub release with those notes, moves the snap (built by Canonical) to the stable
+channel and updates the AUR package. Pushes and pull requests build only the AppImage;
+the other packages are built only for releases (or by starting their workflows by hand).
 
 ## Development
 
@@ -439,18 +469,22 @@ print or single-colour uses.
 
 See [docs/FEATURES.md](docs/FEATURES.md).
 
-## If LinDVB stops responding
+## Feedback and bug reports
 
-When the main loop does not answer for 8 seconds, LinDVB writes the stacks of
-all its threads to `~/.cache/lindvb/hang.log` (crashes go there too). Please
-attach that file when you report a freeze.
+Questions, ideas and bug reports are welcome in the
+[issues](https://github.com/thommy87/LinDVB/issues) and
+[discussions](https://github.com/thommy87/LinDVB/discussions) on GitHub, or by mail to
+**lindvb.feedback@gmail.com** (also in ☰ → About LinDVB).
+
+For a bug report, switch on the debug mode (Preferences ▸ Debug), make the problem
+happen again and attach `~/.cache/lindvb/debug.log` (the page has a button to save a
+copy). When the main loop does not answer for 8 seconds, LinDVB writes the stacks of
+all its threads to `~/.cache/lindvb/hang.log` (crashes go there too); please attach
+that file when you report a freeze.
 
 ## License
 
 Copyright (C) 2026 thommy87.
-
-***Feedback:
-lindvb.feedback@gmail.com***
 
 LinDVB is free software under the GNU General Public License version 2 or (at your
 option) any later version. See [LICENSE](LICENSE).
