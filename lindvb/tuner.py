@@ -18,7 +18,7 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import GLib, GObject, Gst  # noqa: E402
 
-from .epg import parse_eit_section  # noqa: E402
+from .epg import parse_eit_section, section_bytes  # noqa: E402
 from .tsanalysis import sdt_service_type  # noqa: E402
 from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
 from . import debuglog, diseqc, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
@@ -38,6 +38,21 @@ UNICABLE_TRIES = 3
 # ATSC terrestrial (8VSB) and US cable (QAM annex B): the guide is in PSIP
 ATSC_SYSTEMS = ("atsc", "dvb-c-b")
 TS_PACKET = 188
+# seconds between the signal figures passed on from dvbsrc (see Capture._frontend_stats)
+STATS_INTERVAL = 0.5
+
+
+def pat_programs(raw):
+    """[(program_number, PMT PID)] of a raw PAT section.
+
+    Read from the bytes: GstMpegtsSection.get_pat() empties the section's
+    list of programs when called from Python (a binding bug), see
+    lindvb.epg.parse_eit_section."""
+    if len(raw) < 12 or raw[0] != 0x00:
+        return []
+    end = min(len(raw), 3 + (((raw[1] & 0x0F) << 8) | raw[2])) - 4      # without CRC
+    return [((raw[i] << 8) | raw[i + 1], ((raw[i + 2] & 0x1F) << 8) | raw[i + 3])
+            for i in range(8, end - 3, 4)]
 
 
 def dvbsrc_properties(ch, settings, adapter, frontend, lnb=None):
@@ -295,6 +310,9 @@ class Capture(GObject.Object):
         self.users = set()
         self.started_at = time.time()
         self.stats = {}
+        self._stats_at = 0.0             # when dvbsrc's figures were passed on last
+        self._stats_lock = None          # ... and the lock then
+        self._v5_fe = None               # festats.Frontend, False: not needed (see _v5_frontend)
 
         self.pipeline = Gst.Pipeline.new(f"capture{adapter}")
         self._src = None                 # dvbsrc, whose PID filter may grow (AIT)
@@ -689,10 +707,7 @@ class Capture(GObject.Object):
     def _learn_service(self, section):
         """Tvheadend: the PAT names the one service of the stream. Keep its ids
         on the channel, so the broadcast EIT finds it (Channel.epg_links)."""
-        try:
-            programs = [p.program_number for p in section.get_pat() if p.program_number]
-        except (TypeError, AttributeError):
-            return
+        programs = [n for n, _pid in pat_programs(section_bytes(section)) if n]
         tsid = section.subtable_extension
         if programs:
             self._tvh_sid = programs[0]
@@ -704,9 +719,7 @@ class Capture(GObject.Object):
     def _learn_service_type(self, section):
         """The SDT of the transport stream gives the channel's service type
         (lindvb.chansort.quality): the channel search with dvbv5-scan keeps none."""
-        data = section.get_data()
-        raw = data.get_data() if hasattr(data, "get_data") else bytes(data)
-        stype = sdt_service_type(raw, self.channel.sid)
+        stype = sdt_service_type(section_bytes(section), self.channel.sid)
         if stype and stype != self.channel.service_type:
             self.channel.service_type = stype
             self.emit("service-type", stype)
@@ -833,6 +846,9 @@ class Capture(GObject.Object):
         self.pipeline.set_state(Gst.State.NULL)
         self.pipeline.get_bus().remove_signal_watch()
         self.store.finished = True
+        if self._v5_fe:
+            self._v5_fe.close()
+            self._v5_fe = False
         if self._direct is not None:
             self._direct.close()
         if self._satip is not None:
@@ -849,15 +865,55 @@ class Capture(GObject.Object):
         dt = max(1.0, time.time() - self.started_at)
         return max(1.0, end / dt) if end else 1_000_000.0
 
+    def _frontend_stats(self, s):
+        """The figures of a dvb-frontend-stats message of dvbsrc, or None to skip it.
+
+        While it waits for a lock, dvbsrc posts one every few milliseconds;
+        they are passed on at most every STATS_INTERVAL seconds, and at once
+        when the lock comes or goes. Drivers that only fill the DVB API v5
+        statistics (Sony CXD28xx of Digital Devices cards, ...) answer dvbsrc's
+        old FE_READ_SIGNAL_STRENGTH & co. with ENOTSUPP (error 524): dvbsrc
+        then posts whatever was on its stack, so signal, SNR, BER and UNC are
+        read here from the v5 statistics instead."""
+        st = {k: s.get_value(k) for k in ("signal", "snr", "ber", "unc", "lock", "status")
+              if s.has_field(k)}
+        now = time.monotonic()
+        lock = st.get("lock")
+        if lock == self._stats_lock and now - self._stats_at < STATS_INTERVAL:
+            return None
+        self._stats_at, self._stats_lock = now, lock
+        fe = self._v5_frontend()
+        if fe is not None:
+            for k in ("signal", "snr", "ber", "unc"):
+                st.pop(k, None)
+            v5 = directtune.dvb_stats(fe.read())
+            st.update((k, v5[k]) for k in ("signal", "snr", "ber", "unc") if k in v5)
+        return st
+
+    def _v5_frontend(self):
+        """A read-only handle of the frontend when its driver refuses the old
+        DVB API v3 statistics, else None (checked once per capture)."""
+        if self._v5_fe is None:
+            from .festats import Frontend
+            fe = Frontend(self.adapter, self.frontend)
+            if fe.available and not fe.v3_stats_supported():
+                debuglog.write("Capture", f"adapter{self.adapter}/frontend{self.frontend}: "
+                                          "no DVB API v3 statistics, reading the v5 ones")
+                self._v5_fe = fe
+            else:
+                fe.close()
+                self._v5_fe = False
+        return self._v5_fe or None
+
     def _on_message(self, bus, msg):
         t = msg.type
         if t == Gst.MessageType.ELEMENT:
             s = msg.get_structure()
             if s and s.get_name() == "dvb-frontend-stats":
-                st = {k: s.get_value(k) for k in ("signal", "snr", "ber", "unc", "lock",
-                                                  "status") if s.has_field(k)}
-                self.stats = st
-                self.emit("stats", st)
+                st = self._frontend_stats(s)
+                if st is not None:
+                    self.stats = st
+                    self.emit("stats", st)
             elif GstMpegts is not None:
                 section = GstMpegts.message_parse_mpegts_section(msg)
                 if section is not None:

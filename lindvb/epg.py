@@ -219,61 +219,33 @@ class EPGStore:
 # DVB EIT
 # ----------------------------------------------------------------------------
 
-def _gst_dt_to_unix(dt):
-    try:
-        return int(datetime(dt.get_year(), dt.get_month(), dt.get_day(),
-                            dt.get_hour(), dt.get_minute(), dt.get_second(),
-                            tzinfo=timezone.utc).timestamp())
-    except (ValueError, TypeError):
-        return 0
+def section_bytes(section):
+    """The raw bytes of a GstMpegts.Section (header to CRC)."""
+    data = section.get_data()
+    return bytes(data.get_data() if hasattr(data, "get_data") else data)
 
 
-def parse_eit_section(section, GstMpegts, language=""):
-    """Return (key, [Event]) for an EIT section, or None.
+def parse_eit_section(section, GstMpegts=None, language=""):
+    """Return (key, [Event]) for an EIT section (a GstMpegts.Section), or None.
 
     *language* is the preferred EPG language (ISO 639-2); when an event is
     broadcast in several languages that one is used, otherwise the first.
+
+    The events are read from the section's raw bytes (lindvb.epgsources.
+    parse_eit_raw), not with GstMpegts' descriptor parsers: from Python,
+    GstMpegtsDescriptor.parse_dvb_content() hands out a list whose items
+    PyGObject has already freed, and frees them a second time when the list
+    goes away. Every EIT with a content (genre) descriptor corrupted the heap
+    and LinDVB aborted right after tuning ("free(): double free detected in
+    tcache 2" / "malloc(): unaligned tcache chunk detected").
     """
-    from .epgsources import pick_language
-    if section.section_type not in (GstMpegts.SectionType.EIT,):
+    from .epgsources import parse_eit_raw
+    if GstMpegts is not None and section.section_type != GstMpegts.SectionType.EIT:
         return None
-    eit = section.get_eit()
-    if eit is None:
+    try:
+        return parse_eit_raw(section_bytes(section), language)
+    except (IndexError, ValueError, TypeError):
         return None
-    key = f"{eit.transport_stream_id}:{section.subtable_extension}"
-    events = []
-    for ev in eit.events:
-        start = _gst_dt_to_unix(ev.start_time) if ev.start_time else 0
-        if not start:
-            continue
-        genre, bw = "", False
-        shorts, ext = [], {}
-        for d in ev.descriptors:
-            tag = d.tag
-            try:
-                if tag == 0x4D:
-                    ok, lang, name, text = d.parse_dvb_short_event()
-                    if ok:
-                        shorts.append((lang or "", (name or "", text or "")))
-                elif tag == 0x4E:
-                    ok, e = d.parse_dvb_extended_event()
-                    if ok and e.text:
-                        ext.setdefault(getattr(e, "language_code", "") or "", []).append(e.text)
-                elif tag == 0x54:
-                    ok, contents = d.parse_dvb_content()
-                    if ok and contents:
-                        genre = GENRES.get(contents[0].content_nibble_1, "")
-                        bw = any(c.content_nibble_1 == 0xB and c.content_nibble_2 == 0x1
-                                 for c in contents)
-            except (TypeError, ValueError, AttributeError):
-                pass
-        title, sub = pick_language(shorts, language) or ("", "")
-        desc = "".join(pick_language(list(ext.items()), language) or [])
-        if len(sub) > 80 and not desc:
-            sub, desc = "", sub
-        if title:
-            events.append(Event(start, ev.duration, title, sub, desc, genre, ev.event_id, bw=bw))
-    return key, events
 
 
 # ----------------------------------------------------------------------------

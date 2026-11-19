@@ -20,6 +20,9 @@ import os
 
 FE_GET_PROPERTY = 0x80106F53
 FE_READ_STATUS = 0x80046F45
+FE_READ_SIGNAL_STRENGTH = 0x80026F47
+# "not supported" answers: the kernel's ENOTSUPP (524), EOPNOTSUPP, ENOTTY
+V3_UNSUPPORTED = (524, 95, 25)
 
 DTV_FREQUENCY = 3
 DTV_MODULATION = 4
@@ -193,6 +196,19 @@ class Frontend:
         except OSError:
             return None
         return {name: bool(buf.value & bit) for name, bit in STATUS_BITS}
+
+    def v3_stats_supported(self):
+        """False if the driver refuses the old DVB API v3 statistics
+        (FE_READ_SIGNAL_STRENGTH & co., which dvbsrc reads): drivers that only
+        fill the v5 ones answer ENOTSUPP (kernel error 524)."""
+        if self.fd is None:
+            return True
+        buf = ctypes.c_uint16(0)
+        try:
+            fcntl.ioctl(self.fd, FE_READ_SIGNAL_STRENGTH, buf)
+        except OSError as e:
+            return e.errno not in V3_UNSUPPORTED
+        return True
 
     def tuning(self):
         if self.fd is None:
