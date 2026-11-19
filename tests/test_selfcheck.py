@@ -42,14 +42,14 @@ def test_every_package_runs_it():
 def test_offline_skips_network_checks(monkeypatch):
     calls = []
     for name in ("check_gtk", "check_elements", "check_playback", "check_hbbtv",
-                 "check_tls", "check_stream"):
+                 "check_tls", "check_proxy", "check_stream"):
         monkeypatch.setattr(selfcheck, name, lambda r, n=name: calls.append(n))
     out = io.StringIO()
     assert selfcheck.run(["--offline"], out) == 0
-    assert "check_tls" not in calls and "check_stream" not in calls
+    assert not {"check_tls", "check_proxy", "check_stream"} & set(calls)
     calls.clear()
     assert selfcheck.run([], io.StringIO()) == 0
-    assert "check_tls" in calls and "check_stream" in calls
+    assert {"check_tls", "check_proxy", "check_stream"} <= set(calls)
 
 
 def test_warn_does_not_fail():
@@ -60,3 +60,10 @@ def test_warn_does_not_fail():
 
 def test_streams_are_https():
     assert selfcheck.STREAMS and all(u.startswith("https://") for u in selfcheck.STREAMS)
+
+
+def test_snap_uses_libproxy_resolver():
+    """A snap must not ask the desktop portal for proxies (it refuses them)."""
+    text = (ROOT / "snap" / "snapcraft.yaml").read_text()
+    assert "GIO_USE_PROXY_RESOLVER: libproxy" in text
+    assert "- network-status" in text
