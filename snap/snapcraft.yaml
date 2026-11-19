@@ -51,6 +51,14 @@ apps:
       # update-alternatives, which stage-packages never run. Without them the
       # gst-libav plugin does not load and avdec_h264 and the other decoders are
       # missing.
+      # TLS for souphttpsrc (every https:// IPTV stream) and libsoup: the GNOME
+      # content snap ships libsoup but not glib-networking, and the gnome
+      # extension's desktop-launch points GIO_MODULE_DIR at a cache of the
+      # content snap's GIO modules only. Without a TLS backend every HTTPS
+      # stream fails at once ("Internal data stream error", flow error -5).
+      # GIO also loads the modules in GIO_EXTRA_MODULES, which desktop-launch
+      # leaves alone: the staged glib-networking (GnuTLS, libproxy) lives here.
+      GIO_EXTRA_MODULES: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gio/modules
       LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack
 
 parts:
@@ -78,6 +86,7 @@ parts:
       - gstreamer1.0-plugins-bad
       - gstreamer1.0-libav
       - gstreamer1.0-pulseaudio
+      - glib-networking   # GIO TLS backend for HTTPS streams, see GIO_EXTRA_MODULES
       - dvb-tools
       - dtv-scan-tables
 

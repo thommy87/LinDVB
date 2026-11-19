@@ -59,7 +59,7 @@ jobs:
 
   # The bundle as a user gets it: installed next to the GNOME runtime from
   # Flathub (with its codecs-extra extension) on a plain Ubuntu, started, and
-  # "lindvb --self-check" run in it (GTK, GStreamer elements, H.264 playback).
+  # "lindvb --self-check" run in it (GTK, GStreamer elements, H.264 playback, HTTPS HLS).
   # Only a bundle that passes goes into the release.
   test:
     needs: flatpak
@@ -84,7 +84,7 @@ jobs:
           flatpak install --user -y --noninteractive --bundle LinDVB.flatpak
           flatpak list --user
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, HTTPS HLS)
         run: dbus-run-session -- xvfb-run -a flatpak run io.github.thommy87.LinDVB --self-check
 
       - name: Upload to the draft release

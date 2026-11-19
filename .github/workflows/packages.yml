@@ -90,7 +90,7 @@ jobs:
           dpkg -L lindvb | grep -E 'bin/lindvb|dist-packages/lindvb/app.py|applications/io.github.thommy87.LinDVB.desktop'
           cd / && lindvb --help
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, HTTPS HLS)
         run: cd / && xvfb-run -a lindvb --self-check
 
       - name: Upload to the draft release
