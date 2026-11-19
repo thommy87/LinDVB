@@ -88,7 +88,10 @@ jobs:
           deadline=$((SECONDS + WAIT_MINUTES * 60))
           while :; do
             # "  latest/edge:      0.19.2 2026-11-19 (72) 160MB -"
-            edge="$(snap info "$SNAP_NAME" 2>/dev/null | awk '$1 == "latest/edge:" { print $2 }')"
+            # The step runs under bash -e with pipefail: a failing "snap info"
+            # (the store not answering for a moment) ended the step at once,
+            # with no message. Count it as "not there yet" and ask again.
+            edge="$(snap info "$SNAP_NAME" 2>/dev/null | awk '$1 == "latest/edge:" { print $2 }')" || edge=""
             [ "$edge" = "$version" ] && break
             if [ "$SECONDS" -ge "$deadline" ]; then
               snap info "$SNAP_NAME" || true
