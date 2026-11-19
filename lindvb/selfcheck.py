@@ -41,6 +41,8 @@ ELEMENTS = ["h264parse", "mpegaudioparse", "aacparse", "videoconvert", "audiocon
 # own GStreamer must have it; GStreamer 1.28 of the distributions (e.g. Arch)
 # no longer has it, so there a missing overlay is only a warning.
 CC_OVERLAY = "cc708overlay"
+# cc708overlay draws only what ccextractor takes off the frames (lindvb.captions)
+CC_ELEMENTS = (CC_OVERLAY, "ccextractor", "ccconverter")
 # Audio output: one of these must exist; it only plays when a sound server runs
 AUDIO_SINKS = ["pulsesink", "pipewiresink", "alsasink"]
 
@@ -106,13 +108,14 @@ def check_elements(report):
             report.ok(f"GStreamer element {name}")
         else:
             report.fail(f"GStreamer element {name} is missing")
-    if Gst.ElementFactory.find(CC_OVERLAY):
-        report.ok(f"GStreamer element {CC_OVERLAY}")
+    missing = [e for e in CC_ELEMENTS if not Gst.ElementFactory.find(e)]
+    if not missing:
+        report.ok("GStreamer elements " + ", ".join(CC_ELEMENTS))
     elif compat.bundled():
-        report.fail(f"GStreamer element {CC_OVERLAY} is missing")
+        report.fail("GStreamer element " + ", ".join(missing) + " is missing")
     else:
         report.warn(f"closed captions unavailable: GStreamer {Gst.version_string().split()[-1]} "
-                    f"has no {CC_OVERLAY}")
+                    f"has no " + ", ".join(missing))
     sinks = [s for s in AUDIO_SINKS if Gst.ElementFactory.find(s)]
     if sinks:
         report.ok("audio output: " + ", ".join(sinks))
