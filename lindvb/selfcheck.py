@@ -204,16 +204,72 @@ def check_stream(report, streams=None):
 
 
 def check_hbbtv(report):
-    """HbbTV needs WebKitGTK 6. Not a failure: the .deb only recommends it."""
+    """HbbTV needs WebKitGTK 6 and a web process that starts.
+
+    Snap and Flatpak bring WebKit, so there it is required; elsewhere it is
+    optional (the .deb only recommends it) and its absence is a warning.
+    """
     import gi
+    from . import compat
+    required = compat.bundled() in ("Snap", "Flatpak")
     try:
         gi.require_version("WebKit", "6.0")
         from gi.repository import WebKit
     except (ImportError, ValueError) as e:
-        report.warn(f"HbbTV unavailable: no WebKitGTK 6 ({e})")
+        (report.fail if required else report.warn)(f"HbbTV unavailable: no WebKitGTK 6 ({e})")
         return
-    report.ok("WebKitGTK {}.{}.{} for HbbTV".format(
-        WebKit.get_major_version(), WebKit.get_minor_version(), WebKit.get_micro_version()))
+    version = "{}.{}.{}".format(WebKit.get_major_version(), WebKit.get_minor_version(),
+                                WebKit.get_micro_version())
+    from . import hbbtv
+    if not hbbtv.sandbox_ok():
+        report.warn(f"WebKitGTK {version}: its sandbox cannot start here, HbbTV is off")
+        return
+    error, result = _run_page(WebKit)
+    if error:
+        report.fail(f"WebKitGTK {version}: a page does not run: {error}")
+    else:
+        report.ok(f"WebKitGTK {version} for HbbTV: page loaded, JavaScript returned {result}")
+
+
+def _run_page(WebKit, timeout=30):
+    """Load a page in a WebView and evaluate JavaScript in its web process."""
+    from gi.repository import GLib
+    state = {"done": False, "error": None, "result": None}
+    view = WebKit.WebView()
+
+    def evaluated(v, res):
+        try:
+            state["result"] = v.evaluate_javascript_finish(res).to_string()
+        except GLib.Error as e:
+            state["error"] = e.message
+        state["done"] = True
+
+    def changed(v, event):
+        if event == WebKit.LoadEvent.FINISHED and not state["done"]:
+            v.evaluate_javascript("6 * 7", -1, None, None, None, evaluated)
+
+    def failed(v, event, uri, err):
+        state["error"], state["done"] = err.message, True
+        return True
+
+    def crashed(v):
+        state["error"], state["done"] = "the web process crashed", True
+        return True
+
+    view.connect("load-changed", changed)
+    view.connect("load-failed", failed)
+    view.connect("web-process-terminated", lambda v, reason: crashed(v))
+    view.load_html("<!doctype html><title>LinDVB</title><p>self-check</p>", "about:blank")
+    ctx = GLib.MainContext.default()
+    deadline = time.monotonic() + timeout
+    while not state["done"] and time.monotonic() < deadline:
+        ctx.iteration(False)
+        time.sleep(0.01)
+    if not state["done"]:
+        state["error"] = f"no answer within {timeout} s"
+    if state["result"] != "42" and not state["error"]:
+        state["error"] = f"JavaScript returned {state['result']!r}"
+    return state["error"], state["result"]
 
 
 def run(argv=None, out=None):

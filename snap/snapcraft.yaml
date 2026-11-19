@@ -38,9 +38,12 @@ apps:
     # released. Standby or power-off after a recording therefore does nothing in
     # the snap (recorder.power_action logs the refused D-Bus call); the Flatpak
     # and the AppImage still do it. See docs/STORES.md.
-    # HbbTV uses WebKitGTK 6 from the GNOME content snap (gnome extension); WebKit
-    # runs without its bubblewrap sandbox inside the snap's confinement.
     environment:
+      # HbbTV: WebKitGTK 6 is staged below (the GNOME content snap only has
+      # webkit2gtk-4.1 for GTK 3). Its bubblewrap sandbox cannot run inside the
+      # snap's confinement, which already isolates it, so it is switched off
+      # like in other WebKit snaps.
+      WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS: "1"
       PYTHONPATH: $SNAP/lib/lindvb:$SNAP/usr/lib/python3/dist-packages
       GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:${GI_TYPELIB_PATH}
       GST_PLUGIN_SYSTEM_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gstreamer-1.0
@@ -60,6 +63,13 @@ apps:
       # leaves alone: the staged glib-networking (GnuTLS, libproxy) lives here.
       GIO_EXTRA_MODULES: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gio/modules
       LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/blas:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/lapack
+
+# WebKit starts its web and network processes from the directory it was built
+# for (/usr/lib/<triplet>/webkitgtk-6.0, also home of the injected bundle);
+# it has no run-time setting for that, so the snap's copy is bound there.
+layout:
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/webkitgtk-6.0:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/webkitgtk-6.0
 
 parts:
   lindvb:
@@ -87,6 +97,7 @@ parts:
       - gstreamer1.0-libav
       - gstreamer1.0-pulseaudio
       - glib-networking   # GIO TLS backend for HTTPS streams, see GIO_EXTRA_MODULES
+      - gir1.2-webkit-6.0 # HbbTV: WebKitGTK 6 with its JavaScriptCore, see the layout
       - dvb-tools
       - dtv-scan-tables
 

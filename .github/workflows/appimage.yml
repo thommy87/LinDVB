@@ -76,7 +76,7 @@ jobs:
           chmod +x squashfs-root/AppRunPython
           xvfb-run -a squashfs-root/AppRunPython "$PWD/tools/appimage-webkit-check.py"
 
-      - name: Self-check (GTK, GStreamer elements, H.264 playback, HTTPS HLS)
+      - name: Self-check (GTK, GStreamer elements, H.264 playback, HTTPS HLS, HbbTV)
         # the AppImage as users start it: GTK lays out text, the elements live TV
         # needs are there and a short H.264/MPEG audio stream really decodes
         run: xvfb-run -a squashfs-root/AppRun --self-check
