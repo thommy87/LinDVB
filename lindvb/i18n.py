@@ -19,7 +19,7 @@ from pathlib import Path
 PO_DIR = Path(__file__).with_name("po")
 # Preferences lists these when a catalogue exists ("" follows the desktop);
 # the official EU languages, Arabic, Persian, Russian, Ukrainian, Japanese, Georgian,
-# Armenian, Thai and Chinese (simplified and traditional characters)
+# Armenian, Albanian, Thai and Chinese (simplified and traditional characters)
 NATIVE_NAMES = {
     "": "System", "en": "English", "bg": "Български", "cs": "Čeština", "da": "Dansk",
     "de": "Deutsch", "el": "Ελληνικά", "es": "Español", "et": "Eesti", "fi": "Suomi",
@@ -27,7 +27,7 @@ NATIVE_NAMES = {
     "lt": "Lietuvių", "lv": "Latviešu", "mt": "Malti", "nl": "Nederlands", "pl": "Polski",
     "pt": "Português", "ro": "Română", "sk": "Slovenčina", "sl": "Slovenščina",
     "sv": "Svenska", "ar": "العربية", "fa": "فارسی", "ru": "Русский", "uk": "Українська",
-    "ja": "日本語", "ka": "ქართული", "hy": "Հայերեն", "th": "ไทย",
+    "ja": "日本語", "ka": "ქართული", "hy": "Հայերեն", "sq": "Shqip", "th": "ไทย",
     "zh_CN": "简体中文", "zh_TW": "繁體中文",
 }
 # desktop locales that read the catalogue of another region

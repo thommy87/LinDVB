@@ -234,11 +234,11 @@ them.
 
 ### Languages
 
-The interface is translated into 34 languages: English, all official languages of
+The interface is translated into 35 languages: English, all official languages of
 the European Union (Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish,
 French, German, Greek, Hungarian, Irish, Italian, Latvian, Lithuanian, Maltese,
-Polish, Portuguese, Romanian, Slovak, Slovenian, Spanish, Swedish), Arabic, Armenian,
-Georgian, Japanese, Persian, Russian, Thai, Ukrainian and Chinese (simplified and
+Polish, Portuguese, Romanian, Slovak, Slovenian, Spanish, Swedish), Albanian, Arabic,
+Armenian, Georgian, Japanese, Persian, Russian, Thai, Ukrainian and Chinese (simplified and
 traditional). It follows the desktop unless Preferences ▸ General sets a language.
 
 ## Plugins and conditional access
