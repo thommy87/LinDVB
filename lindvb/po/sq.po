@@ -1,0 +1,4758 @@
+# LinDVB translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: sq\n"
+
+msgid "Import a channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importo një listë kanalesh (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Start with this channel (name or number)"
+msgstr "Fillo me këtë kanal (emër ose numër)"
+
+msgid "{channel} at {time}"
+msgstr "{channel} në {time}"
+
+msgid "Watch"
+msgstr "Shiko"
+
+msgid "Reminder: {title} on {channel} at {time}"
+msgstr "Kujtesë: {title} në {channel} në {time}"
+
+msgid "Set an XMLTV URL in the preferences first"
+msgstr "Fillimisht vendos një URL XMLTV te parapëlqimet"
+
+msgid "Downloading XMLTV guide…"
+msgstr "Po shkarkohet udhëzuesi XMLTV…"
+
+msgid ", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)"
+msgstr ", {unmatched} pa udhëzues (Parapëlqimet ▸ EPG ▸ Përputh kanalet IPTV)"
+
+msgid "DVB-I: loading the service list…"
+msgstr "DVB-I: po ngarkohet lista e shërbimeve…"
+
+msgid "Search the web"
+msgstr "Kërko në internet"
+
+msgid "MPEG-TS (.ts)"
+msgstr "MPEG-TS (.ts)"
+
+msgid "MPEG-PS (.mpg)"
+msgstr "MPEG-PS (.mpg)"
+
+msgid "Matroska (.mkv)"
+msgstr "Matroska (.mkv)"
+
+msgid "Teletext (TS)"
+msgstr "Teletekst (TS)"
+
+msgid "Subtitles (TS / MKV)"
+msgstr "Titra (TS / MKV)"
+
+msgid "EPG data (TS)"
+msgstr "Të dhëna EPG (TS)"
+
+msgid "All audio tracks"
+msgstr "Të gjitha pistat audio"
+
+msgid "Preferred language only"
+msgstr "Vetëm gjuha e parapëlqyer"
+
+msgid "First audio track only"
+msgstr "Vetëm pista e parë audio"
+
+msgid "Record"
+msgstr "Regjistro"
+
+msgid "Record and tune"
+msgstr "Regjistro dhe sintonizo"
+
+msgid "Tune only"
+msgstr "Vetëm sintonizo"
+
+msgid "Hibernate"
+msgstr "Hibernim"
+
+msgid "None"
+msgstr "Asnjë"
+
+msgid "Power off"
+msgstr "Fike"
+
+msgid "Quit LinDVB"
+msgstr "Mbyll LinDVB"
+
+msgid "Standby"
+msgstr "Në pritje"
+
+msgid "Internet streams have no teletext, subtitle or EPG data streams."
+msgstr "Transmetimet në internet nuk kanë rrjedha teleteksti, titrash ose të dhënash EPG."
+
+msgid "MP4 keeps one audio track (the preferred language when it is on air)."
+msgstr "MP4 mban një pistë audio (gjuhën e parapëlqyer kur është në transmetim)."
+
+msgid "The audio file keeps one track (the preferred language when it is on air)."
+msgstr "Skedari audio mban një pistë (gjuhën e parapëlqyer kur është në transmetim)."
+
+msgid "Fr"
+msgstr "Pr"
+
+msgid "Mo"
+msgstr "Hë"
+
+msgid "Sa"
+msgstr "Sh"
+
+msgid "Su"
+msgstr "Di"
+
+msgid "Th"
+msgstr "En"
+
+msgid "Tu"
+msgstr "Ma"
+
+msgid "We"
+msgstr "Më"
+
+msgid "Scheduled"
+msgstr "Planifikuar"
+
+msgid "Done"
+msgstr "Kryer"
+
+msgid "Channel missing"
+msgstr "Kanali mungon"
+
+msgid "Tuned"
+msgstr "Sintonizuar"
+
+msgid "Recording"
+msgstr "Po regjistrohet"
+
+msgid "Failed"
+msgstr "Dështoi"
+
+msgid "Missed"
+msgstr "Humbur"
+
+msgid "After recording: {action}"
+msgstr "Pas regjistrimit: {action}"
+
+msgid "The module was removed or reset."
+msgstr "Moduli u hoq ose u rivendos."
+
+msgid "CAM Menu"
+msgstr "Menyja CAM"
+
+msgid "Cancel"
+msgstr "Anulo"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Open CAM Menu"
+msgstr "Hap menynë CAM"
+
+msgid "Select"
+msgstr "Zgjidh"
+
+msgid "Back"
+msgstr "Mbrapa"
+
+msgid "Close Menu"
+msgstr "Mbyll menynë"
+
+msgid "Device: {path} – {state}"
+msgstr "Pajisja: {path} – {state}"
+
+msgid "Open the CAM menu to see the module's settings, smart card information and parental control."
+msgstr "Hap menynë CAM për të parë cilësimet e modulit, informacionin e kartës inteligjente dhe kontrollin prindëror."
+
+msgid "The module has not finished starting yet."
+msgstr "Moduli nuk ka përfunduar ende nisjen."
+
+msgid "Custom colour"
+msgstr "Ngjyrë e personalizuar"
+
+msgid "LinDVB blue (default)"
+msgstr "Blu LinDVB (parazgjedhje)"
+
+msgid "System accent colour"
+msgstr "Ngjyra theksuese e sistemit"
+
+msgid "Preferences"
+msgstr "Parapëlqimet"
+
+msgid "Save"
+msgstr "Ruaj"
+
+msgid "Appearance"
+msgstr "Pamja"
+
+msgid "Language"
+msgstr "Gjuha"
+
+msgid "Takes effect when LinDVB is started again."
+msgstr "Hyn në fuqi kur LinDVB niset përsëri."
+
+msgid "Accent colour"
+msgstr "Ngjyra theksuese"
+
+msgid "Used for highlights, selections and buttons in every window."
+msgstr "Përdoret për theksime, përzgjedhje dhe butona në çdo dritare."
+
+msgid "On-screen display"
+msgstr "Shfaqja në ekran"
+
+msgid "OSD display time (s)"
+msgstr "Koha e shfaqjes së OSD (s)"
+
+msgid "Visualisation"
+msgstr "Vizualizimi"
+
+msgid "What is shown over the radio visualisation while a radio channel or an audio file plays. Song details come from the RadioText of DVB radio, the stream title of internet radio and the tags of audio files."
+msgstr "Çfarë shfaqet mbi vizualizimin e radios kur luhet një kanal radioje ose një skedar audio. Detajet e këngës vijnë nga RadioText i radios DVB, titulli i rrjedhës së radios në internet dhe etiketat e skedarëve audio."
+
+msgid "Overlay"
+msgstr "Mbivendosja"
+
+msgid "Station logo tile"
+msgstr "Pllakë me logon e stacionit"
+
+msgid "The channel's logo, or a tile with the station name when there is none."
+msgstr "Logoja e kanalit, ose një pllakë me emrin e stacionit kur nuk ka logo."
+
+msgid "Album cover"
+msgstr "Kopertina e albumit"
+
+msgid "The cover of the song on air, from the file or looked up online."
+msgstr "Kopertina e këngës në transmetim, nga skedari ose e kërkuar në internet."
+
+msgid "Song information"
+msgstr "Informacioni i këngës"
+
+msgid "Artist, album and year, track and title. Without song details the station and the programme on air are shown."
+msgstr "Artisti, albumi dhe viti, pista dhe titulli. Pa detaje të këngës shfaqen stacioni dhe programi në transmetim."
+
+msgid "Clock in the top right corner"
+msgstr "Ora në këndin e sipërm djathtas"
+
+msgid "Sources"
+msgstr "Burimet"
+
+msgid "Look up covers online"
+msgstr "Kërko kopertina në internet"
+
+msgid "Sends artist and title of the song on air to the iTunes Search API to find the album, year and cover."
+msgstr "Dërgon artistin dhe titullin e këngës në transmetim te iTunes Search API për të gjetur albumin, vitin dhe kopertinën."
+
+msgid "Station logo folder"
+msgstr "Dosja e logove të stacioneve"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\". Logos named after the channel, as DVBViewer keeps them, work as they are. Empty: {v0}"
+msgstr "Skedarë imazhesh (PNG, SVG, JPG) të emërtuar sipas kanalit, p.sh. \"Bayern 3.png\". Logot e emërtuara sipas kanalit, siç i mban DVBViewer, funksionojnë ashtu siç janë. Bosh: {v0}"
+
+msgid "Playback"
+msgstr "Luajtja"
+
+msgid "Deinterlace video"
+msgstr "Çndërthur videon"
+
+msgid "Screenshot folder"
+msgstr "Dosja e pamjeve të ekranit"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timeshift folder"
+msgstr "Dosja e timeshift"
+
+msgid "Timeshift buffer (MB)"
+msgstr "Buferi i timeshift (MB)"
+
+msgid "Tuner and Channels"
+msgstr "Sintonizuesi dhe kanalet"
+
+msgid "DVB hardware"
+msgstr "Pajisjet DVB"
+
+msgid "Adapter numbers LinDVB may use, comma separated."
+msgstr "Numrat e adaptorëve që mund të përdorë LinDVB, të ndarë me presje."
+
+msgid "DVB adapters"
+msgstr "Adaptorët DVB"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Capture whole transponder"
+msgstr "Kap të gjithë transponderin"
+
+msgid "Needed for all audio tracks when the channel list knows only one audio PID."
+msgstr "Nevojitet për të gjitha pistat audio kur lista e kanaleve njeh vetëm një PID audio."
+
+msgid "Satellite LNB"
+msgstr "LNB satelitor"
+
+msgid "LOF low band (kHz)"
+msgstr "LOF brezi i ulët (kHz)"
+
+msgid "LOF high band (kHz)"
+msgstr "LOF brezi i lartë (kHz)"
+
+msgid "Switch frequency (kHz)"
+msgstr "Frekuenca e kalimit (kHz)"
+
+msgid "Channels"
+msgstr "Kanalet"
+
+msgid "Channel Search…"
+msgstr "Kërkimi i kanaleve…"
+
+msgid "Channel search"
+msgstr "Kërkimi i kanaleve"
+
+msgid "Search the antenna, cable or satellite for channels (Shift+Ctrl+S)."
+msgstr "Kërko kanale në antenë, kabllo ose satelit (Shift+Ctrl+S)."
+
+msgid "Channel Editor / Favourites"
+msgstr "Redaktori i kanaleve / Të preferuarat"
+
+msgid "Channel editor"
+msgstr "Redaktori i kanaleve"
+
+msgid "Rename, sort, delete and add channels and mark favourites (Shift+Ctrl+E)."
+msgstr "Riemërto, rendit, fshi dhe shto kanale dhe shëno të preferuarat (Shift+Ctrl+E)."
+
+msgid "Internet"
+msgstr "Interneti"
+
+msgid "Channel lists from the internet: the DVB-I list of your region and IPTV playlists. These settings apply at once."
+msgstr "Lista kanalesh nga interneti: lista DVB-I e rajonit tënd dhe listat IPTV. Këto cilësime zbatohen menjëherë."
+
+msgctxt "preferences page"
+msgid "Recording"
+msgstr "Regjistrimi"
+
+msgid "Recording folder"
+msgstr "Dosja e regjistrimeve"
+
+msgid "File naming scheme"
+msgstr "Skema e emërtimit të skedarëve"
+
+msgid "Placeholders: %year %date %time %end %station %name, / for sub-folders"
+msgstr "Vendmbajtës: %year %date %time %end %station %name, / për nëndosje"
+
+msgid "Timer padding"
+msgstr "Kohë shtesë e kohëmatësit"
+
+msgid "Start earlier by (min)"
+msgstr "Fillo më herët me (min)"
+
+msgid "Stop later by (min)"
+msgstr "Ndalo më vonë me (min)"
+
+msgid "Timers"
+msgstr "Kohëmatësit"
+
+msgid "Open the timer window after creating a timer"
+msgstr "Hap dritaren e kohëmatësve pasi krijohet një kohëmatës"
+
+msgid "After Record in the programme guide, edit the new timer straight away."
+msgstr "Pas Regjistro në udhëzuesin e programeve, redakto menjëherë kohëmatësin e ri."
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "Programme guide: broadcast EPG, internet EPG (XMLTV) and the EPG of other providers."
+msgstr "Udhëzuesi i programeve: EPG i transmetimit, EPG nga interneti (XMLTV) dhe EPG i ofruesve të tjerë."
+
+msgid "Conditional access"
+msgstr "Qasja e kushtëzuar"
+
+msgid "Descrambling of the encrypted channels you subscribe to, with your own card in a softcam or CI module."
+msgstr "Deshifrimi i kanaleve të koduara ku je abonuar, me kartën tënde në një softcam ose modul CI."
+
+msgid "None (leave scrambled)"
+msgstr "Asnjë (lëri të koduara)"
+
+msgid "External softcam (DVBAPI / OSCam)"
+msgstr "Softcam i jashtëm (DVBAPI / OSCam)"
+
+msgid "Hardware CI / CI+ module"
+msgstr "Modul harduerik CI / CI+"
+
+msgid "Descrambling via"
+msgstr "Deshifrimi përmes"
+
+msgid "Softcam"
+msgstr "Softcam"
+
+msgid "DVBAPI socket"
+msgstr "Soketa DVBAPI"
+
+msgid "Unix socket path, or host:port."
+msgstr "Shtegu i soketës Unix, ose host:port."
+
+msgid "CI module"
+msgstr "Moduli CI"
+
+msgid "CI adapter number"
+msgstr "Numri i adaptorit CI"
+
+msgid "CA device number"
+msgstr "Numri i pajisjes CA"
+
+msgid "Plugins"
+msgstr "Shtojcat"
+
+msgid "Load plugins at startup"
+msgstr "Ngarko shtojcat në nisje"
+
+msgid "Manage Plugins…"
+msgstr "Menaxho shtojcat…"
+
+msgid "Format and tracks"
+msgstr "Formati dhe pistat"
+
+msgid "Defaults for new timers and the Record button. Each timer, and a recording started with \"Record with options…\", can change them.\nTS: video, all audio tracks, subtitles, teletext and EPG data. MKV: video, several audio tracks and subtitles. MPG: video and several audio tracks. MP4: video and one audio track. Internet streams have no teletext, subtitles or EPG data; HLS and DASH streams are recorded with one audio track."
+msgstr "Parazgjedhjet për kohëmatësit e rinj dhe butonin Regjistro. Çdo kohëmatës, dhe një regjistrim i nisur me \"Regjistro me opsione…\", mund t'i ndryshojë.\nTS: video, të gjitha pistat audio, titrat, teleteksti dhe të dhënat EPG. MKV: video, disa pista audio dhe titra. MPG: video dhe disa pista audio. MP4: video dhe një pistë audio. Transmetimet në internet nuk kanë teletekst, titra ose të dhëna EPG; rrjedhat HLS dhe DASH regjistrohen me një pistë audio."
+
+msgid "TV format"
+msgstr "Formati TV"
+
+msgid "Radio format"
+msgstr "Formati i radios"
+
+msgid "Audio tracks"
+msgstr "Pistat audio"
+
+msgid "Preferred audio language"
+msgstr "Gjuha audio e parapëlqyer"
+
+msgid "Used by \"Preferred language only\" and by MP4, which keeps one track. Audio description tracks are skipped. Without a match the first track is recorded."
+msgstr "Përdoret nga \"Vetëm gjuha e parapëlqyer\" dhe nga MP4, që mban një pistë. Pistat me përshkrim audio anashkalohen. Pa përputhje regjistrohet pista e parë."
+
+msgid "{what}: {items} can only be kept in MPEG-TS, so recordings are saved as TS."
+msgstr "{what}: {items} mund të ruhen vetëm në MPEG-TS, prandaj regjistrimet ruhen si TS."
+
+msgid "{what}: {items} can only be kept in TS or MKV, so recordings are saved as TS."
+msgstr "{what}: {items} mund të ruhen vetëm në TS ose MKV, prandaj regjistrimet ruhen si TS."
+
+msgid " and "
+msgstr " dhe "
+
+msgid "No preferred audio language is set, so only the first audio track is recorded."
+msgstr "Nuk është vendosur gjuhë audio e parapëlqyer, prandaj regjistrohet vetëm pista e parë audio."
+
+msgid "Desktop accent: {found}"
+msgstr "Theksi i desktopit: {found}"
+
+msgid "No desktop accent found, using LinDVB blue."
+msgstr "Nuk u gjet theks i desktopit, përdoret blu LinDVB."
+
+msgid "Current accent: {color}"
+msgstr "Theksi aktual: {color}"
+
+msgid "Channel Editor"
+msgstr "Redaktori i kanaleve"
+
+msgid "Name"
+msgstr "Emri"
+
+msgid "Category"
+msgstr "Kategoria"
+
+msgid "Group"
+msgstr "Grupi"
+
+msgid "Fav"
+msgstr "Pref"
+
+msgid "Type"
+msgstr "Lloji"
+
+msgid "Filter channels"
+msgstr "Filtro kanalet"
+
+msgid "General"
+msgstr "Të përgjithshme"
+
+msgid "Stream URL"
+msgstr "URL e rrjedhës"
+
+msgid "Favourite"
+msgstr "E preferuar"
+
+msgid "Radio"
+msgstr "Radio"
+
+msgid "Encrypted"
+msgstr "E koduar"
+
+msgid "Tuning"
+msgstr "Sintonizimi"
+
+msgid "System"
+msgstr "Sistemi"
+
+msgid "Polarity"
+msgstr "Polariteti"
+
+msgid "Modulation"
+msgstr "Modulimi"
+
+msgid "Frequency (kHz)"
+msgstr "Frekuenca (kHz)"
+
+msgid "Symbol rate (kBd)"
+msgstr "Shpejtësia e simboleve (kBd)"
+
+msgid "Bandwidth (Hz)"
+msgstr "Gjerësia e brezit (Hz)"
+
+msgid "Stream ID"
+msgstr "ID e rrjedhës"
+
+msgid "DiSEqC port (-1 none)"
+msgstr "Porta DiSEqC (-1 asnjë)"
+
+msgid "Service and PIDs"
+msgstr "Shërbimi dhe PID-et"
+
+msgid "Service ID"
+msgstr "ID e shërbimit"
+
+msgid "Transport ID"
+msgstr "ID e transportit"
+
+msgid "Video PID"
+msgstr "PID video"
+
+msgid "Audio PIDs"
+msgstr "PID-et audio"
+
+msgid "Teletext PID"
+msgstr "PID teleteksti"
+
+msgid "Apply changes (Ctrl+S)"
+msgstr "Zbato ndryshimet (Ctrl+S)"
+
+msgid "New channel"
+msgstr "Kanal i ri"
+
+msgid "Delete channel"
+msgstr "Fshi kanalin"
+
+msgid "Move up"
+msgstr "Lëviz lart"
+
+msgid "Move down"
+msgstr "Lëviz poshtë"
+
+msgid "Sort by group and name"
+msgstr "Rendit sipas grupit dhe emrit"
+
+msgid "No channel selected"
+msgstr "Asnjë kanal i zgjedhur"
+
+msgid "Pick a channel in the list to edit it."
+msgstr "Zgjidh një kanal në listë për ta redaktuar."
+
+msgid "Unnamed channel"
+msgstr "Kanal pa emër"
+
+msgid "Recording and Device Statistics"
+msgstr "Statistikat e regjistrimeve dhe pajisjeve"
+
+msgid "Active recordings:"
+msgstr "Regjistrime aktive:"
+
+msgid "\nNext timer: {v0}"
+msgstr "\nKohëmatësi tjetër: {v0}"
+
+msgid "Teletext – {name}"
+msgstr "Teletekst – {name}"
+
+msgid "Find on page"
+msgstr "Gjej në faqe"
+
+msgid "Copy page"
+msgstr "Kopjo faqen"
+
+msgid "Save page"
+msgstr "Ruaj faqen"
+
+msgid "Waiting for teletext…"
+msgstr "Në pritje të teletekstit…"
+
+msgid "teletextdec is missing (gst-plugins-bad with libzvbi)."
+msgstr "Mungon teletextdec (gst-plugins-bad me libzvbi)."
+
+msgid "Searching page {page}…"
+msgstr "Po kërkohet faqja {page}…"
+
+msgid "No descrambling configured. Encrypted channels you are entitled to can be descrambled by pointing LinDVB at your own softcam or CI module in Preferences."
+msgstr "Nuk është konfiguruar deshifrimi. Kanalet e koduara për të cilat ke të drejtë mund të deshifrohen duke e drejtuar LinDVB te softcam-i ose moduli yt CI te Parapëlqimet."
+
+msgid "Provider '{v0}' is not available."
+msgstr "Ofruesi '{v0}' nuk është i disponueshëm."
+
+msgid "Provider: CI module – {status}\nThe module descrambles with your card inside the tuner."
+msgstr "Ofruesi: modul CI – {status}\nModuli deshifron me kartën tënde brenda sintonizuesit."
+
+msgid "Provider: {name}\nLinDVB forwards ECM sections to your own card client and applies the control words it returns; it holds no keys itself."
+msgstr "Ofruesi: {name}\nLinDVB ua përcjell seksionet ECM klientit të kartës tënde dhe zbaton fjalët e kontrollit që ai kthen; vetë nuk mban asnjë çelës."
+
+msgid "Open CAM Menu…"
+msgstr "Hap menynë CAM…"
+
+msgid "Failed to load: {v0}"
+msgstr "Ngarkimi dështoi: {v0}"
+
+msgid "Switched off"
+msgstr "E fikur"
+
+msgid "Changes take effect when LinDVB is started again."
+msgstr "Ndryshimet hyjnë në fuqi kur LinDVB niset përsëri."
+
+msgid "No plugins installed."
+msgstr "Nuk ka shtojca të instaluara."
+
+msgid "Plugin actions"
+msgstr "Veprimet e shtojcave"
+
+msgid "Plugin folder: {path}"
+msgstr "Dosja e shtojcave: {path}"
+
+msgid "Copy plugins into this folder: a Python file (.py), or a folder containing __init__.py."
+msgstr "Kopjo shtojcat në këtë dosje: një skedar Python (.py), ose një dosje që përmban __init__.py."
+
+msgid "Open Plugin Folder"
+msgstr "Hap dosjen e shtojcave"
+
+msgid "DVB-I gets the channel list of your region from the internet: numbering, names and logos, and for each channel the ways to receive it. LinDVB uses the antenna, cable or satellite channels from your channel search where it can and the internet stream otherwise."
+msgstr "DVB-I merr nga interneti listën e kanaleve të rajonit tënd: numërimin, emrat dhe logot, dhe për çdo kanal mënyrat e marrjes. LinDVB përdor kanalet e antenës, kabllos ose satelitit nga kërkimi yt i kanaleve kur mundet, përndryshe rrjedhën nga interneti."
+
+msgid "Privacy"
+msgstr "Privatësia"
+
+msgid "I have read the privacy notice"
+msgstr "E kam lexuar njoftimin e privatësisë"
+
+msgid "Load the programme guide (EPG) of the DVB-I channels"
+msgstr "Ngarko udhëzuesin e programeve (EPG) të kanaleve DVB-I"
+
+msgid "Switch to another reception path (internet, antenna, cable, satellite) when one fails"
+msgstr "Kalo në një rrugë tjetër marrjeje (internet, antenë, kabllo, satelit) kur njëra dështon"
+
+msgid "Tune satellite channels from the list without a channel search (needs satellite channels in your list)"
+msgstr "Sintonizo kanalet satelitore nga lista pa kërkim kanalesh (kërkon kanale satelitore në listën tënde)"
+
+msgid "Service list"
+msgstr "Lista e shërbimeve"
+
+msgid "Load Lists from Registry"
+msgstr "Ngarko listat nga regjistri"
+
+msgid "In use: {current}"
+msgstr "Në përdorim: {current}"
+
+msgid "No DVB-I list is in use yet."
+msgstr "Ende nuk është në përdorim asnjë listë DVB-I."
+
+msgid "Region"
+msgstr "Rajoni"
+
+msgid "Your postcode selects the regional channels and their numbering. It is sent to the service list server only."
+msgstr "Kodi yt postar zgjedh kanalet rajonale dhe numërimin e tyre. Dërgohet vetëm te serveri i listës së shërbimeve."
+
+msgid "Postcode"
+msgstr "Kodi postar"
+
+msgid "No postcode: nationwide list"
+msgstr "Pa kod postar: listë mbarëkombëtare"
+
+msgid "Remove DVB-I Channels"
+msgstr "Hiq kanalet DVB-I"
+
+msgid "Update Now"
+msgstr "Përditëso tani"
+
+msgid "Load the chosen list again (it is also checked daily)"
+msgstr "Ngarko përsëri listën e zgjedhur (kontrollohet edhe çdo ditë)"
+
+msgid "Install Channel List"
+msgstr "Instalo listën e kanaleve"
+
+msgid "Asking the service list registry…"
+msgstr "Po pyetet regjistri i listave të shërbimeve…"
+
+msgid "The registry could not be reached: {error}"
+msgstr "Regjistri nuk u arrit: {error}"
+
+msgid "Default"
+msgstr "Parazgjedhje"
+
+msgid "{v0} service lists from {netloc}"
+msgstr "{v0} lista shërbimesh nga {netloc}"
+
+msgid "The registry offers no service list for Germany."
+msgstr "Regjistri nuk ofron listë shërbimesh për Gjermaninë."
+
+msgid "Loading the service list…"
+msgstr "Po ngarkohet lista e shërbimeve…"
+
+msgid "In use: {v0}"
+msgstr "Në përdorim: {v0}"
+
+msgid "\nChoose your region and press Install again."
+msgstr "\nZgjidh rajonin tënd dhe shtyp përsëri Instalo."
+
+msgid "Enter Again"
+msgstr "Fute përsëri"
+
+msgid "The service list does not know this postcode."
+msgstr "Lista e shërbimeve nuk e njeh këtë kod postar."
+
+msgid "The service list server answered {code}."
+msgstr "Serveri i listës së shërbimeve u përgjigj {code}."
+
+msgid "Try Again"
+msgstr "Provo përsëri"
+
+msgid "You can try again or use the nationwide list without a postcode."
+msgstr "Mund të provosh përsëri ose të përdorësh listën mbarëkombëtare pa kod postar."
+
+msgid "Nationwide List"
+msgstr "Lista mbarëkombëtare"
+
+msgid "No DVB-I list is in use."
+msgstr "Nuk është në përdorim asnjë listë DVB-I."
+
+msgid "{removed} DVB-I channels removed"
+msgstr "U hoqën {removed} kanale DVB-I"
+
+msgid "All programmes"
+msgstr "Të gjitha programet"
+
+msgid "With audio description"
+msgstr "Me përshkrim audio"
+
+msgid "With subtitles"
+msgstr "Me titra"
+
+msgid "Programme Guide"
+msgstr "Udhëzuesi i programeve"
+
+msgid "Now / Next"
+msgstr "Tani / Më pas"
+
+msgid "Per Channel"
+msgstr "Për kanal"
+
+msgid "TV Guide"
+msgstr "Udhëzuesi TV"
+
+msgid "Search"
+msgstr "Kërko"
+
+msgid "Record Series"
+msgstr "Regjistro serinë"
+
+msgid "Remind Me"
+msgstr "Më kujto"
+
+msgid "Search Web"
+msgstr "Kërko në internet"
+
+msgid "Export the guide as XMLTV"
+msgstr "Eksporto udhëzuesin si XMLTV"
+
+msgid "Next"
+msgstr "Më pas"
+
+msgid "Now"
+msgstr "Tani"
+
+msgid "Only favourites"
+msgstr "Vetëm të preferuarat"
+
+msgid "Accessibility features (DVB-I programme guide)"
+msgstr "Veçoritë e aksesueshmërisë (udhëzuesi i programeve DVB-I)"
+
+msgid "Show:"
+msgstr "Shfaq:"
+
+msgid "Channel"
+msgstr "Kanali"
+
+msgid "Start"
+msgstr "Fillimi"
+
+msgid "End"
+msgstr "Fundi"
+
+msgid "Title"
+msgstr "Titulli"
+
+msgid "Genre"
+msgstr "Zhanri"
+
+msgid "Day"
+msgstr "Dita"
+
+msgid "Duration"
+msgstr "Kohëzgjatja"
+
+msgid "Subheading"
+msgstr "Nëntitulli"
+
+msgid "Title or description"
+msgstr "Titulli ose përshkrimi"
+
+msgid "Include description"
+msgstr "Përfshi përshkrimin"
+
+msgid "Case sensitive"
+msgstr "Dallo shkronjat e mëdha/të vogla"
+
+msgid "Series recording: {title}"
+msgstr "Regjistrim serie: {title}"
+
+msgid "Reminder removed: {title}"
+msgstr "Kujtesa u hoq: {title}"
+
+msgid "{title} has already started"
+msgstr "{title} ka filluar tashmë"
+
+msgid "Reminder set: {title}, {time}"
+msgstr "Kujtesa u vendos: {title}, {time}"
+
+msgid "Remove Reminder"
+msgstr "Hiq kujtesën"
+
+msgid "Save EPG data"
+msgstr "Ruaj të dhënat EPG"
+
+msgid "Keeps the guide on disk after LinDVB is closed."
+msgstr "Mban udhëzuesin në disk pasi mbyllet LinDVB."
+
+msgid "Show EPG info on channel change (s)"
+msgstr "Shfaq informacionin EPG kur ndërrohet kanali (s)"
+
+msgid "0 = do not show it."
+msgstr "0 = mos e shfaq."
+
+msgid "Remind before start (min)"
+msgstr "Kujto para fillimit (min)"
+
+msgid "Reminders set in the programme guide notify you this early."
+msgstr "Kujtesat e vendosura në udhëzuesin e programeve të njoftojnë kaq herët."
+
+msgid "Preferred language"
+msgstr "Gjuha e parapëlqyer"
+
+msgid "Used when a programme is broadcast in several languages."
+msgstr "Përdoret kur një program transmetohet në disa gjuhë."
+
+msgid "Time zone"
+msgstr "Zona kohore"
+
+msgid "Set time zone automatically"
+msgstr "Vendos zonën kohore automatikisht"
+
+msgid "Off: use a fixed offset to GMT for the guide, timers and clock."
+msgstr "Joaktive: përdor një zhvendosje fikse nga GMT për udhëzuesin, kohëmatësit dhe orën."
+
+msgid "Offset to GMT"
+msgstr "Zhvendosja nga GMT"
+
+msgid "Internet EPG (IPTV)"
+msgstr "EPG nga interneti (IPTV)"
+
+msgid "Internet EPG source, used in addition to the broadcast EPG."
+msgstr "Burim EPG nga interneti, i përdorur përveç EPG-së së transmetimit."
+
+msgid "Match IPTV Channels…"
+msgstr "Përputh kanalet IPTV…"
+
+msgid "Check or fix which guide channel belongs to which M3U channel."
+msgstr "Kontrollo ose rregullo cili kanal i udhëzuesit i përket cilit kanal M3U."
+
+msgid "MediaHighway / Freesat frequencies"
+msgstr "Frekuencat MediaHighway / Freesat"
+
+msgid "When a tuned channel is on one of these transponders, LinDVB also reads that provider's EPG. Changes apply the next time a channel is tuned."
+msgstr "Kur një kanal i sintonizuar është në një nga këta transpondera, LinDVB lexon edhe EPG-në e atij ofruesi. Ndryshimet zbatohen herën tjetër që sintonizohet një kanal."
+
+msgid "Frequency (MHz)"
+msgstr "Frekuenca (MHz)"
+
+msgid "Add"
+msgstr "Shto"
+
+msgid "Polarisation"
+msgstr "Polarizimi"
+
+msgid "Defaults"
+msgstr "Parazgjedhjet"
+
+msgid "Delete"
+msgstr "Fshi"
+
+msgid "Enter the transponder frequency in MHz."
+msgstr "Fut frekuencën e transponderit në MHz."
+
+msgid "IPTV channel lists (M3U, DVBViewer .ini, CSV)"
+msgstr "Lista kanalesh IPTV (M3U, DVBViewer .ini, CSV)"
+
+msgid "All files"
+msgstr "Të gjithë skedarët"
+
+msgid "Import one or more M3U playlists or other channel lists with internet streams. Channels that are already in your list are updated, the others are added."
+msgstr "Importo një ose më shumë lista M3U ose lista të tjera kanalesh me rrjedha nga interneti. Kanalet që janë tashmë në listën tënde përditësohen, të tjerët shtohen."
+
+msgid "Import Files…"
+msgstr "Importo skedarë…"
+
+msgid "From files"
+msgstr "Nga skedarët"
+
+msgid "M3U / M3U8, DVBViewer .ini, CSV or dvbv5. Several files can be chosen at once."
+msgstr "M3U / M3U8, DVBViewer .ini, CSV ose dvbv5. Mund të zgjidhen disa skedarë njëherësh."
+
+msgid "Import"
+msgstr "Importo"
+
+msgid "From a web address"
+msgstr "Nga një adresë uebi"
+
+msgid "The address of an M3U playlist. Import it again to update the channels."
+msgstr "Adresa e një liste M3U. Importoje përsëri për të përditësuar kanalet."
+
+msgid "IPTV channels in your channel list: {n}"
+msgstr "Kanale IPTV në listën tënde të kanaleve: {n}"
+
+msgid "Import IPTV channel lists"
+msgstr "Importo lista kanalesh IPTV"
+
+msgid "Downloading {url}…"
+msgstr "Po shkarkohet {url}…"
+
+msgid "Could not import {name}"
+msgstr "{name} nuk u importua dot"
+
+msgid "The address has no channels."
+msgstr "Adresa nuk ka kanale."
+
+msgid "Imported {total_a} new and {total_u} updated channels"
+msgstr "U importuan {total_a} kanale të reja dhe {total_u} të përditësuara"
+
+msgid "Cover lookup failed: {e}"
+msgstr "Kërkimi i kopertinës dështoi: {e}"
+
+msgid "Swap with the main picture"
+msgstr "Shkëmbe me figurën kryesore"
+
+msgid "Close picture in picture"
+msgstr "Mbyll figurën në figurë"
+
+msgid "Picture in picture: {error}"
+msgstr "Figurë në figurë: {error}"
+
+msgid "Picture in picture works with internet channels; DVB channels need a second tuner."
+msgstr "Figura në figurë funksionon me kanalet e internetit; kanalet DVB kërkojnë një sintonizues të dytë."
+
+msgid "Channel Mosaic"
+msgstr "Mozaiku i kanaleve"
+
+msgid "Previous channels"
+msgstr "Kanalet e mëparshme"
+
+msgid "Next channels"
+msgstr "Kanalet e ardhshme"
+
+msgid "The mosaic shows internet channels. The list has none in the current view."
+msgstr "Mozaiku shfaq kanale interneti. Lista nuk ka asnjë në pamjen aktuale."
+
+msgid "Page {page} of {pages} · {n} internet channels"
+msgstr "Faqja {page} nga {pages} · {n} kanale interneti"
+
+msgid "Click to watch {name}"
+msgstr "Kliko për të parë {name}"
+
+msgid "Single 10750"
+msgstr "Single 10750"
+
+msgid "Universal (9750/10600, 11700)"
+msgstr "Universal (9750/10600, 11700)"
+
+msgid "Single 10700"
+msgstr "Single 10700"
+
+msgid "Single 11300"
+msgstr "Single 11300"
+
+msgid "Extended"
+msgstr "I zgjeruar"
+
+msgid "None / not satellite"
+msgstr "Asnjë / jo satelit"
+
+msgid "Port 1 (A/A)"
+msgstr "Porta 1 (A/A)"
+
+msgid "Port 2 (B/A)"
+msgstr "Porta 2 (B/A)"
+
+msgid "Port 3 (A/B)"
+msgstr "Porta 3 (A/B)"
+
+msgid "Port 4 (B/B)"
+msgstr "Porta 4 (B/B)"
+
+msgid "Frequency"
+msgstr "Frekuenca"
+
+msgid "Initial letter"
+msgstr "Shkronja fillestare"
+
+msgid "Provider"
+msgstr "Ofruesi"
+
+msgid "Channel Search"
+msgstr "Kërkimi i kanaleve"
+
+msgid "Device"
+msgstr "Pajisja"
+
+msgid "(choose…)"
+msgstr "(zgjidh…)"
+
+msgid "Add folder…"
+msgstr "Shto dosje…"
+
+msgid "Folder with transponder lists (dtv-scan-tables or DVBViewer style .ini)"
+msgstr "Dosje me lista transponderësh (dtv-scan-tables ose .ini në stilin DVBViewer)"
+
+msgid "Transponder list"
+msgstr "Lista e transponderëve"
+
+msgid "LNB type"
+msgstr "Lloji i LNB"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "Target group"
+msgstr "Grupi i synuar"
+
+msgid "e.g. Astra 19.2°E"
+msgstr "p.sh. Astra 19.2°E"
+
+msgid "Search for additional frequencies (NIT)"
+msgstr "Kërko frekuenca shtesë (NIT)"
+
+msgid "Only add free-to-air channels"
+msgstr "Shto vetëm kanalet e lira"
+
+msgid "Only update existing channels"
+msgstr "Përditëso vetëm kanalet ekzistuese"
+
+msgid "Update channel names"
+msgstr "Përditëso emrat e kanaleve"
+
+msgid "Group by"
+msgstr "Grupo sipas"
+
+msgid "Start Search"
+msgstr "Fillo kërkimin"
+
+msgid "Stop"
+msgstr "Ndalo"
+
+msgid "Folder with transponder lists"
+msgstr "Dosje me lista transponderësh"
+
+msgid "No transponder list selected. Install dtv-scan-tables or add a folder.\n"
+msgstr "Nuk është zgjedhur listë transponderësh. Instalo dtv-scan-tables ose shto një dosje.\n"
+
+msgid "\nNo channels found.\n"
+msgstr "\nNuk u gjet asnjë kanal.\n"
+
+msgid "\nDone: {added} new, {updated} updated channels.\n"
+msgstr "\nPërfundoi: {added} kanale të reja, {updated} të përditësuara.\n"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Recording Timers"
+msgstr "Kohëmatësit e regjistrimit"
+
+msgid "Search channels"
+msgstr "Kërko kanale"
+
+msgid "  (Radio)"
+msgstr "  (Radio)"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Repeat"
+msgstr "Përsërit"
+
+msgid "Once"
+msgstr "Një herë"
+
+msgid "Series"
+msgstr "Seri"
+
+msgid "Action"
+msgstr "Veprimi"
+
+msgid "Format"
+msgstr "Formati"
+
+msgid "After"
+msgstr "Pas"
+
+msgid "Disabled"
+msgstr "Çaktivizuar"
+
+msgid "Status"
+msgstr "Gjendja"
+
+msgid "Repeat every {day}"
+msgstr "Përsërit çdo {day}"
+
+msgid "_Date"
+msgstr "_Data"
+
+msgid "_Lead (min)"
+msgstr "_Para (min)"
+
+msgid "_End"
+msgstr "_Fundi"
+
+msgid "_Start"
+msgstr "_Fillimi"
+
+msgid "Repeat on"
+msgstr "Përsërit më"
+
+msgid "_Follow (min)"
+msgstr "_Pas (min)"
+
+msgid "Pick a channel on the left"
+msgstr "Zgjidh një kanal në të majtë"
+
+msgid "_Name"
+msgstr "_Emri"
+
+msgid "_Timer action"
+msgstr "_Veprimi i kohëmatësit"
+
+msgid "_After recording"
+msgstr "Pas _regjistrimit"
+
+msgid "T_V format"
+msgstr "Formati _TV"
+
+msgid "_Radio format"
+msgstr "Formati i _radios"
+
+msgid "Preferred language only: the tracks in the audio language from the preferences, without audio description. MP4 and the radio audio file keep one track."
+msgstr "Vetëm gjuha e parapëlqyer: pistat në gjuhën audio nga parapëlqimet, pa përshkrim audio. MP4 dhe skedari audio i radios mbajnë një pistë."
+
+msgid "Audi_o tracks"
+msgstr "Pistat _audio"
+
+msgid "Teletext only exists in MPEG-TS, so TS is used."
+msgstr "Teleteksti ekziston vetëm në MPEG-TS, prandaj përdoret TS."
+
+msgid "EPG data (EIT) only exists in MPEG-TS, so TS is used."
+msgstr "Të dhënat EPG (EIT) ekzistojnë vetëm në MPEG-TS, prandaj përdoret TS."
+
+msgid "TS keeps all subtitle streams. MKV gets the teletext subtitle page as a text track; DVB bitmap subtitles are kept in TS only."
+msgstr "TS mban të gjitha rrjedhat e titrave. MKV merr faqen e titrave të teletekstit si pistë teksti; titrat bitmap DVB mbahen vetëm në TS."
+
+msgid "Tracks"
+msgstr "Pistat"
+
+msgid "File _naming scheme"
+msgstr "Skema e _emërtimit të skedarëve"
+
+msgid "Folder…"
+msgstr "Dosja…"
+
+msgid "Use the recording folder from the preferences"
+msgstr "Përdor dosjen e regjistrimeve nga parapëlqimet"
+
+msgid "Placeholders"
+msgstr "Vendmbajtësit"
+
+msgid "Folder: "
+msgstr "Dosja: "
+
+msgid "Clear the editor"
+msgstr "Pastro redaktorin"
+
+msgid "New"
+msgstr "I ri"
+
+msgid "Add the editor's settings as a new timer"
+msgstr "Shto cilësimet e redaktorit si kohëmatës të ri"
+
+msgid "Apply"
+msgstr "Zbato"
+
+msgid "Save the editor's settings to the selected timer"
+msgstr "Ruaj cilësimet e redaktorit te kohëmatësi i zgjedhur"
+
+msgid "Delete the selected timer"
+msgstr "Fshi kohëmatësin e zgjedhur"
+
+msgid "Enable/Disable"
+msgstr "Aktivizo/Çaktivizo"
+
+msgid "Switch the selected timer on or off"
+msgstr "Ndize ose fike kohëmatësin e zgjedhur"
+
+msgid "Save as default"
+msgstr "Ruaj si parazgjedhje"
+
+msgid "Use these formats and extra streams for new timers and manual recordings"
+msgstr "Përdor këto formate dhe rrjedha shtesë për kohëmatësit e rinj dhe regjistrimet manuale"
+
+msgid "Close"
+msgstr "Mbyll"
+
+msgid "Series title"
+msgstr "Titulli i serisë"
+
+msgid "Delete series rule"
+msgstr "Fshi rregullin e serisë"
+
+msgid "Series recordings"
+msgstr "Regjistrimet e serive"
+
+msgid "Subtitles fit into TS or MKV."
+msgstr "Titrat përshtaten në TS ose MKV."
+
+msgid "No preferred audio language in the preferences: the first track is recorded."
+msgstr "Nuk ka gjuhë audio të parapëlqyer te parapëlqimet: regjistrohet pista e parë."
+
+msgid "File: {v0}"
+msgstr "Skedari: {v0}"
+
+msgid "Invalid start or end time"
+msgstr "Kohë fillimi ose mbarimi e pavlefshme"
+
+msgid "Use HH:MM, for example 20:15."
+msgstr "Përdor HH:MM, për shembull 20:15."
+
+msgid "No channel"
+msgstr "Asnjë kanal"
+
+msgid "Pick the channel to record in the list on the left."
+msgstr "Zgjidh kanalin për ta regjistruar në listën në të majtë."
+
+msgid "Recording defaults saved"
+msgstr "Parazgjedhjet e regjistrimit u ruajtën"
+
+msgid "Record with Options"
+msgstr "Regjistro me opsione"
+
+msgid "_Format"
+msgstr "_Formati"
+
+msgid "Teletext and EPG data can only be kept in MPEG-TS, so TS is used."
+msgstr "Teleteksti dhe të dhënat EPG mund të ruhen vetëm në MPEG-TS, prandaj përdoret TS."
+
+msgid "Preferred audio language: {lang}."
+msgstr "Gjuha audio e parapëlqyer: {lang}."
+
+msgid "Visualisation '{v0}' failed: {e}"
+msgstr "Vizualizimi '{v0}' dështoi: {e}"
+
+msgid "OpenGL{v0} {major}.{minor} is too old"
+msgstr "OpenGL{v0} {major}.{minor} është shumë i vjetër"
+
+msgid "Playback error: "
+msgstr "Gabim në luajtje: "
+
+msgid "All channels"
+msgstr "Të gjitha kanalet"
+
+msgid "Favourites (TV + Radio)"
+msgstr "Të preferuarat (TV + Radio)"
+
+msgid "Free to air"
+msgstr "Të lira"
+
+msgid "Internet streams"
+msgstr "Rrjedha interneti"
+
+msgid "Fill (crop)"
+msgstr "Mbush (prerje)"
+
+msgid "Fit"
+msgstr "Përshtat"
+
+msgid "Stretch"
+msgstr "Shtrij"
+
+msgid "Playback error: {m}"
+msgstr "Gabim në luajtje: {m}"
+
+msgid "Plugin action failed: {e}"
+msgstr "Veprimi i shtojcës dështoi: {e}"
+
+msgid "Open Media File…"
+msgstr "Hap skedar media…"
+
+msgid "Open URL…"
+msgstr "Hap URL…"
+
+msgid "Import Channel List…"
+msgstr "Importo listë kanalesh…"
+
+msgid "Export Channel List…"
+msgstr "Eksporto listën e kanaleve…"
+
+msgid "Export Programme Guide (XMLTV)…"
+msgstr "Eksporto udhëzuesin e programeve (XMLTV)…"
+
+msgid "Switch TV / Radio"
+msgstr "Ndërro TV / Radio"
+
+msgid "Recordings"
+msgstr "Regjistrimet"
+
+msgid "Programme Guide (EPG)"
+msgstr "Udhëzuesi i programeve (EPG)"
+
+msgid "Timer Recordings"
+msgstr "Regjistrimet me kohëmatës"
+
+msgid "Record with Options…"
+msgstr "Regjistro me opsione…"
+
+msgid "Teletext"
+msgstr "Teleteksti"
+
+msgid "CAM Menu (CI Module)…"
+msgstr "Menyja CAM (moduli CI)…"
+
+msgid "Update Internet EPG (XMLTV)"
+msgstr "Përditëso EPG-në nga interneti (XMLTV)"
+
+msgid "Audio Track"
+msgstr "Pista audio"
+
+msgid "Subtitles"
+msgstr "Titrat"
+
+msgid "Play Rate"
+msgstr "Shpejtësia e luajtjes"
+
+msgid "Back 10 s"
+msgstr "Mbrapa 10 s"
+
+msgid "Forward 10 s"
+msgstr "Përpara 10 s"
+
+msgid "Back 1 min"
+msgstr "Mbrapa 1 min"
+
+msgid "Forward 1 min"
+msgstr "Përpara 1 min"
+
+msgid "Back to Live"
+msgstr "Kthehu te drejtpërdrejti"
+
+msgid "Jump"
+msgstr "Kërce"
+
+msgid "Previous"
+msgstr "E mëparshmja"
+
+msgid "Random Order"
+msgstr "Renditje e rastësishme"
+
+msgid "Endless Playback"
+msgstr "Luajtje pa fund"
+
+msgid "Playlist"
+msgstr "Lista e luajtjes"
+
+msgid "Keep Timeshift as Recording"
+msgstr "Mbaje timeshift-in si regjistrim"
+
+msgid "Rebuild Playback"
+msgstr "Rindërto luajtjen"
+
+msgid "Video Off (audio only)"
+msgstr "Video joaktive (vetëm audio)"
+
+msgid "Show Selected Channel"
+msgstr "Shfaq kanalin e zgjedhur"
+
+msgid "Swap Pictures"
+msgstr "Shkëmbe figurat"
+
+msgid "Picture in Picture"
+msgstr "Figurë në figurë"
+
+msgid "Channel Mosaic…"
+msgstr "Mozaiku i kanaleve…"
+
+msgid "Stop in {mins} min"
+msgstr "Ndalo pas {mins} min"
+
+msgid "Stop after current programme"
+msgstr "Ndalo pas programit aktual"
+
+msgid "Sleep Timer"
+msgstr "Kohëmatësi i fikjes"
+
+msgid "Sound Later (+{AUDIO_DELAY_STEP} ms, K)"
+msgstr "Zëri më vonë (+{AUDIO_DELAY_STEP} ms, K)"
+
+msgid "Sound Earlier (−{AUDIO_DELAY_STEP} ms, J)"
+msgstr "Zëri më herët (−{AUDIO_DELAY_STEP} ms, J)"
+
+msgid "Reset"
+msgstr "Rivendos"
+
+msgid "Audio Delay (this channel)"
+msgstr "Vonesa e audios (ky kanal)"
+
+msgid "Full Screen"
+msgstr "Ekran i plotë"
+
+msgid "Show/Hide Channel List"
+msgstr "Shfaq/Fshih listën e kanaleve"
+
+msgid "Aspect / Zoom"
+msgstr "Raporti / Zmadhimi"
+
+msgid "Window Size"
+msgstr "Madhësia e dritares"
+
+msgid "Picture Settings…"
+msgstr "Cilësimet e figurës…"
+
+msgid "Equalizer…"
+msgstr "Barazuesi…"
+
+msgid "Radio Visualisation"
+msgstr "Vizualizimi i radios"
+
+msgid "Screenshot"
+msgstr "Pamje ekrani"
+
+msgid "Plugins…"
+msgstr "Shtojcat…"
+
+msgid "About LinDVB"
+msgstr "Rreth LinDVB"
+
+msgid "Show/hide channel list (F9)"
+msgstr "Shfaq/fshih listën e kanaleve (F9)"
+
+msgid "Main menu (F10)"
+msgstr "Menyja kryesore (F10)"
+
+msgid "Programme guide (Ctrl+E)"
+msgstr "Udhëzuesi i programeve (Ctrl+E)"
+
+msgid "TXT"
+msgstr "TXT"
+
+msgid "Teletext (Ctrl+Shift+T)"
+msgstr "Teleteksti (Ctrl+Shift+T)"
+
+msgid "Show TV channels (Ctrl+M switches)"
+msgstr "Shfaq kanalet TV (Ctrl+M ndërron)"
+
+msgid "Show radio stations (Ctrl+M switches)"
+msgstr "Shfaq stacionet e radios (Ctrl+M ndërron)"
+
+msgid "Show your recordings (double-click plays one)"
+msgstr "Shfaq regjistrimet e tua (klikimi i dyfishtë luan një)"
+
+msgid "Search name or number"
+msgstr "Kërko emër ose numër"
+
+msgid "All groups"
+msgstr "Të gjitha grupet"
+
+msgid "Previous channel (Page Down)"
+msgstr "Kanali i mëparshëm (Page Down)"
+
+msgid "Pause / timeshift (Space)"
+msgstr "Pauzë / timeshift (Hapësirë)"
+
+msgid "Stop (switch the channel off)"
+msgstr "Ndalo (fik kanalin)"
+
+msgid "Next channel (Page Up)"
+msgstr "Kanali tjetër (Page Up)"
+
+msgid "Record current channel (Ctrl+R)"
+msgstr "Regjistro kanalin aktual (Ctrl+R)"
+
+msgid "Choose format and tracks for this recording"
+msgstr "Zgjidh formatin dhe pistat për këtë regjistrim"
+
+msgid "Seek"
+msgstr "Kërko pozicionin"
+
+msgid "LIVE"
+msgstr "DREJTPËRDREJT"
+
+msgid "Back to live (L)"
+msgstr "Kthehu te drejtpërdrejti (L)"
+
+msgid "Mute (M)"
+msgstr "Pa zë (M)"
+
+msgid "Volume"
+msgstr "Volumi"
+
+msgid "Audio track"
+msgstr "Pista audio"
+
+msgid "Playback and picture settings"
+msgstr "Cilësimet e luajtjes dhe të figurës"
+
+msgid "Full screen (F)"
+msgstr "Ekran i plotë (F)"
+
+msgid "\nNow: {title}"
+msgstr "\nTani: {title}"
+
+msgid "{n} of {total}"
+msgstr "{n} nga {total}"
+
+msgid "{n} of {total} recordings shown"
+msgstr "Shfaqen {n} nga {total} regjistrime"
+
+msgid "{n} of {total} favourites shown"
+msgstr "Shfaqen {n} nga {total} të preferuara"
+
+msgid "{n} of {total} radio stations shown"
+msgstr "Shfaqen {n} nga {total} stacione radioje"
+
+msgid "{n} of {total} TV channels shown"
+msgstr "Shfaqen {n} nga {total} kanale TV"
+
+msgid "Add to Favourites"
+msgstr "Shto te të preferuarat"
+
+msgid "Remove from Favourites"
+msgstr "Hiq nga të preferuarat"
+
+msgid "Edit…"
+msgstr "Redakto…"
+
+msgid "Show as Picture in Picture"
+msgstr "Shfaq si figurë në figurë"
+
+msgid "Select a channel in the list first"
+msgstr "Fillimisht zgjidh një kanal në listë"
+
+msgid "By channel"
+msgstr "Sipas kanalit"
+
+msgid "By title"
+msgstr "Sipas titullit"
+
+msgid "Newest first"
+msgstr "Më të rejat së pari"
+
+msgid "Oldest first"
+msgstr "Më të vjetrat së pari"
+
+msgid "Largest first"
+msgstr "Më të mëdhatë së pari"
+
+msgid "Sort the recordings"
+msgstr "Rendit regjistrimet"
+
+msgid "Open the recording folder"
+msgstr "Hap dosjen e regjistrimeve"
+
+msgid "Look for new recordings"
+msgstr "Kërko regjistrime të reja"
+
+msgid "No recordings yet.\n\nRecordings are saved in\n{main}"
+msgstr "Ende nuk ka regjistrime.\n\nRegjistrimet ruhen në\n{main}"
+
+msgid "No recording folder set in the preferences."
+msgstr "Nuk është vendosur dosje regjistrimesh te parapëlqimet."
+
+msgid "Recording in progress"
+msgstr "Regjistrim në vazhdim"
+
+msgid "Watched"
+msgstr "Parë"
+
+msgid "Watched up to {pos}"
+msgstr "Parë deri në {pos}"
+
+msgid "Recording not found: {path}"
+msgstr "Regjistrimi nuk u gjet: {path}"
+
+msgid "Continuing at {pos}"
+msgstr "Vazhdon nga {pos}"
+
+msgid "Folder not found: {folder}"
+msgstr "Dosja nuk u gjet: {folder}"
+
+msgid "Cannot open {folder}: {message}"
+msgstr "{folder} nuk hapet dot: {message}"
+
+msgid "Play"
+msgstr "Luaj"
+
+msgid "Play from the Beginning"
+msgstr "Luaj nga fillimi"
+
+msgid "Details…"
+msgstr "Detaje…"
+
+msgid "Mark as Unwatched"
+msgstr "Shëno si të pashikuar"
+
+msgid "Mark as Watched"
+msgstr "Shëno si të shikuar"
+
+msgid "Show in Folder"
+msgstr "Shfaq në dosje"
+
+msgid "Delete…"
+msgstr "Fshi…"
+
+msgid "Stop the recording before deleting it"
+msgstr "Ndalo regjistrimin para se ta fshish"
+
+msgid "Delete “{title}”?"
+msgstr "Të fshihet “{title}”?"
+
+msgid "{path}\n\nThe file is removed from the disk."
+msgstr "{path}\n\nSkedari hiqet nga disku."
+
+msgid "Deleted {name}"
+msgstr "U fshi {name}"
+
+msgid "Cannot delete {name}: {strerror}"
+msgstr "{name} nuk fshihet dot: {strerror}"
+
+msgid "Tuning {name}…"
+msgstr "Po sintonizohet {name}…"
+
+msgid "Search recordings"
+msgstr "Kërko regjistrime"
+
+msgid "No radio stations in the channel list"
+msgstr "Nuk ka stacione radioje në listën e kanaleve"
+
+msgid "No TV channels in the channel list"
+msgstr "Nuk ka kanale TV në listën e kanaleve"
+
+msgid "{name}: {v1} – switched to {kind}"
+msgstr "{name}: {v1} – kaloi në {kind}"
+
+msgid "{name} is not on air at the moment"
+msgstr "{name} nuk është në transmetim për momentin"
+
+msgid "Live TV stopped: tuner needed for a timer recording"
+msgstr "TV i drejtpërdrejtë u ndal: sintonizuesi nevojitet për një regjistrim me kohëmatës"
+
+msgid "Stopped"
+msgstr "Ndalur"
+
+msgid "Sound {ms} ms later"
+msgstr "Zëri {ms} ms më vonë"
+
+msgid "Sound {v0} ms earlier"
+msgstr "Zëri {v0} ms më herët"
+
+msgid "Audio delay off"
+msgstr "Vonesa e audios joaktive"
+
+msgid "Playing {item}"
+msgstr "Po luhet {item}"
+
+msgid "Open media files"
+msgstr "Hap skedarë media"
+
+msgid "Open URL"
+msgstr "Hap URL"
+
+msgid "http://…, rtp://…, udp://…, rtsp://…"
+msgstr "http://…, rtp://…, udp://…, rtsp://…"
+
+msgid "Open"
+msgstr "Hap"
+
+msgid "Import channel list (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importo listë kanalesh (dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Export channels (.conf = dvbv5, .m3u = IPTV, .csv)"
+msgstr "Eksporto kanalet (.conf = dvbv5, .m3u = IPTV, .csv)"
+
+msgid "Exported to {path}"
+msgstr "U eksportua në {path}"
+
+msgid "Export the programme guide (XMLTV)"
+msgstr "Eksporto udhëzuesin e programeve (XMLTV)"
+
+msgid "Cannot write {path}: {error}"
+msgstr "{path} nuk shkruhet dot: {error}"
+
+msgid "Nothing to record"
+msgstr "Asgjë për të regjistruar"
+
+msgid "This channel is already being recorded"
+msgstr "Ky kanal po regjistrohet tashmë"
+
+msgid "Teletext: decoder missing (gst-plugins-bad with libzvbi)"
+msgstr "Teleteksti: mungon dekoduesi (gst-plugins-bad me libzvbi)"
+
+msgid "Teletext: not available on this channel"
+msgstr "Teleteksti: nuk është i disponueshëm në këtë kanal"
+
+msgid "Teletext needs a DVB channel"
+msgstr "Teleteksti kërkon një kanal DVB"
+
+msgid "Volume {v0}%"
+msgstr "Volumi {v0}%"
+
+msgid "Off"
+msgstr "Joaktiv"
+
+msgid "Closed Captions (CEA-608/708)"
+msgstr "Titra për të shurdhër (CEA-608/708)"
+
+msgid "{n} languages"
+msgstr "{n} gjuhë"
+
+msgid "{n} audio tracks"
+msgstr "{n} pista audio"
+
+msgid "Screenshot saved: {path}"
+msgstr "Pamja e ekranit u ruajt: {path}"
+
+msgid "Screenshot failed"
+msgstr "Pamja e ekranit dështoi"
+
+msgid "Picture Settings"
+msgstr "Cilësimet e figurës"
+
+msgid "Restore Defaults"
+msgstr "Rikthe parazgjedhjet"
+
+msgid "Equalizer"
+msgstr "Barazuesi"
+
+msgid "Leave full screen (F)"
+msgstr "Dil nga ekrani i plotë (F)"
+
+msgid "Visualisation failed: {e}"
+msgstr "Vizualizimi dështoi: {e}"
+
+msgid "Radio visualisation"
+msgstr "Vizualizimi i radios"
+
+msgid "Radio visualisation (only for radio and audio)"
+msgstr "Vizualizimi i radios (vetëm për radio dhe audio)"
+
+msgid "Playback stops at {v0}"
+msgstr "Luajtja ndalon në {v0}"
+
+msgid "No programme information for the sleep timer"
+msgstr "Nuk ka informacion programi për kohëmatësin e fikjes"
+
+msgid "Sleep timer: playback stopped"
+msgstr "Kohëmatësi i fikjes: luajtja u ndal"
+
+msgid "No programme information"
+msgstr "Nuk ka informacion programi"
+
+msgid "Next: {v0}  {title}"
+msgstr "Më pas: {v0}  {title}"
+
+msgid "Signal {v0}%"
+msgstr "Sinjali {v0}%"
+
+msgid "Signal quality {v0}%"
+msgstr "Cilësia e sinjalit {v0}%"
+
+msgid "Stream quality {v0}%"
+msgstr "Cilësia e rrjedhës {v0}%"
+
+msgid "No signal"
+msgstr "Nuk ka sinjal"
+
+msgid "● REC {n}"
+msgstr "● REG {n}"
+
+msgid "Live"
+msgstr "Drejtpërdrejt"
+
+msgid "Timeshift −{v0}:{v1:02d}"
+msgstr "Timeshift −{v0}:{v1:02d}"
+
+msgid "Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and internet TV with the Linux DVB API and GStreamer."
+msgstr "Shiko dhe regjistro DVB-S/S2, DVB-C, DVB-T/T2, ATSC dhe TV nga interneti me Linux DVB API dhe GStreamer."
+
+msgid "Match IPTV Channels to XMLTV"
+msgstr "Përputh kanalet IPTV me XMLTV"
+
+msgid "No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Ende nuk është ngarkuar udhëzues XMLTV. Vendos URL-në XMLTV te cilësimet EPG dhe shkarko fillimisht udhëzuesin; përputhja fillon automatikisht pas shkarkimit."
+
+msgid "Download XMLTV guide now"
+msgstr "Shkarko tani udhëzuesin XMLTV"
+
+msgid "Only channels without guide"
+msgstr "Vetëm kanalet pa udhëzues"
+
+msgid "Match"
+msgstr "Përputh"
+
+msgid "Guide channel:"
+msgstr "Kanali i udhëzuesit:"
+
+msgid "Assign"
+msgstr "Cakto"
+
+msgid "Suggest"
+msgstr "Sugjero"
+
+msgid "Auto-match all"
+msgstr "Përputh automatikisht të gjitha"
+
+msgid "Match every channel that was not assigned by hand"
+msgstr "Përputh çdo kanal që nuk është caktuar me dorë"
+
+msgid "Reset to automatic"
+msgstr "Rikthe në automatik"
+
+msgid "Let the automatic matching decide for the selected channel again"
+msgstr "Lëre përsëri përputhjen automatike të vendosë për kanalin e zgjedhur"
+
+msgid "{done} of {v1} channels have a guide channel"
+msgstr "{done} nga {v1} kanale kanë një kanal udhëzuesi"
+
+msgid "No suggestion for {name}"
+msgstr "Nuk ka sugjerim për {name}"
+
+msgid "{name} could not start ({m}), showing {other} instead"
+msgstr "{name} nuk u nis dot ({m}), po shfaqet {other} në vend të tij"
+
+msgid "Off (station name only)"
+msgstr "Joaktiv (vetëm emri i stacionit)"
+
+msgid "Spectrum analyser (classic)"
+msgstr "Analizues spektri (klasik)"
+
+msgid "VU meters (classic)"
+msgstr "Matës VU (klasik)"
+
+msgid "Oscilloscope (classic)"
+msgstr "Oshiloskop (klasik)"
+
+msgid "Glow waves (modern)"
+msgstr "Valë ndriçuese (moderne)"
+
+msgid "Nebula particles (modern)"
+msgstr "Grimca mjegullnaje (moderne)"
+
+msgid "Light ribbons (modern)"
+msgstr "Shirita drite (moderne)"
+
+msgid "Pulsar (modern)"
+msgstr "Pulsar (modern)"
+
+msgid "Supernova (modern)"
+msgstr "Supernova (modern)"
+
+msgid "Occasus solis (modern)"
+msgstr "Occasus solis (modern)"
+
+msgid "Aurora borealis (modern)"
+msgstr "Aurora borealis (modern)"
+
+msgid "Goom HD (GPU)"
+msgstr "Goom HD (GPU)"
+
+msgid "All presets (shuffled)"
+msgstr "Të gjitha paravendosjet (të përziera)"
+
+msgid "All of {name}"
+msgstr "Të gjitha nga {name}"
+
+msgid "Dancer"
+msgstr "Valltar"
+
+msgid "Drawing"
+msgstr "Vizatim"
+
+msgid "Fractal"
+msgstr "Fraktal"
+
+msgid "Geometric"
+msgstr "Gjeometrik"
+
+msgid "Hypnotic"
+msgstr "Hipnotik"
+
+msgid "Particles"
+msgstr "Grimca"
+
+msgid "Reaction"
+msgstr "Reaksion"
+
+msgid "Sparkle"
+msgstr "Shkëlqim"
+
+msgid "Supernova"
+msgstr "Supernova"
+
+msgid "Waveform"
+msgstr "Forma e valës"
+
+msgid "! Transition"
+msgstr "! Kalim"
+
+msgid "HbbTV"
+msgstr "HbbTV"
+
+msgid "Interactive services (HbbTV)"
+msgstr "Shërbime interaktive (HbbTV)"
+
+msgid "Media libraries, teletext successors and more behind the red button (F5)."
+msgstr "Biblioteka mediash, pasardhës të teletekstit dhe më shumë pas butonit të kuq (F5)."
+
+msgid "Needs WebKitGTK 6 (gir1.2-webkit-6.0), which is not installed."
+msgstr "Kërkon WebKitGTK 6 (gir1.2-webkit-6.0), i cili nuk është i instaluar."
+
+msgid "Start automatically"
+msgstr "Nis automatikisht"
+
+msgid "Off: an application starts only with the red button. Channels' applications send usage data to the broadcaster."
+msgstr "Joaktiv: një aplikacion niset vetëm me butonin e kuq. Aplikacionet e kanaleve i dërgojnë të dhëna përdorimi transmetuesit."
+
+msgid "Allow third-party cookies"
+msgstr "Lejo cookie-t e palëve të treta"
+
+msgid "Advertising networks use them to follow you across channels."
+msgstr "Rrjetet e reklamave i përdorin për të të ndjekur nëpër kanale."
+
+msgid "Delete HbbTV Data"
+msgstr "Fshi të dhënat HbbTV"
+
+msgid "Cookies and storage"
+msgstr "Cookie-t dhe hapësira ruajtëse"
+
+msgid "Removes what HbbTV applications stored, such as cookies and settings."
+msgstr "Heq atë që kanë ruajtur aplikacionet HbbTV, si cookie-t dhe cilësimet."
+
+msgid "HbbTV data deleted"
+msgstr "Të dhënat HbbTV u fshinë"
+
+msgid "HbbTV: {name}"
+msgstr "HbbTV: {name}"
+
+msgid "HbbTV application could not be loaded: {msg}"
+msgstr "Aplikacioni HbbTV nuk u ngarkua dot: {msg}"
+
+msgid "HbbTV (red button)"
+msgstr "HbbTV (butoni i kuq)"
+
+msgid "Interactive service of the channel (red button, F5)"
+msgstr "Shërbimi interaktiv i kanalit (butoni i kuq, F5)"
+
+msgid "Close the interactive service (Esc)"
+msgstr "Mbyll shërbimin interaktiv (Esc)"
+
+msgid "Subtitles in media libraries"
+msgstr "Titrat në bibliotekat e mediave"
+
+msgid "Applications show subtitles in their videos from the start."
+msgstr "Aplikacionet shfaqin titra në videot e tyre që nga fillimi."
+
+msgid "Audio description in media libraries"
+msgstr "Përshkrimi audio në bibliotekat e mediave"
+
+msgid "Applications prefer the soundtrack that describes the picture."
+msgstr "Aplikacionet parapëlqejnë kolonën zanore që përshkruan figurën."
+
+msgid "WebKit's sandbox may not create user namespaces here (Ubuntu's AppArmor restriction), so applications cannot start safely. See docs/HBBTV.md."
+msgstr "Sandbox-i i WebKit mund të mos krijojë hapësira emrash përdoruesi këtu (kufizimi AppArmor i Ubuntu), prandaj aplikacionet nuk mund të nisen në mënyrë të sigurt. Shih docs/HBBTV.md."
+
+msgid "This interactive service is rated {age}+."
+msgstr "Ky shërbim interaktiv është i klasifikuar {age}+."
+
+msgid "Blocked by youth protection. Set a PIN in the preferences."
+msgstr "Bllokuar nga mbrojtja e të miturve. Vendos një PIN te parapëlqimet."
+
+msgid "Too many wrong PINs. Try again in a few minutes."
+msgstr "Shumë PIN-e të gabuara. Provo përsëri pas disa minutash."
+
+msgid "Youth protection"
+msgstr "Mbrojtja e të miturve"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Unlock"
+msgstr "Zhblloko"
+
+msgid "Wrong PIN."
+msgstr "PIN i gabuar."
+
+msgid "This video is rated {age}+."
+msgstr "Kjo video është e klasifikuar {age}+."
+
+msgid "Teletext of the channel's interactive service (Ctrl+Shift+T)"
+msgstr "Teleteksti i shërbimit interaktiv të kanalit (Ctrl+Shift+T)"
+
+msgid "Teletext from the interactive service"
+msgstr "Teleteksti nga shërbimi interaktiv"
+
+msgid "The TXT button opens the channel's HbbTV teletext where there is one."
+msgstr "Butoni TXT hap teletekstin HbbTV të kanalit kur ka një të tillë."
+
+msgid "Viewers from {age} years"
+msgstr "Shikues nga {age} vjeç"
+
+msgid "Applications and their videos rated above this age need the PIN."
+msgstr "Aplikacionet dhe videot e tyre të klasifikuara mbi këtë moshë kërkojnë PIN-in."
+
+msgid "Current PIN"
+msgstr "PIN-i aktual"
+
+msgid "Needed to change the youth protection or the PIN."
+msgstr "Nevojitet për të ndryshuar mbrojtjen e të miturve ose PIN-in."
+
+msgid "New PIN"
+msgstr "PIN-i i ri"
+
+msgid "Leave empty to keep the current PIN."
+msgstr "Lëre bosh për të mbajtur PIN-in aktual."
+
+msgid "Youth protection not changed"
+msgstr "Mbrojtja e të miturve nuk u ndryshua"
+
+msgid "The current PIN is wrong."
+msgstr "PIN-i aktual është i gabuar."
+
+msgid "Youth protection needs a PIN"
+msgstr "Mbrojtja e të miturve kërkon një PIN"
+
+msgid "Set a PIN to switch on the youth protection."
+msgstr "Vendos një PIN për të aktivizuar mbrojtjen e të miturve."
+
+msgid "Companion screens on the network"
+msgstr "Ekranet shoqëruese në rrjet"
+
+msgid "Phones and tablets in your network can find LinDVB, talk to applications and follow the picture in sync, and ask to start applications. Off: nothing listens on the network."
+msgstr "Telefonat dhe tabletët në rrjetin tënd mund të gjejnë LinDVB, të flasin me aplikacionet, të ndjekin figurën të sinkronizuar dhe të kërkojnë nisjen e aplikacioneve. Joaktiv: asgjë nuk dëgjon në rrjet."
+
+msgid "Start an application from another device?"
+msgstr "Të niset një aplikacion nga një pajisje tjetër?"
+
+msgid "A device on your network wants to start “{name}” ({url})."
+msgstr "Një pajisje në rrjetin tënd dëshiron të nisë “{name}” ({url})."
+
+msgid "an HbbTV application"
+msgstr "një aplikacion HbbTV"
+
+msgid "Refuse"
+msgstr "Refuzo"
+
+msgid "This video is encrypted with {drm}. LinDVB does not support DRM, so it cannot be played."
+msgstr "Kjo video është e koduar me {drm}. LinDVB nuk mbështet DRM, prandaj nuk mund të luhet."
+
+msgid "This video is encrypted. LinDVB does not support DRM, so it cannot be played."
+msgstr "Kjo video është e koduar. LinDVB nuk mbështet DRM, prandaj nuk mund të luhet."
+
+msgid "Contains code from"
+msgstr "Përmban kod nga"
+
+msgid "Built with"
+msgstr "Ndërtuar me"
+
+msgid "Visualisations"
+msgstr "Vizualizimet"
+
+msgid "Broadcast (EIT)"
+msgstr "Transmetimi (EIT)"
+
+msgid "Provider EPG (MediaHighway / Freesat)"
+msgstr "EPG e ofruesit (MediaHighway / Freesat)"
+
+msgid "DVB-I content guide"
+msgstr "Udhëzuesi i përmbajtjes DVB-I"
+
+msgid "XMLTV (internet)"
+msgstr "XMLTV (internet)"
+
+msgid "Advanced"
+msgstr "Të avancuara"
+
+msgid "Priority of the EPG sources"
+msgstr "Përparësia e burimeve EPG"
+
+msgid "Automatic (recommended)"
+msgstr "Automatike (e rekomanduar)"
+
+msgid "Custom order"
+msgstr "Renditje e personalizuar"
+
+msgid "Automatic: now and next come from the broadcast, further ahead the most complete source wins, and gaps are filled from the other sources. A programme is never shown twice."
+msgstr "Automatike: tani dhe më pas vijnë nga transmetimi, më tej fiton burimi më i plotë dhe boshllëqet mbushen nga burimet e tjera. Një program nuk shfaqet kurrë dy herë."
+
+msgid "Order of the EPG sources"
+msgstr "Renditja e burimeve EPG"
+
+msgid "The source at the top wins when two sources disagree; the others fill the gaps. A channel with an order of its own always uses it, for example when its broadcast EPG is poor."
+msgstr "Burimi në krye fiton kur dy burime nuk përputhen; të tjerët mbushin boshllëqet. Një kanal me renditjen e vet e përdor gjithmonë atë, për shembull kur EPG e transmetimit të tij është e dobët."
+
+msgid "Applies to"
+msgstr "Zbatohet për"
+
+msgid "Remove Channel"
+msgstr "Hiq kanalin"
+
+msgid "Move Up"
+msgstr "Lëviz lart"
+
+msgid "Move Down"
+msgstr "Lëviz poshtë"
+
+msgid "Own Order for Channel"
+msgstr "Renditje e veçantë për kanalin"
+
+msgid "Automatic (graphics card when possible)"
+msgstr "Automatike (karta grafike kur është e mundur)"
+
+msgid "V4L2 (ARM boards)"
+msgstr "V4L2 (pllaka ARM)"
+
+msgid "Software (processor)"
+msgstr "Softuer (procesori)"
+
+msgid "Graphics card decoders found: {list}"
+msgstr "Dekodues të kartës grafike të gjetur: {list}"
+
+msgid "none"
+msgstr "asnjë"
+
+msgid "Switched off after an error: {list}"
+msgstr "Fikur pas një gabimi: {list}"
+
+msgid "Decoding now: {decoder}"
+msgstr "Po dekodohet tani: {decoder}"
+
+msgid "Video decoding"
+msgstr "Dekodimi i videos"
+
+msgid "Interlaced TV pictures (most SD and 1080i channels). Done on the graphics card when VA-API decodes, else by the processor."
+msgstr "Figura TV të ndërthurura (shumica e kanaleve SD dhe 1080i). Bëhet në kartën grafike kur dekodon VA-API, përndryshe nga procesori."
+
+msgid "{name} video decoding failed, playing with the next decoder"
+msgstr "Dekodimi i videos {name} dështoi, po luhet me dekoduesin tjetër"
+
+msgid "Tuners"
+msgstr "Sintonizuesit"
+
+msgid "LinDVB records and plays on several tuners at once and uses the tuners with the highest priority first. Channels on one transponder share a tuner."
+msgstr "LinDVB regjistron dhe luan në disa sintonizues njëherësh dhe përdor së pari sintonizuesit me përparësinë më të lartë. Kanalet në një transponder ndajnë një sintonizues."
+
+msgid "Reception types unknown"
+msgstr "Llojet e marrjes të panjohura"
+
+msgid "not connected"
+msgstr "jo i lidhur"
+
+msgid "Priority"
+msgstr "Përparësia"
+
+msgid "Higher numbers are used first."
+msgstr "Numrat më të lartë përdoren së pari."
+
+msgid "Shared antenna cable"
+msgstr "Kabllo antene e përbashkët"
+
+msgid "On for tuners that hang on one cable with other tuners (loop-through or a splitter on one LNB output). Without Unicable they then only receive one band and polarisation at a time."
+msgstr "Aktiv për sintonizuesit që varen në një kabllo me sintonizues të tjerë (loop-through ose një ndarës në një dalje LNB). Pa Unicable ata marrin atëherë vetëm një brez dhe një polarizim njëherësh."
+
+msgid "Cable name"
+msgstr "Emri i kabllos"
+
+msgid "Tuners with the same name share one cable."
+msgstr "Sintonizuesit me të njëjtin emër ndajnë një kabllo."
+
+msgid "For all tuners without an LNB of their own."
+msgstr "Për të gjithë sintonizuesit pa LNB të vetin."
+
+msgid "Picture errors: {n} blocks could not be corrected"
+msgstr "Gabime në figurë: {n} blloqe nuk u korrigjuan dot"
+
+msgid "Weak reception: only {db} dB margin"
+msgstr "Marrje e dobët: vetëm {db} dB rezervë"
+
+msgid "{n} uncorrectable blocks"
+msgstr "{n} blloqe të pakorrigjueshme"
+
+msgid "Lock lost"
+msgstr "Kyçja u humb"
+
+msgid "{n} continuity errors"
+msgstr "{n} gabime vazhdimësie"
+
+msgid "PCR jump"
+msgstr "Kërcim PCR"
+
+msgid "New table version (0x{tid})"
+msgstr "Version i ri tabele (0x{tid})"
+
+msgid "Loudness jump {lu} LU"
+msgstr "Kërcim i fortësisë së zërit {lu} LU"
+
+msgid "Rebuffering"
+msgstr "Ribuferim"
+
+msgid "Measured since {time}"
+msgstr "Matur që nga {time}"
+
+msgid "Delivery"
+msgstr "Shpërndarja"
+
+msgid "Frame rate"
+msgstr "Shpejtësia e kuadrove"
+
+msgid "Average bit rate"
+msgstr "Shpejtësia mesatare e bitëve"
+
+msgid "Peak bit rate"
+msgstr "Shpejtësia maksimale e bitëve"
+
+msgid "Margin"
+msgstr "Rezerva"
+
+msgid "Loudness"
+msgstr "Fortësia e zërit"
+
+msgid "Bit rate"
+msgstr "Shpejtësia e bitëve"
+
+msgid "Events"
+msgstr "Ngjarjet"
+
+msgid "1 minute"
+msgstr "1 minutë"
+
+msgid "15 minutes"
+msgstr "15 minuta"
+
+msgid "5 minutes"
+msgstr "5 minuta"
+
+msgid "hard of hearing"
+msgstr "për persona me dëgjim të dobët"
+
+msgid "Data"
+msgstr "Të dhënat"
+
+msgid "Level"
+msgstr "Niveli"
+
+msgid "Carrier"
+msgstr "Bartësi"
+
+msgid "Uncorrectable blocks"
+msgstr "Blloqe të pakorrigjueshme"
+
+msgid "Lock losses"
+msgstr "Humbje kyçjeje"
+
+msgid "C/N history"
+msgstr "Historiku C/N"
+
+msgid "Errors"
+msgstr "Gabimet"
+
+msgid "Roll-off / pilots"
+msgstr "Roll-off / pilotët"
+
+msgid "Protocol"
+msgstr "Protokolli"
+
+msgid "Response time"
+msgstr "Koha e përgjigjes"
+
+msgid "Bad"
+msgstr "E keqe"
+
+msgid "Fair"
+msgstr "Mesatare"
+
+msgid "Good"
+msgstr "E mirë"
+
+msgid "Poor"
+msgstr "E dobët"
+
+msgid "NO LOCK"
+msgstr "PA KYÇJE"
+
+msgid "Buffer"
+msgstr "Buferi"
+
+msgid "Download"
+msgstr "Shkarkimi"
+
+msgid "Buffer history"
+msgstr "Historiku i buferit"
+
+msgid "(driver value)"
+msgstr "(vlera e drajverit)"
+
+msgid "since start"
+msgstr "që nga nisja"
+
+msgid "required"
+msgstr "e kërkuar"
+
+msgid "Quality history"
+msgstr "Historiku i cilësisë"
+
+msgid "horizontal"
+msgstr "horizontal"
+
+msgid "left"
+msgstr "majtas"
+
+msgid "vertical"
+msgstr "vertikal"
+
+msgid "right"
+msgstr "djathtas"
+
+msgid "Port {n}"
+msgstr "Porta {n}"
+
+msgid "(theoretical)"
+msgstr "(teorike)"
+
+msgid "Overview"
+msgstr "Përmbledhje"
+
+msgid "Bit rate of the channel"
+msgstr "Shpejtësia e bitëve e kanalit"
+
+msgid "Average"
+msgstr "Mesatarja"
+
+msgid "Peak"
+msgstr "Maksimumi"
+
+msgid "Codec"
+msgstr "Kodeku"
+
+msgid "Decoder"
+msgstr "Dekoduesi"
+
+msgid "Dropped frames"
+msgstr "Kuadro të hedhura"
+
+msgid "EIT"
+msgstr "EIT"
+
+msgid "Autostart"
+msgstr "Nisje automatike"
+
+msgid "PCR arrival jitter"
+msgstr "Luhatja e mbërritjes së PCR"
+
+msgid "PCR interval"
+msgstr "Intervali i PCR"
+
+msgid "PAT / PMT interval"
+msgstr "Intervali PAT / PMT"
+
+msgid "Teletext / subtitles / data"
+msgstr "Teletekst / titra / të dhëna"
+
+msgid "Ø {v}"
+msgstr "Ø {v}"
+
+msgid "progressive"
+msgstr "progresiv"
+
+msgid "only for the channel on screen"
+msgstr "vetëm për kanalin në ekran"
+
+msgid "AD"
+msgstr "PA"
+
+msgid "Loudness (current track): {lufs} · peak {peak} · dialnorm {dn}"
+msgstr "Fortësia e zërit (pista aktuale): {lufs} · maksimumi {peak} · dialnorm {dn}"
+
+msgid "Loudness: only for the channel on screen"
+msgstr "Fortësia e zërit: vetëm për kanalin në ekran"
+
+msgid "scrambled packets"
+msgstr "paketa të koduara"
+
+msgid "no CA descriptors in the PMT"
+msgstr "nuk ka përshkrues CA në PMT"
+
+msgid "PID {pid} · {n} pages"
+msgstr "PID {pid} · {n} faqe"
+
+msgid "Quality"
+msgstr "Cilësia"
+
+msgid "Carrier to noise ratio"
+msgstr "Raporti bartës/zhurmë"
+
+msgid "Bit error rate (log₁₀)"
+msgstr "Shkalla e gabimit të bitëve (log₁₀)"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "HTTP status"
+msgstr "Statusi HTTP"
+
+msgid "Content type"
+msgstr "Lloji i përmbajtjes"
+
+msgid "Download speed"
+msgstr "Shpejtësia e shkarkimit"
+
+msgid "Segments"
+msgstr "Segmentet"
+
+msgid "Error"
+msgstr "Gabim"
+
+msgid "Variants"
+msgstr "Variantet"
+
+msgid "Codecs"
+msgstr "Kodekët"
+
+msgid "Error timeline"
+msgstr "Kronologjia e gabimeve"
+
+msgid "uncorrectable blocks"
+msgstr "blloqe të pakorrigjueshme"
+
+msgid "lock lost"
+msgstr "kyçja u humb"
+
+msgid "rebuffering"
+msgstr "ribuferim"
+
+msgid "loudness jump"
+msgstr "kërcim i fortësisë së zërit"
+
+msgid "table version"
+msgstr "versioni i tabelës"
+
+msgid "Tuned parameters (from the frontend)"
+msgstr "Parametrat e sintonizimit (nga frontend-i)"
+
+msgid "Delivery system"
+msgstr "Sistemi i shpërndarjes"
+
+msgid "Code rate"
+msgstr "Shkalla e kodit"
+
+msgid "Roll-off"
+msgstr "Roll-off"
+
+msgid "Guard interval"
+msgstr "Intervali mbrojtës"
+
+msgid "Pilots"
+msgstr "Pilotët"
+
+msgid "Carriers"
+msgstr "Bartësit"
+
+msgid "C/N needed"
+msgstr "C/N e nevojshme"
+
+msgid "Dish alignment aid…"
+msgstr "Ndihmë për drejtimin e antenës…"
+
+msgid "Logging and warnings"
+msgstr "Regjistri dhe paralajmërimet"
+
+msgid "Log reception (one line a minute, kept 31 days)"
+msgstr "Regjistro marrjen (një rresht në minutë, ruhet 31 ditë)"
+
+msgid "Warn below this margin (dB)"
+msgstr "Paralajmëro nën këtë rezervë (dB)"
+
+msgid "Reception over the last days"
+msgstr "Marrja gjatë ditëve të fundit"
+
+msgid "Ø {avg} · min {min}"
+msgstr "Ø {avg} · min {min}"
+
+msgid "Ø {avg} · peak {max}"
+msgstr "Ø {avg} · maksimumi {max}"
+
+msgid "{x}× the stream rate"
+msgstr "{x}× shpejtësia e rrjedhës"
+
+msgid "Download and stream rate"
+msgstr "Shpejtësia e shkarkimit dhe e rrjedhës"
+
+msgid "HLS with {n} variants"
+msgstr "HLS me {n} variante"
+
+msgid "HLS media playlist"
+msgstr "Listë media HLS"
+
+msgid "MPEG-DASH"
+msgstr "MPEG-DASH"
+
+msgid "live"
+msgstr "drejtpërdrejt"
+
+msgid "on demand"
+msgstr "sipas kërkesës"
+
+msgid "{n} segments of Ø {s} (target {t}) · {c}"
+msgstr "{n} segmente me Ø {s} (synimi {t}) · {c}"
+
+msgid "No variant list: the address is a single stream."
+msgstr "Nuk ka listë variantesh: adresa është një rrjedhë e vetme."
+
+msgid "No events so far."
+msgstr "Ende nuk ka ngjarje."
+
+msgid "{n} minutes logged for this channel."
+msgstr "{n} minuta të regjistruara për këtë kanal."
+
+msgid "Nothing logged for this channel yet."
+msgstr "Ende nuk është regjistruar asgjë për këtë kanal."
+
+msgid "min {min} · max {max}"
+msgstr "min {min} · maks {max}"
+
+msgid "needs {db}"
+msgstr "kërkon {db}"
+
+msgid "relative (driver)"
+msgstr "relative (drajveri)"
+
+msgid "post FEC {v}"
+msgstr "pas FEC {v}"
+
+msgid "needed for a clean picture"
+msgstr "e nevojshme për një figurë të pastër"
+
+msgid "DVB API v5 statistics"
+msgstr "Statistikat DVB API v5"
+
+msgid "dvbsrc (driver scale)"
+msgstr "dvbsrc (shkalla e drajverit)"
+
+msgid "Elementary streams and PIDs"
+msgstr "Rrjedhat elementare dhe PID-et"
+
+msgid "Whole stream"
+msgstr "E gjithë rrjedha"
+
+msgid "Sort by PID"
+msgstr "Rendit sipas PID"
+
+msgid "Sort by bit rate"
+msgstr "Rendit sipas shpejtësisë së bitëve"
+
+msgid "PID hex"
+msgstr "PID hex"
+
+msgid "dec"
+msgstr "dec"
+
+msgid "CC errors"
+msgstr "Gabime CC"
+
+msgid "Scrambled"
+msgstr "Të koduara"
+
+msgid "Last 60 s"
+msgstr "60 s e fundit"
+
+msgid "Packets"
+msgstr "Paketa"
+
+msgid "Sync losses"
+msgstr "Humbje sinkronizimi"
+
+msgid "Null packets"
+msgstr "Paketa boshe"
+
+msgid "PCR jumps"
+msgstr "Kërcime PCR"
+
+msgid "PID filter"
+msgstr "Filtri PID"
+
+msgid "unknown"
+msgstr "e panjohur"
+
+msgid "SI"
+msgstr "SI"
+
+msgid "Null"
+msgstr "Null"
+
+msgid "Other"
+msgstr "Tjetër"
+
+msgid "Sum ({n} PIDs): {rate} · {cc} continuity errors"
+msgstr "Shuma ({n} PID): {rate} · {cc} gabime vazhdimësie"
+
+msgid "Measuring…"
+msgstr "Po matet…"
+
+msgid "SI / EPG"
+msgstr "SI / EPG"
+
+msgid "free / null"
+msgstr "e lirë / null"
+
+msgid "{used} used of {cap} · measured {time}"
+msgstr "{used} të përdorura nga {cap} · matur {time}"
+
+msgid "Only the PIDs of this channel are received. Measure the whole transponder to see the other channels on it."
+msgstr "Merren vetëm PID-et e këtij kanali. Mat të gjithë transponderin për të parë kanalet e tjera në të."
+
+msgid "{n} PIDs"
+msgstr "{n} PID"
+
+msgid "Profile / level"
+msgstr "Profili / niveli"
+
+msgid "Scan"
+msgstr "Skanimi"
+
+msgid "Film (3:2 pulldown)"
+msgstr "Film (3:2 pulldown)"
+
+msgid "Frames shown / dropped"
+msgstr "Kuadro të shfaqura / të hedhura"
+
+msgid "Measured bit rate"
+msgstr "Shpejtësia e matur e bitëve"
+
+msgid "Nominal bit rate"
+msgstr "Shpejtësia nominale e bitëve"
+
+msgid "VBV buffer"
+msgstr "Buferi VBV"
+
+msgid "Frame sizes"
+msgstr "Madhësitë e kuadrove"
+
+msgid "B frame"
+msgstr "Kuadër B"
+
+msgid "I frame"
+msgstr "Kuadër I"
+
+msgid "P frame"
+msgstr "Kuadër P"
+
+msgid "GOP length"
+msgstr "Gjatësia e GOP"
+
+msgid "I frame average"
+msgstr "Mesatarja e kuadrove I"
+
+msgid "P/B frame average"
+msgstr "Mesatarja e kuadrove P/B"
+
+msgid "Nominal"
+msgstr "Nominale"
+
+msgid "Sample rate"
+msgstr "Frekuenca e mostrimit"
+
+msgid "Dialnorm"
+msgstr "Dialnorm"
+
+msgid "Measured"
+msgstr "E matur"
+
+msgid "Notes"
+msgstr "Shënime"
+
+msgid "Loudness (EBU R 128)"
+msgstr "Fortësia e zërit (EBU R 128)"
+
+msgid "Momentary"
+msgstr "Momentale"
+
+msgid "Short term"
+msgstr "Afatshkurtër"
+
+msgid "Loudness range"
+msgstr "Diapazoni i fortësisë"
+
+msgid "Sample peak"
+msgstr "Maksimumi i mostrës"
+
+msgid "level {l}"
+msgstr "niveli {l}"
+
+msgid "tier {t}"
+msgstr "shkalla {t}"
+
+msgid "fields"
+msgstr "fusha"
+
+msgid "mixed"
+msgstr "e përzier"
+
+msgid "not sent"
+msgstr "nuk dërgohet"
+
+msgid "letterbox {pct} % top and bottom"
+msgstr "letterbox {pct} % lart dhe poshtë"
+
+msgid "pillarbox {pct} % at the sides"
+msgstr "pillarbox {pct} % anash"
+
+msgid "picture {ratio}:1"
+msgstr "figura {ratio}:1"
+
+msgid "yes, repeated fields"
+msgstr "po, fusha të përsëritura"
+
+msgid "mastering display data"
+msgstr "të dhëna të ekranit të masterimit"
+
+msgid "(maximum)"
+msgstr "(maksimumi)"
+
+msgid "not signalled (variable)"
+msgstr "nuk sinjalizohet (e ndryshueshme)"
+
+msgid "now {now} · Ø {avg} · peak {max}"
+msgstr "tani {now} · Ø {avg} · maksimumi {max}"
+
+msgid "clean audio"
+msgstr "audio e pastër"
+
+msgid "EBU target −23 LUFS"
+msgstr "Synimi EBU −23 LUFS"
+
+msgid "Measured on the decoded sound of the channel on screen, before the equaliser."
+msgstr "Matet mbi zërin e dekoduar të kanalit në ekran, para barazuesit."
+
+msgid "{n} loudness jumps of 6 LU or more (programme ↔ advertising)."
+msgstr "{n} kërcime fortësie prej 6 LU ose më shumë (program ↔ reklamë)."
+
+msgid "Loudness is measured for the channel on screen only."
+msgstr "Fortësia e zërit matet vetëm për kanalin në ekran."
+
+msgid "index"
+msgstr "indeksi"
+
+msgid "info"
+msgstr "info"
+
+msgid "subtitles (hard of hearing)"
+msgstr "titra (për persona me dëgjim të dobët)"
+
+msgid "DVB subtitles PID {pid}:"
+msgstr "Titra DVB PID {pid}:"
+
+msgid "Tables & EPG"
+msgstr "Tabelat dhe EPG"
+
+msgid "SI tables"
+msgstr "Tabelat SI"
+
+msgid "Version"
+msgstr "Versioni"
+
+msgid "Events in the guide"
+msgstr "Ngjarje në udhëzues"
+
+msgid "EIT now/next"
+msgstr "EIT tani/më pas"
+
+msgid "Difference to this computer"
+msgstr "Diferenca me këtë kompjuter"
+
+msgid "Local time offset"
+msgstr "Zhvendosja e orës lokale"
+
+msgid "Network"
+msgstr "Rrjeti"
+
+msgid "Raw view"
+msgstr "Pamje e papërpunuar"
+
+msgid "Hex"
+msgstr "Hex"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "slow"
+msgstr "e ngadaltë"
+
+msgid "(all services)"
+msgstr "(të gjitha shërbimet)"
+
+msgid "not seen"
+msgstr "nuk është parë"
+
+msgid "seen {s} s ago"
+msgstr "parë {s} s më parë"
+
+msgid "timers may start early or late"
+msgstr "kohëmatësit mund të nisen herët ose vonë"
+
+msgid "no TDT/TOT"
+msgstr "nuk ka TDT/TOT"
+
+msgid "SDT free_CA_mode"
+msgstr "SDT free_CA_mode"
+
+msgid "Scrambled packets"
+msgstr "Paketa të koduara"
+
+msgid "CA system ID"
+msgstr "ID e sistemit CA"
+
+msgid "ECM PID"
+msgstr "PID ECM"
+
+msgid "ECM rate"
+msgstr "Shpeshtësia ECM"
+
+msgid "Scrambling per stream"
+msgstr "Kodimi për rrjedhë"
+
+msgid "Crypto period"
+msgstr "Periudha kriptografike"
+
+msgid "A key change is the switch between the even and the odd control word; the crypto period is the time between two of them."
+msgstr "Një ndërrim çelësi është kalimi midis fjalës çift dhe tek të kontrollit; periudha kriptografike është koha midis dy të tillave."
+
+msgid "No conditional access in the PMT and no scrambled packets."
+msgstr "Nuk ka qasje të kushtëzuar në PMT dhe nuk ka paketa të koduara."
+
+msgid "free"
+msgstr "e lirë"
+
+msgid "all streams"
+msgstr "të gjitha rrjedhat"
+
+msgid "not received"
+msgstr "nuk merret"
+
+msgid "EMM (CAT): {list}"
+msgstr "EMM (CAT): {list}"
+
+msgid "No CAT with EMM streams received."
+msgstr "Nuk u mor CAT me rrjedha EMM."
+
+msgid "Applications (AIT)"
+msgstr "Aplikacionet (AIT)"
+
+msgid "Organisation / app"
+msgstr "Organizata / aplikacioni"
+
+msgid "Control"
+msgstr "Kontrolli"
+
+msgid "Data carousels (DSM-CC)"
+msgstr "Karuselet e të dhënave (DSM-CC)"
+
+msgid "Component tag"
+msgstr "Etiketa e komponentit"
+
+msgid "AIT version {v} on PID {pid}"
+msgstr "Versioni AIT {v} në PID {pid}"
+
+msgid "The channel announces an AIT on PID {pid}; it has not arrived yet."
+msgstr "Kanali njofton një AIT në PID {pid}; ende nuk ka mbërritur."
+
+msgid "Channel Analysis – {name}"
+msgstr "Analiza e kanalit – {name}"
+
+msgid "Freeze the measurement"
+msgstr "Ngrij matjen"
+
+msgid "Copy report as text"
+msgstr "Kopjo raportin si tekst"
+
+msgid "Save report as text…"
+msgstr "Ruaj raportin si tekst…"
+
+msgid "Save report as JSON…"
+msgstr "Ruaj raportin si JSON…"
+
+msgid "Save history as CSV…"
+msgstr "Ruaj historikun si CSV…"
+
+msgid "Save window as picture…"
+msgstr "Ruaj dritaren si figurë…"
+
+msgid "Save 30 s of the stream…"
+msgstr "Ruaj 30 s të rrjedhës…"
+
+msgid "Channel Analysis · {name}"
+msgstr "Analiza e kanalit · {name}"
+
+msgid "Live · measuring for {t}"
+msgstr "Drejtpërdrejt · po matet prej {t}"
+
+msgid "Paused"
+msgstr "Në pauzë"
+
+msgid "No tuner is free for this channel. Watch it, or try again when a tuner is free."
+msgstr "Nuk ka sintonizues të lirë për këtë kanal. Shikoje, ose provo përsëri kur të lirohet një sintonizues."
+
+msgid "The tuner of this channel was switched to another channel."
+msgstr "Sintonizuesi i këtij kanali kaloi në një kanal tjetër."
+
+msgid "Measured in the background on a tuner of its own; picture, sound and loudness are only measured for the channel on screen."
+msgstr "Matet në sfond në një sintonizues më vete; figura, zëri dhe fortësia maten vetëm për kanalin në ekran."
+
+msgid "This internet channel is fetched in the background without decoding it; watch it for picture, sound and buffer figures."
+msgstr "Ky kanal interneti merret në sfond pa u dekoduar; shikoje për të dhënat e figurës, zërit dhe buferit."
+
+msgid "Source: DVB adapter {a}, frontend {f}"
+msgstr "Burimi: adaptori DVB {a}, frontend {f}"
+
+msgid "dvbsrc statistics"
+msgstr "Statistikat dvbsrc"
+
+msgid "Source: background download"
+msgstr "Burimi: shkarkim në sfond"
+
+msgid "Source: the player's stream"
+msgstr "Burimi: rrjedha e luajtësit"
+
+msgid "updated every second"
+msgstr "përditësohet çdo sekondë"
+
+msgid "Nothing to save: the channel is not received."
+msgstr "Asgjë për të ruajtur: kanali nuk merret."
+
+msgid "Compare {name} with"
+msgstr "Krahaso {name} me"
+
+msgid "Figures over the time window of each analysis; picture and loudness only for the channel on screen."
+msgstr "Shifrat gjatë dritares kohore të çdo analize; figura dhe fortësia e zërit vetëm për kanalin në ekran."
+
+msgid "Dish alignment aid"
+msgstr "Ndihmë për drejtimin e antenës"
+
+msgid "Tone"
+msgstr "Toni"
+
+msgid "Reset best value"
+msgstr "Rivendos vlerën më të mirë"
+
+msgid "Turn the dish slowly; the tone gets higher with a better signal."
+msgstr "Rrotullo antenën ngadalë; toni bëhet më i lartë me një sinjal më të mirë."
+
+msgid "% quality"
+msgstr "% cilësi"
+
+msgid "Best so far: {v}"
+msgstr "Më e mira deri tani: {v}"
+
+msgid "Signal lost"
+msgstr "Sinjali u humb"
+
+msgid "The tuner was needed for watching or recording."
+msgstr "Sintonizuesi nevojitej për shikim ose regjistrim."
+
+msgid "Channel analysis: {name}"
+msgstr "Analiza e kanalit: {name}"
+
+msgid "Resolution"
+msgstr "Rezolucioni"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Signal quality"
+msgstr "Cilësia e sinjalit"
+
+msgid "Continuity errors"
+msgstr "Gabime vazhdimësie"
+
+msgid "Content"
+msgstr "Përmbajtja"
+
+msgid "audio description"
+msgstr "përshkrim audio"
+
+msgid "DVB subtitles"
+msgstr "Titra DVB"
+
+msgid "Signal"
+msgstr "Sinjali"
+
+msgid "Reception"
+msgstr "Marrja"
+
+msgid "Symbol rate"
+msgstr "Shpejtësia e simboleve"
+
+msgid "Transponder capacity"
+msgstr "Kapaciteti i transponderit"
+
+msgid "Server"
+msgstr "Serveri"
+
+msgid "Stream"
+msgstr "Rrjedha"
+
+msgid "Share of transponder"
+msgstr "Pjesa e transponderit"
+
+msgid "Aspect ratio"
+msgstr "Raporti i pamjes"
+
+msgid "Colour"
+msgstr "Ngjyra"
+
+msgid "Track"
+msgstr "Pista"
+
+msgid "Now & next"
+msgstr "Tani dhe më pas"
+
+msgid "Encryption"
+msgstr "Kodimi"
+
+msgid "Interactive"
+msgstr "Interaktive"
+
+msgid "Stream health"
+msgstr "Shëndeti i rrjedhës"
+
+msgid "Transport errors"
+msgstr "Gabime transporti"
+
+msgid "Timeshift buffer"
+msgstr "Buferi i timeshift"
+
+msgid "interlaced"
+msgstr "i ndërthurur"
+
+msgid "Hardware"
+msgstr "Harduer"
+
+msgid "Software"
+msgstr "Softuer"
+
+msgid "{n} tracks"
+msgstr "{n} pista"
+
+msgid "Free-to-air"
+msgstr "Të lira"
+
+msgid "Signal level"
+msgstr "Niveli i sinjalit"
+
+msgid "Internet stream"
+msgstr "Rrjedhë interneti"
+
+msgid "continuity errors"
+msgstr "gabime vazhdimësie"
+
+msgid "Stream / PLP"
+msgstr "Rrjedha / PLP"
+
+msgid "Source of the figures"
+msgstr "Burimi i shifrave"
+
+msgid "Warn on screen when the reception gets weak"
+msgstr "Paralajmëro në ekran kur marrja dobësohet"
+
+msgid "Open log folder"
+msgstr "Hap dosjen e regjistrit"
+
+msgid "stream"
+msgstr "rrjedhë"
+
+msgid "none (a plain stream)"
+msgstr "asnjë (një rrjedhë e thjeshtë)"
+
+msgid "internet stream"
+msgstr "rrjedhë interneti"
+
+msgid "Transport Stream"
+msgstr "Transport Stream"
+
+msgid "This channel only"
+msgstr "Vetëm ky kanal"
+
+msgid "Transponder"
+msgstr "Transponderi"
+
+msgid "Measure the whole transponder (10 s)"
+msgstr "Mat të gjithë transponderin (10 s)"
+
+msgid "Internet channels have no transponder."
+msgstr "Kanalet e internetit nuk kanë transponder."
+
+msgid "whole transponder"
+msgstr "i gjithë transponderi"
+
+msgid "Video & Audio"
+msgstr "Video dhe audio"
+
+msgid "Black bars"
+msgstr "Shirita të zinj"
+
+msgid "Click a track to listen to it."
+msgstr "Kliko një pistë për ta dëgjuar."
+
+msgid "Integrated"
+msgstr "Integruar"
+
+msgid "Teletext and subtitles"
+msgstr "Teleteksti dhe titrat"
+
+msgid "interlaced capable"
+msgstr "i aftë për ndërthurje"
+
+msgid "no"
+msgstr "jo"
+
+msgid "{n} frames"
+msgstr "{n} kuadro"
+
+msgid "schedule"
+msgstr "orari"
+
+msgid "subtitles"
+msgstr "titra"
+
+msgid "Teletext PID {pid}:"
+msgstr "PID teleteksti {pid}:"
+
+msgid "No teletext or subtitles in this channel."
+msgstr "Nuk ka teletekst ose titra në këtë kanal."
+
+msgid "Table"
+msgstr "Tabela"
+
+msgid "Changes"
+msgstr "Ndryshimet"
+
+msgid "Repetition"
+msgstr "Përsëritja"
+
+msgid "Sections"
+msgstr "Seksionet"
+
+msgid "Programme guide and clock"
+msgstr "Udhëzuesi i programeve dhe ora"
+
+msgid "Guide reaches"
+msgstr "Udhëzuesi arrin deri"
+
+msgid "Clock of the channel"
+msgstr "Ora e kanalit"
+
+msgid "EIT schedule"
+msgstr "Orari EIT"
+
+msgid "missing"
+msgstr "mungon"
+
+msgid "(other services)"
+msgstr "(shërbime të tjera)"
+
+msgid "{n} sections"
+msgstr "{n} seksione"
+
+msgid "Descrambling"
+msgstr "Deshifrimi"
+
+msgid "Descrambler state"
+msgstr "Gjendja e deshifruesit"
+
+msgid "Conditional access systems"
+msgstr "Sistemet e qasjes së kushtëzuar"
+
+msgid "For"
+msgstr "Për"
+
+msgid "Key changes"
+msgstr "Ndërrime çelësi"
+
+msgid "This channel is encrypted. LinDVB descrambles it only with your own subscription card (softcam or CI module)."
+msgstr "Ky kanal është i koduar. LinDVB e deshifron vetëm me kartën tënde të abonimit (softcam ose modul CI)."
+
+msgid "scrambled"
+msgstr "i koduar"
+
+msgid "Profile"
+msgstr "Profili"
+
+msgid "test application"
+msgstr "aplikacion testimi"
+
+msgid "This channel has no HbbTV application."
+msgstr "Ky kanal nuk ka aplikacion HbbTV."
+
+msgid "No object carousel in this channel."
+msgstr "Nuk ka karusel objektesh në këtë kanal."
+
+msgid "Export"
+msgstr "Eksporto"
+
+msgid "Compare with another channel…"
+msgstr "Krahaso me një kanal tjetër…"
+
+msgid "Analyse another channel…"
+msgstr "Analizo një kanal tjetër…"
+
+msgid "Window: {w}"
+msgstr "Dritarja: {w}"
+
+msgid "Follow the channel on screen"
+msgstr "Ndiq kanalin në ekran"
+
+msgid "Watch this channel"
+msgstr "Shiko këtë kanal"
+
+msgid "Try again"
+msgstr "Provo përsëri"
+
+msgid "Copy as text"
+msgstr "Kopjo si tekst"
+
+msgid "Export report…"
+msgstr "Eksporto raportin…"
+
+msgid "Source: none"
+msgstr "Burimi: asnjë"
+
+msgid "Saved {path}"
+msgstr "U ruajt {path}"
+
+msgid "Recording the next 30 seconds…"
+msgstr "Po regjistrohen 30 sekondat e ardhshme…"
+
+msgid "Choose a channel"
+msgstr "Zgjidh një kanal"
+
+msgid "Channel name"
+msgstr "Emri i kanalit"
+
+msgid "Compare channels"
+msgstr "Krahaso kanalet"
+
+msgid "Comparison"
+msgstr "Krahasimi"
+
+msgid "Close (Esc)"
+msgstr "Mbyll (Esc)"
+
+msgid "Channel Analysis…"
+msgstr "Analiza e kanalit…"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "No Unicable"
+msgstr "Pa Unicable"
+
+msgid "Unicable I (EN 50494)"
+msgstr "Unicable I (EN 50494)"
+
+msgid "Unicable II / JESS (EN 50607)"
+msgstr "Unicable II / JESS (EN 50607)"
+
+msgid "User band"
+msgstr "Brezi i përdoruesit"
+
+msgid "Each tuner on the cable needs a different user band. Switch on the shared antenna cable above for all of them."
+msgstr "Çdo sintonizues në kabllo kërkon një brez tjetër përdoruesi. Aktivizo më sipër kabllon e përbashkët të antenës për të gjithë ata."
+
+msgid "User band frequency (MHz)"
+msgstr "Frekuenca e brezit të përdoruesit (MHz)"
+
+msgid "From the label or manual of the LNB or multiswitch."
+msgstr "Nga etiketa ose manuali i LNB-së ose multiswitch-it."
+
+msgid "Only for a protected user band (0-255). Usually empty."
+msgstr "Vetëm për një brez përdoruesi të mbrojtur (0-255). Zakonisht bosh."
+
+msgid "Fill in from"
+msgstr "Plotëso nga"
+
+msgid "Common devices: sets the type and the frequency of the user band above."
+msgstr "Pajisje të zakonshme: vendos llojin dhe frekuencën e brezit të përdoruesit më sipër."
+
+msgid "This transponder list has no satellite transponders.\n"
+msgstr "Kjo listë transponderësh nuk ka transpondera satelitorë.\n"
+
+msgid "The tuner is busy (recording or channel analysis).\n"
+msgstr "Sintonizuesi është i zënë (regjistrim ose analizë kanali).\n"
+
+msgid "Apply the changes of all edited channels (Ctrl+S)"
+msgstr "Zbato ndryshimet e të gjitha kanaleve të redaktuara (Ctrl+S)"
+
+msgid "Channel Editor – {n} channels not applied yet"
+msgstr "Redaktori i kanaleve – {n} kanale ende të pazbatuara"
+
+msgid "Apply the changes to {n} channels?"
+msgstr "Të zbatohen ndryshimet në {n} kanale?"
+
+msgid "The edits were not applied yet. Without applying they are lost."
+msgstr "Redaktimet ende nuk janë zbatuar. Pa i zbatuar ato humbasin."
+
+msgid "Discard"
+msgstr "Hidh poshtë"
+
+msgid "Germany"
+msgstr "Gjermania"
+
+msgid "Italy"
+msgstr "Italia"
+
+msgid "New Zealand"
+msgstr "Zelanda e Re"
+
+msgid "CAP"
+msgstr "CAP"
+
+msgid "Regione"
+msgstr "Regione"
+
+msgid "Freeview region"
+msgstr "Rajoni Freeview"
+
+msgid "Country"
+msgstr "Vendi"
+
+msgid "Options"
+msgstr "Opsionet"
+
+msgid "Asked in this order, separated by spaces. Press Enter to keep a change; empty brings back the country's registries."
+msgstr "Pyeten në këtë renditje, të ndara me hapësira. Shtyp Enter për të mbajtur një ndryshim; bosh rikthen regjistrat e vendit."
+
+msgid "Prefer antenna, cable and satellite to the internet stream when a channel has both"
+msgstr "Parapëlqe antenën, kabllon dhe satelitin para rrjedhës nga interneti kur një kanal ka të dyja"
+
+msgid "Registry address"
+msgstr "Adresa e regjistrit"
+
+msgid "Region in the list"
+msgstr "Rajoni në listë"
+
+msgid "Your region selects the regional channels and their numbering."
+msgstr "Rajoni yt zgjedh kanalet rajonale dhe numërimin e tyre."
+
+msgid "Settings follow: {profile}"
+msgstr "Cilësimet ndjekin: {profile}"
+
+msgid "Choose…"
+msgstr "Zgjidh…"
+
+msgid "Optional. Your {label} is sent to the service list server only."
+msgstr "Opsionale. {label} yt dërgohet vetëm te serveri i listës së shërbimeve."
+
+msgid "e.g. {example}"
+msgstr "p.sh. {example}"
+
+msgid "The DVB-I channels of the previous country stay until you install a list for {country} or remove them."
+msgstr "Kanalet DVB-I të vendit të mëparshëm mbeten derisa të instalosh një listë për {country} ose t'i heqësh."
+
+msgid "The registry offers no service list for {country}."
+msgstr "Regjistri nuk ofron listë shërbimesh për {country}."
+
+msgid "Please enter a postcode with {n} digits"
+msgstr "Fut një kod postar me {n} shifra"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the German service list registry (csr.dvb-i-slr.de), the server of the service list you choose, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server so that it can return the channels of your region. LinDVB sends no other personal data and keeps the list and logos only on this computer. Internet channels are streamed from the broadcasters' servers, which may log your requests according to their own privacy policies."
+msgstr "DVB-I e ngarkon listën e kanaleve nga interneti. Për këtë, LinDVB kontakton regjistrin gjerman të listave të shërbimeve (csr.dvb-i-slr.de), serverin e listës së shërbimeve që zgjedh, serverët që strehojnë logot e kanaleve dhe, kur udhëzuesi i programeve është aktiv, serverët e udhëzuesit të programeve të transmetuesve. Këta serverë shohin adresën tënde IP dhe kohën e kërkesës. Nëse fut një kod postar, ai dërgohet te serveri i listës së shërbimeve që të mund të kthejë kanalet e rajonit tënd. LinDVB nuk dërgon të dhëna të tjera personale dhe e mban listën dhe logot vetëm në këtë kompjuter. Kanalet e internetit transmetohen nga serverët e transmetuesve, të cilët mund t'i regjistrojnë kërkesat e tua sipas politikave të tyre të privatësisë."
+
+msgid "Antenna, satellite and internet channels are merged into one list without duplicates; a channel you receive by antenna or dish uses that first."
+msgstr "Kanalet e antenës, satelitit dhe internetit bashkohen në një listë pa dublikata; një kanal që e merr me antenë ose pjatë e përdor së pari atë."
+
+msgid "Update the channel list automatically (daily)"
+msgstr "Përditëso listën e kanaleve automatikisht (çdo ditë)"
+
+msgid "Warning! With this switched off, LinDVB can no longer keep your channel list up to date with the channels on air."
+msgstr "Kujdes! Me këtë të çaktivizuar, LinDVB nuk mund ta mbajë më të përditësuar listën tënde të kanaleve me kanalet në transmetim."
+
+msgid "Package"
+msgstr "Paketa"
+
+msgid "Free channels only"
+msgstr "Vetëm kanalet e lira"
+
+msgid "Press Install again to use the channel numbers of this package."
+msgstr "Shtyp përsëri Instalo për të përdorur numrat e kanaleve të kësaj pakete."
+
+msgid "The region selects the LCN table of your area, with the local channels, the way the terrestrial channel search does. Channels without a number go to 850-999."
+msgstr "Rajoni zgjedh tabelën LCN të zonës tënde, me kanalet lokale, ashtu si kërkimi tokësor i kanaleve. Kanalet pa numër shkojnë te 850-999."
+
+msgid "No screen saver during playback"
+msgstr "Pa mbrojtës ekrani gjatë luajtjes"
+
+msgid "Keeps the screen on while TV, radio or a file plays."
+msgstr "Mban ekranin ndezur ndërsa luhet TV, radio ose një skedar."
+
+msgid "Playing TV or radio"
+msgstr "Po luhet TV ose radio"
+
+msgid "HbbTV: not available on this channel"
+msgstr "HbbTV: nuk është i disponueshëm në këtë kanal"
+
+msgid "OSD and Visualisations"
+msgstr "OSD dhe vizualizimet"
+
+msgid "OSD size (%)"
+msgstr "Madhësia e OSD (%)"
+
+msgid "The programme info over the picture and the channel number."
+msgstr "Informacioni i programit mbi figurë dhe numri i kanalit."
+
+msgid "Font"
+msgstr "Shkronjat"
+
+msgid "Teletext subtitles and the text subtitles of files and streams."
+msgstr "Titrat e teletekstit dhe titrat tekst të skedarëve dhe rrjedhave."
+
+msgid "Size (%)"
+msgstr "Madhësia (%)"
+
+msgid "Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."
+msgstr "Titrat e vizatuara si figura (titrat DVB) mbajnë madhësinë që dërgon kanali."
+
+msgid "Subtitle font"
+msgstr "Shkronjat e titrave"
+
+msgid "Default font"
+msgstr "Shkronjat e parazgjedhura"
+
+msgid "Shown while radio or audio plays; also in the visualisation button."
+msgstr "Shfaqet ndërsa luhet radio ose audio; edhe te butoni i vizualizimit."
+
+msgid "Draw on the graphics card"
+msgstr "Vizato në kartën grafike"
+
+msgid "OpenGL for the built-in visualisations. Takes effect when LinDVB is started again."
+msgstr "OpenGL për vizualizimet e integruara. Hyn në fuqi kur LinDVB niset përsëri."
+
+msgid "Service list address"
+msgstr "Adresa e listës së shërbimeve"
+
+msgid "Use This List"
+msgstr "Përdor këtë listë"
+
+msgid "Loads this service list directly, without asking a registry."
+msgstr "Ngarkon drejtpërdrejt këtë listë shërbimesh, pa pyetur një regjistër."
+
+msgid "Please enter a web address (https://…)."
+msgstr "Fut një adresë uebi (https://…)."
+
+msgid "Please confirm the privacy notice first."
+msgstr "Fillimisht konfirmo njoftimin e privatësisë."
+
+msgid "Enter the address of a registry or of a service list."
+msgstr "Fut adresën e një regjistri ose të një liste shërbimesh."
+
+msgid "Pause / play"
+msgstr "Pauzë / luaj"
+
+msgid "Back / forward 10 seconds (timeshift, files)"
+msgstr "Mbrapa / përpara 10 sekonda (timeshift, skedarë)"
+
+msgid "Back to live"
+msgstr "Kthehu te drejtpërdrejti"
+
+msgid "Mute"
+msgstr "Pa zë"
+
+msgid "Volume up / down"
+msgstr "Volumi lart / poshtë"
+
+msgid "Sound earlier / later (audio delay of the channel)"
+msgstr "Zëri më herët / më vonë (vonesa e audios së kanalit)"
+
+msgid "Next radio visualisation"
+msgstr "Vizualizimi tjetër i radios"
+
+msgid "Next / previous playlist entry"
+msgstr "Elementi tjetër / i mëparshëm i listës së luajtjes"
+
+msgid "Previous / next channel"
+msgstr "Kanali i mëparshëm / tjetër"
+
+msgid "Next / previous channel"
+msgstr "Kanali tjetër / i mëparshëm"
+
+msgid "Channel by number (type the digits)"
+msgstr "Kanali sipas numrit (shkruaj shifrat)"
+
+msgid "Last channel"
+msgstr "Kanali i fundit"
+
+msgid "Switch TV / radio"
+msgstr "Ndërro TV / radio"
+
+msgid "Show / hide the channel list"
+msgstr "Shfaq / fshih listën e kanaleve"
+
+msgid "Programme guide and recording"
+msgstr "Udhëzuesi i programeve dhe regjistrimi"
+
+msgid "Programme guide (EPG)"
+msgstr "Udhëzuesi i programeve (EPG)"
+
+msgid "Timer recordings"
+msgstr "Regjistrimet me kohëmatës"
+
+msgid "Programme info (OSD)"
+msgstr "Informacioni i programit (OSD)"
+
+msgid "Teletext and interactive services"
+msgstr "Teleteksti dhe shërbimet interaktive"
+
+msgid "View"
+msgstr "Pamja"
+
+msgid "Full screen"
+msgstr "Ekran i plotë"
+
+msgid "Leave full screen"
+msgstr "Dil nga ekrani i plotë"
+
+msgid "Application"
+msgstr "Aplikacioni"
+
+msgid "Main menu"
+msgstr "Menyja kryesore"
+
+msgid "Open media file"
+msgstr "Hap skedar media"
+
+msgid "Keyboard shortcuts"
+msgstr "Shkurtoret e tastierës"
+
+msgid "Keyboard Shortcuts"
+msgstr "Shkurtoret e tastierës"
+
+msgid "Time"
+msgstr "Koha"
+
+msgid "Programme"
+msgstr "Programi"
+
+msgid "File"
+msgstr "Skedari"
+
+msgid "Other (own registry or list)"
+msgstr "Tjetër (regjistër ose listë e vetja)"
+
+msgid "DVB-I loads the channel list from the internet. To do so, LinDVB contacts the registry or service list server whose address you enter, the servers that host the channel logos and, when the programme guide is switched on, the broadcasters' programme guide servers. These servers see your IP address and the time of the request. If you enter a postcode, it is sent to the service list server."
+msgstr "DVB-I e ngarkon listën e kanaleve nga interneti. Për këtë, LinDVB kontakton regjistrin ose serverin e listës së shërbimeve adresën e të cilit fut, serverët që strehojnë logot e kanaleve dhe, kur udhëzuesi i programeve është aktiv, serverët e udhëzuesit të programeve të transmetuesve. Këta serverë shohin adresën tënde IP dhe kohën e kërkesës. Nëse fut një kod postar, ai dërgohet te serveri i listës së shërbimeve."
+
+msgid "Enter the address of a service list registry, or of a service list directly, below."
+msgstr "Fut më poshtë adresën e një regjistri listash shërbimesh, ose drejtpërdrejt të një liste shërbimesh."
+
+msgid "Preferred audio format"
+msgstr "Formati audio i parapëlqyer"
+
+msgid "As broadcast"
+msgstr "Siç transmetohet"
+
+msgid "Stereo (MPEG / AAC)"
+msgstr "Stereo (MPEG / AAC)"
+
+msgid "When a channel or file has this sound in the same language, it plays first."
+msgstr "Kur një kanal ose skedar ka këtë zë në të njëjtën gjuhë, luhet i pari."
+
+msgid "Dolby Digital (AC-3)"
+msgstr "Dolby Digital (AC-3)"
+
+msgid "Dolby Digital Plus (E-AC-3)"
+msgstr "Dolby Digital Plus (E-AC-3)"
+
+msgid "Number"
+msgstr "Numri"
+
+msgid "Name A–Z"
+msgstr "Emri A–Z"
+
+msgid "Name Z–A"
+msgstr "Emri Z–A"
+
+msgid "Video resolution"
+msgstr "Rezolucioni i videos"
+
+msgid "Sort by"
+msgstr "Rendit sipas"
+
+msgid "All"
+msgstr "Të gjitha"
+
+msgid "General settings"
+msgstr "Cilësimet e përgjithshme"
+
+msgid "For this recording"
+msgstr "Për këtë regjistrim"
+
+msgid "Formats and _tracks"
+msgstr "Formatet dhe _pistat"
+
+msgid "Whole series"
+msgstr "E gjithë seria"
+
+msgid "Next recording only"
+msgstr "Vetëm regjistrimi i ardhshëm"
+
+msgid "_Apply to"
+msgstr "_Zbato për"
+
+msgid "General settings: formats, audio tracks and extra streams come from the preferences when the recording starts."
+msgstr "Cilësimet e përgjithshme: formatet, pistat audio dhe rrjedhat shtesë merren nga parapëlqimet kur fillon regjistrimi."
+
+msgid "All streams of the channel (TS)"
+msgstr "Të gjitha rrjedhat e kanalit (TS)"
+
+msgid "Records every stream the channel announces, also HbbTV data and new audio tracks, with a programme table for this channel only. Only MPEG-TS can hold it, so TS is used."
+msgstr "Regjistron çdo rrjedhë që njofton kanali, edhe të dhënat HbbTV dhe pistat e reja audio, me një tabelë programi vetëm për këtë kanal. Vetëm MPEG-TS mund ta mbajë, prandaj përdoret TS."
+
+msgid "Web address"
+msgstr "Adresa e uebit"
+
+msgid "The address of an M3U playlist, or of a single HLS stream (.m3u8)."
+msgstr "Adresa e një liste M3U, ose e një rrjedhe të vetme HLS (.m3u8)."
+
+msgid "User name"
+msgstr "Emri i përdoruesit"
+
+msgid "Password"
+msgstr "Fjalëkalimi"
+
+msgid "The live channels of an Xtream Codes account. The password is kept in the list's address in the LinDVB settings."
+msgstr "Kanalet e drejtpërdrejta të një llogarie Xtream Codes. Fjalëkalimi ruhet në adresën e listës te cilësimet e LinDVB."
+
+msgid "Your lists"
+msgstr "Listat e tua"
+
+msgid "Source"
+msgstr "Burimi"
+
+msgid "Updated"
+msgstr "Përditësuar"
+
+msgid "Update"
+msgstr "Përditëso"
+
+msgid "Load the list again: favourites, channel numbers and guide matches stay, channels no longer in the list are removed."
+msgstr "Ngarko përsëri listën: të preferuarat, numrat e kanaleve dhe përputhjet e udhëzuesit mbeten, kanalet që nuk janë më në listë hiqen."
+
+msgid "Remove"
+msgstr "Hiq"
+
+msgid "Remove the list and its channels"
+msgstr "Hiq listën dhe kanalet e saj"
+
+msgid "{n} removed"
+msgstr "{n} të hequra"
+
+msgid "The file has no channels."
+msgstr "Skedari nuk ka kanale."
+
+msgid "{n} channels removed"
+msgstr "U hoqën {n} kanale"
+
+msgid "Colour scheme"
+msgstr "Skema e ngjyrave"
+
+msgid "Dark"
+msgstr "E errët"
+
+msgid "Light"
+msgstr "E çelët"
+
+msgid "Same as the system"
+msgstr "Njësoj si sistemi"
+
+msgid "The picture always keeps its dark frame."
+msgstr "Figura mban gjithmonë kornizën e saj të errët."
+
+msgid "Only the tuners connected now are listed; the settings of others are kept under “Not connected”."
+msgstr "Listohen vetëm sintonizuesit e lidhur tani; cilësimet e të tjerëve ruhen te “Jo i lidhur”."
+
+msgid "Receives everything the transponder sends instead of only the channel's own streams. It costs more bandwidth on USB tuners, but plays and records all audio tracks even when the channel list knows only one. Applies to live TV and recordings."
+msgstr "Merr gjithçka që dërgon transponderi në vend të vetëm rrjedhave të kanalit. Kushton më shumë gjerësi brezi në sintonizuesit USB, por luan dhe regjistron të gjitha pistat audio edhe kur lista e kanaleve njeh vetëm një. Zbatohet për TV të drejtpërdrejtë dhe regjistrimet."
+
+msgid "Your own name for this tuner. Empty: the name of the device."
+msgstr "Emri yt për këtë sintonizues. Bosh: emri i pajisjes."
+
+msgid "Satellite"
+msgstr "Sateliti"
+
+msgid "Antenna (terrestrial)"
+msgstr "Antenë (tokësore)"
+
+msgid "Cable"
+msgstr "Kabllo"
+
+msgid "Connected to"
+msgstr "I lidhur me"
+
+msgid "A combined tuner receives one type at a time, on the socket it is connected to. LinDVB then only uses it for channels of that type."
+msgstr "Një sintonizues i kombinuar merr një lloj njëherësh, në prizën ku është i lidhur. LinDVB e përdor atëherë vetëm për kanalet e atij lloji."
+
+msgid "No tuner is connected."
+msgstr "Nuk është lidhur asnjë sintonizues."
+
+msgid "Not connected ({n})"
+msgstr "Jo i lidhur ({n})"
+
+msgid "All its reception types"
+msgstr "Të gjitha llojet e tij të marrjes"
+
+msgid "Image files (PNG, SVG, JPG) named after the channel, e.g. \"Bayern 3.png\", or a picon set as Enigma2, Kodi and VDR use it (named by service reference or by SNP name). They are shown in the channel list too. LinDVB ships no logos, because they belong to the broadcasters. Empty: {v0}"
+msgstr "Skedarë imazhesh (PNG, SVG, JPG) të emërtuar sipas kanalit, p.sh. \"Bayern 3.png\", ose një grup piconësh siç e përdorin Enigma2, Kodi dhe VDR (të emërtuar sipas referencës së shërbimit ose emrit SNP). Ato shfaqen edhe në listën e kanaleve. LinDVB nuk sjell logo, sepse ato u përkasin transmetuesve. Bosh: {v0}"
+
+msgid "Picons for my channels"
+msgstr "Picone për kanalet e mia"
+
+msgid "Download Logos"
+msgstr "Shkarko logot"
+
+msgid "Fetches only the logos of the channels in your list from the picons project (github.com/picons/picons) into the logo folder. Channels that already have a logo there are left alone."
+msgstr "Merr vetëm logot e kanaleve në listën tënde nga projekti picons (github.com/picons/picons) në dosjen e logove. Kanalet që kanë tashmë një logo atje nuk preken."
+
+msgid "Looking up…"
+msgstr "Po kërkohet…"
+
+msgid "{done} of {total}"
+msgstr "{done} nga {total}"
+
+msgid "{got} logos downloaded, {have} already there, {missing} not in the picon set."
+msgstr "U shkarkuan {got} logo, {have} ishin tashmë atje, {missing} nuk janë në grupin e piconëve."
+
+msgid "Download failed: {error}"
+msgstr "Shkarkimi dështoi: {error}"
+
+msgid "Provider / category"
+msgstr "Ofruesi / kategoria"
+
+msgid "Extra streams"
+msgstr "Rrjedha shtesë"
+
+msgid "New timer"
+msgstr "Kohëmatës i ri"
+
+msgid "Edit timer"
+msgstr "Redakto kohëmatësin"
+
+msgid "{folder} (from the preferences)"
+msgstr "{folder} (nga parapëlqimet)"
+
+msgid "{items} can only be kept in MPEG-TS, so TS is used."
+msgstr "{items} mund të ruhen vetëm në MPEG-TS, prandaj përdoret TS."
+
+msgid "Privacy Notice"
+msgstr "Njoftimi i privatësisë"
+
+msgid "Show Privacy Notice…"
+msgstr "Shfaq njoftimin e privatësisë…"
+
+msgid "Agree"
+msgstr "Pajtohem"
+
+msgid "Please read the privacy notice to the end."
+msgstr "Lexo njoftimin e privatësisë deri në fund."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Argentina"
+msgstr "Argjentina"
+
+msgid "Austria"
+msgstr "Austria"
+
+msgid "Australia"
+msgstr "Australia"
+
+msgid "Åland Islands"
+msgstr "Ishujt Aland"
+
+msgid "Belgium"
+msgstr "Belgjika"
+
+msgid "Bulgaria"
+msgstr "Bullgaria"
+
+msgid "Brazil"
+msgstr "Brazili"
+
+msgid "Canada"
+msgstr "Kanadaja"
+
+msgid "Switzerland"
+msgstr "Zvicra"
+
+msgid "China"
+msgstr "Kina"
+
+msgid "Colombia"
+msgstr "Kolumbia"
+
+msgid "Czechia"
+msgstr "Çekia"
+
+msgid "Denmark"
+msgstr "Danimarka"
+
+msgid "Estonia"
+msgstr "Estonia"
+
+msgid "Spain"
+msgstr "Spanja"
+
+msgid "Finland"
+msgstr "Finlanda"
+
+msgid "France"
+msgstr "Franca"
+
+msgid "Greece"
+msgstr "Greqia"
+
+msgid "Hong Kong"
+msgstr "Hong Kongu"
+
+msgid "Croatia"
+msgstr "Kroacia"
+
+msgid "Hungary"
+msgstr "Hungaria"
+
+msgid "Ireland"
+msgstr "Irlanda"
+
+msgid "Israel"
+msgstr "Izraeli"
+
+msgid "Iran"
+msgstr "Irani"
+
+msgid "Iceland"
+msgstr "Islanda"
+
+msgid "Kenya"
+msgstr "Kenia"
+
+msgid "South Korea"
+msgstr "Koreja e Jugut"
+
+msgid "Liechtenstein"
+msgstr "Lihtenshtajni"
+
+msgid "Lithuania"
+msgstr "Lituania"
+
+msgid "Luxembourg"
+msgstr "Luksemburgu"
+
+msgid "Latvia"
+msgstr "Letonia"
+
+msgid "Netherlands"
+msgstr "Holanda"
+
+msgid "Norway"
+msgstr "Norvegjia"
+
+msgid "Poland"
+msgstr "Polonia"
+
+msgid "Portugal"
+msgstr "Portugalia"
+
+msgid "Romania"
+msgstr "Rumania"
+
+msgid "Russia"
+msgstr "Rusia"
+
+msgid "Sweden"
+msgstr "Suedia"
+
+msgid "Slovenia"
+msgstr "Sllovenia"
+
+msgid "Slovakia"
+msgstr "Sllovakia"
+
+msgid "Taiwan"
+msgstr "Tajvani"
+
+msgid "Ukraine"
+msgstr "Ukraina"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "United Kingdom"
+msgstr "Mbretëria e Bashkuar"
+
+msgid "United States"
+msgstr "Shtetet e Bashkuara"
+
+msgid "Vietnam"
+msgstr "Vietnami"
+
+msgid "All frequencies, 7/8 MHz (Europe, Africa, Asia)"
+msgstr "Të gjitha frekuencat, 7/8 MHz (Evropë, Afrikë, Azi)"
+
+msgid "All frequencies, 7 MHz (Australia)"
+msgstr "Të gjitha frekuencat, 7 MHz (Australi)"
+
+msgid "All frequencies, 6 MHz (Americas)"
+msgstr "Të gjitha frekuencat, 6 MHz (Amerikat)"
+
+msgid "All frequencies, 6 MHz (Taiwan)"
+msgstr "Të gjitha frekuencat, 6 MHz (Tajvan)"
+
+msgid "Whole country"
+msgstr "I gjithë vendi"
+
+msgid "Virtual tuner (vidtv)"
+msgstr "Sintonizues virtual (vidtv)"
+
+msgid "Other country (no list)"
+msgstr "Vend tjetër (pa listë)"
+
+msgid "Own lists"
+msgstr "Listat e veta"
+
+msgid "All frequencies (blind scan)"
+msgstr "Të gjitha frekuencat (skanim i verbër)"
+
+msgid "All frequencies, 6 MHz (ISDB-T)"
+msgstr "Të gjitha frekuencat, 6 MHz (ISDB-T)"
+
+msgid "All frequencies (ATSC)"
+msgstr "Të gjitha frekuencat (ATSC)"
+
+msgid "All frequencies, 8 MHz (DTMB)"
+msgstr "Të gjitha frekuencat, 8 MHz (DTMB)"
+
+msgid "Terrestrial"
+msgstr "Tokësore"
+
+msgid "Satellites"
+msgstr "Satelitët"
+
+msgid "Add satellite"
+msgstr "Shto satelit"
+
+msgid "Search several dish positions behind a DiSEqC switch in one go"
+msgstr "Kërko disa pozicione pjate pas një ndërprerësi DiSEqC njëherësh"
+
+msgid "More options"
+msgstr "Më shumë opsione"
+
+msgid "Receives: {systems}"
+msgstr "Merr: {systems}"
+
+msgid "The tuner does not say what it receives, so every list is offered."
+msgstr "Sintonizuesi nuk tregon çfarë merr, prandaj ofrohet çdo listë."
+
+msgid "Single-cable setup of this tuner: {setup}"
+msgstr "Konfigurimi me një kabllo i këtij sintonizuesi: {setup}"
+
+msgid "(no lists found)"
+msgstr "(nuk u gjetën lista)"
+
+msgid "DiSEqC port"
+msgstr "Porta DiSEqC"
+
+msgid "Each satellite needs a DiSEqC port of its own."
+msgstr "Çdo satelit kërkon portën e vet DiSEqC."
+
+msgid "{n} transponders from the lists of these positions; the search adds the ones the network announces (NIT)."
+msgstr "{n} transpondera nga listat e këtyre pozicioneve; kërkimi shton ato që njofton rrjeti (NIT)."
+
+msgid "Blind scan: tries {n} frequencies, about {minutes} min."
+msgstr "Skanim i verbër: provon {n} frekuenca, rreth {minutes} min."
+
+msgid "{n} frequencies from the list."
+msgstr "{n} frekuenca nga lista."
+
+msgid "Transponder lists"
+msgstr "Listat e transponderëve"
+
+msgid "Favourites"
+msgstr "Të preferuarat"
+
+msgid "Create, rename, delete and reorder your favourites lists."
+msgstr "Krijo, riemërto, fshi dhe rirendit listat e tua të të preferuarave."
+
+msgid "Delete list"
+msgstr "Fshi listën"
+
+msgid "Delete the list “{name}”?"
+msgstr "Të fshihet lista “{name}”?"
+
+msgid "Favourites Lists"
+msgstr "Listat e të preferuarave"
+
+msgid "Favourites Lists…"
+msgstr "Listat e të preferuarave…"
+
+msgid "Favourites lists"
+msgstr "Listat e të preferuarave"
+
+msgid "Filter; the favourites lists show TV and radio"
+msgstr "Filtri; listat e të preferuarave shfaqin TV dhe radio"
+
+msgid "In no favourites list"
+msgstr "Në asnjë listë të preferuarash"
+
+msgid "Manage favourites lists"
+msgstr "Menaxho listat e të preferuarave"
+
+msgid "Manage favourites lists…"
+msgstr "Menaxho listat e të preferuarave…"
+
+msgid "Move to the bottom"
+msgstr "Lëviz në fund"
+
+msgid "Move to the top"
+msgstr "Lëviz në krye"
+
+msgid "Name of the favourites list"
+msgstr "Emri i listës së të preferuarave"
+
+msgid "New Favourites List"
+msgstr "Listë e re të preferuarash"
+
+msgid "New list"
+msgstr "Listë e re"
+
+msgid "New list…"
+msgstr "Listë e re…"
+
+msgid "Only the channels of a favourites list"
+msgstr "Vetëm kanalet e një liste të preferuarash"
+
+msgid "Order in this list"
+msgstr "Renditja në këtë listë"
+
+msgid "Remove from “{name}”"
+msgstr "Hiq nga “{name}”"
+
+msgid "Rename Favourites List"
+msgstr "Riemërto listën e të preferuarave"
+
+msgid "Rename"
+msgstr "Riemërto"
+
+msgid "The channels stay in the channel list."
+msgstr "Kanalet mbeten në listën e kanaleve."
+
+msgid "{n} channels"
+msgstr "{n} kanale"
+
+msgid "Each list keeps its own order. Sort the channels of a list in the channel list: pick the list, then drag the channels or use the right-click menu."
+msgstr "Çdo listë mban renditjen e vet. Rendit kanalet e një liste te lista e kanaleve: zgjidh listën, pastaj tërhiq kanalet ose përdor menynë e klikimit të djathtë."
+
+msgid "Indonesia"
+msgstr "Indonezia"
+
+msgid "North Macedonia"
+msgstr "Maqedonia e Veriut"
+
+msgid "South Africa"
+msgstr "Afrika e Jugut"
+
+msgid "(no tuner)"
+msgstr "(pa sintonizues)"
+
+msgid "1 tuner"
+msgstr "1 sintonizues"
+
+msgid "{n} tuners"
+msgstr "{n} sintonizues"
+
+msgid "Add Server"
+msgstr "Shto server"
+
+msgid "Add by address"
+msgstr "Shto me adresë"
+
+msgid "Find SAT>IP servers"
+msgstr "Gjej serverë SAT>IP"
+
+msgid "For a server the search does not find (another network, or no multicast)."
+msgstr "Për një server që kërkimi nuk e gjen (rrjet tjetër, ose pa multicast)."
+
+msgid "No SAT>IP server added."
+msgstr "Nuk është shtuar asnjë server SAT>IP."
+
+msgid "No SAT>IP server answered. Add it by its address below."
+msgstr "Asnjë server SAT>IP nuk u përgjigj. Shtoje me adresën e tij më poshtë."
+
+msgid "SAT>IP boxes and LNBs, minisatip, FRITZ!Box Cable and other DVB over IP servers in the local network. Their tuners are listed below once the preferences are saved and opened again."
+msgstr "Kuti dhe LNB SAT>IP, minisatip, FRITZ!Box Cable dhe serverë të tjerë DVB mbi IP në rrjetin lokal. Sintonizuesit e tyre listohen më poshtë pasi parapëlqimet të ruhen dhe të hapen përsëri."
+
+msgid "SAT>IP servers"
+msgstr "Serverët SAT>IP"
+
+msgid "Search Network"
+msgstr "Kërko në rrjet"
+
+msgid "Searching…"
+msgstr "Po kërkohet…"
+
+msgid "TCP (in the RTSP connection)"
+msgstr "TCP (në lidhjen RTSP)"
+
+msgid "TCP works through firewalls that block the UDP stream."
+msgstr "TCP funksionon përmes murit mbrojtës që bllokon rrjedhën UDP."
+
+msgid "UDP"
+msgstr "UDP"
+
+msgid "{n} servers found, {new} new."
+msgstr "U gjetën {n} serverë, {new} të rinj."
+
+msgid "Source: SAT>IP server {host}"
+msgstr "Burimi: serveri SAT>IP {host}"
+
+msgid "SAT>IP signal report (RTCP)"
+msgstr "Raporti i sinjalit SAT>IP (RTCP)"
+
+msgid "SAT>IP: the search uses the frequencies of the list (no NIT search)."
+msgstr "SAT>IP: kërkimi përdor frekuencat e listës (pa kërkim NIT)."
+
+msgid "The SAT>IP server controls the LNB and the DiSEqC switch; the DiSEqC port chooses its source (1 to 4)."
+msgstr "Serveri SAT>IP kontrollon LNB-në dhe ndërprerësin DiSEqC; porta DiSEqC zgjedh burimin e tij (1 deri në 4)."
+
+msgid "This transponder list has no transponders for this tuner.\n"
+msgstr "Kjo listë transponderësh nuk ka transpondera për këtë sintonizues.\n"
+
+msgid "LinDVB cannot find these GStreamer elements: {elements}. Live TV or some channels may not play."
+msgstr "LinDVB nuk i gjen këto elemente GStreamer: {elements}. TV i drejtpërdrejtë ose disa kanale mund të mos luhen."
+
+msgid "The {package} should include them. Please report this as a bug."
+msgstr "{package} duhet t'i përfshijë ato. Raportoje këtë si defekt."
+
+msgid "Install them with:"
+msgstr "Instaloji me:"
+
+msgid "Install the GStreamer plugins base, bad and libav from your distribution."
+msgstr "Instalo shtojcat GStreamer base, bad dhe libav nga shpërndarja jote."
+
+msgid "GStreamer plugins are missing"
+msgstr "Mungojnë shtojca GStreamer"
+
+msgid "At start"
+msgstr "Në nisje"
+
+msgid "Channel at start"
+msgstr "Kanali në nisje"
+
+msgid "Last channel watched"
+msgstr "Kanali i fundit i shikuar"
+
+msgid "First channel of the current list"
+msgstr "Kanali i parë i listës aktuale"
+
+msgid "A chosen channel"
+msgstr "Një kanal i zgjedhur"
+
+msgid "The current list is the channel list as you left it: TV or radio, filter, group and sort order."
+msgstr "Lista aktuale është lista e kanaleve siç e le: TV ose radio, filtri, grupi dhe renditja."
+
+msgid "Channel list"
+msgstr "Lista e kanaleve"
+
+msgid "All channels or one of your favourites lists."
+msgstr "Të gjitha kanalet ose një nga listat e tua të të preferuarave."
+
+msgid "Tuned at every start, whichever channel you watched last."
+msgstr "Sintonizohet në çdo nisje, pavarësisht se cilin kanal shikove së fundi."
+
+msgid "No channel (black screen)"
+msgstr "Asnjë kanal (ekran i zi)"
+
+msgid "Lock"
+msgstr "Kyç"
+
+msgid "Search this satellite"
+msgstr "Kërko këtë satelit"
+
+msgid "Tick the satellites to search."
+msgstr "Shëno satelitët për t'u kërkuar."
+
+msgid "Horizontal"
+msgstr "Horizontal"
+
+msgid "Vertical"
+msgstr "Vertikal"
+
+msgid "Left (circular)"
+msgstr "Majtas (rrethor)"
+
+msgid "Right (circular)"
+msgstr "Djathtas (rrethor)"
+
+msgid "Auto"
+msgstr "Automatik"
+
+msgid "Add…"
+msgstr "Shto…"
+
+msgid "Tick all"
+msgstr "Shëno të gjitha"
+
+msgid "Tick none"
+msgstr "Hiq të gjitha shenjat"
+
+msgid "Back to the lists"
+msgstr "Kthehu te listat"
+
+msgid "Forget the changes to this position and use the transponder lists again"
+msgstr "Harro ndryshimet në këtë pozicion dhe përdor përsëri listat e transponderëve"
+
+msgid "The changed list is kept for this position."
+msgstr "Lista e ndryshuar ruhet për këtë pozicion."
+
+msgid "This transponder is already in the list."
+msgstr "Ky transponder është tashmë në listë."
+
+msgid "Tick the transponders to search."
+msgstr "Shëno transponderët për t'u kërkuar."
+
+msgid "DVB-S only uses QPSK; choose DVB-S2 for 8PSK, 16APSK and 32APSK."
+msgstr "DVB-S përdor vetëm QPSK; zgjidh DVB-S2 për 8PSK, 16APSK dhe 32APSK."
+
+msgid "This transponder is not valid."
+msgstr "Ky transponder nuk është i vlefshëm."
+
+msgid "All {n} transponders are searched."
+msgstr "Kërkohen të gjithë {n} transponderët."
+
+msgid "{on} of {n} transponders are searched. A search of single transponders does not add the ones the network announces (NIT)."
+msgstr "Kërkohen {on} nga {n} transponderë. Një kërkim i transponderëve të veçantë nuk shton ata që njofton rrjeti (NIT)."
+
+msgid "Edit transponder"
+msgstr "Redakto transponderin"
+
+msgid "Add transponder"
+msgstr "Shto transponder"
+
+msgid "Transponders of {position}"
+msgstr "Transponderët e {position}"
+
+msgid "The list could not be saved."
+msgstr "Lista nuk u ruajt dot."
+
+msgid "Transponders: search single ones, add, change or remove them"
+msgstr "Transponderët: kërko të veçantë, shto, ndrysho ose hiqi"
+
+msgid "{n} transponders; where only some are ticked, just those are searched."
+msgstr "{n} transpondera; kur janë shënuar vetëm disa, kërkohen vetëm ata."
+
+msgid "Own transponder list: {positions}."
+msgstr "Listë e vetja transponderësh: {positions}."
+
+msgid "The stream format the server delivers. Choose HLS when the channels do not play as MPEG-TS."
+msgstr "Formati i rrjedhës që jep serveri. Zgjidh HLS kur kanalet nuk luhen si MPEG-TS."
+
+msgid "Give the list its own name (also the name of its channel group)"
+msgstr "Jepi listës emrin e vet (edhe emri i grupit të saj të kanaleve)"
+
+msgid "List renamed to {name}"
+msgstr "Lista u riemërtua në {name}"
+
+msgid "Add Channels…"
+msgstr "Shto kanale…"
+
+msgid "Add channels"
+msgstr "Shto kanale"
+
+msgid "Tune a single frequency by hand and compare its channels with the channel list: add new ones, update changed ones, remove old ones."
+msgstr "Sintonizo me dorë një frekuencë të vetme dhe krahaso kanalet e saj me listën e kanaleve: shto të rejat, përditëso të ndryshuarat, hiq të vjetrat."
+
+msgid "Unchanged"
+msgstr "Pa ndryshim"
+
+msgid "Changed"
+msgstr "Ndryshuar"
+
+msgid "No longer broadcast"
+msgstr "Nuk transmetohet më"
+
+msgid "Bandwidth"
+msgstr "Gjerësia e brezit"
+
+msgid "yes"
+msgstr "po"
+
+msgid "Add Channels"
+msgstr "Shto kanale"
+
+msgid "Tune Channel"
+msgstr "Sintonizo kanalin"
+
+msgid "No tuner found."
+msgstr "Nuk u gjet asnjë sintonizues."
+
+msgid "Log"
+msgstr "Regjistri"
+
+msgid "The PLP of a DVB-T2 multiplex that sends several; -1 leaves the choice to the tuner"
+msgstr "PLP-ja e një multipleksi DVB-T2 që dërgon disa; -1 ia lë zgjedhjen sintonizuesit"
+
+msgid "Enter by hand"
+msgstr "Fut me dorë"
+
+msgid "Tuning…"
+msgstr "Po sintonizohet…"
+
+msgid "The tuner could not be used."
+msgstr "Sintonizuesi nuk u përdor dot."
+
+msgid "No channels found on this frequency."
+msgstr "Nuk u gjetën kanale në këtë frekuencë."
+
+msgid "{same} unchanged, {changed} changed, {new} new, {gone} no longer broadcast."
+msgstr "{same} pa ndryshim, {changed} të ndryshuara, {new} të reja, {gone} nuk transmetohen më."
+
+msgid "Saved: {added} added, {updated} updated, {removed} removed."
+msgstr "U ruajt: {added} të shtuara, {updated} të përditësuara, {removed} të hequra."
+
+msgid "Satellite · DiSEqC port {n}"
+msgstr "Satelit · porta DiSEqC {n}"
+
+msgid "Source: satellite, cable, terrestrial or internet streams, a DiSEqC port, or a satellite, network, import file or IPTV list"
+msgstr "Burimi: rrjedha satelitore, kabllore, tokësore ose interneti, një portë DiSEqC, ose një satelit, rrjet, skedar importi ose listë IPTV"
+
+msgid "LinDVB channel file (.json): everything, with the favourites lists"
+msgstr "Skedar kanalesh LinDVB (.json): gjithçka, me listat e të preferuarave"
+
+msgid "M3U playlist (.m3u): internet channels and DVB-I streams"
+msgstr "Listë M3U (.m3u): kanale interneti dhe rrjedha DVB-I"
+
+msgid "dvbv5 channel file (.conf): tuner channels"
+msgstr "Skedar kanalesh dvbv5 (.conf): kanalet e sintonizuesit"
+
+msgid "CSV table (.csv): every channel"
+msgstr "Tabelë CSV (.csv): çdo kanal"
+
+msgid "Export Channel List"
+msgstr "Eksporto listën e kanaleve"
+
+msgid "TV channels only"
+msgstr "Vetëm kanalet TV"
+
+msgid "Radio stations only"
+msgstr "Vetëm stacionet e radios"
+
+msgid "The channels shown in the list ({n})"
+msgstr "Kanalet e shfaqura në listë ({n})"
+
+msgid "Save…"
+msgstr "Ruaj…"
+
+msgid "There are no channels to export."
+msgstr "Nuk ka kanale për të eksportuar."
+
+msgid "None of these {total} channels can be stored in this format; internet channels go into M3U, tuner channels into dvbv5, every channel into CSV or the LinDVB channel file."
+msgstr "Asnjë nga këto {total} kanale nuk mund të ruhet në këtë format; kanalet e internetit shkojnë në M3U, kanalet e sintonizuesit në dvbv5, çdo kanal në CSV ose në skedarin e kanaleve LinDVB."
+
+msgid "{n} of {total} channels will be saved; the other {skipped} cannot be stored in this format."
+msgstr "Do të ruhen {n} nga {total} kanale; {skipped} të tjerat nuk mund të ruhen në këtë format."
+
+msgid "{n} channels will be saved."
+msgstr "Do të ruhen {n} kanale."
+
+msgid "Could not save {name}"
+msgstr "{name} nuk u ruajt dot"
+
+msgid "{n} channels exported to {path}"
+msgstr "U eksportuan {n} kanale në {path}"
+
+msgid "Import channel list (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+msgstr "Importo listë kanalesh (LinDVB .json, dvbv5, VDR, lamedb, M3U, CSV, DVBViewer .ini)"
+
+msgid "Server (host:9981)"
+msgstr "Serveri (host:9981)"
+
+msgid "The channels of a Tvheadend server, with its channel tags as groups and its programme guide. Leave user name and password empty when the server does not ask for them. The password is kept in the LinDVB settings."
+msgstr "Kanalet e një serveri Tvheadend, me etiketat e kanaleve si grupe dhe udhëzuesin e tij të programeve. Lëri bosh emrin e përdoruesit dhe fjalëkalimin kur serveri nuk i kërkon. Fjalëkalimi ruhet te cilësimet e LinDVB."
+
+msgid "Tvheadend: {n} programmes loaded"
+msgstr "Tvheadend: u ngarkuan {n} programe"
+
+msgid "Hardware Tuners"
+msgstr "Sintonizuesit harduerikë"
+
+msgid "No hardware tuner found."
+msgstr "Nuk u gjet sintonizues harduerik."
+
+msgid "The Snap package may only use the tuners once its DVB interface is connected: run “sudo snap connect lindvb:dvb” and start LinDVB again."
+msgstr "Paketa Snap mund t'i përdorë sintonizuesit vetëm pasi të lidhet ndërfaqja e saj DVB: ekzekuto “sudo snap connect lindvb:dvb” dhe nis përsëri LinDVB."
+
+msgid "Linux has not set up a DVB device (/dev/dvb is missing). The driver or the firmware of the tuner is probably missing; “dmesg | grep -i dvb” shows what the kernel reports."
+msgstr "Linux nuk ka konfiguruar një pajisje DVB (mungon /dev/dvb). Ndoshta mungon drajveri ose firmware-i i sintonizuesit; “dmesg | grep -i dvb” tregon çfarë raporton kerneli."
+
+msgid "Connect a tuner and open the preferences again."
+msgstr "Lidh një sintonizues dhe hap përsëri parapëlqimet."
+
+msgid "{n} tuners found in this computer."
+msgstr "U gjetën {n} sintonizues në këtë kompjuter."
+
+msgid "1 tuner found in this computer."
+msgstr "U gjet 1 sintonizues në këtë kompjuter."
+
+msgid "Tuner {n}: {name}"
+msgstr "Sintonizuesi {n}: {name}"
+
+msgid "Internet stream {host}"
+msgstr "Rrjedhë interneti {host}"
+
+msgid "the server ended the stream"
+msgstr "serveri e mbylli rrjedhën"
+
+msgid "{host}: {reason} – connecting again in {s} s"
+msgstr "{host}: {reason} – lidhje përsëri pas {s} s"
+
+msgid "{host}: connected again"
+msgstr "{host}: u lidh përsëri"
+
+msgid "could not open the stream"
+msgstr "rrjedha nuk u hap dot"
+
+msgid "{name}: playing the stream directly, without timeshift ({reason})"
+msgstr "{name}: rrjedha po luhet drejtpërdrejt, pa timeshift ({reason})"
+
+msgid "Connection lost ({reason}) – connecting again in {s} s"
+msgstr "Lidhja u humb ({reason}) – lidhje përsëri pas {s} s"
+
+msgid "Connected again"
+msgstr "U lidh përsëri"
+
+msgid "{name} has no catch-up"
+msgstr "{name} nuk ka catch-up"
+
+msgid "Catch-up: {title} ({name}, {time})"
+msgstr "Catch-up: {title} ({name}, {time})"
+
+msgid "Timeshift for internet channels"
+msgstr "Timeshift për kanalet e internetit"
+
+msgid "Internet TV and radio channels go through the timeshift buffer like a tuner's: pause, jump back and keep the buffer as a recording. Radio stations keep their song titles."
+msgstr "Kanalet TV dhe radio të internetit kalojnë përmes buferit të timeshift si ato të një sintonizuesi: pauzë, kërce mbrapa dhe mbaje buferin si regjistrim. Stacionet e radios mbajnë titujt e këngëve."
+
+msgid "Quality of HLS / DASH streams"
+msgstr "Cilësia e rrjedhave HLS / DASH"
+
+msgid "Automatic (follows the connection)"
+msgstr "Automatike (ndjek lidhjen)"
+
+msgid "Always the best"
+msgstr "Gjithmonë më e mira"
+
+msgid "Automatic switches to a lower quality when the connection gets slow; the buffer keeps what arrived. Always the best looks the same all the time, but stops to wait on a slow connection."
+msgstr "Automatikja kalon në cilësi më të ulët kur lidhja ngadalësohet; buferi mban atë që ka mbërritur. Gjithmonë më e mira duket njësoj gjatë gjithë kohës, por ndalon për të pritur në një lidhje të ngadaltë."
+
+msgid "Reconnect internet streams"
+msgstr "Rilidh rrjedhat e internetit"
+
+msgid "When the connection of an internet or Tvheadend channel breaks, it is opened again after a few seconds, for up to three minutes."
+msgstr "Kur lidhja e një kanali interneti ose Tvheadend ndërpritet, ai hapet përsëri pas disa sekondash, deri në tre minuta."
+
+msgid "Watch from the Start"
+msgstr "Shiko nga fillimi"
+
+msgid "Plays the programme from its start from the provider's archive (catch-up)"
+msgstr "Luan programin nga fillimi i tij nga arkivi i ofruesit (catch-up)"
+
+msgid "HLS and DASH internet streams are recorded with one audio track (the preferred language when it is offered)."
+msgstr "Rrjedhat e internetit HLS dhe DASH regjistrohen me një pistë audio (gjuhën e parapëlqyer kur ofrohet)."
+
+msgid "margin"
+msgstr "rezervë"
+
+msgid "pixel"
+msgstr "piksel"
+
+msgid "TV"
+msgstr "TV"
+
+msgid "Filter"
+msgstr "Filtri"
+
+msgid "Source or group"
+msgstr "Burimi ose grupi"
+
+msgid "Favourites list"
+msgstr "Lista e të preferuarave"
+
+msgid "For channels whose type was guessed wrong, e.g. internet streams or imported lists"
+msgstr "Për kanalet lloji i të cilëve u mendua gabim, p.sh. rrjedha interneti ose lista të importuara"
+
+msgid "Sort by number to move channels"
+msgstr "Rendit sipas numrit për të lëvizur kanalet"
+
+msgid "Move up in the channel list (Alt+Up)"
+msgstr "Lëviz lart në listën e kanaleve (Alt+Lart)"
+
+msgid "Move down in the channel list (Alt+Down)"
+msgstr "Lëviz poshtë në listën e kanaleve (Alt+Poshtë)"
+
+msgid "Add to the favourites list"
+msgstr "Shto në listën e të preferuarave"
+
+msgid "Remove from the favourites list"
+msgstr "Hiq nga lista e të preferuarave"
+
+msgid "Move up in the favourites list (Alt+Up)"
+msgstr "Lëviz lart në listën e të preferuarave (Alt+Lart)"
+
+msgid "Move down in the favourites list (Alt+Down)"
+msgstr "Lëviz poshtë në listën e të preferuarave (Alt+Poshtë)"
+
+msgid "Empty. Drag channels here or use the arrow button."
+msgstr "Bosh. Tërhiq kanale këtu ose përdor butonin me shigjetë."
+
+msgid "No favourites list yet. Use the star of a channel to make one."
+msgstr "Ende nuk ka listë të preferuarash. Përdor yllin e një kanali për të krijuar një."
+
+msgid "Sort the channel list"
+msgstr "Rendit listën e kanaleve"
+
+msgid "By group and name"
+msgstr "Sipas grupit dhe emrit"
+
+msgid "By the numbers of the DVB-I list"
+msgstr "Sipas numrave të listës DVB-I"
+
+msgid "{n} channels · drag to reorder"
+msgstr "{n} kanale · tërhiq për të rirenditur"
+
+msgid "Shown as the source in the channel list filter. Empty: the name the list gives itself."
+msgstr "Shfaqet si burim te filtri i listës së kanaleve. Bosh: emri që i jep vetes lista."
+
+msgid "The name the list gives itself"
+msgstr "Emri që i jep vetes lista"
+
+msgid "Name in the channel list"
+msgstr "Emri në listën e kanaleve"
+
+msgid "All tags"
+msgstr "Të gjitha etiketat"
+
+msgid "Tvheadend channel tag"
+msgstr "Etiketa e kanalit Tvheadend"
+
+msgid "{n} min left"
+msgstr "Kanë mbetur {n} min"
+
+msgid "Audio description"
+msgstr "Përshkrim audio"
+
+msgid "Black and white"
+msgstr "Bardh e zi"
+
+msgid "In memory (RAM)"
+msgstr "Në memorie (RAM)"
+
+msgid "On disk as a file"
+msgstr "Në disk si skedar"
+
+msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgstr "Joaktiv: TV i drejtpërdrejtë nuk mund të vihet në pauzë ose të kërcejë mbrapa. Në memorie: asgjë nuk shkruhet në disk, por buferi zë RAM. Në disk: buferi më i madh."
+
+msgid "Timeshift buffer in memory (MB)"
+msgstr "Buferi i timeshift në memorie (MB)"
+
+msgid "At most half of the memory ({mb} MB); less when other programs need it."
+msgstr "Më së shumti gjysma e memories ({mb} MB); më pak kur programe të tjera kanë nevojë për të."
+
+msgid "Less when the disk is almost full ({mb} MB stay free)."
+msgstr "Më pak kur disku është pothuajse plot ({mb} MB mbeten të lira)."
+
+msgid "≈ {sd} SD · {hd} HD · {uhd} UHD"
+msgstr "≈ {sd} SD · {hd} HD · {uhd} UHD"
+
+msgid "{m} min"
+msgstr "{m} min"
+
+msgid "Timeshift buffer reduced to {mb} MB: {reason}"
+msgstr "Buferi i timeshift u zvogëlua në {mb} MB: {reason}"
+
+msgid "Timeshift is off for this channel: {reason}"
+msgstr "Timeshift është joaktiv për këtë kanal: {reason}"
+
+msgid "not enough free memory"
+msgstr "nuk ka mjaftueshëm memorie të lirë"
+
+msgid "the disk is almost full"
+msgstr "disku është pothuajse plot"
+
+msgid "Timeshift is off (Preferences › Playback)"
+msgstr "Timeshift është joaktiv (Parapëlqimet › Luajtja)"
+
+msgid "HbbTV: the application is not signalled on this channel"
+msgstr "HbbTV: aplikacioni nuk sinjalizohet në këtë kanal"
+
+msgid "HbbTV video could not be played: {msg}"
+msgstr "Videoja HbbTV nuk u luajt dot: {msg}"
+
+msgid "unknown error"
+msgstr "gabim i panjohur"
+
+msgid "Diagnostic log"
+msgstr "Regjistri diagnostikues"
+
+msgid "Records what the applications do and ask of LinDVB in {path}, to attach to a bug report. Takes effect on the next channel change."
+msgstr "Regjistron në {path} çfarë bëjnë aplikacionet dhe çfarë i kërkojnë LinDVB-së, për t'ia bashkëngjitur një raporti defekti. Hyn në fuqi në ndërrimin e ardhshëm të kanalit."
+
+msgid "DiSEqC switch"
+msgstr "Ndërprerësi DiSEqC"
+
+msgid "DiSEqC 1.0 (up to 4 satellites)"
+msgstr "DiSEqC 1.0 (deri në 4 satelitë)"
+
+msgid "DiSEqC 1.1 (up to 16 satellites)"
+msgstr "DiSEqC 1.1 (deri në 16 satelitë)"
+
+msgid "DiSEqC 1.1, uncommitted only (up to 16)"
+msgstr "DiSEqC 1.1, vetëm uncommitted (deri në 16)"
+
+msgid "DiSEqC 1.1 for switches with more than 4 inputs, or an uncommitted switch in front of DiSEqC 1.0 switches. \"Uncommitted only\" for a switch that does not take DiSEqC 1.0 commands."
+msgstr "DiSEqC 1.1 për ndërprerës me më shumë se 4 hyrje, ose një ndërprerës uncommitted para ndërprerësve DiSEqC 1.0. \"Vetëm uncommitted\" për një ndërprerës që nuk pranon komanda DiSEqC 1.0."
+
+msgid "SAT>IP: up to 4 satellites (source 1 to 4)."
+msgstr "SAT>IP: deri në 4 satelitë (burimi 1 deri në 4)."
+
+msgid "Single cable: up to {n} satellite positions."
+msgstr "Një kabllo: deri në {n} pozicione satelitore."
+
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted and committed)."
+msgstr "Ndërprerës DiSEqC 1.1: deri në 16 satelitë (uncommitted dhe committed)."
+
+msgid "DiSEqC 1.1 switch: up to 16 satellites (uncommitted only)."
+msgstr "Ndërprerës DiSEqC 1.1: deri në 16 satelitë (vetëm uncommitted)."
+
+msgid "DiSEqC 1.0 switch: up to 4 satellites. DiSEqC 1.1 (up to 16 satellites) and Unicable (up to 64 positions) are chosen in the tuner settings."
+msgstr "Ndërprerës DiSEqC 1.0: deri në 4 satelitë. DiSEqC 1.1 (deri në 16 satelitë) dhe Unicable (deri në 64 pozicione) zgjidhen te cilësimet e sintonizuesit."
+
+msgid "Show your favourites lists (Ctrl+D)"
+msgstr "Shfaq listat e tua të të preferuarave (Ctrl+D)"
+
+msgid "Edit this favourites list"
+msgstr "Redakto këtë listë të preferuarash"
+
+msgid "Area"
+msgstr "Zona"
+
+msgid "All sources"
+msgstr "Të gjitha burimet"
+
+msgid "All areas"
+msgstr "Të gjitha zonat"
+
+msgid "DiSEqC port {n}"
+msgstr "Porta DiSEqC {n}"
+
+msgid "Picture quality"
+msgstr "Cilësia e figurës"
+
+msgid "Tags"
+msgstr "Etiketat"
+
+msgid "Reset the filter and the search"
+msgstr "Rivendos filtrin dhe kërkimin"
+
+msgid "Debug"
+msgstr "Debug"
+
+msgid "When something does not work: switch on the debug mode, repeat what went wrong and attach the log to the bug report."
+msgstr "Kur diçka nuk funksionon: aktivizo modalitetin debug, përsërit atë që shkoi keq dhe bashkëngjite regjistrin te raporti i defektit."
+
+msgid "Debug mode"
+msgstr "Modaliteti debug"
+
+msgid "Records channel changes, tuning, playback, recordings, HbbTV, status messages, GStreamer warnings and errors in a log file. Passwords, PINs, your user name and your home folder are left out. Takes effect when you save; switch it off again when the problem is solved."
+msgstr "Regjistron në një skedar regjistri ndërrimet e kanaleve, sintonizimin, luajtjen, regjistrimet, HbbTV, mesazhet e gjendjes, paralajmërimet dhe gabimet e GStreamer. Fjalëkalimet, PIN-et, emri yt i përdoruesit dhe dosja jote kryesore lihen jashtë. Hyn në fuqi kur ruan; çaktivizoje përsëri kur problemi të jetë zgjidhur."
+
+msgid "Log file"
+msgstr "Skedari i regjistrit"
+
+msgid "Open Folder"
+msgstr "Hap dosjen"
+
+msgid "{size} now, at most {max}. Save… makes a copy to attach to a bug report."
+msgstr "{size} tani, më së shumti {max}. Ruaj… bën një kopje për t'ia bashkëngjitur një raporti defekti."
+
+msgid "No log yet."
+msgstr "Ende nuk ka regjistër."
+
+#: lindvb/ui/window.py
+msgid "Feedback"
+msgstr "Komente"
+
+#: lindvb/ui/dialogs.py
+msgid "Audio passthrough"
+msgstr "Kalim i drejtpërdrejtë i audios"
+
+#: lindvb/ui/dialogs.py
+msgid "Sends this sound undecoded over HDMI or S/PDIF, so the AV receiver decodes it. Volume and equaliser then stay with the receiver. Radio is always decoded."
+msgstr "E dërgon këtë zë të padekoduar përmes HDMI ose S/PDIF, që marrësi AV ta dekodojë. Volumi dhe barazuesi mbeten atëherë te marrësi. Radioja dekodohet gjithmonë."
+
+#: lindvb/ui/dialogs.py
+msgid "Output device"
+msgstr "Pajisja dalëse"
+
+#: lindvb/ui/dialogs.py
+msgid "Empty: the sound server (PulseAudio or PipeWire), with the formats switched on for the HDMI or S/PDIF output there (pavucontrol: Output Devices, Advanced). Or an ALSA device such as hdmi:CARD=PCH,DEV=0 (aplay -L lists them). If the output takes none of the formats, the sound is decoded."
+msgstr "Bosh: serveri i zërit (PulseAudio ose PipeWire), me formatet të aktivizuara për daljen HDMI ose S/PDIF atje (pavucontrol: Pajisjet dalëse, Të avancuara). Ose një pajisje ALSA si hdmi:CARD=PCH,DEV=0 (aplay -L i liston). Nëse dalja nuk pranon asnjë nga formatet, zëri dekodohet."
+
+#: lindvb/ui/dialogs.py
+msgid "Sound server"
+msgstr "Serveri i zërit"
