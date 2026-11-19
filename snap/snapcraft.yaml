@@ -74,3 +74,31 @@ parts:
       - gstreamer1.0-pulseaudio
       - dvb-tools
       - dtv-scan-tables
+
+  # The GNOME content snap (gnome-46-2404, mounted at $SNAP/gnome-platform) ships
+  # its own, much newer GTK stack: GLib 2.86, Pango 1.56, HarfBuzz 12, GTK 4.20.
+  # The stage-packages above pull the Ubuntu 24.04 versions of many of the same
+  # libraries in as dependencies (HarfBuzz 8.3, Pango 1.52, GLib 2.80, ...), and
+  # those are found first at run time. GTK 4 from the content snap then loads
+  # against the old HarfBuzz and fails ("libharfbuzz-subset.so.0: undefined
+  # symbol: hb_free"), so "from gi.repository import Gtk" dies on start.
+  # This part deletes every shared library from the snap that the content snap
+  # also provides, so only the content snap's copy is used. Python modules are
+  # left alone: the staged PyGObject stays complete. The gnome extension does
+  # the same for core26 and later ("gnome/cleanup"), but not for core24.
+  cleanup:
+    after: [lindvb]
+    plugin: nil
+    build-snaps: [gnome-46-2404]
+    override-prime: |
+      set -eu
+      platform=/snap/gnome-46-2404/current
+      cd "$platform"
+      find . -path './usr/lib/python3*' -prune -o \
+             \( -type f -o -type l \) \( -name '*.so' -o -name '*.so.*' \) -print |
+      while IFS= read -r lib; do
+        if [ -e "$CRAFT_PRIME/$lib" ] || [ -L "$CRAFT_PRIME/$lib" ]; then
+          echo "cleanup: $lib is provided by gnome-46-2404"
+          rm -f "$CRAFT_PRIME/$lib"
+        fi
+      done
