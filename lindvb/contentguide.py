@@ -40,7 +40,10 @@ HOW_PROMO_IMAGE = ":19"        # urn:tva:metadata:cs:HowRelatedCS:2012:19
 AUDIO_DESCRIPTION = "Audio description"
 SUBTITLES = "Subtitles"
 SIGN_LANGUAGE = "Sign language"
-ACCESS_SHORT = {AUDIO_DESCRIPTION: "AD", SUBTITLES: "ST", SIGN_LANGUAGE: "SL"}
+ACCESS_SHORT = {SUBTITLES: "ST", SIGN_LANGUAGE: "SL"}
+# features shown as a symbol instead of a short text (audio description: the
+# crossed-out eye of the German "Hörfilm" logo)
+ACCESS_ICONS = {AUDIO_DESCRIPTION: "lindvb-audio-description-symbolic"}
 
 
 def _q(endpoint, params):
@@ -239,7 +242,14 @@ def supported_access(access, broadcast):
 
 
 def badges(ev):
-    return " ".join(f"[{ACCESS_SHORT.get(a, a)}]" for a in getattr(ev, "access", []) or [])
+    """Short text badges ('[ST]') for the features that have no symbol."""
+    return " ".join(f"[{ACCESS_SHORT.get(a, a)}]" for a in getattr(ev, "access", []) or []
+                    if a not in ACCESS_ICONS)
+
+
+def access_icons(ev):
+    """[(icon name, feature)] for the features shown as a symbol."""
+    return [(ACCESS_ICONS[a], a) for a in getattr(ev, "access", []) or [] if a in ACCESS_ICONS]
 
 
 # ---------------------------------------------------------------- loading

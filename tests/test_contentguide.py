@@ -156,7 +156,8 @@ def test_load_guide_and_store(tmp_path, monkeypatch):
     again = EPGStore()
     # the saved file keeps the DVB-I fields (only future events are loaded)
     assert all(hasattr(e, "access") for evs in again.events.values() for e in evs.values())
-    assert cg.badges(ts) == "[AD]"
+    assert cg.badges(ts) == ""                        # shown as the symbol instead
+    assert cg.access_icons(ts) == [("lindvb-audio-description-symbolic", cg.AUDIO_DESCRIPTION)]
 
 
 def test_load_guide_reports_errors():

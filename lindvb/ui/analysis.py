@@ -18,6 +18,7 @@ from .. import sitree
 from ..analysis import AnalysisSession, ca_lines, report_json
 from ..esparse import AFD_NAMES
 from ..i18n import _
+from ..media_info import is_audio_description
 from ..tsanalysis import NULL_PID, ca_system_name, pid_owners
 from . import charts
 from .charts import (BAD, FAIR, GOOD, OTHER, PALETTE, POOR, Bar, Chart, EventStrip,
@@ -228,7 +229,10 @@ class Table(Gtk.Grid):
                 cr.fill()
             sw.set_draw_func(draw)
             box.append(sw)
-            box.append(label("", ellipsize=3, hexpand=True))
+            box.append(label("", ellipsize=3))
+            box.append(Gtk.Image(icon_name="lindvb-audio-description-symbolic", pixel_size=16,
+                                 tooltip_text=_("Audio description"), visible=False,
+                                 halign=Gtk.Align.START, hexpand=True))
             return box
         return label("", ["lv-cell", "lv-tnum"], xalign=xalign, hexpand=expand, ellipsize=3)
 
@@ -246,12 +250,13 @@ class Table(Gtk.Grid):
                 set_chip(w.get_first_child(), text, k)
                 w.get_first_child().set_visible(bool(text))
             elif kind == "swatch":
-                colour, text = v
+                colour, text, *ad = v      # ad: show the audio description symbol
                 sw = w.get_first_child()
                 sw.colour = colour or OTHER
                 sw.set_visible(bool(colour))
                 sw.queue_draw()
-                w.get_last_child().set_text(text)
+                sw.get_next_sibling().set_text(text)
+                w.get_last_child().set_visible(bool(ad and ad[0]))
             else:
                 w.set_text(str(v))
 
@@ -730,15 +735,14 @@ class OverviewPage(Page):
             d = streams[pid]
             e = es.get(pid, {})
             name = d.get("language") or "–"
-            if d.get("audio_description"):
-                name += " · " + _("AD")
-            rows.append((i, [(PALETTE[i % len(PALETTE)], name),
+            rows.append((i, [(PALETTE[i % len(PALETTE)], name, bool(d.get("audio_description"))),
                              e.get("short") or d.get("codec", ""),
                              e.get("layout", ""),
                              str(round((e.get("nominal_bps") or rates.get(pid) or 0) / 1000)) or "–"]))
         if not rows and tracks[0]:
             for i, t in enumerate(tracks[0]):
-                rows.append((i, [(PALETTE[i % len(PALETTE)], t.language_name or "–"), t.codec or "",
+                rows.append((i, [(PALETTE[i % len(PALETTE)], t.language_name or "–", is_audio_description(t)),
+                                 t.codec or "",
                                  t.layout or "", "–"]))
         self.atable.set_rows(rows, selected=cur if st.get("on_screen") else None)
         self.audio_count.set_text(_("{n} tracks").format(n=len(rows)))
@@ -1442,7 +1446,8 @@ class MediaPage(Page):
                 notes.append(_("clean audio"))
             if e.get("mode") and e["mode"] not in ("stereo",):
                 notes.append(e["mode"])
-            rows.append((ai, [str(pid), (PALETTE[ai % len(PALETTE)], d.get("language") or "–"),
+            rows.append((ai, [str(pid), (PALETTE[ai % len(PALETTE)], d.get("language") or "–",
+                                           bool(d.get("audio_description"))),
                               e.get("codec") or d.get("codec", ""), e.get("layout", ""),
                               f"{e['rate'] / 1000:g} kHz" if e.get("rate") else "",
                               rate(e.get("nominal_bps")) if e.get("nominal_bps") else "–",
@@ -1451,7 +1456,8 @@ class MediaPage(Page):
             ai += 1
         if not rows:
             for i, t in enumerate(tracks):
-                rows.append((i, ["–", (PALETTE[i % len(PALETTE)], t.language_name or "–"), t.codec or "",
+                rows.append((i, ["–", (PALETTE[i % len(PALETTE)], t.language_name or "–",
+                                        is_audio_description(t)), t.codec or "",
                                  t.layout or "", "", "", "", "", ""]))
         self.atable.set_rows(rows, selected=cur if on else None)
         loud = st.get("loudness") or {}

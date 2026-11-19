@@ -10,7 +10,7 @@ import time
 from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 
 from ..config import CACHE_DIR
-from ..contentguide import AUDIO_DESCRIPTION, SUBTITLES, badges, image_url
+from ..contentguide import ACCESS_ICONS, AUDIO_DESCRIPTION, SUBTITLES, access_icons, badges, image_url
 from .common import day, dropdown, fill, hm, make_column_view, scrolled, selected
 from ..i18n import _
 
@@ -24,6 +24,11 @@ ACCESS_FILTERS = [(_("All programmes"), None), (_("With audio description"), AUD
 def _title(e):
     b = badges(e)
     return f"{e.title}  {b}" if b else e.title
+
+
+def _title_icons(e):
+    """Symbols after the title (audio description: the crossed-out eye)."""
+    return [(name, _(a)) for name, a in access_icons(e)]
 PX_PER_MIN = 4
 NAME_W = 150
 # Start widths of the list columns; the user's own widths are saved per view.
@@ -241,7 +246,8 @@ class EPGWindow(Gtk.Window):
         top.append(self.access_dd)
         box.append(top)
         cols = [(_("Channel"), lambda r: r[0].name, False), (_("Start"), lambda r: hm(r[1].start), False),
-                (_("End"), lambda r: hm(r[1].end), False), (_("Title"), lambda r: _title(r[1]), True),
+                (_("End"), lambda r: hm(r[1].end), False),
+                (_("Title"), lambda r: _title(r[1]), True, lambda r: _title_icons(r[1])),
                 (_("Genre"), lambda r: r[1].genre, False)]
         self.now_view, self.now_store, self.now_sel = make_column_view(
             cols, lambda r: self.app.window.zap(r[0]), self._widths("now"))
@@ -265,7 +271,8 @@ class EPGWindow(Gtk.Window):
         box.append(self.ch_dd)
         cols = [(_("Day"), lambda r: day(r[1].start), False), (_("Start"), lambda r: hm(r[1].start), False),
                 (_("Duration"), lambda r: f"{r[1].duration // 60} min", False),
-                (_("Title"), lambda r: _title(r[1]), True), (_("Subheading"), lambda r: r[1].subtitle, True)]
+                (_("Title"), lambda r: _title(r[1]), True, lambda r: _title_icons(r[1])),
+                (_("Subheading"), lambda r: r[1].subtitle, True)]
         self.ch_view, self.ch_store, self.ch_sel = make_column_view(
             cols, lambda r: self.on_record(), self._widths("channel"))
         self.ch_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
@@ -296,7 +303,8 @@ class EPGWindow(Gtk.Window):
             top.append(w)
         box.append(top)
         cols = [(_("Channel"), lambda r: r[0].name, False), (_("Day"), lambda r: day(r[1].start), False),
-                (_("Start"), lambda r: hm(r[1].start), False), (_("Title"), lambda r: _title(r[1]), True)]
+                (_("Start"), lambda r: hm(r[1].start), False),
+                (_("Title"), lambda r: _title(r[1]), True, lambda r: _title_icons(r[1]))]
         self.s_view, self.s_store, self.s_sel = make_column_view(
             cols, lambda r: self.on_record(), self._widths("search"))
         self.s_sel.connect("notify::selected-item", lambda s, _p: self._select(selected(s)))
@@ -404,11 +412,16 @@ class EPGWindow(Gtk.Window):
         self.chips.remove_all()
         facts = [f"{day(e.start)}  {hm(e.start)}–{hm(e.end)}", f"{e.duration // 60} min"]
         facts += [e.genre] if e.genre else []
-        facts += list(e.access or [])
+        facts += [_(a) for a in e.access or [] if a not in ACCESS_ICONS]
         facts += [f"FSK {e.min_age}"] if e.min_age else []
         for i, fact in enumerate([c.name] + facts):
             css = ["epg-chip"] + (["epg-chip-accent"] if i == 0 else [])
             self.chips.append(Gtk.Label(label=fact, halign=Gtk.Align.START, css_classes=css))
+        for name, a in access_icons(e):
+            chip = Gtk.Box(spacing=5, halign=Gtk.Align.START, css_classes=["epg-chip"], tooltip_text=_(a))
+            chip.append(Gtk.Image(icon_name=name, pixel_size=16))
+            chip.append(Gtk.Label(label=_(a)))
+            self.chips.append(chip)
         self.desc_lbl.set_text(e.description or "")
         self.desc_lbl.set_visible(bool(e.description))
         self.desc_sw.get_vadjustment().set_value(0)
