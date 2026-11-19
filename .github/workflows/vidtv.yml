@@ -58,8 +58,15 @@ jobs:
             echo "::error title=vidtv::no vidtv adapter on kernel $kver"
             exit 1
           fi
+          # udev sets the device permissions after the nodes appear; let it
+          # finish first, or it undoes the chmod
+          sudo udevadm settle || true
           sudo chmod -R a+rw /dev/dvb
           ls -lR /dev/dvb
+          for d in /sys/class/dvb/*; do
+            echo "$d -> $(readlink -f "$d/device") driver=$(readlink -f "$d/device/driver")"
+          done
+          python3 -c 'from lindvb.scan import find_adapters, is_virtual_adapter as v; print([(a, f, n, v(a, f)) for a, f, n in find_adapters()])'
 
       - name: Run tests
         run: python3 -m pytest -v -rs tests/test_vidtv.py
