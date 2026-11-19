@@ -76,9 +76,11 @@ def test_appimage_bundles_the_checked_plugins():
     text = (ROOT / "packaging" / "build-appdir.sh").read_text()
     plugins = text.split('PLUGINS="', 1)[1].split('"', 1)[0].split()
     for element, plugin in (("level", "level"), ("capssetter", "debug"),
-                            ("cc708overlay", "closedcaption"), ("aacparse", "audioparsers")):
+                            ("aacparse", "audioparsers")):
         assert element in selfcheck.ELEMENTS
         assert plugin in plugins, plugin
+    assert selfcheck.CC_OVERLAY == "cc708overlay"
+    assert "closedcaption" in plugins
 
 
 def test_silence_is_noticed():
