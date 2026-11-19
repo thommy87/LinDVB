@@ -36,8 +36,11 @@ TIMEOUT = 60
 ELEMENTS = ["h264parse", "mpegaudioparse", "aacparse", "videoconvert", "audioconvert",
             "decodebin3",
             "level",           # loudness meter (gst-plugins-good)
-            "capssetter",      # AAC and subtitles in MP4/MKV recordings (good)
-            "cc708overlay"]    # closed captions (gst-plugins-bad)
+            "capssetter"]      # AAC and subtitles in MP4/MKV recordings (good)
+# Closed captions (CEA-608/708, gst-plugins-bad). The packages that bring their
+# own GStreamer must have it; GStreamer 1.28 of the distributions (e.g. Arch)
+# no longer has it, so there a missing overlay is only a warning.
+CC_OVERLAY = "cc708overlay"
 # Audio output: one of these must exist; it only plays when a sound server runs
 AUDIO_SINKS = ["pulsesink", "pipewiresink", "alsasink"]
 
@@ -103,6 +106,13 @@ def check_elements(report):
             report.ok(f"GStreamer element {name}")
         else:
             report.fail(f"GStreamer element {name} is missing")
+    if Gst.ElementFactory.find(CC_OVERLAY):
+        report.ok(f"GStreamer element {CC_OVERLAY}")
+    elif compat.bundled():
+        report.fail(f"GStreamer element {CC_OVERLAY} is missing")
+    else:
+        report.warn(f"closed captions unavailable: GStreamer {Gst.version_string().split()[-1]} "
+                    f"has no {CC_OVERLAY}")
     sinks = [s for s in AUDIO_SINKS if Gst.ElementFactory.find(s)]
     if sinks:
         report.ok("audio output: " + ", ".join(sinks))
