@@ -210,3 +210,39 @@ def test_undefined_start_time_is_skipped():
     sec[16:21] = b"\xff" * 5                 # start_time of the first event
     sec[-4:] = mpeg_crc(bytes(sec[:-4])).to_bytes(4, "big")
     assert parse_eit_section(_section(bytes(sec)), GstMpegts)[1] == []
+
+
+def test_capture_collects_repeated_eit_of_a_busy_carousel(tmp_path, monkeypatch):
+    """DVB-C with the full schedule of the network on PID 0x12: the sections
+    of several TS packets repeat. tsparse skips the first packet of a section
+    it has seen and reads the following packets' payload (event texts) as new
+    sections, so the tuned transport stream's guide never came together and
+    keys like 25970:... ("er") appeared. The capture reassembles the EIT itself."""
+    from lindvb import timeshift
+    from lindvb.channels import Channel
+    from lindvb.config import DEFAULTS
+    from tests.test_epgsources import _long_eit, _packetize
+    pf = _long_eit(10301, 10002, 0x4E, 2)
+    sched = _long_eit(10301, 10002, 0x50, 3)
+    other = _long_eit(20001, 10005, 0x6E, 2)
+    later = _long_eit(10302, 10002, 0x50, 3)
+    ts = tmp_path / "eit.ts"
+    ts.write_bytes(_packetize([pf, sched, other] * 3 + [pf, later, other]))
+    monkeypatch.setattr(timeshift, "ram_dir", lambda: tmp_path / "shm")
+    monkeypatch.setenv("LINDVB_TEST_TS", str(ts))
+    settings = dict(DEFAULTS, timeshift_dir=str(tmp_path / "ts"), timeshift_mode="off")
+    ch = Channel("Das Erste HD", delsys="dvb-c", frequency=386000, sid=10301, tsid=10002,
+                 onid=61441, pmt_pid=0x100)
+    cap = tuner.Capture(ch, 0, 0, settings)
+    from gi.repository import GLib
+    keys = []
+    cap.connect("eit", lambda _c, key, evs: keys.append((key, len(evs))))
+    loop = GLib.MainLoop()
+    bus = cap.pipeline.get_bus()
+    bus.connect("message::eos", lambda *_a: GLib.idle_add(loop.quit))
+    GLib.timeout_add(10000, loop.quit)
+    cap.start()
+    loop.run()
+    cap.destroy()
+    assert keys == [("10002:10301", 2), ("10002:10301", 3), ("10005:20001", 2),
+                    ("10002:10302", 3)]

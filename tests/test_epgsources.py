@@ -192,3 +192,81 @@ def test_black_and_white_programmes():
     <title>News</title><video><colour>yes</colour></video></programme></tv>"""
     (_c1, film), (_c2, news) = read_xmltv(xml)[1]
     assert film.bw and not news.bw
+
+
+# -- broadcast EIT from the TS packets (issue: no guide on a busy cable EIT) ------------
+
+def _ext(text):
+    t = text.encode("latin-1")[:240]
+    body = bytes([0x00]) + b"ger" + bytes([0, len(t)]) + t
+    return bytes([0x4E, len(body)]) + body
+
+
+def _long_eit(sid, tsid, table_id, n=3, start=None):
+    """An EIT section spanning several TS packets (long descriptions)."""
+    start = start or int(time.time()) - 600
+    text = "Hier steht eine lange Beschreibung der Sendung, die ueber Pakete geht. " * 3
+    evs = [(i + 1, start + i * 3600, 3600, [_short("ger", f"Titel {sid} {i}", "Folge"), _ext(text)])
+           for i in range(n)]
+    return _eit(sid, tsid, evs, table_id)
+
+
+def _packetize(sections, pid=0x12):
+    """Sections back to back in TS packets, as a multiplexer sends them."""
+    stream = b"".join(sections)
+    starts, pos = [], 0
+    for s in sections:
+        starts.append(pos)
+        pos += len(s)
+    out, i, cc = [], 0, 0
+    while i < len(stream):
+        first = next((p for p in starts if i <= p < i + 183), None)
+        if first is not None:
+            payload, i, pusi = bytes([first - i]) + stream[i:i + 183], i + 183, 0x40
+        else:
+            payload, i, pusi = stream[i:i + 184], i + 184, 0
+        out.append(bytes([0x47, pusi | (pid >> 8), pid & 0xFF, 0x10 | cc]) +
+                   payload.ljust(184, b"\xff"))
+        cc = (cc + 1) % 16
+    return b"".join(out)
+
+
+def test_section_assembler_keeps_section_ending_before_pointer():
+    from lindvb.ca import SectionAssembler
+    a, b = _long_eit(1, 2, 0x50), _long_eit(3, 4, 0x6E)
+    data = _packetize([a, b, a])
+    asm = SectionAssembler()
+    got = [s for i in range(0, len(data), 188) for s in asm.feed(data[i:i + 188])]
+    assert got[:3] == [a, b, a]
+
+
+def test_eit_collector_repeated_multi_packet_sections():
+    """The carousel repeats sections of several packets; every section comes
+    through once, under its own tsid:sid, and no event text is read as a
+    section header (keys like 25970:... = "er")."""
+    from lindvb.epgsources import EITCollector
+    own_pf = _long_eit(10301, 10002, 0x4E, 2)
+    own_sched = _long_eit(10301, 10002, 0x50, 3)
+    other = _long_eit(20001, 10005, 0x6E, 2)
+    later = _long_eit(10302, 10002, 0x50, 3)       # only in the second round
+    data = _packetize([own_pf, own_sched, other] * 3 + [own_pf, later, other])
+    got = []
+    col = EITCollector(lambda k, evs, tid, sid: got.append((k, len(evs), tid, sid)))
+    for i in range(0, len(data), 7 * 188):
+        col.feed_buffer(data[i:i + 7 * 188])
+    assert got == [("10002:10301", 2, 0x4E, 10301), ("10002:10301", 3, 0x50, 10301),
+                   ("10005:20001", 2, 0x6E, 20001), ("10002:10302", 3, 0x50, 10302)]
+
+
+def test_eit_collector_drops_corrupt_sections():
+    from lindvb.epgsources import EITCollector
+    good = _long_eit(10301, 10002, 0x50)
+    bad = bytearray(good)
+    bad[40] ^= 0xFF                                  # CRC no longer matches
+    text = b"ner Sendung, die " * 20                  # "n" = 0x6E, no long-form bit
+    got = []
+    col = EITCollector(lambda k, evs, tid, sid: got.append(k))
+    for sec in (bytes(bad), text, good):
+        col.feed_section(sec)
+    assert got == ["10002:10301"]
+    assert parse_eit_raw(text) is None

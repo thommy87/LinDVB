@@ -18,9 +18,9 @@ import gi
 gi.require_version("Gst", "1.0")
 from gi.repository import GLib, GObject, Gst  # noqa: E402
 
-from .epg import parse_eit_section, section_bytes  # noqa: E402
+from .epg import section_bytes  # noqa: E402
 from .tsanalysis import sdt_service_type  # noqa: E402
-from .epgsources import ProviderEPG, provider_pids, provider_types_for  # noqa: E402
+from .epgsources import EITCollector, ProviderEPG, provider_pids, provider_types_for  # noqa: E402
 from . import debuglog, diseqc, directtune, ipstream, satip, timeshift, tunerprofiles, tvheadend, unicable  # noqa: E402
 
 try:
@@ -390,6 +390,12 @@ class Capture(GObject.Object):
             self.provider_epg = ProviderEPG(kinds, self._on_provider_events, self.epg_language)
             parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._epg_probe)
 
+        # DVB EIT, reassembled from the packets (see lindvb.epgsources.EITCollector)
+        self.eit = None
+        if self._atsc is None:
+            self.eit = EITCollector(self._on_eit_events, self.epg_language)
+            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._eit_probe)
+
         # HbbTV: watch the PMT for the AIT and the AIT for applications
         self.ait_monitor = None
         self._views = {}                 # channel key -> ServiceView (shared services)
@@ -490,6 +496,29 @@ class Capture(GObject.Object):
                 finally:
                     buf.unmap(mapinfo)
         return Gst.PadProbeReturn.OK
+
+    def _eit_probe(self, pad, info):
+        buf = info.get_buffer()
+        if buf is not None and self.eit is not None:
+            ok, mapinfo = buf.map(Gst.MapFlags.READ)
+            if ok:
+                try:
+                    self.eit.feed_buffer(bytes(mapinfo.data))
+                finally:
+                    buf.unmap(mapinfo)
+        return Gst.PadProbeReturn.OK
+
+    def _on_eit_events(self, key, events, table_id, sid):
+        """Streaming thread: events of an EIT section; the store gets them in
+        the main loop."""
+        def deliver():
+            k = key
+            if self._tvh is not None:
+                k = self._tvh_eit_key(table_id, sid)
+            if k:
+                self.emit("eit", k, events)
+            return False
+        GLib.idle_add(deliver)
 
     def _ait_probe(self, pad, info):
         buf = info.get_buffer()
@@ -724,7 +753,7 @@ class Capture(GObject.Object):
             self.channel.service_type = stype
             self.emit("service-type", stype)
 
-    def _tvh_eit_key(self, section):
+    def _tvh_eit_key(self, table_id, sid):
         """Tvheadend: the store key of an EIT section of the stream, or None to drop it.
 
         The server can rewrite the service and transport stream ids of the
@@ -734,9 +763,8 @@ class Capture(GObject.Object):
         The present/following and schedule of the stream's own service are
         kept under the channel's own key (Channel.tvh_eit_key), the rest is
         dropped: its ids say nothing reliable about which channel it is."""
-        actual = section.table_id == 0x4E or 0x50 <= section.table_id <= 0x5F
-        if not actual or (self._tvh_sid is not None and
-                          section.subtable_extension != self._tvh_sid):
+        actual = table_id == 0x4E or 0x50 <= table_id <= 0x5F
+        if not actual or (self._tvh_sid is not None and sid != self._tvh_sid):
             return None
         return self.channel.tvh_eit_key
 
@@ -930,11 +958,7 @@ class Capture(GObject.Object):
                         for key, events in self._atsc.feed(section, GstMpegts):
                             self.emit("eit", key, events)
                         return
-                    res = parse_eit_section(section, GstMpegts, self.epg_language)
-                    if res and res[1]:
-                        key = self._tvh_eit_key(section) if self._tvh is not None else res[0]
-                        if key:
-                            self.emit("eit", key, res[1])
+                    # the DVB EIT comes from self.eit, not from these messages
         elif t == Gst.MessageType.ERROR:
             err, dbg = msg.parse_error()
             self.emit("error", f"{err.message}")
