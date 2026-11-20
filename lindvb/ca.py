@@ -315,22 +315,28 @@ class SectionAssembler:
             if not payload:
                 return
             pointer = payload[0]
-            payload = payload[1 + pointer:]
-            self._buf = bytearray(payload)
+            if self._buf:
+                # the bytes before the pointer end the section in progress
+                self._buf += payload[1:1 + pointer]
+                yield from self._complete()
+            self._buf = bytearray(payload[1 + pointer:])
         else:
             if not self._buf:
                 return
             self._buf += payload
+        yield from self._complete()
+
+    def _complete(self):
         while len(self._buf) >= 3:
+            if self._buf[0] == 0xFF:        # stuffing
+                self._buf = bytearray()
+                break
             length = ((self._buf[1] & 0x0F) << 8) | self._buf[2]
             total = 3 + length
             if len(self._buf) < total:
                 break
             yield bytes(self._buf[:total])
             self._buf = self._buf[total:]
-            if not self._buf or self._buf[0] == 0xFF:   # stuffing
-                self._buf = bytearray()
-                break
 
 
 def section_matches(section, flt, mask):

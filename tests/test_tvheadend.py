@@ -489,12 +489,12 @@ def test_stream_eit_kept_per_channel():
                 tvh_server="http://tvh:9981", sid=1, tsid=1)
     cap = NS(channel=a, _tvh_sid=None)
     key = Capture._tvh_eit_key
-    assert key(cap, NS(table_id=0x4E, subtable_extension=1)) == a.tvh_eit_key
-    assert key(cap, NS(table_id=0x50, subtable_extension=7)) == a.tvh_eit_key
-    assert key(cap, NS(table_id=0x4F, subtable_extension=1)) is None    # other services
+    assert key(cap, 0x4E, 1) == a.tvh_eit_key
+    assert key(cap, 0x50, 7) == a.tvh_eit_key
+    assert key(cap, 0x4F, 1) is None    # other services
     cap._tvh_sid = 1
-    assert key(cap, NS(table_id=0x4E, subtable_extension=1)) == a.tvh_eit_key
-    assert key(cap, NS(table_id=0x4E, subtable_extension=2)) is None
+    assert key(cap, 0x4E, 1) == a.tvh_eit_key
+    assert key(cap, 0x4E, 2) is None
     b = Channel(name="B", delsys="iptv", url="http://tvh:9981/stream/channel/b",
                 tvh_server="http://tvh:9981", sid=1, tsid=1)
     assert a.tvh_eit_key != b.tvh_eit_key

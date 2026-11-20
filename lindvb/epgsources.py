@@ -291,13 +291,23 @@ def crc_ok(section):
     return _crc32_mpeg(section) == 0
 
 
-def _crc32_mpeg(data):
-    crc = 0xFFFFFFFF
-    for b in data:
-        crc ^= b << 24
+def _crc_table():
+    table = []
+    for i in range(256):
+        crc = i << 24
         for _ in range(8):
             crc = ((crc << 1) ^ 0x04C11DB7) if crc & 0x80000000 else (crc << 1)
-            crc &= 0xFFFFFFFF
+        table.append(crc & 0xFFFFFFFF)
+    return table
+
+
+_CRC_TABLE = _crc_table()
+
+
+def _crc32_mpeg(data):
+    crc, table = 0xFFFFFFFF, _CRC_TABLE
+    for b in data:
+        crc = ((crc << 8) & 0xFFFFFFFF) ^ table[(crc >> 24) ^ b]
     return crc
 
 
@@ -321,11 +331,13 @@ def parse_eit_raw(section, language=""):
 
     Used for EIT on non-standard PIDs (Freesat) that GStreamer does not parse.
     """
-    if len(section) < 18 or not (0x4E <= section[0] <= 0x6F):
+    # an EIT is a long section (section_syntax_indicator set): anything else
+    # with an EIT table id is not one, e.g. text a demuxer took for a header
+    if len(section) < 18 or not (0x4E <= section[0] <= 0x6F) or not section[1] & 0x80:
         return None
     length = ((section[1] & 0x0F) << 8) | section[2]
     end = 3 + length - 4                          # without CRC
-    if end > len(section):
+    if end > len(section) or length > 4093:
         return None
     sid = (section[3] << 8) | section[4]
     tsid = (section[8] << 8) | section[9]
@@ -619,6 +631,68 @@ class MHWGrabber:
 
 
 # -- packet level -------------------------------------------------------------------
+
+EIT_PID = 0x12
+
+
+class EITCollector:
+    """The DVB EIT of a capture, reassembled from its TS packets (PID 0x12).
+
+    GStreamer's section messages are not used for the EIT: when a section
+    that spans several TS packets repeats, tsparse skips its first packet as
+    already seen but then reads the payload of the packets that follow as the
+    start of new sections. Those "sections" are event texts (with a table id
+    like "N".."o" they pass as EIT), and the real sections that start in
+    those packets are lost. On a busy EIT (the full schedule of a cable
+    network) the guide of the tuned transport stream never came together and
+    the store filled with keys like 25970:... ("er").
+
+    Every section is checked (long form, CRC) and decoded once; the carousel
+    repeats it until its version changes. ``on_events(key, events, table_id,
+    service_id)`` is called from the streaming thread.
+    """
+
+    def __init__(self, on_events, language=""):
+        from .ca import SectionAssembler
+        self.on_events = on_events
+        self.language = language
+        self._asm = SectionAssembler()
+        self._seen = set()
+
+    def feed_section(self, section):
+        if len(section) < 18 or not (0x4E <= section[0] <= 0x6F) or not section[1] & 0x80:
+            return
+        sig = zlib.crc32(section)
+        if sig in self._seen:
+            return
+        if not crc_ok(section):
+            return
+        if len(self._seen) > 200000:
+            self._seen.clear()
+        self._seen.add(sig)
+        try:
+            res = parse_eit_raw(section, self.language)
+        except (IndexError, ValueError, TypeError, OverflowError):
+            return
+        if res and res[1]:
+            self.on_events(res[0], res[1], section[0], (section[3] << 8) | section[4])
+
+    def feed_packet(self, packet):
+        for section in self._asm.feed(packet):
+            self.feed_section(section)
+
+    def feed_buffer(self, data):
+        """Feed a buffer of whole TS packets (possibly not aligned)."""
+        n, i = len(data), data.find(0x47)
+        while 0 <= i and i + 188 <= n:
+            if data[i] != 0x47:
+                i += 1
+                continue
+            # PID 0x12, without the transport error indicator
+            if data[i + 2] == EIT_PID and (data[i + 1] & 0x9F) == 0:
+                self.feed_packet(memoryview(data)[i:i + 188])
+            i += 188
+
 
 class ProviderEPG:
     """Collects provider EPG from TS packets of a capture.
