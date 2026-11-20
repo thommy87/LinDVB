@@ -219,6 +219,21 @@ class Feeder(threading.Thread):
         self.running = False
 
 
+def capture_buffer(end, read_offset, level, limit, byte_rate):
+    """Buffer of an internet channel played from its capture: the bytes in the
+    capture not yet read by the Feeder plus those waiting in the appsrc.
+    *percent* is that against the appsrc's size (a full appsrc = 100 %),
+    *left_ms* the playing time it holds at the stream's byte rate."""
+    ahead = max(0, int(end) - int(read_offset)) + max(0, int(level or 0))
+    out = {"ahead_bytes": ahead}
+    if limit:
+        out["percent"] = min(100, round(ahead * 100 / limit))
+    if byte_rate and byte_rate > 0:
+        out["left_ms"] = int(ahead * 1000 / byte_rate)
+        out["out"] = byte_rate
+    return out
+
+
 def display_size(s):
     """(width, height) of a video caps structure as it is shown: the width
     stretched by the pixel aspect ratio, so 720x576 at 64/45 (SD 16:9) is
@@ -626,7 +641,10 @@ class Player(GObject.Object):
             lv.set_property("post-messages", on)
 
     def add_ts_tap(self, fn):
-        """Hand the transport stream of internet channels to fn (streaming thread)."""
+        """Hand the transport stream of internet channels to fn (streaming thread),
+        as it reaches tsdemux: from the network, or from the timeshift buffer of
+        a channel read into a capture (lindvb.ipstream). DVB captures are
+        tapped at the capture (Capture.add_tap)."""
         self._ts_taps = tuple(self._ts_taps) + (fn,)
 
     def remove_ts_tap(self, fn):
@@ -634,7 +652,7 @@ class Player(GObject.Object):
 
     def _ts_probe(self, _pad, info):
         taps = self._ts_taps
-        if taps and not self.capture:
+        if taps and (not self.capture or self.plays_stream_capture()):
             buf = info.get_buffer()
             if buf is not None:
                 data = buf.extract_dup(0, buf.get_size())
@@ -1732,15 +1750,39 @@ class Player(GObject.Object):
         return black_borders(data, info.width, info.height, stride)
 
     def buffer_info(self):
-        """Buffering of an internet stream: dict percent, in/out rates (bytes/s), left (ms)."""
-        if not self.playbin or self.capture:
+        """Buffering of an internet stream: dict percent, in/out rates (bytes/s), left (ms).
+
+        An internet channel buffered for timeshift plays from its capture
+        (lindvb.ipstream) through the appsrc: its buffer is what lies ready
+        ahead of the playback there (capture_buffer). Adaptive streams
+        (hlsdemux, hlsdemux2) answer no buffering query; the percentage of
+        their last buffering message stands in for it."""
+        if not self.playbin:
             return {}
+        if self.capture:
+            f = self.feeder
+            if f is None or not self.plays_stream_capture():
+                return {}
+            try:
+                _start, end = self.capture.store.bounds()
+                level = f.appsrc.get_property("current-level-bytes")
+                limit = f.appsrc.get_property("max-bytes")
+            except (AttributeError, TypeError):
+                return {}
+            return capture_buffer(end, f.reader.offset, level, limit, self.capture.byte_rate())
         q = Gst.Query.new_buffering(Gst.Format.TIME)
-        if not self.playbin.query(q):
-            return {}
-        _busy, pct = q.parse_buffering_percent()
-        _mode, avg_in, avg_out, left = q.parse_buffering_stats()
-        return {"percent": pct, "in": avg_in, "out": avg_out, "left_ms": left}
+        if self.playbin.query(q):
+            _busy, pct = q.parse_buffering_percent()
+            _mode, avg_in, avg_out, left = q.parse_buffering_stats()
+            return {"percent": pct, "in": avg_in, "out": avg_out, "left_ms": left}
+        pct = getattr(self, "_last_buffering", None)
+        if pct is None and self._played:
+            pct = 100           # playing and never asked to wait: nothing missing
+        return {"percent": pct} if pct is not None else {}
+
+    def plays_stream_capture(self):
+        """The capture played is an internet stream (or Tvheadend) read by LinDVB."""
+        return getattr(self.capture, "_net", None) is not None
 
     # -- bus ----------------------------------------------------------------
 

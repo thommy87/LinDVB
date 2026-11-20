@@ -733,6 +733,11 @@ class Capture(GObject.Object):
         """Bytes read from the network (internet streams and Tvheadend)."""
         return self._net.received if self._net is not None else 0
 
+    @property
+    def reconnects(self):
+        """How often the connection of an internet stream was opened again."""
+        return getattr(self._net, "reconnects", 0) if self._net is not None else 0
+
     def _learn_service(self, section):
         """Tvheadend: the PAT names the one service of the stream. Keep its ids
         on the channel, so the broadcast EIT finds it (Channel.epg_links)."""

@@ -4875,3 +4875,79 @@ msgstr "Leer: der Sound-Server (PulseAudio oder PipeWire); dort die Formate für
 #: lindvb/ui/dialogs.py
 msgid "Sound server"
 msgstr "Sound-Server"
+
+#: lindvb/analysis.py
+msgid "Capacity"
+msgstr "Kapazität"
+
+#: lindvb/analysis.py
+msgid "Count"
+msgstr "Anzahl"
+
+#: lindvb/analysis.py
+msgid "Final address"
+msgstr "Endgültige Adresse"
+
+#: lindvb/analysis.py
+msgid "Frames measured"
+msgstr "Gemessene Bilder"
+
+#: lindvb/analysis.py
+msgid "Interval"
+msgstr "Intervall"
+
+#: lindvb/analysis.py
+msgid "Loudness jumps"
+msgstr "Lautheitssprünge"
+
+#: lindvb/analysis.py
+msgid "No tables received."
+msgstr "Keine Tabellen empfangen."
+
+#: lindvb/analysis.py
+msgid "Renditions"
+msgstr "Ausspielungen"
+
+#: lindvb/analysis.py
+msgid "Tables"
+msgstr "Tabellen"
+
+#: lindvb/analysis.py
+msgid "Window"
+msgstr "Zeitfenster"
+
+#: lindvb/analysis.py
+msgid "a background reception"
+msgstr "ein Empfang im Hintergrund"
+
+#: lindvb/analysis.py
+msgid "no tuner free"
+msgstr "kein Tuner frei"
+
+#: lindvb/analysis.py
+msgid "no, played directly"
+msgstr "nein, direkt abgespielt"
+
+#: lindvb/analysis.py
+msgid "playing"
+msgstr "läuft"
+
+#: lindvb/analysis.py
+msgid "reception lost"
+msgstr "Empfang verloren"
+
+#: lindvb/analysis.py
+msgid "the player's stream"
+msgstr "der Stream des Players"
+
+#: lindvb/analysis.py
+msgid "the tuner was needed for watching or recording"
+msgstr "der Tuner wurde zum Ansehen oder Aufnehmen gebraucht"
+
+#: lindvb/analysis.py
+msgid "yes, played from the timeshift buffer"
+msgstr "ja, aus dem Timeshift-Puffer abgespielt"
+
+#: lindvb/analysis.py
+msgid "Ø {avg} % · min {min} %"
+msgstr "Ø {avg} % · min. {min} %"

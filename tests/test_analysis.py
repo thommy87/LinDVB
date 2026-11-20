@@ -347,3 +347,80 @@ def test_stream_rate_prefers_tag_then_buffer_output():
     assert stream_rate({"in": 1_076_000, "out": 16_000}) == 128_000
     assert stream_rate({"in": 20_000, "out": -1}) == 160_000
     assert stream_rate({}) is None and stream_rate(None) is None
+
+
+# ---------------------------------------------------------------- IPTV buffer and the report
+
+def test_capture_buffer_of_a_timeshifted_internet_channel():
+    from lindvb.player import capture_buffer
+    # 300 kB in the capture not yet read, 200 kB in the appsrc of 1 MB, 250 kB/s
+    b = capture_buffer(1_300_000, 1_000_000, 200_000, 1_000_000, 250_000)
+    assert b["percent"] == 50 and b["left_ms"] == 2000 and b["ahead_bytes"] == 500_000
+    # far behind live (timeshift): full
+    assert capture_buffer(90_000_000, 1_000_000, 0, 1_000_000, 250_000)["percent"] == 100
+    # the appsrc ran dry at the live end
+    assert capture_buffer(1_000_000, 1_000_000, 0, 1_000_000, 250_000)["percent"] == 0
+    assert "left_ms" not in capture_buffer(10, 0, 0, 100, 0)
+
+
+def _report_session(kind, state, channel):
+    import functools
+    import time
+    import types
+    from collections import deque
+
+    from lindvb.analysis import AnalysisSession
+    s = types.SimpleNamespace(kind=kind, state=state, status=state.get("status", "player"),
+                              channel=channel, window_seconds=300, tuning={}, capture=None, transponder=None,
+                              player=None, events=deque(), started=time.time(),
+                              app=types.SimpleNamespace(epg=None),
+                              history=deque([{"t": time.time(), "total": 4e6, "quality": 1.0,
+                                              "buffer": 80, "download": 9e6}]))
+    for name in ("stats", "window_history", "summary", "report_dict", "report_sections",
+                 "report_text"):
+        setattr(s, name, functools.partial(getattr(AnalysisSession, name), s))
+    return s
+
+
+def test_report_of_an_internet_channel_has_the_internet_stream():
+    from lindvb.analysis import report_json
+    ch = Channel(name="arte", delsys="iptv", url="https://example.org/live/playlist.m3u8")
+    probe = {"protocol": "HTTPS", "status": 200, "content_type": "application/x-mpegURL",
+             "latency": 0.067, "server": "nginx", "download_bps": 12e6,
+             "playlist": {"kind": "master", "live": True,
+                          "variants": [{"bandwidth": 5_000_000, "width": 1280, "height": 720,
+                                        "fps": 25.0, "codecs": "avc1.4d401f,mp4a.40.2"}],
+                          "media": [{"type": "AUDIO", "language": "de", "name": "Deutsch"}],
+                          "media_playlist": {"segments": 10, "avg_segment": 5.0, "target": 6,
+                                             "container": "MPEG-TS", "live": True}}}
+    state = {"kind": "iptv", "status": "background", "on_screen": False,
+             "iptv": {"probe": probe}, "signal": {"quality": 1.0}}
+    s = _report_session("iptv", state, ch)
+    text = s.report_text()
+    assert "Internet stream\n---------------" in text
+    for line in ("Address: https://example.org/live/playlist.m3u8", "Protocol: HTTPS",
+                 "HTTP status: 200", "Server: nginx", "Content type: application/x-mpegURL",
+                 "Response time: 67 ms", "Download speed: 12.00 Mbit/s",
+                 "Playlist: HLS with 1 variants · live",
+                 "Segments: 10 segments of Ø 5.0 s (target 6 s) · MPEG-TS",
+                 "Buffer: only for the channel on screen", "Stream: now 4.00 Mbit/s"):
+        assert line in text, line
+    assert "1280 × 720" in text and "avc1.4d401f" in text           # the variants
+    assert "audio de Deutsch" in text                                # renditions
+    for heading in ("Video", "Audio tracks", "Stream health", "Encryption", "Tables"):
+        assert f"\n{heading}\n" in text, heading
+    assert "Signal\n" not in text and "Reception\n" not in text
+    d = json.loads(report_json(s))
+    assert d["sections"][1]["title"] == "Internet stream"
+
+
+def test_report_of_a_dvb_channel_has_signal_and_reception():
+    ch = Channel(name="Das Erste HD", delsys="dvb-s2", frequency=11494000, polarity="h",
+                 symbol_rate=22000, sid=10301)
+    state = {"kind": "dvb", "status": "live", "on_screen": True,
+             "signal": {"quality": 0.9, "cnr_db": 12.5, "margin": 4.0, "lock": True,
+                        "status": {"lock": True}}}
+    text = _report_session("dvb", state, ch).report_text()
+    assert "\nSignal\n" in text and "C/N: 12.5 dB" in text and "Margin: +4.0 dB" in text
+    assert "\nReception\n" in text and "Frequency: 11494 MHz H" in text and "Symbol rate: 22000 kBd" in text
+    assert "Internet stream" not in text
