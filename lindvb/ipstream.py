@@ -891,6 +891,10 @@ class StreamSource:
     def received(self):
         return self.reader.received if self.reader is not None else 0
 
+    @property
+    def reconnects(self):
+        return getattr(self.reader, "reconnects", 0) if self.reader is not None else 0
+
     def start(self):
         if self.kind == "http":
             self.reader = StreamReader(self.url, self.on_data, self.on_error, self.on_status,

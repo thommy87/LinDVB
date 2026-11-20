@@ -262,6 +262,7 @@ class AnalysisSession(GObject.Object):
         self.iptv_probe = None
         self.stream = {}                # streaminfo.probe() result
         self._tapped_player = False
+        self._tap = None                # the player whose transport stream feeds the analyser
         self._preempt_id = app.tuners.connect("preempt-analysis", self._on_preempt)
         self._timer = GLib.timeout_add(1000, self._tick)
         self.closed = False
@@ -293,6 +294,7 @@ class AnalysisSession(GObject.Object):
         self._prev_cc = 0
         self._prev_lock = None
         self._prev_rebuffers = None
+        self._received = deque()        # (monotonic, bytes) of the stream's capture
         self._seen_events = 0
         self._loud_jumps = 0
         self._bars_at = 0.0
@@ -310,9 +312,7 @@ class AnalysisSession(GObject.Object):
         if c.is_iptv:
             self.kind = "iptv"
             if self.is_on_screen():
-                self.player.add_ts_tap(self.analyzer.feed)
-                self._tapped_player = True
-                self.status = "player"
+                self._tap_player()
             else:
                 self.iptv_probe = IptvProbe(c.url, self.analyzer.feed)
                 self.iptv_probe.start()
@@ -358,9 +358,7 @@ class AnalysisSession(GObject.Object):
         if self.frontend is not None:
             self.frontend.close()
             self.frontend = None
-        if self._tapped_player and self.player is not None:
-            self.player.remove_ts_tap(self.analyzer.feed)
-        self._tapped_player = False
+        self._untap_player()
         if self.iptv_probe is not None:
             self.iptv_probe.stop()
             self.iptv_probe = None
@@ -406,6 +404,36 @@ class AnalysisSession(GObject.Object):
             self.window.zap(self.channel)
 
     # -- IPTV -----------------------------------------------------------------
+    def _tap_player(self):
+        """Feed the analyser with the transport stream the player demuxes: from
+        its own pipeline, or from the timeshift buffer of an internet channel
+        read into a capture (lindvb.ipstream), which it plays through an appsrc."""
+        if self._tap is not None or self.player is None:
+            return
+        self.player.add_ts_tap(self.analyzer.feed)
+        self._tap = self.player
+        self._tapped_player = True
+        self.status = "player"
+
+    def _untap_player(self):
+        tap, self._tap = self._tap, None
+        self._tapped_player = False
+        if tap is not None:
+            tap.remove_ts_tap(self.analyzer.feed)
+
+    def _download_rate(self, now, received):
+        """Bit rate read from the network over the last ten seconds, from the
+        byte counter of the stream's capture (None until two seconds passed)."""
+        self._received.append((now, received))
+        while len(self._received) > 2 and now - self._received[0][0] > 10:
+            self._received.popleft()
+        t0, b0 = self._received[0]
+        if received < b0:               # a new capture: count again
+            self._received.clear()
+            self._received.append((now, received))
+            return None
+        return (received - b0) * 8 / (now - t0) if now - t0 >= 2 else None
+
     def _probe_stream(self):
         from .streaminfo import probe
         url = self.channel.url
@@ -489,14 +517,18 @@ class AnalysisSession(GObject.Object):
                 self.frontend.close()
                 self.frontend = None
             self._attach_capture()
-        if self.kind == "iptv" and not self._tapped_player and self.is_on_screen():
+        if self.kind == "iptv" and self._tap is None and self.is_on_screen():
             # the channel started playing: measure what the player gets
             if self.iptv_probe is not None:
                 self.iptv_probe.stop()
                 self.iptv_probe = None
-            self.player.add_ts_tap(self.analyzer.feed)
-            self._tapped_player = True
-            self.status = "player"
+            self._tap_player()
+        elif self.kind == "iptv" and self._tap is not None and not self.is_on_screen():
+            # the player went to another channel: fetch this one ourselves again
+            self._untap_player()
+            self.iptv_probe = IptvProbe(self.channel.url, self.analyzer.feed)
+            self.iptv_probe.start()
+            self.status = "background"
         if self.kind == "iptv" and time.monotonic() - getattr(self, "_probe_at", 0) > IPTV_PROBE_EVERY:
             self._probe_stream()
         if self.paused:
@@ -587,14 +619,17 @@ class AnalysisSession(GObject.Object):
         if self.kind == "iptv":
             iptv = {"probe": self.stream}
             if on_screen:
+                cap = player.capture
                 iptv["buffer"] = player.buffer_info()
                 iptv["fragments"] = list(player.fragments)
-                iptv["rebuffers"] = player.rebuffers
+                iptv["timeshift"] = cap is not None
+                rebuffers = player.rebuffers + (getattr(cap, "reconnects", 0) if cap else 0)
+                iptv["rebuffers"] = rebuffers
                 q = self.window.quality
                 sample["quality"] = q.quality if q.kind == "iptv" else None
-                if self._prev_rebuffers is not None and player.rebuffers > self._prev_rebuffers:
+                if self._prev_rebuffers is not None and rebuffers > self._prev_rebuffers:
                     self._event("rebuffer", _("Rebuffering"))
-                self._prev_rebuffers = player.rebuffers
+                self._prev_rebuffers = rebuffers
                 buf = iptv["buffer"]
                 if buf:
                     sample["buffer"] = buf.get("percent")
@@ -604,11 +639,17 @@ class AnalysisSession(GObject.Object):
                     if total:
                         sample["total"] = total
                 frags = [f for f in iptv["fragments"] if f["seconds"] > 0]
+                dl = None
                 if frags:
                     recent = frags[-5:]
-                    iptv["download_bps"] = sum(f["bytes"] for f in recent) * 8 / \
-                        sum(f["seconds"] for f in recent)
-                    sample["download"] = iptv["download_bps"]
+                    dl = sum(f["bytes"] for f in recent) * 8 / sum(f["seconds"] for f in recent)
+                elif cap is not None:
+                    dl = self._download_rate(now, getattr(cap, "received", 0))
+                elif buf and (buf.get("in") or 0) > 0:
+                    dl = buf["in"] * 8
+                if dl:
+                    iptv["download_bps"] = dl
+                    sample["download"] = dl
             elif self.iptv_probe is not None:
                 iptv["error"] = self.iptv_probe.error
                 iptv["caps"] = self.iptv_probe.caps
@@ -702,7 +743,15 @@ class AnalysisSession(GObject.Object):
             "transponder": _plain(self.transponder), "iptv": _plain(st.get("iptv")),
             "events": [{"time": time.strftime("%H:%M:%S", time.localtime(t)), "kind": k,
                         "text": txt} for t, k, txt in self.events],
+            "sections": [{"title": sec["title"], "rows": [list(r) for r in sec.get("rows", [])],
+                          "table": sec.get("table"), "lines": sec.get("lines", [])}
+                         for sec in self.report_sections()],
         }
+
+    def report_sections(self):
+        """The report as the window shows it: [{"title", "rows": [(label, value)],
+        "table": (columns, rows) or None, "lines": [str]}] (lindvb.ui.analysis)."""
+        return report_sections(self)
 
     def report_text(self):
         d = self.report_dict()
@@ -715,6 +764,13 @@ class AnalysisSession(GObject.Object):
                   "loudness": _("Loudness")}
         for k, label in labels.items():
             lines.append(f"{label}: {d['summary'].get(k, '–')}")
+        for sec in d["sections"]:
+            lines += ["", sec["title"], "-" * len(sec["title"])]
+            lines += [f"{label}: {value}" for label, value in sec.get("rows", [])]
+            table = sec.get("table")
+            if table:
+                lines += _text_table(table["columns"], table["rows"])
+            lines += sec.get("lines", [])
         lines += ["", "PID       " + _("Content").ljust(28) + _("Bit rate").rjust(14) + "  CC"]
         for p in d["pids"]:
             lines.append(f"0x{p['pid']:04X}    {str(p['content'])[:28].ljust(28)}"
@@ -843,4 +899,492 @@ def ca_lines(snap):
     for spid, d in pmt.get("streams", []):
         for caid, pid in d.get("ca", []):
             out.append((caid, ca_system_name(caid), pid, f"PID {spid}"))
+    return out
+
+
+# -- the report: every section of the window -------------------------------------
+
+AIT_CODES = {1: "AUTOSTART", 2: "PRESENT", 3: "DESTROY", 4: "KILL", 5: "PREFETCH",
+             6: "REMOTE", 7: "DISABLED", 8: "PLAYBACK_AUTOSTART"}
+
+
+def _num(v, digits=1, unit=""):
+    if v is None or (isinstance(v, float) and not math.isfinite(v)):
+        return "–"
+    return f"{v:.{digits}f} {unit}".strip()
+
+
+def _ms(seconds, digits=0):
+    return _num(seconds * 1000, digits, "ms") if seconds is not None else "–"
+
+
+def _or_dash(v):
+    return v if v not in (None, "") else "–"
+
+
+def _text_table(columns, rows):
+    """Plain text columns, as wide as their longest cell."""
+    cells = [[str(c) for c in columns]] + [[str(_or_dash(c)) for c in r] for r in rows]
+    widths = [max(len(r[i]) for r in cells) for i in range(len(columns))]
+    return ["  ".join(c.ljust(w) for c, w in zip(r, widths)).rstrip() for r in cells]
+
+
+def _section(title, rows=(), table=None, lines=()):
+    return {"title": title, "rows": [(k, str(_or_dash(v))) for k, v in rows],
+            "table": table, "lines": list(lines)}
+
+
+def _stats_text(st):
+    return _("now {now} · Ø {avg} · peak {max}").format(
+        now=_fmt_rate(st["now"]), avg=_fmt_rate(st["avg"]), max=_fmt_rate(st["max"])) if st else "–"
+
+
+def _iptv_sections(session, st):
+    ip = st.get("iptv") or {}
+    probe = ip.get("probe") or {}
+    sig = st.get("signal") or {}
+    on = st.get("on_screen")
+    q = session.stats("quality")
+    tot = session.stats("total")
+    dl = ip.get("download_bps") or probe.get("download_bps")
+    buf = ip.get("buffer") or {}
+    pct = buf.get("percent")
+    buffer_txt = f"{pct} %" if pct is not None else (
+        "–" if on else _("only for the channel on screen"))
+    if buf.get("left_ms") is not None and pct is not None:
+        buffer_txt += " · " + _num(buf["left_ms"] / 1000, 1, "s")
+    rows = [(_("Quality"), (f"{round((sig.get('quality') or 0) * 100)} %" +
+                            (" · " + _("Ø {avg} · min {min}").format(
+                                avg=f"{round(q['avg'] * 100)} %", min=f"{round(q['min'] * 100)} %")
+                             if q else ""))),
+            (_("Stream"), _stats_text(tot)),
+            (_("Download"), _fmt_rate(dl) + (" · " + _("{x}× the stream rate").format(
+                x=_num(dl / tot["avg"], 1)) if dl and tot and tot["avg"] else "") if dl else "–"),
+            (_("Buffer"), buffer_txt),
+            (_("Rebuffering"), str(ip.get("rebuffers", "–"))),
+            (_("Timeshift"), (_("yes, played from the timeshift buffer") if ip.get("timeshift")
+                              else _("no, played directly")) if on else "")]
+    out = [_section(_("Stream"), [r for r in rows if r[1]])]
+    hist = session.window_history()
+    bufs = [h["buffer"] for h in hist if h.get("buffer") is not None]
+    out[0]["rows"].append((_("Buffer history"), _("Ø {avg} % · min {min} %").format(
+        avg=round(sum(bufs) / len(bufs)), min=min(bufs)) if bufs else "–"))
+    pl = probe.get("playlist") or {}
+    kind = pl.get("kind")
+    media_pl = pl.get("media_playlist") or (pl if kind == "media" else {})
+    playlist = {"master": _("HLS with {n} variants").format(n=len(pl.get("variants", []))),
+                "media": _("HLS media playlist"),
+                "dash": _("MPEG-DASH")}.get(kind, _("none (a plain stream)")) + \
+        ((" · " + (_("live") if pl.get("live") or media_pl.get("live") else _("on demand")))
+         if kind else "")
+    segments = _("{n} segments of Ø {s} (target {t}) · {c}").format(
+        n=media_pl["segments"], s=_num(media_pl["avg_segment"], 1, "s"),
+        t=_num(media_pl["target"], 0, "s"), c=media_pl.get("container") or "?") \
+        if media_pl.get("segments") else "–"
+    rows = [(_("Address"), session.channel.url),
+            (_("Final address"), probe.get("final_url")
+             if probe.get("final_url") and probe.get("final_url") != session.channel.url else ""),
+            (_("Protocol"), probe.get("protocol") or "–"),
+            (_("HTTP status"), str(probe["status"]) if "status" in probe else "–"),
+            (_("Server"), probe.get("server") or "–"),
+            (_("Content type"), probe.get("content_type") or "–"),
+            (_("Response time"), _ms(probe.get("latency")) if probe.get("latency") else "–"),
+            (_("Download speed"), _fmt_rate(probe.get("download_bps"))
+             if probe.get("download_bps") else _fmt_rate(dl) if dl else "–"),
+            (_("Playlist"), playlist if probe else "–"),
+            (_("Segments"), segments),
+            (_("Rebuffering"), str(ip.get("rebuffers", "–"))),
+            (_("Error"), probe.get("error") or ip.get("error") or "")]
+    variants = pl.get("variants") or [r for r in pl.get("representations", [])
+                                      if r.get("type") in ("video", "")]
+    table = None
+    if variants:
+        table = {"columns": [_("Bit rate"), _("Resolution"), _("Frame rate"), _("Codecs")],
+                 "rows": [[_fmt_rate(v.get("bandwidth")),
+                           f"{v['width']} × {v['height']}" if v.get("width") else "–",
+                           _num(v["fps"], 2, "fps") if v.get("fps") else "–", v.get("codecs", "")]
+                          for v in variants]}
+    media = pl.get("media") or [r for r in pl.get("representations", [])
+                                if r.get("type") not in ("video", "")]
+    lines = []
+    if media:
+        lines.append(_("Renditions") + ": " + ", ".join(
+            " ".join(x for x in (m.get("type", "").lower(), m.get("language", ""), m.get("name", ""))
+                     if x) for m in media))
+    elif not variants:
+        lines.append(_("No variant list: the address is a single stream."))
+    out.insert(0, _section(_("Internet stream"), [r for r in rows if r[1]], table, lines))
+    return out
+
+
+def _dvb_sections(session, st):
+    sig = st.get("signal") or {}
+    c = session.channel
+    t = session.tuning or {}
+    q = session.stats("quality")
+    cn = session.stats("cnr_db")
+    m = sig.get("margin")
+    ber = sig.get("ber")
+    rows = [(_("Quality"), (f"{round((sig.get('quality') or 0) * 100)} %" +
+                            (" · " + _("Ø {avg} · min {min}").format(
+                                avg=f"{round(q['avg'] * 100)} %", min=f"{round(q['min'] * 100)} %")
+                             if q else ""))),
+            ("C/N", _num(sig.get("cnr_db"), 1, "dB") + (
+                " · " + _("min {min} · max {max}").format(min=_num(cn["min"], 1), max=_num(cn["max"], 1))
+                if cn else "")),
+            (_("Margin"), (("+" if m >= 0 else "") + _num(m, 1, "dB")) if m is not None else "–"),
+            (_("C/N needed"), _num(sig.get("required_cn"), 1, "dB") if sig.get("required_cn") else ""),
+            (_("Level"), _num(sig.get("level_dbm"), 1, "dBm") if sig.get("level_dbm") is not None
+             else (f"{round(sig['level_rel'] * 100)} %" if sig.get("level_rel") is not None else "–")),
+            ("BER", (f"{ber:.1e}" if ber else "0") if ber is not None else
+             (str(sig.get("ber_raw")) if sig.get("ber_raw") is not None else "–")),
+            (_("Uncorrectable blocks"), str(sum(s.get("unc", 0) for s in session.history))),
+            (_("Lock losses"), str(sum(1 for e in session.events if e[1] == "lock"))),
+            ("Lock", ", ".join(k for k, v in (sig.get("status") or {}).items() if v) or "–")]
+    out = [_section(_("Signal"), [r for r in rows if r[1]])]
+    snap = st.get("snap") or {}
+    sr = (t.get("symbol_rate") or (c.symbol_rate or 0) * 1000) // 1000
+    cap = st.get("capacity")
+    rows = [(_("Frequency"), f"{c.frequency // 1000} MHz {c.polarity.upper()}".strip()
+             if c.is_sat else (_num(c.frequency / 1000, 1, "MHz") if c.frequency else "")),
+            (_("Symbol rate"), f"{sr} kBd" if sr else ""),
+            (_("Modulation"), " · ".join(x for x in ((t.get("delsys") or c.delsys).upper(),
+                                                      (t.get("modulation") or c.modulation).upper(),
+                                                      "FEC " + (t.get("fec") or t.get("code_rate_hp")
+                                                                or c.fec))
+                                         if x and x.upper() not in ("AUTO", "FEC AUTO"))),
+            (_("Roll-off / pilots"), " · ".join(x for x in (t.get("rolloff", ""), t.get("pilot", ""),
+                                                            t.get("guard", ""),
+                                                            t.get("transmission_mode", "")) if x)),
+            ("DiSEqC", _("Port {n}").format(n=c.diseqc + 1) if c.diseqc >= 0 else ""),
+            (_("Transponder capacity"), _fmt_rate(cap) + " " + _("(theoretical)") if cap else ""),
+            ("ONID · TSID · SID", f"{snap.get('onid') or c.onid or '–'} · "
+                                  f"{snap.get('tsid') or c.tsid or '–'} · {c.sid or '–'}")]
+    out.append(_section(_("Reception"), [r for r in rows if r[1]]))
+    if t:
+        out.append(_section(_("Tuned parameters (from the frontend)"),
+                            [(k, str(v)) for k, v in t.items() if v not in (None, "")]))
+    return out
+
+
+def _video_sections(session, st):
+    snap = st.get("snap") or {}
+    pmt = snap.get("pmt") or {}
+    es = snap.get("es") or {}
+    rates = st.get("rates") or {}
+    vi = st.get("video") or {}
+    on = st.get("on_screen")
+    vpid = next((pid for pid, d in pmt.get("streams", []) if d["kind"] == "video"), None)
+    vid = es.get(vpid, {}) if vpid is not None else {}
+    vd = dict(pmt.get("streams", [])).get(vpid, {})
+    w, h = vi.get("width") or vid.get("width"), vi.get("height") or vid.get("height")
+    im = vi.get("interlace-mode", "")
+    scan = {"progressive": _("progressive"), "interleaved": _("interlaced"),
+            "mixed": _("mixed"), "fields": _("fields")}.get(im, "")
+    if not scan and "interlaced" in vid:
+        scan = _("interlaced capable") if vid["interlaced"] else _("progressive")
+    fps = vi.get("fps") or vid.get("fps") or (1000 / vid["frame_ms"] if vid.get("frame_ms") else None)
+    par = vi.get("par") or vid.get("sar")
+    afd = vid.get("afd")
+    from .esparse import AFD_NAMES
+    bars = st.get("bars")
+    bars_txt = "–" if on else _("only for the channel on screen")
+    if bars:
+        t, b, lft, r = bars
+        bars_txt = (_("letterbox {pct} % top and bottom").format(pct=round((t + b) * 50))
+                    if t + b > 0.05 else
+                    _("pillarbox {pct} % at the sides").format(pct=round((lft + r) * 50))
+                    if lft + r > 0.05 else _("none"))
+    tr, cm = vid.get("transfer", ""), vi.get("colorimetry", "")
+    hdr = ("HDR10 (PQ)" if "PQ" in tr or "smpte2084" in cm or "bt2100-pq" in cm else
+           "HLG" if "HLG" in tr or "hlg" in cm or "arib-std-b67" in cm else "SDR") if tr or cm else ""
+    nominal = vid.get("nominal_bps") or vd.get("max_bps")
+    hist = session.window_history()
+    vr = [hh["layers"].get(vpid) for hh in hist if vpid in hh.get("layers", {})]
+    tc = vid.get("telecine")
+    decoder = vi.get("decoder", "") if on else _("only for the channel on screen")
+    rows = [("PID", str(vpid) if vpid is not None else "–"),
+            (_("Codec"), vid.get("codec") or vd.get("codec") or vi.get("codec", "")),
+            (_("Profile / level"), " · ".join(x for x in (
+                vid.get("profile"), vid.get("level") and _("level {l}").format(l=vid["level"]),
+                vid.get("tier") and _("tier {t}").format(t=vid["tier"])) if x)),
+            (_("Resolution"), f"{w} × {h}" if w and h else ""),
+            (_("Scan"), scan + (f" · {vi['field-order']}" if vi.get("field-order") else "")),
+            (_("Frame rate"), _num(fps, 3 if fps and fps % 1 else 0, "fps") if fps else ""),
+            (_("Aspect ratio"), " · ".join(x for x in (vid.get("aspect", ""),
+                                                       f"{_('pixel')} {par[0]}:{par[1]}" if par else "")
+                                           if x)),
+            ("AFD", f"{afd} – {AFD_NAMES.get(afd, '')}" if afd is not None else _("not sent")),
+            (_("Black bars"), bars_txt),
+            (_("Film (3:2 pulldown)"), (_("yes, repeated fields") if tc else _("no"))
+             if tc is not None else ""),
+            (_("Colour"), " · ".join(x for x in (vid.get("chroma"),
+                                                 f"{vid['bit_depth']} bit" if vid.get("bit_depth") else "",
+                                                 vid.get("primaries"), cm) if x)),
+            ("HDR", hdr),
+            (_("Decoder"), decoder),
+            (_("Frames shown / dropped"), f"{vi.get('rendered', 0)} / {vi.get('dropped', 0)}"
+             if "dropped" in vi else ""),
+            (_("Nominal bit rate"), (_fmt_rate(nominal) + ("" if vid.get("nominal_bps") else
+                                                           " " + _("(maximum)")))
+             if nominal else _("not signalled (variable)")),
+            (_("Measured bit rate"), _("now {now} · Ø {avg} · peak {max}").format(
+                now=_fmt_rate(rates.get(vpid)), avg=_fmt_rate(sum(vr) / len(vr)),
+                max=_fmt_rate(max(vr))) if vr else ""),
+            (_("VBV buffer"), f"{vid['vbv_bytes'] // 1024} KiB" if vid.get("vbv_bytes") else "")]
+    out = [_section(_("Video"), rows)]
+    frames = vid.get("frames") or []
+    pb = [sz for sz, t in frames if t in ("P", "B")]
+    counts = {k: sum(1 for _sz, t in frames if t == k) for k in ("I", "P", "B")}
+    out.append(_section(_("Frame sizes"), [
+        (_("GOP length"), _("{n} frames").format(n=vid["gop"]) +
+         (f" ({_num(vid['gop'] / fps, 2, 's')})" if fps else "") if vid.get("gop") else ""),
+        (_("I frame average"), f"{vid['i_frame_avg'] / 1024:.0f} KiB" if vid.get("i_frame_avg") else ""),
+        (_("P/B frame average"), f"{sum(pb) / len(pb) / 1024:.0f} KiB" if pb else ""),
+        (_("Frames measured"), " · ".join(f"{n} {k}" for k, n in counts.items() if n) if frames else "")]))
+    return out
+
+
+def _audio_sections(session, st):
+    snap = st.get("snap") or {}
+    pmt = snap.get("pmt") or {}
+    es = snap.get("es") or {}
+    rates = st.get("rates") or {}
+    on = st.get("on_screen")
+    tracks, cur = st.get("tracks") or ([], -1)
+    rows = []
+    ai = 0
+    for pid, d in pmt.get("streams", []):
+        if d["kind"] != "audio":
+            continue
+        e = es.get(pid, {})
+        notes = []
+        if d.get("audio_description"):
+            notes.append(_("audio description"))
+        if d.get("hard_of_hearing"):
+            notes.append(_("clean audio"))
+        if e.get("mode") and e["mode"] not in ("stereo",):
+            notes.append(e["mode"])
+        if on and ai == cur:
+            notes.append(_("playing"))
+        lang = d.get("language") or ""
+        if not lang and ai < len(tracks):
+            lang = tracks[ai].language or ""
+        rows.append([str(pid), lang or "–", e.get("codec") or d.get("codec", ""), e.get("layout", ""),
+                     f"{e['rate'] / 1000:g} kHz" if e.get("rate") else "",
+                     _fmt_rate(e.get("nominal_bps")) if e.get("nominal_bps") else "–",
+                     _fmt_rate(rates.get(pid)), f"{e['dialnorm']} dB" if e.get("dialnorm") else "–",
+                     ", ".join(notes)])
+        ai += 1
+    if not rows:
+        for i, t in enumerate(tracks):
+            rows.append(["–", t.language_name or "–", t.codec or "", t.layout or "", "", "", "", "",
+                         _("playing") if on and i == cur else ""])
+    cols = ["PID", _("Language"), _("Format"), _("Channels"), _("Sample rate"), _("Nominal"),
+            _("Measured"), _("Dialnorm"), _("Notes")]
+    out = [_section(_("Audio tracks"), [(_("Tracks"), str(len(rows)))],
+                    {"columns": cols, "rows": rows} if rows else None)]
+    loud = st.get("loudness") or {}
+
+    def lu(key, unit="LUFS"):
+        v = loud.get(key)
+        return _num(v, 1, unit) if v is not None and math.isfinite(v) else "–"
+    if on:
+        rows = [(_("Momentary"), lu("momentary")), (_("Short term"), lu("short")),
+                (_("Integrated"), lu("integrated")), (_("Loudness range"), lu("lra", "LU")),
+                (_("Sample peak"), lu("recent_peak", "dBFS")),
+                (_("Loudness jumps"), str(len(loud.get("jumps", []))))]
+    else:
+        rows = [(_("Loudness"), _("Loudness is measured for the channel on screen only."))]
+    out.append(_section(_("Loudness (EBU R 128)"), rows))
+    lines = []
+    for pid, d in pmt.get("streams", []):
+        if d["kind"] == "teletext":
+            types = {1: _("index"), 2: _("subtitles"), 3: _("info"), 4: _("schedule"),
+                     5: _("subtitles (hard of hearing)")}
+            lines.append(_("Teletext PID {pid}:").format(pid=pid))
+            for lang, ttype, page in d.get("pages", []):
+                lines.append(f"   {page}  {lang}  {types.get(ttype, ttype)}")
+        elif d["kind"] == "subtitle":
+            lines.append(_("DVB subtitles PID {pid}:").format(pid=pid) + " " + ", ".join(
+                f"{lang} (0x{t:02X})" for lang, t in d.get("subtitles", [])))
+    out.append(_section(_("Teletext and subtitles"),
+                        lines=lines or [_("No teletext or subtitles in this channel.")]))
+    return out
+
+
+def _health_section(session, st):
+    snap = st.get("snap") or {}
+    pmt = snap.get("pmt") or {}
+    pids = snap.get("pids") or {}
+    rates = st.get("rates") or {}
+    pd = pids.get(pmt.get("pcr_pid"), {})
+    tables = {t["tid"]: t for t in snap.get("tables", [])}
+    pat, pmt_t = tables.get(0), tables.get(2)
+    rows = [(_("Packets"), str(snap.get("packets", 0))),
+            (_("Sync losses"), str(snap.get("sync_losses", 0))),
+            (_("Transport errors"), str(snap.get("tei", 0))),
+            (_("Continuity errors"), str(snap.get("cc_errors", 0))),
+            (_("PCR interval"), (_ms(pd["pcr_avg"], 1) + " · max " + _ms(pd["pcr_max"], 1))
+             if "pcr_avg" in pd else "–"),
+            (_("PCR arrival jitter"), ("± " + _ms(pd["pcr_jitter"], 2))
+             if pd.get("pcr_jitter") is not None else "–"),
+            (_("PCR jumps"), str(pd.get("pcr_jumps", 0))),
+            (_("PAT / PMT interval"), " / ".join(_ms(t["interval"]) if t and t.get("interval") else "–"
+                                                 for t in (pat, pmt_t))),
+            (_("Null packets"), _fmt_rate(rates.get(NULL_PID)))]
+    f = st.get("pid_filter")
+    if f:
+        rows.append((_("PID filter"), _("whole transponder") if f == "8192" else
+                     _("{n} PIDs").format(n=len(f.split(":")))))
+    cap = session.capture
+    if cap is None and session.kind == "iptv" and session.player is not None and st.get("on_screen"):
+        cap = session.player.capture
+    if cap is not None:
+        try:
+            start, end = cap.store.bounds()
+            secs = int((end - start) / max(1, cap.byte_rate()))
+            rows.append((_("Timeshift buffer"), f"{(end - start) / 1e6:.1f} MB · "
+                                                f"{secs // 60:02d}:{secs % 60:02d}"))
+        except (AttributeError, OSError, TypeError):
+            pass
+    return _section(_("Stream health"), rows)
+
+
+def _rate_section(session, st):
+    layers = st.get("layers") or []
+    stats = session.stats("service")
+    if st.get("kind") == "iptv" and not layers:
+        stats = session.stats("total")
+    tp = st.get("transponder") or {}
+    base = tp.get("used") or st.get("capacity")
+    snap = st.get("snap") or {}
+    streams = dict((snap.get("pmt") or {}).get("streams", []))
+    es = snap.get("es") or {}
+    rows = [(_("Now"), _fmt_rate(stats["now"]) if stats else "–"),
+            (_("Average"), _fmt_rate(stats["avg"]) if stats else "–"),
+            (_("Peak"), _fmt_rate(stats["max"]) if stats else "–"),
+            (_("Share of transponder"), f"{round(stats['avg'] / base * 100)} %"
+             if stats and base else "–")]
+    for key, r, kind in layers:
+        d = streams.get(key, {})
+        e = es.get(key, {})
+        name = _("Video") if kind == "video" else (
+            _("Teletext / subtitles / data") if kind == "other" else
+            " ".join(x for x in (e.get("short") or d.get("codec", ""), d.get("language", "")) if x))
+        rows.append((f"  {name}", _fmt_rate(r)))
+    return _section(_("Bit rate of the channel"), rows)
+
+
+def _encryption_section(session, st):
+    snap = st.get("snap") or {}
+    pmt = snap.get("pmt") or {}
+    pids = snap.get("pids") or {}
+    rates = st.get("rates") or {}
+    cas = ca_lines(snap)
+    streams = pmt.get("streams", [])
+    scr = sum(pids.get(p, {}).get("scrambled", 0) for p, _d in streams)
+    tot = sum(pids.get(p, {}).get("packets", 0) for p, _d in streams)
+    sv = (snap.get("services") or {}).get(session.channel.sid)
+    rows = [(_("Status"), _("Encrypted") if cas or scr else _("Free-to-air")),
+            (_("Scrambled packets"), f"{scr * 100 // max(1, tot)} %" if tot else "–"),
+            ("SDT", (_("scrambled") if sv.get("scrambled") else _("free")) if sv else "")]
+    table = {"columns": ["CAID", _("System"), "ECM PID", _("Level"), _("Bit rate")],
+             "rows": [[f"0x{caid:04X}", name or _("unknown"), f"0x{pid:04X}",
+                       lvl if lvl != "program" else _("all streams"),
+                       _fmt_rate(rates.get(pid)) if pid in rates else _("not received")]
+                      for caid, name, pid, lvl in cas]} if cas else None
+    emm = snap.get("cat") or []
+    lines = [_("EMM (CAT): {list}").format(list=", ".join(
+        f"{ca_system_name(c) or hex(c)} PID 0x{p:04X}" for c, p in emm))] if emm else []
+    return _section(_("Encryption"), [r for r in rows if r[1]], table, lines)
+
+
+def _interactive_section(session, st):
+    snap = st.get("snap") or {}
+    pmt = snap.get("pmt") or {}
+    ait_pid = next((pid for pid, d in pmt.get("streams", []) if d.get("ait")), None)
+    ait = getattr(session.capture, "ait", None) if session.capture is not None else None
+    auto = ait.autostart() if ait is not None else None
+    ttx = [(pid, d) for pid, d in pmt.get("streams", []) if d["kind"] == "teletext"]
+    subs = [d for _p, d in pmt.get("streams", []) if d["kind"] == "subtitle"]
+    rows = [("HbbTV", f"AIT · PID {ait_pid}" if ait_pid else _("none")),
+            (_("Autostart"), auto.name() if auto else "–"),
+            (_("Teletext"), _("PID {pid} · {n} pages").format(pid=ttx[0][0], n=len(ttx[0][1].get("pages", [])))
+             if ttx else _("none")),
+            (_("DVB subtitles"), ", ".join(d.get("language", "?") for d in subs) if subs else _("none"))]
+    table = None
+    if ait is not None:
+        table = {"columns": [_("Name"), _("Organisation / app"), _("Control"), _("Address")],
+                 "rows": [[a.name() or "–", f"0x{a.org_id:X} / 0x{a.app_id:X}",
+                           AIT_CODES.get(a.control_code, str(a.control_code)), ait.url(a) or "–"]
+                          for a in ait.apps]}
+    return _section(_("Interactive"), rows, table)
+
+
+def _epg_section(session):
+    epg = getattr(session.app, "epg", None)
+    rows = []
+    try:
+        ev_now, ev_next = epg.now_next(session.channel.epg_key) if epg is not None else (None, None)
+    except Exception:                   # noqa: BLE001 - a guide that is still loading
+        ev_now = ev_next = None
+    hm = lambda t: time.strftime("%H:%M", time.localtime(t))   # noqa: E731
+    if ev_now:
+        rows.append((_("Now"), f"{hm(ev_now.start)} – {hm(ev_now.end)}  {ev_now.title}"))
+    if ev_next:
+        rows.append((_("Next"), f"{hm(ev_next.start)}  {ev_next.title}"))
+    if not rows:
+        rows.append((_("Now"), _("No programme information")))
+    return _section(_("Now & next"), rows)
+
+
+def _tables_section(st):
+    snap = st.get("snap") or {}
+    rows = []
+    for t in snap.get("tables", []):
+        rows.append([f"0x{t.get('tid', 0):02X}", f"0x{t['pid']:04X}" if t.get("pid") is not None else "–",
+                     str(t.get("name") or ""), str(t.get("version", "–")),
+                     _ms(t["interval"]) if t.get("interval") else "–", str(t.get("count", "–"))])
+    return _section(_("Tables"), table={"columns": ["TID", "PID", _("Table"), _("Version"),
+                                                    _("Interval"), _("Count")], "rows": rows}
+                    if rows else None, lines=[] if rows else [_("No tables received.")])
+
+
+def _transponder_section(st):
+    tp = st.get("transponder")
+    if not tp:
+        return None
+    rows = [(sv["name"], _fmt_rate(sv["bps"]) + (" (" + _("scrambled") + ")" if sv["scrambled"] else ""))
+            for sv in tp["services"]]
+    rows += [(_("SI / EPG"), _fmt_rate(tp["si"])), (_("free / null"), _fmt_rate(tp["null"])),
+             (_("Capacity"), _fmt_rate(tp.get("capacity")) if tp.get("capacity") else "–")]
+    return _section(_("Transponder"), rows)
+
+
+def report_sections(session):
+    """Every section the analysis window shows, as label/value rows (see
+    AnalysisSession.report_sections)."""
+    st = session.state or {}
+    status = {"player": _("the player's stream"), "live": _("the player's stream"),
+              "background": _("a background reception"), "no_tuner": _("no tuner free"),
+              "preempted": _("the tuner was needed for watching or recording"),
+              "lost": _("reception lost")}.get(st.get("status", session.status), session.status)
+    out = [_section(_("Source"), [(_("Channel"), session.channel.name),
+                                   (_("Delivery"), _("Internet") if session.kind == "iptv"
+                                    else session.channel.delsys.upper()),
+                                   (_("Source"), status),
+                                   (_("Window"), _num(session.window_seconds / 60, 0, "min"))])]
+    out += _iptv_sections(session, st) if session.kind == "iptv" else _dvb_sections(session, st)
+    out.append(_rate_section(session, st))
+    out += _video_sections(session, st)
+    out += _audio_sections(session, st)
+    out.append(_health_section(session, st))
+    out.append(_encryption_section(session, st))
+    out.append(_interactive_section(session, st))
+    out.append(_epg_section(session))
+    out.append(_tables_section(st))
+    tp = _transponder_section(st)
+    if tp:
+        out.append(tp)
     return out
