@@ -126,6 +126,31 @@ def replace(db, root, new):
     return added, updated, len(gone)
 
 
+def is_iptv_list(channels):
+    """True when *channels* (an imported file) are all internet streams, so
+    the file is an IPTV list to remember (and not a DVB channel list)."""
+    return bool(channels) and all(c.is_iptv and not c.dvbi_id for c in channels)
+
+
+def apply_list(db, sources, kind, location, chans, update=False, now=None, **extra):
+    """Merge the loaded list *chans* from *location* into *db* and remember
+    it: a new list gets a name of its own (also the channel group of its
+    channels), a known one keeps its name. *update* replaces the list's
+    channels (see :func:`replace`) instead of merging. Returns
+    (sources, added, updated, removed)."""
+    old = find(sources, location)
+    root = old.get("root", "") if old else ""
+    root = root or unique_name(sources, default_name(kind, location, chans[0].root), location)
+    for c in chans:
+        c.root = root
+    if update:
+        added, updated, gone = replace(db, root, chans)
+    else:
+        (added, updated), gone = db.merge(chans), 0
+    return remember(sources, kind, location, root, len(chans), now=now, **extra), \
+        added, updated, gone
+
+
 def remove(db, root):
     """Remove the channels of the list *root*; returns how many."""
     gone = {id(c) for c in own_channels(db.channels, root)}

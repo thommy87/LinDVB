@@ -2,6 +2,7 @@
 """Main window: channel list, video area with OSD, transport controls, menus."""
 
 import functools
+import os
 import random
 import time
 from dataclasses import replace
@@ -9,7 +10,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, debuglog, dvbi, listfilter, logothumbs, satip
+from .. import chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs, satip
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
@@ -2297,14 +2298,28 @@ class MainWindow(Gtk.ApplicationWindow):
         the status text."""
         total_a = total_u = 0
         fav_lists = []
+        iptv_lists = False
         for path in paths:
             try:
-                a, u = self.app.db.merge(import_file(path))
+                chans = import_file(path)
+                own = False
                 # LinDVB's own channel file also brings its favourites lists
                 if str(path).lower().endswith(".json"):
                     text = Path(path).read_text(encoding="utf-8", errors="replace")
                     if is_lindvb_json(text):
+                        own = True
                         fav_lists += parse_lindvb_json(text)[1]
+                if not own and iptvsources.is_iptv_list(chans):
+                    # an M3U playlist (or another list of internet streams) is
+                    # remembered like one imported in Preferences ▸ Internet, so
+                    # it shows in "Your lists" and can be updated and removed
+                    sources, a, u, _gone = iptvsources.apply_list(
+                        self.app.db, list(self.app.settings.get("iptv_sources") or []),
+                        "file", os.path.abspath(path), chans)
+                    self.app.settings["iptv_sources"] = sources
+                    iptv_lists = True
+                else:
+                    a, u = self.app.db.merge(chans)
             except (OSError, ValueError) as e:
                 message(parent or self, _("Could not import {name}").format(name=Path(path).name),
                         str(e))
@@ -2312,6 +2327,13 @@ class MainWindow(Gtk.ApplicationWindow):
             total_a += a
             total_u += u
         self.app.db.save()
+        if iptv_lists:
+            try:
+                self.app.settings.save()
+            except OSError:
+                pass
+            from .iptv import fetch_logos
+            fetch_logos(self.app)
         if fav_lists and self.app.favs.merge_lists(fav_lists):
             self.app.favourites_changed()
         self.reload_channels()
