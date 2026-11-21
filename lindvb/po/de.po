@@ -4959,6 +4959,7 @@ msgstr "nicht lesbar (der Server kündigt eine Playlist an)"
 #: lindvb/ipstream.py
 msgid "no data arrived within {s} s"
 msgstr "innerhalb von {s} s kamen keine Daten an"
+
 #: lindvb/ui/epgsettings.py
 msgid "Add Files…"
 msgstr "Dateien hinzufügen…"
