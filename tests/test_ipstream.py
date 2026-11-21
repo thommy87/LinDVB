@@ -613,6 +613,42 @@ def test_hls_with_compressed_playlists(hls, playlist):
     assert r.source_uri and r.source_uri.startswith("data:")
 
 
+def test_hls_with_subtitles_keeps_picture_and_sound(hls, tmp_path, monkeypatch):
+    """A master playlist with a WebVTT subtitle rendition whose segments carry
+    no time stamps (PBS): the reader leaves the subtitles out, so picture and
+    sound are not held back by them."""
+    from lindvb import selfcheck
+    base, folder = hls
+    subs = folder / "subs"
+    subs.mkdir()
+    lines = ["#EXTM3U", "#EXT-X-VERSION:3", "#EXT-X-TARGETDURATION:1", "#EXT-X-MEDIA-SEQUENCE:0"]
+    for i in range(4):
+        (subs / f"c{i}.vtt").write_text("WEBVTT\n\n")
+        lines += ["#EXTINF:1.0,", f"c{i}.vtt"]
+    (subs / "index.m3u8").write_text("\n".join(lines + ["#EXT-X-ENDLIST", ""]))
+    (folder / "subs.m3u8").write_text(
+        "#EXTM3U\n#EXT-X-VERSION:3\n"
+        '#EXT-X-STREAM-INF:BANDWIDTH=1500000,RESOLUTION=640x360,CODECS="avc1.640028,mp4a.40.2",'
+        'SUBTITLES="subs"\nhigh/index.m3u8\n'
+        '#EXT-X-MEDIA:TYPE=SUBTITLES,NAME="English",DEFAULT=YES,AUTOSELECT=YES,LANGUAGE="eng",'
+        'GROUP-ID="subs",URI="subs/index.m3u8"\n')
+    pads = []
+    parsed = ipstream.GstReader._on_parsed_pad
+
+    def spy(self, parse, pad, pl):
+        pads.append(self._caps_name(pad))
+        return parsed(self, parse, pad, pl)
+    monkeypatch.setattr(ipstream.GstReader, "_on_parsed_pad", spy)
+    r, data, errors = _read_all(ipstream.GstReader, base + "/subs.m3u8",
+                                retry=ipstream.Retry(delays=(5,), give_up=30))
+    assert not errors and ipstream.looks_like_ts(data)
+    out = tmp_path / "out.ts"
+    out.write_bytes(data)
+    error, counts, _used = selfcheck._play(out.as_uri())
+    assert not error and counts["video"] >= 50 and counts["audio"] > 0
+    assert pads and not [p for p in pads if "subtitle" in p or p.startswith("text/")]
+
+
 def test_plain_playlist_needs_no_unpacking(hls):
     base, _folder = hls
     assert ipstream.uncompressed_hls(base + "/master.m3u8") is None
