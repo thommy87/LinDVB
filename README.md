@@ -263,12 +263,12 @@ and how to point LinDVB at your softcam or CI module, and
 | Fedora 40 and newer, Bazzite, Silverblue | Flatpak | AppImage, from source |
 | Arch, Manjaro, EndeavourOS, CachyOS | AppImage | Flatpak, from source |
 | openSUSE Tumbleweed | AppImage | Flatpak, from source |
-| Older systems: Debian 12, Ubuntu 22.04, Linux Mint 21, RHEL/Alma/Rocky 9, openSUSE Leap 15 | Flatpak | – |
+| Older systems: Debian 12, Ubuntu 22.04, Linux Mint 21, RHEL/Alma/Rocky 9, openSUSE Leap 15 | Flatpak | AppImage |
 | SteamOS and other immutable systems | Flatpak | – |
 
 The Flatpak runs on every distribution that has Flatpak, including older ones. The
-AppImage needs glibc 2.39 or newer; on older systems it stops with a message that
-points here. The .deb and running from source need GTK 4.10 or newer from the
+AppImage brings its own C library for systems older than Ubuntu 24.04 (tested on
+Ubuntu 22.04). The .deb and running from source need GTK 4.10 or newer from the
 distribution.
 
 ### AppImage
@@ -284,8 +284,9 @@ chmod +x LinDVB-*-x86_64.AppImage
 ```
 
 The AppImage bundles Python, GTK 4, GStreamer (with FFmpeg decoders) and the dvbv5
-tools. It is built on Ubuntu 24.04 and needs glibc 2.39 or newer (Ubuntu 24.04,
-Debian 13, Fedora 40 and later). To build it yourself: `packaging/build-appimage.sh`.
+tools. It is built on Ubuntu 24.04 and also brings that system's C library (glibc
+2.39): on an older system, such as Ubuntu 22.04, it uses its own, on a newer one the
+system's. To build it yourself: `packaging/build-appimage.sh`.
 
 ### Flatpak
 

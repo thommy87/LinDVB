@@ -36,6 +36,7 @@ belong to their owners.
 | [WebKitGTK](https://webkitgtk.org) | LGPL-2.1 and BSD-2-Clause | HbbTV browser |
 | [libzvbi](https://github.com/zapping-vbi/zvbi) | mostly LGPL-2.0-or-later, some parts GPL-2.0-or-later and BSD | teletext |
 | [libdvbcsa](https://www.videolan.org/developers/libdvbcsa.html) | GPL-2.0-or-later | software descrambling (optional) |
+| [GNU C Library](https://www.gnu.org/software/libc/) (glibc), GCC runtime (libstdc++, libgcc_s) | LGPL-2.1-or-later; GPL-3.0 with the GCC Runtime Library Exception | AppImage only, for systems with an older C library |
 | [v4l-utils](https://git.linuxtv.org/v4l-utils.git) (`dvbv5-scan`, `dvbv5-zap`, libdvbv5) | programs GPL-2.0, libdvbv5 LGPL-2.1 | channel search (separate programs) |
 
 ## Data and artwork in LinDVB and the AppImage
