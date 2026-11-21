@@ -120,6 +120,14 @@ class EPGStore:
         bucket[ev.start] = ev
         self._changed(key)
 
+    def drop(self, key, source):
+        """Remove the programmes of *source* for *key* (a removed XMLTV source)."""
+        by_src = self.events.get(key)
+        if by_src and by_src.pop(source, None) is not None:
+            if not by_src:
+                del self.events[key]
+            self._changed(key)
+
     def _changed(self, key=None):
         """Drop cached merges: of all keys, or of those *key* is part of."""
         if key is None:

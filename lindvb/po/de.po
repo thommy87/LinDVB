@@ -4951,3 +4951,83 @@ msgstr "ja, aus dem Timeshift-Puffer abgespielt"
 #: lindvb/analysis.py
 msgid "Ø {avg} % · min {min} %"
 msgstr "Ø {avg} % · min. {min} %"
+
+#: lindvb/ui/epgsettings.py
+msgid "Add Files…"
+msgstr "Dateien hinzufügen…"
+
+#: lindvb/ui/epgsettings.py
+msgid "Add XMLTV guides"
+msgstr "XMLTV-Programmführer hinzufügen"
+
+#: lindvb/app.py
+msgid "Add an XMLTV source in the preferences first (EPG ▸ Internet EPG)"
+msgstr "Füge zuerst in den Einstellungen eine XMLTV-Quelle hinzu (EPG ▸ Internet-EPG)"
+
+#: lindvb/ui/epgsettings.py
+#, python-brace-format
+msgid "Could not load {name}"
+msgstr "{name} konnte nicht geladen werden"
+
+#: lindvb/ui/epgsettings.py
+#, python-brace-format
+msgid "Guide renamed to {name}"
+msgstr "Programmführer umbenannt in {name}"
+
+#: lindvb/ui/epgsettings.py
+#, python-brace-format
+msgid "Guide {name} removed"
+msgstr "Programmführer {name} entfernt"
+
+#: lindvb/ui/epgsettings.py
+msgid "Internet programme guides (XMLTV) for your IPTV channels, used in addition to the broadcast EPG. Many playlists have a guide of their own; add as many as you like."
+msgstr "Programmführer aus dem Internet (XMLTV) für deine IPTV-Sender, zusätzlich zum EPG der Sender. Viele Playlists haben einen eigenen Programmführer; du kannst beliebig viele hinzufügen."
+
+#: lindvb/ui/epgsettings.py
+msgid "Load the guide again"
+msgstr "Programmführer neu laden"
+
+#: lindvb/ui/xmltvmatch.py
+msgid "No XMLTV guide loaded yet. Add an XMLTV source in the EPG settings and download the guide first; matching starts automatically after the download."
+msgstr "Noch kein XMLTV-Programmführer geladen. Füge in den EPG-Einstellungen eine XMLTV-Quelle hinzu und lade den Programmführer herunter; die Zuordnung startet nach dem Download automatisch."
+
+#: lindvb/ui/epgsettings.py
+msgid "Not loaded yet"
+msgstr "Noch nicht geladen"
+
+#: lindvb/ui/epgsettings.py
+msgid "Programmes"
+msgstr "Sendungen"
+
+#: lindvb/ui/epgsettings.py
+msgid "Remove the guide and the programmes only it had"
+msgstr "Programmführer und die Sendungen entfernen, die nur er hatte"
+
+#: lindvb/ui/epgsettings.py
+msgid "The address of an XMLTV guide (.xml or .xml.gz). It is loaded again with Update or with the menu entry Update Internet EPG (XMLTV)."
+msgstr "Die Adresse eines XMLTV-Programmführers (.xml oder .xml.gz). Er wird mit „Aktualisieren“ oder dem Menüeintrag „Internet-EPG aktualisieren (XMLTV)“ neu geladen."
+
+#: lindvb/ui/epgsettings.py
+msgid "The file is no longer there."
+msgstr "Die Datei ist nicht mehr vorhanden."
+
+#: lindvb/ui/epgsettings.py
+msgid "Update All"
+msgstr "Alle aktualisieren"
+
+#: lindvb/ui/epgsettings.py
+msgid "XMLTV files (.xml or .xml.gz). Several files can be chosen at once."
+msgstr "XMLTV-Dateien (.xml oder .xml.gz). Mehrere Dateien können auf einmal gewählt werden."
+
+#: lindvb/ui/epgsettings.py
+msgid "XMLTV guides (.xml, .xml.gz)"
+msgstr "XMLTV-Programmführer (.xml, .xml.gz)"
+
+#: lindvb/app.py
+#, python-brace-format
+msgid "XMLTV: {n} programmes loaded, {matched} IPTV channels matched"
+msgstr "XMLTV: {n} Sendungen geladen, {matched} IPTV-Sender zugeordnet"
+
+#: lindvb/ui/epgsettings.py
+msgid "Your guides"
+msgstr "Deine Programmführer"

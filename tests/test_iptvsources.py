@@ -98,3 +98,25 @@ def test_list_names_and_rename():
     db.merge([Channel(name="A", delsys="iptv", url="http://s/a", root="a")])
     srcs, used = iptvsources.rename(db, srcs, "http://a/index.m3u", " My TV ")
     assert used == "My TV" and srcs[0]["root"] == "My TV" and db.channels[0].root == "My TV"
+
+
+def test_list_imported_from_the_main_window_is_remembered():
+    """An M3U file chosen with File ▸ Import Channel List shows in "Your lists"."""
+    db = ChannelDB.__new__(ChannelDB)
+    db.channels = []
+    chans = import_data(M3U, "/home/me/German IPTV.m3u")
+    assert iptvsources.is_iptv_list(chans)
+    assert not iptvsources.is_iptv_list([Channel(name="ZDF", frequency=11953000, sid=1)])
+    assert not iptvsources.is_iptv_list(chans + [Channel(name="ZDF", frequency=1, sid=1)])
+    assert not iptvsources.is_iptv_list([])
+    srcs, a, u, gone = iptvsources.apply_list(db, [], "file", "/home/me/German IPTV.m3u",
+                                              chans, now=7)
+    assert (a, u, gone) == (2, 0, 0)
+    assert srcs == [{"kind": "file", "location": "/home/me/German IPTV.m3u",
+                     "root": "German IPTV", "count": 2, "date": 7}]
+    assert len(iptvsources.own_channels(db.channels, "German IPTV")) == 2
+    # the same file again keeps its entry and name
+    again = import_data(M3U, "/home/me/German IPTV.m3u")
+    srcs, a, u, gone = iptvsources.apply_list(db, srcs, "file", "/home/me/German IPTV.m3u",
+                                              again, update=True, now=8)
+    assert (a, u, gone) == (0, 2, 0) and len(srcs) == 1 and srcs[0]["date"] == 8

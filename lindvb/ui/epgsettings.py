@@ -5,13 +5,17 @@ channel change, time zone, XMLTV, the MediaHighway / Freesat transponders
 the EPG sources (lindvb.epgmerge)."""
 
 import copy
+import os
+import time
 
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, Gtk
 
 from ..epg import apply_timezone
 from ..epgmerge import DEFAULT_ORDER, SOURCE_LABELS, normalize_order
 from ..epgsources import DEFAULT_PROVIDER_FREQS, LANGUAGES, PROVIDER_TYPES
+from .. import xmltvsources
 from .common import dropdown, fill, make_column_view, message, selected
+from .favourites import ask_name
 from ..i18n import _
 
 POLS = ["h", "v"]
@@ -69,13 +73,10 @@ class EPGPrefs:
         self.tz_auto.connect("notify::active",
                              lambda sw, _p: self.tz_spin.set_sensitive(not sw.get_active()))
 
-        g = group(page, _("Internet EPG (IPTV)"))
-        self.xmltv = row(g, "XMLTV URL", Gtk.Entry(text=s.get("xmltv_url", "")),
-                         _("Internet EPG source, used in addition to the broadcast EPG."))
-        match = Gtk.Button(label=_("Match IPTV Channels…"))
-        match.connect("clicked", lambda *_: app.show_xmltv_match())
-        row(g, "IPTV channels and XMLTV", match,
-            _("Check or fix which guide channel belongs to which M3U channel."))
+        page.append(Gtk.Label(label=_("Internet EPG (IPTV)"), xalign=0,
+                              css_classes=["lv-section-title"], margin_top=4))
+        self.xmltv = XMLTVSources(app, row)
+        page.append(self.xmltv)
 
         page.append(Gtk.Label(label=_("MediaHighway / Freesat frequencies"), xalign=0,
                               css_classes=["lv-section-title"], margin_top=4))
@@ -154,7 +155,6 @@ class EPGPrefs:
         s["epg_info_seconds"] = int(self.info_spin.get_value())
         s["reminder_minutes"] = int(self.remind_spin.get_value())
         s["epg_language"] = self._lang_codes[self.lang_dd.get_selected()]
-        s["xmltv_url"] = self.xmltv.get_text().strip()
         s["epg_tz_auto"] = self.tz_auto.get_active()
         s["epg_tz_offset"] = int(self.tz_spin.get_value())
         s["epg_provider_freqs"] = self.entries
@@ -166,6 +166,204 @@ class EPGPrefs:
         self.app.epg.persist = s["epg_save"]
         self.app.epg.save()
         self.app.epg.notify()
+
+
+XMLTV_KINDS = {"url": _("Web address"), "file": _("File")}
+XMLTV_PATTERNS = ("*.xml", "*.xml.gz", "*.xmltv", "*.gz")
+
+
+def _xmltv_filters():
+    store = Gio.ListStore.new(Gtk.FileFilter)
+    guides = Gtk.FileFilter(name=_("XMLTV guides (.xml, .xml.gz)"))
+    for p in XMLTV_PATTERNS:
+        guides.add_pattern(p)
+        guides.add_pattern(p.upper())
+    store.append(guides)
+    every = Gtk.FileFilter(name=_("All files"))
+    every.add_pattern("*")
+    store.append(every)
+    return store
+
+
+class XMLTVSources(Gtk.Box):
+    """"Internet EPG (IPTV)": the XMLTV guides the user added, from web
+    addresses and files, like the IPTV lists on the Internet page. Changes
+    apply at once (they are not part of the page's Save)."""
+
+    def __init__(self, app, row):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
+        self.app = app
+        self.append(Gtk.Label(
+            label=_("Internet programme guides (XMLTV) for your IPTV channels, used in addition "
+                    "to the broadcast EPG. Many playlists have a guide of their own; add as "
+                    "many as you like."),
+            xalign=0, wrap=True, css_classes=["lv-hint"], margin_top=8, margin_bottom=4))
+        url_box = Gtk.Box(spacing=6, hexpand=True)
+        self.url = Gtk.Entry(placeholder_text="https://…/epg.xml.gz", width_chars=28,
+                             input_purpose=Gtk.InputPurpose.URL, hexpand=True)
+        self.url.connect("activate", lambda *_: self._add_url())
+        self.url_btn = Gtk.Button(label=_("Add"))
+        self.url_btn.connect("clicked", lambda *_: self._add_url())
+        url_box.append(self.url)
+        url_box.append(self.url_btn)
+        row(self, _("From a web address"), url_box,
+            _("The address of an XMLTV guide (.xml or .xml.gz). It is loaded again with "
+              "Update or with the menu entry Update Internet EPG (XMLTV)."), stacked=True)
+        files = Gtk.Button(label=_("Add Files…"))
+        files.connect("clicked", lambda *_: self._pick_files())
+        row(self, _("From files"), files,
+            _("XMLTV files (.xml or .xml.gz). Several files can be chosen at once."),
+            stacked=True)
+
+        self.append(Gtk.Label(label=_("Your guides"), xalign=0, css_classes=["heading"],
+                              margin_top=10, margin_bottom=4))
+        cols = [(_("Name"), lambda s: s.get("name", ""), False),
+                (_("Type"), lambda s: XMLTV_KINDS.get(s.get("kind"), ""), False),
+                (_("Source"), lambda s: s.get("location", ""), True),
+                (_("Channels"), lambda s: str(s.get("channels", 0)), False),
+                (_("Programmes"), lambda s: str(s.get("programmes", 0)), False),
+                (_("Updated"), self._when, False)]
+        self.view, self.store, self.sel = make_column_view(cols)
+        sw = Gtk.ScrolledWindow(child=self.view, min_content_height=150,
+                                hscrollbar_policy=Gtk.PolicyType.NEVER)
+        self.append(sw)
+        btns = Gtk.Box(spacing=6, margin_top=6)
+        self.update_btn = Gtk.Button(label=_("Update"))
+        self.update_btn.set_tooltip_text(_("Load the guide again"))
+        self.update_btn.connect("clicked", lambda *_: self._update())
+        self.update_all_btn = Gtk.Button(label=_("Update All"))
+        self.update_all_btn.connect("clicked", lambda *_: self._update(every=True))
+        rename = Gtk.Button(label=_("Rename"))
+        rename.connect("clicked", lambda *_: self._rename())
+        remove = Gtk.Button(label=_("Remove"))
+        remove.set_tooltip_text(_("Remove the guide and the programmes only it had"))
+        remove.connect("clicked", lambda *_: self._remove())
+        for b in (self.update_btn, self.update_all_btn, rename, remove):
+            btns.append(b)
+        spacer = Gtk.Box(hexpand=True)
+        btns.append(spacer)
+        match = Gtk.Button(label=_("Match IPTV Channels…"))
+        match.set_tooltip_text(_("Check or fix which guide channel belongs to which M3U channel."))
+        match.connect("clicked", lambda *_: app.show_xmltv_match())
+        btns.append(match)
+        self.append(btns)
+
+        self.status = Gtk.Label(xalign=0, wrap=True, selectable=True, css_classes=["lv-hint"],
+                                margin_top=4, margin_bottom=8)
+        self.append(self.status)
+        self._refresh()
+
+    # ------------------------------------------------------------------ helpers
+    @staticmethod
+    def _when(s):
+        if s.get("error"):
+            return _("Failed")
+        if not s.get("date"):
+            return _("Not loaded yet")
+        return time.strftime("%x %H:%M", time.localtime(s.get("date", 0)))
+
+    def _sources(self):
+        return list(self.app.settings.get("xmltv_sources") or [])
+
+    def _set_sources(self, sources):
+        self.app.settings["xmltv_sources"] = sources
+        try:
+            self.app.settings.save()
+        except OSError:
+            pass
+        self._refresh()
+
+    def _refresh(self, select=None):
+        sources = self._sources()
+        fill(self.store, sources)
+        locs = [s.get("location") for s in sources]
+        if select in locs:
+            self.sel.set_selected(locs.index(select))
+
+    def _busy(self, on, text=""):
+        for b in (self.url_btn, self.update_btn, self.update_all_btn):
+            b.set_sensitive(not on)
+        if text:
+            self.status.set_text(text)
+
+    def _load(self, locations):
+        self._busy(True, _("Downloading XMLTV guide…"))
+        sel = selected(self.sel)
+
+        def done(msg):
+            self._busy(False)
+            self._refresh(sel.get("location") if sel else None)
+            self.status.set_text(msg)
+        if not self.app.update_xmltv(locations=locations, done=done):
+            self._busy(False, "")
+
+    def _add(self, kind, location):
+        sources, entry = xmltvsources.add(self._sources(), kind, location)
+        self._set_sources(sources)
+        self._refresh(location)
+        self._load([entry["location"]])
+
+    # ------------------------------------------------------------------ add
+    def _add_url(self):
+        url = xmltvsources.normalize_url(self.url.get_text())
+        if not url:
+            return
+        self.url.set_text("")
+        self._add("url", url)
+
+    def _pick_files(self):
+        dlg = Gtk.FileDialog(title=_("Add XMLTV guides"), filters=_xmltv_filters())
+        dlg.open_multiple(self.get_root(), None, self._files_chosen)
+
+    def _files_chosen(self, dlg, res):
+        try:
+            files = dlg.open_multiple_finish(res)
+        except GLib.Error:
+            return
+        paths = [files.get_item(i).get_path() for i in range(files.get_n_items())]
+        sources = self._sources()
+        for path in paths:
+            if path:
+                sources, _entry = xmltvsources.add(sources, "file", path)
+        self._set_sources(sources)
+        self._load([p for p in paths if p])
+
+    # ------------------------------------------------------------------ the list
+    def _update(self, every=False):
+        if every:
+            locs = [s.get("location") for s in self._sources()]
+        else:
+            src = selected(self.sel)
+            if not src:
+                return
+            if src.get("kind") == "file" and not os.path.exists(src.get("location", "")):
+                message(self.get_root(), _("Could not load {name}").format(
+                    name=src.get("name", "")), _("The file is no longer there."))
+                return
+            locs = [src.get("location")]
+        if locs:
+            self._load(locs)
+
+    def _rename(self):
+        src = selected(self.sel)
+        if not src:
+            return
+
+        def done(name):
+            sources, used = xmltvsources.rename(self._sources(), src.get("location"), name)
+            self._set_sources(sources)
+            self._refresh(src.get("location"))
+            self.status.set_text(_("Guide renamed to {name}").format(name=used))
+
+        ask_name(self.get_root(), _("Rename"), src.get("name", ""), done, label=_("Name"))
+
+    def _remove(self):
+        src = selected(self.sel)
+        if not src:
+            return
+        self.app.remove_xmltv_source(src.get("location"))
+        self._refresh()
+        self.status.set_text(_("Guide {name} removed").format(name=src.get("name", "")))
 
 
 def _search_dropdown(strings):
