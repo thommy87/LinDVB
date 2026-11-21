@@ -15,7 +15,7 @@ from pathlib import Path
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import sitree
-from ..analysis import AnalysisSession, ca_lines, report_json
+from ..analysis import AnalysisSession, no_playlist, ca_lines, report_json
 from ..esparse import AFD_NAMES
 from ..i18n import _
 from ..media_info import is_audio_description
@@ -1004,7 +1004,7 @@ class SignalPage(Page):
         media_pl = pl.get("media_playlist") or (pl if kind == "media" else {})
         self.ikv.set("playlist", {"master": _("HLS with {n} variants").format(n=len(pl.get("variants", []))),
                                   "media": _("HLS media playlist"),
-                                  "dash": _("MPEG-DASH")}.get(kind, _("none (a plain stream)"))
+                                  "dash": _("MPEG-DASH")}.get(kind, no_playlist(probe))
                      + ((" · " + (_("live") if pl.get("live") or media_pl.get("live") else _("on demand")))
                         if kind else ""))
         self.ikv.set("segments", _("{n} segments of Ø {s} (target {t}) · {c}").format(

@@ -4951,3 +4951,11 @@ msgstr "ja, aus dem Timeshift-Puffer abgespielt"
 #: lindvb/analysis.py
 msgid "Ø {avg} % · min {min} %"
 msgstr "Ø {avg} % · min. {min} %"
+
+#: lindvb/analysis.py
+msgid "unreadable (the server announces a playlist)"
+msgstr "nicht lesbar (der Server kündigt eine Playlist an)"
+
+#: lindvb/ipstream.py
+msgid "no data arrived within {s} s"
+msgstr "innerhalb von {s} s kamen keine Daten an"

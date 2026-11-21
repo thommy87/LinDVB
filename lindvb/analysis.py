@@ -66,6 +66,14 @@ def stream_rate(buf, tag_bps=None):
     return None
 
 
+def no_playlist(probe):
+    """The playlist line of a stream without a playlist LinDVB could read."""
+    ctype = (probe.get("content_type") or "").lower()
+    if "mpegurl" in ctype or "dash" in ctype:
+        return _("unreadable (the server announces a playlist)")
+    return _("none (a plain stream)")
+
+
 def _fmt_rate(bps):
     if bps is None:
         return "–"
@@ -974,7 +982,7 @@ def _iptv_sections(session, st):
     media_pl = pl.get("media_playlist") or (pl if kind == "media" else {})
     playlist = {"master": _("HLS with {n} variants").format(n=len(pl.get("variants", []))),
                 "media": _("HLS media playlist"),
-                "dash": _("MPEG-DASH")}.get(kind, _("none (a plain stream)")) + \
+                "dash": _("MPEG-DASH")}.get(kind, no_playlist(probe)) + \
         ((" · " + (_("live") if pl.get("live") or media_pl.get("live") else _("on demand")))
          if kind else "")
     segments = _("{n} segments of Ø {s} (target {t}) · {c}").format(

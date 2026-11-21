@@ -67,6 +67,10 @@ RECONNECT_DELAYS = (1, 2, 4, 8, 15, 30)     # seconds before each new attempt
 RECONNECT_GIVE_UP = 180                     # seconds without a stream before giving up
 # a stream that ran this long since its last reconnect starts the delays anew
 STABLE_SECONDS = 30
+# GStreamer reader: a pipeline that delivered nothing for this long (no
+# error either, e.g. a demuxer waiting for a playlist it cannot read) counts
+# as broken, so the user gets a message instead of a black picture
+FIRST_DATA_TIMEOUT = 20
 
 QUALITIES = ("auto", "best")
 
@@ -233,6 +237,33 @@ def stream_kind(url):
     if ".m3u8" in path or ".mpd" in path or "/manifest" in path or ".ism" in path:
         return "adaptive"
     return "http"
+
+
+def fetch_manifest(url, limit=512 * 1024, timeout=REDIRECT_TIMEOUT):
+    """(text, final address, compressed) of a playlist or manifest over HTTP,
+    unpacked when the server compressed it (lindvb.streaminfo.decode_body)."""
+    from .streaminfo import decode_body, is_compressed
+    req = urllib.request.Request(url, headers=http_headers())
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        data = resp.read(limit)
+        enc = resp.headers.get("Content-Encoding", "")
+        final = resp.geturl() or url
+    text = decode_body(data, enc).decode("utf-8", "replace").lstrip("\ufeff")
+    return text, final, is_compressed(data, enc)
+
+
+def uncompressed_hls(url, timeout=REDIRECT_TIMEOUT):
+    """A data: address GStreamer can start *url* from, when *url* is an HLS
+    playlist the server sends compressed (which GStreamer's HTTP source
+    cannot read; see lindvb.streaminfo.data_master); else None. Blocking."""
+    from .streaminfo import data_master
+    if not url.lower().startswith(("http://", "https://")):
+        return None
+    try:
+        text, final, compressed = fetch_manifest(url, timeout=timeout)
+    except (OSError, ValueError):
+        return None
+    return data_master(text, final) if compressed else None
 
 
 def is_stream(profile):
@@ -599,6 +630,9 @@ class GstReader:
         self._meta_due = False           # changed since the last packet
         self._meta_sent = 0.0            # time.monotonic() of the last packet
         self._meta_cc = 0
+        self.source_uri = None           # what GStreamer opens instead of url
+        self._manifest_checked = False   # looked for a compressed playlist
+        self._watch = 0                  # FIRST_DATA_TIMEOUT timer
 
     @property
     def host(self):
@@ -606,7 +640,15 @@ class GstReader:
         return parts.netloc or self.url
 
     def start(self):
-        self._build()
+        if stream_kind(self.url) == "adaptive" and ".m3u8" in self.url.lower() and \
+                self.url.lower().startswith(("http://", "https://")):
+            # an HLS playlist the server sends compressed reaches the demuxer
+            # cut short or garbled (variants and renditions missing, or
+            # "Invalid manifest"): look at it first, in the background
+            self._manifest_checked = True
+            threading.Thread(target=self._check_manifest, args=(None,), daemon=True).start()
+        else:
+            self._build()
 
     # -- pipeline ----------------------------------------------------------------
     def _build(self):
@@ -620,7 +662,7 @@ class GstReader:
             self._fail("GStreamer element 'urisourcebin' is missing (gst-plugins-base)")
             return
         uri, ssm, rtp = multicast_source(self.url) if stream_kind(self.url) == "multicast" \
-            else (self.url, None, False)
+            else (self.source_uri or self.url, None, False)
         src.set_property("uri", uri)
         src.connect("source-setup", self._on_source_setup, ssm, rtp)
         sink = Gst.ElementFactory.make("appsink")
@@ -639,8 +681,16 @@ class GstReader:
         bus.add_signal_watch()
         bus.connect("message", self._on_message, gen)
         self.pipeline = pl
+        if not self.received:
+            self._watch = self.GLib.timeout_add_seconds(FIRST_DATA_TIMEOUT, self._no_data, gen)
         if pl.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
             self._broken(gen, _("could not open the stream"))
+
+    def _no_data(self, gen):
+        self._watch = 0
+        if gen == self._gen and not self.closed and not self.received:
+            self._broken(gen, _("no data arrived within {s} s").format(s=FIRST_DATA_TIMEOUT))
+        return False
 
     def _on_source_setup(self, _bin, source, ssm, rtp):
         Gst = self.Gst
@@ -821,6 +871,9 @@ class GstReader:
             self._broken(gen, _("the server ended the stream"))
 
     def _teardown(self):
+        if self._watch:
+            self.GLib.source_remove(self._watch)
+            self._watch = 0
         pl, self.pipeline = self.pipeline, None
         if pl is not None:
             pl.get_bus().remove_signal_watch()
@@ -832,6 +885,13 @@ class GstReader:
         self._gen += 1                   # ignore what the old pipeline still says
         self._teardown()
         if not self.received:
+            if not self._manifest_checked and stream_kind(self.url) == "adaptive":
+                # nothing came: perhaps a playlist the server sends gzip-
+                # compressed, which the HTTP source does not unpack
+                self._manifest_checked = True
+                threading.Thread(target=self._check_manifest, args=(reason,),
+                                 daemon=True).start()
+                return
             self._fail(f"{self.host}: {reason}")
             return
         delay = self.retry.broken() if self.reconnect else None
@@ -842,6 +902,26 @@ class GstReader:
         self._status("reconnecting", _("{host}: {reason} – connecting again in {s} s").format(
             host=self.host, reason=reason, s=delay))
         self._timer = self.GLib.timeout_add(int(delay * 1000), self._again)
+
+    def _check_manifest(self, reason):
+        uri = uncompressed_hls(self.url)
+        self.GLib.idle_add(self._manifest_checked_done, uri, reason)
+
+    def _manifest_checked_done(self, uri, reason):
+        """*reason*: why the pipeline broke (None: checked before the start)."""
+        if self.closed:
+            return False
+        if uri:
+            from . import debuglog
+            debuglog.write("Stream", f"{self.host}: the server sends the playlist "
+                                     "compressed; handing it to GStreamer unpacked")
+            self.source_uri = uri
+            self._build()
+        elif reason is None:
+            self._build()
+        else:
+            self._fail(f"{self.host}: {reason}")
+        return False
 
     def _again(self):
         self._timer = 0
