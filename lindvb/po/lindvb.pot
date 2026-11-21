@@ -6017,3 +6017,22 @@ msgstr ""
 #: lindvb/ui/dialogs.py
 msgid "Sound server"
 msgstr ""
+
+#: lindvb/player.py
+#, python-brace-format
+msgid "service {n}"
+msgstr ""
+
+#: lindvb/player.py
+#, python-brace-format
+msgid "Closed captions ({tag})"
+msgstr ""
+
+#: lindvb/player.py
+msgid "The subtitles of this stream hold the picture back, so they were switched off."
+msgstr ""
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "{name} (without timeshift)"
+msgstr ""

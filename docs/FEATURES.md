@@ -62,7 +62,7 @@ Status: **Yes** = implemented in LinDVB, **Partly** = a simpler version exists,
 | Search the web for a programme | **Yes**: configurable URL list |
 | EPG export / internet EPG | **Yes**: XMLTV import for internet channels; the whole guide can be exported as XMLTV (Menu ▸ File, or the button in the programme guide) |
 | ATSC programme guide (PSIP) | **Yes**: virtual channel table (TVCT/CVCT) with major.minor numbers, EIT and ETT descriptions, system time table for GPS time; parsed from the raw sections |
-| Closed captions (CEA-608/708) | **Yes**: `cc708overlay`, switchable in the Subtitles menu |
+| Closed captions (CEA-608/708) | **Yes**: `cc708overlay`, one line per CEA-708 service in the Subtitles menu |
 | EPG of other providers (MediaHighway 1/2, Freesat) | **Yes**: frequency list in Preferences ▸ EPG; MediaHighway 1/2 tables and Freesat (Huffman) EIT are decoded while a channel on such a transponder is tuned |
 | Several EPG sources for one channel | **Yes**: broadcast EIT, provider EPG, DVB-I and XMLTV are kept apart and merged per channel. Automatic: now/next from the broadcast, further ahead the most complete source, gaps filled from the others, no programme twice, missing details borrowed from the same programme in another source. Preferences ▸ EPG ▸ Advanced: a custom order for all channels and per channel |
 | EPG options: save to disk, preferred language, info on channel change, time zone | **Yes**: Preferences ▸ EPG |

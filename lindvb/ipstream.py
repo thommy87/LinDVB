@@ -74,6 +74,12 @@ FIRST_DATA_TIMEOUT = 20
 
 QUALITIES = ("auto", "best")
 
+# HLS audio renditions (EXT-X-MEDIA TYPE=AUDIO, e.g. ARD's "Klare Sprache")
+# go into the buffer on PIDs from here, worked out from their NAME, so the
+# player can tell them apart by name: a transport stream has no place for it
+RENDITION_PID_BASE = 0x1C0
+RENDITION_PIDS = 32
+
 # song titles in the buffer (see the module notes); mpegtsmux uses low PIDs
 META_PID = 0x1FF0
 META_MAGIC = b"LinDVB-meta\x01"
@@ -264,6 +270,43 @@ def uncompressed_hls(url, timeout=REDIRECT_TIMEOUT):
     except (OSError, ValueError):
         return None
     return data_master(text, final) if compressed else None
+
+
+def _iso639_2(code):
+    """'de' -> 'ger' for the PMT; None for what is no language code."""
+    code = (code or "").strip().lower()
+    try:
+        import gi
+        gi.require_version("GstTag", "1.0")
+        from gi.repository import GstTag
+        return GstTag.tag_get_language_code_iso_639_2B(code)
+    except (ImportError, ValueError, TypeError):
+        return code if len(code) == 3 and code.isalpha() else None
+
+
+def rendition_pid(name, taken=()):
+    """The PID of the HLS rendition called *name* in the buffer; *taken*
+    holds the PIDs already used (the next free one is taken then)."""
+    import zlib
+    first = zlib.crc32((name or "").encode("utf-8")) % RENDITION_PIDS
+    for k in range(RENDITION_PIDS):
+        pid = RENDITION_PID_BASE + (first + k) % RENDITION_PIDS
+        if pid not in taken:
+            return pid
+    return None
+
+
+def rendition_for_pid(media, pid):
+    """The rendition of *media* (EXT-X-MEDIA entries) put on *pid*, or None."""
+    if not RENDITION_PID_BASE <= pid < RENDITION_PID_BASE + RENDITION_PIDS:
+        return None
+    taken = set()
+    for m in media:
+        p = rendition_pid(m.get("name", ""), taken)
+        taken.add(p)
+        if p == pid:
+            return m
+    return None
 
 
 def is_stream(profile):
@@ -630,6 +673,7 @@ class GstReader:
         self._meta_due = False           # changed since the last packet
         self._meta_sent = 0.0            # time.monotonic() of the last packet
         self._meta_cc = 0
+        self._rendition_pids = set()     # PIDs given to HLS audio renditions
         self.source_uri = None           # what GStreamer opens instead of url
         self._manifest_checked = False   # looked for a compressed playlist
         self._watch = 0                  # FIRST_DATA_TIMEOUT timer
@@ -675,6 +719,7 @@ class GstReader:
         pl.add(sink)
         self._sink = sink
         self._mux = None
+        self._rendition_pids = set()
         pl.connect("deep-element-added", self._on_element)
         src.connect("pad-added", self._on_source_pad, pl)
         bus = pl.get_bus()
@@ -823,7 +868,9 @@ class GstReader:
             mpad = None
             if fmt or (tmpl is not None and caps is not None and
                        caps.can_intersect(tmpl.get_caps())):
-                mpad = self._mux.request_pad_simple("sink_%d")
+                mpad = self._audio_rendition_pad(pad, name, tmpl, chain[0])
+                if mpad is None:
+                    mpad = self._mux.request_pad_simple("sink_%d")
             if mpad is None or out.link(mpad) != Gst.PadLinkReturn.OK:
                 # a stream mpegtsmux does not take (e.g. TTML subtitles): drop it
                 if mpad is not None:
@@ -834,6 +881,36 @@ class GstReader:
                 pl.add(fake)
                 fake.sync_state_with_parent()
                 out.link(fake.get_static_pad("sink"))
+
+    def _audio_rendition_pad(self, pad, name, tmpl, first):
+        """An HLS audio rendition (hlsdemux2 names its stream ".../audio-NAME"):
+        a muxer pad on the PID that its name gives (rendition_pid), and its
+        language for the PMT when the playlist gives a real one (ARD writes
+        LANGUAGE="klare sprache"). None for other streams."""
+        Gst = self.Gst
+        st = pad.get_stream()
+        tail = (st.get_stream_id() or "").rsplit("/", 1)[-1] if st is not None else ""
+        if not name.startswith("audio/") or not tail.startswith("audio-"):
+            return None
+        pid = rendition_pid(tail[6:], self._rendition_pids)
+        if pid is None:
+            return None
+        self._rendition_pids.add(pid)
+        tags = st.get_tags()
+        ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE) if tags else (False, "")
+        code = _iso639_2(lang) if ok else None
+        if code:
+            tl = Gst.TagList.new_empty()
+            tl.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_LANGUAGE_CODE, code)
+
+            def once(qpad, _info):
+                # after stream-start, caps and segment, before the first data
+                peer = qpad.get_peer()
+                if peer is not None:
+                    peer.send_event(Gst.Event.new_tag(tl))
+                return Gst.PadProbeReturn.REMOVE
+            first.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, once)
+        return self._mux.request_pad(tmpl, f"sink_{pid}", None)
 
     def _drop(self, pad, pl):
         fake = self.Gst.ElementFactory.make("fakesink")

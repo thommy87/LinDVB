@@ -2,6 +2,7 @@
 """Main window: channel list, video area with OSD, transport controls, menus."""
 
 import functools
+import threading
 import os
 import random
 import time
@@ -184,6 +185,7 @@ class MainWindow(Gtk.ApplicationWindow):
                                                   self._update_visualizer(),
                                                   self._update_teletext()))
         self.player.connect("state", lambda _p, _s: self._update_visualizer())
+        self.player.connect("notice", lambda _p, text: self.set_status(text))
         self.vis.analysis = self.player.analysis
         self.player.connect("metadata", self._on_metadata)
         self.player.connect("subtitle-text", self._on_subtitle_text)
@@ -277,6 +279,9 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: (self.player.select_subtitle(p.get_int32()),
                                              self._rebuild_track_menus()))
         self.add_action(a)
+        a = Gio.SimpleAction.new("rendition", GLib.VariantType.new("s"))
+        a.connect("activate", lambda _a, p: self._play_rendition(*p.get_string().split("\t", 1)))
+        self.add_action(a)
         a = Gio.SimpleAction.new("zoom", GLib.VariantType.new("i"))
         a.connect("activate", lambda _a, p: self.picture.set_content_fit(ZOOM[p.get_int32()][1]))
         self.add_action(a)
@@ -316,8 +321,6 @@ class MainWindow(Gtk.ApplicationWindow):
         a.connect("activate", lambda _a, p: self._run_plugin_action(p.get_int32()))
         self.add_action(a)
         for name, init, fn in (("video-off", False, lambda v: self.player.disable_video(v)),
-                               ("closed-captions", bool(self.settings.get("closed_captions")),
-                                lambda v: self.player.set_closed_captions(v)),
                                ("pl-random", False, lambda v: setattr(self, "playlist_random", v)),
                                ("pl-repeat", False, lambda v: setattr(self, "playlist_repeat", v))):
             a = Gio.SimpleAction.new_stateful(name, None, GLib.Variant.new_boolean(init))
@@ -1931,6 +1934,8 @@ class MainWindow(Gtk.ApplicationWindow):
             from .. import hooks
             hooks.run("channel-tuned", (c,))          # the user's scripts (DVB: via emit)
         else:
+            if c.buffered:
+                self._probe_renditions(c)
             self.capture = self.app.tuners.acquire(c, "live")
             self.capture.connect("stats", self._on_stats)
             self.capture.connect("error", self._on_capture_error)
@@ -2523,15 +2528,85 @@ class MainWindow(Gtk.ApplicationWindow):
         for i, t in enumerate(tracks):
             self.audio_menu.append(("● " if i == cur else "") + t, f"win.audio-track({i})")
         self.sub_menu.remove_all()
-        self.sub_menu.append(_("Off"), "win.subtitle(-1)")
         subs, cur = self.player.subtitle_tracks()
+        self.sub_menu.append(("● " if cur < 0 and subs else "") + _("Off"), "win.subtitle(-1)")
         for i, t in enumerate(subs):
             self.sub_menu.append(("● " if i == cur else "") + t, f"win.subtitle({i})")
-        if self.player.has_closed_captions():
-            cc = Gio.Menu()
-            cc.append(_("Closed Captions (CEA-608/708)"), "win.closed-captions")
-            self.sub_menu.append_section(None, cc)
+        # HLS renditions the timeshift buffer cannot hold (WebVTT subtitles)
+        # or does not hold: picking one plays the channel directly
+        extra_subs, extra_audio = self._missing_renditions()
+        for menu, kind, names in ((self.sub_menu, "SUBTITLES", extra_subs),
+                                  (self.audio_menu, "AUDIO", extra_audio)):
+            if not names:
+                continue
+            sec = Gio.Menu()
+            for name in names:
+                label = _("{name} (without timeshift)").format(name=name) \
+                    if self.capture is not None else name
+                item = Gio.MenuItem.new(label, None)
+                item.set_action_and_target_value("win.rendition",
+                                                 GLib.Variant.new_string(f"{kind}\t{name}"))
+                sec.append_item(item)
+            menu.append_section(None, sec)
         self._update_osd_tags()
+
+    def _missing_renditions(self):
+        """([subtitle names], [audio names]) of the HLS renditions of the
+        channel that what plays does not carry: the timeshift buffer (no
+        WebVTT), or playbin (no renditions at all)."""
+        c = self._tuned
+        if c is None or not c.url or not (
+                (self.capture is not None and c.buffered) or
+                (self.capture is None and self.player.uri and not self.player._pb3)):
+            return [], []
+        media = self.player.renditions.get(c.url, [])
+        subs = [m["name"] for m in media if m.get("type") == "SUBTITLES" and m.get("name")]
+        titles = {t.title for t in self.player.audio_track_info()[0]}
+        audio = [m["name"] for m in media if m.get("type") == "AUDIO" and m.get("uri")
+                 and m.get("name") and m["name"] not in titles]
+        return subs, audio
+
+    def _probe_renditions(self, c):
+        """Buffered HLS channel: read its master playlist for the renditions
+        (names of the audio renditions, subtitles the buffer cannot hold,
+        caption names)."""
+        url = c.url
+        if not url or ".m3u8" not in url.lower() or url in self.player.renditions:
+            return
+
+        def work():
+            from ..ipstream import fetch_manifest
+            from ..streaminfo import parse_hls
+            try:
+                text, _final, _z = fetch_manifest(url)
+                media = parse_hls(text).get("media", [])
+            except (OSError, ValueError):
+                return
+            GLib.idle_add(done, media)
+
+        def done(media):
+            self.player.renditions[url] = media
+            self._rebuild_track_menus()
+            return False
+        threading.Thread(target=work, daemon=True).start()
+
+    def _play_rendition(self, kind, name):
+        """Play the channel in the timeshift buffer directly, with this HLS
+        audio or subtitle rendition (the buffer cannot carry it)."""
+        c = self._tuned
+        if c is None or not c.url:
+            return
+        debuglog.write("Channel", f"{c.name}: {kind.lower()} '{name}' without timeshift")
+        buffered = self.capture is not None
+        self._direct_fallback = True
+        self._release_capture()
+        self.quality.reset("iptv")
+        self._update_quality_bar()
+        self.player.play_rendition(c.url, kind, name)
+        self.hbbtv.channel_changed(c, None)
+        if buffered:
+            self.set_status(_("{name}: playing the stream directly, without timeshift ({reason})")
+                            .format(name=c.name, reason=name))
 
     def _update_osd_tags(self):
         """The OSD's technical row: source, resolution, picture format (and

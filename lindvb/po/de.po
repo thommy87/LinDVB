@@ -5039,3 +5039,22 @@ msgstr "XMLTV: {n} Sendungen geladen, {matched} IPTV-Sender zugeordnet"
 #: lindvb/ui/epgsettings.py
 msgid "Your guides"
 msgstr "Deine Programmführer"
+
+#: lindvb/player.py
+#, python-brace-format
+msgid "service {n}"
+msgstr "Dienst {n}"
+
+#: lindvb/player.py
+#, python-brace-format
+msgid "Closed captions ({tag})"
+msgstr "Untertitel für Hörgeschädigte ({tag})"
+
+#: lindvb/player.py
+msgid "The subtitles of this stream hold the picture back, so they were switched off."
+msgstr "Die Untertitel dieses Streams halten das Bild an, darum wurden sie abgeschaltet."
+
+#: lindvb/ui/window.py
+#, python-brace-format
+msgid "{name} (without timeshift)"
+msgstr "{name} (ohne Timeshift)"

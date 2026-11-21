@@ -116,7 +116,8 @@ def parse_hls(text, base=""):
                 a = _attrs(ln)
                 media.append({"type": a.get("TYPE", ""), "language": a.get("LANGUAGE", ""),
                               "name": a.get("NAME", ""), "default": a.get("DEFAULT") == "YES",
-                              "channels": a.get("CHANNELS", "")})
+                              "channels": a.get("CHANNELS", ""), "group": a.get("GROUP-ID", ""),
+                              "uri": a.get("URI", ""), "instream_id": a.get("INSTREAM-ID", "")})
         variants.sort(key=lambda v: v["bandwidth"])
         return {"kind": "master", "variants": variants, "media": media}
     target, durations, live = 0.0, [], True

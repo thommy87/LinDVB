@@ -90,8 +90,9 @@ them.
   Vulkan Video or software can be chosen by hand. With VA-API, deinterlacing
   runs on the graphics card too
 * Subtitles: DVB subtitles and teletext subtitles (pages from the channel's PMT,
-  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-608/708) for
-  ATSC and US cable channels (Subtitles ▸ Closed Captions)
+  e.g. 150 or 777) drawn over the video in sync; closed captions (CEA-708) of
+  ATSC, US cable and IPTV channels, listed by service ("English (CC1)"); WebVTT
+  subtitles of HLS streams. Subtitles start switched off on every channel
 * Teletext window with page navigation, find, copy and save, opened from the "TXT"
   button in the header bar (greyed out when the channel carries no teletext)
 * Picture in picture and a channel mosaic (nine channels at once) for internet channels
