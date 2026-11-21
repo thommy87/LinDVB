@@ -91,7 +91,7 @@ jobs:
         run: |
           docker run --rm --privileged -v "$PWD/squashfs-root:/lindvb:ro" ubuntu:22.04 bash -euc '
             export DEBIAN_FRONTEND=noninteractive
-            sed -i "s#http://\(archive\|security\).ubuntu.com#http://azure.archive.ubuntu.com#" /etc/apt/sources.list
+            sed -i "s#/\(archive\|security\)\.ubuntu\.com#/azure.archive.ubuntu.com#" /etc/apt/sources.list
             echo "== apt"
             timeout 420 apt-get -o Acquire::Retries=3 update -qq
             timeout 420 apt-get -o Acquire::Retries=3 install -y -qq --no-install-recommends xvfb xauth libgl1-mesa-dri libegl1 libgles2 \
