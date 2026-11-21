@@ -81,17 +81,28 @@ jobs:
         # needs are there and a short H.264/MPEG audio stream really decodes
         run: xvfb-run -a squashfs-root/AppRun --self-check
 
-      - name: Older systems get a clear message
-        # Debian 12 has glibc 2.36: AppRun must stop with a hint to the Flatpak
-        # rather than fail inside the dynamic loader.
+      - name: Self-check on Ubuntu 22.04 (older glibc)
+        # The AppImage brings its own glibc for systems older than the build
+        # system (AppImageHub tests on the oldest supported Ubuntu LTS): the same
+        # self-check there, with only the libraries a desktop has installed.
+        # The container uses the runner's (Azure) Ubuntu mirror: archive.ubuntu.com
+        # is sometimes very slow. Time limits, so a hang shows its log.
+        timeout-minutes: 15
         run: |
-          set +e
-          out="$(docker run --rm -e LINDVB_NO_GUI_ERROR=1 -v "$PWD/squashfs-root:/lindvb:ro" \
-                   debian:12 /lindvb/AppRun --help 2>&1)"
-          rc=$?
-          set -e
-          echo "$out"
-          [ "$rc" -eq 1 ] && grep -q "needs a Linux system with glibc" <<<"$out"
+          docker run --rm --privileged -v "$PWD/squashfs-root:/lindvb:ro" ubuntu:22.04 bash -euc '
+            export DEBIAN_FRONTEND=noninteractive
+            sed -i "s#/\(archive\|security\)\.ubuntu\.com#/azure.archive.ubuntu.com#" /etc/apt/sources.list
+            echo "== apt"
+            timeout 420 apt-get -o Acquire::Retries=3 update -qq
+            timeout 420 apt-get -o Acquire::Retries=3 install -y -qq --no-install-recommends xvfb xauth libgl1-mesa-dri libegl1 libgles2 \
+              libopengl0 libgbm1 libvulkan1 libfontconfig1 libwayland-client0 libwayland-egl1 \
+              libwayland-cursor0 libx11-xcb1 libasound2 libpulse0 libpipewire-0.3-0 libva2 libva-drm2 \
+              libva-x11-2 libva-wayland2 ca-certificates bubblewrap xdg-dbus-proxy dbus-x11 >/dev/null
+            ldd --version | head -n1
+            echo "== --help"
+            timeout 60 /lindvb/AppRun --help >/dev/null
+            echo "== self-check"
+            timeout 300 xvfb-run -a /lindvb/AppRun --self-check'
 
       # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
       # Release builds upload straight to the release instead.

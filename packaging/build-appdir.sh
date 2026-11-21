@@ -1,7 +1,8 @@
 #!/bin/bash
 # Assemble an AppDir for LinDVB from the packages of the build system
-# (meant for Ubuntu 24.04; the AppImage then runs on distributions with
-# glibc 2.39 or newer). Usage: packaging/build-appdir.sh [AppDir]
+# (meant for Ubuntu 24.04). The AppImage brings its own C library too (see
+# glibc-launcher.c), so it also runs on older distributions such as Ubuntu
+# 22.04 or Debian 12. Usage: packaging/build-appdir.sh [AppDir]
 set -euo pipefail
 [ -n "${CI:-}" ] && set -x
 
@@ -148,6 +149,22 @@ print(f"patched {n} occurrence(s) of {old.decode()}")
 PYEOF
 fi
 
+echo "== C library"
+# glibc with its loader, and the C++ runtime built against it, in a directory of
+# their own: only the programs of the AppImage use them, through
+# glibc-launcher.c (installed at the end), and only when the host's glibc is
+# older than this one. The other libraries that come from the host stay
+# excluded above: they work with a newer C library than they were built for.
+GLIBC_DIR="$APPDIR/usr/lib/glibc"
+mkdir -p "$GLIBC_DIR"
+for lib in ld-linux-x86-64.so.2 libc.so.6 libm.so.6 libmvec.so.1 libpthread.so.0 libdl.so.2 \
+           librt.so.1 libresolv.so.2 libutil.so.1 libanl.so.1 libnss_dns.so.2 libnss_files.so.2 \
+           libBrokenLocale.so.1 libc_malloc_debug.so.0 libthread_db.so.1 \
+           libstdc++.so.6 libgcc_s.so.1; do
+    cp -L "$ARCH_LIB/$lib" "$GLIBC_DIR/"
+done
+chmod +x "$GLIBC_DIR/ld-linux-x86-64.so.2"
+
 echo "== licences of the bundled packages"
 # The licence and copyright files of every Ubuntu package the AppImage takes
 # files from, and a list of those packages with their source versions, so the
@@ -180,6 +197,8 @@ cp "$SRC/data/io.github.thommy87.LinDVB.desktop" "$APPDIR/"
 sed -i 's/^Icon=.*/Icon=lindvb/' "$APPDIR/io.github.thommy87.LinDVB.desktop"
 cp "$SRC/data/lindvb.png" "$APPDIR/lindvb.png"
 ln -sf lindvb.png "$APPDIR/.DirIcon"
+mkdir -p "$APPDIR/usr/share/applications"
+cp "$APPDIR/io.github.thommy87.LinDVB.desktop" "$APPDIR/usr/share/applications/"
 cp -r "$SRC/data/icons/hicolor/." "$APPDIR/usr/share/icons/hicolor/"
 mkdir -p "$APPDIR/usr/share/icons/hicolor/scalable/apps"
 cp "$SRC/data/lindvb.svg" "$APPDIR/usr/share/icons/hicolor/scalable/apps/lindvb.svg"
@@ -193,23 +212,15 @@ MIN_GLIBC="$(getconf GNU_LIBC_VERSION | awk '{print $2}')"
 cat > "$APPDIR/AppRun" <<EOF
 #!/bin/bash
 HERE="\$(dirname "\$(readlink -f "\$0")")"
-# Built on glibc $MIN_GLIBC: on an older (or a non-glibc) system the bundled
-# libraries fail with a loader error, so say so plainly and point to Flathub.
+# Built on glibc $MIN_GLIBC, which the AppImage brings along (usr/lib/glibc):
+# on an older system, or one without glibc, its programs use that one; on a
+# system with this glibc or a newer one, the host's (see glibc-launcher.c).
 MIN_GLIBC=$MIN_GLIBC
 HOST_GLIBC="\$(getconf GNU_LIBC_VERSION 2>/dev/null | awk '{print \$2}')"
-[ -n "\$HOST_GLIBC" ] || HOST_GLIBC="\$(ldd --version 2>&1 | head -n1 | grep -oE '[0-9]+\\.[0-9]+\$')"
-if [ -z "\$HOST_GLIBC" ] || [ "\$(printf '%s\\n' "\$MIN_GLIBC" "\$HOST_GLIBC" | sort -V | head -n1)" != "\$MIN_GLIBC" ]; then
-    msg="This LinDVB AppImage needs a Linux system with glibc \$MIN_GLIBC or newer (this system: \${HOST_GLIBC:-no glibc}).
-Older systems such as Debian 12, Ubuntu 22.04 or RHEL 9 can use the Flatpak instead:
-https://github.com/thommy87/LinDVB#install"
-    echo "\$msg" >&2
-    if [ -z "\${LINDVB_NO_GUI_ERROR:-}" ] && { [ -n "\${DISPLAY:-}" ] || [ -n "\${WAYLAND_DISPLAY:-}" ]; }; then
-        if command -v zenity >/dev/null; then zenity --error --title=LinDVB --text="\$msg" 2>/dev/null
-        elif command -v kdialog >/dev/null; then kdialog --title LinDVB --error "\$msg" 2>/dev/null
-        elif command -v notify-send >/dev/null; then notify-send LinDVB "\$msg" 2>/dev/null
-        fi
-    fi
-    exit 1
+if [ -n "\$HOST_GLIBC" ] && [ "\$(printf '%s\\n' "\$MIN_GLIBC" "\$HOST_GLIBC" | sort -V | head -n1)" = "\$MIN_GLIBC" ]; then
+    export LINDVB_HOST_GLIBC=1
+else
+    export LINDVB_HOST_GLIBC=0
 fi
 # WebKit finds its helper processes relative to the working directory (see
 # build-appdir.sh); LinDVB resolves relative file arguments against the old one.
@@ -218,7 +229,11 @@ cd "\$HERE/usr/lib"
 export PYTHONHOME="\$HERE/usr"
 export PYTHONPATH="\$HERE/usr/lib/python$PYVER/site-packages"
 export PYTHONDONTWRITEBYTECODE=1
-export LD_LIBRARY_PATH="\$HERE/usr/lib\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}"
+# The programs of the AppImage get their library path from glibc-launcher.c,
+# not from the environment, so programs of the host started from LinDVB keep
+# their own libraries. WebKit binds the directories on LD_LIBRARY_PATH into its
+# sandbox: usr has the bundled libraries below it but none directly in it.
+export LD_LIBRARY_PATH="\$HERE/usr\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}"
 export GI_TYPELIB_PATH="\$HERE/usr/lib/girepository-1.0"
 export GST_PLUGIN_SYSTEM_PATH_1_0="\$HERE/usr/lib/gstreamer-1.0"
 export GST_PLUGIN_PATH_1_0=""
@@ -251,6 +266,21 @@ EOF
 chmod +x "$APPDIR/AppRun"
 QL="$(ls "$ARCH_LIB"/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders 2>/dev/null || command -v gdk-pixbuf-query-loaders || true)"
 [ -n "$QL" ] && cp "$QL" "$APPDIR/usr/bin/gdk-pixbuf-query-loaders"
+
+echo "== glibc launcher"
+# Every program of the AppImage moves to .real/ next to it, and the launcher
+# takes its place (one file, hard-linked).
+LAUNCHER="$APPDIR/usr/lib/glibc/glibc-launcher"
+gcc -O2 -Wall -static -s -o "$LAUNCHER" "$SRC/packaging/glibc-launcher.c"
+find "$APPDIR/usr/bin" "$APPDIR/usr/lib" -path '*/.real' -prune -o -type f -perm -u+x -print |
+    while read -r f; do
+        file -b "$f" | grep -q '^ELF.*\(executable\|pie executable\)' || continue
+        case "$f" in "$GLIBC_DIR"/*) continue ;; esac
+        mkdir -p "$(dirname "$f")/.real"
+        mv "$f" "$(dirname "$f")/.real/"
+        ln "$LAUNCHER" "$f"
+        echo "launcher for ${f#"$APPDIR"/}"
+    done
 
 du -sh "$APPDIR"
 echo "AppDir ready: $APPDIR"
