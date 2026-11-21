@@ -556,6 +556,92 @@ def test_quality_change_inside_the_buffer(hls, tmp_path):
     assert sizes == [(640, 360), (320, 180)] and not err
 
 
+class GzipPlaylists(http.server.SimpleHTTPRequestHandler):
+    """Files, the playlists always gzip-compressed (whatever the client asks
+    for), byte ranges of the compressed data: as PBS's Amazon S3 / CloudFront
+    servers answer."""
+    def do_GET(self):
+        path = self.translate_path(self.path)
+        if not path.endswith(".m3u8"):
+            return super().do_GET()
+        import gzip
+        try:
+            with open(path, "rb") as f:
+                data = gzip.compress(f.read(), mtime=0)
+        except OSError:
+            self.send_error(404)
+            return
+        rng = self.headers.get("Range", "")
+        start = int(rng[6:].split("-")[0] or 0) if rng.startswith("bytes=") else 0
+        if start >= len(data):
+            # what S3 answers when the HTTP source asks for the rest
+            self.send_error(416)
+            return
+        self.send_response(206 if rng else 200)
+        if rng:
+            self.send_header("Content-Range", f"bytes {start}-{len(data) - 1}/{len(data)}")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Type", "application/vnd.apple.mpegurl")
+        self.send_header("Content-Encoding", "gzip")
+        self.send_header("Content-Length", str(len(data) - start))
+        self.end_headers()
+        self.wfile.write(data[start:])
+
+    def log_message(self, *a):
+        pass
+
+
+@pytest.mark.parametrize("playlist", ["master.m3u8", "high/index.m3u8"])
+def test_hls_with_compressed_playlists(hls, playlist):
+    """A server that sends its playlists gzip-compressed (PBS): GStreamer's
+    HTTP source cannot read the first one, so the reader hands it over
+    unpacked and the channel plays."""
+    _base, folder = hls
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), GzipPlaylists)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{srv.server_address[1]}/{playlist}"
+    try:
+        text, final, compressed = ipstream.fetch_manifest(url)
+        assert compressed and text.startswith("#EXTM3U") and final == url
+        assert ipstream.uncompressed_hls(url).startswith("data:")
+        r, data, errors = _read_all(ipstream.GstReader, url,
+                                    retry=ipstream.Retry(delays=(5,), give_up=30))
+    finally:
+        srv.shutdown()
+    assert not errors and ipstream.looks_like_ts(data) and len(data) > 20_000
+    assert r.source_uri and r.source_uri.startswith("data:")
+
+
+def test_plain_playlist_needs_no_unpacking(hls):
+    base, _folder = hls
+    assert ipstream.uncompressed_hls(base + "/master.m3u8") is None
+    r, data, errors = _read_all(ipstream.GstReader, base + "/master.m3u8",
+                                retry=ipstream.Retry(delays=(5,), give_up=30))
+    assert not errors and data and r.source_uri is None
+
+
+def test_silent_stream_gives_a_message(monkeypatch):
+    """A server that takes the connection and never answers: after
+    FIRST_DATA_TIMEOUT the reader reports an error instead of waiting (the
+    user would see a black picture)."""
+    import socket
+    _gst("urisourcebin", "parsebin", "appsink")
+    monkeypatch.setattr(ipstream, "FIRST_DATA_TIMEOUT", 1)
+    monkeypatch.setattr(ipstream, "uncompressed_hls", lambda url: None)
+    sock = socket.socket()
+    sock.bind(("127.0.0.1", 0))
+    sock.listen(4)
+    try:
+        url = f"http://127.0.0.1:{sock.getsockname()[1]}/live.m3u8"
+        t0 = time.monotonic()
+        _r, data, errors = _read_all(ipstream.GstReader, url, seconds=10)
+    finally:
+        sock.close()
+    assert not data and errors and "no data arrived within 1 s" in errors[0]
+    assert time.monotonic() - t0 < 8
+
+
 def test_source_switches_to_gstreamer(hls):
     """An HTTP address that is no transport stream (here a playlist without
     .m3u8 in its name) goes to GStreamer."""

@@ -206,6 +206,54 @@ def test_hls_master_and_media():
     assert media["avg_segment"] == pytest.approx(3.92)
 
 
+PBS_MASTER = (
+    "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-INDEPENDENT-SEGMENTS\n"
+    '#EXT-X-STREAM-INF:BANDWIDTH=5313616,CODECS="avc1.640028,mp4a.40.2",RESOLUTION=1920x1080,'
+    'SUBTITLES="subs"\nkviedt2-hls_1080p.m3u8\n'
+    '#EXT-X-MEDIA:TYPE=SUBTITLES,NAME="English",DEFAULT=YES,LANGUAGE="eng",GROUP-ID="subs",'
+    'URI="kviedt2-hls_captions.m3u8"\n')
+
+
+def test_compressed_playlist_is_unpacked():
+    """PBS (Amazon S3 / CloudFront) sends its playlists gzip-compressed to
+    every client: the probe unpacks them, also when only the start was read."""
+    import gzip
+    import zlib
+    body = gzip.compress(PBS_MASTER.encode())
+    assert streaminfo.is_compressed(body, "gzip") and streaminfo.is_compressed(body)
+    assert streaminfo.decode_body(body, "gzip").decode() == PBS_MASTER
+    assert streaminfo.decode_body(body).decode() == PBS_MASTER          # magic bytes alone
+    assert streaminfo.decode_body(body[:-12], "gzip").decode().startswith("#EXTM3U")
+    assert streaminfo.decode_body(zlib.compress(b"#EXTM3U"), "deflate") == b"#EXTM3U"
+    assert streaminfo.decode_body(b"#EXTM3U", "") == b"#EXTM3U"
+    assert not streaminfo.is_compressed(b"#EXTM3U")
+
+
+def test_data_master_makes_addresses_absolute():
+    import base64
+    base = "https://kviedt2.lls.pbs.org/kviedt2-hls.m3u8"
+
+    def text(uri):
+        assert uri.startswith("data:application/vnd.apple.mpegurl;base64,")
+        return base64.b64decode(uri.split(",", 1)[1]).decode()
+    master = text(streaminfo.data_master(PBS_MASTER, base))
+    assert "\nhttps://kviedt2.lls.pbs.org/kviedt2-hls_1080p.m3u8\n" in master
+    assert 'URI="https://kviedt2.lls.pbs.org/kviedt2-hls_captions.m3u8"' in master
+    assert "RESOLUTION=1920x1080" in master
+    # a media playlist becomes the only variant of a master that points at it
+    media = text(streaminfo.data_master("#EXTM3U\n#EXT-X-TARGETDURATION:4\n#EXTINF:4,\na.ts\n",
+                                        base))
+    assert streaminfo.parse_hls(media)["variants"][0]["uri"] == base
+    assert streaminfo.data_master("<html>", base) is None
+
+
+def test_no_playlist_label():
+    from lindvb.analysis import no_playlist
+    assert no_playlist({"content_type": "application/vnd.apple.mpegurl"}) == \
+        "unreadable (the server announces a playlist)"
+    assert no_playlist({"content_type": "video/mp2t"}) == "none (a plain stream)"
+
+
 def test_dash_manifest():
     mpd = streaminfo.parse_mpd(
         '<?xml version="1.0"?><MPD xmlns="urn:mpeg:dash:schema:mpd:2011" type="dynamic">'

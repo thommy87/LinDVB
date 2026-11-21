@@ -10,7 +10,6 @@ import re
 import threading
 import time
 import urllib.parse
-import urllib.request
 
 import gi
 
@@ -46,8 +45,8 @@ SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
 from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, META_REPEAT, REFUSED_CODES, Retry,  # noqa: E402
-                       find_meta, host_addresses, http_headers, resolve_redirects,
-                       setup_http_source)
+                       fetch_manifest, find_meta, host_addresses,
+                       resolve_redirects, setup_http_source)
 from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
@@ -76,9 +75,12 @@ def _is_hls_url(uri):
 
 
 def _fetch_text(url, limit=256 * 1024, timeout=4):
-    req = urllib.request.Request(url, headers=http_headers())
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read(limit).decode("utf-8", "replace")
+    """(text, data: address to play instead or None) of an HLS playlist; the
+    data: address when the server sends it compressed (GStreamer's HTTP source
+    cannot read that; lindvb.streaminfo.data_master)."""
+    from .streaminfo import data_master
+    text, final, compressed = fetch_manifest(url, limit, timeout)
+    return text, (data_master(text, final) if compressed else None)
 
 
 def enable_ttml():
@@ -380,6 +382,7 @@ class Player(GObject.Object):
         self._selected = set()          # playbin3: ids of the selected streams
         self._token = 0                 # bumps on every play/stop, cancels stale probes
         self._hls_alt_audio = {}        # url -> master playlist has audio renditions
+        self._hls_unpacked = {}         # url -> data: address of its compressed playlist
         self._fallback_done = False
         self._error_token = -1          # playback that already reported an error
         self._resolve_token = -1        # playback whose address was resolved once
@@ -1094,36 +1097,47 @@ class Player(GObject.Object):
         self._pending_seek = None
         self._token += 1
         self._fallback_done = False
-        engine = self.settings.get("stream_engine", "auto")
-        if engine == "playbin3" and _has_playbin3():
-            self._start_uri(True)
-        elif engine == "auto" and _is_hls_url(uri) and _has_playbin3():
-            known = self._hls_alt_audio.get(uri)
-            if known is not None:
-                self._start_uri(known)
-            else:
-                # look at the master playlist first (in the background)
-                self._teardown()
-                threading.Thread(target=self._probe_hls, args=(uri, self._token),
-                                 daemon=True).start()
+        if _is_hls_url(uri) and uri not in self._hls_alt_audio:
+            # look at the master playlist first (in the background): its
+            # audio renditions pick the pipeline, and a playlist the server
+            # sends compressed is handed to GStreamer unpacked
+            self._teardown()
+            threading.Thread(target=self._probe_hls, args=(uri, self._token),
+                             daemon=True).start()
         else:
-            self._start_uri(False)
+            self._start_uri(self._engine_pb3(uri))
+
+    def _engine_pb3(self, uri):
+        """True to open *uri* with playbin3."""
+        engine = self.settings.get("stream_engine", "auto")
+        if not _has_playbin3() or engine not in ("auto", "playbin3"):
+            return False
+        if engine == "playbin3":
+            return True
+        return bool(_is_hls_url(uri) and self._hls_alt_audio.get(uri))
 
     def _probe_hls(self, uri, token):
         try:
-            alt = hls_has_alternate_audio(_fetch_text(uri))
+            text, unpacked = _fetch_text(uri)
+            alt = hls_has_alternate_audio(text)
         except (OSError, ValueError):
-            alt = False
-        GLib.idle_add(self._probe_done, uri, token, alt)
+            alt, unpacked = False, None
+        GLib.idle_add(self._probe_done, uri, token, alt, unpacked)
 
-    def _probe_done(self, uri, token, alt):
+    def _probe_done(self, uri, token, alt, unpacked=None):
         self._hls_alt_audio[uri] = alt
+        if unpacked:
+            debuglog.write("Player", "the server sends the playlist compressed; "
+                                     "handing it to GStreamer unpacked")
+            self._hls_unpacked[uri] = unpacked
+        else:
+            self._hls_unpacked.pop(uri, None)
         if token == self._token and self.uri == uri and not self.capture:
-            self._start_uri(alt)
+            self._start_uri(self._engine_pb3(uri))
         return False
 
     def _start_uri(self, pb3):
-        uri = self.uri
+        uri = self._hls_unpacked.get(self.uri) or self.uri
         debuglog.write("Player", f"open with {'playbin3' if pb3 else 'playbin'}")
         real, self._ssm_source = ssm_rtp_to_udp(uri) if uri.startswith(("rtp://", "udp://")) \
             else (uri, None)
@@ -1769,7 +1783,10 @@ class Player(GObject.Object):
                 limit = f.appsrc.get_property("max-bytes")
             except (AttributeError, TypeError):
                 return {}
-            return capture_buffer(end, f.reader.offset, level, limit, self.capture.byte_rate())
+            # nothing received yet: byte_rate() is only a guess (8 Mbit/s),
+            # which the channel analysis would show as the stream's rate
+            return capture_buffer(end, f.reader.offset, level, limit,
+                                  self.capture.byte_rate() if end else None)
         q = Gst.Query.new_buffering(Gst.Format.TIME)
         if self.playbin.query(q):
             _busy, pct = q.parse_buffering_percent()
