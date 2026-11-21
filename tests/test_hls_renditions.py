@@ -59,10 +59,13 @@ def _make_main(folder, seconds=6):
     """The variant: H.264 and AAC in TS segments of about 1 s."""
     import shutil
     import subprocess
+    gst_launch = shutil.which("gst-launch-1.0")
+    if gst_launch is None:
+        pytest.skip("gst-launch-1.0 missing")
     d = folder / "main"
     d.mkdir()
     subprocess.run(
-        [shutil.which("gst-launch-1.0"), "-q", "videotestsrc", f"num-buffers={seconds * 25}", "!",
+        [gst_launch, "-q", "videotestsrc", f"num-buffers={seconds * 25}", "!",
          "video/x-raw,width=320,height=180,framerate=25/1,format=I420", "!",
          "x264enc", "key-int-max=25", "speed-preset=ultrafast", "!", "h264parse", "!",
          "queue", "!", "mux.", "audiotestsrc", f"num-buffers={seconds * 47}", "!",
