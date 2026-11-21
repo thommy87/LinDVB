@@ -26,6 +26,7 @@ from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import captions, debuglog, hwaccel, passthrough  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
+from .ca import parse_pmt  # noqa: E402
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
 from .tvheadend import set_login  # noqa: E402
 
@@ -45,8 +46,9 @@ SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 # hlsdemux2 / dashdemux2: start on a good quality (see lindvb.ipstream)
 from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, META_REPEAT, REFUSED_CODES, Retry,  # noqa: E402
-                       fetch_manifest, find_meta, host_addresses,
+                       fetch_manifest, find_meta, host_addresses, rendition_for_pid,
                        resolve_redirects, setup_http_source)
+from .streaminfo import parse_hls  # noqa: E402
 from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
@@ -64,6 +66,15 @@ def subtitle_font_desc(settings, base_points=18):
     if not family and scale == 100:
         return None
     return f"{family or 'Sans'} {max(6, round(base_points * scale / 100))}"
+
+
+def _pid_of(stream_id):
+    """The PID at the end of a tsdemux stream id (".../00000101"), or -1."""
+    tail = (stream_id or "").rsplit("/", 1)[-1].split(":")[-1]
+    try:
+        return int(tail, 16) if 1 <= len(tail) <= 8 else -1
+    except ValueError:
+        return -1
 
 
 def _has_playbin3():
@@ -332,6 +343,8 @@ class Player(GObject.Object):
         "hw-fallback": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # teletext subtitle text to show over the video ("" clears it)
         "subtitle-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        # something the user should know about what plays (status line)
+        "notice": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # what is playing (dict: title, artist, album, year, track, image,
         # organization, radiotext); sent again whenever it changes
         "metadata": (GObject.SignalFlags.RUN_LAST, None, (object,)),
@@ -373,6 +386,13 @@ class Player(GObject.Object):
         self._ttx_pages = []            # TeletextPage from the PMT
         self._ttx_in_pmt = False        # the PMT announces a teletext stream
         self._ttx_last = ""
+        # the subtitles the user picked for this channel or file: None (off),
+        # ("text", stream name or index), ("ttx", page) or ("cc", service).
+        # Every channel starts with them off.
+        self._sub_choice = None
+        self._want_rendition = None     # (TYPE, NAME) to pick once playbin3 offers it
+        self.renditions = {}            # HLS address -> its EXT-X-MEDIA renditions
+        self._cc_pmt = {}               # caption services the PMT names {service: language}
         # Internet streams with the audio in separate HLS renditions run on
         # playbin3: the old hlsdemux in playbin lines those renditions up by
         # playlist position instead of by timestamp, which puts sound and
@@ -431,29 +451,37 @@ class Player(GObject.Object):
         self._played = False
         pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
         pb.set_property("video-sink", self.video.sink)
+        # subtitles start switched off; the user turns them on in Subtitles
+        if not (self._sub_choice and self._sub_choice[0] == "text") and \
+                not (self._want_rendition and self._want_rendition[0] == "SUBTITLES"):
+            pb.set_property("flags", pb.get_property("flags") & ~PLAY_FLAGS_TEXT)
         vf = Gst.Bin.new("vfilter")
-        chain = [Gst.ElementFactory.make("videoconvert")]
-        # ATSC / US cable closed captions (CEA-708 in the video stream);
-        # Subtitles > Closed Captions switches them on and off and is offered
-        # once a frame really carries them (lindvb.captions)
-        self.cc = None
-        if captions.available():
-            self.cc = captions.CaptionOverlay(
-                silent=not self.settings.get("closed_captions", False),
-                on_found=self._tracks_changed,
-                log=lambda msg: debuglog.write("Player", msg))
-            chain.insert(0, self.cc.bin)
+        head, middle = [], [Gst.ElementFactory.make("videoconvert")]
         if self.settings["deinterlace"]:
             gpu = hwaccel.preferred(self._decoder_mode(), hwaccel.available())
             deint = hwaccel.make_deinterlacer(gpu)
             if deint is not None and deint.get_factory().get_name() == "vadeinterlace":
                 # first in the chain: it takes the VA-API decoder's frames
                 # straight from the graphics card and deinterlaces them there
-                chain.insert(0, deint)
+                head.append(deint)
             elif deint is not None:
-                chain.append(deint)
+                middle.append(deint)
         self.vbal = Gst.ElementFactory.make("videobalance")
-        chain += [self.vbal, Gst.ElementFactory.make("videoconvert")]
+        middle += [self.vbal, Gst.ElementFactory.make("videoconvert")]
+        # ATSC / US cable closed captions (CEA-708 in the video stream); they
+        # are offered in Subtitles once a frame really carries them and start
+        # switched off on every channel (lindvb.captions). The overlay goes
+        # last, so it draws into the converted frames (see lindvb.captions).
+        self.cc = None
+        if captions.available():
+            self.cc = captions.CaptionOverlay(
+                silent=True, on_found=self._tracks_changed,
+                log=lambda msg: debuglog.write("Player", msg), middle=middle)
+            chain = head + [self.cc.bin]
+            if self._sub_choice and self._sub_choice[0] == "cc":
+                self.cc.show(self._sub_choice[1])
+        else:
+            chain = head + middle
         for e in chain:
             vf.add(e)
         for a, b in zip(chain, chain[1:]):
@@ -491,6 +519,12 @@ class Player(GObject.Object):
         bus = pb.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
+        if pb3:
+            # the first choice of streams has to be made before playbin3
+            # starts them: it would show a subtitle stream on its own, and
+            # changing the subtitle stream while it plays is fragile
+            bus.enable_sync_message_emission()
+            bus.connect("sync-message::stream-collection", self._on_sync_collection)
         self.playbin = pb
         self._apply_settings()
         return pb
@@ -880,6 +914,12 @@ class Player(GObject.Object):
 
     def _reset_metadata(self):
         self._audio_pref_done = False       # a new channel or file: choose again
+        # subtitles start switched off on every channel and file
+        self._sub_choice = None
+        self._want_rendition = None
+        self.ttx_page = 0
+        self._ttx_last = ""
+        self._cc_pmt = {}
         if self.metadata:
             self.metadata = {}
             self.emit("metadata", {})
@@ -1044,11 +1084,16 @@ class Player(GObject.Object):
         try:
             program, pages = subtitle_pages_from_pmt(bytes(raw))
             _program, present = teletext_in_pmt(bytes(raw))
+            pmt = parse_pmt(bytes(raw))
         except ValueError:
             return
         if self.sid and program != self.sid:
             return
-        changed = present != self._ttx_in_pmt
+        cc = captions.caption_services_from_descriptors(pmt.program_info)
+        for _st, _pid, _ca, info in pmt.streams:
+            cc.update(captions.caption_services_from_descriptors(info))
+        changed = present != self._ttx_in_pmt or cc != self._cc_pmt
+        self._cc_pmt = cc
         self._ttx_in_pmt = present
         if pages and pages != self._ttx_pages:
             self._ttx_pages = pages
@@ -1081,9 +1126,11 @@ class Player(GObject.Object):
         self.paused = False
         pb.set_state(Gst.State.PLAYING)
 
-    def play_uri(self, uri, live=False):
+    def play_uri(self, uri, live=False, rendition=None):
         """Play a file or an address; *live*: a channel's stream, opened again
-        when its connection breaks (files and archives play to their end)."""
+        when its connection breaks (files and archives play to their end).
+        *rendition*: (EXT-X-MEDIA TYPE, NAME) of an HLS audio or subtitle
+        rendition to pick from the start (opens the stream with playbin3)."""
         debuglog.write("Player", f"play {'live stream' if live else 'file / address'} {uri} "
                                  f"(engine {self.settings.get('stream_engine', 'auto')})")
         self._cancel_reconnect()
@@ -1093,6 +1140,8 @@ class Player(GObject.Object):
             uri = Gst.filename_to_uri(uri)
         if uri != self.uri:
             self._reset_metadata()
+        if rendition:
+            self._want_rendition = tuple(rendition)
         self.uri = uri
         self._pending_seek = None
         self._token += 1
@@ -1114,18 +1163,23 @@ class Player(GObject.Object):
             return False
         if engine == "playbin3":
             return True
-        return bool(_is_hls_url(uri) and self._hls_alt_audio.get(uri))
+        # only playbin3 (hlsdemux2) plays HLS subtitle renditions
+        return bool(_is_hls_url(uri) and (self._hls_alt_audio.get(uri) or self._want_rendition))
 
     def _probe_hls(self, uri, token):
+        media = []
         try:
             text, unpacked = _fetch_text(uri)
             alt = hls_has_alternate_audio(text)
+            media = parse_hls(text).get("media", [])
         except (OSError, ValueError):
             alt, unpacked = False, None
-        GLib.idle_add(self._probe_done, uri, token, alt, unpacked)
+        GLib.idle_add(self._probe_done, uri, token, alt, unpacked, media)
 
-    def _probe_done(self, uri, token, alt, unpacked=None):
+    def _probe_done(self, uri, token, alt, unpacked=None, media=None):
         self._hls_alt_audio[uri] = alt
+        if media is not None:
+            self.renditions[uri] = media
         if unpacked:
             debuglog.write("Player", "the server sends the playlist compressed; "
                                      "handing it to GStreamer unpacked")
@@ -1344,16 +1398,6 @@ class Player(GObject.Object):
             self.playbin.seek_simple(Gst.Format.TIME, Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT,
                                      int(seconds * Gst.SECOND))
 
-    def set_closed_captions(self, on):
-        """Show the CEA-608/708 captions of the video (ATSC, US cable, some IPTV)."""
-        self.settings["closed_captions"] = bool(on)
-        if self.cc is not None:
-            self.cc.set_silent(not on)
-
-    def has_closed_captions(self):
-        """The video of the current stream carries CEA-708 captions."""
-        return self.cc is not None and self.cc.present
-
     def set_rate(self, rate):
         """Play rate for files (0.5 .. 2.0)."""
         self.rate = rate
@@ -1416,7 +1460,15 @@ class Player(GObject.Object):
         if not tracks or not any(t.codec for t in tracks):
             return                          # the codecs come with later tags
         self._audio_pref_done = True
-        idx = preferred_track(tracks, self.settings.get("audio_prefer", "off"), cur)
+        start = cur
+        default = next((m.get("name") for m in self._media("AUDIO") if m.get("default")), "")
+        if default and not (0 <= cur < len(tracks) and tracks[cur].title == default):
+            # the timeshift buffer lists HLS audio renditions by PID: start
+            # with the one the playlist marks as default, not the first PID
+            start = next((i for i, t in enumerate(tracks) if t.title == default), cur)
+        idx = preferred_track(tracks, self.settings.get("audio_prefer", "off"), start)
+        if idx is None and start != cur:
+            idx = start
         if idx is not None:
             self.select_audio(idx)
 
@@ -1469,6 +1521,20 @@ class Player(GObject.Object):
                 return ch
         return 0
 
+    def _media(self, kind=None):
+        """The HLS renditions of what plays (EXT-X-MEDIA), optionally of one
+        TYPE ("AUDIO", "SUBTITLES", "CLOSED-CAPTIONS")."""
+        url = self.uri or getattr(getattr(self.capture, "channel", None), "url", "") or ""
+        media = self.renditions.get(url, [])
+        return [m for m in media if not kind or m.get("type") == kind]
+
+    @staticmethod
+    def _stream_name(stream_id, kind):
+        """The rendition name hlsdemux2 puts at the end of its stream ids
+        (".../audio-Klare Sprache", ".../text-Deutsch"), or ""."""
+        tail = (stream_id or "").rsplit("/", 1)[-1]
+        return tail[len(kind) + 1:] if tail.startswith(kind + "-") else ""
+
     def audio_track_info(self):
         """([AudioTrack], index of the current one or -1)."""
         if not self.playbin:
@@ -1476,45 +1542,90 @@ class Player(GObject.Object):
         tracks, cur = [], -1
         if self._pb3:
             for i, st in enumerate(self._streams(Gst.StreamType.AUDIO)):
-                tracks.append(self._track_from(st.get_tags(), st.get_caps(), Gst.TAG_AUDIO_CODEC))
+                t = self._track_from(st.get_tags(), st.get_caps(), Gst.TAG_AUDIO_CODEC)
+                if not t.title:
+                    t.title = self._stream_name(st.get_stream_id(), "audio")
+                tracks.append(t)
                 if st.get_stream_id() in self._selected:
                     cur = i
         else:
+            audio = self._media("AUDIO")
             for i in range(self.playbin.get_property("n-audio")):
                 pad = self.playbin.emit("get-audio-pad", i)
                 caps = pad.get_current_caps() if pad else None
-                tracks.append(self._track_from(self.playbin.emit("get-audio-tags", i), caps,
-                                               Gst.TAG_AUDIO_CODEC))
+                t = self._track_from(self.playbin.emit("get-audio-tags", i), caps,
+                                     Gst.TAG_AUDIO_CODEC)
+                if audio and pad is not None and not t.title:
+                    # an HLS audio rendition the timeshift reader put on a PID
+                    # of its own (lindvb.ipstream.rendition_pid): its name
+                    m = rendition_for_pid(audio, _pid_of(pad.get_stream_id()))
+                    if m is not None:
+                        t.title = m.get("name", "")
+                tracks.append(t)
             cur = self.playbin.get_property("current-audio") if tracks else -1
         if 0 <= cur < len(tracks) and not tracks[cur].channels:
             tracks[cur].channels = self._decoded_channels()
         return tracks, cur
 
-    def _text_labels(self):
+    def _text_streams(self):
+        """[(key, label)] of the text and DVB subtitle streams: the key is the
+        stream id (playbin3) or the index (playbin)."""
         if not self.playbin:
-            return [], -1
+            return []
         if self._pb3:
             streams = self._streams(Gst.StreamType.TEXT)
-            items = [st.get_tags() for st in streams]
-            cur = next((i for i, st in enumerate(streams) if st.get_stream_id() in self._selected), -1)
+            items = [(st.get_stream_id(), st.get_tags(),
+                      self._stream_name(st.get_stream_id(), "text")) for st in streams]
         else:
-            items = [self.playbin.emit("get-text-tags", i)
+            items = [(i, self.playbin.emit("get-text-tags", i), "")
                      for i in range(self.playbin.get_property("n-text"))]
-            on = bool(self.playbin.get_property("flags") & PLAY_FLAGS_TEXT)
-            cur = self.playbin.get_property("current-text") if on else -1
         out = []
-        for i, tags in enumerate(items):
-            label = f"Subtitles {i + 1}"
+        for i, (key, tags, name) in enumerate(items):
+            label = name or f"Subtitles {i + 1}"
             if tags:
                 ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE)
                 ok2, codec = tags.get_string(Gst.TAG_SUBTITLE_CODEC)
-                name = language_name(lang) if ok else None
-                if name:
-                    label = name
+                lname = language_name(lang) if ok else None
+                if lname and not name:
+                    label = lname
                 if ok2 and codec:
                     label += f" ({codec})"
-            out.append(label)
-        return out, cur
+            out.append((key, label))
+        return out
+
+    def _text_labels(self):
+        """Labels of the text streams and the index of the one shown (-1 = none)."""
+        streams = self._text_streams()
+        keys = [k for k, _l in streams]
+        cur = -1
+        if self._pb3:
+            cur = next((i for i, k in enumerate(keys) if k in self._selected), -1)
+        elif self.playbin and self.playbin.get_property("flags") & PLAY_FLAGS_TEXT and keys:
+            cur = self.playbin.get_property("current-text")
+        return [lab for _k, lab in streams], cur
+
+    def caption_label(self, service):
+        """'English (CC1)': the closed caption service with the name and language
+        the HLS playlist (CLOSED-CAPTIONS) or the PMT (caption_service_descriptor)
+        gives for it."""
+        hls = next((m for m in self._media("CLOSED-CAPTIONS")
+                    if captions.instream_service(m.get("instream_id")) == service), None)
+        iid = (hls or {}).get("instream_id", "").upper()
+        tag = iid if iid.startswith("CC") else f"CC{service}" if service == 1 else \
+            _("service {n}").format(n=service)
+        name = (hls or {}).get("name", "") or \
+            language_name((hls or {}).get("language", "")) or \
+            language_name(self._cc_pmt.get(service, "") or self._cc_pmt.get(-service, ""))
+        return f"{name} ({tag})" if name else _("Closed captions ({tag})").format(tag=tag)
+
+    def _subtitle_entries(self):
+        """[(kind, key, label)]: text/DVB subtitle streams, teletext subtitle
+        pages and the closed caption services of the video."""
+        out = [("text", k, lab) for k, lab in self._text_streams()]
+        out += [("ttx", p.page, p.label) for p in self.teletext_pages()]
+        if self.cc is not None and self.cc.present:
+            out += [("cc", svc, self.caption_label(svc)) for svc in self.cc.services]
+        return out
 
     def audio_tracks(self):
         """Readable labels ('German, Stereo', ...) and the index of the current track."""
@@ -1522,16 +1633,23 @@ class Player(GObject.Object):
         return audio_track_labels(tracks), cur
 
     def subtitle_tracks(self):
-        """Labels of the DVB/text subtitle streams followed by the teletext
-        subtitle pages, and the index of the active one (-1 = off)."""
-        tracks, text_cur = self._text_labels()
-        pages = self.teletext_pages()
+        """Labels of the subtitle streams, teletext subtitle pages and closed
+        caption services, and the index of the one shown (-1 = off)."""
+        entries = self._subtitle_entries()
+        labels = [lab for _k, _key, lab in entries]
+        cur = -1
         if self.ttx_page:
-            idx = next((i for i, p in enumerate(pages) if p.page == self.ttx_page), -1)
-            cur = len(tracks) + idx if idx >= 0 else -1
+            cur = next((i for i, e in enumerate(entries) if e[:2] == ("ttx", self.ttx_page)), -1)
+        elif self.cc is not None and self.cc.service:
+            cur = next((i for i, e in enumerate(entries) if e[:2] == ("cc", self.cc.service)), -1)
         else:
+            _labels, text_cur = self._text_labels()
             cur = text_cur
-        return tracks + [p.label for p in pages], cur
+        return labels, cur
+
+    def has_closed_captions(self):
+        """The video of the current stream carries CEA-708 captions."""
+        return self.cc is not None and self.cc.present
 
     def select_audio(self, i):
         if not self.playbin:
@@ -1544,34 +1662,131 @@ class Player(GObject.Object):
             self.playbin.set_property("current-audio", i)
             self._tracks_changed()
 
-    def select_subtitle(self, i):
+    def _text_off(self):
         if not self.playbin:
             return
-        flags = self.playbin.get_property("flags")
-        n = len(self._text_labels()[0])
-        pages = self.teletext_pages()
-        if 0 <= i - n < len(pages):
-            self.ttx_page = pages[i - n].page
-            self._ttx_last = ""
-            if self._ttx_dec is not None:
-                self._ttx_dec.set_property("page", self.ttx_page)
-            self.playbin.set_property("flags", flags & ~PLAY_FLAGS_TEXT)
-            self.emit("subtitle-text", "")
+        self.playbin.set_property("flags", self.playbin.get_property("flags") & ~PLAY_FLAGS_TEXT)
+
+    def select_subtitle(self, i):
+        """Show entry *i* of subtitle_tracks(); -1 (Off) switches all of them off:
+        text and DVB subtitles, teletext subtitles and closed captions."""
+        if not self.playbin:
             return
+        entries = self._subtitle_entries()
+        kind, key = entries[i][:2] if 0 <= i < len(entries) else (None, None)
+        if self._pb3 and self.uri and not self.capture:
+            # playbin3 (1.24) hangs or crashes when its subtitle stream changes
+            # while it plays: open the stream again with the new choice
+            # (_on_sync_collection makes it before anything starts)
+            shown = next((st.get_stream_id() for st in self._streams(Gst.StreamType.TEXT)
+                          if st.get_stream_id() in self._selected), None)
+            if (key if kind == "text" else None) != shown:
+                self._want_rendition = ("SUBTITLES", self._stream_name(key, "text")) \
+                    if kind == "text" else None
+                self._sub_choice = (kind, key) if kind in ("cc", "ttx") else None
+                if self.cc is not None:
+                    self.cc.show(key if kind == "cc" else 0)
+                self.ttx_page = key if kind == "ttx" else 0
+                self._ttx_last = ""
+                self.emit("subtitle-text", "")
+                debuglog.write("Player", "subtitles changed: opening the stream again")
+                self._start_uri(True)
+                return
+        # whatever showed so far goes off
         self.ttx_page = 0
+        self._ttx_last = ""
         self.emit("subtitle-text", "")
-        if i < 0:
-            self.playbin.set_property("flags", flags & ~PLAY_FLAGS_TEXT)
+        self._sub_choice = (kind, key) if kind else None
+        if self.cc is not None and kind != "cc":
+            self.cc.show(0)
+        if kind != "text":
+            self._text_off()
+        if kind == "ttx":
+            self.ttx_page = key
+            if self._ttx_dec is not None:
+                self._ttx_dec.set_property("page", key)
+        elif kind == "cc":
+            self.cc.show(key)
+        elif kind == "text":
+            self.playbin.set_property("flags", self.playbin.get_property("flags") | PLAY_FLAGS_TEXT)
             if self._pb3:
-                self._select_streams(Gst.StreamType.TEXT, None)
-        else:
-            self.playbin.set_property("flags", flags | PLAY_FLAGS_TEXT)
-            if self._pb3:
-                streams = self._streams(Gst.StreamType.TEXT)
-                if i < len(streams):
-                    self._select_streams(Gst.StreamType.TEXT, streams[i])
+                st = next((st for st in self._streams(Gst.StreamType.TEXT)
+                           if st.get_stream_id() == key), None)
+                if st is not None and key not in self._selected:
+                    self._select_streams(Gst.StreamType.TEXT, st)
             else:
-                self.playbin.set_property("current-text", i)
+                self.playbin.set_property("current-text", key)
+        self.emit("tracks")
+
+    def _on_sync_collection(self, _bus, msg):
+        """Streaming thread: playbin3 offers its streams. Take the first video,
+        the default (or first) audio rendition and a subtitle stream only when
+        the user picked one."""
+        f = msg.src.get_factory() if isinstance(msg.src, Gst.Element) else None
+        # the adaptive demuxer (what it downloads; a subtitle track nobody
+        # shows can hold picture and sound back, see lindvb.ipstream) and
+        # decodebin3 (what it decodes)
+        if not (msg.src is self.playbin or
+                (f and f.get_name() in ("decodebin3", "hlsdemux2", "dashdemux2"))):
+            return
+        coll = msg.parse_stream_collection()
+        streams = [coll.get_stream(i) for i in range(coll.get_size())]
+        want = self._want_rendition
+        want_audio = want[1] if want and want[0] == "AUDIO" else ""
+        want_text = want[1] if want and want[0] == "SUBTITLES" else \
+            self._stream_name(self._sub_choice[1], "text") \
+            if self._sub_choice and self._sub_choice[0] == "text" else ""
+        pick = []
+        for kind, prefix, wanted in ((Gst.StreamType.VIDEO, "video", ""),
+                                     (Gst.StreamType.AUDIO, "audio", want_audio),
+                                     (Gst.StreamType.TEXT, "text", want_text)):
+            of_kind = [st for st in streams if st.get_stream_type() & kind]
+            if not of_kind or (kind == Gst.StreamType.VIDEO and self.video_off):
+                continue
+            match = next((st for st in of_kind
+                          if wanted and self._stream_name(st.get_stream_id(), prefix) == wanted), None)
+            if kind == Gst.StreamType.TEXT:
+                if match is None:
+                    continue            # subtitles stay off
+                if self._sub_choice != ("text", match.get_stream_id()):
+                    self._sub_choice = ("text", match.get_stream_id())
+                    GLib.idle_add(self._watch_subtitle_stall, self._token)
+            if match is None:
+                # what the demuxer marks as its default (HLS DEFAULT=YES), else the first
+                match = next((st for st in of_kind
+                              if st.get_stream_flags() & Gst.StreamFlags.SELECT), of_kind[0])
+            pick.append(match.get_stream_id())
+        if pick:
+            msg.src.send_event(Gst.Event.new_select_streams(pick))
+
+    def _watch_subtitle_stall(self, token, last=None, still=0.0, checks=0):
+        """A subtitle rendition whose segments carry no usable time stamps
+        (PBS's WebVTT) makes hlsdemux2 hold picture and sound back: when the
+        picture stands still with subtitles on, open the stream again without."""
+        if token != self._token or not self.playbin or not self._sub_choice or \
+                self._sub_choice[0] != "text" or checks > 15:
+            return False
+        ok, pos = self.playbin.query_position(Gst.Format.TIME)
+        if not ok or pos < 0:
+            pos = -1
+        if checks and not self.paused:
+            moved = pos >= 0 and last is not None and last >= 0 and pos - last >= Gst.SECOND // 2
+            still = 0.0 if moved else still + 2.0
+        if still >= 6.0:
+            debuglog.write("Player", "the picture stands still with the subtitles on: "
+                                     "opening the stream again without them")
+            self._sub_choice = None
+            self.emit("notice", _("The subtitles of this stream hold the picture back, "
+                                  "so they were switched off."))
+            self._start_uri(True)
+            return False
+        GLib.timeout_add(2000, self._watch_subtitle_stall, token, pos, still, checks + 1)
+        return False
+
+    def play_rendition(self, uri, kind, name):
+        """Play the HLS stream *uri* directly with the audio or subtitle
+        rendition (EXT-X-MEDIA TYPE, NAME) picked from the start."""
+        self.play_uri(uri, live=True, rendition=(kind, name))
 
     def apply_subtitle_font(self):
         """Font of the text subtitles (files, streams) from the preferences."""

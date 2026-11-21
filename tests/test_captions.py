@@ -126,3 +126,96 @@ def test_608_only_is_not_offered(elements):
     cc, bright = _play(dict(enumerate(cc608("HELLO WORLD"))))
     assert cc.kinds == {"608"}
     assert not cc.present
+
+
+def cc708_service(text, service):
+    """Like cc708(), for another caption service."""
+    svc = bytes([0x98, 0x38, 0x00, 0x00, 0x1f, 0x11, 0x0b]) + text.encode() + bytes([0x89, 0x01])
+    blk = bytes([(service << 5) | len(svc)]) + svc
+    data = bytes([((len(blk) + 2) // 2) & 0x3f]) + blk
+    data += b"\0" * (len(data) % 2)
+    return b"".join([bytes([0xff, data[0], data[1]])] + [bytes([0xfe, data[i], data[i + 1]])
+                                                       for i in range(2, len(data), 2)])
+
+
+def test_services_of_dtvcc_packets():
+    from lindvb.captions import DtvccScanner
+    sc = DtvccScanner()
+    assert sc.feed(cc708("HI") + PADDING) == {1}
+    assert sc.feed(cc708_service("HOLA", 2) + PADDING) == {2}
+    assert sc.feed(cc708("AGAIN") + PADDING) == set()
+    assert sc.services == {1, 2}
+    assert DtvccScanner().feed(b"".join(cc608("HI"))) == set()
+
+
+def test_caption_service_descriptor():
+    """ATSC A/65 caption_service_descriptor in the PMT: language per service."""
+    from lindvb.captions import caption_services_from_descriptors, instream_service
+    body = bytes([0xc2]) + b"eng" + bytes([0x80 | 1, 0x3f, 0xff]) + b"spa" + bytes([0x80 | 2, 0x3f, 0xff])
+    assert caption_services_from_descriptors(bytes([0x86, len(body)]) + body) == {1: "eng", 2: "spa"}
+    line21 = bytes([0xc1]) + b"eng" + bytes([0x3e, 0x3f, 0xff])
+    assert caption_services_from_descriptors(bytes([0x86, len(line21)]) + line21) == {-1: "eng"}
+    assert instream_service("CC1") == 1 and instream_service("SERVICE3") == 3
+    assert instream_service("CC2") is None
+
+
+def test_caption_label():
+    """'English (CC1)' from the HLS playlist or the PMT, a plain name otherwise."""
+    from lindvb.player import Player
+    p = Player.__new__(Player)
+    p.uri, p.capture = "http://x/master.m3u8", None
+    p.renditions = {p.uri: [{"type": "CLOSED-CAPTIONS", "name": "English", "language": "en",
+                             "instream_id": "CC1"}]}
+    p._cc_pmt = {2: "spa"}
+    assert p.caption_label(1) == "English (CC1)"
+    assert p.caption_label(2).endswith("(service 2)") and p.caption_label(2) != \
+        "Closed captions (service 2)"
+    p.renditions = {}
+    p._cc_pmt = {}
+    assert p.caption_label(1) == "Closed captions (CC1)"
+
+
+def test_overlay_last_in_the_filter(elements):
+    """The overlay draws behind the converters it is given (middle)."""
+    from lindvb.captions import CaptionOverlay
+    mid = [Gst.ElementFactory.make("videoconvert"), Gst.ElementFactory.make("videobalance")]
+    cc = CaptionOverlay(silent=True, middle=mid)
+    assert mid[1].get_static_pad("src").get_peer().get_parent() is cc.overlay
+    assert cc.service == 0 and cc.overlay.get_property("silent")
+    cc.show(2)
+    assert cc.overlay.get_property("service-number") == 2 and not cc.overlay.get_property("silent")
+    cc.show(0)
+    assert cc.overlay.get_property("silent") and cc.overlay.get_property("service-number") == 0
+
+
+def test_caption_shows_with_its_frame(elements):
+    """A caption sent with frame 10 is drawn from about frame 10 on, not later."""
+    from lindvb.captions import CaptionOverlay
+    cc = CaptionOverlay(silent=False)
+    p = Gst.parse_launch(
+        "videotestsrc pattern=black num-buffers=40 ! "
+        "video/x-raw,format=I420,width=320,height=180,framerate=30/1 ! cccombiner name=c "
+        "appsrc name=a format=time caps=closedcaption/x-cea-708,format=cc_data,framerate=30/1 ! c.caption")
+    sink = Gst.parse_bin_from_description(
+        "videoconvert ! video/x-raw,format=GRAY8 ! appsink name=s sync=true", True)
+    p.add(cc.bin)
+    p.add(sink)
+    p.get_by_name("c").link(cc.bin)
+    cc.bin.link(sink)
+    a = p.get_by_name("a")
+    for i in range(40):
+        b = Gst.Buffer.new_wrapped(cc708("HELLO") if i == 10 else PADDING)
+        b.pts, b.duration = i * Gst.SECOND // 30, Gst.SECOND // 30
+        a.emit("push-buffer", b)
+    a.emit("end-of-stream")
+    p.set_state(Gst.State.PLAYING)
+    s = sink.get_by_name("s")
+    shown = []
+    while (smp := s.emit("try-pull-sample", 10 * Gst.SECOND)) is not None:
+        buf = smp.get_buffer()
+        ok, m = buf.map(Gst.MapFlags.READ)
+        shown.append(sum(1 for x in m.data if x > 100) > 50)
+        buf.unmap(m)
+    p.set_state(Gst.State.NULL)
+    assert len(shown) == 40
+    assert shown.index(True) <= 12
