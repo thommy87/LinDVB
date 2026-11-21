@@ -31,13 +31,22 @@ def main():
         ctx.iteration(False)
         time.sleep(0.01)
     title = view.get_title() or ""
+    # The AppImage's glibc launcher runs the web process through a dynamic
+    # loader (its own or the host's): "<loader> --library-path ... --argv0 ...
+    # <program> ...", so the program is the argument after --argv0's value.
     exes = set()
     for pid in subprocess.run(["pgrep", "-f", "WebKitWebProcess"], capture_output=True,
                               text=True).stdout.split():
         try:
-            exes.add(os.readlink(f"/proc/{pid}/exe"))
+            exe = os.readlink(f"/proc/{pid}/exe")
+            with open(f"/proc/{pid}/cmdline", "rb") as f:
+                args = [a.decode(errors="replace") for a in f.read().split(b"\0") if a]
         except OSError:
-            pass
+            continue
+        if os.path.basename(exe).startswith("ld-linux"):
+            if "--argv0" in args[:-2]:
+                exe = args[args.index("--argv0") + 2]
+        exes.add(exe)
     print("title:", title)
     print("web processes:", sorted(exes))
     ours = [e for e in exes if e.startswith(here)]
