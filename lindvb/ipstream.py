@@ -680,6 +680,9 @@ class GstReader:
         bus = pl.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message, gen)
+        # the stream choice has to reach the demuxer before it starts
+        bus.enable_sync_message_emission()
+        bus.connect("sync-message::stream-collection", self._on_collection)
         self.pipeline = pl
         if not self.received:
             self._watch = self.GLib.timeout_add_seconds(FIRST_DATA_TIMEOUT, self._no_data, gen)
@@ -869,6 +872,29 @@ class GstReader:
             self._broken(gen, err.message)
         elif msg.type == Gst.MessageType.EOS:
             self._broken(gen, _("the server ended the stream"))
+
+    def _on_collection(self, _bus, msg):
+        """Streaming thread: the adaptive demuxer offers its streams."""
+        self._leave_out_text(msg)
+
+    def _leave_out_text(self, msg):
+        """The adaptive demuxer offers its streams: take all but the subtitles.
+
+        A transport stream cannot carry WebVTT or TTML subtitles, so they are
+        dropped anyway. Worse, hlsdemux2 hands its tracks on in step: a
+        subtitle track whose segments carry no time stamps (PBS's WebVTT
+        captions) holds picture and sound back until its next segment comes,
+        so the stream arrived in bursts every few seconds or hardly at all."""
+        Gst = self.Gst
+        f = msg.src.get_factory() if isinstance(msg.src, Gst.Element) else None
+        if f is None or f.get_name() not in ADAPTIVE_DEMUXERS:
+            return
+        coll = msg.parse_stream_collection()
+        streams = [coll.get_stream(i) for i in range(coll.get_size())]
+        keep = [st.get_stream_id() for st in streams
+                if not st.get_stream_type() & Gst.StreamType.TEXT]
+        if keep and len(keep) < len(streams):
+            msg.src.send_event(Gst.Event.new_select_streams(keep))
 
     def _teardown(self):
         if self._watch:
