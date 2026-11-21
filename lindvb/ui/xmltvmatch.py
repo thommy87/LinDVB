@@ -27,7 +27,7 @@ class XMLTVMatchWindow(Gtk.Window):
                       margin_end=12, margin_top=12, margin_bottom=12)
         if not self.guide:
             box.append(Gtk.Label(
-                label=_("No XMLTV guide loaded yet. Set the XMLTV URL in the EPG settings and "
+                label=_("No XMLTV guide loaded yet. Add an XMLTV source in the EPG settings and "
                       "download the guide first; matching starts automatically after the download."),
                 wrap=True, xalign=0))
             dl = Gtk.Button(label=_("Download XMLTV guide now"), halign=Gtk.Align.START)

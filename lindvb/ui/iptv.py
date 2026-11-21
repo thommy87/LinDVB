@@ -42,6 +42,30 @@ def _download(url):
         return import_data(r.read(), download_name(url), source=url)
 
 
+def fetch_logos(app):
+    """tvg-logo: download the logos of the IPTV channels in the background."""
+    todo = [c for c in app.db.channels
+            if c.is_iptv and not c.dvbi_id and c.logo_url and not c.logo]
+    if not todo:
+        return
+    from .. import dvbi
+    folder = os.path.join(str(CACHE_DIR), "iptv-logos")
+
+    def work():
+        # logos in a Tvheadend server's image cache need its login
+        dvbi.download_logos([c for c in todo if not c.tvh_server], folder)
+        tvheadend.download_logos([c for c in todo if c.tvh_server], folder)
+        GLib.idle_add(done)
+
+    def done():
+        app.db.save()
+        if app.window is not None:
+            app.window.reload_channels()
+        return False
+
+    threading.Thread(target=work, daemon=True).start()
+
+
 class IPTVPanel(Gtk.Box):
     def __init__(self, app, row):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, css_classes=["lv-group"])
@@ -173,20 +197,10 @@ class IPTVPanel(Gtk.Box):
     def _apply(self, kind, location, chans, replace=False, **extra):
         """Merge a loaded list, remember it and show the result."""
         db = self.app.db
-        sources = self._sources()
-        old = iptvsources.find(sources, location)
-        root = old.get("root", "") if old else ""
-        root = root or iptvsources.unique_name(
-            sources, iptvsources.default_name(kind, location, chans[0].root), location)
-        for c in chans:
-            c.root = root
-        if replace:
-            a, u, gone = iptvsources.replace(db, root, chans)
-        else:
-            (a, u), gone = db.merge(chans), 0
+        sources, a, u, gone = iptvsources.apply_list(db, self._sources(), kind, location, chans,
+                                                     update=replace, **extra)
         db.save()
-        self._set_sources(iptvsources.remember(sources, kind, location, root,
-                                               len(chans), **extra))
+        self._set_sources(sources)
         text = _("Imported {total_a} new and {total_u} updated channels").format(
             total_a=a, total_u=u)
         if gone:
@@ -198,27 +212,7 @@ class IPTVPanel(Gtk.Box):
         self._fetch_logos()
 
     def _fetch_logos(self):
-        """tvg-logo: download the channel logos in the background."""
-        todo = [c for c in self.app.db.channels
-                if c.is_iptv and not c.dvbi_id and c.logo_url and not c.logo]
-        if not todo:
-            return
-        from .. import dvbi
-        folder = os.path.join(str(CACHE_DIR), "iptv-logos")
-
-        def work():
-            # logos in a Tvheadend server's image cache need its login
-            dvbi.download_logos([c for c in todo if not c.tvh_server], folder)
-            tvheadend.download_logos([c for c in todo if c.tvh_server], folder)
-            GLib.idle_add(done)
-
-        def done():
-            self.app.db.save()
-            if self.app.window is not None:
-                self.app.window.reload_channels()
-            return False
-
-        threading.Thread(target=work, daemon=True).start()
+        fetch_logos(self.app)
 
     # ------------------------------------------------------------------ files
     def _pick_files(self):

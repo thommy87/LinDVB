@@ -65,7 +65,16 @@ class LinDVBApp(Gtk.Application):
                 path = os.path.join(os.environ["LINDVB_ORIG_CWD"], path)   # AppImage
             loader = self.plugins.importer_for(path)
             channels = loader(path) if loader else import_file(path)
-            added, updated = self.db.merge(channels)
+            from . import iptvsources
+            if not loader and not path.lower().endswith(".json") and \
+                    iptvsources.is_iptv_list(channels):
+                # remembered like a list imported in Preferences ▸ Internet
+                self.settings["iptv_sources"], added, updated, _gone = iptvsources.apply_list(
+                    self.db, list(self.settings.get("iptv_sources") or []), "file",
+                    os.path.abspath(path), channels)
+                self.settings.save()
+            else:
+                added, updated = self.db.merge(channels)
             print(f"{path}: {added} added, {updated} updated")
             self.db.save()
         from .favourites import FavouriteLists
@@ -254,43 +263,115 @@ class LinDVBApp(Gtk.Application):
             self.epg.notify()
         return True
 
-    def update_xmltv(self):
-        url = self.settings.get("xmltv_url")
-        from . import tvheadend
-        if tvheadend.servers(self.settings):
-            self.update_tvheadend_guide()
-            if not url:
-                return
-        if not url:
-            self.window.set_status(_("Set an XMLTV URL in the preferences first"))
-            return
-        self.window.set_status(_("Downloading XMLTV guide…"))
+    def update_xmltv(self, locations=None, done=None):
+        """Load the internet guides (Preferences ▸ EPG ▸ XMLTV sources) in the
+        background: all of them and the Tvheadend guides, or only those at
+        *locations*. *done(message)* runs on the main thread afterwards."""
+        from . import tvheadend, xmltvsources
+        srcs = list(self.settings.get("xmltv_sources") or [])
+        if locations is None:
+            if tvheadend.servers(self.settings):
+                self.update_tvheadend_guide()
+                if not srcs:
+                    return False
+        else:
+            srcs = [s for s in srcs if s.get("location") in locations]
+        if not srcs:
+            if locations is None and self.window is not None:
+                self.window.set_status(_("Add an XMLTV source in the preferences first "
+                                         "(EPG ▸ Internet EPG)"))
+            return False
+        if self.window is not None:
+            self.window.set_status(_("Downloading XMLTV guide…"))
         language = self.settings.get("epg_language", "")
 
         def work():
-            try:
-                data = urllib.request.urlopen(url, timeout=60).read()
-                channels, items = read_xmltv(data, language)
-            except Exception as e:  # network and XML errors are reported to the user
-                GLib.idle_add(self.window.set_status, f"XMLTV failed: {e}")
-                return
-            GLib.idle_add(self._apply_xmltv, channels, items)
+            results = []
+            for src in srcs:
+                try:
+                    channels, items = read_xmltv(xmltvsources.fetch(src), language)
+                    results.append((src, channels, items, ""))
+                except Exception as e:  # network, file and XML errors are reported to the user
+                    results.append((src, {}, [], str(e) or type(e).__name__))
+            GLib.idle_add(self._apply_xmltv, results, done)
         threading.Thread(target=work, daemon=True).start()
+        return True
 
-    def _apply_xmltv(self, channels, items):
-        from . import xmltvmatch
-        for cid, ev in items:
-            self.epg.add("xmltv:" + cid, ev, "xmltv")
-        xmltvmatch.save_channels(channels)
-        matched, unmatched = xmltvmatch.auto_match(self.db.channels, channels)
+    def _apply_xmltv(self, results, done=None):
+        from . import xmltvmatch, xmltvsources
+        by_source = xmltvsources.load_channels()
+        sources = list(self.settings.get("xmltv_sources") or [])
+        total, errors = 0, []
+        for src, channels, items, error in results:
+            loc = src.get("location", "")
+            if not xmltvsources.find(sources, loc):
+                continue                    # removed while it was loading
+            if error:
+                errors.append(f"{src.get('name', loc)}: {error}")
+                sources = xmltvsources.touch(sources, loc, 0, 0, error=error)
+                continue
+            for cid, ev in items:
+                self.epg.add("xmltv:" + cid, ev, "xmltv")
+            by_source[loc] = channels
+            sources = xmltvsources.touch(sources, loc, len(channels), len(items))
+            total += len(items)
+        self.settings["xmltv_sources"] = sources
+        try:
+            self.settings.save()
+            xmltvsources.save_channels(by_source)
+        except OSError:
+            pass
+        guide = xmltvsources.all_channels(by_source, sources)
+        xmltvmatch.save_channels(guide)
+        matched, unmatched = xmltvmatch.auto_match(self.db.channels, guide)
         self.db.save()
+        self.epg.relink()
         self.epg.notify()
         self.epg.save()
-        msg = f"XMLTV: {len(items)} programmes loaded, {matched} IPTV channels matched"
+        msg = _("XMLTV: {n} programmes loaded, {matched} IPTV channels matched").format(
+            n=total, matched=matched)
         if unmatched:
             msg += _(", {unmatched} without guide (Preferences ▸ EPG ▸ Match IPTV Channels)").format(unmatched=unmatched)
-        self.window.set_status(msg)
+        if errors:
+            msg += " (" + "; ".join(errors) + ")"
+        if self.window is not None:
+            self.window.set_status(msg)
+        if done:
+            done(msg)
         return False
+
+    def remove_xmltv_source(self, location):
+        """Forget the guide at *location*, with the programmes only it had."""
+        from . import xmltvmatch, xmltvsources
+        by_source = xmltvsources.load_channels()
+        sources = list(self.settings.get("xmltv_sources") or [])
+        gone = xmltvsources.orphaned(by_source, sources, location)
+        for cid in gone:
+            self.epg.drop("xmltv:" + cid, "xmltv")
+        by_source.pop(location, None)
+        sources = xmltvsources.forget(sources, location)
+        self.settings["xmltv_sources"] = sources
+        try:
+            self.settings.save()
+            xmltvsources.save_channels(by_source)
+        except OSError:
+            pass
+        guide = xmltvsources.all_channels(by_source, sources)
+        xmltvmatch.save_channels(guide)
+        # IPTV channels matched to a guide channel that is gone lose the match,
+        # unless the user chose it by hand
+        ids = set(guide)
+        for c in self.db.channels:
+            if c.is_iptv and c.xmltv_id in gone and c.xmltv_id not in ids and \
+                    not c.xmltv_manual and not c.tvh_server:
+                c.xmltv_id = ""
+        if guide:
+            xmltvmatch.auto_match(self.db.channels, guide)
+        self.db.save()
+        self.epg.relink()
+        self.epg.notify()
+        self.epg.save()
+        return len(gone)
 
     # -- Tvheadend ---------------------------------------------------------------
     def refresh_tvheadend_lists(self, done=None):

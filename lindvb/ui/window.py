@@ -2,6 +2,7 @@
 """Main window: channel list, video area with OSD, transport controls, menus."""
 
 import functools
+import os
 import random
 import time
 from dataclasses import replace
@@ -9,7 +10,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, debuglog, dvbi, listfilter, logothumbs, satip
+from .. import chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs, satip
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR
 from ..epg import details_line, programme_details
@@ -166,6 +167,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._logos = logothumbs.Loader(CACHE_DIR / "list-logos",
                                         Gdk.Texture.new_from_filename, self._on_logo_ready)
         self._row_icons = {}
+        self._scroll_tick = 0        # bringing the selected row into view (_scroll_to_selected)
+        self._scroll_map = 0
         self._row_labels = {}
         self._logo_paths = {}
         self._off_air = set()
@@ -836,7 +839,11 @@ class MainWindow(Gtk.ApplicationWindow):
     def _row_setup(self, _f, li):
         b = Gtk.Box(spacing=10)
         num = Gtk.Label(width_chars=4, xalign=1, css_classes=["lv-num"])
-        icon = Gtk.Image(css_classes=["lv-chan-icon"])
+        # every row is as high as a row with a logo, whether its logo is
+        # there, on its way, or missing (a symbol instead): a long list whose
+        # rows change height while it scrolls makes the ListView misjudge
+        # where it is, and the rows shake in place instead of scrolling
+        icon = Gtk.Image(css_classes=["lv-chan-icon"], width_request=32, height_request=32)
         lbl = Gtk.Label(xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END,
                         has_tooltip=True)
         # the tooltip (with the programme on air) is made only when it is shown
@@ -862,11 +869,10 @@ class MainWindow(Gtk.ApplicationWindow):
         num.set_text(str(pos) if pos else c.vchannel or str(c.number))
         path = self._list_logo(c)
         self._row_icons[icon] = (c, path)
-        logo, pending = None, False
+        logo = None
         if path:
-            known, logo = self._logos.get(path)     # not ready yet: comes in later
-            pending = not known
-        self._set_row_icon(icon, c, logo, pending)
+            _known, logo = self._logos.get(path)     # not ready yet: comes in later
+        self._set_row_icon(icon, c, logo)
         self._row_labels[lbl] = c
         lbl.set_text(c.name)
         extra.set_from_icon_name("starred-symbolic" if c.favourite else
@@ -882,10 +888,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self._row_icons.pop(icon, None)
         self._row_labels.pop(lbl, None)
 
-    def _set_row_icon(self, icon, c, logo, pending=False):
-        # while a logo is on its way the row already takes the logo's height,
-        # so it does not jump when the logo comes in
-        icon.set_size_request(*((32, 32) if pending else (-1, -1)))
+    def _set_row_icon(self, icon, c, logo):
         if logo is not None:
             icon.set_from_paintable(logo)
             icon.set_pixel_size(32)
@@ -1846,9 +1849,46 @@ class MainWindow(Gtk.ApplicationWindow):
         for i in range(self.filtered.get_n_items()):
             if self.filtered.get_item(i).data.key == c.key:
                 self.selection.set_selected(i)
-                if hasattr(self.listview, "scroll_to"):      # GTK >= 4.12
-                    self.listview.scroll_to(i, Gtk.ListScrollFlags.NONE, None)
+                self._scroll_to_selected()
                 return
+
+    def _scroll_to_selected(self):
+        """Bring the selected row into view, once the list is on screen with its size.
+
+        A ListView told to scroll before it has been laid out (at the start,
+        while the list is hidden in full screen or behind the recordings)
+        stays at the top and shows only its first row until it is scrolled
+        by hand (GTK 4.14). So the scroll waits for a frame in which the list
+        is mapped and has a height, and then goes to the row selected by then."""
+        if self._scroll_tick or self._scroll_map:
+            return                   # already waiting
+        if self.listview.get_mapped():
+            self._scroll_tick = self.listview.add_tick_callback(self._scroll_list_tick)
+        else:
+            self._scroll_map = self.listview.connect("map", self._scroll_list_mapped)
+
+    def _scroll_list_mapped(self, lv):
+        lv.disconnect(self._scroll_map)
+        self._scroll_map = 0
+        if self._scroll_tick == 0:
+            self._scroll_tick = lv.add_tick_callback(self._scroll_list_tick)
+
+    def _scroll_list_tick(self, lv, _clock):
+        if not lv.get_mapped():      # hidden again: wait for it to come back
+            self._scroll_tick = 0
+            self._scroll_map = lv.connect("map", self._scroll_list_mapped)
+            return GLib.SOURCE_REMOVE
+        if lv.get_height() <= 0:
+            return GLib.SOURCE_CONTINUE              # not laid out yet
+        self._scroll_tick = 0
+        pos = self.selection.get_selected()
+        if pos >= self.filtered.get_n_items():          # (none: GTK_INVALID_LIST_POSITION)
+            return GLib.SOURCE_REMOVE
+        if hasattr(lv, "scroll_to"):                 # GTK >= 4.12
+            lv.scroll_to(pos, Gtk.ListScrollFlags.NONE, None)
+        else:
+            lv.activate_action("list.scroll-to-item", GLib.Variant("u", pos))
+        return GLib.SOURCE_REMOVE
 
     def step_item(self, step):
         """Previous/next button: playlist entry when a playlist runs, else channel."""
@@ -2297,14 +2337,28 @@ class MainWindow(Gtk.ApplicationWindow):
         the status text."""
         total_a = total_u = 0
         fav_lists = []
+        iptv_lists = False
         for path in paths:
             try:
-                a, u = self.app.db.merge(import_file(path))
+                chans = import_file(path)
+                own = False
                 # LinDVB's own channel file also brings its favourites lists
                 if str(path).lower().endswith(".json"):
                     text = Path(path).read_text(encoding="utf-8", errors="replace")
                     if is_lindvb_json(text):
+                        own = True
                         fav_lists += parse_lindvb_json(text)[1]
+                if not own and iptvsources.is_iptv_list(chans):
+                    # an M3U playlist (or another list of internet streams) is
+                    # remembered like one imported in Preferences ▸ Internet, so
+                    # it shows in "Your lists" and can be updated and removed
+                    sources, a, u, _gone = iptvsources.apply_list(
+                        self.app.db, list(self.app.settings.get("iptv_sources") or []),
+                        "file", os.path.abspath(path), chans)
+                    self.app.settings["iptv_sources"] = sources
+                    iptv_lists = True
+                else:
+                    a, u = self.app.db.merge(chans)
             except (OSError, ValueError) as e:
                 message(parent or self, _("Could not import {name}").format(name=Path(path).name),
                         str(e))
@@ -2312,6 +2366,13 @@ class MainWindow(Gtk.ApplicationWindow):
             total_a += a
             total_u += u
         self.app.db.save()
+        if iptv_lists:
+            try:
+                self.app.settings.save()
+            except OSError:
+                pass
+            from .iptv import fetch_logos
+            fetch_logos(self.app)
         if fav_lists and self.app.favs.merge_lists(fav_lists):
             self.app.favourites_changed()
         self.reload_channels()

@@ -117,7 +117,7 @@ DEFAULTS = {
     # Draw the built-in visualisations on the graphics card (OpenGL); cairo
     # on the CPU is used when this is off or OpenGL is not available.
     "visualizer_gpu": True,
-    "xmltv_url": "",
+    "xmltv_sources": [],             # added internet guides (lindvb.xmltvsources)
     "epg_search_urls": [
         ["Wikipedia (en)", "https://en.wikipedia.org/wiki/Special:Search/{q}"],
         ["IMDb", "https://www.imdb.com/find?q={q}"],
@@ -283,6 +283,9 @@ class Settings(dict):
         # the HbbTV-only diagnostic log became the debug mode of all of LinDVB
         if saved.pop("hbbtv_debug_log", False):
             saved.setdefault("debug_mode", True)
+        # the one XMLTV address became a list of guides
+        from .xmltvsources import migrate
+        migrate(saved)
         self.update(saved)
 
     def save(self):
