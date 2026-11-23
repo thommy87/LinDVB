@@ -8,8 +8,11 @@ and compares (``compare``). On a real machine with a tuner it shows where
 the time goes (``--decoder auto`` uses the hardware decoder there).
 
     tools/perfcheck.py run [--seconds 20] [--switches 30] [--out perf.json]
-                           [--lindvb CHECKOUT]
-    tools/perfcheck.py compare base.json head.json [--summary file.md]
+                           [--lindvb CHECKOUT] [--decoder software|auto|...]
+    tools/perfcheck.py compare base.json head.json [--summary]
+
+Result files are plain names in the current folder; ``--summary`` appends
+the table to the job summary of a GitHub Actions run ($GITHUB_STEP_SUMMARY).
 
 ``--lindvb`` measures the lindvb package of another checkout (the base of a
 pull request) with this tool and these stream samples, so that only the
@@ -35,10 +38,11 @@ Needs a display (run under xvfb-run) and GStreamer with x264enc.
 
 import argparse
 import json
+import multiprocessing
 import os
+import re
 import resource
 import statistics
-import subprocess
 import sys
 import tempfile
 import time
@@ -250,21 +254,43 @@ def run_scenario(name, args):
     raise SystemExit(f"unknown scenario {name}")
 
 
+def _scenario_process(name, seconds, switches, decoder):  # noqa: D401
+    """One scenario in a fresh interpreter (spawned, not forked: nothing of
+    GTK or GStreamer carries over); it inherits sys.path, so the checkout
+    given with --lindvb."""
+    opts = argparse.Namespace(seconds=seconds, switches=switches, decoder=decoder)
+    return run_scenario(name, opts)
+
+
+def json_file(name):
+    """A result file in the current folder: a plain name ending in .json."""
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+\.json", name or ""):
+        raise SystemExit(f"perfcheck: {name!r}: give a file name like base.json "
+                         "(in the current folder)")
+    return Path.cwd() / os.path.basename(name)
+
+
+def checkout(path):
+    """The folder of a checkout holding a lindvb package."""
+    folder = Path(path).resolve()
+    if not (folder / "lindvb" / "__init__.py").is_file():
+        raise SystemExit(f"perfcheck: {path}: no lindvb package in it")
+    return folder
+
+
 def cmd_run(args):
     results = {}
+    ctx = multiprocessing.get_context("spawn")
     for name in args.only or SCENARIOS:
         runs = []
         for _i in range(args.repeat):
-            out = subprocess.run(
-                [sys.executable, __file__, "scenario", name, "--seconds", str(args.seconds),
-                 "--switches", str(args.switches), "--decoder", args.decoder,
-                 *(["--lindvb", args.lindvb] if args.lindvb else [])],
-                capture_output=True, text=True, timeout=600)
-            line = next((ln for ln in reversed(out.stdout.splitlines()) if ln.startswith("{")), "")
-            if out.returncode or not line:
-                sys.stderr.write(out.stderr[-2000:])
-                raise SystemExit(f"perfcheck: scenario {name} failed")
-            runs.append(json.loads(line))
+            with ctx.Pool(1, maxtasksperchild=1) as pool:
+                job = pool.apply_async(_scenario_process,
+                                       (name, args.seconds, args.switches, args.decoder))
+                try:
+                    runs.append(job.get(timeout=600))
+                except Exception as e:  # noqa: BLE001  (any failure of the child)
+                    raise SystemExit(f"perfcheck: scenario {name} failed: {e}") from e
         # the median of each number: one slow run on a busy runner is not a trend
         results[name] = {k: statistics.median(r[k] for r in runs) for k in runs[0]}
         print(name, json.dumps(results[name]), flush=True)
@@ -281,7 +307,7 @@ def cmd_run(args):
                                              results["play-no-cc"]["cpu_per_s"], 3)
     text = json.dumps(report, indent=1)
     if args.out:
-        Path(args.out).write_text(text + "\n")
+        json_file(args.out).write_text(text + "\n")
     else:
         print(text)
 
@@ -302,8 +328,8 @@ def compare(base, head):
 
 
 def cmd_compare(args):
-    base = json.loads(Path(args.base).read_text())
-    head = json.loads(Path(args.head).read_text())
+    base = json.loads(json_file(args.base).read_text())
+    head = json.loads(json_file(args.head).read_text())
     rows = compare(base, head)
     lines = ["| scenario | measure | base | head | |", "|---|---|---|---|---|"]
     mark = {"ok": "", "worse": "⚠ worse", "leak": "✗ leak"}
@@ -313,37 +339,33 @@ def cmd_compare(args):
             lines.append(f"| play | {key} | {base.get(key, '–')} | {head.get(key, '–')} | |")
     text = "\n".join(lines) + "\n"
     print(text)
-    if args.summary:
-        with open(args.summary, "a") as f:
+    summary = os.environ.get("GITHUB_STEP_SUMMARY") if args.summary else None
+    if summary:
+        with open(summary, "a") as f:
             f.write("### Player resources (base vs head, same runner)\n\n" + text)
     # CPU and memory on a shared runner are noisy: only leaks fail the check
     return 1 if any(v == "leak" for *_r, v in rows) else 0
 
 
 def main(argv=None):
+    from lindvb import hwaccel
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("run", "scenario"):
-        p = sub.add_parser(name)
-        if name == "scenario":
-            p.add_argument("name", choices=SCENARIOS)
-        p.add_argument("--seconds", type=int, default=20)
-        p.add_argument("--switches", type=int, default=30)
-        p.add_argument("--decoder", default="software",
-                       help="video_decoder setting: software (CI), auto (hardware if there)")
-        p.add_argument("--lindvb", help="checkout whose lindvb package is measured")
-        if name == "run":
-            p.add_argument("--repeat", type=int, default=3)
-            p.add_argument("--only", action="append", choices=SCENARIOS)
-            p.add_argument("--out")
+    p = sub.add_parser("run")
+    p.add_argument("--seconds", type=int, default=20)
+    p.add_argument("--switches", type=int, default=30)
+    p.add_argument("--decoder", default="software", choices=sorted(hwaccel.BACKENDS),
+                   help="video_decoder setting: software (CI), auto (hardware if there)")
+    p.add_argument("--lindvb", type=checkout, help="checkout whose lindvb package is measured")
+    p.add_argument("--repeat", type=int, default=3)
+    p.add_argument("--only", action="append", choices=SCENARIOS)
+    p.add_argument("--out", help="result file (a name in the current folder)")
     p = sub.add_parser("compare")
     p.add_argument("base")
     p.add_argument("head")
-    p.add_argument("--summary")
+    p.add_argument("--summary", action="store_true",
+                   help="append the table to $GITHUB_STEP_SUMMARY")
     args = ap.parse_args(argv)
-    if args.cmd == "scenario":
-        print(json.dumps(run_scenario(args.name, args)), flush=True)
-        return 0
     if args.cmd == "run":
         cmd_run(args)
         return 0

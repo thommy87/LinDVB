@@ -26,21 +26,23 @@ def test_noise_is_not_worse():
     assert {v for *_r, v in pc.compare(base, head)} == {"ok"}
 
 
-def test_more_cpu_is_worse_but_does_not_fail(tmp_path):
+def test_more_cpu_is_worse_but_does_not_fail(tmp_path, monkeypatch):
     pc = _tool()
+    monkeypatch.chdir(tmp_path)
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
     base = _report(play={"cpu_per_s": 0.50, "rss_mb": 230.0})
     head = _report(play={"cpu_per_s": 0.80, "rss_mb": 230.0})
     assert ("play", "cpu_per_s", 0.50, 0.80, "worse") in pc.compare(base, head)
     (tmp_path / "b.json").write_text(json.dumps(base))
     (tmp_path / "h.json").write_text(json.dumps(head))
-    summary = tmp_path / "summary.md"
-    assert pc.main(["compare", str(tmp_path / "b.json"), str(tmp_path / "h.json"),
-                    "--summary", str(summary)]) == 0
+    assert pc.main(["compare", "b.json", "h.json", "--summary"]) == 0
     assert "⚠ worse" in summary.read_text()
 
 
-def test_threads_growing_with_channel_changes_fail(tmp_path):
+def test_threads_growing_with_channel_changes_fail(tmp_path, monkeypatch):
     pc = _tool()
+    monkeypatch.chdir(tmp_path)
     base = _report(switches={"threads_growth": 0, "fds_growth": 1})
     head = _report(switches={"threads_growth": 30, "fds_growth": 1})
     rows = pc.compare(base, head)
@@ -48,9 +50,30 @@ def test_threads_growing_with_channel_changes_fail(tmp_path):
     assert ("switches", "fds_growth", 1, 1, "ok") in rows
     (tmp_path / "b.json").write_text(json.dumps(base))
     (tmp_path / "h.json").write_text(json.dumps(head))
-    assert pc.main(["compare", str(tmp_path / "b.json"), str(tmp_path / "h.json")]) == 1
+    assert pc.main(["compare", "b.json", "h.json"]) == 1
 
 
 def test_a_new_scenario_has_nothing_to_compare_with():
     pc = _tool()
     assert pc.compare(_report(), _report(reader={"cpu_per_s": 0.1})) == []
+
+
+def test_result_files_stay_in_the_current_folder(tmp_path, monkeypatch):
+    """Result files are plain names: no other folder is read or written."""
+    import pytest
+    pc = _tool()
+    monkeypatch.chdir(tmp_path)
+    assert pc.json_file("base.json") == tmp_path / "base.json"
+    for bad in ("../base.json", "/etc/passwd", "a/b.json", "base.txt", "", "-x.json\n"):
+        with pytest.raises(SystemExit):
+            pc.json_file(bad)
+
+
+def test_only_known_decoders_and_checkouts(tmp_path):
+    import pytest
+    pc = _tool()
+    with pytest.raises(SystemExit):
+        pc.main(["run", "--decoder", "software;rm -rf /"])
+    with pytest.raises(SystemExit):
+        pc.checkout(str(tmp_path))
+    assert pc.checkout(str(ROOT)) == ROOT

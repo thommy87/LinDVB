@@ -52,7 +52,7 @@ jobs:
         run: xvfb-run -a python3 tools/perfcheck.py run --out head.json
 
       - name: Compare
-        run: python3 tools/perfcheck.py compare base.json head.json --summary "$GITHUB_STEP_SUMMARY"
+        run: python3 tools/perfcheck.py compare base.json head.json --summary
 
       # the two measurements, kept for a day (the Actions storage quota is small)
       - uses: actions/upload-artifact@v4
