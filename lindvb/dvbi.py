@@ -1371,6 +1371,40 @@ class Updater:
             return cands[0].id, []
         return (cands[0].id if cands else ""), cands
 
+    def _download(self, url, postcode, force, res):
+        """Fetch the list (IT-18: If-Modified-Since, except on the first
+        (postcode) request) and cache it. None when unchanged or failed."""
+        s = self.settings
+        first = not s.get("dvbi_last_modified") and not s.get("dvbi_etag")
+        conditional = not (force or first)
+        try:
+            sl, resp = load_service_list(
+                url, postcode,
+                last_modified=s.get("dvbi_last_modified", "") if conditional else "",
+                etag=s.get("dvbi_etag", "") if conditional else "",
+                fetcher=self.fetcher)
+        except DVBIError as e:
+            # IT-18: keep using the last list when the download fails
+            res.error, res.error_code = str(e), e.code
+            return None
+        res.last_modified, res.etag = resp.last_modified, resp.etag
+        if sl is not None:
+            os.makedirs(self.cache_dir, exist_ok=True)
+            tmp = self.cache_file + ".tmp"
+            with open(tmp, "wb") as f:
+                f.write(resp.data)
+            os.replace(tmp, self.cache_file)
+        return sl
+
+    def _country(self):
+        """(country options, country code for the channels, LCN base).
+        An added list may be for any country; its options are the general ones."""
+        code = (self.settings.get("dvbi_country") or "").upper()
+        if self.block is not None:
+            return countries.OTHER, code, LCN_BLOCK * int(self.block.get("slot") or 1)
+        country = countries.get(code)
+        return country, ("" if country.code == countries.OTHER.code else country.code), 0
+
     def run(self, scanned, force=False, region=None, logos=True):
         s = self.settings
         res = UpdateResult()
@@ -1380,25 +1414,8 @@ class Updater:
             res.error = "No DVB-I service list chosen"
             return res
         postcode = s.get("dvbi_postcode", "")
-        first = not s.get("dvbi_last_modified") and not s.get("dvbi_etag")
-        sl = None
-        try:
-            # IT-18: If-Modified-Since, except on the first (postcode) request
-            sl, resp = load_service_list(
-                url, postcode,
-                last_modified="" if force or first else s.get("dvbi_last_modified", ""),
-                etag="" if force or first else s.get("dvbi_etag", ""),
-                fetcher=self.fetcher)
-            res.last_modified, res.etag = resp.last_modified, resp.etag
-            if sl is not None:
-                os.makedirs(self.cache_dir, exist_ok=True)
-                tmp = self.cache_file + ".tmp"
-                with open(tmp, "wb") as f:
-                    f.write(resp.data)
-                os.replace(tmp, self.cache_file)
-        except DVBIError as e:
-            # IT-18: keep using the last list when the download fails
-            res.error, res.error_code = str(e), e.code
+        sl = self._download(url, postcode, force, res)
+        if res.error:
             return res
         if sl is None:                   # 304: unchanged
             if not force and region is None:
@@ -1407,10 +1424,7 @@ class Updater:
             if sl is None:
                 res.error = "The service list is unchanged but no copy is cached"
                 return res
-        own = self.block is not None
-        code = (s.get("dvbi_country") or "").upper()
-        # an added list may be for any country; its options are the general ones
-        country = countries.OTHER if own else countries.get(code)
+        country, ch_country, lcn_base = self._country()
         rid, cands = self.choose_region(sl, postcode,
                                         region if region is not None else s.get("dvbi_region", ""),
                                         countries.area(country, s.get("dvbi_area", "")))
@@ -1419,18 +1433,16 @@ class Updater:
         res.auto_label = list_label("", s.get("dvbi_list_name", ""), sl.name, sl.provider,
                                     "" if manual else country.name, url, manual=manual)
         res.label = (s.get("dvbi_list_label") or "").strip() or res.auto_label
+        package = s.get("dvbi_package", "")
         res.build = build_channels(sl, rid, scanned, res.label,
                                    sat_direct=s.get("dvbi_sat_direct", True),
                                    prefer_broadcast=self.root.get(
                                        "dvbi_prefer_broadcast", country.prefer_broadcast),
-                                   package=s.get("dvbi_package", "") if s.get("dvbi_package", "")
-                                   in sl.packages else "",
+                                   package=package if package in sl.packages else "",
                                    overflow=country.overflow,
-                                   country=code if own else
-                                   ("" if country.code == countries.OTHER.code else country.code),
+                                   country=ch_country,
                                    block=self.block_id,
-                                   lcn_base=LCN_BLOCK * int(self.block.get("slot") or 1)
-                                   if own else 0)
+                                   lcn_base=lcn_base)
         res.packages = list(sl.packages)
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)

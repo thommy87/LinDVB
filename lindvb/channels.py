@@ -234,6 +234,25 @@ def _keep_from(c, prev, block):
                              if d.get("block") not in (None, block)]
 
 
+def _merge(c, prev, other, block, rank, displaced, fresh):
+    """Merge the channel *c* of a list update of *block* (see
+    ChannelDB.replace_dvbi): *prev* is the channel it replaces, *other* the
+    copy of it in another block. Returns "added", "updated" or ""."""
+    if other is not None and rank.get(other.dvbi_block, len(rank)) < rank[block]:
+        # an earlier block has it: a spare instance there
+        other.dvbi_instances += _spares(c, block)
+        return "updated" if prev else ""
+    if other is not None:
+        # a later block had it: this one takes over
+        displaced.add(other.key)
+        c.dvbi_instances += _spares(other, other.dvbi_block)
+        prev = prev or other
+    if prev:
+        _keep_from(c, prev, block)
+    fresh.append(c)
+    return "updated" if prev else "added"
+
+
 class ChannelDB:
     path = CONFIG_DIR / "channels.json"
     # the user put the channels in an order of their own (channel editor):
@@ -287,26 +306,10 @@ class ChannelDB:
         added = updated = 0
         for c in new:
             c.dvbi_block = block
-            prev = old.pop(c.key, None)
-            other = others.get(c.key)
-            earlier = other is not None and \
-                rank.get(other.dvbi_block, len(order)) < rank[block]
-            if earlier:
-                # an earlier block has it: a spare instance there
-                other.dvbi_instances += _spares(c, block)
-            elif other is not None:
-                # a later block had it: this one takes over
-                displaced.add(other.key)
-                c.dvbi_instances += _spares(other, other.dvbi_block)
-                prev = prev or other
-            if prev:
-                updated += 1
-            elif not earlier:
-                added += 1
-            if not earlier:
-                if prev:
-                    _keep_from(c, prev, block)
-                fresh.append(c)
+            kind = _merge(c, old.pop(c.key, None), others.get(c.key), block, rank,
+                          displaced, fresh)
+            added += kind == "added"
+            updated += kind == "updated"
         self._place_block(fresh, block, displaced, rank)
         self.renumber()
         return added, updated, len(old)
