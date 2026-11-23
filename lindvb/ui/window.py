@@ -2564,7 +2564,9 @@ class MainWindow(Gtk.ApplicationWindow):
         titles = {t.title for t in self.player.audio_track_info()[0]}
         audio = [m["name"] for m in media if m.get("type") == "AUDIO" and m.get("uri")
                  and m.get("name") and m["name"] not in titles]
-        return subs, audio
+        # a playlist with the variant twice (two CDNs, 3sat) lists every
+        # rendition once per copy: each name once, in playlist order
+        return list(dict.fromkeys(subs)), list(dict.fromkeys(audio))
 
     def _probe_renditions(self, c):
         """Buffered HLS channel: read its master playlist for the renditions

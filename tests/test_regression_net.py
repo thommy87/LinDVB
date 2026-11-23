@@ -66,11 +66,11 @@ def _caps_track(caps):
     ("audio/x-ac3, channels=6", "AC-3"),
     ("audio/x-eac3, channels=6", "E-AC-3"),
     ("audio/x-opus, channels=2", "Opus"),
-    pytest.param("audio/mpeg, mpegversion=4, stream-format=raw, channels=2", "AAC",
-                 marks=known_bug("PBS/WEDQ and DASH: the OSD shows 'MPEG' for "
-                                 "AAC when the stream gives no codec tag")),
-    pytest.param("audio/mpeg, mpegversion=1, layer=2, channels=2", "MP2",
-                 marks=known_bug("'MPEG' for MPEG-1 Layer II without codec tag")),
+    # PBS/WEDQ and DASH: the OSD showed "MPEG" for these
+    ("audio/mpeg, mpegversion=4, stream-format=raw, channels=2", "AAC"),
+    ("audio/mpeg, mpegversion=2, stream-format=adts, channels=2", "AAC"),
+    ("audio/mpeg, mpegversion=1, layer=2, channels=2", "MP2"),
+    ("audio/mpeg, mpegversion=1, layer=3, channels=2", "MP3"),
 ])
 def test_codec_from_caps_alone(caps, short):
     """A track whose stream has no codec tag (HLS renditions, DASH, the
@@ -85,8 +85,9 @@ def test_codec_from_caps_alone(caps, short):
     AudioTrack(language="deu", title="Audiodeskription"),
     AudioTrack(language="deu", title="Hörfilm"),
     AudioTrack(language="eng", title="English audio description"),
-    pytest.param(AudioTrack(language="deu", title="Audio-Deskription"), marks=known_bug(
-        "3sat names its rendition 'Audio-Deskription' (with hyphen): no AD icon")),
+    AudioTrack(language="deu", title="Audio-Deskription"),       # 3sat, with hyphen
+    AudioTrack(language="fra", title="Audio-description"),
+    AudioTrack(language="deu", title="TV Ton", description=True),   # HLS CHARACTERISTICS
 ], ids=lambda t: t.title or t.language)
 def test_audio_description_is_recognised(track):
     assert is_audio_description(track)
@@ -105,7 +106,8 @@ def test_other_sound_is_not_audio_description(track):
 
 def _menu_extras(media, titles, buffered=True, pb3=False):
     """window._missing_renditions on a stand-in window."""
-    pytest.importorskip("gi")
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
     from lindvb.ui.window import MainWindow
     url = "https://example.invalid/master.m3u8"
     tuned = types.SimpleNamespace(url=url, buffered=buffered)
@@ -114,6 +116,12 @@ def _menu_extras(media, titles, buffered=True, pb3=False):
         audio_track_info=lambda: ([AudioTrack(title=t) for t in titles], 0))
     fake = types.SimpleNamespace(_tuned=tuned, capture=object() if buffered else None, player=player)
     return MainWindow._missing_renditions(fake)
+
+
+def test_hls_characteristics_are_kept():
+    media = parse_hls(sk.REDUNDANT_MASTER)["media"]
+    ad = [m for m in media if "describes-video" in m["characteristics"]]
+    assert [m["name"] for m in ad] == ["Audio-Deskription"] * 2
 
 
 def test_menu_extras_ard():
@@ -125,12 +133,11 @@ def test_menu_extras_ard():
     assert _menu_extras(media, []) == (["Deutsch"], ["Klare Sprache"])
 
 
-@known_bug("3sat: every subtitle and extra audio choice is offered twice")
 @pytest.mark.parametrize("titles", [["TV Ton", "Klare Sprache", "Audio-Deskription"], []],
                          ids=["buffer-has-renditions", "buffer-not-yet"])
 def test_menu_extras_redundant_groups(titles):
     """3sat lists each rendition once per CDN copy of the variant: the menus
-    offer it once."""
+    offer it once (they offered every choice twice)."""
     media = parse_hls(sk.REDUNDANT_MASTER)["media"]
     subs, audio = _menu_extras(media, titles)
     assert subs == ["Untertitel deutsch"]
@@ -179,6 +186,9 @@ def test_buffer_names_the_renditions(redundant, player):  # noqa: F811
         == [True] * 3, labels
     assert "TV Ton" in labels[cur]
     assert player.subtitle_tracks() == ([], -1)
+    # CHARACTERISTICS="public.accessibility.describes-video" in the playlist
+    ad = [t.title for t in player.audio_track_info()[0] if is_audio_description(t)]
+    assert ad == ["Audio-Deskription"]
 
 
 def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
@@ -190,6 +200,8 @@ def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
     _run(15, lambda: player.subtitle_tracks()[0] and player._played)
     assert player.subtitle_tracks() == (["Untertitel deutsch"], -1)
     assert len(player.audio_tracks()[0]) == 3
+    ad = [t.title for t in player.audio_track_info()[0] if is_audio_description(t)]
+    assert ad == ["Audio-Deskription"]
 
 
 # -- a live stream whose server stops answering (3sat, zdf-hls-18) ---------------------------
@@ -269,9 +281,9 @@ def test_subtitle_watchdog_switches_them_off_once(player, monkeypatch):  # noqa:
     assert player._sub_choice is None
 
 
-@known_bug("PBS/WEDQ: the stream is reopened with the subtitle rendition "
-           "still wanted, so it stalls again and again")
 def test_subtitle_watchdog_does_not_pick_them_again(player, monkeypatch):  # noqa: F811
+    """PBS/WEDQ: the stream was reopened with the subtitle rendition still
+    wanted, so it stalled again and again."""
     _stall(player, monkeypatch)
     assert not (player._want_rendition and player._want_rendition[0] == "SUBTITLES")
 

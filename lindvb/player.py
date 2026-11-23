@@ -68,6 +68,25 @@ def subtitle_font_desc(settings, base_points=18):
     return f"{family or 'Sans'} {max(6, round(base_points * scale / 100))}"
 
 
+def _codec_from_caps(st):
+    """A codec name from caps alone (a stream without codec tag): MPEG audio
+    by its version and layer, so the OSD says AAC or MP2 and not "mpeg"."""
+    name = st.get_name()
+    if name == "audio/mpeg":
+        ok, version = st.get_int("mpegversion")
+        if ok and version in (2, 4):
+            return "MPEG-4 AAC"
+        ok, layer = st.get_int("layer")
+        if ok and layer in (1, 2, 3):
+            return f"MPEG-1 Layer {layer}"
+    return name.split("/")[-1]
+
+
+def _describes_video(media):
+    """An HLS rendition (EXT-X-MEDIA) marked as audio description."""
+    return "public.accessibility.describes-video" in ((media or {}).get("characteristics") or "")
+
+
 def _pid_of(stream_id):
     """The PID at the end of a tsdemux stream id (".../00000101"), or -1."""
     tail = (stream_id or "").rsplit("/", 1)[-1].split(":")[-1]
@@ -1508,7 +1527,7 @@ class Player(GObject.Object):
             if ok:
                 t.channels = ch
             if not t.codec and not st.get_name().startswith(("audio/x-raw", "text/x-raw")):
-                t.codec = st.get_name().split("/")[-1]
+                t.codec = _codec_from_caps(st)
         return t
 
     def _decoded_channels(self):
@@ -1545,6 +1564,8 @@ class Player(GObject.Object):
                 t = self._track_from(st.get_tags(), st.get_caps(), Gst.TAG_AUDIO_CODEC)
                 if not t.title:
                     t.title = self._stream_name(st.get_stream_id(), "audio")
+                m = next((m for m in self._media("AUDIO") if m.get("name") == t.title), None)
+                t.description = _describes_video(m)
                 tracks.append(t)
                 if st.get_stream_id() in self._selected:
                     cur = i
@@ -1561,6 +1582,7 @@ class Player(GObject.Object):
                     m = rendition_for_pid(audio, _pid_of(pad.get_stream_id()))
                     if m is not None:
                         t.title = m.get("name", "")
+                        t.description = _describes_video(m)
                 tracks.append(t)
             cur = self.playbin.get_property("current-audio") if tracks else -1
         if 0 <= cur < len(tracks) and not tracks[cur].channels:
@@ -1776,6 +1798,10 @@ class Player(GObject.Object):
             debuglog.write("Player", "the picture stands still with the subtitles on: "
                                      "opening the stream again without them")
             self._sub_choice = None
+            # a subtitle rendition picked from the start would be picked again
+            # on the reopened stream, and stall it again
+            if self._want_rendition and self._want_rendition[0] == "SUBTITLES":
+                self._want_rendition = None
             self.emit("notice", _("The subtitles of this stream hold the picture back, "
                                   "so they were switched off."))
             self._start_uri(True)
