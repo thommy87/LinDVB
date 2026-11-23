@@ -4915,3 +4915,19 @@ msgstr "Обране зберігає канали й знову показує 
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "Каналів: {n}"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Мова інтерфейсу"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Канал або файл починається зі звуку цією мовою, якщо він є (а не з оригінальної доріжки фільму чи серіалу іншою мовою)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Починати з аудіоопису"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Вимкнено: аудіоопис для незрячих і слабозорих звучить, лише якщо вибрати його в меню звуку."

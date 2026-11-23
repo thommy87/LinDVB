@@ -4958,3 +4958,19 @@ msgstr "علاقه‌مندی‌ها کانال‌ها را نگه می‌دار
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} کانال"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "زبان رابط کاربری"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "یک کانال یا فایل با صدای این زبان شروع می‌شود، اگر موجود باشد (نه با صدای اصلی فیلم یا سریالی به زبان دیگر)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "شروع با توصیف صوتی"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "خاموش: توصیف صوتی برای نابینایان و کم‌بینایان فقط وقتی پخش می‌شود که در منوی صدا انتخاب شود."

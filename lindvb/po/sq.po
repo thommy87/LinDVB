@@ -5244,3 +5244,19 @@ msgstr "Të hiqet lista “{name}” dhe {n} kanalet e saj?"
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "Të preferuarat i mbajnë kanalet dhe i shfaqin përsëri kur lista shtohet sërish."
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Gjuha e ndërfaqes"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Një kanal ose skedar fillon me zërin në këtë gjuhë kur e ka (jo me zërin origjinal të një filmi ose serie në gjuhë tjetër)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Fillo me përshkrim audio"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Joaktiv: përshkrimi audio për të verbërit dhe personat me shikim të dobët luhet vetëm kur zgjidhet në menunë e zërit."

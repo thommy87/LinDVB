@@ -4915,3 +4915,19 @@ msgstr "Priljubljene obdržijo kanale in jih znova prikažejo, ko seznam spet do
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "Kanalov: {n}"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Jezik vmesnika"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Kanal ali datoteka se začne z zvokom v tem jeziku, če ga ima (ne z izvirnim zvokom filma ali serije v drugem jeziku)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Začni z zvočnim opisom"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Izklopljeno: zvočni opis za slepe in slabovidne se predvaja le, če ga izberete v meniju zvoka."

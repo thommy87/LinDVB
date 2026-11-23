@@ -5244,3 +5244,19 @@ msgstr "ลบรายการ “{name}” และ {n} ช่องขอ�
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "รายการโปรดจะเก็บช่องไว้และแสดงอีกครั้งเมื่อเพิ่มรายการกลับมา"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "ภาษาของส่วนติดต่อ"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "ช่องหรือไฟล์จะเริ่มด้วยเสียงภาษานี้เมื่อมี (ไม่ใช่เสียงต้นฉบับของภาพยนตร์หรือซีรีส์ในภาษาอื่น)"
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "เริ่มด้วยเสียงบรรยายภาพ"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "ปิด: เสียงบรรยายภาพสำหรับผู้พิการทางสายตาและผู้มีสายตาเลือนรางจะเล่นเฉพาะเมื่อเลือกในเมนูเสียงเท่านั้น"

@@ -168,3 +168,64 @@ def test_audio_badges(monkeypatch):
     assert langs == ["DE", "EN"]
     assert layout_icon(8) == "lindvb-audio-surround-71-symbolic" and layout_icon(3) is None
     assert language_short("qaa") == "OV" and language_short("und") is None
+
+
+# -- preferred audio language and audio description ------------------------------
+
+def test_playback_language():
+    from lindvb.media_info import playback_language
+    assert playback_language("auto", "de") == "deu"
+    assert playback_language("auto", "en") == "eng"
+    assert playback_language("", "de") == ""
+    assert playback_language("fra", "de") == "fra"
+    assert playback_language("ger", "en") == "deu"
+
+
+def test_language_track_prefers_the_language():
+    from lindvb.media_info import AudioTrack, language_track
+    eng = AudioTrack(language="eng", codec="AAC")
+    deu = AudioTrack(language="ger", codec="AAC")
+    # ONE: the series starts in its original English sound
+    assert language_track([eng, deu], 0, "deu") == 1
+    assert language_track([eng, deu], 1, "deu") is None           # already German
+    assert language_track([eng, deu], 0, "eng") is None
+    assert language_track([eng, deu], 0, "") is None              # as broadcast
+    assert language_track([eng, deu], 0, "fra") is None           # no French: keep
+    assert language_track([deu], 0, "eng") is None
+
+
+def test_language_track_avoids_audio_description():
+    from lindvb.media_info import AudioTrack, language_track
+    ad = AudioTrack(language="deu", title="Audio-Deskription", codec="AAC")
+    main = AudioTrack(language="deu", title="TV Ton", codec="AAC")
+    flagged = AudioTrack(language="deu", codec="AAC", description=True)
+    eng = AudioTrack(language="eng", codec="AAC")
+    # 3sat: the audio description came first
+    assert language_track([ad, main], 0, "deu") == 1
+    assert language_track([flagged, main], 0, "deu") == 1
+    assert language_track([ad, main], 0, "") == 1                 # also without a language
+    assert language_track([ad, main], 1, "deu", description=True) == 0
+    # audio description wanted, but only in another language: the own language first
+    assert language_track([eng, AudioTrack(language="eng", description=True), main], 0,
+                          "deu", description=True) == 2
+    # only audio description on offer: it stays
+    assert language_track([ad, flagged], 0, "deu") is None
+    # no German main sound: the main sound in another language, not the description
+    assert language_track([ad, eng], 0, "deu") == 1
+
+
+def test_language_track_keeps_the_language_of_the_current_track():
+    from lindvb.media_info import AudioTrack, language_track
+    ad = AudioTrack(language="fra", description=True)
+    tracks = [ad, AudioTrack(language="eng"), AudioTrack(language="fra")]
+    assert language_track(tracks, 0, "") == 2
+
+
+def test_preferred_format_keeps_the_kind_of_track():
+    from lindvb.media_info import AudioTrack, preferred_track
+    main = AudioTrack(language="deu", codec="MPEG-1 Layer 2 (MP2)", channels=2)
+    ad_ac3 = AudioTrack(language="deu", codec="AC-3", channels=6, description=True)
+    main_ac3 = AudioTrack(language="deu", codec="AC-3", channels=6)
+    assert preferred_track([main, ad_ac3], "ac3", 0) is None
+    assert preferred_track([main, ad_ac3, main_ac3], "ac3", 0) == 2
+    assert preferred_track([main, ad_ac3], "stereo", 1) is None

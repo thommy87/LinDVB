@@ -4915,3 +4915,19 @@ msgstr "A kedvencek megtartják a csatornákat, és újra megjelenítik őket, h
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} csatorna"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "A felület nyelve"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Egy csatorna vagy fájl ezen a nyelven szóló hanggal indul, ha van ilyen (nem egy más nyelvű film vagy sorozat eredeti hangjával)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Kezdés hangalámondással"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Ki: a vakoknak és gyengénlátóknak szóló hangalámondás csak akkor szól, ha a hang menüben kiválasztják."

@@ -5546,3 +5546,19 @@ msgstr "Die Liste „{name}“ und ihre {n} Sender entfernen?"
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "Favoriten behalten die Sender und zeigen sie wieder, wenn die Liste erneut hinzugefügt wird."
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Sprache der Oberfläche"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Ein Sender oder eine Datei beginnt mit dem Ton in dieser Sprache, wenn es ihn gibt (nicht mit dem Originalton eines Films oder einer Serie in einer anderen Sprache)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Mit Audiodeskription beginnen"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Aus: Die Audiodeskription für blinde und sehbehinderte Menschen läuft nur, wenn sie im Tonmenü gewählt wird."

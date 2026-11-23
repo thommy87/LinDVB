@@ -4915,3 +4915,19 @@ msgstr "Coinníonn ceanáin na cainéil agus taispeánann siad arís iad nuair a
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} cainéal"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Teanga na comhéadain"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Tosaíonn cainéal nó comhad leis an bhfuaim sa teanga seo nuair atá sí ann (ní le bunfhuaim scannáin nó sraithe i dteanga eile)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Tosaigh le closchur síos"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "As: ní sheinntear an closchur síos do dhaoine dalla agus lagamhairc ach nuair a roghnaítear é sa roghchlár fuaime."

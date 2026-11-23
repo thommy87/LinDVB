@@ -20,13 +20,15 @@ from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 
 from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
-                         language_name, preferred_track)
+                         language_name, preferred_track, AUDIO_LANGUAGE_AUTO,
+                         language_track, playback_language)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import captions, debuglog, hwaccel, passthrough  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
+from .recformat import pmt_described_pids  # noqa: E402
 from .tuner import SegmentReader, TS_PACKET  # noqa: E402
 from .tvheadend import set_login  # noqa: E402
 
@@ -49,6 +51,7 @@ from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, META_REPEAT, REFUSED_CODES, Retr
                        fetch_manifest, find_meta, host_addresses, rendition_for_pid,
                        resolve_redirects, setup_http_source)
 from .streaminfo import parse_hls  # noqa: E402
+from . import i18n  # noqa: E402
 from .i18n import _  # noqa: E402
 
 EQ_BANDS = ["29 Hz", "59 Hz", "119 Hz", "237 Hz", "474 Hz",
@@ -385,6 +388,7 @@ class Player(GObject.Object):
         self.playbin = None
         self.video_off = False          # "Video Off (audio only)": kept across rebuilds
         self._audio_pref_done = False   # preferred audio format applied for this stream
+        self._auto_audio = -1           # the track chosen for the channel or file
         self.radio = False              # a radio channel plays: no passthrough (visualisations)
         self.passthrough_formats = ()   # formats going undecoded to the receiver now
         self.feeder = None
@@ -412,6 +416,7 @@ class Player(GObject.Object):
         self._want_rendition = None     # (TYPE, NAME) to pick once playbin3 offers it
         self.renditions = {}            # HLS address -> its EXT-X-MEDIA renditions
         self._cc_pmt = {}               # caption services the PMT names {service: language}
+        self._ad_pids = set()           # audio description PIDs the PMT names
         # Internet streams with the audio in separate HLS renditions run on
         # playbin3: the old hlsdemux in playbin lines those renditions up by
         # playlist position instead of by timestamp, which puts sound and
@@ -939,6 +944,7 @@ class Player(GObject.Object):
         self.ttx_page = 0
         self._ttx_last = ""
         self._cc_pmt = {}
+        self._ad_pids = set()
         if self.metadata:
             self.metadata = {}
             self.emit("metadata", {})
@@ -1104,6 +1110,7 @@ class Player(GObject.Object):
             program, pages = subtitle_pages_from_pmt(bytes(raw))
             _program, present = teletext_in_pmt(bytes(raw))
             pmt = parse_pmt(bytes(raw))
+            ad = pmt_described_pids(bytes(raw))
         except ValueError:
             return
         if self.sid and program != self.sid:
@@ -1112,6 +1119,7 @@ class Player(GObject.Object):
         for _st, _pid, _ca, info in pmt.streams:
             cc.update(captions.caption_services_from_descriptors(info))
         changed = present != self._ttx_in_pmt or cc != self._cc_pmt
+        changed = self._described_pids(ad) or changed
         self._cc_pmt = cc
         self._ttx_in_pmt = present
         if pages and pages != self._ttx_pages:
@@ -1119,6 +1127,18 @@ class Player(GObject.Object):
             changed = True
         if changed:
             self.emit("tracks")
+
+    def _described_pids(self, ad):
+        """The PMT names the audio description PIDs *ad*. True when that is new."""
+        if ad == self._ad_pids:
+            return False
+        self._ad_pids = ad
+        if self._audio_pref_done and self.audio_track_info()[1] == self._auto_audio:
+            # the sound was chosen before the PMT named the audio
+            # description tracks, and not by the user: choose again
+            self._audio_pref_done = False
+            self._tracks_changed()
+        return True
 
     # -- sources ------------------------------------------------------------
 
@@ -1470,6 +1490,12 @@ class Player(GObject.Object):
                 return False
             GLib.idle_add(fire)
 
+    def _pb3_tracks_changed(self):
+        """playbin3 has no audio-tags-changed signal: the stream collection,
+        the selection and tags tell when the sound can be chosen."""
+        if not self._audio_pref_done:
+            self._tracks_changed()
+
     def _apply_audio_preference(self):
         """Once per channel or file: switch to the preferred audio format
         (Preferences › Playback) as soon as the tracks' codecs are known."""
@@ -1478,22 +1504,39 @@ class Player(GObject.Object):
         tracks, cur = self.audio_track_info()
         if not tracks or not any(t.codec for t in tracks):
             return                          # the codecs come with later tags
+        if cur < 0 and getattr(self, "_pb3", False):
+            return                          # playbin3 has not chosen yet: it would undo the choice
         renditions = self._media("AUDIO")
         default = next((m.get("name") for m in renditions if m.get("default")), "")
         if default and len(tracks) < len(renditions) and \
                 not any(t.title == default for t in tracks):
             return                          # the playlist's default track is still to come
         self._audio_pref_done = True
+        idx = self._starting_track(tracks, cur, default)
+        self._auto_audio = cur if idx is None else idx
+        if idx is not None:
+            self.select_audio(idx)
+
+    def _starting_track(self, tracks, cur, default):
+        """The track a channel or file starts with (None: the current one):
+        the playlist's default, then the preferred language and audio
+        description choice, then the preferred format."""
         start = cur
         if default and not (0 <= cur < len(tracks) and tracks[cur].title == default):
             # the timeshift buffer lists HLS audio renditions by PID: start
             # with the one the playlist marks as default, not the first PID
             start = next((i for i, t in enumerate(tracks) if t.title == default), cur)
-        idx = preferred_track(tracks, self.settings.get("audio_prefer", "off"), start)
+        s = self.settings
+        lang = language_track(
+            tracks, start,
+            playback_language(s.get("audio_language", AUDIO_LANGUAGE_AUTO), i18n.current),
+            bool(s.get("audio_description_prefer", False)))
+        if lang is not None:
+            start = lang
+        idx = preferred_track(tracks, s.get("audio_prefer", "off"), start)
         if idx is None and start != cur:
             idx = start
-        if idx is not None:
-            self.select_audio(idx)
+        return idx
 
     def _streams(self, stype):
         """playbin3: the streams of one type in the current collection."""
@@ -1569,7 +1612,8 @@ class Player(GObject.Object):
                 if not t.title:
                     t.title = self._stream_name(st.get_stream_id(), "audio")
                 m = next((m for m in self._media("AUDIO") if m.get("name") == t.title), None)
-                t.description = _describes_video(m)
+                t.description = _describes_video(m) or \
+                    _pid_of(st.get_stream_id()) in self._ad_pids
                 tracks.append(t)
                 if st.get_stream_id() in self._selected:
                     cur = i
@@ -1587,6 +1631,8 @@ class Player(GObject.Object):
                     if m is not None:
                         t.title = m.get("name", "")
                         t.description = _describes_video(m)
+                if pad is not None and _pid_of(pad.get_stream_id()) in self._ad_pids:
+                    t.description = True
                 tracks.append(t)
             cur = self.playbin.get_property("current-audio") if tracks else -1
         if 0 <= cur < len(tracks) and not tracks[cur].channels:
@@ -1777,6 +1823,8 @@ class Player(GObject.Object):
                 if self._sub_choice != ("text", match.get_stream_id()):
                     self._sub_choice = ("text", match.get_stream_id())
                     GLib.idle_add(self._watch_subtitle_stall, self._token)
+            if match is None and kind == Gst.StreamType.AUDIO and not wanted:
+                match = self._preferred_audio_stream(of_kind)
             if match is None:
                 # what the demuxer marks as its default (HLS DEFAULT=YES), else the first
                 match = next((st for st in of_kind
@@ -1784,6 +1832,31 @@ class Player(GObject.Object):
             pick.append(match.get_stream_id())
         if pick:
             msg.src.send_event(Gst.Event.new_select_streams(pick))
+
+    def _preferred_audio_stream(self, streams):
+        """Of the audio streams playbin3 offers, the one to start with when it
+        is not the demuxer's default: the preferred language, audio
+        description only when it is wanted (see language_track). None keeps
+        the default."""
+        media = self._media("AUDIO")
+        tracks, start = [], -1
+        for i, st in enumerate(streams):
+            t = self._track_from(st.get_tags(), None, Gst.TAG_AUDIO_CODEC)
+            if not t.title:
+                t.title = self._stream_name(st.get_stream_id(), "audio")
+            m = next((m for m in media if m.get("name") == t.title), None)
+            if m is not None and not t.language:
+                t.language = m.get("language", "")
+            t.description = _describes_video(m)
+            tracks.append(t)
+            if start < 0 and st.get_stream_flags() & Gst.StreamFlags.SELECT:
+                start = i
+        s = self.settings
+        idx = language_track(
+            tracks, max(start, 0),
+            playback_language(s.get("audio_language", AUDIO_LANGUAGE_AUTO), i18n.current),
+            bool(s.get("audio_description_prefer", False)))
+        return streams[idx] if idx is not None else None
 
     def _watch_subtitle_stall(self, token, last=None, still=0.0, checks=0):
         """A subtitle rendition whose segments carry no usable time stamps
@@ -2117,12 +2190,14 @@ class Player(GObject.Object):
                 self._collection = msg.parse_streams_selected()
                 self._selected = {msg.streams_selected_get_stream(i).get_stream_id()
                                   for i in range(msg.streams_selected_get_size())}
+                self._pb3_tracks_changed()
             self.emit("tracks")
         elif t == Gst.MessageType.STREAM_COLLECTION:
             if self._pb3:
                 f = msg.src.get_factory() if isinstance(msg.src, Gst.Element) else None
                 if msg.src is self.playbin or (f and f.get_name() in ("decodebin3", "uridecodebin3")):
                     self._collection = msg.parse_stream_collection()
+                self._pb3_tracks_changed()
             self.emit("tracks")
         elif t == Gst.MessageType.ELEMENT:
             st = msg.get_structure()
@@ -2139,6 +2214,8 @@ class Player(GObject.Object):
             self._on_section(msg)
         elif t == Gst.MessageType.TAG:
             self._on_tags(msg)
+            if self._pb3:
+                self._pb3_tracks_changed()      # a codec may now be known
         elif t == Gst.MessageType.BUFFERING:
             pct = msg.parse_buffering()
             if pct < 100 and self._played and not self.capture and self.uri and \

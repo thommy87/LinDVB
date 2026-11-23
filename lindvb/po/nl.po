@@ -4915,3 +4915,19 @@ msgstr "Favorieten houden de zenders en tonen ze weer wanneer de lijst opnieuw w
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} zenders"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Taal van de interface"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Een zender of bestand begint met het geluid in deze taal als het er is (niet met het originele geluid van een film of serie in een andere taal)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Beginnen met audiodescriptie"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Uit: de audiodescriptie voor blinden en slechtzienden speelt alleen als die in het geluidsmenu wordt gekozen."

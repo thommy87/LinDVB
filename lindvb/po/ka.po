@@ -5271,3 +5271,19 @@ msgstr "წავშალო სია „{name}“ და მისი {n} ა
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "რჩეულები ინარჩუნებენ არხებს და ისევ აჩვენებენ, როცა სია თავიდან დაემატება."
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "ინტერფეისის ენა"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "არხი ან ფაილი იწყება ამ ენაზე ხმით, თუ ის არსებობს (და არა სხვა ენაზე ფილმის ან სერიალის ორიგინალი ხმით)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "დაწყება აუდიოაღწერით"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "გამორთული: აუდიოაღწერა უსინათლოთა და მხედველობადაქვეითებულთათვის მხოლოდ მაშინ ჟღერს, როცა ხმის მენიუში აირჩევთ."

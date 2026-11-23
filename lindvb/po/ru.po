@@ -4915,3 +4915,19 @@ msgstr "Избранное сохраняет каналы и снова пок�
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "Каналов: {n}"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Язык интерфейса"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Канал или файл начинается со звука на этом языке, если он есть (а не с оригинальной дорожки фильма или сериала на другом языке)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Начинать с тифлокомментария"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Выкл.: тифлокомментарий для незрячих и слабовидящих звучит, только если выбрать его в меню звука."

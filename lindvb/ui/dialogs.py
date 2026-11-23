@@ -48,6 +48,19 @@ def decoder_hint(player=None):
 ACCENT_LABELS = [_("LinDVB blue (default)"), _("System accent colour"), _("Custom colour")]
 
 
+def _audio_languages():
+    """(codes, labels) of Preferences › Playback › Preferred audio language."""
+    from ..epgsources import LANGUAGES as EPG_LANGUAGES
+    from ..media_info import AUDIO_LANGUAGE_AUTO, language_name
+    codes = [AUDIO_LANGUAGE_AUTO, ""]
+    labels = [_("Language of the interface"), _("As broadcast")]
+    for code, label in EPG_LANGUAGES:
+        if code:
+            codes.append(code)
+            labels.append(language_name(code) or label)
+    return codes, labels
+
+
 def _row(group, label, widget, hint=None, stacked=False):
     """One labelled setting inside a preferences group. *stacked* puts the title and
     the hint above the widget, over the full width, for widgets too wide to leave
@@ -252,6 +265,15 @@ class PrefsWindow(Gtk.Window):
              _("Stereo (MPEG / AAC)")],
             self._aprefs.index(cur) if cur in self._aprefs else 0),
             _("When a channel or file has this sound in the same language, it plays first."))
+        self._alang_codes, alang_labels = _audio_languages()
+        cur = s.get("audio_language", "auto")
+        self._alang_drop = _row(g, _("Preferred audio language"), dropdown(
+            alang_labels, self._alang_codes.index(cur) if cur in self._alang_codes else 0),
+            _("A channel or file starts with the sound in this language when it has one "
+              "(not the original sound of a film or series in another language)."))
+        switch(g, "audio_description_prefer", _("Start with audio description"),
+               _("Off: the audio description for blind and visually impaired viewers only "
+                 "plays when it is chosen in the audio menu."))
         switch(g, "inhibit_screensaver", _("No screen saver during playback"),
                _("Keeps the screen on while TV, radio or a file plays."))
         folder(g, "screenshot_dir", _("Screenshot folder"))
@@ -1283,6 +1305,7 @@ class PrefsWindow(Gtk.Window):
         s.update(self._rec_values())
         s["subtitle_font"] = self._font_value()
         s["audio_prefer"] = self._aprefs[self._apref_drop.get_selected()]
+        s["audio_language"] = self._alang_codes[self._alang_drop.get_selected()]
         s.update(self._passthrough_values())
         s["iptv_timeshift_quality"] = self._ts_qualities[self._ts_quality_drop.get_selected()]
         s.update(self._startup_values())
