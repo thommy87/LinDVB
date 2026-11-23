@@ -1,0 +1,66 @@
+name: Player resources
+
+# CPU, memory, threads and open files of the player on a pull request,
+# measured on the same runner for the base and the head (tools/perfcheck.py).
+# Shared runners are noisy, so CPU and memory are only reported (job summary);
+# threads or open files that grow with every channel change fail the check.
+
+on:
+  pull_request:
+    paths:
+      - "lindvb/**"
+      - "tools/perfcheck.py"
+      - "tests/streamkit.py"
+      - ".github/workflows/perf.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  perf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # nothing is pushed: no token left in .git/config
+          persist-credentials: false
+
+      - name: Install dependencies
+        uses: ./.github/actions/apt-install
+        with:
+          name: perf
+          packages: >-
+            python3-gi python3-gi-cairo python3-pytest gir1.2-gtk-4.0 gir1.2-gstreamer-1.0
+            gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-x xvfb xauth
+
+      - name: Check out the base
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
+        run: git worktree add "$RUNNER_TEMP/base" "$BASE"
+
+      # base and head with the head's tool and stream samples: only the
+      # lindvb package differs between the two measurements
+      - name: Measure base
+        run: xvfb-run -a python3 tools/perfcheck.py run --lindvb "$RUNNER_TEMP/base" --out base.json
+
+      - name: Measure head
+        run: xvfb-run -a python3 tools/perfcheck.py run --out head.json
+
+      - name: Compare
+        run: python3 tools/perfcheck.py compare base.json head.json --summary
+
+      # the two measurements, kept for a day (the Actions storage quota is small)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: perfcheck
+          path: |
+            base.json
+            head.json
+          retention-days: 1

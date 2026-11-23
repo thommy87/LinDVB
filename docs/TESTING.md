@@ -7,7 +7,46 @@ python3 -m pytest -q tests
 ```
 
 They need Python with PyGObject; tests that need GTK, GStreamer elements or a
-tuner skip themselves when those are missing.
+tuner skip themselves when those are missing. The player tests need a display
+(`xvfb-run -a python3 -m pytest -q tests` without one) and, for the stream
+samples, `x264enc` (gstreamer1.0-plugins-ugly).
+
+## The regression net for streams, timeshift, subtitles and extra audio
+
+`tests/test_regression_net.py` pins down how each reception path behaves
+today: HLS with redundant rendition groups (3sat), WebVTT without time stamps
+(PBS), a live server that stops answering, DASH with roles (ONE HD), CEA-708
+captions in the picture, HbbTV of DVB-I channels, the channel search and
+where recordings go. The streams are made on the fly by `tests/streamkit.py`
+and served from 127.0.0.1, so no network is needed.
+
+Bugs seen on air that are not fixed yet are tests marked `known_bug(...)`
+(`xfail(strict=True)`, failing only on an assertion). They are reported as
+"xfailed" while the bug is there. A change that fixes one makes it "XPASS",
+which fails the run: remove the marker in the same change, so every fix is
+visible here and nothing is fixed (or broken) by accident. A test without
+the marker that starts failing is a regression of a path that worked.
+
+## Player resources
+
+`tools/perfcheck.py` measures the player: CPU per second of picture, peak
+memory, frames reaching the sink and late frames for a 720p HLS stream, the
+same without the closed caption chain and with CEA-708 captions shown, the
+timeshift reader alone, and threads, open files and memory after many
+channel changes.
+
+```sh
+xvfb-run -a tools/perfcheck.py run --out head.json             # this checkout
+xvfb-run -a tools/perfcheck.py run --lindvb ../base --out base.json
+tools/perfcheck.py compare base.json head.json
+```
+
+The numbers are relative: they depend on the machine, so compare two runs on
+the same one. The "Player resources" workflow does that on every pull request
+that touches the player (base and head on one runner) and puts the table in
+the job summary; threads or open files that grow with every channel change
+fail it. On a machine with a hardware decoder, `--decoder auto` measures the
+path users get.
 
 ## The virtual tuner (vidtv)
 
