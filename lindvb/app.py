@@ -59,6 +59,9 @@ class LinDVBApp(Gtk.Application):
         self.plugins.load_all()
         self.db = ChannelDB()
         self.db.manual_order = bool(self.settings.get("channel_order_manual"))
+        from . import dvbi_countries
+        if dvbi_countries.label_old_channels(self.settings, self.db.channels):
+            self.db.save()
         for path in opts.get("import", []):
             path = path.decode() if isinstance(path, bytes) else path
             if not os.path.isabs(path) and os.environ.get("LINDVB_ORIG_CWD"):

@@ -337,6 +337,22 @@ class PrefsWindow(Gtk.Window):
         switch(g, "hbbtv_teletext", _("Teletext from the interactive service"),
                _("The TXT button opens the channel's HbbTV teletext where there is one."))
         from .. import dvbi_countries
+        # configuration.countryId for all channels except DVB-I ones, which
+        # use the country of their list
+        self._hbbtv_countries = [(c, n) for c, n, _ok in dvbi_countries.country_choices()
+                                 if c != dvbi_countries.OTHER.code]
+        hcur = s.get("hbbtv_country") or "DEU"
+        if hcur not in [c for c, _n in self._hbbtv_countries]:
+            self._hbbtv_countries.append((hcur, dvbi_countries.country_name(hcur)))
+        hdrop = dropdown([n for _c, n in self._hbbtv_countries],
+                         [c for c, _n in self._hbbtv_countries].index(hcur))
+        hdrop.set_enable_search(True)
+        hdrop.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+        self._hbbtv_country_drop = _row(
+            g, _("Country"), hdrop,
+            _("Applications use it for youth protection and regional offers. It applies to "
+              "satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of "
+              "its list."))
         # the age steps of the country chosen for DVB-I (Germany 6/12/16,
         # Italy 6/14, New Zealand 13/16); a limit set before stays a choice
         ages = list(dvbi_countries.get(s.get("dvbi_country")).age_limits)
@@ -1259,6 +1275,9 @@ class PrefsWindow(Gtk.Window):
                         s.get("audio_passthrough_device", ""))
         s["video_decoder"] = self._dec_codes[self._dec_drop.get_selected()]
         self._save_youth_protection(s)
+        hcode = self._hbbtv_countries[self._hbbtv_country_drop.get_selected()][0]
+        if hcode != s.get("hbbtv_country"):
+            s["hbbtv_country"], s["hbbtv_country_set"] = hcode, True
         s.update(self._accent_settings())
         s["theme"] = SCHEMES[self._theme_drop.get_selected()]
         s.update(self._rec_values())

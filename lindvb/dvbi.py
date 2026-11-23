@@ -1001,11 +1001,12 @@ class BuildResult:
 
 
 def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
-                   prefer_broadcast=False, package="", overflow=None):
+                   prefer_broadcast=False, package="", overflow=None, country=""):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
     channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
     satellite instances may be tuned from their delivery parameters;
-    *prefer_broadcast*: those before internet ones (see by_preference)."""
+    *prefer_broadcast*: those before internet ones (see by_preference);
+    *country*: the country the list is for (alpha-3, "" = unknown)."""
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
@@ -1031,6 +1032,7 @@ def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
         ch.dvbi_oos_logo = pick_logo(svc.oos_logos)
         ch.dvbi_apps = linked_apps(svc.apps, inst)
         ch.dvbi_alt_names = list(svc.alt_names)
+        ch.dvbi_country = country
         ch.dvbi_cg = svc.cg_service_ref
         ch.dvbi_guide = dict(svc.guide or sl.content_guides.get(svc.cg_source_ref) or
                              sl.default_guide)
@@ -1278,7 +1280,9 @@ class Updater:
                                                           country.prefer_broadcast),
                                    package=s.get("dvbi_package", "") if s.get("dvbi_package", "")
                                    in sl.packages else "",
-                                   overflow=country.overflow)
+                                   overflow=country.overflow,
+                                   country="" if country.code == countries.OTHER.code
+                                   else country.code)
         res.packages = list(sl.packages)
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)

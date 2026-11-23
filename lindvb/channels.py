@@ -87,6 +87,7 @@ class Channel:
     dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
+    dvbi_country: str = ""           # the country of its list (HbbTV country, youth protection)
     tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
     groups: list = field(default_factory=list)   # Tvheadend: all channel tags that are groups
     tvh_networks: list = field(default_factory=list)  # Tvheadend: the networks of its services

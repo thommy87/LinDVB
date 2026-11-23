@@ -341,12 +341,17 @@ class HbbTV:
         except (TypeError, ValueError):
             return 0
 
+    @property
+    def country(self):
+        """The viewer's country for the channel on air (hb.country_for)."""
+        return hb.country_for(self.settings, getattr(self.win, "current", None))
+
     def _allowed(self, app):
         return app.key in self._unlocked or not hb.needs_pin(
-            app.parental, self.age_limit, self.settings.get("hbbtv_country", "DEU"))
+            app.parental, self.age_limit, self.country)
 
     def _ask_pin_for_app(self, app, start):
-        age = hb.min_age(app.parental, self.settings.get("hbbtv_country", "DEU"))
+        age = hb.min_age(app.parental, self.country)
 
         def ok():
             self._unlocked.add(app.key)
@@ -757,7 +762,7 @@ class HbbTV:
             "capabilities": hb.capabilities_xml(),
             "components": self._components(),
             "config": {"audioLanguage": lang, "subtitleLanguage": lang, "uiLanguage": lang,
-                       "country": self.settings.get("hbbtv_country", "DEU"),
+                       "country": hb.country_for(self.settings, cur),
                        "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
                        "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
                        "ageLimit": self.age_limit, "hasPin": self.pin.has_pin,

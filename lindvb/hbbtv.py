@@ -302,6 +302,18 @@ def rating_age(rating):
     return rating + 3 if 0x01 <= rating <= 0x0F else 0
 
 
+def country_for(settings, channel=None):
+    """The country HbbTV applications are told (configuration.countryId) and
+    youth protection uses. A DVB-I channel plays with the country of its
+    list (the list block's country, for lists from before 0.23 the DVB-I
+    country); everything else with the HbbTV country of the preferences."""
+    if channel is not None and getattr(channel, "dvbi_id", ""):
+        code = getattr(channel, "dvbi_country", "") or settings.get("dvbi_country", "")
+        if code and code.upper() != "ZZZ":
+            return code.upper()
+    return (settings.get("hbbtv_country") or "DEU").upper()
+
+
 def min_age(ratings, country="DEU"):
     """Minimum age of [(country, rating)], the viewer's country first."""
     mine = [r for c, r in ratings if c.upper() == country.upper()]

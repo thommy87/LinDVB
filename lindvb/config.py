@@ -5,6 +5,8 @@ import json
 import os
 from pathlib import Path
 
+from .dvbi_countries import system_country
+
 APP_ID = "io.github.thommy87.LinDVB"
 APP_NAME = "LinDVB"
 
@@ -108,7 +110,13 @@ DEFAULTS = {
     # start a channel's AUTOSTART application by itself (else only with the red button)
     "hbbtv_autostart": False,
     "hbbtv_third_party_cookies": False,
-    "hbbtv_country": "DEU",             # configuration.countryId (ISO 3166 alpha-3)
+    # configuration.countryId (ISO 3166 alpha-3) for satellite, cable,
+    # antenna and IPTV channels, the desktop's country by default; DVB-I
+    # channels use the country of their list (lindvb.hbbtv.country_for).
+    # hbbtv_country_set: chosen in the preferences (before 0.23 the DVB-I
+    # country set it, see Settings.__init__)
+    "hbbtv_country": system_country(),
+    "hbbtv_country_set": False,
     # what applications are told about the viewer (configuration object, and
     # the first audio / subtitle choice in their DASH videos)
     "hbbtv_subtitles": False,
@@ -271,10 +279,10 @@ DEFAULTS = {
     "editor_sections_open": ["general"],
     # DVB-I (Preferences ▸ Internet, see lindvb.dvbi) --------------------------
     # Country whose DVB-I profile is used (lindvb.dvbi_countries: "DEU",
-    # "ITA", "NZL"). The dvbi_* keys below up to dvbi_prefer_broadcast belong
+    # "ITA", "NZL", "ZZZ"; "" = none chosen yet). The dvbi_* keys below up to dvbi_prefer_broadcast belong
     # to that country; the settings of the other countries are kept in
     # dvbi_country_state and come back when switching to them again.
-    "dvbi_country": "DEU",
+    "dvbi_country": "",
     "dvbi_country_state": {},
     # Service list registries, asked in this order; the chosen service list,
     # the postcode for the region, the region chosen when several match, and
@@ -356,6 +364,10 @@ class Settings(dict):
         for key, sub in (("recording_dir", "Videos"), ("screenshot_dir", "Pictures")):
             if _old_snap_default(saved.get(key), sub):
                 saved.pop(key)
+        # the HbbTV country was set with the DVB-I country and could not be
+        # chosen: until it is, the desktop's country applies
+        if not saved.get("hbbtv_country_set"):
+            saved.pop("hbbtv_country", None)
         self.update(saved)
 
     def save(self):

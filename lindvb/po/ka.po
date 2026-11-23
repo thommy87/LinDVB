@@ -4783,3 +4783,423 @@ msgstr "ცარიელი: ხმის სერვერი (PulseAudio �
 #: lindvb/ui/dialogs.py
 msgid "Sound server"
 msgstr "ხმის სერვერი"
+
+#: lindvb/dvbi_countries.py
+msgid "Albania"
+msgstr "ალბანეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Armenia"
+msgstr "სომხეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Azerbaijan"
+msgstr "აზერბაიჯანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Belarus"
+msgstr "ბელარუსი"
+
+#: lindvb/dvbi_countries.py
+msgid "Bosnia and Herzegovina"
+msgstr "ბოსნია და ჰერცეგოვინა"
+
+#: lindvb/dvbi_countries.py
+msgid "Cyprus"
+msgstr "კვიპროსი"
+
+#: lindvb/dvbi_countries.py
+msgid "Georgia"
+msgstr "საქართველო"
+
+#: lindvb/dvbi_countries.py
+msgid "Malta"
+msgstr "მალტა"
+
+#: lindvb/dvbi_countries.py
+msgid "Moldova"
+msgstr "მოლდოვა"
+
+#: lindvb/dvbi_countries.py
+msgid "Monaco"
+msgstr "მონაკო"
+
+#: lindvb/dvbi_countries.py
+msgid "Montenegro"
+msgstr "მონტენეგრო"
+
+#: lindvb/dvbi_countries.py
+msgid "San Marino"
+msgstr "სან-მარინო"
+
+#: lindvb/dvbi_countries.py
+msgid "Serbia"
+msgstr "სერბეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Türkiye"
+msgstr "თურქეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Algeria"
+msgstr "ალჟირი"
+
+#: lindvb/dvbi_countries.py
+msgid "Bahrain"
+msgstr "ბაჰრეინი"
+
+#: lindvb/dvbi_countries.py
+msgid "Egypt"
+msgstr "ეგვიპტე"
+
+#: lindvb/dvbi_countries.py
+msgid "Iraq"
+msgstr "ერაყი"
+
+#: lindvb/dvbi_countries.py
+msgid "Jordan"
+msgstr "იორდანია"
+
+#: lindvb/dvbi_countries.py
+msgid "Kuwait"
+msgstr "ქუვეითი"
+
+#: lindvb/dvbi_countries.py
+msgid "Lebanon"
+msgstr "ლიბანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Libya"
+msgstr "ლიბია"
+
+#: lindvb/dvbi_countries.py
+msgid "Morocco"
+msgstr "მაროკო"
+
+#: lindvb/dvbi_countries.py
+msgid "Oman"
+msgstr "ომანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Palestine, State of"
+msgstr "პალესტინის სახელმწიფო"
+
+#: lindvb/dvbi_countries.py
+msgid "Qatar"
+msgstr "კატარი"
+
+#: lindvb/dvbi_countries.py
+msgid "Saudi Arabia"
+msgstr "საუდის არაბეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Syria"
+msgstr "სირია"
+
+#: lindvb/dvbi_countries.py
+msgid "Tunisia"
+msgstr "ტუნისი"
+
+#: lindvb/dvbi_countries.py
+msgid "United Arab Emirates"
+msgstr "არაბთა გაერთიანებული საამიროები"
+
+#: lindvb/dvbi_countries.py
+msgid "Yemen"
+msgstr "იემენი"
+
+#: lindvb/dvbi_countries.py
+msgid "Benin"
+msgstr "ბენინი"
+
+#: lindvb/dvbi_countries.py
+msgid "Burkina Faso"
+msgstr "ბურკინა-ფასო"
+
+#: lindvb/dvbi_countries.py
+msgid "Burundi"
+msgstr "ბურუნდი"
+
+#: lindvb/dvbi_countries.py
+msgid "Cameroon"
+msgstr "კამერუნი"
+
+#: lindvb/dvbi_countries.py
+msgid "Cabo Verde"
+msgstr "კაბო-ვერდე"
+
+#: lindvb/dvbi_countries.py
+msgid "Central African Republic"
+msgstr "ცენტრალური აფრიკის რესპუბლიკა"
+
+#: lindvb/dvbi_countries.py
+msgid "Chad"
+msgstr "ჩადი"
+
+#: lindvb/dvbi_countries.py
+msgid "Comoros"
+msgstr "კომორის კუნძულების კავშირი"
+
+#: lindvb/dvbi_countries.py
+msgid "Congo, The Democratic Republic of the"
+msgstr "კონგო, დემოკრატიული რესპუბლიკა"
+
+#: lindvb/dvbi_countries.py
+msgid "Congo"
+msgstr "კონგო"
+
+#: lindvb/dvbi_countries.py
+msgid "Côte d'Ivoire"
+msgstr "კოტ-დ'ივუარი"
+
+#: lindvb/dvbi_countries.py
+msgid "Djibouti"
+msgstr "ჯიბუტი"
+
+#: lindvb/dvbi_countries.py
+msgid "Equatorial Guinea"
+msgstr "ეკვატორული გვინეა"
+
+#: lindvb/dvbi_countries.py
+msgid "Eritrea"
+msgstr "ერიტრეა"
+
+#: lindvb/dvbi_countries.py
+msgid "Eswatini"
+msgstr "ესვატინი"
+
+#: lindvb/dvbi_countries.py
+msgid "Ethiopia"
+msgstr "ეთიოპია"
+
+#: lindvb/dvbi_countries.py
+msgid "Gabon"
+msgstr "გაბონი"
+
+#: lindvb/dvbi_countries.py
+msgid "Gambia"
+msgstr "გამბია"
+
+#: lindvb/dvbi_countries.py
+msgid "Ghana"
+msgstr "განა"
+
+#: lindvb/dvbi_countries.py
+msgid "Guinea"
+msgstr "გვინეა"
+
+#: lindvb/dvbi_countries.py
+msgid "Guinea-Bissau"
+msgstr "გვინეა-ბისაუ"
+
+#: lindvb/dvbi_countries.py
+msgid "Lesotho"
+msgstr "ლესოთო"
+
+#: lindvb/dvbi_countries.py
+msgid "Liberia"
+msgstr "ლიბერია"
+
+#: lindvb/dvbi_countries.py
+msgid "Madagascar"
+msgstr "მადაგასკარი"
+
+#: lindvb/dvbi_countries.py
+msgid "Malawi"
+msgstr "მალავი"
+
+#: lindvb/dvbi_countries.py
+msgid "Mali"
+msgstr "მალი"
+
+#: lindvb/dvbi_countries.py
+msgid "Mauritania"
+msgstr "მავრიტანია"
+
+#: lindvb/dvbi_countries.py
+msgid "Mauritius"
+msgstr "მავრიკი"
+
+#: lindvb/dvbi_countries.py
+msgid "Mozambique"
+msgstr "მოზამბიკი"
+
+#: lindvb/dvbi_countries.py
+msgid "Namibia"
+msgstr "ნამიბია"
+
+#: lindvb/dvbi_countries.py
+msgid "Niger"
+msgstr "ნიგერი"
+
+#: lindvb/dvbi_countries.py
+msgid "Nigeria"
+msgstr "ნიგერია"
+
+#: lindvb/dvbi_countries.py
+msgid "Rwanda"
+msgstr "რუანდა"
+
+#: lindvb/dvbi_countries.py
+msgid "Sao Tome and Principe"
+msgstr "საო-ტომე და პრინსიპი"
+
+#: lindvb/dvbi_countries.py
+msgid "Senegal"
+msgstr "სენეგალი"
+
+#: lindvb/dvbi_countries.py
+msgid "Seychelles"
+msgstr "სეიშელის კუნძულები"
+
+#: lindvb/dvbi_countries.py
+msgid "Sierra Leone"
+msgstr "სიერა-ლეონე"
+
+#: lindvb/dvbi_countries.py
+msgid "Somalia"
+msgstr "სომალი"
+
+#: lindvb/dvbi_countries.py
+msgid "South Sudan"
+msgstr "სამხრეთ სუდანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Sudan"
+msgstr "სუდანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Tanzania"
+msgstr "ტანზანია"
+
+#: lindvb/dvbi_countries.py
+msgid "Togo"
+msgstr "ტოგო"
+
+#: lindvb/dvbi_countries.py
+msgid "Zambia"
+msgstr "ზამბია"
+
+#: lindvb/dvbi_countries.py
+msgid "Zimbabwe"
+msgstr "ზიმბაბვე"
+
+#: lindvb/dvbi_countries.py
+msgid "Afghanistan"
+msgstr "ავღანეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Bangladesh"
+msgstr "ბანგლადეში"
+
+#: lindvb/dvbi_countries.py
+msgid "Cambodia"
+msgstr "კამბოჯა"
+
+#: lindvb/dvbi_countries.py
+msgid "India"
+msgstr "ინდოეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Kazakhstan"
+msgstr "ყაზახეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Kyrgyzstan"
+msgstr "ყირგიზეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Malaysia"
+msgstr "მალაიზია"
+
+#: lindvb/dvbi_countries.py
+msgid "Mongolia"
+msgstr "მონღოლეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Myanmar"
+msgstr "მიანმარი"
+
+#: lindvb/dvbi_countries.py
+msgid "Nepal"
+msgstr "ნეპალი"
+
+#: lindvb/dvbi_countries.py
+msgid "Pakistan"
+msgstr "პაკისტანი"
+
+#: lindvb/dvbi_countries.py
+msgid "Singapore"
+msgstr "სინგაპური"
+
+#: lindvb/dvbi_countries.py
+msgid "Thailand"
+msgstr "ტაილანდი"
+
+#: lindvb/dvbi_countries.py
+msgid "Tajikistan"
+msgstr "ტაჯიკეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Turkmenistan"
+msgstr "თურქმენეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "Uzbekistan"
+msgstr "უზბეკეთი"
+
+#: lindvb/dvbi_countries.py
+msgid "North Korea"
+msgstr "ჩრდილოეთი კორეა"
+
+#: lindvb/dvbi_countries.py
+msgid "Brunei Darussalam"
+msgstr "ბრუნეი დარუსალამი"
+
+#: lindvb/dvbi_countries.py
+msgid "Fiji"
+msgstr "ფიჯი"
+
+#: lindvb/dvbi_countries.py
+msgid "Papua New Guinea"
+msgstr "პაპუა-ახალი გვინეა"
+
+#: lindvb/dvbi_countries.py
+msgid "Panama"
+msgstr "პანამა"
+
+#: lindvb/dvbi_countries.py
+msgid "Greenland"
+msgstr "გრენლანდია"
+
+#: lindvb/ui/dvbi.py
+msgid "{country} (not available)"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Choose your country to set up DVB-I."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "LinDVB has no DVB-I profile for {country} yet."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The settings of each country are kept and come back when you choose it again."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Switch"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
+msgstr ""

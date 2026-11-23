@@ -50,7 +50,10 @@ class DVBIPanel(Gtk.Box):
                          css_classes=["lv-group"])
         self.app = app
         self.s = app.settings
-        self.country = countries.get(self.s.get("dvbi_country"))
+        # "" until a country is chosen; self.country is then Germany's profile
+        # (what the rest of LinDVB uses), but nothing below the list shows
+        self.country_code = (self.s.get("dvbi_country") or "").upper()
+        self.country = countries.get(self.country_code)
         self.offers = []
         self.region_ids = []
         self.consent_checks = {}
@@ -68,16 +71,39 @@ class DVBIPanel(Gtk.Box):
                          "it. LinDVB uses the antenna, cable or satellite channels from your "
                          "channel search where it can and the internet stream otherwise."))
 
-        # the country decides registry, consents and how the region is found
+        # the country decides registry, consents and how the region is found:
+        # all countries with DVB, those without a DVB-I profile greyed out
         self.title(box, _("Country"))
         row = Gtk.Box(spacing=12)
         row.append(Gtk.Label(label=_("Country"), xalign=0))
-        self.country_dd = Gtk.DropDown.new_from_strings([_(c.name) for c in countries.COUNTRIES])
-        self.country_dd.set_selected([c.code for c in countries.COUNTRIES].index(self.country.code))
+        # "Choose…" heads the list until a country is chosen
+        self.country_rows = ([] if self.country_code else [("", _("Choose…"), True)]) + \
+            countries.country_choices()
+        self._country_ok = {n: ok for _c, n, ok in self.country_rows}
+        self._country_guard = False
+        self.country_dd = Gtk.DropDown.new_from_strings([n for _c, n, _ok in self.country_rows])
+        # the expression first: setting it puts the default factory back
+        self.country_dd.set_enable_search(True)
+        self.country_dd.set_expression(
+            Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", lambda _f, item: item.set_child(Gtk.Label(xalign=0)))
+        factory.connect("bind", self._bind_country)
+        self.country_dd.set_factory(factory)
+        self._select_country(self.country_code)
         self.country_dd.connect("notify::selected", lambda *_: self._country_changed())
         row.append(self.country_dd)
         box.append(row)
+        self.choose_lbl = self.hint(box, _("Choose your country to set up DVB-I."))
         self.profile_lbl = self.hint(box, "")
+        self.country_status = self.hint(box, "")
+        self.country_status.set_visible(False)
+
+        # everything else comes from the country's profile and shows once
+        # a country is chosen
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        box.append(body)
+        self.body = box = body
 
         # country part 1: privacy notice and consents (IT-17: before any request)
         self.privacy_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -215,10 +241,41 @@ class DVBIPanel(Gtk.Box):
         box.append(lbl)
         return lbl
 
+    def _bind_country(self, _factory, item):
+        # by name: while searching, the positions are those of the matches
+        name = item.get_item().get_string()
+        ok = self._country_ok.get(name, True)
+        lbl = item.get_child()
+        lbl.set_text(name if ok else _("{country} (not available)").format(country=name))
+        if ok:
+            lbl.remove_css_class("dim-label")
+        else:
+            lbl.add_css_class("dim-label")
+
+    def _select_country(self, code):
+        """Show *code* in the country list without acting on it."""
+        codes = [c for c, _n, _ok in self.country_rows]
+        self._country_guard = True
+        self.country_dd.set_selected(codes.index(code) if code in codes else 0)
+        self._country_guard = False
+
+    def _drop_choose_row(self):
+        if self.country_rows and not self.country_rows[0][0]:
+            self.country_rows = self.country_rows[1:]
+            self._country_guard = True
+            self.country_dd.get_model().remove(0)
+            self._country_guard = False
+            self._select_country(self.country_code)
+        return False
+
     def _build_country(self):
         """(Re)build what depends on the country: notice, consents, postcode,
         region list, notes, registry and the list in use."""
         c, s = self.country, self.s
+        chosen = bool(self.country_code)
+        self.body.set_visible(chosen)
+        self.choose_lbl.set_visible(not chosen)
+        self.profile_lbl.set_visible(chosen)
         self.profile_lbl.set_text(_("Settings follow: {profile}").format(profile=c.profile))
 
         # only what the country's profile asks for (Germany: IT-17)
@@ -324,17 +381,80 @@ class DVBIPanel(Gtk.Box):
 
     # ------------------------------------------------------------------ country
     def _country_changed(self):
-        code = countries.COUNTRIES[self.country_dd.get_selected()].code
-        if code == self.country.code:
+        if self._country_guard:
             return
-        had = bool(self.app.db.dvbi_channels())
+        i = self.country_dd.get_selected()
+        if not 0 <= i < len(self.country_rows):
+            return
+        code, name, ok = self.country_rows[i]
+        if code == self.country_code:
+            return
+        if not code:                                    # "Choose…"
+            self._select_country(self.country_code)
+            return
+        if not ok:
+            self._select_country(self.country_code)     # back to the country in use
+            self._country_note(_("LinDVB has no DVB-I profile for {country} yet.").format(
+                country=name))
+            return
+        self._country_note("")
+        chans = self.app.db.dvbi_channels()
+        # the installed list may already be the new country's (0.22 kept it
+        # when the country was changed)
+        if chans and countries.installed_country(self.s, chans) != code:
+            self._confirm_switch(code, len(chans))
+        else:
+            self._switch_to(code)
+
+    def _country_note(self, text):
+        self.country_status.set_text(text)
+        self.country_status.set_visible(bool(text))
+
+    def _confirm_switch(self, code, n):
+        """The list of the country in use is installed: remove it and switch,
+        or stay (the country list goes back)."""
+        new = countries.country_name(code)
+        old = countries.installed_country(self.s, self.app.db.dvbi_channels())
+        if not old:
+            text = _("Your own DVB-I list is installed ({n} channels). Remove it and switch to "
+                     "{country}?").format(n=n, country=new)
+        else:
+            text = _("The list for {old} is installed ({n} channels). Remove it and switch to "
+                     "{country}?").format(old=countries.country_name(old), n=n, country=new)
+        dlg = Gtk.AlertDialog(message=text, detail=_(
+            "The settings of each country are kept and come back when you choose it again."),
+            buttons=[_("Switch"), _("Cancel")], cancel_button=1, default_button=1)
+
+        def chosen(d, result):
+            try:
+                i = d.choose_finish(result)
+            except GLib.Error:
+                i = 1
+            self._switch_answer(code, i == 0)
+        dlg.choose(self.get_root(), None, chosen)
+
+    def _switch_answer(self, code, switch):
+        if not switch:
+            self._select_country(self.country_code)
+            return
+        removed = self.app.db.replace_dvbi([])[2]
+        self.app.db.save()
+        if self.app.window:
+            self.app.window.reload_channels()
+        self._switch_to(code)
+        self.status.set_text(_("{removed} DVB-I channels removed").format(removed=removed))
+
+    def _switch_to(self, code):
         self.country = countries.switch_country(self.s, code)
+        self.country_code = self.country.code
         dvbi.use_country(code)
         self.s.save()
+        if self.country_rows and not self.country_rows[0][0]:
+            # a country is chosen: "Choose…" goes (after this signal)
+            GLib.idle_add(self._drop_choose_row)
+        self._select_country(self.country_code)
         self._build_country()
-        self.status.set_text(
-            _("The DVB-I channels of the previous country stay until you install a list for "
-              "{country} or remove them.").format(country=_(self.country.name)) if had else "")
+        self.status.set_text("")
         if self._ack_ok():
             self._load_registry()
 
@@ -461,7 +581,7 @@ class DVBIPanel(Gtk.Box):
         not each time the preferences open."""
         if not self._started:
             self._started = True
-            if self._ack_ok():
+            if self.country_code and self._ack_ok():
                 self._load_registry()
 
     # ------------------------------------------------------------------ state
