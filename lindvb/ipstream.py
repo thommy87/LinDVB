@@ -979,6 +979,10 @@ class GstReader:
     def _leave_out_text(self, msg):
         """The adaptive demuxer offers its streams: take all but the subtitles.
 
+        Every sound goes into the buffer: dashdemux2 starts with one audio
+        adaptation set only, so a DASH stream lost its audio description
+        and other languages in timeshift (ONE HD).
+
         A transport stream cannot carry WebVTT or TTML subtitles, so they are
         dropped anyway. Worse, hlsdemux2 hands its tracks on in step: a
         subtitle track whose segments carry no time stamps (PBS's WebVTT
@@ -992,7 +996,8 @@ class GstReader:
         streams = [coll.get_stream(i) for i in range(coll.get_size())]
         keep = [st.get_stream_id() for st in streams
                 if not st.get_stream_type() & Gst.StreamType.TEXT]
-        if keep and len(keep) < len(streams):
+        sounds = sum(1 for st in streams if st.get_stream_type() & Gst.StreamType.AUDIO)
+        if keep and (len(keep) < len(streams) or sounds > 1):
             msg.src.send_event(Gst.Event.new_select_streams(keep))
 
     def _teardown(self):

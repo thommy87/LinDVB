@@ -342,9 +342,9 @@ def dash():
         srv.close()
 
 
-@known_bug("ONE HD: the timeshift buffer keeps only the first DASH audio, "
-           "the audio description is lost")
 def test_dash_buffer_keeps_every_audio(dash):
+    """ONE HD: the timeshift buffer kept only the first DASH audio, the
+    audio description was lost."""
     srv, _folder = dash
     _r, data, errors = _read_all(ipstream.GstReader, srv.url("manifest-roles.mpd"),
                                  retry=ipstream.Retry(delays=(5,), give_up=30))
@@ -375,7 +375,7 @@ def test_dash_role_description_is_audio_description(dash, player):  # noqa: F811
 
 # -- HbbTV of DVB-I channels ----------------------------------------------------------------
 
-def _hbbtv_channel_changed(capture):
+def _hbbtv_channel_changed(capture, iptv=True):
     pytest.importorskip("gi")
     try:
         from lindvb.ui import hbbtv
@@ -390,8 +390,8 @@ def _hbbtv_channel_changed(capture):
         dsmcc=None, _new_dsmcc=nothing, _sync_broadcast=False, _sync_selector=False, cs=None,
         life=life, enabled=True, _unlocked=set(), _tuned_at=0, _cancel_autostart=nothing,
         view=None, _notify=nothing, _on_ait=nothing, _js=nothing,
-        _dvbi_signalling=lambda ch, same: called.append("dvb-i"))
-    channel = types.SimpleNamespace(key="one", name="ONE HD", sid=0,
+        _dvbi_signalling=lambda *a: called.append("dvb-i"))
+    channel = types.SimpleNamespace(key="one", name="ONE HD", sid=0, is_iptv=iptv,
                                     dvbi_apps=[("https://hbbtv.example/one", "html", "")])
     hbbtv.HbbTV.channel_changed(fake, channel, capture)
     return called
@@ -401,11 +401,20 @@ def test_hbbtv_dvbi_apps_without_timeshift():
     assert _hbbtv_channel_changed(None) == ["dvb-i"]
 
 
-@known_bug("ONE HD with timeshift: the DVB-I HbbTV app is not offered "
-           "(red button greyed) because the buffer counts as a tuner")
+def _capture():
+    """A stream capture: it watches the stream for an AIT of its own."""
+    return types.SimpleNamespace(connect=lambda *a: 1, ait=None, ait_monitor=object())
+
+
 def test_hbbtv_dvbi_apps_with_timeshift():
-    capture = types.SimpleNamespace(connect=lambda *a: 1, ait=None, ait_monitor=None)
-    assert _hbbtv_channel_changed(capture) == ["dvb-i"]
+    """ONE HD with timeshift: the DVB-I HbbTV app was not offered (red
+    button greyed) because the buffer counted as a tuner."""
+    assert _hbbtv_channel_changed(_capture()) == ["dvb-i"]
+
+
+def test_hbbtv_of_a_tuner_channel_comes_from_the_broadcast():
+    """A DVB-T/S/C channel of a DVB-I list keeps the AIT of its broadcast."""
+    assert _hbbtv_channel_changed(_capture(), iptv=False) == []
 
 
 # -- the channel list ------------------------------------------------------------------------
