@@ -4814,32 +4814,104 @@ msgstr "Groenlandja"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (mhux disponibbli)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Agħżel il-pajjiż tiegħek biex tissettja d-DVB-I."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB għad m'għandux profil DVB-I għal {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Il-lista DVB-I tiegħek hija installata ({n} stazzjonijiet). Tneħħiha u taqleb għal {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Il-lista għal {old} hija installata ({n} stazzjonijiet). Tneħħiha u taqleb għal {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "L-issettjar ta' kull pajjiż jinżamm u jerġa' lura meta terġa' tagħżlu."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Aqleb"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "L-applikazzjonijiet jużawh għall-protezzjoni tal-minuri u offerti reġjonali. Japplika għal stazzjonijiet bis-satellita, kejbil, antenna u IPTV; stazzjon DVB-I juża l-pajjiż tal-lista tiegħu."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Aktar listi"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Il-listi li żżid jiġu wara l-lista tal-pajjiż. L-istazzjonijiet tagħhom jiġu nnumerati minn 1000, 2000 eċċ.; stazzjon li diġà jinsab f'lista preċedenti jidher darba. LinDVB jikkuntattja l-indirizz li ddaħħal; dak is-server jara l-indirizz IP tiegħek."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Indirizz ta' lista ta' servizzi jew reġistru"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Pajjiż mhux magħruf"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "pajjiż mhux magħruf"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Il-pajjiż li għalih hija l-lista, meta l-lista ma tgħidx"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Żid Lista"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "numri minn {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Neħħi din il-lista u l-istazzjonijiet tagħha"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Qed jitgħabba {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address} ma setax jitgħabba: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Ir-reġistru ma joffri l-ebda lista ta' servizzi."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Agħżel Lista"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Din il-lista diġà qed tintuża."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Lista oħra qed titgħabba. Erġa' pprova fi ftit mumenti."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Tneħħi l-lista “{name}” u l-{n} stazzjonijiet tagħha?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Il-favoriti jżommu l-istazzjonijiet u jerġgħu juruhom meta l-lista terġa' tiżdied."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} stazzjonijiet"

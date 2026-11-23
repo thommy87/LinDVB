@@ -305,6 +305,11 @@ DEFAULTS = {
     "dvbi_prefer_broadcast": False,
     # subscription package whose LCN table is used ("" = the free one)
     "dvbi_package": "",
+    # DVB-I lists the viewer added beside the country's list (list blocks,
+    # lindvb.dvbi.own_lists): [{"id", "slot", "url", "name", "country",
+    # "postcode", "region", "label", "auto_label", "last_check",
+    # "last_modified", "etag"}], in the order they were added
+    "dvbi_own_lists": [],
     # check the chosen list daily by itself (off: only with Update Now)
     "dvbi_auto_update": True,
     # Load the programme guide of DVB-I channels from the list's content

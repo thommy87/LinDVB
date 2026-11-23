@@ -4814,32 +4814,104 @@ msgstr "Γροιλανδία"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (μη διαθέσιμο)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Επιλέξτε τη χώρα σας για να ρυθμίσετε το DVB-I."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "Το LinDVB δεν έχει ακόμη προφίλ DVB-I για {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Η δική σας λίστα DVB-I είναι εγκατεστημένη ({n} κανάλια). Να αφαιρεθεί και να γίνει αλλαγή σε {country};"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Η λίστα για {old} είναι εγκατεστημένη ({n} κανάλια). Να αφαιρεθεί και να γίνει αλλαγή σε {country};"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Οι ρυθμίσεις κάθε χώρας διατηρούνται και επιστρέφουν όταν την επιλέξετε ξανά."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Αλλαγή"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Οι εφαρμογές το χρησιμοποιούν για την προστασία ανηλίκων και τις τοπικές προσφορές. Ισχύει για δορυφορικά, καλωδιακά, επίγεια και IPTV κανάλια· ένα κανάλι DVB-I χρησιμοποιεί τη χώρα της λίστας του."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Περισσότερες λίστες"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Οι λίστες που προσθέτετε ακολουθούν τη λίστα της χώρας. Τα κανάλια τους αριθμούνται από 1000, 2000 κ.ο.κ.· ένα κανάλι που υπάρχει ήδη σε προηγούμενη λίστα εμφανίζεται μία φορά. Το LinDVB επικοινωνεί με τη διεύθυνση που εισάγετε· αυτός ο διακομιστής βλέπει τη διεύθυνση IP σας."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Διεύθυνση λίστας υπηρεσιών ή μητρώου"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Άγνωστη χώρα"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "άγνωστη χώρα"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Η χώρα για την οποία ισχύει η λίστα, αν η λίστα δεν το αναφέρει"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Προσθήκη λίστας"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "αριθμοί από {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Αφαίρεση αυτής της λίστας και των καναλιών της"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Φόρτωση {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "Δεν ήταν δυνατή η φόρτωση του {address}: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Το μητρώο δεν προσφέρει λίστα υπηρεσιών."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Επιλογή λίστας"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Αυτή η λίστα χρησιμοποιείται ήδη."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Φορτώνεται άλλη λίστα. Δοκιμάστε ξανά σε λίγο."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Να αφαιρεθεί η λίστα «{name}» και τα {n} κανάλιά της;"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Τα αγαπημένα κρατούν τα κανάλια και τα δείχνουν ξανά όταν η λίστα προστεθεί ξανά."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} κανάλια"

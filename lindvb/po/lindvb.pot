@@ -6456,3 +6456,75 @@ msgstr ""
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
 msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr ""
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr ""

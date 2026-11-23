@@ -5102,32 +5102,100 @@ msgstr "グリーンランド"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country}（利用不可）"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "DVB-I を設定するには国を選択してください。"
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB には {country} 用の DVB-I プロファイルがまだありません。"
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "独自の DVB-I リストがインストールされています（{n} チャンネル）。削除して {country} に切り替えますか？"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "{old} のリストがインストールされています（{n} チャンネル）。削除して {country} に切り替えますか？"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "各国の設定は保存され、もう一度選択すると元に戻ります。"
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "切り替え"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "アプリケーションは青少年保護と地域サービスにこれを使用します。衛星、ケーブル、地上波、IPTV のチャンネルに適用され、DVB-I チャンネルはそのリストの国を使用します。"
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "その他のリスト"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "追加したリストは国のリストの後に続きます。そのチャンネルは 1000、2000 などから番号が付けられ、前のリストにすでにあるチャンネルは一度だけ表示されます。LinDVB は入力したアドレスに接続し、そのサーバーにはあなたの IP アドレスが見えます。"
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "サービスリストまたはレジストリのアドレス"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "国不明"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "国不明"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "リストが示していない場合の、リストの対象国"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "リストを追加"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "{first} からの番号"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "このリストとそのチャンネルを削除"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "{address} を読み込み中…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address} を読み込めませんでした: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "レジストリはサービスリストを提供していません。"
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "リストを選択"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "このリストはすでに使用されています。"
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "別のリストを読み込み中です。しばらくしてからもう一度お試しください。"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "リスト「{name}」とその {n} チャンネルを削除しますか？"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "お気に入りはチャンネルを保持し、リストを再度追加するとまた表示します。"

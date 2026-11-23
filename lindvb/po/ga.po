@@ -4814,32 +4814,104 @@ msgstr "An Ghraonlainn"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (níl ar fáil)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Roghnaigh do thír chun DVB-I a shocrú."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "Níl próifíl DVB-I ag LinDVB do {country} fós."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Tá do liosta DVB-I féin suiteáilte ({n} cainéal). É a bhaint agus aistriú go {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Tá an liosta do {old} suiteáilte ({n} cainéal). É a bhaint agus aistriú go {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Coinnítear socruithe gach tíre agus tagann siad ar ais nuair a roghnaíonn tú arís í."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Aistrigh"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Úsáideann feidhmchláir é le haghaidh cosaint leanaí agus tairiscintí réigiúnacha. Baineann sé le cainéil satailíte, cábla, aeróige agus IPTV; úsáideann cainéal DVB-I tír a liosta."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Tuilleadh liostaí"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Tagann na liostaí a chuireann tú leis i ndiaidh liosta na tíre. Uimhrítear a gcainéil ó 1000, 2000 agus mar sin de; feictear cainéal atá i liosta níos luaithe cheana uair amháin. Déanann LinDVB teagmháil leis an seoladh a chuireann tú isteach; feiceann an freastalaí sin do sheoladh IP."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Seoladh liosta seirbhísí nó clárlainne"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Tír anaithnid"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "tír anaithnid"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "An tír a bhfuil an liosta di, mura ndeir an liosta é"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Cuir Liosta Leis"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "uimhreacha ó {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Bain an liosta seo agus a cainéil"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "{address} á lódáil…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "Níorbh fhéidir {address} a lódáil: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Ní thairgeann an chlárlann aon liosta seirbhísí."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Roghnaigh Liosta"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Tá an liosta seo in úsáid cheana."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Tá liosta eile á lódáil. Bain triail eile as i gceann nóiméid."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "An liosta “{name}” agus a {n} cainéal a bhaint?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Coinníonn ceanáin na cainéil agus taispeánann siad arís iad nuair a chuirtear an liosta leis arís."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} cainéal"

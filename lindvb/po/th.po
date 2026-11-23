@@ -5147,32 +5147,100 @@ msgstr "กรีนแลนด์"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (ไม่พร้อมใช้งาน)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "เลือกประเทศของคุณเพื่อตั้งค่า DVB-I"
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB ยังไม่มีโปรไฟล์ DVB-I สำหรับ {country}"
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "ติดตั้งรายการ DVB-I ของคุณเองแล้ว ({n} ช่อง) ลบออกและเปลี่ยนเป็น {country} หรือไม่?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "ติดตั้งรายการสำหรับ {old} แล้ว ({n} ช่อง) ลบออกและเปลี่ยนเป็น {country} หรือไม่?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "การตั้งค่าของแต่ละประเทศจะถูกเก็บไว้และกลับมาเมื่อคุณเลือกอีกครั้ง"
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "เปลี่ยน"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "แอปพลิเคชันใช้ค่านี้สำหรับการคุ้มครองเยาวชนและข้อเสนอระดับภูมิภาค ใช้กับช่องดาวเทียม เคเบิล เสาอากาศ และ IPTV ส่วนช่อง DVB-I ใช้ประเทศของรายการตนเอง"
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "รายการเพิ่มเติม"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "รายการที่คุณเพิ่มจะต่อจากรายการของประเทศ ช่องของรายการเหล่านั้นจะมีหมายเลขเริ่มที่ 1000, 2000 และต่อไป ช่องที่มีอยู่แล้วในรายการก่อนหน้าจะแสดงเพียงครั้งเดียว LinDVB จะติดต่อที่อยู่ที่คุณป้อน และเซิร์ฟเวอร์นั้นจะเห็นที่อยู่ IP ของคุณ"
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "ที่อยู่ของรายการบริการหรือรีจิสทรี"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "ไม่ทราบประเทศ"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "ไม่ทราบประเทศ"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "ประเทศที่รายการนี้ใช้ เมื่อรายการไม่ได้ระบุ"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "เพิ่มรายการ"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "หมายเลขตั้งแต่ {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "ลบรายการนี้และช่องของรายการ"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "กำลังโหลด {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "ไม่สามารถโหลด {address}: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "รีจิสทรีไม่มีรายการบริการ"
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "เลือกรายการ"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "รายการนี้ถูกใช้งานอยู่แล้ว"
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "กำลังโหลดรายการอื่นอยู่ โปรดลองอีกครั้งในอีกสักครู่"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "ลบรายการ “{name}” และ {n} ช่องของรายการหรือไม่?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "รายการโปรดจะเก็บช่องไว้และแสดงอีกครั้งเมื่อเพิ่มรายการกลับมา"

@@ -201,6 +201,7 @@ class ListOffering:
     postcode: bool = False       # server-side region selection by postcode
     list_id: str = ""
     logo: str = ""
+    countries: list = field(default_factory=list)   # TargetCountry values (alpha-3)
 
 
 def registry_query_url(base, country=TARGET_COUNTRY, delivery=DELIVERY):
@@ -277,7 +278,9 @@ def parse_registry(data):
                 url=url, provider=prov_name, default=list_flag,
                 official=list_flag or prov_flag or entity_flag, delivery=delivery,
                 postcode=_bool(srs.get("postcode") if srs is not None else None, False),
-                list_id=_text(_kid(slo, "ServiceListId")), logo=logos[0] if logos else ""))
+                list_id=_text(_kid(slo, "ServiceListId")), logo=logos[0] if logos else "",
+                countries=[c.upper() for tc in _kids(slo, "TargetCountry")
+                           for c in _text(tc).replace(",", " ").split() if c]))
     # IT-8: no list carries regulatorListFlag -> a list from a regulator
     # provider is the default
     if not any(o.default for o in offerings):
@@ -1001,12 +1004,15 @@ class BuildResult:
 
 
 def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
-                   prefer_broadcast=False, package="", overflow=None, country=""):
+                   prefer_broadcast=False, package="", overflow=None, country="", block="",
+                   lcn_base=0):
     """LinDVB channels for the line-up of *region_id*. *scanned* are the
     channels of the user's own channel search (DVB-T/C/S). *sat_direct*:
     satellite instances may be tuned from their delivery parameters;
     *prefer_broadcast*: those before internet ones (see by_preference);
-    *country*: the country the list is for (alpha-3, "" = unknown)."""
+    *country*: the country the list is for (alpha-3, "" = unknown); *block*:
+    the list block (lindvb.channels.Channel.dvbi_block) whose numbers start
+    at *lcn_base* (an added list: 1000, 2000 ...)."""
     scanned = [c for c in scanned if not c.is_iptv and not c.dvbi_id]
     group = list_name or sl.name or "DVB-I"
     res = BuildResult()
@@ -1022,8 +1028,8 @@ def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
         if svc.radio:
             ch.radio = True
         ch.dvbi_id = svc.uid
-        ch.lcn = entry.lcn
-        ch.number = entry.lcn
+        ch.lcn = entry.lcn + lcn_base
+        ch.number = ch.lcn
         ch.selectable = entry.selectable
         ch.visible = entry.visible
         ch.logo_url = pick_logo(svc.logos)
@@ -1033,6 +1039,7 @@ def build_channels(sl, region_id, scanned, list_name="", sat_direct=True,
         ch.dvbi_apps = linked_apps(svc.apps, inst)
         ch.dvbi_alt_names = list(svc.alt_names)
         ch.dvbi_country = country
+        ch.dvbi_block = block
         ch.dvbi_cg = svc.cg_service_ref
         ch.dvbi_guide = dict(svc.guide or sl.content_guides.get(svc.cg_source_ref) or
                              sl.default_guide)
@@ -1107,6 +1114,27 @@ def query_registry(registries=REGISTRIES, fetcher=fetch, country=TARGET_COUNTRY)
     raise DVBIError("No service list registry could be reached: " + "; ".join(errors))
 
 
+def probe_address(url, fetcher=fetch):
+    """What the viewer added: a service list or a registry (central list).
+    Returns (offerings, None) for a registry, (None, ServiceList) for a
+    service list; DVBIError when it is neither."""
+    errors = []
+    for addr in (url, registry_query_url(url, "")):
+        try:
+            resp = fetcher(addr)
+            tag = _local(_parse(resp.data).tag)
+            if tag == "ServiceListEntryPoints":
+                return parse_registry(resp.data), None
+            if tag == "ServiceList":
+                return None, parse_service_list(resp.data)
+            errors.append(f"not a service list ({tag})")
+        except DVBIError as e:
+            errors.append(str(e))
+        if "?" in url:
+            break                    # a query already: no second try
+    raise DVBIError("; ".join(dict.fromkeys(errors)))
+
+
 def load_service_list(url, postcode="", last_modified="", etag="", fetcher=fetch):
     """Download a service list. Returns (ServiceList or None when unchanged,
     Response). With a postcode the server selects the region (IT-5); a
@@ -1171,6 +1199,111 @@ def http_date(ts):
     return email.utils.formatdate(ts, usegmt=True)
 
 
+# ---------------------------------------------------------------- list blocks
+
+# The channel list holds DVB-I lists as blocks (concept section 9): first the
+# list of the chosen country (the plain dvbi_* settings, block id ""), then
+# the lists the viewer added, in the order they were added (settings
+# "dvbi_own_lists"). Each added list keeps its address, the country it is
+# for, its postcode and region, its update state and a number range: its
+# channels are numbered from slot * 1000 (1000, 2000 ...), so lists never mix
+# their numbers. A service in two lists is one channel, from the earlier
+# block (lindvb.channels.ChannelDB.replace_dvbi).
+
+LCN_BLOCK = 1000
+MAX_OWN_LISTS = 8
+
+
+def own_lists(settings):
+    return [b for b in (settings.get("dvbi_own_lists") or []) if isinstance(b, dict)
+            and b.get("id") and b.get("url")]
+
+
+def block_order(settings):
+    """The block ids from the first to the last: the country's list first."""
+    return [""] + [b["id"] for b in own_lists(settings)]
+
+
+def own_list(settings, block_id):
+    return next((b for b in own_lists(settings) if b["id"] == block_id), None)
+
+
+def add_own_list(settings, url, name="", country=""):
+    """Add a list block for *url* (once). Returns the block (a dict kept in
+    the settings), or None when *url* is already a block or too many are."""
+    lists = own_lists(settings)
+    if url == settings.get("dvbi_list_url") or any(b["url"] == url for b in lists) or \
+            len(lists) >= MAX_OWN_LISTS:
+        return None
+    ids = {b["id"] for b in lists}
+    slots = {b.get("slot") for b in lists}
+    n = 1
+    while f"own{n}" in ids:
+        n += 1
+    slot = next(i for i in range(1, MAX_OWN_LISTS + 2) if i not in slots)
+    block = {"id": f"own{n}", "slot": slot, "url": url,
+             "name": name or urllib.parse.urlsplit(url).netloc or url,
+             "country": (country or "").upper(), "postcode": "", "region": "", "label": "",
+             "auto_label": "", "last_check": 0, "last_modified": "", "etag": ""}
+    settings["dvbi_own_lists"] = lists + [block]
+    return block
+
+
+def remove_own_list(settings, block_id):
+    settings["dvbi_own_lists"] = [b for b in own_lists(settings) if b["id"] != block_id]
+
+
+class BlockSettings:
+    """The settings an Updater reads and writes, for an added list: the list
+    keys are the block's own, the options (satellite, failover, automatic
+    update ...) the general DVB-I ones."""
+    KEYS = {"dvbi_list_url": "url", "dvbi_list_name": "name", "dvbi_postcode": "postcode",
+            "dvbi_region": "region", "dvbi_last_check": "last_check",
+            "dvbi_last_modified": "last_modified", "dvbi_etag": "etag",
+            "dvbi_list_label": "label", "dvbi_list_auto_label": "auto_label",
+            "dvbi_country": "country"}
+    FIXED = {"dvbi_list_manual": True, "dvbi_area": "", "dvbi_package": ""}
+
+    def __init__(self, settings, block):
+        self.settings = settings
+        self.block = block
+
+    def get(self, key, default=None):
+        if key in self.KEYS:
+            return self.block.get(self.KEYS[key], default)
+        if key in self.FIXED:
+            return self.FIXED[key]
+        return self.settings.get(key, default)
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def __setitem__(self, key, value):
+        if key in self.KEYS:
+            self.block[self.KEYS[key]] = value
+        elif key not in self.FIXED:
+            self.settings[key] = value
+
+
+def reload_lists_after(settings, block_id):
+    """After the block *block_id* was removed: the added lists after it load
+    again at the next check, so the services they share with it come back."""
+    order = block_order(settings)
+    later = order[order.index(block_id) + 1:] if block_id in order else order[1:]
+    for b in own_lists(settings):
+        if b["id"] in later:
+            b["last_check"], b["last_modified"], b["etag"] = 0, "", ""
+
+
+def due_lists(settings, now=None):
+    """The added lists whose daily check is due."""
+    now = time.time() if now is None else now
+    if not settings.get("dvbi_auto_update", True):
+        return []
+    return [b for b in own_lists(settings)
+            if now - float(b.get("last_check") or 0) >= UPDATE_INTERVAL]
+
+
 # ---------------------------------------------------------------- refresh
 
 @dataclass
@@ -1194,14 +1327,23 @@ class Updater:
     network work and may be called from a thread; ``apply`` changes the
     channel list and the settings and belongs on the main thread."""
 
-    def __init__(self, settings, cache_dir, logo_dir, fetcher=fetch):
-        self.settings = settings
+    def __init__(self, settings, cache_dir, logo_dir, fetcher=fetch, block=None):
+        # block: an added list (see own_lists); None the country's list
+        self.root = settings
+        self.block = block
+        self.settings = BlockSettings(settings, block) if block is not None else settings
         self.cache_dir = str(cache_dir)
         self.logo_dir = str(logo_dir)
         self.fetcher = fetcher
 
     @property
+    def block_id(self):
+        return self.block["id"] if self.block is not None else ""
+
+    @property
     def cache_file(self):
+        if self.block is not None:
+            return os.path.join(self.cache_dir, f"servicelist-{self.block['id']}.xml")
         return os.path.join(self.cache_dir, "servicelist.xml")
 
     def _cached(self):
@@ -1232,7 +1374,7 @@ class Updater:
     def run(self, scanned, force=False, region=None, logos=True):
         s = self.settings
         res = UpdateResult()
-        use_country(s.get("dvbi_country"))
+        use_country(self.root.get("dvbi_country"))     # the languages of the chosen country
         url = s.get("dvbi_list_url")
         if not url:
             res.error = "No DVB-I service list chosen"
@@ -1265,7 +1407,10 @@ class Updater:
             if sl is None:
                 res.error = "The service list is unchanged but no copy is cached"
                 return res
-        country = countries.get(s.get("dvbi_country"))
+        own = self.block is not None
+        code = (s.get("dvbi_country") or "").upper()
+        # an added list may be for any country; its options are the general ones
+        country = countries.OTHER if own else countries.get(code)
         rid, cands = self.choose_region(sl, postcode,
                                         region if region is not None else s.get("dvbi_region", ""),
                                         countries.area(country, s.get("dvbi_area", "")))
@@ -1276,13 +1421,16 @@ class Updater:
         res.label = (s.get("dvbi_list_label") or "").strip() or res.auto_label
         res.build = build_channels(sl, rid, scanned, res.label,
                                    sat_direct=s.get("dvbi_sat_direct", True),
-                                   prefer_broadcast=s.get("dvbi_prefer_broadcast",
-                                                          country.prefer_broadcast),
+                                   prefer_broadcast=self.root.get(
+                                       "dvbi_prefer_broadcast", country.prefer_broadcast),
                                    package=s.get("dvbi_package", "") if s.get("dvbi_package", "")
                                    in sl.packages else "",
                                    overflow=country.overflow,
-                                   country="" if country.code == countries.OTHER.code
-                                   else country.code)
+                                   country=code if own else
+                                   ("" if country.code == countries.OTHER.code else country.code),
+                                   block=self.block_id,
+                                   lcn_base=LCN_BLOCK * int(self.block.get("slot") or 1)
+                                   if own else 0)
         res.packages = list(sl.packages)
         if logos:
             download_logos(res.build.channels, self.logo_dir, self.fetcher)
@@ -1307,7 +1455,8 @@ class Updater:
         s["dvbi_region"] = res.region
         if res.auto_label:
             s["dvbi_list_auto_label"] = res.auto_label
-        added, updated, removed = db.replace_dvbi(res.build.channels)
+        added, updated, removed = db.replace_dvbi(res.build.channels, block=self.block_id,
+                                                  order=block_order(self.root))
         b = res.build
         msg = (f"DVB-I: {len(b.channels)} channels ({b.broadcast} antenna/cable/satellite, "
                f"{b.internet} internet)")

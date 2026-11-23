@@ -88,6 +88,9 @@ class Channel:
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
     dvbi_country: str = ""           # the country of its list (HbbTV country, youth protection)
+    # the list block it comes from: "" the country's list, else the id of a
+    # list the viewer added (settings "dvbi_own_lists", lindvb.dvbi_blocks)
+    dvbi_block: str = ""
     tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
     groups: list = field(default_factory=list)   # Tvheadend: all channel tags that are groups
     tvh_networks: list = field(default_factory=list)  # Tvheadend: the networks of its services
@@ -237,15 +240,46 @@ class ChannelDB:
     def dvbi_channels(self):
         return [c for c in self.channels if c.dvbi_id]
 
-    def replace_dvbi(self, new):
-        """Replace the channels of the DVB-I service list with *new* (a list
-        update). Favourites and guide matches of services that stay are kept.
+    def replace_dvbi(self, new, block="", order=None):
+        """Replace the channels of the DVB-I list block *block* ("" the
+        country's list, else an added list) with *new* (a list update).
+        Favourites and guide matches of services that stay are kept.
+
+        *order* lists the block ids from the first to the last (the country's
+        list first). A service that is in two blocks (same DVB-I identifier)
+        is one channel, from the earlier block; the instances of the other
+        copy are kept with it for failover (marked with their block).
         Returns (added, updated, removed)."""
-        old = {c.key: c for c in self.channels if c.dvbi_id}
-        keep = [c for c in self.channels if not c.dvbi_id]
+        order = list(order) if order else [""]
+        if block not in order:
+            order.append(block)
+        rank = {b: i for i, b in enumerate(order)}
+        mine = rank[block]
+        old = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block == block}
+        others = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block != block}
+        # this block's spare instances in other blocks' channels are made anew
+        for o in others.values():
+            o.dvbi_instances = [d for d in o.dvbi_instances if d.get("block") != block]
+        displaced = set()
+        fresh = []
         added = updated = 0
         for c in new:
+            c.dvbi_block = block
             prev = old.pop(c.key, None)
+            other = others.get(c.key)
+            if other is not None and rank.get(other.dvbi_block, len(order)) < mine:
+                # an earlier block has it: a spare instance there
+                other.dvbi_instances += [dict(d, block=block) for d in c.dvbi_instances
+                                         if "block" not in d]
+                if prev:
+                    updated += 1
+                continue
+            if other is not None:
+                # a later block had it: this one takes over
+                displaced.add(other.key)
+                prev = prev or other
+                c.dvbi_instances += [dict(d, block=other.dvbi_block)
+                                     for d in other.dvbi_instances if "block" not in d]
             if prev:
                 c.favourite = prev.favourite
                 if prev.xmltv_manual or not c.xmltv_id:
@@ -253,24 +287,50 @@ class ChannelDB:
                 if not c.logo:
                     c.logo = prev.logo
                 c.seen_video = c.seen_video or prev.seen_video
+                if prev.dvbi_block == block:
+                    # spare instances other blocks gave this channel
+                    c.dvbi_instances += [d for d in prev.dvbi_instances
+                                         if d.get("block") not in (None, block)]
                 updated += 1
             else:
                 added += 1
+            fresh.append(c)
+        gone = len(old)
         if self.manual_order:
             # an order of the user's own: the channels that stay keep their
             # place, new ones come at the end
-            fresh = {c.key: c for c in new}
+            byk = {c.key: c for c in fresh}
             out = []
             for c in self.channels:
-                if not c.dvbi_id:
+                if c.key in displaced:
+                    if c.key in byk:
+                        out.append(byk.pop(c.key))
+                elif not c.dvbi_id or c.dvbi_block != block:
                     out.append(c)
-                elif c.key in fresh:
-                    out.append(fresh.pop(c.key))
-            self.channels[:] = out + list(fresh.values())
+                elif c.key in byk:
+                    out.append(byk.pop(c.key))
+            self.channels[:] = out + list(byk.values())
         else:
-            self.channels[:] = list(new) + keep
+            # the blocks in their order, then the other channels
+            rest = [c for c in self.channels
+                    if c.key not in displaced and (not c.dvbi_id or c.dvbi_block != block)]
+            dv = fresh + [c for c in rest if c.dvbi_id]
+            dv.sort(key=lambda c: rank.get(c.dvbi_block, len(order)))
+            self.channels[:] = dv + [c for c in rest if not c.dvbi_id]
         self.renumber()
-        return added, updated, len(old)
+        return added, updated, gone
+
+    def remove_dvbi_block(self, block):
+        """Remove the channels of one DVB-I list block (and its spare
+        instances in the channels of other blocks). Returns how many."""
+        n = len([c for c in self.channels if c.dvbi_id and c.dvbi_block == block])
+        self.channels[:] = [c for c in self.channels
+                            if not (c.dvbi_id and c.dvbi_block == block)]
+        for c in self.channels:
+            if c.dvbi_id:
+                c.dvbi_instances = [d for d in c.dvbi_instances if d.get("block") != block]
+        self.renumber()
+        return n
 
     def by_key(self, key):
         for c in self.channels:

@@ -4814,32 +4814,104 @@ msgstr "Grönlanti"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (ei saatavilla)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Valitse maasi DVB-I:n määrittämiseksi."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB:llä ei ole vielä DVB-I-profiilia maalle {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Oma DVB-I-luettelosi on asennettu ({n} kanavaa). Poistetaanko se ja vaihdetaan maahan {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Luettelo maalle {old} on asennettu ({n} kanavaa). Poistetaanko se ja vaihdetaan maahan {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Kunkin maan asetukset säilytetään ja ne palaavat, kun valitset maan uudelleen."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Vaihda"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Sovellukset käyttävät sitä lastensuojeluun ja alueellisiin palveluihin. Se koskee satelliitti-, kaapeli-, antenni- ja IPTV-kanavia; DVB-I-kanava käyttää luettelonsa maata."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Lisää luetteloita"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Lisäämäsi luettelot tulevat maan luettelon jälkeen. Niiden kanavat numeroidaan alkaen 1000, 2000 ja niin edelleen; kanava, joka on jo aiemmassa luettelossa, näkyy kerran. LinDVB ottaa yhteyden antamaasi osoitteeseen; se palvelin näkee IP-osoitteesi."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Palveluluettelon tai rekisterin osoite"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Maa tuntematon"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "maa tuntematon"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Maa, jota luettelo koskee, jos luettelo ei kerro sitä"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Lisää luettelo"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "numerot alkaen {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Poista tämä luettelo ja sen kanavat"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Ladataan {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "Kohdetta {address} ei voitu ladata: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Rekisteri ei tarjoa palveluluetteloa."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Valitse luettelo"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Tämä luettelo on jo käytössä."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Toista luetteloa ladataan. Yritä hetken kuluttua uudelleen."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Poistetaanko luettelo ”{name}” ja sen {n} kanavaa?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Suosikit säilyttävät kanavat ja näyttävät ne taas, kun luettelo lisätään uudelleen."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} kanavaa"

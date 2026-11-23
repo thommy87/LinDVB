@@ -4814,32 +4814,104 @@ msgstr "Grönland"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (nem érhető el)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Válassza ki az országát a DVB-I beállításához."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "A LinDVB-nek még nincs DVB-I profilja ehhez: {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "A saját DVB-I listája telepítve van ({n} csatorna). Eltávolítja, és átvált erre: {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "A(z) {old} listája telepítve van ({n} csatorna). Eltávolítja, és átvált erre: {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Minden ország beállításai megmaradnak, és visszatérnek, ha újra kiválasztja."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Váltás"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Az alkalmazások a gyermekvédelemhez és a regionális ajánlatokhoz használják. A műholdas, kábeles, antennás és IPTV-csatornákra vonatkozik; egy DVB-I csatorna a listája országát használja."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "További listák"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "A hozzáadott listák az ország listája után következnek. Csatornáik számozása 1000-től, 2000-től stb. indul; egy korábbi listában már szereplő csatorna egyszer jelenik meg. A LinDVB felveszi a kapcsolatot a megadott címmel; az a szerver látja az IP-címét."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Szolgáltatáslista vagy regiszter címe"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Ország ismeretlen"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "ország ismeretlen"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Az ország, amelyre a lista vonatkozik, ha a lista nem adja meg"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Lista hozzáadása"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "számok ettől: {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "A lista és csatornái eltávolítása"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "{address} betöltése…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address} nem tölthető be: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "A regiszter nem kínál szolgáltatáslistát."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Lista kiválasztása"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Ez a lista már használatban van."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Egy másik lista töltődik be. Próbálja újra egy pillanat múlva."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Eltávolítja a(z) „{name}” listát és {n} csatornáját?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "A kedvencek megtartják a csatornákat, és újra megjelenítik őket, ha a listát ismét hozzáadja."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} csatorna"

@@ -4814,32 +4814,104 @@ msgstr "Grenlandija"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (neprieinama)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "Pasirinkite savo šalį, kad nustatytumėte DVB-I."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB dar neturi DVB-I profilio šaliai {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Įdiegtas jūsų paties DVB-I sąrašas (kanalų: {n}). Pašalinti jį ir perjungti į {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Įdiegtas šalies {old} sąrašas (kanalų: {n}). Pašalinti jį ir perjungti į {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Kiekvienos šalies nustatymai išsaugomi ir grįžta, kai ją vėl pasirenkate."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Perjungti"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Programos jį naudoja nepilnamečių apsaugai ir regioniniams pasiūlymams. Jis taikomas palydoviniams, kabeliniams, antenos ir IPTV kanalams; DVB-I kanalas naudoja savo sąrašo šalį."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Daugiau sąrašų"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Jūsų pridėti sąrašai eina po šalies sąrašo. Jų kanalai numeruojami nuo 1000, 2000 ir t. t.; kanalas, kuris jau yra ankstesniame sąraše, rodomas vieną kartą. LinDVB susisiekia su įvestu adresu; tas serveris mato jūsų IP adresą."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Paslaugų sąrašo arba registro adresas"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Šalis nežinoma"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "šalis nežinoma"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Šalis, kuriai skirtas sąrašas, jei sąraše to nenurodyta"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Pridėti sąrašą"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "numeriai nuo {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Pašalinti šį sąrašą ir jo kanalus"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Įkeliama {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "Nepavyko įkelti {address}: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Registras nesiūlo jokio paslaugų sąrašo."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Pasirinkite sąrašą"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Šis sąrašas jau naudojamas."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Įkeliamas kitas sąrašas. Bandykite dar kartą po akimirkos."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Pašalinti sąrašą „{name}“ ir jo kanalus ({n})?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Mėgstamiausi išlaiko kanalus ir vėl juos rodo, kai sąrašas vėl pridedamas."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "Kanalų: {n}"

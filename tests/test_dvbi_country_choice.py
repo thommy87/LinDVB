@@ -163,12 +163,23 @@ class FakeDB:
         self.channels = [c for c in self.channels if not c.dvbi_id] + list(new)
         return len(new), 0, removed
 
+    def remove_dvbi_block(self, block):
+        gone = [c for c in self.channels if c.dvbi_id and c.dvbi_block == block]
+        self.channels = [c for c in self.channels if c not in gone]
+        return len(gone)
+
     def save(self):
         self.saved += 1
 
 
 @pytest.fixture
 def panel_for(monkeypatch):
+    yield panel_factory(monkeypatch)
+
+
+def panel_factory(monkeypatch):
+    """make(country, n, **settings) -> a DVBIPanel with fake settings and
+    channel list; the registry is not asked."""
     if not Gtk.init_check():
         pytest.skip("no display")
     from lindvb.ui import dvbi as dvbi_ui
@@ -186,7 +197,7 @@ def panel_for(monkeypatch):
         p.loads = loads
         made.append(p)
         return p
-    yield make
+    return make
 
 
 def _choose(panel, code):

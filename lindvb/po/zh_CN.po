@@ -5174,32 +5174,100 @@ msgstr "格陵兰"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country}（不可用）"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "选择您的国家以设置 DVB-I。"
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB 尚无 {country} 的 DVB-I 配置文件。"
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "已安装您自己的 DVB-I 列表（{n} 个频道）。是否删除并切换到 {country}？"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "已安装 {old} 的列表（{n} 个频道）。是否删除并切换到 {country}？"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "每个国家的设置都会保留，再次选择时会恢复。"
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "切换"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "应用程序将其用于未成年人保护和地区服务。适用于卫星、有线、天线和 IPTV 频道；DVB-I 频道使用其列表所属的国家。"
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "更多列表"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "您添加的列表排在国家列表之后。其频道从 1000、2000 等开始编号；已在前面列表中的频道只显示一次。LinDVB 会连接您输入的地址；该服务器可以看到您的 IP 地址。"
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "服务列表或注册表的地址"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "国家未知"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "国家未知"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "列表未注明时，列表所属的国家"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "添加列表"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "编号从 {first} 开始"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "删除此列表及其频道"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "正在加载 {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "无法加载 {address}：{error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "注册表未提供任何服务列表。"
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "选择列表"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "此列表已在使用中。"
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "正在加载另一个列表。请稍后再试。"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "删除列表“{name}”及其 {n} 个频道？"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "收藏会保留这些频道，再次添加列表时会重新显示。"

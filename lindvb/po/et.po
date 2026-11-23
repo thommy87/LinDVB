@@ -4814,32 +4814,104 @@ msgstr "Gröönimaa"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (pole saadaval)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "DVB-I seadistamiseks vali oma riik."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB-l pole veel DVB-I profiili riigile {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Sinu oma DVB-I loend on paigaldatud ({n} kanalit). Kas eemaldada see ja vahetada riigiks {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "Riigi {old} loend on paigaldatud ({n} kanalit). Kas eemaldada see ja vahetada riigiks {country}?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "Iga riigi seaded säilitatakse ja need tulevad tagasi, kui valid riigi uuesti."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "Vaheta"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "Rakendused kasutavad seda alaealiste kaitseks ja piirkondlike pakkumiste jaoks. See kehtib satelliit-, kaabel-, antenni- ja IPTV-kanalitele; DVB-I kanal kasutab oma loendi riiki."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Veel loendeid"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Lisatud loendid tulevad pärast riigi loendit. Nende kanalid nummerdatakse alates 1000, 2000 jne; kanal, mis on juba varasemas loendis, kuvatakse üks kord. LinDVB võtab ühendust sisestatud aadressiga; see server näeb sinu IP-aadressi."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Teenuseloendi või registri aadress"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Riik teadmata"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "riik teadmata"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Riik, mille jaoks loend on, kui loend seda ei ütle"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Lisa loend"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "numbrid alates {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Eemalda see loend ja selle kanalid"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Laaditakse {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address} laadimine ebaõnnestus: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Register ei paku ühtegi teenuseloendit."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Vali loend"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "See loend on juba kasutusel."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Laaditakse teist loendit. Proovi hetke pärast uuesti."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Kas eemaldada loend „{name}“ ja selle {n} kanalit?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Lemmikud jätavad kanalid alles ja näitavad neid uuesti, kui loend uuesti lisatakse."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} kanalit"

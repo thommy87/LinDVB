@@ -467,20 +467,35 @@ class LinDVBApp(Gtk.Application):
         return False
 
     # -- DVB-I -----------------------------------------------------------------
-    def dvbi_updater(self):
+    def dvbi_updater(self, block=None):
         from . import dvbi
         from .config import CACHE_DIR
-        return dvbi.Updater(self.settings, CACHE_DIR / "dvbi", CACHE_DIR / "dvbi" / "logos")
+        return dvbi.Updater(self.settings, CACHE_DIR / "dvbi", CACHE_DIR / "dvbi" / "logos",
+                            block=block)
 
     def _dvbi_check(self):
         import time
-        from . import dvbi
-        if dvbi.update_due(self.settings):
-            self.update_dvbi()
-        elif time.time() - float(self.settings.get("dvbi_guide_last") or 0) >= GUIDE_INTERVAL:
-            self.update_dvbi_guide()
+        if not self.dvbi_next():
+            if time.time() - float(self.settings.get("dvbi_guide_last") or 0) >= GUIDE_INTERVAL:
+                self.update_dvbi_guide()
         GLib.timeout_add_seconds(3600, self._dvbi_check)
         return False
+
+    def dvbi_next(self):
+        """Update the next DVB-I list whose daily check is due: the country's
+        list first, then the added lists one after the other."""
+        from . import dvbi
+        if self._dvbi_busy:
+            return False
+        if dvbi.update_due(self.settings):
+            return self.update_dvbi(done=lambda *_a: self._dvbi_chain())
+        due = dvbi.due_lists(self.settings)
+        if due:
+            return self.update_dvbi(block=due[0]["id"], done=lambda *_a: self._dvbi_chain())
+        return False
+
+    def _dvbi_chain(self):
+        GLib.timeout_add_seconds(2, lambda: (self.dvbi_next(), False)[1])
 
     def update_dvbi_guide(self, done=None):
         """Load the DVB-I content guide of all DVB-I channels in the
@@ -530,13 +545,17 @@ class LinDVBApp(Gtk.Application):
         threading.Thread(target=work, daemon=True).start()
         return True
 
-    def update_dvbi(self, force=False, region=None, done=None):
+    def update_dvbi(self, force=False, region=None, done=None, block=None):
         """Load the DVB-I service list in the background and update the
-        channel list. *done(result, message)* runs on the main thread."""
-        if self._dvbi_busy or not self.settings.get("dvbi_list_url"):
+        channel list. *block*: the id of an added list (lindvb.dvbi.own_lists),
+        None the country's list. *done(result, message)* runs on the main
+        thread."""
+        from . import dvbi
+        own = dvbi.own_list(self.settings, block) if block else None
+        if self._dvbi_busy or (own is None if block else not self.settings.get("dvbi_list_url")):
             return False
         self._dvbi_busy = True
-        updater = self.dvbi_updater()
+        updater = self.dvbi_updater(own)
         scanned = [c for c in self.db.channels if not c.dvbi_id]
         if self.window:
             self.window.set_status(_("DVB-I: loading the service list…"))

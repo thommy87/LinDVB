@@ -5174,32 +5174,100 @@ msgstr "გრენლანდია"
 
 #: lindvb/ui/dvbi.py
 msgid "{country} (not available)"
-msgstr ""
+msgstr "{country} (მიუწვდომელია)"
 
 #: lindvb/ui/dvbi.py
 msgid "Choose your country to set up DVB-I."
-msgstr ""
+msgstr "DVB-I-ის დასაყენებლად აირჩიეთ თქვენი ქვეყანა."
 
 #: lindvb/ui/dvbi.py
 msgid "LinDVB has no DVB-I profile for {country} yet."
-msgstr ""
+msgstr "LinDVB-ს ჯერ არ აქვს DVB-I პროფილი ქვეყნისთვის {country}."
 
 #: lindvb/ui/dvbi.py
 msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "თქვენი საკუთარი DVB-I სია დაყენებულია ({n} არხი). წავშალო და გადავერთო {country}-ზე?"
 
 #: lindvb/ui/dvbi.py
 msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
-msgstr ""
+msgstr "სია ქვეყნისთვის {old} დაყენებულია ({n} არხი). წავშალო და გადავერთო {country}-ზე?"
 
 #: lindvb/ui/dvbi.py
 msgid "The settings of each country are kept and come back when you choose it again."
-msgstr ""
+msgstr "თითოეული ქვეყნის პარამეტრები ინახება და ბრუნდება, როცა მას თავიდან აირჩევთ."
 
 #: lindvb/ui/dvbi.py
 msgid "Switch"
-msgstr ""
+msgstr "გადართვა"
 
 #: lindvb/ui/dvbi.py
 msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
-msgstr ""
+msgstr "აპლიკაციები მას იყენებენ არასრულწლოვანთა დაცვისა და რეგიონული შეთავაზებებისთვის. ვრცელდება სატელიტურ, საკაბელო, საეთერო და IPTV არხებზე; DVB-I არხი იყენებს თავისი სიის ქვეყანას."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "სხვა სიები"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "თქვენ მიერ დამატებული სიები ქვეყნის სიის შემდეგ მოდის. მათი არხები ინომრება 1000-დან, 2000-დან და ა.შ.; არხი, რომელიც უკვე არის ადრეულ სიაში, ერთხელ ჩანს. LinDVB უკავშირდება თქვენ მიერ შეყვანილ მისამართს; ის სერვერი ხედავს თქვენს IP მისამართს."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "სერვისების სიის ან რეესტრის მისამართი"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "ქვეყანა უცნობია"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "ქვეყანა უცნობია"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "ქვეყანა, რომლისთვისაც არის სია, თუ სია ამას არ აღნიშნავს"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "სიის დამატება"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "ნომრები {first}-დან"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "ამ სიის და მისი არხების წაშლა"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "იტვირთება {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address}-ის ჩატვირთვა ვერ მოხერხდა: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "რეესტრი არცერთ სერვისების სიას არ გვთავაზობს."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "აირჩიეთ სია"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "ეს სია უკვე გამოიყენება."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "იტვირთება სხვა სია. სცადეთ ცოტა ხანში."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "წავშალო სია „{name}“ და მისი {n} არხი?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "რჩეულები ინარჩუნებენ არხებს და ისევ აჩვენებენ, როცა სია თავიდან დაემატება."
