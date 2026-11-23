@@ -22,7 +22,9 @@ def test_window_opens(name, tmp_path):
                XDG_DATA_HOME=str(tmp_path / ".local/share"), XDG_CACHE_HOME=str(tmp_path / ".cache"),
                PYTHONPATH=str(ROOT))
     env = {k: v for k, v in env.items() if not k.startswith("SNAP")}
-    out = subprocess.run([sys.executable, str(ROOT / "tests" / "windowsmoke.py"), name],
+    env["PYTHONPATH"] = os.pathsep.join((str(ROOT), str(ROOT / "tests")))
+    code = f"import sys, windowsmoke; sys.exit(windowsmoke.main([{name!r}]))"
+    out = subprocess.run([sys.executable, "-c", code],
                          env=env, cwd=tmp_path, capture_output=True, text=True, timeout=120)
     if out.stdout.startswith("SKIP"):
         pytest.skip(out.stdout.strip())

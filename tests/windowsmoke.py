@@ -1,15 +1,12 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-"""Builds one of LinDVB's windows with a headless app and prints OK or the error.
+"""Builds LinDVB's windows with a headless app and prints OK or the error.
 
-Run by tests/test_windows_open.py in a subprocess with its own HOME and XDG
-folders: the settings, channel list and timers are read at import time, and
-nothing of the user's may be read or written.
-
-    python3 tests/windowsmoke.py prefs
+tests/test_windows_open.py calls main() in a subprocess with its own HOME and
+XDG folders: the settings, channel list and timers are read at import time,
+and nothing of the user's may be read or written. No command line: the
+windows to build are named in the call.
 """
 
-import importlib
-import sys
 import traceback
 import types
 
@@ -19,23 +16,31 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, Gtk  # noqa: E402
 
-# what the windows reach through app (lindvb.app.App, do_handle_local_options and do_startup)
+def _window(module, cls):
+    def make(app):
+        import importlib
+        return getattr(importlib.import_module(module), cls)(app, None)
+    return make
+
+
 WINDOWS = {
-    "prefs": ("lindvb.ui.dialogs", "PrefsWindow"),
-    "editor": ("lindvb.ui.dialogs", "EditorWindow"),
-    "stats": ("lindvb.ui.dialogs", "StatsWindow"),
-    "plugins": ("lindvb.ui.dialogs", "PluginsWindow"),
-    "scan": ("lindvb.ui.scan", "ScanWindow"),
-    "tune": ("lindvb.ui.tune", "TuneWindow"),
-    "timers": ("lindvb.ui.timers", "TimersWindow"),
-    "epg": ("lindvb.ui.epg", "EPGWindow"),
-    "export": ("lindvb.ui.export", "ExportWindow"),
-    "favourites": ("lindvb.ui.favourites", "FavouritesWindow"),
-    "xmltvmatch": ("lindvb.ui.xmltvmatch", "XMLTVMatchWindow"),
+    "prefs": _window("lindvb.ui.dialogs", "PrefsWindow"),
+    "editor": _window("lindvb.ui.dialogs", "EditorWindow"),
+    "stats": _window("lindvb.ui.dialogs", "StatsWindow"),
+    "plugins": _window("lindvb.ui.dialogs", "PluginsWindow"),
+    "scan": _window("lindvb.ui.scan", "ScanWindow"),
+    "tune": _window("lindvb.ui.tune", "TuneWindow"),
+    "timers": _window("lindvb.ui.timers", "TimersWindow"),
+    "epg": _window("lindvb.ui.epg", "EPGWindow"),
+    "export": _window("lindvb.ui.export", "ExportWindow"),
+    "favourites": _window("lindvb.ui.favourites", "FavouritesWindow"),
+    "xmltvmatch": _window("lindvb.ui.xmltvmatch", "XMLTVMatchWindow"),
 }
 
 
 def headless_app():
+    """What the windows reach through app (lindvb.app.App,
+    do_handle_local_options and do_startup)."""
     from lindvb.channels import ChannelDB
     from lindvb.config import Settings
     from lindvb.epg import EPGStore
@@ -62,9 +67,8 @@ def main(names):
     app = headless_app()
     failed = 0
     for name in names:
-        module, cls = WINDOWS[name]
         try:
-            win = getattr(importlib.import_module(module), cls)(app, None)
+            win = WINDOWS[name](app)
             # every page of a window with pages, as a click through the sidebar does
             stack = getattr(win, "stack", None)
             if isinstance(stack, Gtk.Stack):
@@ -77,7 +81,3 @@ def main(names):
             print("FAIL", name)
             traceback.print_exc()
     return 1 if failed else 0
-
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:] or list(WINDOWS)))
