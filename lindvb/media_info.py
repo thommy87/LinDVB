@@ -117,6 +117,19 @@ AUDIO_PREFERENCES = ("off", "ac3", "eac3", "stereo")
 _DOLBY = ("AC-3", "E-AC-3")
 
 
+def _like_current(tracks, current):
+    """The tracks in the language of the current one (all tracks when it has
+    none), and of its kind: a better sound never swaps the main sound for
+    audio description or the other way round."""
+    if not 0 <= current < len(tracks):
+        return list(range(len(tracks)))
+    lang = tracks[current].language
+    pool = [i for i, t in enumerate(tracks) if not lang or t.language == lang] or \
+        list(range(len(tracks)))
+    ad = is_audio_description(tracks[current])
+    return [i for i in pool if is_audio_description(tracks[i]) == ad]
+
+
 def preferred_track(tracks, prefer, current=-1):
     """Index of the track the "preferred audio format" asks for, or None to
     keep the current one. The language of the current track stays: only its
@@ -125,9 +138,7 @@ def preferred_track(tracks, prefer, current=-1):
     "stereo" (the plain MPEG / AAC sound); "off" keeps what plays."""
     if prefer not in ("ac3", "eac3", "stereo") or len(tracks) < 2:
         return None
-    lang = tracks[current].language if 0 <= current < len(tracks) else ""
-    pool = [i for i, t in enumerate(tracks) if not lang or t.language == lang] or \
-        list(range(len(tracks)))
+    pool = _like_current(tracks, current)
     codecs = {i: short_codec(tracks[i].codec) for i in pool}
     if prefer == "stereo":
         order = [[i for i in pool if codecs[i] and codecs[i] not in _DOLBY]]
@@ -138,6 +149,48 @@ def preferred_track(tracks, prefer, current=-1):
         if group:
             return None if current in group else group[0]
     return None
+
+
+# Preferences › Playback › "Preferred audio language": "auto" is the
+# language of the interface, "" plays the track the broadcaster starts with
+AUDIO_LANGUAGE_AUTO = "auto"
+
+
+def playback_language(setting, ui_language="en"):
+    """The ISO 639-2 code the "preferred audio language" setting stands for
+    ("" for none)."""
+    from .epgsources import norm_lang
+    if setting == AUDIO_LANGUAGE_AUTO:
+        setting = ui_language
+    return norm_lang(setting or "")
+
+
+def language_track(tracks, current=-1, language="", description=False):
+    """Index of the track a channel or file starts with, or None to keep the
+    current one: the main sound (audio description when *description*) in
+    *language* (ISO 639-2), else in any language. Audio description is only
+    chosen when it is wanted or there is nothing else. Among equal tracks
+    the current one stays, then one in the current track's language."""
+    from .epgsources import norm_lang
+    if len(tracks) < 2:
+        return None
+    want = norm_lang(language)
+    langs = [norm_lang(t.language) for t in tracks]
+    ad = [i for i, t in enumerate(tracks) if is_audio_description(t)]
+    main = [i for i in range(len(tracks)) if i not in ad]
+    if want:
+        mine = [[i for i in g if langs[i] == want] for g in (main, ad)]
+        order = [mine[1], mine[0], ad, main] if description else [mine[0], main, mine[1], ad]
+    else:
+        order = [ad, main] if description else [main, ad]
+    group = next((g for g in order if g), [])
+    if not group or current in group:
+        return None
+    if 0 <= current < len(tracks):
+        same = [i for i in group if langs[i] == langs[current]]
+        if same:
+            return same[0]
+    return group[0]
 
 
 def _useless_title(title, track):

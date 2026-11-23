@@ -212,3 +212,14 @@ def test_all_streams_and_cleaned_pat():
     pat = out[5:5 + 16]
     assert pat[3:5] == bytes([0x04, 0x37]) and pat[8:10] == bytes([0x6D, 0xCA])
     assert (pat[1] & 0x0F) << 8 | pat[2] == 13 and mpeg_crc(pat) == 0
+
+
+def test_pmt_described_pids():
+    from lindvb.recformat import pmt_described_pids
+    supplementary = bytes([0x7F, 2, 0x06, (1 << 2) | 0x80])     # audio description
+    clean = bytes([0x7F, 2, 0x06, (2 << 2) | 0x80])             # clean audio: not described
+    pmt = _pmt([(0x1B, 5101, b""), (0x03, 5102, _lang("deu")),
+                (0x03, 5103, _lang("deu", 3)), (0x06, 5108, bytes([0x6A, 1, 0]) + supplementary),
+                (0x06, 5109, bytes([0x6A, 1, 0]) + clean), (0x03, 5110, _lang("deu", 2))])
+    assert pmt_described_pids(pmt) == {5103, 5108}
+    assert pmt_described_pids(PMT) == {5103}

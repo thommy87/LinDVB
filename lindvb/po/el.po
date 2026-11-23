@@ -4915,3 +4915,19 @@ msgstr "Τα αγαπημένα κρατούν τα κανάλια και τα �
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} κανάλια"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Γλώσσα του περιβάλλοντος"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Ένα κανάλι ή αρχείο ξεκινά με τον ήχο σε αυτή τη γλώσσα όταν υπάρχει (όχι με τον πρωτότυπο ήχο μιας ταινίας ή σειράς σε άλλη γλώσσα)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Έναρξη με ακουστική περιγραφή"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Ανενεργό: η ακουστική περιγραφή για τυφλούς και άτομα με μειωμένη όραση παίζει μόνο όταν επιλεγεί στο μενού ήχου."

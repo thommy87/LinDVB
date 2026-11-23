@@ -250,6 +250,13 @@ DEFAULTS = {
     # language: "off", "ac3" (Dolby Digital first), "eac3" (Dolby Digital Plus
     # first) or "stereo" (the MPEG / AAC sound).
     "audio_prefer": "off",
+    # Preferred audio language of a channel or file (Preferences › Playback):
+    # "auto" is the language of the interface, "" the track the broadcaster
+    # starts with, else an ISO 639-2 code ("deu").
+    "audio_language": "auto",
+    # Start with the audio description track (for blind and visually
+    # impaired viewers) when there is one; off, it plays only when chosen.
+    "audio_description_prefer": False,
     # Audio passthrough (lindvb.passthrough): formats sent undecoded to an AV
     # receiver ("ac3", "eac3", "dts"; empty = off) and the output: "" is the
     # sound server (PulseAudio / PipeWire), else an ALSA device such as

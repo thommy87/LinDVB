@@ -174,6 +174,9 @@ AUDIO_STREAM_TYPES = {0x03, 0x04, 0x0F, 0x11, 0x81, 0x87}
 AUDIO_DESCRIPTORS = {0x6A, 0x7B, 0x7C, 0x7A}
 # ISO 639 audio_type: 2 = hearing impaired, 3 = audio description for the blind.
 SPECIAL_AUDIO_TYPES = {0x02, 0x03}
+# extension descriptor, its supplementary_audio_descriptor tag
+EXTENSION_DESCRIPTOR = 0x7F
+SUPPLEMENTARY_AUDIO = 0x06
 
 
 def _descriptors(loop):
@@ -251,6 +254,22 @@ def pmt_audio_tracks(section):
             special = body[3] in SPECIAL_AUDIO_TYPES
         tracks.append((pid, lang, special))
     return tracks
+
+
+def pmt_described_pids(section):
+    """PIDs of the PMT's audio description tracks: ISO 639 audio type
+    "visual impaired commentary", or a supplementary audio descriptor (EN 300
+    468 6.4.11) with the editorial classification audio description or
+    spoken subtitles."""
+    pids = set()
+    for _stream_type, pid, _ca, info in parse_pmt(section).streams:
+        for tag, body in _descriptors(info):
+            if tag == ISO_639_DESCRIPTOR and len(body) >= 4 and body[3] == 0x03:
+                pids.add(pid)
+            elif tag == EXTENSION_DESCRIPTOR and len(body) >= 2 and \
+                    body[0] == SUPPLEMENTARY_AUDIO and ((body[1] >> 2) & 0x1F) in (1, 3):
+                pids.add(pid)
+    return pids
 
 
 def choose_audio(tracks, mode, language="", single=False):

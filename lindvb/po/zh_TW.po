@@ -5271,3 +5271,19 @@ msgstr "要移除清單「{name}」及其 {n} 個頻道嗎？"
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "我的最愛會保留這些頻道，再次新增清單時會重新顯示。"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "介面語言"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "頻道或檔案在有該語言的聲音時以其開始（而不是另一種語言的電影或影集的原音）。"
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "以口述影像開始"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "關閉：為盲人和視障人士提供的口述影像僅在音訊選單中選擇後播放。"

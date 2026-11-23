@@ -5239,3 +5239,19 @@ msgstr "Հեռացնե՞լ «{name}» ցանկը և դրա {n} ալիքները�
 #: lindvb/ui/dvbi.py
 msgid "Favourites keep the channels and show them again when the list is added again."
 msgstr "Ընտրյալները պահում են ալիքները և նորից ցույց են տալիս դրանք, երբ ցանկը կրկին ավելացվի։"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Միջերեսի լեզուն"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Ալիքը կամ ֆայլը սկսվում է այս լեզվով ձայնով, երբ այն կա (այլ ոչ թե այլ լեզվով ֆիլմի կամ սերիալի բնօրինակ ձայնով)։"
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Սկսել աուդիոնկարագրությամբ"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Անջատված․ աուդիոնկարագրությունը կույրերի և թույլ տեսողություն ունեցողների համար հնչում է միայն, երբ ընտրվում է ձայնի ընտրացանկում։"

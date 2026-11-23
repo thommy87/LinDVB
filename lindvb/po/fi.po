@@ -4915,3 +4915,19 @@ msgstr "Suosikit säilyttävät kanavat ja näyttävät ne taas, kun luettelo li
 #: lindvb/ui/dvbi.py
 msgid "{n} channels"
 msgstr "{n} kanavaa"
+
+#: lindvb/ui/dialogs.py
+msgid "Language of the interface"
+msgstr "Käyttöliittymän kieli"
+
+#: lindvb/ui/dialogs.py
+msgid "A channel or file starts with the sound in this language when it has one (not the original sound of a film or series in another language)."
+msgstr "Kanava tai tiedosto alkaa tämänkielisellä äänellä, kun sellainen on (ei toisenkielisen elokuvan tai sarjan alkuperäisäänellä)."
+
+#: lindvb/ui/dialogs.py
+msgid "Start with audio description"
+msgstr "Aloita kuvailutulkkauksella"
+
+#: lindvb/ui/dialogs.py
+msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
+msgstr "Pois: sokeille ja heikkonäköisille tarkoitettu kuvailutulkkaus soi vain, kun se valitaan äänivalikosta."

@@ -184,6 +184,7 @@ def test_sound_waits_for_the_playlists_default_track():
         _audio_pref_done=False, playbin=object(), settings={"audio_prefer": "off"},
         audio_track_info=lambda: (list(tracks), 0), _media=lambda kind: renditions,
         select_audio=chosen.append)
+    fake._starting_track = lambda *a: Player._starting_track(fake, *a)
     Player._apply_audio_preference(fake)
     assert not fake._audio_pref_done and chosen == []
     tracks.insert(1, AudioTrack(title="TV Ton", codec="AAC"))
@@ -612,3 +613,54 @@ def test_appimage_build_has_text_subtitles_to_bundle():
     (the AppImage of 0.21 had no textoverlay)."""
     text = (ROOT / ".github" / "workflows" / "appimage.yml").read_text()
     assert "gstreamer1.0-x" in text.split("Install build dependencies", 1)[1].split("- name:", 1)[0]
+
+
+def test_direct_starts_with_the_main_sound(redundant, player):  # noqa: F811
+    """3sat played directly: the sound is chosen, and it is the German TV
+    sound, not the audio description or the easy-to-understand one."""
+    srv, _folder, _data, _errors = redundant
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(srv.url("master.m3u8"))
+    _run(15, lambda: len(player.audio_tracks()[0]) == 3 and player.audio_tracks()[1] >= 0
+         and player._audio_pref_done)
+    tracks, cur = player.audio_track_info()
+    assert player._audio_pref_done
+    assert 0 <= cur < len(tracks) and not is_audio_description(tracks[cur]), tracks
+    assert tracks[cur].title == "TV Ton", tracks
+
+
+def test_direct_skips_audio_description_marked_default(redundant, player):  # noqa: F811
+    """A playlist that starts with the audio description (DEFAULT=YES):
+    the German TV sound plays instead (3sat over IPTV)."""
+    srv, folder, _data, _errors = redundant
+    master = sk.REDUNDANT_MASTER.replace('NAME="TV Ton",LANGUAGE="deu",DEFAULT=YES',
+                                         'NAME="TV Ton",LANGUAGE="deu",DEFAULT=NO')
+    master = master.replace('describes-video",DEFAULT=NO', 'describes-video",DEFAULT=YES')
+    (folder / "ad_first.m3u8").write_text(master)
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(srv.url("ad_first.m3u8"))
+    _run(15, lambda: player._audio_pref_done and player.audio_track_info()[1] >= 0 and
+         not is_audio_description(player.audio_track_info()[0][player.audio_track_info()[1]]))
+    tracks, cur = player.audio_track_info()
+    assert player._audio_pref_done
+    assert tracks[cur].title == "TV Ton", (tracks, cur)
+
+
+def test_sound_in_the_interface_language(monkeypatch):
+    """ONE over DVB-I: the series started with its original English sound.
+    With German as the interface language the German sound plays; set to
+    "as broadcast" the first track stays."""
+    from lindvb import i18n
+    from lindvb.player import Player
+    monkeypatch.setattr(i18n, "current", "de")
+    tracks = [AudioTrack(language="eng", codec="AAC"), AudioTrack(language="deu", codec="AAC")]
+    for setting, want in (("auto", [1]), ("", []), ("eng", [])):
+        chosen = []
+        fake = types.SimpleNamespace(
+            _audio_pref_done=False, playbin=object(),
+            settings={"audio_prefer": "off", "audio_language": setting},
+            audio_track_info=lambda: (list(tracks), 0), _media=lambda kind: [],
+            select_audio=chosen.append)
+        fake._starting_track = lambda *a, f=fake: Player._starting_track(f, *a)
+        Player._apply_audio_preference(fake)
+        assert chosen == want, setting
