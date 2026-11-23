@@ -206,11 +206,11 @@ def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
 
 # -- a live stream whose server stops answering (3sat, zdf-hls-18) ---------------------------
 
-@known_bug("3sat: the server stops answering, the picture stands still "
-           "and LinDVB neither says so nor reconnects")
 def test_reader_notices_a_server_that_stops_answering():
-    """The buffer reader reports a stream that stops delivering (status or
-    error, so the capture reconnects or fails over) within 30 s."""
+    """3sat: the server stopped answering, the picture stood still and LinDVB
+    neither said so nor reconnected. The buffer reader reports a stream that
+    stops delivering (status or error, so it reconnects or the capture
+    fails over) within 30 s."""
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 60, stall_after=6)
     got, errors, status = [], [], []
