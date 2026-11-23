@@ -17,6 +17,7 @@ Two kinds of tests live here:
 The streams come from tests/streamkit.py (made on the fly, served locally).
 """
 
+import json
 import os
 import subprocess
 import sys
@@ -66,11 +67,11 @@ def _caps_track(caps):
     ("audio/x-ac3, channels=6", "AC-3"),
     ("audio/x-eac3, channels=6", "E-AC-3"),
     ("audio/x-opus, channels=2", "Opus"),
-    pytest.param("audio/mpeg, mpegversion=4, stream-format=raw, channels=2", "AAC",
-                 marks=known_bug("PBS/WEDQ and DASH: the OSD shows 'MPEG' for "
-                                 "AAC when the stream gives no codec tag")),
-    pytest.param("audio/mpeg, mpegversion=1, layer=2, channels=2", "MP2",
-                 marks=known_bug("'MPEG' for MPEG-1 Layer II without codec tag")),
+    # PBS/WEDQ and DASH: the OSD showed "MPEG" for these
+    ("audio/mpeg, mpegversion=4, stream-format=raw, channels=2", "AAC"),
+    ("audio/mpeg, mpegversion=2, stream-format=adts, channels=2", "AAC"),
+    ("audio/mpeg, mpegversion=1, layer=2, channels=2", "MP2"),
+    ("audio/mpeg, mpegversion=1, layer=3, channels=2", "MP3"),
 ])
 def test_codec_from_caps_alone(caps, short):
     """A track whose stream has no codec tag (HLS renditions, DASH, the
@@ -85,8 +86,9 @@ def test_codec_from_caps_alone(caps, short):
     AudioTrack(language="deu", title="Audiodeskription"),
     AudioTrack(language="deu", title="Hörfilm"),
     AudioTrack(language="eng", title="English audio description"),
-    pytest.param(AudioTrack(language="deu", title="Audio-Deskription"), marks=known_bug(
-        "3sat names its rendition 'Audio-Deskription' (with hyphen): no AD icon")),
+    AudioTrack(language="deu", title="Audio-Deskription"),       # 3sat, with hyphen
+    AudioTrack(language="fra", title="Audio-description"),
+    AudioTrack(language="deu", title="TV Ton", description=True),   # HLS CHARACTERISTICS
 ], ids=lambda t: t.title or t.language)
 def test_audio_description_is_recognised(track):
     assert is_audio_description(track)
@@ -105,7 +107,8 @@ def test_other_sound_is_not_audio_description(track):
 
 def _menu_extras(media, titles, buffered=True, pb3=False):
     """window._missing_renditions on a stand-in window."""
-    pytest.importorskip("gi")
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
     from lindvb.ui.window import MainWindow
     url = "https://example.invalid/master.m3u8"
     tuned = types.SimpleNamespace(url=url, buffered=buffered)
@@ -114,6 +117,12 @@ def _menu_extras(media, titles, buffered=True, pb3=False):
         audio_track_info=lambda: ([AudioTrack(title=t) for t in titles], 0))
     fake = types.SimpleNamespace(_tuned=tuned, capture=object() if buffered else None, player=player)
     return MainWindow._missing_renditions(fake)
+
+
+def test_hls_characteristics_are_kept():
+    media = parse_hls(sk.REDUNDANT_MASTER)["media"]
+    ad = [m for m in media if "describes-video" in m["characteristics"]]
+    assert [m["name"] for m in ad] == ["Audio-Deskription"] * 2
 
 
 def test_menu_extras_ard():
@@ -125,12 +134,11 @@ def test_menu_extras_ard():
     assert _menu_extras(media, []) == (["Deutsch"], ["Klare Sprache"])
 
 
-@known_bug("3sat: every subtitle and extra audio choice is offered twice")
 @pytest.mark.parametrize("titles", [["TV Ton", "Klare Sprache", "Audio-Deskription"], []],
                          ids=["buffer-has-renditions", "buffer-not-yet"])
 def test_menu_extras_redundant_groups(titles):
     """3sat lists each rendition once per CDN copy of the variant: the menus
-    offer it once."""
+    offer it once (they offered every choice twice)."""
     media = parse_hls(sk.REDUNDANT_MASTER)["media"]
     subs, audio = _menu_extras(media, titles)
     assert subs == ["Untertitel deutsch"]
@@ -179,6 +187,9 @@ def test_buffer_names_the_renditions(redundant, player):  # noqa: F811
         == [True] * 3, labels
     assert "TV Ton" in labels[cur]
     assert player.subtitle_tracks() == ([], -1)
+    # CHARACTERISTICS="public.accessibility.describes-video" in the playlist
+    ad = [t.title for t in player.audio_track_info()[0] if is_audio_description(t)]
+    assert ad == ["Audio-Deskription"]
 
 
 def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
@@ -190,15 +201,17 @@ def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
     _run(15, lambda: player.subtitle_tracks()[0] and player._played)
     assert player.subtitle_tracks() == (["Untertitel deutsch"], -1)
     assert len(player.audio_tracks()[0]) == 3
+    ad = [t.title for t in player.audio_track_info()[0] if is_audio_description(t)]
+    assert ad == ["Audio-Deskription"]
 
 
 # -- a live stream whose server stops answering (3sat, zdf-hls-18) ---------------------------
 
-@known_bug("3sat: the server stops answering, the picture stands still "
-           "and LinDVB neither says so nor reconnects")
 def test_reader_notices_a_server_that_stops_answering():
-    """The buffer reader reports a stream that stops delivering (status or
-    error, so the capture reconnects or fails over) within 30 s."""
+    """3sat: the server stopped answering, the picture stood still and LinDVB
+    neither said so nor reconnected. The buffer reader reports a stream that
+    stops delivering (status or error, so it reconnects or the capture
+    fails over) within 30 s."""
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 60, stall_after=6)
     got, errors, status = [], [], []
@@ -269,9 +282,9 @@ def test_subtitle_watchdog_switches_them_off_once(player, monkeypatch):  # noqa:
     assert player._sub_choice is None
 
 
-@known_bug("PBS/WEDQ: the stream is reopened with the subtitle rendition "
-           "still wanted, so it stalls again and again")
 def test_subtitle_watchdog_does_not_pick_them_again(player, monkeypatch):  # noqa: F811
+    """PBS/WEDQ: the stream was reopened with the subtitle rendition still
+    wanted, so it stalled again and again."""
     _stall(player, monkeypatch)
     assert not (player._want_rendition and player._want_rendition[0] == "SUBTITLES")
 
@@ -330,9 +343,9 @@ def dash():
         srv.close()
 
 
-@known_bug("ONE HD: the timeshift buffer keeps only the first DASH audio, "
-           "the audio description is lost")
 def test_dash_buffer_keeps_every_audio(dash):
+    """ONE HD: the timeshift buffer kept only the first DASH audio, the
+    audio description was lost."""
     srv, _folder = dash
     _r, data, errors = _read_all(ipstream.GstReader, srv.url("manifest-roles.mpd"),
                                  retry=ipstream.Retry(delays=(5,), give_up=30))
@@ -363,7 +376,7 @@ def test_dash_role_description_is_audio_description(dash, player):  # noqa: F811
 
 # -- HbbTV of DVB-I channels ----------------------------------------------------------------
 
-def _hbbtv_channel_changed(capture):
+def _hbbtv_channel_changed(capture, iptv=True):
     pytest.importorskip("gi")
     try:
         from lindvb.ui import hbbtv
@@ -378,8 +391,8 @@ def _hbbtv_channel_changed(capture):
         dsmcc=None, _new_dsmcc=nothing, _sync_broadcast=False, _sync_selector=False, cs=None,
         life=life, enabled=True, _unlocked=set(), _tuned_at=0, _cancel_autostart=nothing,
         view=None, _notify=nothing, _on_ait=nothing, _js=nothing,
-        _dvbi_signalling=lambda ch, same: called.append("dvb-i"))
-    channel = types.SimpleNamespace(key="one", name="ONE HD", sid=0,
+        _dvbi_signalling=lambda *a: called.append("dvb-i"))
+    channel = types.SimpleNamespace(key="one", name="ONE HD", sid=0, is_iptv=iptv,
                                     dvbi_apps=[("https://hbbtv.example/one", "html", "")])
     hbbtv.HbbTV.channel_changed(fake, channel, capture)
     return called
@@ -389,16 +402,24 @@ def test_hbbtv_dvbi_apps_without_timeshift():
     assert _hbbtv_channel_changed(None) == ["dvb-i"]
 
 
-@known_bug("ONE HD with timeshift: the DVB-I HbbTV app is not offered "
-           "(red button greyed) because the buffer counts as a tuner")
+def _capture():
+    """A stream capture: it watches the stream for an AIT of its own."""
+    return types.SimpleNamespace(connect=lambda *a: 1, ait=None, ait_monitor=object())
+
+
 def test_hbbtv_dvbi_apps_with_timeshift():
-    capture = types.SimpleNamespace(connect=lambda *a: 1, ait=None, ait_monitor=None)
-    assert _hbbtv_channel_changed(capture) == ["dvb-i"]
+    """ONE HD with timeshift: the DVB-I HbbTV app was not offered (red
+    button greyed) because the buffer counted as a tuner."""
+    assert _hbbtv_channel_changed(_capture()) == ["dvb-i"]
+
+
+def test_hbbtv_of_a_tuner_channel_comes_from_the_broadcast():
+    """A DVB-T/S/C channel of a DVB-I list keeps the AIT of its broadcast."""
+    assert _hbbtv_channel_changed(_capture(), iptv=False) == []
 
 
 # -- the channel list ------------------------------------------------------------------------
 
-@known_bug("the search text of one tab stays as a filter on the others")
 def test_switching_tabs_clears_the_search():
     gi = pytest.importorskip("gi")
     gi.require_version("Gtk", "4.0")
@@ -421,8 +442,6 @@ def test_switching_tabs_clears_the_search():
 
 # -- where recordings go ---------------------------------------------------------------------
 
-@known_bug("Snap: recordings default to ~/snap/lindvb/<rev>/Videos, "
-           "a folder the user does not find")
 def test_snap_records_into_the_real_videos_folder(tmp_path):
     real = tmp_path / "home"
     snap_home = real / "snap" / "lindvb" / "42"
@@ -443,6 +462,93 @@ def test_recordings_default_to_videos_outside_snap(tmp_path):
         [sys.executable, "-c", "from lindvb.config import DEFAULTS; print(DEFAULTS['recording_dir'])"],
         env=env, cwd=Path(__file__).parent.parent, capture_output=True, text=True, check=True)
     assert Path(out.stdout.strip()) == tmp_path / "Videos" / "LinDVB"
+
+
+def _defaults(env, *keys):
+    code = "from lindvb.config import DEFAULTS; print(*(DEFAULTS[k] for k in %r), sep='\\n')" % (keys,)
+    out = subprocess.run([sys.executable, "-c", code], env=env, cwd=ROOT,
+                         capture_output=True, text=True, check=True)
+    return [Path(line) for line in out.stdout.splitlines()]
+
+
+def test_recordings_follow_the_desktops_own_videos_folder(tmp_path):
+    (tmp_path / ".config").mkdir()
+    (tmp_path / ".config" / "user-dirs.dirs").write_text(
+        '# written by xdg-user-dirs-update\nXDG_VIDEOS_DIR="$HOME/Vidéos"\n'
+        'XDG_PICTURES_DIR="/data/Bilder"\n', encoding="utf-8")
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    assert _defaults(env, "recording_dir", "screenshot_dir") == [
+        tmp_path / "Vidéos" / "LinDVB", Path("/data/Bilder/LinDVB")]
+
+
+def test_a_switched_off_videos_folder_falls_back_to_videos(tmp_path):
+    (tmp_path / ".config").mkdir()
+    (tmp_path / ".config" / "user-dirs.dirs").write_text('XDG_VIDEOS_DIR="$HOME/"\n')
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    assert _defaults(env, "recording_dir") == [tmp_path / "Videos" / "LinDVB"]
+
+
+def _snap_env(tmp_path, rev="43"):
+    real = tmp_path / "home"
+    snap_home = real / "snap" / "lindvb" / rev
+    (snap_home / ".config" / "lindvb").mkdir(parents=True)
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env.update(HOME=str(snap_home), SNAP="/snap/lindvb/" + rev, SNAP_REAL_HOME=str(real),
+               SNAP_USER_DATA=str(snap_home), SNAP_INSTANCE_NAME="lindvb",
+               XDG_CONFIG_HOME=str(snap_home / ".config"))
+    return env, real, snap_home
+
+
+def _settings(env, *keys):
+    code = ("from lindvb.config import Settings; s = Settings(); "
+            "print(*(s[k] for k in %r), sep='\\n')" % (keys,))
+    out = subprocess.run([sys.executable, "-c", code], env=env, cwd=ROOT,
+                         capture_output=True, text=True, check=True)
+    return [Path(line) for line in out.stdout.splitlines()]
+
+
+def test_snap_moves_the_old_revision_default_to_the_real_home(tmp_path):
+    env, real, snap_home = _snap_env(tmp_path)
+    old = real / "snap" / "lindvb" / "42"
+    (snap_home / ".config" / "lindvb" / "settings.json").write_text(json.dumps({
+        "recording_dir": str(old / "Videos" / "LinDVB"),
+        "screenshot_dir": str(old / "Pictures" / "LinDVB")}))
+    assert _settings(env, "recording_dir", "screenshot_dir") == [
+        real / "Videos" / "LinDVB", real / "Pictures" / "LinDVB"]
+
+
+def test_snap_keeps_a_folder_the_user_chose(tmp_path):
+    env, real, snap_home = _snap_env(tmp_path)
+    (snap_home / ".config" / "lindvb" / "settings.json").write_text(json.dumps({
+        "recording_dir": "/media/disk/TV", "screenshot_dir": str(real / "snap" / "x")}))
+    assert _settings(env, "recording_dir", "screenshot_dir") == [
+        Path("/media/disk/TV"), real / "snap" / "x"]
+
+
+def test_settings_outside_the_snap_are_left_alone(tmp_path):
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    saved = str(tmp_path / "snap" / "lindvb" / "42" / "Videos" / "LinDVB")
+    (tmp_path / ".config" / "lindvb").mkdir(parents=True)
+    (tmp_path / ".config" / "lindvb" / "settings.json").write_text(
+        json.dumps({"recording_dir": saved}))
+    assert _settings(env, "recording_dir") == [Path(saved)]
+
+
+def test_snap_recordings_list_still_shows_the_old_folder(tmp_path, monkeypatch):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    env, real, snap_home = _snap_env(tmp_path)
+    for k, v in env.items():
+        monkeypatch.setenv(k, v)
+    (snap_home / "Videos" / "LinDVB").mkdir(parents=True)
+    from lindvb.ui.window import MainWindow
+    fake = types.SimpleNamespace(settings={"recording_dir": str(real / "Videos" / "LinDVB")},
+                                 app=types.SimpleNamespace(timers=types.SimpleNamespace(timers=[])))
+    assert MainWindow._recording_folders(fake) == [
+        str(real / "Videos" / "LinDVB"), str(snap_home / "Videos" / "LinDVB")]
 
 
 
@@ -467,11 +573,18 @@ def test_appimage_brings_text_subtitles_and_the_gtk_sink():
     assert "pango" in plugins and "gtk4" in plugins
 
 
-@known_bug("Snap: text subtitles (WebVTT/TTML) are never drawn, the snap lacks textoverlay")
 def test_snap_brings_text_subtitles():
+    """Snap: text subtitles (WebVTT/TTML) were never drawn, it lacked textoverlay."""
     assert "gstreamer1.0-x" in _snap_stage_packages()
 
 
-@known_bug(".deb: text subtitles depend on gstreamer1.0-x, which it does not ask for")
 def test_deb_brings_text_subtitles():
+    """.deb: text subtitles need gstreamer1.0-x, which it did not ask for."""
     assert "gstreamer1.0-x" in _deb_depends()
+
+
+def test_appimage_build_has_text_subtitles_to_bundle():
+    """The AppImage bundles the pango plugin only if the build machine has it
+    (the AppImage of 0.21 had no textoverlay)."""
+    text = (ROOT / ".github" / "workflows" / "appimage.yml").read_text()
+    assert "gstreamer1.0-x" in text.split("Install build dependencies", 1)[1].split("- name:", 1)[0]

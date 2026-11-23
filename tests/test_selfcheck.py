@@ -109,3 +109,21 @@ def test_missing_optional_elements_only_warn(monkeypatch):
     assert "WARN  GStreamer element gtk4paintablesink is missing" in out
     assert not any(line.startswith("FAIL") and n in line for line in out.splitlines()
                    for n in selfcheck.OPTIONAL_ELEMENTS)
+
+
+@pytest.mark.parametrize("bundled,fails", [("Snap", True), ("AppImage", True),
+                                           ("Flatpak", False), ("", False)])
+def test_text_subtitles_are_required_where_lindvb_brings_them(monkeypatch, bundled, fails):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    from lindvb import compat
+    Gst.init(None)
+    find = Gst.ElementFactory.find
+    monkeypatch.setattr(Gst.ElementFactory, "find",
+                        lambda name: None if name == "textoverlay" else find(name))
+    monkeypatch.setattr(compat, "bundled", lambda: bundled)
+    r = selfcheck.Report(io.StringIO())
+    selfcheck.check_elements(r)
+    line = next(ln for ln in r.out.getvalue().splitlines() if "textoverlay" in ln)
+    assert line.startswith("FAIL" if fails else "WARN")

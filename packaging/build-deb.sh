@@ -64,7 +64,7 @@ Homepage: https://github.com/thommy87/LinDVB
 Depends: python3 (>= 3.10), python3-gi, python3-gi-cairo, gir1.2-gtk-4.0,
  gir1.2-gstreamer-1.0, gir1.2-gst-plugins-base-1.0, gir1.2-gst-plugins-bad-1.0,
  gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad,
- gstreamer1.0-libav, gstreamer1.0-gl, dvb-tools
+ gstreamer1.0-libav, gstreamer1.0-gl, gstreamer1.0-x, dvb-tools
 Recommends: dtv-scan-tables, gstreamer1.0-plugins-ugly, gstreamer1.0-gtk4,
  gstreamer1.0-pipewire | gstreamer1.0-pulseaudio, gir1.2-webkit-6.0, gir1.2-soup-3.0
 Description: Watch and record DVB and internet TV

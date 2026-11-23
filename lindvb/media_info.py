@@ -86,6 +86,9 @@ class AudioTrack:
     title: str = ""        # track name from the stream (HLS NAME, Matroska title)
     codec: str = ""        # e.g. "MPEG-4 AAC", "AC-3 (ATSC A/52)"
     channels: int = 0      # 0 = not known yet
+    # the stream says it describes the picture (HLS CHARACTERISTICS
+    # public.accessibility.describes-video), whatever its name
+    description: bool = False
 
     @property
     def language_name(self):
@@ -285,13 +288,21 @@ def layout_icon(channels):
             8: "lindvb-audio-surround-71-symbolic"}.get(channels or 0)
 
 
+# names of audio description tracks, without spaces and hyphens
+# ("Audio-Deskription" at 3sat, "Audiodeskription" at ARD)
+_AD_WORDS = ("audiodescription", "audiodeskription", "hörfilm", "audiodescripción",
+             "audiodescrizione", "audiodescrição", "audiodescriptie", "audiodeskripsjon",
+             "syntolkning", "synstolkning", "kuvailutulkkaus")
+
+
 def is_audio_description(track):
     """A track for blind and visually impaired viewers (Hörfilm)."""
+    if getattr(track, "description", False):
+        return True
     if (track.language or "").strip().lower() in ("qad", "nar_ad"):
         return True
-    t = (track.title or "").lower()
-    return any(k in t for k in ("audio description", "audiodeskription", "hörfilm",
-                                "audiodescription", "audiodescripción"))
+    t = "".join((track.title or "").lower().replace("-", " ").replace("_", " ").split())
+    return any(k in t for k in _AD_WORDS)
 
 
 _ISO1 = {"deu": "de", "ger": "de", "eng": "en", "fra": "fr", "fre": "fr", "ita": "it",

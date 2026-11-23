@@ -13,7 +13,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs, satip
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
-from ..config import APP_NAME, CACHE_DIR
+from ..config import APP_NAME, CACHE_DIR, old_snap_folder
 from ..epg import details_line, programme_details
 from ..media_info import (aspect_label, audio_badges, audio_summary, is_audio_description, is_hdr,
                            source_label, system_label, video_class)
@@ -1447,6 +1447,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def _recording_folders(self):
         """The recording folder from the preferences plus any folder a timer uses."""
         folders = [self.settings.get("recording_dir", "")]
+        old = old_snap_folder("Videos")   # where the snap recorded before
+        if old is not None and old.is_dir():
+            folders.append(str(old))
         folders += [t.folder for t in self.app.timers.timers if t.folder]
         return list(dict.fromkeys(str(Path(f).expanduser()) for f in folders if f))
 
@@ -1810,6 +1813,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._mode_sync = False
         self.search.set_placeholder_text(_("Search recordings") if mode == "recordings"
                                          else _("Search name or number"))
+        if self.search.get_text():   # a search belongs to the tab it was typed in
+            self.search.set_text("")
         if mode == "recordings":
             self.side_stack.set_visible_child_name("recordings")
             self.reload_recordings()
@@ -2564,7 +2569,9 @@ class MainWindow(Gtk.ApplicationWindow):
         titles = {t.title for t in self.player.audio_track_info()[0]}
         audio = [m["name"] for m in media if m.get("type") == "AUDIO" and m.get("uri")
                  and m.get("name") and m["name"] not in titles]
-        return subs, audio
+        # a playlist with the variant twice (two CDNs, 3sat) lists every
+        # rendition once per copy: each name once, in playlist order
+        return list(dict.fromkeys(subs)), list(dict.fromkeys(audio))
 
     def _probe_renditions(self, c):
         """Buffered HLS channel: read its master playlist for the renditions

@@ -71,6 +71,12 @@ STABLE_SECONDS = 30
 # error either, e.g. a demuxer waiting for a playlist it cannot read) counts
 # as broken, so the user gets a message instead of a black picture
 FIRST_DATA_TIMEOUT = 20
+# ... and one that stops delivering once it ran: a server that stops
+# answering in the middle of a segment sends neither data nor an error
+# (3sat, zdf-hls-18), so without this the picture just stands still.
+# Longer than the longest HLS segments in use (10 s) with room to spare.
+STALL_TIMEOUT = 20
+STALL_CHECK = 2                  # seconds between two looks
 
 QUALITIES = ("auto", "best")
 
@@ -677,6 +683,8 @@ class GstReader:
         self.source_uri = None           # what GStreamer opens instead of url
         self._manifest_checked = False   # looked for a compressed playlist
         self._watch = 0                  # FIRST_DATA_TIMEOUT timer
+        self._stall_watch = 0            # STALL_TIMEOUT timer
+        self._last_data = 0.0            # time.monotonic() of the last data
 
     @property
     def host(self):
@@ -731,8 +739,21 @@ class GstReader:
         self.pipeline = pl
         if not self.received:
             self._watch = self.GLib.timeout_add_seconds(FIRST_DATA_TIMEOUT, self._no_data, gen)
+        self._last_data = time.monotonic()
+        self._stall_watch = self.GLib.timeout_add_seconds(STALL_CHECK, self._stalled, gen)
         if pl.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
             self._broken(gen, _("could not open the stream"))
+
+    def _stalled(self, gen):
+        """A stream that delivered data and then nothing for STALL_TIMEOUT:
+        broken, so it is opened again (or the capture gives up and says so)."""
+        if gen != self._gen or self.closed:
+            return False                 # its timer was removed with its pipeline
+        if self.received and time.monotonic() - self._last_data > STALL_TIMEOUT:
+            self._stall_watch = 0
+            self._broken(gen, _("no data for {s} s").format(s=STALL_TIMEOUT))
+            return False
+        return True
 
     def _no_data(self, gen):
         self._watch = 0
@@ -930,6 +951,7 @@ class GstReader:
         buf = sample.get_buffer()
         data = buf.extract_dup(0, buf.get_size())
         received = len(data)
+        self._last_data = time.monotonic()
         data = self._meta_out(data)
         if self.retry.up_since is None:
             self.retry.running()
@@ -957,6 +979,10 @@ class GstReader:
     def _leave_out_text(self, msg):
         """The adaptive demuxer offers its streams: take all but the subtitles.
 
+        Every sound goes into the buffer: dashdemux2 starts with one audio
+        adaptation set only, so a DASH stream lost its audio description
+        and other languages in timeshift (ONE HD).
+
         A transport stream cannot carry WebVTT or TTML subtitles, so they are
         dropped anyway. Worse, hlsdemux2 hands its tracks on in step: a
         subtitle track whose segments carry no time stamps (PBS's WebVTT
@@ -970,13 +996,17 @@ class GstReader:
         streams = [coll.get_stream(i) for i in range(coll.get_size())]
         keep = [st.get_stream_id() for st in streams
                 if not st.get_stream_type() & Gst.StreamType.TEXT]
-        if keep and len(keep) < len(streams):
+        sounds = sum(1 for st in streams if st.get_stream_type() & Gst.StreamType.AUDIO)
+        if keep and (len(keep) < len(streams) or sounds > 1):
             msg.src.send_event(Gst.Event.new_select_streams(keep))
 
     def _teardown(self):
         if self._watch:
             self.GLib.source_remove(self._watch)
             self._watch = 0
+        if self._stall_watch:
+            self.GLib.source_remove(self._stall_watch)
+            self._stall_watch = 0
         pl, self.pipeline = self.pipeline, None
         if pl is not None:
             pl.get_bus().remove_signal_watch()

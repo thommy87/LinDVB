@@ -285,8 +285,16 @@ class HbbTV:
         if self._sync_selector and self.cs is not None:
             self.cs.set_content(self._content_id() or None)
         self.life.autostart = self.settings.get("hbbtv_autostart", False)
-        if capture is None and self.enabled and channel is not None and channel.dvbi_apps:
-            self._dvbi_signalling(channel, same)
+        if self.enabled and channel is not None and channel.dvbi_apps and \
+                (capture is None or getattr(channel, "is_iptv", False)):
+            # an internet channel of a DVB-I list, also through the timeshift
+            # buffer (ONE HD): its list names the applications
+            self._dvbi_signalling(channel, same, capture)
+            if capture is not None:
+                # an AIT in the stream itself still comes first
+                self._cap_handler = capture.connect("ait", lambda _c, a: self._on_ait(a))
+                if capture.ait is not None:
+                    self._on_ait(capture.ait)
             return
         if capture is None or not self.enabled:
             self.life.no_signalling()
@@ -534,9 +542,10 @@ class HbbTV:
         if h is not None and self.dsmcc is not None:
             self.dsmcc.remove_listener(h)
 
-    def _dvbi_signalling(self, channel, same):
+    def _dvbi_signalling(self, channel, same, capture=None):
         """A DVB-I internet channel: its service list names the applications
-        (an XML AIT or a page) instead of an AIT in the broadcast."""
+        (an XML AIT or a page) instead of an AIT in the broadcast. *capture*:
+        the timeshift buffer it plays through, if any."""
         if not same:
             self._unlocked = set()
             self.life.channel_changed()
@@ -551,8 +560,10 @@ class HbbTV:
                 return r.read(1 << 20)
 
         def done(ait):
-            if self._channel_key != key or self.capture is not None:
+            if self._channel_key != key or self.capture is not capture:
                 return False                     # zapped away meanwhile
+            if capture is not None and capture.ait is not None:
+                return False                     # the stream's own AIT came first
             if ait is None:
                 self.life.no_signalling()
                 self._notify()

@@ -13,6 +13,70 @@ def _xdg(var, fallback):
     return Path(os.environ.get(var) or (Path.home() / fallback))
 
 
+def _snap_real_home():
+    """The user's own home in the snap, where HOME is ~/snap/lindvb/<revision>."""
+    real = os.environ.get("SNAP_REAL_HOME")
+    return Path(real) if os.environ.get("SNAP") and real else None
+
+
+def _in_snap_data(path):
+    data = os.environ.get("SNAP_USER_DATA")
+    return bool(data) and (path == Path(data) or Path(data) in path.parents)
+
+
+def user_dir(key, fallback):
+    """An XDG user directory (key XDG_VIDEOS_DIR, XDG_PICTURES_DIR, ...) from
+    user-dirs.dirs, so a German desktop gets its ~/Videos and a French one its
+    ~/Vidéos; *fallback* below the home when there is none. In the snap the
+    real home is used: its HOME is a folder of the snap revision, which nobody
+    looks into and which snapd removes with old revisions."""
+    home = _snap_real_home() or Path.home()
+    files = [_xdg("XDG_CONFIG_HOME", ".config") / "user-dirs.dirs"]
+    if home != Path.home():
+        files.insert(0, home / ".config" / "user-dirs.dirs")
+    for f in files:
+        try:
+            lines = f.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError):
+            continue
+        for line in lines:
+            name, sep, value = line.strip().partition("=")
+            if name != key or not sep:
+                continue
+            value = value.strip().strip('"')
+            if value.startswith("$HOME"):
+                path = home / value[len("$HOME"):].lstrip("/")
+            elif value.startswith("/"):
+                path = Path(value)
+            else:
+                continue
+            # "$HOME/" switches the folder off; a folder inside the snap is the
+            # revision folder again
+            if path != home and not _in_snap_data(path):
+                return path
+    return home / fallback
+
+
+def old_snap_folder(sub):
+    """Where the snap put recordings (sub "Videos") or screenshots ("Pictures")
+    before user_dir: the LinDVB folder in the snap revision's home. None
+    outside the snap."""
+    if _snap_real_home() is None:
+        return None
+    return Path.home() / sub / APP_NAME
+
+
+def _old_snap_default(value, sub):
+    """True for an old snap default such as ~/snap/lindvb/42/Videos/LinDVB,
+    of any revision: settings.json keeps the revision it was written in."""
+    real = _snap_real_home()
+    if real is None or not value:
+        return False
+    path = Path(value)
+    base = real / "snap" / (os.environ.get("SNAP_INSTANCE_NAME") or "lindvb")
+    return path.parent.parent.parent == base and path.parts[-2:] == (sub, APP_NAME)
+
+
 CONFIG_DIR = _xdg("XDG_CONFIG_HOME", ".config") / "lindvb"
 DATA_DIR = _xdg("XDG_DATA_HOME", ".local/share") / "lindvb"
 CACHE_DIR = _xdg("XDG_CACHE_HOME", ".cache") / "lindvb"
@@ -70,7 +134,7 @@ DEFAULTS = {
     "iptv_timeshift_quality": "auto",
     # open internet streams (and Tvheadend) again when the connection breaks
     "stream_reconnect": True,
-    "recording_dir": str(Path.home() / "Videos" / "LinDVB"),
+    "recording_dir": str(user_dir("XDG_VIDEOS_DIR", "Videos") / APP_NAME),
     "name_scheme": "%station_%date_%time_%name",
     # Default recording options for new timers and manual recordings.
     # TV: "TS" "MPG" "MP4" "MKV"; radio: "Audio" (native MP2/MP3/AAC/AC3) or "TS".
@@ -90,7 +154,7 @@ DEFAULTS = {
     "timer_edit_after_create": False,
     "lead_minutes": 2,
     "follow_minutes": 5,
-    "screenshot_dir": str(Path.home() / "Pictures" / "LinDVB"),
+    "screenshot_dir": str(user_dir("XDG_PICTURES_DIR", "Pictures") / APP_NAME),
     "volume": 0.8,
     # Last tuned channel (TV or radio, tuned again at start) and the last
     # channel of each kind, tuned when switching between TV and radio.
@@ -286,6 +350,12 @@ class Settings(dict):
         # the one XMLTV address became a list of guides
         from .xmltvsources import migrate
         migrate(saved)
+        # the snap's old defaults were inside a revision folder: the new ones
+        # (real home) take over; recordings already made stay in the list
+        # (window._recording_folders)
+        for key, sub in (("recording_dir", "Videos"), ("screenshot_dir", "Pictures")):
+            if _old_snap_default(saved.get(key), sub):
+                saved.pop(key)
         self.update(saved)
 
     def save(self):
