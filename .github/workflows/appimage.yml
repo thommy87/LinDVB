@@ -35,7 +35,7 @@ jobs:
         with:
           name: appimage
           packages: >-
-            python3-gi python3-gi-cairo python3-pytest gir1.2-gtk-4.0 gir1.2-gstreamer-1.0
+            python3-gi python3-gi-cairo python3-pytest python3-yaml gir1.2-gtk-4.0 gir1.2-gstreamer-1.0
             gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0
             gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad
             gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-pulseaudio

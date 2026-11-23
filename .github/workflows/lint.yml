@@ -22,6 +22,7 @@ jobs:
           persist-credentials: false
       - name: Install ruff
         # wheels only: no setup script of a source package runs
-        run: python3 -m pip install --user --only-binary :all: ruff==0.17.6
+        run: |
+          python3 -m pip install --user --only-binary :all: ruff==0.17.6
       - name: Check
         run: python3 -m ruff check --output-format github lindvb plugins tools tests
