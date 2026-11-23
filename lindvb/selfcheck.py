@@ -44,15 +44,19 @@ CC_OVERLAY = "cc708overlay"
 # cc708overlay draws only what ccextractor takes off the frames (lindvb.captions)
 CC_ELEMENTS = (CC_OVERLAY, "ccextractor", "ccconverter")
 # Elements without which LinDVB still plays, but worse: missing, they are a
-# warning, with what the user loses
+# warning, with what the user loses ...
 OPTIONAL_ELEMENTS = {
     # playbin draws text subtitles (WebVTT, TTML, SRT) with it
     # (gst-plugins-base "pango", Debian/Ubuntu package gstreamer1.0-x)
     "textoverlay": "text subtitles (WebVTT, TTML, SRT) are not shown",
     # the picture goes to GTK without a copy of each frame in Python
-    # (gst-plugins-rs "gtk4", package gstreamer1.0-gtk4 / gst-plugin-gtk4)
+    # (gst-plugins-rs "gtk4", package gstreamer1.0-gtk4 / gst-plugin-gtk4;
+    # Ubuntu 24.04, which the Snap and the AppImage are built from, has none)
     "gtk4paintablesink": "each video frame is copied on its way to the screen (more CPU)",
 }
+# ... except in the packages that bring these themselves: there a missing one
+# is a packaging mistake and fails the check
+REQUIRED_WHEN_BUNDLED = {"textoverlay": ("Snap", "AppImage")}
 # Audio output: one of these must exist; it only plays when a sound server runs
 AUDIO_SINKS = ["pulsesink", "pipewiresink", "alsasink"]
 
@@ -129,6 +133,8 @@ def check_elements(report):
     for name, without in OPTIONAL_ELEMENTS.items():
         if Gst.ElementFactory.find(name):
             report.ok(f"GStreamer element {name}")
+        elif compat.bundled() in REQUIRED_WHEN_BUNDLED.get(name, ()):
+            report.fail(f"GStreamer element {name} is missing: {without}")
         else:
             report.warn(f"GStreamer element {name} is missing: {without}")
     sinks = [s for s in AUDIO_SINKS if Gst.ElementFactory.find(s)]

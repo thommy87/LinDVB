@@ -488,11 +488,18 @@ def test_appimage_brings_text_subtitles_and_the_gtk_sink():
     assert "pango" in plugins and "gtk4" in plugins
 
 
-@known_bug("Snap: text subtitles (WebVTT/TTML) are never drawn, the snap lacks textoverlay")
 def test_snap_brings_text_subtitles():
+    """Snap: text subtitles (WebVTT/TTML) were never drawn, it lacked textoverlay."""
     assert "gstreamer1.0-x" in _snap_stage_packages()
 
 
-@known_bug(".deb: text subtitles depend on gstreamer1.0-x, which it does not ask for")
 def test_deb_brings_text_subtitles():
+    """.deb: text subtitles need gstreamer1.0-x, which it did not ask for."""
     assert "gstreamer1.0-x" in _deb_depends()
+
+
+def test_appimage_build_has_text_subtitles_to_bundle():
+    """The AppImage bundles the pango plugin only if the build machine has it
+    (the AppImage of 0.21 had no textoverlay)."""
+    text = (ROOT / ".github" / "workflows" / "appimage.yml").read_text()
+    assert "gstreamer1.0-x" in text.split("Install build dependencies", 1)[1].split("- name:", 1)[0]
