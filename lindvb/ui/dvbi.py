@@ -50,7 +50,10 @@ class DVBIPanel(Gtk.Box):
                          css_classes=["lv-group"])
         self.app = app
         self.s = app.settings
-        self.country = countries.get(self.s.get("dvbi_country"))
+        # "" until a country is chosen; self.country is then Germany's profile
+        # (what the rest of LinDVB uses), but nothing below the list shows
+        self.country_code = (self.s.get("dvbi_country") or "").upper()
+        self.country = countries.get(self.country_code)
         self.offers = []
         self.region_ids = []
         self.consent_checks = {}
@@ -68,16 +71,39 @@ class DVBIPanel(Gtk.Box):
                          "it. LinDVB uses the antenna, cable or satellite channels from your "
                          "channel search where it can and the internet stream otherwise."))
 
-        # the country decides registry, consents and how the region is found
+        # the country decides registry, consents and how the region is found:
+        # all countries with DVB, those without a DVB-I profile greyed out
         self.title(box, _("Country"))
         row = Gtk.Box(spacing=12)
         row.append(Gtk.Label(label=_("Country"), xalign=0))
-        self.country_dd = Gtk.DropDown.new_from_strings([_(c.name) for c in countries.COUNTRIES])
-        self.country_dd.set_selected([c.code for c in countries.COUNTRIES].index(self.country.code))
+        # "Choose…" heads the list until a country is chosen
+        self.country_rows = ([] if self.country_code else [("", _("Choose…"), True)]) + \
+            countries.country_choices()
+        self._country_ok = {n: ok for _c, n, ok in self.country_rows}
+        self._country_guard = False
+        self.country_dd = Gtk.DropDown.new_from_strings([n for _c, n, _ok in self.country_rows])
+        # the expression first: setting it puts the default factory back
+        self.country_dd.set_enable_search(True)
+        self.country_dd.set_expression(
+            Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", lambda _f, item: item.set_child(Gtk.Label(xalign=0)))
+        factory.connect("bind", self._bind_country)
+        self.country_dd.set_factory(factory)
+        self._select_country(self.country_code)
         self.country_dd.connect("notify::selected", lambda *_: self._country_changed())
         row.append(self.country_dd)
         box.append(row)
+        self.choose_lbl = self.hint(box, _("Choose your country to set up DVB-I."))
         self.profile_lbl = self.hint(box, "")
+        self.country_status = self.hint(box, "")
+        self.country_status.set_visible(False)
+
+        # everything else comes from the country's profile and shows once
+        # a country is chosen
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        box.append(body)
+        self.body = box = body
 
         # country part 1: privacy notice and consents (IT-17: before any request)
         self.privacy_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -202,7 +228,203 @@ class DVBIPanel(Gtk.Box):
         for b in (self.remove_btn, self.update_btn, self.install_btn):
             buttons.append(b)
         box.append(buttons)
+        self._build_own_lists(self.box)
         self._build_country()
+
+    # ------------------------------------------------------------------ added lists
+    def _build_own_lists(self, box):
+        """Lists the viewer adds beside the country's list (list blocks): always
+        shown, also before a country is chosen."""
+        self.title(box, _("More lists"))
+        self.hint(box, _("Lists you add come after the country's list. Their channels are "
+                         "numbered from 1000, 2000 and so on; a channel that is already in an "
+                         "earlier list appears once. LinDVB contacts the address you enter; "
+                         "that server sees your IP address."))
+        self.own_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box.append(self.own_box)
+        row = Gtk.Box(spacing=8)
+        self.own_entry = Gtk.Entry(hexpand=True,
+                                   placeholder_text=_("Address of a service list or registry"))
+        self.own_entry.connect("activate", lambda *_: self._add_own())
+        row.append(self.own_entry)
+        # the country the list is for, when the list does not say
+        self.own_countries = [("", _("Country unknown"))] + \
+            [(c, n) for c, n, _ok in countries.country_choices() if c != countries.OTHER.code]
+        self.own_country_dd = Gtk.DropDown.new_from_strings([n for _c, n in self.own_countries])
+        self.own_country_dd.set_enable_search(True)
+        self.own_country_dd.set_expression(
+            Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
+        self.own_country_dd.set_tooltip_text(_("The country the list is for, when the list "
+                                               "does not say"))
+        row.append(self.own_country_dd)
+        self.own_add_btn = Gtk.Button(label=_("Add List"))
+        self.own_add_btn.connect("clicked", lambda *_: self._add_own())
+        row.append(self.own_add_btn)
+        box.append(row)
+        self.own_status = self.hint(box, "")
+        self._show_own_lists()
+
+    def _own_country_default(self):
+        codes = [c for c, _n in self.own_countries]
+        code = self.country_code if self.country_code in codes else ""
+        self.own_country_dd.set_selected(codes.index(code))
+
+    def _show_own_lists(self):
+        self.own_box = _renew(self.own_box)
+        chans = self.app.db.dvbi_channels()
+        for b in dvbi.own_lists(self.s):
+            n = sum(1 for c in chans if c.dvbi_block == b["id"])
+            row = Gtk.Box(spacing=8)
+            text = b.get("label") or b.get("auto_label") or b.get("name") or b["url"]
+            info = [countries.country_name(b["country"]) if b.get("country")
+                    else _("country unknown"),
+                    _("{n} channels").format(n=n),
+                    _("numbers from {first}").format(first=dvbi.LCN_BLOCK * int(b.get("slot") or 1))]
+            col = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, hexpand=True)
+            col.append(Gtk.Label(label=text, xalign=0, wrap=True))
+            col.append(Gtk.Label(label=" · ".join(info), xalign=0, css_classes=["lv-hint"]))
+            row.append(col)
+            upd = Gtk.Button(icon_name="view-refresh-symbolic", valign=Gtk.Align.CENTER,
+                             tooltip_text=_("Update Now"))
+            upd.connect("clicked", lambda *_a, i=b["id"]: self._update_own(i))
+            rem = Gtk.Button(icon_name="user-trash-symbolic", valign=Gtk.Align.CENTER,
+                             tooltip_text=_("Remove this list and its channels"))
+            rem.connect("clicked", lambda *_a, i=b["id"]: self._ask_remove_own(i))
+            row.append(upd)
+            row.append(rem)
+            self.own_box.append(row)
+        self.own_add_btn.set_sensitive(len(dvbi.own_lists(self.s)) < dvbi.MAX_OWN_LISTS)
+        self._own_country_default()
+
+    def _add_own(self):
+        url = self.own_entry.get_text().strip()
+        if not url:
+            return
+        if "://" not in url:
+            url = "https://" + url
+        if not url.startswith(("http://", "https://")):
+            self.own_status.set_text(_("Please enter a web address (https://…)."))
+            return
+        country = self.own_countries[self.own_country_dd.get_selected()][0]
+        self.own_add_btn.set_sensitive(False)
+        self.own_status.set_text(_("Loading {address}…").format(address=url))
+
+        def work():
+            try:
+                offers, sl = dvbi.probe_address(url)
+                GLib.idle_add(self._own_probed, url, country, offers, sl, "")
+            except dvbi.DVBIError as e:
+                GLib.idle_add(self._own_probed, url, country, None, None, str(e))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _own_probed(self, url, country, offers, sl, error):
+        self.own_add_btn.set_sensitive(len(dvbi.own_lists(self.s)) < dvbi.MAX_OWN_LISTS)
+        if error:
+            self.own_status.set_text(_("{address} could not be loaded: {error}").format(
+                address=url, error=error))
+            return False
+        if offers is not None:
+            if not offers:
+                self.own_status.set_text(_("The registry offers no service list."))
+            else:
+                self._choose_offer(offers, country)
+            return False
+        self._add_block(url, sl.name if sl is not None else "", country)
+        return False
+
+    def _choose_offer(self, offers, country):
+        """A registry (central list): pick one of its lists."""
+        win = Gtk.Window(title=_("Choose a List"), transient_for=self.get_root(), modal=True,
+                         default_width=480, default_height=360, destroy_with_parent=True)
+        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        lb = Gtk.ListBox(selection_mode=Gtk.SelectionMode.SINGLE)
+        for o in offers:
+            lab = o.name + (f" — {o.provider}" if o.provider and o.provider != o.name else "")
+            lb.append(Gtk.Label(label=lab, xalign=0, wrap=True, margin_start=8, margin_end=8,
+                                margin_top=6, margin_bottom=6))
+        lb.select_row(lb.get_row_at_index(0))
+        sw = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        sw.set_child(lb)
+        outer.append(sw)
+        bar = Gtk.ActionBar()
+        add = Gtk.Button(label=_("Add List"), css_classes=["suggested-action"])
+        cancel = Gtk.Button(label=_("Cancel"))
+        bar.pack_end(add)
+        bar.pack_end(cancel)
+        outer.append(bar)
+        win.set_child(outer)
+
+        def chosen(*_a):
+            row = lb.get_selected_row()
+            win.close()
+            if row is not None:
+                o = offers[row.get_index()]
+                # the registry names the list's country (TargetCountry)
+                self._add_block(o.url, o.name, o.countries[0] if len(o.countries) == 1
+                                else country)
+        add.connect("clicked", chosen)
+        lb.connect("row-activated", chosen)
+        cancel.connect("clicked", lambda *_a: win.close())
+        win.present()
+        return win
+
+    def _add_block(self, url, name, country):
+        block = dvbi.add_own_list(self.s, url, name, country)
+        if block is None:
+            self.own_status.set_text(_("This list is already in use."))
+            return None
+        self.s.save()
+        self.own_entry.set_text("")
+        self._show_own_lists()
+        self._update_own(block["id"])
+        return block
+
+    def _update_own(self, block_id):
+        if self.app.update_dvbi(force=True, block=block_id, done=self._own_done):
+            self.own_status.set_text(_("Loading the service list…"))
+        else:
+            self.own_status.set_text(_("Another list is loading. Please try again in a "
+                                       "moment."))
+
+    def _own_done(self, res, msg):
+        self.own_status.set_text(msg)
+        self._show_own_lists()
+        self._sensitive()
+
+    def _ask_remove_own(self, block_id):
+        b = dvbi.own_list(self.s, block_id)
+        if b is None:
+            return
+        n = sum(1 for c in self.app.db.dvbi_channels() if c.dvbi_block == block_id)
+        name = b.get("label") or b.get("auto_label") or b.get("name") or b["url"]
+        dlg = Gtk.AlertDialog(
+            message=_("Remove the list “{name}” and its {n} channels?").format(name=name, n=n),
+            detail=_("Favourites keep the channels and show them again when the list is "
+                     "added again."),
+            buttons=[_("Remove"), _("Cancel")], cancel_button=1, default_button=1)
+
+        def chosen(d, result):
+            try:
+                if d.choose_finish(result) == 0:
+                    self._remove_own(block_id)
+            except GLib.Error:
+                pass
+        dlg.choose(self.get_root(), None, chosen)
+
+    def _remove_own(self, block_id):
+        """A list is always removed as a whole, with its channels."""
+        removed = self.app.db.remove_dvbi_block(block_id)
+        dvbi.reload_lists_after(self.s, block_id)
+        dvbi.remove_own_list(self.s, block_id)
+        self.s.save()
+        self.app.db.save()
+        if self.app.window:
+            self.app.window.reload_channels()
+        self._show_own_lists()
+        self.own_status.set_text(_("{removed} DVB-I channels removed").format(removed=removed))
+        self._sensitive()
+        if dvbi.own_lists(self.s) and hasattr(self.app, "dvbi_next"):
+            self.app.dvbi_next()           # the later lists load again
 
     # ------------------------------------------------------------------ widgets
     @staticmethod
@@ -215,10 +437,41 @@ class DVBIPanel(Gtk.Box):
         box.append(lbl)
         return lbl
 
+    def _bind_country(self, _factory, item):
+        # by name: while searching, the positions are those of the matches
+        name = item.get_item().get_string()
+        ok = self._country_ok.get(name, True)
+        lbl = item.get_child()
+        lbl.set_text(name if ok else _("{country} (not available)").format(country=name))
+        if ok:
+            lbl.remove_css_class("dim-label")
+        else:
+            lbl.add_css_class("dim-label")
+
+    def _select_country(self, code):
+        """Show *code* in the country list without acting on it."""
+        codes = [c for c, _n, _ok in self.country_rows]
+        self._country_guard = True
+        self.country_dd.set_selected(codes.index(code) if code in codes else 0)
+        self._country_guard = False
+
+    def _drop_choose_row(self):
+        if self.country_rows and not self.country_rows[0][0]:
+            self.country_rows = self.country_rows[1:]
+            self._country_guard = True
+            self.country_dd.get_model().remove(0)
+            self._country_guard = False
+            self._select_country(self.country_code)
+        return False
+
     def _build_country(self):
         """(Re)build what depends on the country: notice, consents, postcode,
         region list, notes, registry and the list in use."""
         c, s = self.country, self.s
+        chosen = bool(self.country_code)
+        self.body.set_visible(chosen)
+        self.choose_lbl.set_visible(not chosen)
+        self.profile_lbl.set_visible(chosen)
         self.profile_lbl.set_text(_("Settings follow: {profile}").format(profile=c.profile))
 
         # only what the country's profile asks for (Germany: IT-17)
@@ -324,17 +577,83 @@ class DVBIPanel(Gtk.Box):
 
     # ------------------------------------------------------------------ country
     def _country_changed(self):
-        code = countries.COUNTRIES[self.country_dd.get_selected()].code
-        if code == self.country.code:
+        if self._country_guard:
             return
-        had = bool(self.app.db.dvbi_channels())
+        i = self.country_dd.get_selected()
+        if not 0 <= i < len(self.country_rows):
+            return
+        code, name, ok = self.country_rows[i]
+        if code == self.country_code:
+            return
+        if not code:                                    # "Choose…"
+            self._select_country(self.country_code)
+            return
+        if not ok:
+            self._select_country(self.country_code)     # back to the country in use
+            self._country_note(_("LinDVB has no DVB-I profile for {country} yet.").format(
+                country=name))
+            return
+        self._country_note("")
+        chans = [c for c in self.app.db.dvbi_channels() if not c.dvbi_block]
+        # the installed list may already be the new country's (0.22 kept it
+        # when the country was changed)
+        if chans and countries.installed_country(self.s, chans) != code:
+            self._confirm_switch(code, len(chans))
+        else:
+            self._switch_to(code)
+
+    def _country_note(self, text):
+        self.country_status.set_text(text)
+        self.country_status.set_visible(bool(text))
+
+    def _confirm_switch(self, code, n):
+        """The list of the country in use is installed: remove it and switch,
+        or stay (the country list goes back)."""
+        new = countries.country_name(code)
+        old = countries.installed_country(
+            self.s, [c for c in self.app.db.dvbi_channels() if not c.dvbi_block])
+        if not old:
+            text = _("Your own DVB-I list is installed ({n} channels). Remove it and switch to "
+                     "{country}?").format(n=n, country=new)
+        else:
+            text = _("The list for {old} is installed ({n} channels). Remove it and switch to "
+                     "{country}?").format(old=countries.country_name(old), n=n, country=new)
+        dlg = Gtk.AlertDialog(message=text, detail=_(
+            "The settings of each country are kept and come back when you choose it again."),
+            buttons=[_("Switch"), _("Cancel")], cancel_button=1, default_button=1)
+
+        def chosen(d, result):
+            try:
+                i = d.choose_finish(result)
+            except GLib.Error:
+                i = 1
+            self._switch_answer(code, i == 0)
+        dlg.choose(self.get_root(), None, chosen)
+
+    def _switch_answer(self, code, switch):
+        if not switch:
+            self._select_country(self.country_code)
+            return
+        removed = self.app.db.remove_dvbi_block("")
+        dvbi.reload_lists_after(self.s, "")
+        self.app.db.save()
+        if self.app.window:
+            self.app.window.reload_channels()
+        self._switch_to(code)
+        self.status.set_text(_("{removed} DVB-I channels removed").format(removed=removed))
+
+    def _switch_to(self, code):
         self.country = countries.switch_country(self.s, code)
+        self.country_code = self.country.code
         dvbi.use_country(code)
         self.s.save()
+        if self.country_rows and not self.country_rows[0][0]:
+            # a country is chosen: "Choose…" goes (after this signal)
+            GLib.idle_add(self._drop_choose_row)
+        self._select_country(self.country_code)
         self._build_country()
-        self.status.set_text(
-            _("The DVB-I channels of the previous country stay until you install a list for "
-              "{country} or remove them.").format(country=_(self.country.name)) if had else "")
+        self._own_country_default()
+        self.status.set_text("")
         if self._ack_ok():
             self._load_registry()
 
@@ -461,7 +780,7 @@ class DVBIPanel(Gtk.Box):
         not each time the preferences open."""
         if not self._started:
             self._started = True
-            if self._ack_ok():
+            if self.country_code and self._ack_ok():
                 self._load_registry()
 
     # ------------------------------------------------------------------ state
@@ -495,7 +814,8 @@ class DVBIPanel(Gtk.Box):
         self.install_btn.set_sensitive(ok and has_list and self._region_ok() and not busy)
         configured = bool(self.s.get("dvbi_list_url"))
         self.update_btn.set_sensitive(ok and configured and not busy)
-        self.remove_btn.set_sensitive(bool(self.app.db.dvbi_channels()) or configured)
+        self.remove_btn.set_sensitive(
+            any(not c.dvbi_block for c in self.app.db.dvbi_channels()) or configured)
 
     def _show_regions(self, regions, selected=""):
         self.region_ids = [r.id for r in regions]
@@ -709,7 +1029,9 @@ class DVBIPanel(Gtk.Box):
             self.app.update_dvbi_guide()
 
     def _remove(self):
-        removed = self.app.db.replace_dvbi([])[2]
+        """The country's list goes; the lists added beside it stay."""
+        removed = self.app.db.remove_dvbi_block("")
+        dvbi.reload_lists_after(self.s, "")
         for k in ("dvbi_list_url", "dvbi_list_name", "dvbi_region", "dvbi_last_modified",
                   "dvbi_etag", "dvbi_list_auto_label"):
             self.s[k] = ""
@@ -720,4 +1042,7 @@ class DVBIPanel(Gtk.Box):
             self.app.window.reload_channels()
         self.current_lbl.set_text(_("No DVB-I list is in use."))
         self.status.set_text(_("{removed} DVB-I channels removed").format(removed=removed))
+        self._show_own_lists()
         self._sensitive()
+        if dvbi.own_lists(self.s) and hasattr(self.app, "dvbi_next"):
+            self.app.dvbi_next()           # what the added lists shared with it comes back

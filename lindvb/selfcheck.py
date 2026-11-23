@@ -3,9 +3,9 @@
 
 Every package (AppImage, Flatpak, .deb, Snap) runs this in CI before it is
 released. It starts GTK and lays out text (this is where a wrong HarfBuzz or
-Pango shows up), looks for the GStreamer elements live TV needs and plays a
-short MPEG-TS sample (H.264 video, MPEG-1 Layer II audio, as on DVB) through
-playbin into fake sinks, so the decoders are not only installed but work.
+Pango shows up), opens the preferences with every page, looks for the
+GStreamer elements live TV needs and plays a short MPEG-TS sample (H.264
+video, MPEG-1 Layer II audio, as on DVB) through playbin into fake sinks, so the decoders are not only installed but work.
 
 Then it does what an IPTV channel does: it checks that GIO has a TLS backend
 and plays a public HTTPS HLS stream (H.264 and AAC) until enough frames are
@@ -112,6 +112,34 @@ def check_gtk(report):
         report.ok(f"GTK {version}: window shown, text laid out ({width} px)")
     else:
         report.fail(f"GTK {version}: the window was not laid out")
+
+
+def check_preferences(report):
+    """Build the preferences window with every page, as opening it does (0.22.0
+    was released with preferences that did not open). Reads the settings and
+    the channel list, writes nothing."""
+    from gi.repository import Gtk
+    if not Gtk.init_check():
+        report.fail("preferences: no display")
+        return
+    import types
+    from .channels import ChannelDB
+    from .config import Settings
+    from .favourites import FavouriteLists
+    from .plugins import PluginManager
+    from .ui.dialogs import PrefsWindow
+    settings = Settings()
+    db = ChannelDB()
+    app = types.SimpleNamespace(settings=settings, db=db, favs=FavouriteLists(db),
+                                plugins=PluginManager(settings), _dvbi_busy=False, window=None)
+    win = PrefsWindow(app, None)
+    try:
+        pages = [p.get_name() for p in win.stack.get_pages()]
+        for name in pages:
+            win.stack.set_visible_child_name(name)
+    finally:
+        win.destroy()
+    report.ok(f"preferences open ({len(pages)} pages)")
 
 
 def check_elements(report):
@@ -456,7 +484,7 @@ def run(argv=None, out=None):
     Gst.init(None)
     where = compat.bundled() or "system packages"
     out.write(f"LinDVB {__version__} self-check ({where}, {Gst.version_string()})\n")
-    checks = [check_gtk, check_elements, check_playback, check_hbbtv]
+    checks = [check_gtk, check_preferences, check_elements, check_playback, check_hbbtv]
     if "--offline" not in argv:
         checks += [check_tls, check_proxy, check_stream, check_iptv]
     for check in checks:

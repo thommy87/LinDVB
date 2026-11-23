@@ -26,8 +26,12 @@ before it goes online, the preferred languages and the youth protection steps.
 The module has no GTK; the settings panel is lindvb.ui.dvbi.
 """
 
+import os
 import re
+import unicodedata
 from dataclasses import dataclass, field
+
+from .i18n import N_, _
 
 
 @dataclass(frozen=True)
@@ -217,11 +221,122 @@ OTHER = Country(
 COUNTRIES = (GERMANY, ITALY, NEW_ZEALAND, OTHER)
 DEFAULT = GERMANY.code
 
+# The countries with DVB as their terrestrial television standard (the DVB
+# Project's DVB-T/T2 deployment list), offered in the DVB-I country list and
+# for the HbbTV country: (ISO 3166-1 alpha-2, alpha-3, English common name).
+# Only those in COUNTRIES have a DVB-I profile; the others are shown greyed
+# out. The names are translated through the catalogues (ISO 3166 names).
+DVB_COUNTRIES = (
+    ("AL", "ALB", N_("Albania")), ("AD", "AND", N_("Andorra")), ("AM", "ARM", N_("Armenia")),
+    ("AT", "AUT", N_("Austria")), ("AZ", "AZE", N_("Azerbaijan")), ("BY", "BLR", N_("Belarus")),
+    ("BE", "BEL", N_("Belgium")), ("BA", "BIH", N_("Bosnia and Herzegovina")),
+    ("BG", "BGR", N_("Bulgaria")), ("HR", "HRV", N_("Croatia")), ("CY", "CYP", N_("Cyprus")),
+    ("CZ", "CZE", N_("Czechia")), ("DK", "DNK", N_("Denmark")), ("EE", "EST", N_("Estonia")),
+    ("FI", "FIN", N_("Finland")), ("FR", "FRA", N_("France")), ("GE", "GEO", N_("Georgia")),
+    ("DE", "DEU", N_("Germany")), ("GR", "GRC", N_("Greece")), ("HU", "HUN", N_("Hungary")),
+    ("IS", "ISL", N_("Iceland")), ("IE", "IRL", N_("Ireland")), ("IT", "ITA", N_("Italy")),
+    ("LV", "LVA", N_("Latvia")), ("LI", "LIE", N_("Liechtenstein")),
+    ("LT", "LTU", N_("Lithuania")), ("LU", "LUX", N_("Luxembourg")), ("MT", "MLT", N_("Malta")),
+    ("MD", "MDA", N_("Moldova")), ("MC", "MCO", N_("Monaco")), ("ME", "MNE", N_("Montenegro")),
+    ("NL", "NLD", N_("Netherlands")), ("MK", "MKD", N_("North Macedonia")),
+    ("NO", "NOR", N_("Norway")), ("PL", "POL", N_("Poland")), ("PT", "PRT", N_("Portugal")),
+    ("RO", "ROU", N_("Romania")), ("RU", "RUS", N_("Russia")), ("SM", "SMR", N_("San Marino")),
+    ("RS", "SRB", N_("Serbia")), ("SK", "SVK", N_("Slovakia")), ("SI", "SVN", N_("Slovenia")),
+    ("ES", "ESP", N_("Spain")), ("SE", "SWE", N_("Sweden")), ("CH", "CHE", N_("Switzerland")),
+    ("TR", "TUR", N_("Türkiye")), ("UA", "UKR", N_("Ukraine")),
+    ("GB", "GBR", N_("United Kingdom")), ("DZ", "DZA", N_("Algeria")),
+    ("BH", "BHR", N_("Bahrain")), ("EG", "EGY", N_("Egypt")), ("IR", "IRN", N_("Iran")),
+    ("IQ", "IRQ", N_("Iraq")), ("IL", "ISR", N_("Israel")), ("JO", "JOR", N_("Jordan")),
+    ("KW", "KWT", N_("Kuwait")), ("LB", "LBN", N_("Lebanon")), ("LY", "LBY", N_("Libya")),
+    ("MA", "MAR", N_("Morocco")), ("OM", "OMN", N_("Oman")),
+    ("PS", "PSE", N_("Palestine, State of")), ("QA", "QAT", N_("Qatar")),
+    ("SA", "SAU", N_("Saudi Arabia")), ("SY", "SYR", N_("Syria")), ("TN", "TUN", N_("Tunisia")),
+    ("AE", "ARE", N_("United Arab Emirates")), ("YE", "YEM", N_("Yemen")),
+    ("BJ", "BEN", N_("Benin")), ("BF", "BFA", N_("Burkina Faso")), ("BI", "BDI", N_("Burundi")),
+    ("CM", "CMR", N_("Cameroon")), ("CV", "CPV", N_("Cabo Verde")),
+    ("CF", "CAF", N_("Central African Republic")), ("TD", "TCD", N_("Chad")),
+    ("KM", "COM", N_("Comoros")), ("CD", "COD", N_("Congo, The Democratic Republic of the")),
+    ("CG", "COG", N_("Congo")), ("CI", "CIV", N_("Côte d'Ivoire")), ("DJ", "DJI", N_("Djibouti")),
+    ("GQ", "GNQ", N_("Equatorial Guinea")), ("ER", "ERI", N_("Eritrea")),
+    ("SZ", "SWZ", N_("Eswatini")), ("ET", "ETH", N_("Ethiopia")), ("GA", "GAB", N_("Gabon")),
+    ("GM", "GMB", N_("Gambia")), ("GH", "GHA", N_("Ghana")), ("GN", "GIN", N_("Guinea")),
+    ("GW", "GNB", N_("Guinea-Bissau")), ("KE", "KEN", N_("Kenya")), ("LS", "LSO", N_("Lesotho")),
+    ("LR", "LBR", N_("Liberia")), ("MG", "MDG", N_("Madagascar")), ("MW", "MWI", N_("Malawi")),
+    ("ML", "MLI", N_("Mali")), ("MR", "MRT", N_("Mauritania")), ("MU", "MUS", N_("Mauritius")),
+    ("MZ", "MOZ", N_("Mozambique")), ("NA", "NAM", N_("Namibia")), ("NE", "NER", N_("Niger")),
+    ("NG", "NGA", N_("Nigeria")), ("RW", "RWA", N_("Rwanda")),
+    ("ST", "STP", N_("Sao Tome and Principe")), ("SN", "SEN", N_("Senegal")),
+    ("SC", "SYC", N_("Seychelles")), ("SL", "SLE", N_("Sierra Leone")),
+    ("SO", "SOM", N_("Somalia")), ("ZA", "ZAF", N_("South Africa")),
+    ("SS", "SSD", N_("South Sudan")), ("SD", "SDN", N_("Sudan")), ("TZ", "TZA", N_("Tanzania")),
+    ("TG", "TGO", N_("Togo")), ("UG", "UGA", N_("Uganda")), ("ZM", "ZMB", N_("Zambia")),
+    ("ZW", "ZWE", N_("Zimbabwe")), ("AF", "AFG", N_("Afghanistan")),
+    ("BD", "BGD", N_("Bangladesh")), ("KH", "KHM", N_("Cambodia")), ("IN", "IND", N_("India")),
+    ("ID", "IDN", N_("Indonesia")), ("KZ", "KAZ", N_("Kazakhstan")),
+    ("KG", "KGZ", N_("Kyrgyzstan")), ("MY", "MYS", N_("Malaysia")), ("MN", "MNG", N_("Mongolia")),
+    ("MM", "MMR", N_("Myanmar")), ("NP", "NPL", N_("Nepal")), ("PK", "PAK", N_("Pakistan")),
+    ("SG", "SGP", N_("Singapore")), ("TW", "TWN", N_("Taiwan")), ("TH", "THA", N_("Thailand")),
+    ("TJ", "TJK", N_("Tajikistan")), ("TM", "TKM", N_("Turkmenistan")),
+    ("UZ", "UZB", N_("Uzbekistan")), ("VN", "VNM", N_("Vietnam")),
+    ("KP", "PRK", N_("North Korea")), ("BN", "BRN", N_("Brunei Darussalam")),
+    ("AU", "AUS", N_("Australia")), ("NZ", "NZL", N_("New Zealand")), ("FJ", "FJI", N_("Fiji")),
+    ("PG", "PNG", N_("Papua New Guinea")), ("CO", "COL", N_("Colombia")),
+    ("PA", "PAN", N_("Panama")), ("GL", "GRL", N_("Greenland")),
+)
+_ALPHA3 = {a2: a3 for a2, a3, _n in DVB_COUNTRIES}
+_NAMES = {a3: n for _a2, a3, n in DVB_COUNTRIES}
+
 
 def get(code):
     """The profile for *code* (alpha-3), Germany when unknown."""
     code = (code or "").upper()
     return next((c for c in COUNTRIES if c.code == code), GERMANY)
+
+
+def available(code):
+    """Whether LinDVB has a DVB-I profile for *code* ("ZZZ": own registry)."""
+    return any(c.code == (code or "").upper() for c in COUNTRIES)
+
+
+def country_name(code):
+    """The translated name of the country *code* (alpha-3)."""
+    code = (code or "").upper()
+    if code == OTHER.code:
+        return _(OTHER.name)
+    if code in _NAMES:
+        return _(_NAMES[code])
+    return code
+
+
+def _sort_key(text):
+    """Sort "Österreich" with "O", not after "Z"."""
+    return unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
+
+
+def country_choices():
+    """[(code, translated name, has a DVB-I profile)] of all DVB countries
+    in alphabetical order of the names, "Other (own registry or list)" last."""
+    rows = sorted(((a3, country_name(a3), available(a3)) for _a2, a3, _n in DVB_COUNTRIES),
+                  key=lambda r: _sort_key(r[1]))
+    return rows + [(OTHER.code, country_name(OTHER.code), True)]
+
+
+def system_country(environ=None, fallback="DEU"):
+    """The country of the desktop's locale (de_AT.UTF-8 -> "AUT") when DVB is
+    its standard, else *fallback*."""
+    env = os.environ if environ is None else environ
+    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        val = (env.get(var) or "").split(":")[0]
+        if not val:
+            continue
+        region = val.split(".")[0].split("@")[0].partition("_")[2].upper()
+        if region in _ALPHA3:
+            return _ALPHA3[region]
+        if region == "UK":
+            return "GBR"
+        if val not in ("C", "POSIX") and region:
+            break
+    return fallback
 
 
 def valid_postcode(country, text):
@@ -289,8 +404,10 @@ def fresh_state(country):
 
 def switch_country(settings, code):
     """Make *code* the DVB-I country: keep the settings of the country in use
-    and bring back those of *code* (fresh ones the first time). Also tells
-    HbbTV applications the country. Returns the new Country."""
+    and bring back those of *code* (fresh ones the first time). Returns the
+    new Country. The HbbTV country is a setting of its own (Preferences ›
+    HbbTV); a DVB-I channel uses the country of its list while it plays
+    (lindvb.hbbtv.country_for)."""
     old = get(settings.get("dvbi_country"))
     new = get(code)
     store = dict(settings.get("dvbi_country_state") or {})
@@ -304,9 +421,38 @@ def switch_country(settings, code):
         settings["dvbi_last_check"] = 0
     settings["dvbi_country_state"] = store
     settings["dvbi_country"] = new.code
-    if new.code != OTHER.code:              # HbbTV keeps the country it had
-        settings["hbbtv_country"] = new.code
     return new
+
+
+def installed_country(settings, channels=()):
+    """The country of the DVB-I list in the channel list: the one its
+    channels name; for a list from before 0.23 (channels without a country)
+    the DVB-I country, unless that has no list chosen and exactly one other
+    country has (the list stayed when the country was changed, as 0.22 did).
+    "" when the list has no country (own registry or list)."""
+    named = {c.dvbi_country for c in channels if c.dvbi_id and c.dvbi_country}
+    if len(named) == 1:
+        return named.pop()
+    code = (settings.get("dvbi_country") or "").upper()
+    if not settings.get("dvbi_list_url"):
+        others = [k for k, st in (settings.get("dvbi_country_state") or {}).items()
+                  if k != code and (st or {}).get("dvbi_list_url")]
+        if len(others) == 1:
+            code = others[0]
+    return "" if code == OTHER.code else code
+
+
+def label_old_channels(settings, channels):
+    """Give the DVB-I channels of a list from before 0.23 the country of their
+    list (installed_country): the HbbTV country and youth protection follow
+    it. Returns how many were labelled."""
+    old = [c for c in channels if c.dvbi_id and not c.dvbi_country]
+    code = installed_country(settings, old) if old else ""
+    if not code:
+        return 0
+    for c in old:
+        c.dvbi_country = code
+    return len(old)
 
 
 def set_consent(settings, country, key, given, now):

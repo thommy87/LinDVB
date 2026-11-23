@@ -87,6 +87,10 @@ class Channel:
     dvbi_periods: list = field(default_factory=list)  # availability (pop-up channel)
     dvbi_oos_logo: str = ""          # out-of-service banner image URL
     dvbi_apps: list = field(default_factory=list)    # linked HbbTV applications (url, type, role)
+    dvbi_country: str = ""           # the country of its list (HbbTV country, youth protection)
+    # the list block it comes from: "" the country's list, else the id of a
+    # list the viewer added (settings "dvbi_own_lists", lindvb.dvbi_blocks)
+    dvbi_block: str = ""
     tvh_server: str = ""             # Tvheadend: the server the channel comes from (lindvb.tvheadend)
     groups: list = field(default_factory=list)   # Tvheadend: all channel tags that are groups
     tvh_networks: list = field(default_factory=list)  # Tvheadend: the networks of its services
@@ -206,6 +210,49 @@ def numbered(channels, manual=False):
     return out
 
 
+def _spares(channel, block):
+    """The own instances of *channel* as spare instances from *block*."""
+    return [dict(d, block=block) for d in channel.dvbi_instances if "block" not in d]
+
+
+def _without_spares(instances, block):
+    return [d for d in instances if d.get("block") != block]
+
+
+def _keep_from(c, prev, block):
+    """What the channel *c* of a list update keeps of the channel it
+    replaces: favourite, guide match, logo, picture seen and the spare
+    instances other blocks gave it."""
+    c.favourite = prev.favourite
+    if prev.xmltv_manual or not c.xmltv_id:
+        c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
+    if not c.logo:
+        c.logo = prev.logo
+    c.seen_video = c.seen_video or prev.seen_video
+    if prev.dvbi_block == block:
+        c.dvbi_instances += [d for d in prev.dvbi_instances
+                             if d.get("block") not in (None, block)]
+
+
+def _merge(c, prev, other, block, rank, displaced, fresh):
+    """Merge the channel *c* of a list update of *block* (see
+    ChannelDB.replace_dvbi): *prev* is the channel it replaces, *other* the
+    copy of it in another block. Returns "added", "updated" or ""."""
+    if other is not None and rank.get(other.dvbi_block, len(rank)) < rank[block]:
+        # an earlier block has it: a spare instance there
+        other.dvbi_instances += _spares(c, block)
+        return "updated" if prev else ""
+    if other is not None:
+        # a later block had it: this one takes over
+        displaced.add(other.key)
+        c.dvbi_instances += _spares(other, other.dvbi_block)
+        prev = prev or other
+    if prev:
+        _keep_from(c, prev, block)
+    fresh.append(c)
+    return "updated" if prev else "added"
+
+
 class ChannelDB:
     path = CONFIG_DIR / "channels.json"
     # the user put the channels in an order of their own (channel editor):
@@ -236,40 +283,70 @@ class ChannelDB:
     def dvbi_channels(self):
         return [c for c in self.channels if c.dvbi_id]
 
-    def replace_dvbi(self, new):
-        """Replace the channels of the DVB-I service list with *new* (a list
-        update). Favourites and guide matches of services that stay are kept.
+    def replace_dvbi(self, new, block="", order=None):
+        """Replace the channels of the DVB-I list block *block* ("" the
+        country's list, else an added list) with *new* (a list update).
+        Favourites and guide matches of services that stay are kept.
+
+        *order* lists the block ids from the first to the last (the country's
+        list first). A service that is in two blocks (same DVB-I identifier)
+        is one channel, from the earlier block; the instances of the other
+        copy are kept with it for failover (marked with their block).
         Returns (added, updated, removed)."""
-        old = {c.key: c for c in self.channels if c.dvbi_id}
-        keep = [c for c in self.channels if not c.dvbi_id]
+        order = list(order) if order else [""]
+        if block not in order:
+            order.append(block)
+        rank = {b: i for i, b in enumerate(order)}
+        old = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block == block}
+        others = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block != block}
+        # this block's spare instances in other blocks' channels are made anew
+        for o in others.values():
+            o.dvbi_instances = _without_spares(o.dvbi_instances, block)
+        displaced, fresh = set(), []
         added = updated = 0
         for c in new:
-            prev = old.pop(c.key, None)
-            if prev:
-                c.favourite = prev.favourite
-                if prev.xmltv_manual or not c.xmltv_id:
-                    c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
-                if not c.logo:
-                    c.logo = prev.logo
-                c.seen_video = c.seen_video or prev.seen_video
-                updated += 1
-            else:
-                added += 1
+            c.dvbi_block = block
+            kind = _merge(c, old.pop(c.key, None), others.get(c.key), block, rank,
+                          displaced, fresh)
+            added += kind == "added"
+            updated += kind == "updated"
+        self._place_block(fresh, block, displaced, rank)
+        self.renumber()
+        return added, updated, len(old)
+
+    def _place_block(self, fresh, block, displaced, rank):
+        """Put the new channels of *block* into the list (see replace_dvbi)."""
+        def stays(c):
+            return c.key not in displaced and (not c.dvbi_id or c.dvbi_block != block)
         if self.manual_order:
             # an order of the user's own: the channels that stay keep their
             # place, new ones come at the end
-            fresh = {c.key: c for c in new}
+            byk = {c.key: c for c in fresh}
             out = []
             for c in self.channels:
-                if not c.dvbi_id:
+                if stays(c):
                     out.append(c)
-                elif c.key in fresh:
-                    out.append(fresh.pop(c.key))
-            self.channels[:] = out + list(fresh.values())
-        else:
-            self.channels[:] = list(new) + keep
+                elif c.key in byk:
+                    out.append(byk.pop(c.key))
+            self.channels[:] = out + list(byk.values())
+            return
+        # the blocks in their order, then the other channels
+        rest = [c for c in self.channels if stays(c)]
+        dv = fresh + [c for c in rest if c.dvbi_id]
+        dv.sort(key=lambda c: rank.get(c.dvbi_block, len(rank)))
+        self.channels[:] = dv + [c for c in rest if not c.dvbi_id]
+
+    def remove_dvbi_block(self, block):
+        """Remove the channels of one DVB-I list block (and its spare
+        instances in the channels of other blocks). Returns how many."""
+        n = len([c for c in self.channels if c.dvbi_id and c.dvbi_block == block])
+        self.channels[:] = [c for c in self.channels
+                            if not (c.dvbi_id and c.dvbi_block == block)]
+        for c in self.channels:
+            if c.dvbi_id:
+                c.dvbi_instances = [d for d in c.dvbi_instances if d.get("block") != block]
         self.renumber()
-        return added, updated, len(old)
+        return n
 
     def by_key(self, key):
         for c in self.channels:

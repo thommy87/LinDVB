@@ -43,8 +43,8 @@ def test_every_package_runs_it():
 
 def test_offline_skips_network_checks(monkeypatch):
     calls = []
-    for name in ("check_gtk", "check_elements", "check_playback", "check_hbbtv",
-                 "check_tls", "check_proxy", "check_stream", "check_iptv"):
+    for name in ("check_gtk", "check_preferences", "check_elements", "check_playback",
+                 "check_hbbtv", "check_tls", "check_proxy", "check_stream", "check_iptv"):
         monkeypatch.setattr(selfcheck, name, lambda r, n=name: calls.append(n))
     out = io.StringIO()
     assert selfcheck.run(["--offline"], out) == 0
@@ -52,6 +52,46 @@ def test_offline_skips_network_checks(monkeypatch):
     calls.clear()
     assert selfcheck.run([], io.StringIO()) == 0
     assert {"check_tls", "check_proxy", "check_stream", "check_iptv"} <= set(calls)
+
+
+def _isolated(monkeypatch, tmp_path):
+    from lindvb import config
+    from lindvb.channels import ChannelDB
+    monkeypatch.setattr(config.Settings, "path", tmp_path / "settings.json")
+    monkeypatch.setattr(ChannelDB, "path", tmp_path / "channels.json")
+
+
+def test_preferences_are_opened(monkeypatch, tmp_path):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    from gi.repository import Gtk
+    if not Gtk.init_check():
+        pytest.skip("no display")
+    _isolated(monkeypatch, tmp_path)
+    r = selfcheck.Report(io.StringIO())
+    selfcheck.check_preferences(r)
+    assert not r.failed and "OK    preferences open (" in r.out.getvalue()
+    assert not (tmp_path / "settings.json").exists()          # nothing written
+
+
+def test_preferences_that_do_not_open_fail_the_check(monkeypatch, tmp_path):
+    """What 0.22.0 shipped with: a NameError while the window is built."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    from gi.repository import Gtk
+    if not Gtk.init_check():
+        pytest.skip("no display")
+    _isolated(monkeypatch, tmp_path)
+    from lindvb.ui import dialogs
+
+    def broken(self, *a):
+        raise NameError("name 'folder' is not defined")
+    monkeypatch.setattr(dialogs.PrefsWindow, "__init__", broken)
+    for name in ("check_gtk", "check_elements", "check_playback", "check_hbbtv"):
+        monkeypatch.setattr(selfcheck, name, lambda r: None)
+    out = io.StringIO()
+    assert selfcheck.run(["--offline"], out) == 1
+    assert "FAIL  check_preferences: NameError: name 'folder' is not defined" in out.getvalue()
 
 
 def test_warn_does_not_fail():

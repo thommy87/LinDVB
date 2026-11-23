@@ -4423,3 +4423,495 @@ msgstr "Tukšs: skaņas serveris (PulseAudio vai PipeWire), kurā formāti iesl�
 #: lindvb/ui/dialogs.py
 msgid "Sound server"
 msgstr "Skaņas serveris"
+
+#: lindvb/dvbi_countries.py
+msgid "Albania"
+msgstr "Albānija"
+
+#: lindvb/dvbi_countries.py
+msgid "Armenia"
+msgstr "Armēnija"
+
+#: lindvb/dvbi_countries.py
+msgid "Azerbaijan"
+msgstr "Azerbaidžāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Belarus"
+msgstr "Baltkrievija"
+
+#: lindvb/dvbi_countries.py
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnija un Hercegovina"
+
+#: lindvb/dvbi_countries.py
+msgid "Cyprus"
+msgstr "Kipra"
+
+#: lindvb/dvbi_countries.py
+msgid "Georgia"
+msgstr "Gruzija"
+
+#: lindvb/dvbi_countries.py
+msgid "Malta"
+msgstr "Malta"
+
+#: lindvb/dvbi_countries.py
+msgid "Moldova"
+msgstr "Moldova"
+
+#: lindvb/dvbi_countries.py
+msgid "Monaco"
+msgstr "Monako"
+
+#: lindvb/dvbi_countries.py
+msgid "Montenegro"
+msgstr "Melnkalne"
+
+#: lindvb/dvbi_countries.py
+msgid "San Marino"
+msgstr "Sanmarīno"
+
+#: lindvb/dvbi_countries.py
+msgid "Serbia"
+msgstr "Serbija"
+
+#: lindvb/dvbi_countries.py
+msgid "Türkiye"
+msgstr "Türkiye"
+
+#: lindvb/dvbi_countries.py
+msgid "Algeria"
+msgstr "Alžīrija"
+
+#: lindvb/dvbi_countries.py
+msgid "Bahrain"
+msgstr "Bahreina"
+
+#: lindvb/dvbi_countries.py
+msgid "Egypt"
+msgstr "Ēģipte"
+
+#: lindvb/dvbi_countries.py
+msgid "Iraq"
+msgstr "Irāka"
+
+#: lindvb/dvbi_countries.py
+msgid "Jordan"
+msgstr "Jordānija"
+
+#: lindvb/dvbi_countries.py
+msgid "Kuwait"
+msgstr "Kuveita"
+
+#: lindvb/dvbi_countries.py
+msgid "Lebanon"
+msgstr "Libāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Libya"
+msgstr "Lībija"
+
+#: lindvb/dvbi_countries.py
+msgid "Morocco"
+msgstr "Maroka"
+
+#: lindvb/dvbi_countries.py
+msgid "Oman"
+msgstr "Omāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Palestine, State of"
+msgstr "Palestīnas valsts"
+
+#: lindvb/dvbi_countries.py
+msgid "Qatar"
+msgstr "Katara"
+
+#: lindvb/dvbi_countries.py
+msgid "Saudi Arabia"
+msgstr "Saūda Arābija"
+
+#: lindvb/dvbi_countries.py
+msgid "Syria"
+msgstr "Sīrija"
+
+#: lindvb/dvbi_countries.py
+msgid "Tunisia"
+msgstr "Tunisija"
+
+#: lindvb/dvbi_countries.py
+msgid "United Arab Emirates"
+msgstr "Apvienotie Arābu Emirāti"
+
+#: lindvb/dvbi_countries.py
+msgid "Yemen"
+msgstr "Jemena"
+
+#: lindvb/dvbi_countries.py
+msgid "Benin"
+msgstr "Benina"
+
+#: lindvb/dvbi_countries.py
+msgid "Burkina Faso"
+msgstr "Burkinafaso"
+
+#: lindvb/dvbi_countries.py
+msgid "Burundi"
+msgstr "Burundi"
+
+#: lindvb/dvbi_countries.py
+msgid "Cameroon"
+msgstr "Kamerūna"
+
+#: lindvb/dvbi_countries.py
+msgid "Cabo Verde"
+msgstr "Cabo Verde"
+
+#: lindvb/dvbi_countries.py
+msgid "Central African Republic"
+msgstr "Centrālāfrikas Republika"
+
+#: lindvb/dvbi_countries.py
+msgid "Chad"
+msgstr "Čada"
+
+#: lindvb/dvbi_countries.py
+msgid "Comoros"
+msgstr "Komoras"
+
+#: lindvb/dvbi_countries.py
+msgid "Congo, The Democratic Republic of the"
+msgstr "Kongo Demokrātiskā Republika"
+
+#: lindvb/dvbi_countries.py
+msgid "Congo"
+msgstr "Kongo"
+
+#: lindvb/dvbi_countries.py
+msgid "Côte d'Ivoire"
+msgstr "Kotdivuāra"
+
+#: lindvb/dvbi_countries.py
+msgid "Djibouti"
+msgstr "Džibutija"
+
+#: lindvb/dvbi_countries.py
+msgid "Equatorial Guinea"
+msgstr "Ekvatoriālā Gvineja"
+
+#: lindvb/dvbi_countries.py
+msgid "Eritrea"
+msgstr "Eritreja"
+
+#: lindvb/dvbi_countries.py
+msgid "Eswatini"
+msgstr "Eswatini"
+
+#: lindvb/dvbi_countries.py
+msgid "Ethiopia"
+msgstr "Etiopija"
+
+#: lindvb/dvbi_countries.py
+msgid "Gabon"
+msgstr "Gabona"
+
+#: lindvb/dvbi_countries.py
+msgid "Gambia"
+msgstr "Gambija"
+
+#: lindvb/dvbi_countries.py
+msgid "Ghana"
+msgstr "Gana"
+
+#: lindvb/dvbi_countries.py
+msgid "Guinea"
+msgstr "Gvineja"
+
+#: lindvb/dvbi_countries.py
+msgid "Guinea-Bissau"
+msgstr "Gvineja-Bisava"
+
+#: lindvb/dvbi_countries.py
+msgid "Lesotho"
+msgstr "Lesoto"
+
+#: lindvb/dvbi_countries.py
+msgid "Liberia"
+msgstr "Libērija"
+
+#: lindvb/dvbi_countries.py
+msgid "Madagascar"
+msgstr "Madagaskara"
+
+#: lindvb/dvbi_countries.py
+msgid "Malawi"
+msgstr "Malāvija"
+
+#: lindvb/dvbi_countries.py
+msgid "Mali"
+msgstr "Mali"
+
+#: lindvb/dvbi_countries.py
+msgid "Mauritania"
+msgstr "Mauritānija"
+
+#: lindvb/dvbi_countries.py
+msgid "Mauritius"
+msgstr "Maurīcija"
+
+#: lindvb/dvbi_countries.py
+msgid "Mozambique"
+msgstr "Mozambika"
+
+#: lindvb/dvbi_countries.py
+msgid "Namibia"
+msgstr "Namībija"
+
+#: lindvb/dvbi_countries.py
+msgid "Niger"
+msgstr "Nigēra"
+
+#: lindvb/dvbi_countries.py
+msgid "Nigeria"
+msgstr "Nigērija"
+
+#: lindvb/dvbi_countries.py
+msgid "Rwanda"
+msgstr "Ruanda"
+
+#: lindvb/dvbi_countries.py
+msgid "Sao Tome and Principe"
+msgstr "Santome un Prinsipi"
+
+#: lindvb/dvbi_countries.py
+msgid "Senegal"
+msgstr "Senegāla"
+
+#: lindvb/dvbi_countries.py
+msgid "Seychelles"
+msgstr "Seišelas"
+
+#: lindvb/dvbi_countries.py
+msgid "Sierra Leone"
+msgstr "Sjerraleone"
+
+#: lindvb/dvbi_countries.py
+msgid "Somalia"
+msgstr "Somālija"
+
+#: lindvb/dvbi_countries.py
+msgid "South Sudan"
+msgstr "Dienvidsudāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Sudan"
+msgstr "Sudāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Tanzania"
+msgstr "Tanzānija"
+
+#: lindvb/dvbi_countries.py
+msgid "Togo"
+msgstr "Togo"
+
+#: lindvb/dvbi_countries.py
+msgid "Zambia"
+msgstr "Zambija"
+
+#: lindvb/dvbi_countries.py
+msgid "Zimbabwe"
+msgstr "Zimbabve"
+
+#: lindvb/dvbi_countries.py
+msgid "Afghanistan"
+msgstr "Afganistāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Bangladesh"
+msgstr "Bangladeša"
+
+#: lindvb/dvbi_countries.py
+msgid "Cambodia"
+msgstr "Kambodža"
+
+#: lindvb/dvbi_countries.py
+msgid "India"
+msgstr "Indija"
+
+#: lindvb/dvbi_countries.py
+msgid "Kazakhstan"
+msgstr "Kazahstāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Kyrgyzstan"
+msgstr "Kirgizstāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Malaysia"
+msgstr "Malaizija"
+
+#: lindvb/dvbi_countries.py
+msgid "Mongolia"
+msgstr "Mongolija"
+
+#: lindvb/dvbi_countries.py
+msgid "Myanmar"
+msgstr "Mjanma"
+
+#: lindvb/dvbi_countries.py
+msgid "Nepal"
+msgstr "Nepāla"
+
+#: lindvb/dvbi_countries.py
+msgid "Pakistan"
+msgstr "Pakistāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Singapore"
+msgstr "Singapūra"
+
+#: lindvb/dvbi_countries.py
+msgid "Thailand"
+msgstr "Taizeme"
+
+#: lindvb/dvbi_countries.py
+msgid "Tajikistan"
+msgstr "Tadžikistāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Turkmenistan"
+msgstr "Turkmenistāna"
+
+#: lindvb/dvbi_countries.py
+msgid "Uzbekistan"
+msgstr "Uzbekistāna"
+
+#: lindvb/dvbi_countries.py
+msgid "North Korea"
+msgstr "Ziemeļkoreja"
+
+#: lindvb/dvbi_countries.py
+msgid "Brunei Darussalam"
+msgstr "Brunejas Darusalamas Valsts"
+
+#: lindvb/dvbi_countries.py
+msgid "Fiji"
+msgstr "Fidži"
+
+#: lindvb/dvbi_countries.py
+msgid "Papua New Guinea"
+msgstr "Papua-Jaungvineja"
+
+#: lindvb/dvbi_countries.py
+msgid "Panama"
+msgstr "Panama"
+
+#: lindvb/dvbi_countries.py
+msgid "Greenland"
+msgstr "Grenlande"
+
+#: lindvb/ui/dvbi.py
+msgid "{country} (not available)"
+msgstr "{country} (nav pieejams)"
+
+#: lindvb/ui/dvbi.py
+msgid "Choose your country to set up DVB-I."
+msgstr "Izvēlieties savu valsti, lai iestatītu DVB-I."
+
+#: lindvb/ui/dvbi.py
+msgid "LinDVB has no DVB-I profile for {country} yet."
+msgstr "LinDVB vēl nav DVB-I profila valstij {country}."
+
+#: lindvb/ui/dvbi.py
+msgid "Your own DVB-I list is installed ({n} channels). Remove it and switch to {country}?"
+msgstr "Jūsu pašu DVB-I saraksts ir instalēts ({n} kanāli). Noņemt to un pārslēgties uz {country}?"
+
+#: lindvb/ui/dvbi.py
+msgid "The list for {old} is installed ({n} channels). Remove it and switch to {country}?"
+msgstr "Saraksts valstij {old} ir instalēts ({n} kanāli). Noņemt to un pārslēgties uz {country}?"
+
+#: lindvb/ui/dvbi.py
+msgid "The settings of each country are kept and come back when you choose it again."
+msgstr "Katras valsts iestatījumi tiek saglabāti un atgriežas, kad to izvēlaties vēlreiz."
+
+#: lindvb/ui/dvbi.py
+msgid "Switch"
+msgstr "Pārslēgt"
+
+#: lindvb/ui/dvbi.py
+msgid "Applications use it for youth protection and regional offers. It applies to satellite, cable, antenna and IPTV channels; a DVB-I channel uses the country of its list."
+msgstr "Lietotnes to izmanto nepilngadīgo aizsardzībai un reģionālajiem piedāvājumiem. Tas attiecas uz satelīta, kabeļa, antenas un IPTV kanāliem; DVB-I kanāls izmanto sava saraksta valsti."
+
+#: lindvb/ui/dvbi.py
+msgid "More lists"
+msgstr "Citi saraksti"
+
+#: lindvb/ui/dvbi.py
+msgid "Lists you add come after the country's list. Their channels are numbered from 1000, 2000 and so on; a channel that is already in an earlier list appears once. LinDVB contacts the address you enter; that server sees your IP address."
+msgstr "Pievienotie saraksti seko valsts sarakstam. To kanāli tiek numurēti no 1000, 2000 utt.; kanāls, kas jau ir agrākā sarakstā, tiek parādīts vienreiz. LinDVB sazinās ar ievadīto adresi; šis serveris redz jūsu IP adresi."
+
+#: lindvb/ui/dvbi.py
+msgid "Address of a service list or registry"
+msgstr "Pakalpojumu saraksta vai reģistra adrese"
+
+#: lindvb/ui/dvbi.py
+msgid "Country unknown"
+msgstr "Valsts nezināma"
+
+#: lindvb/ui/dvbi.py
+msgid "country unknown"
+msgstr "valsts nezināma"
+
+#: lindvb/ui/dvbi.py
+msgid "The country the list is for, when the list does not say"
+msgstr "Valsts, kurai saraksts paredzēts, ja saraksts to nenorāda"
+
+#: lindvb/ui/dvbi.py
+msgid "Add List"
+msgstr "Pievienot sarakstu"
+
+#: lindvb/ui/dvbi.py
+msgid "numbers from {first}"
+msgstr "numuri no {first}"
+
+#: lindvb/ui/dvbi.py
+msgid "Remove this list and its channels"
+msgstr "Noņemt šo sarakstu un tā kanālus"
+
+#: lindvb/ui/dvbi.py
+msgid "Loading {address}…"
+msgstr "Ielādē {address}…"
+
+#: lindvb/ui/dvbi.py
+msgid "{address} could not be loaded: {error}"
+msgstr "{address} neizdevās ielādēt: {error}"
+
+#: lindvb/ui/dvbi.py
+msgid "The registry offers no service list."
+msgstr "Reģistrs nepiedāvā nevienu pakalpojumu sarakstu."
+
+#: lindvb/ui/dvbi.py
+msgid "Choose a List"
+msgstr "Izvēlieties sarakstu"
+
+#: lindvb/ui/dvbi.py
+msgid "This list is already in use."
+msgstr "Šis saraksts jau tiek izmantots."
+
+#: lindvb/ui/dvbi.py
+msgid "Another list is loading. Please try again in a moment."
+msgstr "Tiek ielādēts cits saraksts. Lūdzu, mēģiniet vēlreiz pēc brīža."
+
+#: lindvb/ui/dvbi.py
+msgid "Remove the list “{name}” and its {n} channels?"
+msgstr "Noņemt sarakstu “{name}” un tā {n} kanālus?"
+
+#: lindvb/ui/dvbi.py
+msgid "Favourites keep the channels and show them again when the list is added again."
+msgstr "Izlase saglabā kanālus un parāda tos atkal, kad saraksts tiek pievienots no jauna."
+
+#: lindvb/ui/dvbi.py
+msgid "{n} channels"
+msgstr "{n} kanāli"

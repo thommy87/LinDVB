@@ -113,16 +113,18 @@ def test_registry_query_for_the_country():
 def test_switch_country_keeps_each_countrys_settings():
     s = {"dvbi_country": "DEU", "dvbi_list_url": "https://example.org/de.xml",
          "dvbi_list_name": "Deutschland", "dvbi_postcode": "80331", "dvbi_privacy_ack": True,
-         "dvbi_registries": list(countries.GERMANY.registries), "dvbi_last_check": 5}
+         "dvbi_registries": list(countries.GERMANY.registries), "dvbi_last_check": 5,
+         "hbbtv_country": "DEU"}
     it = countries.switch_country(s, "ITA")
-    assert it is countries.ITALY and s["dvbi_country"] == s["hbbtv_country"] == "ITA"
+    # the HbbTV country is a setting of its own now (concept section 9)
+    assert it is countries.ITALY and s["dvbi_country"] == "ITA" and s["hbbtv_country"] == "DEU"
     assert s["dvbi_list_url"] == "" and not s["dvbi_privacy_ack"] and s["dvbi_postcode"] == ""
     assert s["dvbi_registries"] == list(countries.ITALY.registries)
     assert s["dvbi_prefer_broadcast"] is False and s["dvbi_last_check"] == 0   # list precedence
     s["dvbi_area"], s["dvbi_package"] = "IT-62", "Premium"
     countries.switch_country(s, "DEU")
     assert s["dvbi_list_url"] == "https://example.org/de.xml" and s["dvbi_postcode"] == "80331"
-    assert s["dvbi_privacy_ack"] and s["hbbtv_country"] == "DEU" and s["dvbi_package"] == ""
+    assert s["dvbi_privacy_ack"] and s["dvbi_package"] == ""
     countries.set_consent(s, countries.GERMANY, "privacy", False, 100)
     assert not countries.consent_given(s, countries.GERMANY, "privacy")
     countries.switch_country(s, "ITA")
