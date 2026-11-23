@@ -17,6 +17,7 @@ Two kinds of tests live here:
 The streams come from tests/streamkit.py (made on the fly, served locally).
 """
 
+import json
 import os
 import subprocess
 import sys
@@ -419,7 +420,6 @@ def test_hbbtv_of_a_tuner_channel_comes_from_the_broadcast():
 
 # -- the channel list ------------------------------------------------------------------------
 
-@known_bug("the search text of one tab stays as a filter on the others")
 def test_switching_tabs_clears_the_search():
     gi = pytest.importorskip("gi")
     gi.require_version("Gtk", "4.0")
@@ -442,8 +442,6 @@ def test_switching_tabs_clears_the_search():
 
 # -- where recordings go ---------------------------------------------------------------------
 
-@known_bug("Snap: recordings default to ~/snap/lindvb/<rev>/Videos, "
-           "a folder the user does not find")
 def test_snap_records_into_the_real_videos_folder(tmp_path):
     real = tmp_path / "home"
     snap_home = real / "snap" / "lindvb" / "42"
@@ -464,6 +462,93 @@ def test_recordings_default_to_videos_outside_snap(tmp_path):
         [sys.executable, "-c", "from lindvb.config import DEFAULTS; print(DEFAULTS['recording_dir'])"],
         env=env, cwd=Path(__file__).parent.parent, capture_output=True, text=True, check=True)
     assert Path(out.stdout.strip()) == tmp_path / "Videos" / "LinDVB"
+
+
+def _defaults(env, *keys):
+    code = "from lindvb.config import DEFAULTS; print(*(DEFAULTS[k] for k in %r), sep='\\n')" % (keys,)
+    out = subprocess.run([sys.executable, "-c", code], env=env, cwd=ROOT,
+                         capture_output=True, text=True, check=True)
+    return [Path(line) for line in out.stdout.splitlines()]
+
+
+def test_recordings_follow_the_desktops_own_videos_folder(tmp_path):
+    (tmp_path / ".config").mkdir()
+    (tmp_path / ".config" / "user-dirs.dirs").write_text(
+        '# written by xdg-user-dirs-update\nXDG_VIDEOS_DIR="$HOME/Vidéos"\n'
+        'XDG_PICTURES_DIR="/data/Bilder"\n', encoding="utf-8")
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    assert _defaults(env, "recording_dir", "screenshot_dir") == [
+        tmp_path / "Vidéos" / "LinDVB", Path("/data/Bilder/LinDVB")]
+
+
+def test_a_switched_off_videos_folder_falls_back_to_videos(tmp_path):
+    (tmp_path / ".config").mkdir()
+    (tmp_path / ".config" / "user-dirs.dirs").write_text('XDG_VIDEOS_DIR="$HOME/"\n')
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    assert _defaults(env, "recording_dir") == [tmp_path / "Videos" / "LinDVB"]
+
+
+def _snap_env(tmp_path, rev="43"):
+    real = tmp_path / "home"
+    snap_home = real / "snap" / "lindvb" / rev
+    (snap_home / ".config" / "lindvb").mkdir(parents=True)
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env.update(HOME=str(snap_home), SNAP="/snap/lindvb/" + rev, SNAP_REAL_HOME=str(real),
+               SNAP_USER_DATA=str(snap_home), SNAP_INSTANCE_NAME="lindvb",
+               XDG_CONFIG_HOME=str(snap_home / ".config"))
+    return env, real, snap_home
+
+
+def _settings(env, *keys):
+    code = ("from lindvb.config import Settings; s = Settings(); "
+            "print(*(s[k] for k in %r), sep='\\n')" % (keys,))
+    out = subprocess.run([sys.executable, "-c", code], env=env, cwd=ROOT,
+                         capture_output=True, text=True, check=True)
+    return [Path(line) for line in out.stdout.splitlines()]
+
+
+def test_snap_moves_the_old_revision_default_to_the_real_home(tmp_path):
+    env, real, snap_home = _snap_env(tmp_path)
+    old = real / "snap" / "lindvb" / "42"
+    (snap_home / ".config" / "lindvb" / "settings.json").write_text(json.dumps({
+        "recording_dir": str(old / "Videos" / "LinDVB"),
+        "screenshot_dir": str(old / "Pictures" / "LinDVB")}))
+    assert _settings(env, "recording_dir", "screenshot_dir") == [
+        real / "Videos" / "LinDVB", real / "Pictures" / "LinDVB"]
+
+
+def test_snap_keeps_a_folder_the_user_chose(tmp_path):
+    env, real, snap_home = _snap_env(tmp_path)
+    (snap_home / ".config" / "lindvb" / "settings.json").write_text(json.dumps({
+        "recording_dir": "/media/disk/TV", "screenshot_dir": str(real / "snap" / "x")}))
+    assert _settings(env, "recording_dir", "screenshot_dir") == [
+        Path("/media/disk/TV"), real / "snap" / "x"]
+
+
+def test_settings_outside_the_snap_are_left_alone(tmp_path):
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("SNAP", "XDG_"))}
+    env["HOME"] = str(tmp_path)
+    saved = str(tmp_path / "snap" / "lindvb" / "42" / "Videos" / "LinDVB")
+    (tmp_path / ".config" / "lindvb").mkdir(parents=True)
+    (tmp_path / ".config" / "lindvb" / "settings.json").write_text(
+        json.dumps({"recording_dir": saved}))
+    assert _settings(env, "recording_dir") == [Path(saved)]
+
+
+def test_snap_recordings_list_still_shows_the_old_folder(tmp_path, monkeypatch):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    env, real, snap_home = _snap_env(tmp_path)
+    for k, v in env.items():
+        monkeypatch.setenv(k, v)
+    (snap_home / "Videos" / "LinDVB").mkdir(parents=True)
+    from lindvb.ui.window import MainWindow
+    fake = types.SimpleNamespace(settings={"recording_dir": str(real / "Videos" / "LinDVB")},
+                                 app=types.SimpleNamespace(timers=types.SimpleNamespace(timers=[])))
+    assert MainWindow._recording_folders(fake) == [
+        str(real / "Videos" / "LinDVB"), str(snap_home / "Videos" / "LinDVB")]
 
 
 

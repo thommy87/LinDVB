@@ -139,6 +139,15 @@ class PrefsWindow(Gtk.Window):
             self.w[key] = (_row(g, label, Gtk.Entry(text=str(s[key]), hexpand=stacked), hint,
                                 stacked=stacked), str)
 
+        def folder(g, key, label, hint=None):
+            """A folder entry with a button that opens the folder chooser."""
+            entry(g, key, label, hint)
+            ent = self.w[key][0]
+            btn = Gtk.Button(icon_name="folder-open-symbolic", valign=Gtk.Align.CENTER,
+                             tooltip_text=_("Choose a folder"))
+            btn.connect("clicked", lambda _b: self._choose_folder(ent, label))
+            ent.get_parent().append(btn)
+
         def spin(g, key, label, lo, hi, hint=None):
             sp = _row(g, label, Gtk.SpinButton.new_with_range(lo, hi, 1), hint)
             sp.set_value(s[key])
@@ -245,7 +254,7 @@ class PrefsWindow(Gtk.Window):
             _("When a channel or file has this sound in the same language, it plays first."))
         switch(g, "inhibit_screensaver", _("No screen saver during playback"),
                _("Keeps the screen on while TV, radio or a file plays."))
-        entry(g, "screenshot_dir", _("Screenshot folder"))
+        folder(g, "screenshot_dir", _("Screenshot folder"))
         self._build_passthrough(group(pg, _("Audio passthrough")), s, entry)
         g = group(pg, _("Subtitles"))
         self._sub_font = _row(g, _("Font"), self._font_button(s.get("subtitle_font", "")),
@@ -374,7 +383,7 @@ class PrefsWindow(Gtk.Window):
         # -- Recording
         pg = page("recording", C_("preferences page", "Recording"))
         g = group(pg)
-        entry(g, "recording_dir", _("Recording folder"))
+        folder(g, "recording_dir", _("Recording folder"))
         entry(g, "name_scheme", _("File naming scheme"),
               _("Placeholders: %year %date %time %end %station %name, / for sub-folders"),
               stacked=True)
@@ -1160,7 +1169,7 @@ class PrefsWindow(Gtk.Window):
             _("Off: live TV cannot pause or jump back. In memory: nothing is written "
               "to the disk, but the buffer takes RAM. On disk: the largest buffer."))
         self._ts_mode_drop.connect("notify::selected", lambda *_a: self._on_timeshift_mode())
-        entry(g, "timeshift_dir", _("Timeshift folder"))
+        folder(g, "timeshift_dir", _("Timeshift folder"))
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), timeshift.MIN_MB,
              timeshift.DISK_MAX_MB, " ")
         ram_max = timeshift.ram_limit_mb()
@@ -1215,6 +1224,22 @@ class PrefsWindow(Gtk.Window):
         from .. import passthrough
         return {"audio_passthrough": [c for c in passthrough.CODECS
                                       if self._pt_switches[c].get_active()]}
+
+    def _choose_folder(self, ent, title):
+        dlg = Gtk.FileDialog(title=title)
+        start = Path(ent.get_text().strip()).expanduser()
+        if start.is_dir():
+            dlg.set_initial_folder(Gio.File.new_for_path(str(start)))
+
+        def done(d, res):
+            try:
+                f = d.select_folder_finish(res)
+            except GLib.Error:
+                return
+            if f is not None and f.get_path():
+                ent.set_text(f.get_path())
+
+        dlg.select_folder(self, None, done)
 
     def _on_timeshift_mode(self):
         mode = self._ts_modes[self._ts_mode_drop.get_selected()]
