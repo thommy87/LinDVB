@@ -5,7 +5,7 @@ Copyright (C) 2026 thommy87 (https://github.com/thommy87)
 """
 
 # Keep in step with pyproject.toml (tests/test_credits.py checks it).
-__version__ = "0.22.0"
+__version__ = "0.22.1"
 COPYRIGHT = "© 2026 thommy87"
 WEBSITE = "https://github.com/thommy87/LinDVB"
 ISSUES = WEBSITE + "/issues"
