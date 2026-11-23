@@ -1,0 +1,27 @@
+name: Lint
+
+# pyflakes' checks through ruff (rules in pyproject.toml): an undefined name,
+# a missing import or a typo in a name fails here at once instead of only when
+# the code runs. 0.22.0 shipped preferences that did not open because of one.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ruff:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install ruff
+        # wheels only: no setup script of a source package runs
+        run: python3 -m pip install --user --only-binary :all: ruff==0.17.6
+      - name: Check
+        run: python3 -m ruff check --output-format github lindvb plugins tools tests

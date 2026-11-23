@@ -262,7 +262,7 @@ class PrefsWindow(Gtk.Window):
         spin(g, "subtitle_scale", _("Size (%)"), 50, 300,
              _("Subtitles drawn as pictures (DVB subtitles) keep the size the channel sends."))
         g = group(pg, _("Timeshift"))
-        self._timeshift_rows(g, s, entry, spin)
+        self._timeshift_rows(g, s, folder, spin)
         switch(g, "iptv_timeshift", _("Timeshift for internet channels"),
                _("Internet TV and radio channels go through the timeshift buffer like a "
                  "tuner's: pause, jump back and keep the buffer as a recording. Radio "
@@ -1159,7 +1159,7 @@ class PrefsWindow(Gtk.Window):
         threading.Thread(target=work, daemon=True).start()
 
     # -- timeshift (lindvb.timeshift)
-    def _timeshift_rows(self, g, s, entry, spin):
+    def _timeshift_rows(self, g, s, folder, spin):
         from .. import timeshift
         self._ts_modes = list(timeshift.MODES)
         cur = timeshift.mode(s)
