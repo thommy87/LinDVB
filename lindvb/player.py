@@ -1478,9 +1478,13 @@ class Player(GObject.Object):
         tracks, cur = self.audio_track_info()
         if not tracks or not any(t.codec for t in tracks):
             return                          # the codecs come with later tags
+        renditions = self._media("AUDIO")
+        default = next((m.get("name") for m in renditions if m.get("default")), "")
+        if default and len(tracks) < len(renditions) and \
+                not any(t.title == default for t in tracks):
+            return                          # the playlist's default track is still to come
         self._audio_pref_done = True
         start = cur
-        default = next((m.get("name") for m in self._media("AUDIO") if m.get("default")), "")
         if default and not (0 <= cur < len(tracks) and tracks[cur].title == default):
             # the timeshift buffer lists HLS audio renditions by PID: start
             # with the one the playlist marks as default, not the first PID

@@ -112,10 +112,10 @@ def _menu_extras(media, titles, buffered=True, pb3=False):
     from lindvb.ui.window import MainWindow
     url = "https://example.invalid/master.m3u8"
     tuned = types.SimpleNamespace(url=url, buffered=buffered)
-    player = types.SimpleNamespace(
+    stub = types.SimpleNamespace(
         renditions={url: media}, uri="" if buffered else url, _pb3=pb3,
         audio_track_info=lambda: ([AudioTrack(title=t) for t in titles], 0))
-    fake = types.SimpleNamespace(_tuned=tuned, capture=object() if buffered else None, player=player)
+    fake = types.SimpleNamespace(_tuned=tuned, capture=object() if buffered else None, player=stub)
     return MainWindow._missing_renditions(fake)
 
 
@@ -171,6 +171,26 @@ def test_buffer_holds_each_rendition_once(redundant):
     assert [k for _p, k, _l in streams].count("video") == 1
 
 
+def test_sound_waits_for_the_playlists_default_track():
+    """The sound is chosen once: not before the playlist's default rendition
+    is among the tracks (under load it can come after the others)."""
+    from lindvb.player import Player
+    renditions = [{"name": "TV Ton", "default": True}, {"name": "Klare Sprache"},
+                  {"name": "Audio-Deskription"}]
+    tracks = [AudioTrack(title="Klare Sprache", codec="AAC"),
+              AudioTrack(title="Audio-Deskription", codec="AAC")]
+    chosen = []
+    fake = types.SimpleNamespace(
+        _audio_pref_done=False, playbin=object(), settings={"audio_prefer": "off"},
+        audio_track_info=lambda: (list(tracks), 0), _media=lambda kind: renditions,
+        select_audio=chosen.append)
+    Player._apply_audio_preference(fake)
+    assert not fake._audio_pref_done and chosen == []
+    tracks.insert(1, AudioTrack(title="TV Ton", codec="AAC"))
+    Player._apply_audio_preference(fake)
+    assert fake._audio_pref_done and chosen == [1]
+
+
 def test_buffer_names_the_renditions(redundant, player):  # noqa: F811
     """From the buffer: each audio rendition by its name, the playlist's
     default (TV Ton) plays."""
@@ -179,8 +199,12 @@ def test_buffer_names_the_renditions(redundant, player):  # noqa: F811
     out.write_bytes(data)
     player.renditions[out.as_uri()] = parse_hls(sk.REDUNDANT_MASTER)["media"]
     player.play_uri(out.as_uri())
-    _run(5, lambda: len(player.audio_tracks()[0]) == 3 and player.audio_tracks()[1] >= 0
-         and player._audio_pref_done)
+    names = ("TV Ton", "Klare Sprache", "Audio-Deskription")
+    # a track is named once its stream has been seen; under load that can be
+    # after the third track appeared
+    _run(10, lambda: len(player.audio_tracks()[0]) == 3 and player.audio_tracks()[1] >= 0
+         and player._audio_pref_done
+         and all(any(n in lab for n in names) for lab in player.audio_tracks()[0]))
     labels, cur = player.audio_tracks()
     assert len(labels) == 3, labels
     assert [any(n in lab for lab in labels) for n in ("TV Ton", "Klare Sprache", "Audio-Deskription")] \

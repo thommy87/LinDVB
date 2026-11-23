@@ -32,3 +32,8 @@ lindvb = ["icons/hicolor/scalable/actions/*.svg", "icons/hicolor/scalable/apps/*
 "share/icons/hicolor/256x256/apps" = ["data/icons/hicolor/256x256/apps/lindvb.png"]
 "share/icons/hicolor/512x512/apps" = ["data/icons/hicolor/512x512/apps/lindvb.png"]
 "share/metainfo" = ["data/io.github.thommy87.LinDVB.metainfo.xml"]
+
+# CI (.github/workflows/lint.yml): pyflakes' checks, above all names that are
+# used but never defined, which only fail when that code runs
+[tool.ruff.lint]
+select = ["F"]

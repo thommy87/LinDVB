@@ -22,7 +22,6 @@ folder holds channel lists, not scan tables, and is left out.
 import gzip
 import io
 import json
-import shutil
 import sys
 import tarfile
 from pathlib import Path
