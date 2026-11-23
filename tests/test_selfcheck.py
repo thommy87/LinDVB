@@ -5,6 +5,8 @@ import io
 import tomllib
 from pathlib import Path
 
+import pytest
+
 from lindvb import selfcheck
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -88,3 +90,22 @@ def test_silence_is_noticed():
     assert selfcheck.silent({"audio": 10, "peak": 1})            # about -90 dBFS
     assert not selfcheck.silent({"audio": 10, "peak": 3000})     # about -21 dBFS
     assert not selfcheck.silent({"audio": 0, "peak": 0})         # no sound at all: elsewhere
+
+
+def test_missing_optional_elements_only_warn(monkeypatch):
+    """Without textoverlay (text subtitles) or gtk4paintablesink LinDVB still
+    plays: the self-check says what is lost, and does not fail."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    find = Gst.ElementFactory.find
+    monkeypatch.setattr(Gst.ElementFactory, "find",
+                        lambda name: None if name in selfcheck.OPTIONAL_ELEMENTS else find(name))
+    r = selfcheck.Report(io.StringIO())
+    selfcheck.check_elements(r)
+    out = r.out.getvalue()
+    assert "WARN  GStreamer element textoverlay is missing: text subtitles" in out
+    assert "WARN  GStreamer element gtk4paintablesink is missing" in out
+    assert not any(line.startswith("FAIL") and n in line for line in out.splitlines()
+                   for n in selfcheck.OPTIONAL_ELEMENTS)
