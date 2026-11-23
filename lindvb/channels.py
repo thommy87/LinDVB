@@ -210,6 +210,30 @@ def numbered(channels, manual=False):
     return out
 
 
+def _spares(channel, block):
+    """The own instances of *channel* as spare instances from *block*."""
+    return [dict(d, block=block) for d in channel.dvbi_instances if "block" not in d]
+
+
+def _without_spares(instances, block):
+    return [d for d in instances if d.get("block") != block]
+
+
+def _keep_from(c, prev, block):
+    """What the channel *c* of a list update keeps of the channel it
+    replaces: favourite, guide match, logo, picture seen and the spare
+    instances other blocks gave it."""
+    c.favourite = prev.favourite
+    if prev.xmltv_manual or not c.xmltv_id:
+        c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
+    if not c.logo:
+        c.logo = prev.logo
+    c.seen_video = c.seen_video or prev.seen_video
+    if prev.dvbi_block == block:
+        c.dvbi_instances += [d for d in prev.dvbi_instances
+                             if d.get("block") not in (None, block)]
+
+
 class ChannelDB:
     path = CONFIG_DIR / "channels.json"
     # the user put the channels in an order of their own (channel editor):
@@ -254,71 +278,60 @@ class ChannelDB:
         if block not in order:
             order.append(block)
         rank = {b: i for i, b in enumerate(order)}
-        mine = rank[block]
         old = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block == block}
         others = {c.key: c for c in self.channels if c.dvbi_id and c.dvbi_block != block}
         # this block's spare instances in other blocks' channels are made anew
         for o in others.values():
-            o.dvbi_instances = [d for d in o.dvbi_instances if d.get("block") != block]
-        displaced = set()
-        fresh = []
+            o.dvbi_instances = _without_spares(o.dvbi_instances, block)
+        displaced, fresh = set(), []
         added = updated = 0
         for c in new:
             c.dvbi_block = block
             prev = old.pop(c.key, None)
             other = others.get(c.key)
-            if other is not None and rank.get(other.dvbi_block, len(order)) < mine:
+            earlier = other is not None and \
+                rank.get(other.dvbi_block, len(order)) < rank[block]
+            if earlier:
                 # an earlier block has it: a spare instance there
-                other.dvbi_instances += [dict(d, block=block) for d in c.dvbi_instances
-                                         if "block" not in d]
-                if prev:
-                    updated += 1
-                continue
-            if other is not None:
+                other.dvbi_instances += _spares(c, block)
+            elif other is not None:
                 # a later block had it: this one takes over
                 displaced.add(other.key)
+                c.dvbi_instances += _spares(other, other.dvbi_block)
                 prev = prev or other
-                c.dvbi_instances += [dict(d, block=other.dvbi_block)
-                                     for d in other.dvbi_instances if "block" not in d]
             if prev:
-                c.favourite = prev.favourite
-                if prev.xmltv_manual or not c.xmltv_id:
-                    c.xmltv_id, c.xmltv_manual = prev.xmltv_id, prev.xmltv_manual
-                if not c.logo:
-                    c.logo = prev.logo
-                c.seen_video = c.seen_video or prev.seen_video
-                if prev.dvbi_block == block:
-                    # spare instances other blocks gave this channel
-                    c.dvbi_instances += [d for d in prev.dvbi_instances
-                                         if d.get("block") not in (None, block)]
                 updated += 1
-            else:
+            elif not earlier:
                 added += 1
-            fresh.append(c)
-        gone = len(old)
+            if not earlier:
+                if prev:
+                    _keep_from(c, prev, block)
+                fresh.append(c)
+        self._place_block(fresh, block, displaced, rank)
+        self.renumber()
+        return added, updated, len(old)
+
+    def _place_block(self, fresh, block, displaced, rank):
+        """Put the new channels of *block* into the list (see replace_dvbi)."""
+        def stays(c):
+            return c.key not in displaced and (not c.dvbi_id or c.dvbi_block != block)
         if self.manual_order:
             # an order of the user's own: the channels that stay keep their
             # place, new ones come at the end
             byk = {c.key: c for c in fresh}
             out = []
             for c in self.channels:
-                if c.key in displaced:
-                    if c.key in byk:
-                        out.append(byk.pop(c.key))
-                elif not c.dvbi_id or c.dvbi_block != block:
+                if stays(c):
                     out.append(c)
                 elif c.key in byk:
                     out.append(byk.pop(c.key))
             self.channels[:] = out + list(byk.values())
-        else:
-            # the blocks in their order, then the other channels
-            rest = [c for c in self.channels
-                    if c.key not in displaced and (not c.dvbi_id or c.dvbi_block != block)]
-            dv = fresh + [c for c in rest if c.dvbi_id]
-            dv.sort(key=lambda c: rank.get(c.dvbi_block, len(order)))
-            self.channels[:] = dv + [c for c in rest if not c.dvbi_id]
-        self.renumber()
-        return added, updated, gone
+            return
+        # the blocks in their order, then the other channels
+        rest = [c for c in self.channels if stays(c)]
+        dv = fresh + [c for c in rest if c.dvbi_id]
+        dv.sort(key=lambda c: rank.get(c.dvbi_block, len(rank)))
+        self.channels[:] = dv + [c for c in rest if not c.dvbi_id]
 
     def remove_dvbi_block(self, block):
         """Remove the channels of one DVB-I list block (and its spare

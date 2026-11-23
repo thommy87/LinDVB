@@ -16,6 +16,14 @@ from lindvb.channels import Channel
 from test_dvbi import SCANNED, SERVICE_LIST as LIST
 
 
+@pytest.fixture(autouse=True)
+def _german_languages():
+    """Choosing a country sets the preferred languages of lindvb.dvbi; the
+    other tests expect the German default."""
+    yield
+    dvbi.use_country("DEU")
+
+
 # ---------------------------------------------------------------- the country list
 
 def test_the_list_has_every_dvb_country_once():

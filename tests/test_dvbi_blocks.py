@@ -14,6 +14,14 @@ from lindvb.channels import Channel, ChannelDB
 from test_dvbi import SCANNED, SERVICE_LIST, FakeNet
 
 
+@pytest.fixture(autouse=True)
+def _german_languages():
+    """Choosing a country sets the preferred languages of lindvb.dvbi; the
+    other tests expect the German default."""
+    yield
+    dvbi.use_country("DEU")
+
+
 def _svc(uid, lcn, block="", url=""):
     return Channel(name=uid.upper(), delsys="iptv", url=url or f"https://{block or 'de'}/{uid}",
                    dvbi_id=uid, lcn=lcn, dvbi_block=block,
@@ -168,7 +176,10 @@ def test_an_added_list_is_loaded_into_its_block(tmp_path):
     assert s["dvbi_list_url"] == "https://it/list.xml"
     assert (tmp_path / "c" / "servicelist-own1.xml").exists()
     assert not (tmp_path / "c" / "servicelist.xml").exists()
-    assert dvbi.LANGUAGES == dvbi.use_country("ITA").languages   # the chosen country's
+    try:
+        assert dvbi.LANGUAGES == dvbi.use_country("ITA").languages   # the chosen country's
+    finally:
+        dvbi.use_country("DEU")                 # the default the other tests expect
 
 
 REGISTRY_WITH_COUNTRY = b"""<?xml version="1.0" encoding="UTF-8"?>
