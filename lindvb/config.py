@@ -279,7 +279,7 @@ DEFAULTS = {
     # "custom" (accent_custom, "#RRGGBB").
     # user interface language ("" follows the desktop); see lindvb/i18n.py
     "language": "",
-    "theme": "dark",                # dark, light or system (lindvb.ui.theme.SCHEMES)
+    "theme": "system",              # dark, light or system (lindvb.ui.theme.SCHEMES)
     "accent_mode": "default",
     "accent_custom": "#119CFF",
     # Channel editor sections that are unfolded.
@@ -380,6 +380,10 @@ class Settings(dict):
         # chosen: until it is, the desktop's country applies
         if not saved.get("hbbtv_country_set"):
             saved.pop("hbbtv_country", None)
+        # a new installation follows the desktop's light or dark look; one
+        # from before the colour scheme could be chosen keeps the dark look
+        if saved and "theme" not in saved:
+            saved["theme"] = "dark"
         self.update(saved)
 
     def save(self):

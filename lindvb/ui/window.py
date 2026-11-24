@@ -25,7 +25,8 @@ from ..signalq import Meter as QualityMeter, NONE as Q_NONE
 from ..visuals import DEFAULT_STYLE, STYLES
 from .common import Row, hm, message
 from .stepmenu import Section, StepMenu
-from .theme import OSD_WIDTH, apply_accent, apply_display, apply_theme, resolve_accent
+from .theme import (APPEARANCE, OSD_WIDTH, PORTAL, apply_accent, apply_display, apply_theme,
+                    resolve_accent)
 from .nowplaying import NowPlayingOverlay, overlay_enabled
 from .visualizer import VisualizerArea
 from ..i18n import _
@@ -1794,6 +1795,14 @@ class MainWindow(Gtk.ApplicationWindow):
                 self._gnome_iface.connect("changed::color-scheme", changed)
                 self._gnome_iface.connect("changed::gtk-theme", changed)
         except Exception:          # noqa: BLE001 - no GNOME settings
+            pass
+        try:
+            # KDE Plasma and other desktops tell it through the desktop portal
+            bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+            self._portal_watch = bus.signal_subscribe(
+                PORTAL[0], PORTAL[2], "SettingChanged", PORTAL[1], APPEARANCE[0],
+                Gio.DBusSignalFlags.NONE, changed)
+        except Exception:          # noqa: BLE001 - no session bus
             pass
 
     def first_in_list(self):
