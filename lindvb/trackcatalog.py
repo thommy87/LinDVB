@@ -54,8 +54,8 @@ _HOH_CHARACTERISTICS = ("public.accessibility.transcribes-spoken-dialog",
                         "public.accessibility.describes-music-and-sound")
 
 # formats as tsanalysis.describe_stream names them -> catalog formats
-_FORMATS = {"MPEG-1 Audio": "MP2", "MPEG-2 Audio": "MP2", "HE-AAC (LATM)": "AAC",
-            "DVB-SUB": "DVB-SUB"}
+_FORMATS = {"MPEG-1 Audio": "MP2", "MPEG-2 Audio": "MP2", "HE-AAC (LATM)": "AAC"}
+DVB_SUB = "DVB-SUB"
 # DVB subtitling types (EN 300 468 6.2.41) for the hard of hearing
 _HOH_SUBTITLING = range(0x20, 0x26)
 # teletext types (EN 300 468 6.2.43): 2 subtitles, 5 subtitles for the hard of hearing
@@ -159,7 +159,7 @@ def _stream_tracks(pid, d):
     if d["kind"] == "subtitle":
         if any(t in _HOH_SUBTITLING for _l, t in d.get("subtitles", ())):
             roles.add(HARD_OF_HEARING)
-        return [Track(SUBTITLE, "DVB-SUB", lang, roles=_with_main(roles), origin=origin)]
+        return [Track(SUBTITLE, DVB_SUB, lang, roles=_with_main(roles), origin=origin)]
     if d["kind"] == "teletext":
         return _teletext_tracks(d.get("pages", ()))
     return []
@@ -178,6 +178,11 @@ def _teletext_tracks(pages):
     return out
 
 
+def _rendition_language_and_roles(m):
+    return language_and_roles(m.get("language", ""), m.get("name", ""),
+                              m.get("characteristics", ""))
+
+
 def from_hls(media, in_buffer=True):
     """The tracks of an HLS master playlist's renditions (EXT-X-MEDIA, as
     streaminfo.parse_hls gives them)."""
@@ -188,8 +193,7 @@ def from_hls(media, in_buffer=True):
         if kind is None:
             continue
         name = m.get("name", "")
-        lang, roles = language_and_roles(m.get("language", ""), name,
-                                         m.get("characteristics", ""))
+        lang, roles = _rendition_language_and_roles(m)
         if m.get("type") == "CLOSED-CAPTIONS":
             iid = (m.get("instream_id") or "").upper()
             fmt = "CEA-608" if iid.startswith("CC") else "CEA-708"
@@ -214,8 +218,7 @@ def with_renditions(pmt_tracks, media, rendition_for_pid):
             out.append(t)
             continue
         used.add(m.get("name", ""))
-        lang, roles = language_and_roles(m.get("language", ""), m.get("name", ""),
-                                         m.get("characteristics", ""))
+        lang, roles = _rendition_language_and_roles(m)
         roles |= set(t.roles) - {MAIN}
         out.append(Track(AUDIO, t.format, t.language or lang, m.get("name", ""),
                          _with_main(roles), t.origin))

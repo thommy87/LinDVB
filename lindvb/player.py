@@ -90,6 +90,10 @@ def _describes_video(media):
     return "public.accessibility.describes-video" in ((media or {}).get("characteristics") or "")
 
 
+# the debug log's name for the track catalog lines (stage D, shadow mode)
+_TRACKS_LOG = "Tracks"
+
+
 def _pid_of(stream_id):
     """The PID at the end of a tsdemux stream id (".../00000101"), or -1."""
     tail = (stream_id or "").rsplit("/", 1)[-1].split(":")[-1]
@@ -1522,16 +1526,16 @@ class Player(GObject.Object):
             kinds = [kind for kind, _key, _label in self._subtitle_entries()]
             diff = trackcatalog.compare(catalog, tracks, kinds, is_audio_description)
         except (ValueError, IndexError) as e:
-            debuglog.write("Tracks", f"catalog not built: {e}")
+            debuglog.write(_TRACKS_LOG, f"catalog not built: {e}")
             return False
         said = (tuple(t.id for t in catalog), tuple(diff))
         if catalog and said != self._catalog_logged:
             self._catalog_logged = said
-            debuglog.write("Tracks", "catalog: " + "; ".join(
+            debuglog.write(_TRACKS_LOG, "catalog: " + "; ".join(
                 f"{t.id} = {trackcatalog.label(t, language_name)}"
                 + ("" if t.in_buffer else " (not in the buffer)") for t in catalog))
             for line in diff:
-                debuglog.write("Tracks", "the menu differs from the catalog: " + line)
+                debuglog.write(_TRACKS_LOG, "the menu differs from the catalog: " + line)
         return False
 
     def _pb3_tracks_changed(self):
