@@ -130,8 +130,7 @@ def distinct_languages(text):
         return text, []
     out = []
     for ln in text.splitlines():
-        a = _audio_rendition(ln)
-        key = (a.get("LANGUAGE", "").strip().lower(), a.get("NAME", ""))
+        key = _rendition_key(_audio_rendition(ln))[:2]
         if key in spelling:
             ln = _LANGUAGE_ATTR.sub(f'LANGUAGE="{spelling[key]}"', ln, count=1)
         out.append(ln)
@@ -145,19 +144,23 @@ def _audio_rendition(line):
     return a if a.get("TYPE") == "AUDIO" and a.get("URI") else {}
 
 
+def _rendition_key(attrs):
+    """(language in lower case, name, language as written) of a rendition."""
+    lang = attrs.get("LANGUAGE", "").strip()
+    return lang.lower(), attrs.get("NAME", ""), lang
+
+
 def _respellings(text):
     """{(language, name): spelling} for distinct_languages."""
     first = {}                    # language -> the first name with it
     spelling = {}
     for ln in text.splitlines():
-        a = _audio_rendition(ln)
-        lang = a.get("LANGUAGE", "").strip().lower()
+        lang, name, written = _rendition_key(_audio_rendition(ln))
         if not lang:
             continue
-        name = a.get("NAME", "")
         if first.setdefault(lang, name) != name and (lang, name) not in spelling:
             n = sum(1 for k in spelling if k[0] == lang) + 1
-            spelling[(lang, name)] = _other_language(a["LANGUAGE"].strip(), n)
+            spelling[(lang, name)] = _other_language(written, n)
     return spelling
 
 
