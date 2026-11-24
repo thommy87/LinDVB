@@ -743,7 +743,10 @@ class GstReader:
         self._mux = None
         self._rendition_pids = set()
         pl.connect("deep-element-added", self._on_element)
-        src.connect("pad-added", self._on_source_pad, pl)
+        # the handlers find the pipeline as their element's parent: passed
+        # along, it would be held by its own element, and the pipeline (with
+        # its sockets) never freed
+        src.connect("pad-added", self._on_source_pad)
         bus = pl.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message, gen)
@@ -809,12 +812,15 @@ class GstReader:
                 except (TypeError, OverflowError, ValueError):
                     pass
 
-    def _on_source_pad(self, _src, pad, pl):
+    def _on_source_pad(self, src, pad):
         Gst = self.Gst
+        pl = src.get_parent()
+        if pl is None:
+            return
         parse = Gst.ElementFactory.make("parsebin")
         # a transport stream stays one: parsebin hands it on without tsdemux
         parse.connect("autoplug-continue", self._autoplug_continue)
-        parse.connect("pad-added", self._on_parsed_pad, pl)
+        parse.connect("pad-added", self._on_parsed_pad)
         pl.add(parse)
         parse.sync_state_with_parent()
         pad.link(parse.get_static_pad("sink"))
@@ -854,8 +860,11 @@ class GstReader:
             cc, self._meta_cc = self._meta_cc, (self._meta_cc + 1) & 0x0F
         return meta_packet(fields, cc) + data
 
-    def _on_parsed_pad(self, _parse, pad, pl):
+    def _on_parsed_pad(self, parse, pad):
         Gst = self.Gst
+        pl = parse.get_parent()
+        if pl is None:
+            return
         name = self._caps_name(pad)
         if self.meta:
             pad.add_probe(Gst.PadProbeType.EVENT_DOWNSTREAM, self._on_tag_event)

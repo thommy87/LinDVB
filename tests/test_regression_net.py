@@ -231,6 +231,54 @@ def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
     assert ad == ["Audio-Deskription"]
 
 
+# -- channel changes leave nothing behind (crash of 24.11.2026) ------------------------------
+
+def _open_files():
+    return len(os.listdir("/proc/self/fd"))
+
+
+def test_channel_changes_leave_no_open_files(tmp_path):
+    """Debug log of 24.11.2026: after about 40 channel changes on internet
+    channels LinDVB ran out of files ("Zu viele offene Dateien", no sound
+    device, then the crash). Every released capture stayed in memory with its
+    pipelines, sockets and pipes: GStreamer held the methods of the capture
+    and its reader, and they held their pipelines."""
+    import gc
+    import weakref
+    GLib, _Gst = sk.gst(*HLS_ELEMENTS)
+    if not os.path.isdir("/proc/self/fd"):
+        pytest.skip("needs /proc")
+    from lindvb.channels import Channel
+    from lindvb.config import DEFAULTS
+    from lindvb.tuner import TunerManager
+    srv, _folder = _served(sk.make_av_segments)
+    settings = dict(DEFAULTS, timeshift_dir=str(tmp_path), timeshift_max_mb=64)
+    tm = TunerManager(settings, probe=lambda a, f: [])
+
+    def change(i):
+        cap = tm.acquire(Channel(name=f"Kanal {i}", delsys="iptv",
+                                 url=srv.url("index.m3u8")), "live")
+        loop = GLib.MainLoop()
+        GLib.timeout_add(1500, loop.quit)
+        loop.run()
+        assert cap.store.bounds()[1] > 0                # it did read the stream
+        refs = [weakref.ref(cap), weakref.ref(cap._net.reader)]
+        tm.release(cap, "live")
+        return refs
+
+    try:
+        change(0)                                       # GStreamer's own first-time setup
+        gc.collect()
+        before = _open_files()
+        left = [r for i in range(1, 5) for r in change(i)]
+        gc.collect()
+        assert [r() for r in left] == [None] * len(left)    # captures and readers are gone
+        assert _open_files() <= before + 1, (before, _open_files())
+    finally:
+        tm.shutdown()
+        srv.close()
+
+
 # -- a live stream whose server stops answering (3sat, zdf-hls-18) ---------------------------
 
 def test_reader_notices_a_server_that_stops_answering():
