@@ -4931,3 +4931,15 @@ msgstr "Aloita kuvailutulkkauksella"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Pois: sokeille ja heikkonäköisille tarkoitettu kuvailutulkkaus soi vain, kun se valitaan äänivalikosta."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Tekstitys satelliitin kautta"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Tekstitys kaapelin kautta"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Tekstitys antennin kautta"

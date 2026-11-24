@@ -4931,3 +4931,15 @@ msgstr "Kezdés hangalámondással"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Ki: a vakoknak és gyengénlátóknak szóló hangalámondás csak akkor szól, ha a hang menüben kiválasztják."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Felirat műholdon keresztül"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Felirat kábelen keresztül"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Felirat antennán keresztül"

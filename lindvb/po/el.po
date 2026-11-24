@@ -4931,3 +4931,15 @@ msgstr "Έναρξη με ακουστική περιγραφή"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Ανενεργό: η ακουστική περιγραφή για τυφλούς και άτομα με μειωμένη όραση παίζει μόνο όταν επιλεγεί στο μενού ήχου."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Υπότιτλοι μέσω δορυφόρου"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Υπότιτλοι μέσω καλωδίου"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Υπότιτλοι μέσω κεραίας"

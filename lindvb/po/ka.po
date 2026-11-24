@@ -5287,3 +5287,15 @@ msgstr "დაწყება აუდიოაღწერით"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "გამორთული: აუდიოაღწერა უსინათლოთა და მხედველობადაქვეითებულთათვის მხოლოდ მაშინ ჟღერს, როცა ხმის მენიუში აირჩევთ."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "სუბტიტრები თანამგზავრით"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "სუბტიტრები კაბელით"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "სუბტიტრები ანტენით"

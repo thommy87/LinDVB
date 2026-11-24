@@ -696,7 +696,7 @@ class GstReader:
         self._stall_watch = 0            # STALL_TIMEOUT timer
         self._last_data = 0.0            # time.monotonic() of the last data
         self.event = ""                  # the latest event (lindvb.sourcestate)
-        self.resolved = False            # (it does not resolve refused addresses)
+        self.resolved = False            # a refused address was resolved
         self.gave_up = False             # on_error came: no more attempts
 
     @property
@@ -984,7 +984,10 @@ class GstReader:
             return
         if msg.type == Gst.MessageType.ERROR:
             err, dbg = msg.parse_error()
-            self._broken(gen, err.message, sourcestate.from_gst_error(err, dbg))
+            event = sourcestate.from_gst_error(err, dbg)
+            reason = sourcestate.refused_text(f"{err.message} {dbg or ''}") \
+                if event == sourcestate.REFUSED else err.message
+            self._broken(gen, reason, event)
         elif msg.type == Gst.MessageType.EOS:
             self._broken(gen, _("the server ended the stream"), sourcestate.ENDED)
 
@@ -1034,6 +1037,14 @@ class GstReader:
         self.event = event
         self._gen += 1                   # ignore what the old pipeline still says
         self._teardown()
+        if event == sourcestate.REFUSED and not self.received and not self.resolved and \
+                (self.source_uri or self.url).lower().startswith(("http://", "https://")):
+            # a gateway that redirects to a CDN refusing us: follow the
+            # redirect ourselves and ask the CDN straight away (DVB-I), once,
+            # as the player does when it plays the stream directly
+            self.resolved = True
+            threading.Thread(target=self._resolve, args=(reason,), daemon=True).start()
+            return
         if not self.received:
             if not self._manifest_checked and stream_kind(self.url) == "adaptive":
                 # nothing came: perhaps a playlist the server sends gzip-
@@ -1052,6 +1063,28 @@ class GstReader:
         self._status("reconnecting", _("{host}: {reason} – connecting again in {s} s").format(
             host=self.host, reason=reason, s=delay))
         self._timer = self.GLib.timeout_add(int(delay * 1000), self._again)
+
+    def _resolve(self, reason):
+        uri = self.source_uri or self.url
+        trace = []
+        try:
+            target = resolve_redirects(uri, trace=trace)
+        except OSError:
+            target = uri
+        self.GLib.idle_add(self._resolved_done, uri, target, reason, trace)
+
+    def _resolved_done(self, uri, target, reason, trace):
+        if self.closed:
+            return False
+        from . import debuglog
+        debuglog.write("Stream", f"{self.host}: refused ({reason}); resolved {uri}: "
+                                 + "; ".join(trace))
+        if target and target != uri:
+            self.source_uri = target
+            self._build()
+        else:
+            self._fail(f"{self.host}: {reason}")
+        return False
 
     def _check_manifest(self, reason):
         uri = uncompressed_hls(self.url)

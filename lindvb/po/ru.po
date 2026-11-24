@@ -4931,3 +4931,15 @@ msgstr "Начинать с тифлокомментария"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Выкл.: тифлокомментарий для незрячих и слабовидящих звучит, только если выбрать его в меню звука."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Субтитры через спутник"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Субтитры через кабель"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Субтитры через антенну"

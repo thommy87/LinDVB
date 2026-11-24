@@ -23,6 +23,9 @@ files of their own in the repository:
 ``Server`` serves a folder; its ``stall_after`` makes every request after
 that many seconds hang until the server shuts down, its ``refuse`` answers
 every request with that HTTP status (403: a CDN that does not serve us).
+``redirect`` maps paths to the address they redirect to, and
+``refuse_first`` maps paths to how many of their first requests are
+answered with 403 (ARD's DVB-I gateway and CDN).
 """
 
 import http.server
@@ -203,6 +206,16 @@ class _Handler(http.server.SimpleHTTPRequestHandler):
         if srv.refuse:
             self.send_error(srv.refuse)
             return
+        path = self.path.lstrip("/").split("?")[0]
+        if path in srv.redirect:
+            self.send_response(302)
+            self.send_header("Location", srv.redirect[path])
+            self.end_headers()
+            return
+        if srv.refuse_first.get(path, 0) > 0:
+            srv.refuse_first[path] -= 1
+            self.send_error(403)
+            return
         if srv.stall_after is not None and time.monotonic() - srv.started > srv.stall_after:
             srv.stalled.wait()              # hangs until the server shuts down
             return
@@ -222,7 +235,8 @@ class Server:
     """A folder over HTTP on 127.0.0.1; ``url(path)`` gives an address.
     *live* maps paths to LivePlaylists, served in place of files."""
 
-    def __init__(self, folder, stall_after=None, live=None, refuse=None):
+    def __init__(self, folder, stall_after=None, live=None, refuse=None, redirect=None,
+                 refuse_first=None):
         self.folder = Path(folder)
 
         def handler(*a, **kw):
@@ -232,6 +246,8 @@ class Server:
         self.httpd.requests = []
         self.httpd.stall_after = stall_after
         self.httpd.refuse = refuse
+        self.httpd.redirect = dict(redirect or {})
+        self.httpd.refuse_first = dict(refuse_first or {})
         self.httpd.stalled = threading.Event()
         self.httpd.live = dict(live or {})
         self.httpd.started = time.monotonic()

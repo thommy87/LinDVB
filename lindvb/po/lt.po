@@ -4931,3 +4931,15 @@ msgstr "Pradėti nuo garsinio vaizdavimo"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Išjungta: garsinis vaizdavimas akliesiems ir silpnaregiams skamba tik tada, kai jis pasirenkamas garso meniu."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Subtitrai per palydovą"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Subtitrai per kabelį"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Subtitrai per anteną"

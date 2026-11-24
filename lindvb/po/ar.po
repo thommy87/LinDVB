@@ -4931,3 +4931,15 @@ msgstr "البدء بالوصف الصوتي"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "معطّل: لا يُشغَّل الوصف الصوتي للمكفوفين وضعاف البصر إلا عند اختياره من قائمة الصوت."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "الترجمة عبر القمر الصناعي"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "الترجمة عبر الكابل"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "الترجمة عبر الهوائي"

@@ -4931,3 +4931,15 @@ msgstr "Začni z zvočnim opisom"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Izklopljeno: zvočni opis za slepe in slabovidne se predvaja le, če ga izberete v meniju zvoka."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Podnapisi prek satelita"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Podnapisi prek kabla"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Podnapisi prek antene"

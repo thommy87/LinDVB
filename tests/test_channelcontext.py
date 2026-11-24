@@ -106,3 +106,78 @@ def test_window_logs_the_context(monkeypatch):
     app.tuners.profiles = broken                 # never in the way of a channel change
     MainWindow._log_channel_context(win, web)
     assert lines[-1][1] == "context: not available (no /dev/dvb)"
+
+
+# -- the subtitle menu: subtitles via the broadcast instance -----------------------------
+
+def _window(scanned, profiles, monkeypatch):
+    import gi
+    gi.require_version("Gtk", "4.0")
+    gi.require_version("Gdk", "4.0")
+    gi.require_version("Gst", "1.0")
+    from lindvb.ui import window as wmod
+    monkeypatch.setattr(wmod.GLib, "idle_add", lambda fn, *a: fn(*a))
+    web = _ard_internet(scanned)
+    started, status, chosen = [], [], []
+    app = types.SimpleNamespace(db=types.SimpleNamespace(channels=scanned),
+                                tuners=types.SimpleNamespace(profiles=lambda: profiles))
+    player = types.SimpleNamespace(subtitle_tracks=lambda: ([], -1), select_subtitle=chosen.append)
+    win = types.SimpleNamespace(
+        current=web, _tuned=web, stopped=None, capture=None, settings={}, app=app,
+        _broadcast_subs=(None, None), _subs_wanted=None, _tried={wmod._tuning_sig(web)},
+        _release_capture=lambda: None, _start_stream=started.append,
+        set_status=status.append, _update_teletext=lambda: None,
+        _rebuild_track_menus=lambda: None, player=player)
+    cls = wmod.MainWindow
+    for name in ("_broadcast_subtitle_instance", "_play_broadcast_subtitles",
+                 "_wanted_subtitles_on", "_show_first_subtitles"):
+        setattr(win, name, getattr(cls, name).__get__(win))
+    return wmod, win, web, started, status, chosen
+
+
+T2 = [{"adapter": 0, "systems": ["dvb-t", "dvb-t2"]}]
+
+
+def test_subtitle_menu_offers_the_broadcast_instance(monkeypatch):
+    scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
+    wmod, win, web, started, status, chosen = _window(scanned, T2, monkeypatch)
+    alt = win._broadcast_subtitle_instance()
+    assert alt is not None and alt.delsys == "dvb-t2"
+    assert wmod._broadcast_subtitles_label(alt) == "Subtitles via antenna"
+    # worked out once per instance
+    win.app.db.channels = []
+    assert win._broadcast_subtitle_instance() is alt
+    # picked: the antenna instance plays, and its first subtitles go on
+    win._play_broadcast_subtitles()
+    assert started == [alt] and win._tuned is alt and win._subs_wanted == web.key
+    assert status[-1] == f"{web.name}: Subtitles via antenna"
+    win._wanted_subtitles_on()                       # no subtitle tracks yet
+    assert chosen == [] and win._subs_wanted == web.key
+    win.player.subtitle_tracks = lambda: (["Teletext 150"], -1)
+    win._wanted_subtitles_on()
+    assert chosen == [0] and win._subs_wanted is None
+    # on the broadcast instance there is nothing more to offer
+    assert win._broadcast_subtitle_instance() is None
+
+
+def test_subtitle_menu_without_a_tuner_or_subtitles(monkeypatch):
+    _wmod, win, *_ = _window(SCANNED, T2, monkeypatch)          # no teletext found
+    assert win._broadcast_subtitle_instance() is None
+    scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
+    _wmod, win, *_ = _window(scanned, [{"adapter": 0, "systems": ["dvb-s2"]}], monkeypatch)
+    assert win._broadcast_subtitle_instance() is None
+
+
+def test_no_free_tuner_keeps_the_internet_stream(monkeypatch):
+    scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
+    _wmod, win, web, started, status, _chosen = _window(scanned, T2, monkeypatch)
+
+    def start(c):
+        started.append(c)
+        if not c.is_iptv:
+            raise RuntimeError("All tuners are busy")
+    win._start_stream = start
+    win._play_broadcast_subtitles()
+    assert [c.is_iptv for c in started] == [False, True]
+    assert win._tuned is web and win._subs_wanted is None
+    assert status[-1] == f"{web.name}: All tuners are busy"

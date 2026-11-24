@@ -4931,3 +4931,15 @@ msgstr "Começar com audiodescrição"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Desligado: a audiodescrição para pessoas cegas e com baixa visão só é reproduzida quando escolhida no menu de áudio."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Legendas por satélite"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Legendas por cabo"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Legendas por antena"
