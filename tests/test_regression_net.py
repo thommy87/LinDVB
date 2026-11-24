@@ -43,6 +43,7 @@ def known_bug(reason):
     return pytest.mark.xfail(strict=True, raises=AssertionError, reason=reason)
 
 
+LIVE = "main/live.m3u8"            # the playlist of streamkit.live_hls
 HLS_ELEMENTS = ("videotestsrc", "x264enc", "avenc_aac", "mpegtsmux", "hlssink", "urisourcebin",
                 "parsebin", "appsink", "h264parse", "hlsdemux2")
 
@@ -240,7 +241,7 @@ def test_reader_notices_a_server_that_stops_answering():
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 60, stall_after=6)
     got, errors, status = [], [], []
-    r = ipstream.GstReader(srv.url("main/live.m3u8"), got.append, errors.append,
+    r = ipstream.GstReader(srv.url(LIVE), got.append, errors.append,
                            lambda k, m: status.append((k, r.event)))
     r.start()
     try:
@@ -267,7 +268,7 @@ def test_refused_stream_in_the_buffer_is_named_refused():
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 20, refuse=403)
     errors = []
-    r = ipstream.GstReader(srv.url("main/live.m3u8"), lambda b: None, errors.append,
+    r = ipstream.GstReader(srv.url(LIVE), lambda b: None, errors.append,
                            lambda k, m: None)
     r.start()
     try:
@@ -291,9 +292,9 @@ def test_buffer_reader_resolves_a_refusing_gateway():
     reads the stream from the CDN, with timeshift (stage E; until then the
     channel was played directly, without timeshift)."""
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
-    srv, _folder = _served(sk.live_hls, 30, redirect={"dvbi/live.m3u8": "/main/live.m3u8"},
+    srv, _folder = _served(sk.live_hls, 30, redirect={"dvbi/live.m3u8": "/" + LIVE},
                            # the reader's own look at the playlist, then the HTTP source
-                           refuse_first={"main/live.m3u8": 2})
+                           refuse_first={LIVE: 2})
     got, errors = [], []
     r = ipstream.GstReader(srv.url("dvbi/live.m3u8"), got.append, errors.append,
                            lambda k, m: None)
@@ -301,7 +302,7 @@ def test_buffer_reader_resolves_a_refusing_gateway():
     try:
         _run(25, lambda: got or errors)
         assert got and not errors
-        assert r.resolved and r.source_uri == srv.url("main/live.m3u8")
+        assert r.resolved and r.source_uri == srv.url(LIVE)
     finally:
         r.close()
         srv.close()

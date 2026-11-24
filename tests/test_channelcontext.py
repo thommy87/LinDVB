@@ -11,6 +11,11 @@ from lindvb.channels import Channel
 from test_dvbi import SCANNED, SERVICE_LIST
 
 
+T2 = "dvb-t2"
+TUNER_T2 = [{"adapter": 0, "systems": ["dvb-t", T2]}]
+TUNER_S2 = [{"adapter": 0, "systems": ["dvb-s", "dvb-s2"]}]
+
+
 def _old_rule(channel, capture):
     """ui.hbbtv.channel_changed before stage E, for the comparison."""
     if channel is not None and channel.dvbi_apps and \
@@ -61,13 +66,12 @@ def test_subtitles_via_the_broadcast_instance():
     scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
     web = _ard_internet(scanned)
     assert web.is_iptv
-    t2 = [{"adapter": 0, "systems": ["dvb-t", "dvb-t2"]}]
-    sat_only = [{"adapter": 0, "systems": ["dvb-s", "dvb-s2"]}]
+    t2, sat_only = TUNER_T2, TUNER_S2
     ctx = cc.ChannelContext(web, None, {}, scanned, t2)
     subs = ctx.broadcast_subtitles()
-    assert subs is not None and subs.delsys == "dvb-t2" and subs.teletext_pid == 804
+    assert subs is not None and subs.delsys == T2 and subs.teletext_pid == 804
     assert subs.dvbi_id == web.dvbi_id and subs.name == web.name
-    assert "subtitles via dvb-t2" in ctx.describe()
+    assert f"subtitles via {T2}" in ctx.describe()
     # no tuner for it, or no subtitles found by the channel search: nothing
     assert cc.ChannelContext(web, None, {}, scanned, sat_only).broadcast_subtitles() is None
     assert cc.ChannelContext(web, None, {}, SCANNED, t2).broadcast_subtitles() is None
@@ -79,7 +83,7 @@ def test_describe_for_the_debug_log():
     web = _ard_internet(SCANNED)
     line = cc.ChannelContext(web, None, {"hbbtv_country": "DEU"}, SCANNED, []).describe()
     assert line.startswith(f"{web.name}: country DEU, applications from ")
-    assert "other instances: dvb-t2" in line and "subtitles via" not in line
+    assert f"other instances: {T2}" in line and "subtitles via" not in line
     assert cc.ChannelContext(None).describe() == "no channel"
     plain = Channel(name="Arte", delsys="dvb-s2")
     assert cc.ChannelContext(plain, object()).instances() == []
@@ -135,14 +139,13 @@ def _window(scanned, profiles, monkeypatch):
     return wmod, win, web, started, status, chosen
 
 
-T2 = [{"adapter": 0, "systems": ["dvb-t", "dvb-t2"]}]
 
 
 def test_subtitle_menu_offers_the_broadcast_instance(monkeypatch):
     scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
-    wmod, win, web, started, status, chosen = _window(scanned, T2, monkeypatch)
+    wmod, win, web, started, status, chosen = _window(scanned, TUNER_T2, monkeypatch)
     alt = win._broadcast_subtitle_instance()
-    assert alt is not None and alt.delsys == "dvb-t2"
+    assert alt is not None and alt.delsys == T2
     assert wmod._broadcast_subtitles_label(alt) == "Subtitles via antenna"
     # worked out once per instance
     win.app.db.channels = []
@@ -161,16 +164,16 @@ def test_subtitle_menu_offers_the_broadcast_instance(monkeypatch):
 
 
 def test_subtitle_menu_without_a_tuner_or_subtitles(monkeypatch):
-    _wmod, win, *_ = _window(SCANNED, T2, monkeypatch)          # no teletext found
+    _wmod, win, *_ = _window(SCANNED, TUNER_T2, monkeypatch)          # no teletext found
     assert win._broadcast_subtitle_instance() is None
     scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
-    _wmod, win, *_ = _window(scanned, [{"adapter": 0, "systems": ["dvb-s2"]}], monkeypatch)
+    _wmod, win, *_ = _window(scanned, TUNER_S2, monkeypatch)
     assert win._broadcast_subtitle_instance() is None
 
 
 def test_no_free_tuner_keeps_the_internet_stream(monkeypatch):
     scanned = [dataclasses.replace(SCANNED[0], teletext_pid=804)] + SCANNED[1:]
-    _wmod, win, web, started, status, _chosen = _window(scanned, T2, monkeypatch)
+    _wmod, win, web, started, status, _chosen = _window(scanned, TUNER_T2, monkeypatch)
 
     def start(c):
         started.append(c)
