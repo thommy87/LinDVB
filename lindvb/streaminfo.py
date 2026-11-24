@@ -94,12 +94,12 @@ def data_master(text, base):
 
 
 # ISO 639-2 languages with two codes (bibliographic, terminological)
-_639_2_PAIRS = dict(pair for b, t in (
+_639_2_B_T = (
     ("alb", "sqi"), ("arm", "hye"), ("baq", "eus"), ("bur", "mya"), ("chi", "zho"),
     ("cze", "ces"), ("dut", "nld"), ("fre", "fra"), ("geo", "kat"), ("ger", "deu"),
     ("gre", "ell"), ("ice", "isl"), ("mac", "mkd"), ("mao", "mri"), ("may", "msa"),
     ("per", "fas"), ("rum", "ron"), ("slo", "slk"), ("tib", "bod"), ("wel", "cym"))
-    for pair in ((b, t), (t, b)))
+_639_2_PAIRS = {**dict(_639_2_B_T), **{t: b for b, t in _639_2_B_T}}
 _LANGUAGE_ATTR = re.compile(r'LANGUAGE="([^"]*)"')
 _NAME_ATTR = re.compile(r'NAME="([^"]*)"')
 
