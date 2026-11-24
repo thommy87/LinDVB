@@ -2663,8 +2663,8 @@ class MainWindow(Gtk.ApplicationWindow):
             self._tuned = prev
             try:
                 self._start_stream(prev)
-            except RuntimeError:
-                pass
+            except RuntimeError as again:
+                debuglog.write("Channel", f"{c.name}: back to the internet stream failed: {again}")
             self.set_status(f"{c.name}: {_short(str(e))}")
             self._update_teletext()
             return
