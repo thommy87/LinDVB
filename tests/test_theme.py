@@ -61,3 +61,32 @@ def test_light_and_dark_schemes():
     assert "alpha(white," not in dark.split(".osd")[0]       # lines follow the scheme
     assert ".osd, .osd-num { background: alpha(#121215" in light   # the OSD stays dark
     assert resolve_scheme({}) == "dark" and resolve_scheme({"theme": "light"}) == "light"
+
+
+def test_new_installation_follows_the_desktop(tmp_path, monkeypatch):
+    """A new installation starts in the desktop's look; a setting once saved
+    stays, and one from before the colour scheme could be chosen stays dark."""
+    from lindvb import config
+    path = tmp_path / "settings.json"
+    monkeypatch.setattr(config.Settings, "path", path)
+    assert config.Settings()["theme"] == "system"              # no file yet
+    for saved in ("dark", "light", "system"):
+        path.write_text(f'{{"theme": "{saved}"}}')
+        assert config.Settings()["theme"] == saved
+    path.write_text('{"volume": 0.5}')                          # an old installation
+    assert config.Settings()["theme"] == "dark"
+    s = config.Settings()
+    s.save()
+    assert config.Settings()["theme"] == "dark"
+
+
+def test_system_scheme_asks_the_desktop_portal(monkeypatch):
+    from lindvb.ui import theme
+    assert [theme.portal_value_scheme(v) for v in (1, 2, 0, (1,), ((2,),), None, "x")] == \
+        ["dark", "light", None, "dark", "light", None, None]
+    monkeypatch.setattr(theme, "portal_scheme", lambda: "light")
+    assert theme.system_scheme() == "light"
+    assert theme.resolve_scheme({"theme": "system"}) == "light"
+    monkeypatch.setattr(theme, "portal_scheme", lambda: "dark")
+    assert theme.resolve_scheme({"theme": "system"}) == "dark"
+    assert theme.resolve_scheme({"theme": "light"}) == "light"

@@ -231,6 +231,72 @@ def test_direct_offers_subtitles_once(redundant, player):  # noqa: F811
     assert ad == ["Audio-Deskription"]
 
 
+# -- 3sat with every sound a rendition of its own (log of 24.11.2026) ------------------------
+
+THREESAT_SOUNDS = ("TV Ton", "Klare Sprache / Originalton", "Audio-Deskription")
+
+
+@pytest.fixture(scope="module")
+def threesat():
+    sk.gst(*HLS_ELEMENTS)
+    srv, folder = _served(sk.hls_3sat)
+    _r, data, errors = _read_all(ipstream.GstReader, srv.url("master.m3u8"),
+                                 retry=ipstream.Retry(delays=(5,), give_up=30))
+    try:
+        yield srv, folder, data, errors
+    finally:
+        srv.close()
+
+
+def test_buffer_holds_the_3sat_sounds(threesat):
+    """The three sounds of the playlist, each once on the PID its name gives
+    (also the name with a slash), the audio description with its language;
+    no fourth sound from the variant itself (the menu showed "Track 1" and
+    two unnamed tracks, and no audio description)."""
+    _srv, _folder, data, errors = threesat
+    assert not errors and ipstream.looks_like_ts(data)
+    streams = _pmt_streams(data)
+    audio = {pid: lang for pid, kind, lang in streams if kind == "audio"}
+    taken = set()
+    pids = {}
+    for name in THREESAT_SOUNDS:
+        pids[name] = ipstream.rendition_pid(name, taken)
+        taken.add(pids[name])
+    assert sorted(audio) == sorted(pids.values()), [hex(p) for p in audio]
+    assert audio[pids["TV Ton"]] in ("deu", "ger")
+    assert audio[pids["Audio-Deskription"]] in ("deu", "ger")
+    assert [k for _p, k, _l in streams].count("video") == 1
+
+
+def test_buffer_names_the_3sat_sounds(threesat, player):  # noqa: F811
+    """From the buffer: the three sounds by their names, TV Ton plays."""
+    _srv, folder, data, _errors = threesat
+    out = folder / "buffer.ts"
+    out.write_bytes(data)
+    player.renditions[out.as_uri()] = parse_hls(sk.THREESAT_MASTER)["media"]
+    player.play_uri(out.as_uri())
+    _run(10, lambda: len(player.audio_tracks()[0]) >= 3 and player.audio_tracks()[1] >= 0
+         and player._audio_pref_done
+         and all(any(n in lab for n in THREESAT_SOUNDS) for lab in player.audio_tracks()[0]))
+    labels, cur = player.audio_tracks()
+    assert len(labels) == 3, labels
+    assert [any(n in lab for lab in labels) for n in THREESAT_SOUNDS] == [True] * 3, labels
+    assert "TV Ton" in labels[cur]
+
+
+def test_direct_offers_the_3sat_sounds(threesat, player):  # noqa: F811
+    """Played directly (playbin3): the three sounds, the audio description
+    among them, TV Ton plays."""
+    srv, _folder, _data, _errors = threesat
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(srv.url("master.m3u8"))
+    _run(15, lambda: len(player.audio_tracks()[0]) >= 3 and player._played
+         and player._audio_pref_done)
+    labels, cur = player.audio_tracks()
+    assert [any(n in lab for lab in labels) for n in THREESAT_SOUNDS] == [True] * 3, labels
+    assert "TV Ton" in labels[cur]
+
+
 # -- channel changes leave nothing behind (crash of 24.11.2026) ------------------------------
 
 def _open_files():

@@ -12,7 +12,7 @@ Some servers send their playlists gzip-compressed whether the client asked
 for it or not (PBS on Amazon S3 / CloudFront stores them that way and
 answers ``Content-Encoding: gzip`` to every request). ``decode_body`` unpacks
 such an answer; ``data_master`` turns the playlist into one GStreamer can
-start from (see lindvb.ipstream.uncompressed_hls).
+start from (see lindvb.ipstream.hls_handover).
 """
 
 import base64
@@ -91,6 +91,122 @@ def data_master(text, base):
         out = "\n".join(lines) + "\n"
     return "data:application/vnd.apple.mpegurl;base64," + \
         base64.b64encode(out.encode("utf-8")).decode("ascii")
+
+
+# ISO 639-2 languages with two codes (bibliographic, terminological)
+_639_2_B_T = (
+    ("alb", "sqi"), ("arm", "hye"), ("baq", "eus"), ("bur", "mya"), ("chi", "zho"),
+    ("cze", "ces"), ("dut", "nld"), ("fre", "fra"), ("geo", "kat"), ("ger", "deu"),
+    ("gre", "ell"), ("ice", "isl"), ("mac", "mkd"), ("mao", "mri"), ("may", "msa"),
+    ("per", "fas"), ("rum", "ron"), ("slo", "slk"), ("tib", "bod"), ("wel", "cym"))
+_639_2_PAIRS = {**dict(_639_2_B_T), **{t: b for b, t in _639_2_B_T}}
+_LANGUAGE_ATTR = re.compile(r'LANGUAGE="([^"]*)"')
+_NAME_ATTR = re.compile(r'NAME="([^"]*)"')
+
+
+def _other_language(lang, n):
+    """The *n*-th other spelling of *lang* (n >= 1) that names the same
+    language: the other ISO 639-2 code, then a private subtag."""
+    other = _639_2_PAIRS.get(lang.lower())
+    if other and n == 1:
+        return other
+    return f"{lang}-x-{n + 1}"
+
+
+def distinct_languages(text):
+    """(*text*, []) or (a copy of the master playlist *text*, [names]) in
+    which the audio renditions *names* got a spelling of their language of
+    their own.
+
+    hlsdemux2 (GStreamer 1.24) offers one audio rendition with an address
+    per language: a second one with the same LANGUAGE, under another name, is
+    left out (3sat: "Audio-Deskription" next to "TV Ton", both "deu", so the
+    audio description never reached the buffer). With another spelling of
+    the language ("ger" for "deu") it offers both. The same name in another
+    group (a copy for another variant) gets the same spelling; renditions
+    without an address (the variant's own sound) do not count."""
+    spelling = _respellings(text)
+    if not spelling:
+        return text, []
+    out = []
+    for ln in text.splitlines():
+        key = _rendition_key(_audio_rendition(ln))[:2]
+        if key in spelling:
+            ln = _LANGUAGE_ATTR.sub(f'LANGUAGE="{spelling[key]}"', ln, count=1)
+        out.append(ln)
+    return "\n".join(out) + "\n", [name for _lang, name in spelling]
+
+
+def _audio_rendition(line):
+    """The attributes of an audio rendition with an address, else {}."""
+    st = line.strip()
+    a = _attrs(st) if st.startswith("#EXT-X-MEDIA:") else {}
+    return a if a.get("TYPE") == "AUDIO" and a.get("URI") else {}
+
+
+def _rendition_key(attrs):
+    """(language in lower case, name, language as written) of a rendition."""
+    lang = attrs.get("LANGUAGE", "").strip()
+    return lang.lower(), attrs.get("NAME", ""), lang
+
+
+def _respellings(text):
+    """{(language, name): spelling} for distinct_languages."""
+    first = {}                    # language -> the first name with it
+    spelling = {}
+    for ln in text.splitlines():
+        lang, name, written = _rendition_key(_audio_rendition(ln))
+        if not lang:
+            continue
+        if first.setdefault(lang, name) != name and (lang, name) not in spelling:
+            n = sum(1 for k in spelling if k[0] == lang) + 1
+            spelling[(lang, name)] = _other_language(written, n)
+    return spelling
+
+
+def handover_master(text, base, compressed):
+    """``(data: address, why)`` of the HLS playlist *text* (fetched from
+    *base*) to hand GStreamer instead of its address, or ``(None, "")`` when
+    GStreamer reads the address as it is: a compressed playlist (see
+    data_master), audio renditions hlsdemux2 would leave out (see
+    distinct_languages)."""
+    fixed, renamed = distinct_languages(text) if parse_hls(text).get("kind") == "master" \
+        else (text, [])
+    whys = (["the server sends the playlist compressed"] if compressed else []) + \
+        ([f"audio renditions sharing a language ({', '.join(renamed)}) get a spelling "
+          "of their own"] if renamed else [])
+    if not whys:
+        return None, ""
+    return data_master(fixed, base), "; ".join(whys)
+
+
+def hls_stream_name(stream_id, kind):
+    """The rendition name hlsdemux2 puts into its stream ids
+    ("<hash>/audio-Klare Sprache / Originalton", ".../text-Deutsch") for
+    *kind* "audio" or "text", or "". The name may contain slashes."""
+    sid = stream_id or ""
+    mark = "/" + kind + "-"
+    i = sid.find(mark)
+    if i >= 0:
+        return sid[i + len(mark):]
+    return sid[len(kind) + 1:] if sid.startswith(kind + "-") else ""
+
+
+def _is_variant_sound(stream_id):
+    sid = stream_id or ""
+    return "/main-audio-" in sid or sid.startswith("main-audio-")
+
+
+def without_variant_sound(streams):
+    """*streams* (Gst.Stream of hlsdemux2) without the sound the variant
+    carries itself (".../main-audio-N") when the playlist gives the sounds
+    as renditions with addresses of their own (".../audio-NAME"): a player
+    then ignores the variant's sound (RFC 8216, 4.3.4.2.1). hlsdemux2 offers
+    it next to them (3sat: "Track 1" and an unnamed track in the menu)."""
+    ids = [st.get_stream_id() for st in streams]
+    if not any(hls_stream_name(i, "audio") for i in ids):
+        return list(streams)
+    return [st for st, i in zip(streams, ids) if not _is_variant_sound(i)]
 
 
 def parse_hls(text, base=""):

@@ -55,6 +55,57 @@ def test_rendition_pids_are_found_again():
     assert ipstream.rendition_pid("x", {ipstream.rendition_pid("x")}) != ipstream.rendition_pid("x")
 
 
+def test_renditions_sharing_a_language_get_a_spelling_of_their_own():
+    """hlsdemux2 offers one audio rendition with an address per language:
+    the audio description gets "ger" next to "deu", in both groups the
+    same; names and addresses stay, the variant's own sound does not count."""
+    import streamkit as sk
+    from lindvb import streaminfo
+    text, renamed = streaminfo.distinct_languages(sk.THREESAT_MASTER)
+    assert renamed == ["Audio-Deskription"]
+    media = parse_hls(text)["media"]
+    old = parse_hls(sk.THREESAT_MASTER)["media"]
+    assert [m["name"] for m in media] == [m["name"] for m in old]
+    assert [m["uri"] for m in media] == [m["uri"] for m in old]
+    assert [m["language"] for m in media if m["type"] == "AUDIO"] == \
+        ["deu", "mul", "ger"] * 2
+    # three names, one language: the third gets a private subtag
+    third = sk.THREESAT_MASTER.replace('NAME="Klare Sprache / Originalton",LANGUAGE="mul"',
+                                       'NAME="Klare Sprache / Originalton",LANGUAGE="deu"')
+    langs = [m["language"] for m in parse_hls(streaminfo.distinct_languages(third)[0])["media"]
+             if m["type"] == "AUDIO"][:3]
+    assert langs == ["deu", "ger", "deu-x-3"]
+    # nothing to do: the same text, and no data: address for a plain playlist
+    assert streaminfo.distinct_languages(sk.REDUNDANT_MASTER) == (sk.REDUNDANT_MASTER, [])
+    assert streaminfo.handover_master(sk.REDUNDANT_MASTER, "http://x/m.m3u8", False) == (None, "")
+    uri, why = streaminfo.handover_master(sk.THREESAT_MASTER, "http://x/m.m3u8", False)
+    assert uri.startswith("data:") and "Audio-Deskription" in why
+
+
+class _Stream:
+    def __init__(self, sid):
+        self.sid = sid
+
+    def get_stream_id(self):
+        return self.sid
+
+
+def test_stream_names_and_the_variants_own_sound():
+    from lindvb import streaminfo
+    name = streaminfo.hls_stream_name
+    assert name("9f3a/audio-Klare Sprache / Originalton", "audio") == \
+        "Klare Sprache / Originalton"
+    assert name("9f3a/text-Untertitel deutsch", "text") == "Untertitel deutsch"
+    assert name("9f3a/text-Untertitel deutsch", "audio") == ""
+    assert name("9f3a/main-audio-1", "audio") == "" and name(None, "audio") == ""
+    ids = ["h/audio-TV Ton", "h/main-video-0", "h/main-audio-1"]
+    kept = streaminfo.without_variant_sound([_Stream(i) for i in ids])
+    assert [st.sid for st in kept] == ids[:2]
+    # no rendition of its own: the variant's sound is the sound
+    ids = ["h/main-video-0", "h/main-audio-1"]
+    assert [st.sid for st in streaminfo.without_variant_sound([_Stream(i) for i in ids])] == ids
+
+
 def _make_main(folder, seconds=6):
     """The variant: H.264 and AAC in TS segments of about 1 s."""
     import shutil

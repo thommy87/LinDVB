@@ -318,24 +318,77 @@ def theme_css(scheme="dark"):
 CSS = theme_css("dark")
 
 
+PORTAL = ("org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop",
+          "org.freedesktop.portal.Settings")
+APPEARANCE = ("org.freedesktop.appearance", "color-scheme")
+
+
+def portal_scheme(timeout_ms=1000):
+    """"dark" or "light" as the desktop portal reports the user's choice
+    (GNOME, KDE Plasma and others, also inside a sandbox), or None: no
+    portal, or no preference."""
+    try:
+        from gi.repository import Gio, GLib
+        bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+        try:
+            v = bus.call_sync(*PORTAL, "ReadOne", GLib.Variant("(ss)", APPEARANCE),
+                              GLib.VariantType("(v)"), Gio.DBusCallFlags.NONE, timeout_ms, None)
+            value = v.unpack()[0]
+        except GLib.Error as e:
+            # portals before version 2 only have Read (a variant in a variant);
+            # anything else (a time-out, no portal) would only fail again
+            if Gio.DBusError.get_remote_error(e) != "org.freedesktop.DBus.Error.UnknownMethod":
+                raise
+            v = bus.call_sync(*PORTAL, "Read", GLib.Variant("(ss)", APPEARANCE),
+                              GLib.VariantType("(v)"), Gio.DBusCallFlags.NONE, timeout_ms, None)
+            value = v.unpack()[0]
+        return portal_value_scheme(value)
+    except Exception:          # noqa: BLE001 - no session bus or no portal
+        return None
+
+
+def portal_value_scheme(value):
+    """The portal's color-scheme value (1 dark, 2 light, 0 no preference)."""
+    while isinstance(value, (tuple, list)) and len(value) == 1:
+        value = value[0]
+    return {1: "dark", 2: "light"}.get(value) if isinstance(value, int) else None
+
+
 def system_scheme():
-    """"light" or "dark" from the desktop (GNOME colour scheme, else the GTK
-    theme name); "dark" when nothing says otherwise."""
+    """"light" or "dark" from the desktop: the desktop portal's colour
+    scheme, else GNOME's, else the GTK theme name; "dark" when nothing says
+    otherwise."""
+    return portal_scheme() or _gnome_scheme() or "dark"
+
+
+def _gnome_interface():
+    """GNOME's org.gnome.desktop.interface settings and their keys, or (None, ())."""
     try:
         from gi.repository import Gio
         src = Gio.SettingsSchemaSource.get_default()
-        if src is not None and src.lookup("org.gnome.desktop.interface", True) is not None:
-            gs = Gio.Settings.new("org.gnome.desktop.interface")
-            keys = gs.props.settings_schema.list_keys()
-            if "color-scheme" in keys:
-                v = gs.get_string("color-scheme")
-                if v == "prefer-dark":
-                    return "dark"
-                if v in ("prefer-light", "default"):
-                    name = gs.get_string("gtk-theme") if "gtk-theme" in keys else ""
-                    return "dark" if "dark" in name.lower() else "light"
-    except Exception:          # noqa: BLE001 - no GNOME settings: keep dark
-        pass
+        if src is None or src.lookup("org.gnome.desktop.interface", True) is None:
+            return None, ()
+        gs = Gio.Settings.new("org.gnome.desktop.interface")
+        return gs, gs.props.settings_schema.list_keys()
+    except Exception:          # noqa: BLE001 - no GNOME settings
+        return None, ()
+
+
+def _gnome_scheme():
+    """GNOME's colour scheme setting, else the GTK theme's; None when
+    neither says."""
+    gs, keys = _gnome_interface()
+    v = gs.get_string("color-scheme") if "color-scheme" in keys else ""
+    if v == "prefer-dark":
+        return "dark"
+    if v in ("prefer-light", "default"):
+        name = gs.get_string("gtk-theme") if "gtk-theme" in keys else ""
+        return "dark" if "dark" in name.lower() else "light"
+    return _gtk_theme_scheme()
+
+
+def _gtk_theme_scheme():
+    """"dark" for a dark GTK theme, else None."""
     try:
         from gi.repository import Gtk
         name = Gtk.Settings.get_default().get_property("gtk-theme-name") or ""
@@ -343,7 +396,7 @@ def system_scheme():
             return "dark"
     except Exception:          # noqa: BLE001
         pass
-    return "dark"
+    return None
 
 
 def resolve_scheme(settings):

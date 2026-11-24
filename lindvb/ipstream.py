@@ -265,18 +265,19 @@ def fetch_manifest(url, limit=512 * 1024, timeout=REDIRECT_TIMEOUT):
     return text, final, is_compressed(data, enc)
 
 
-def uncompressed_hls(url, timeout=REDIRECT_TIMEOUT):
-    """A data: address GStreamer can start *url* from, when *url* is an HLS
-    playlist the server sends compressed (which GStreamer's HTTP source
-    cannot read; see lindvb.streaminfo.data_master); else None. Blocking."""
-    from .streaminfo import data_master
+def hls_handover(url, timeout=REDIRECT_TIMEOUT):
+    """``(data: address, why)`` to start the HLS playlist *url* from instead
+    of *url*, or ``(None, "")``: when the server sends it compressed (which
+    GStreamer's HTTP source cannot read) or hlsdemux2 would leave out some of
+    its audio renditions (see lindvb.streaminfo.handover_master). Blocking."""
+    from .streaminfo import handover_master
     if not url.lower().startswith(("http://", "https://")):
-        return None
+        return None, ""
     try:
         text, final, compressed = fetch_manifest(url, timeout=timeout)
     except (OSError, ValueError):
-        return None
-    return data_master(text, final) if compressed else None
+        return None, ""
+    return handover_master(text, final, compressed)
 
 
 def _iso639_2(code):
@@ -709,7 +710,8 @@ class GstReader:
                 self.url.lower().startswith(("http://", "https://")):
             # an HLS playlist the server sends compressed reaches the demuxer
             # cut short or garbled (variants and renditions missing, or
-            # "Invalid manifest"): look at it first, in the background
+            # "Invalid manifest"), and hlsdemux2 leaves out audio renditions
+            # that share a language: look at it first, in the background
             self._manifest_checked = True
             threading.Thread(target=self._check_manifest, args=(None,), daemon=True).start()
         else:
@@ -932,18 +934,17 @@ class GstReader:
         a muxer pad on the PID that its name gives (rendition_pid), and its
         language for the PMT when the playlist gives a real one (ARD writes
         LANGUAGE="klare sprache"). None for other streams."""
+        from .streaminfo import hls_stream_name
         Gst = self.Gst
         st = pad.get_stream()
-        tail = (st.get_stream_id() or "").rsplit("/", 1)[-1] if st is not None else ""
-        if not name.startswith("audio/") or not tail.startswith("audio-"):
+        rendition = hls_stream_name(st.get_stream_id(), "audio") if st is not None else ""
+        if not name.startswith("audio/") or not rendition:
             return None
-        pid = rendition_pid(tail[6:], self._rendition_pids)
+        pid = rendition_pid(rendition, self._rendition_pids)
         if pid is None:
             return None
         self._rendition_pids.add(pid)
-        tags = st.get_tags()
-        ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE) if tags else (False, "")
-        code = _iso639_2(lang) if ok else None
+        code = self._language_of(st.get_tags())
         if code:
             tl = Gst.TagList.new_empty()
             tl.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_LANGUAGE_CODE, code)
@@ -956,6 +957,18 @@ class GstReader:
                 return Gst.PadProbeReturn.REMOVE
             first.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, once)
         return self._mux.request_pad(tmpl, f"sink_{pid}", None)
+
+    def _language_of(self, tags):
+        """The ISO 639-2 code of a stream's tags, or None. A language with a
+        private subtag (see lindvb.streaminfo.distinct_languages: "deu-x-3")
+        comes as a language name."""
+        Gst = self.Gst
+        for tag in (Gst.TAG_LANGUAGE_CODE, Gst.TAG_LANGUAGE_NAME):
+            ok, lang = tags.get_string(tag) if tags else (False, "")
+            code = _iso639_2(lang.split("-x-", 1)[0]) if ok and lang else None
+            if code:
+                return code
+        return None
 
     def _drop(self, pad, pl):
         fake = self.Gst.ElementFactory.make("fakesink")
@@ -1015,14 +1028,19 @@ class GstReader:
         dropped anyway. Worse, hlsdemux2 hands its tracks on in step: a
         subtitle track whose segments carry no time stamps (PBS's WebVTT
         captions) holds picture and sound back until its next segment comes,
-        so the stream arrived in bursts every few seconds or hardly at all."""
+        so the stream arrived in bursts every few seconds or hardly at all.
+
+        The sound a variant carries itself is left out when the playlist
+        gives every sound as a rendition of its own (3sat; see
+        lindvb.streaminfo.without_variant_sound)."""
+        from .streaminfo import without_variant_sound
         Gst = self.Gst
         f = msg.src.get_factory() if isinstance(msg.src, Gst.Element) else None
         if f is None or f.get_name() not in ADAPTIVE_DEMUXERS:
             return
         coll = msg.parse_stream_collection()
         streams = [coll.get_stream(i) for i in range(coll.get_size())]
-        keep = [st.get_stream_id() for st in streams
+        keep = [st.get_stream_id() for st in without_variant_sound(streams)
                 if not st.get_stream_type() & Gst.StreamType.TEXT]
         sounds = sum(1 for st in streams if st.get_stream_type() & Gst.StreamType.AUDIO)
         if keep and (len(keep) < len(streams) or sounds > 1):
@@ -1100,17 +1118,16 @@ class GstReader:
         return False
 
     def _check_manifest(self, reason):
-        uri = uncompressed_hls(self.url)
-        self.GLib.idle_add(self._manifest_checked_done, uri, reason)
+        uri, why = hls_handover(self.url)
+        self.GLib.idle_add(self._manifest_checked_done, uri, reason, why)
 
-    def _manifest_checked_done(self, uri, reason):
+    def _manifest_checked_done(self, uri, reason, why=""):
         """*reason*: why the pipeline broke (None: checked before the start)."""
         if self.closed:
             return False
         if uri:
             from . import debuglog
-            debuglog.write("Stream", f"{self.host}: the server sends the playlist "
-                                     "compressed; handing it to GStreamer unpacked")
+            debuglog.write("Stream", f"{self.host}: {why}; handing GStreamer the playlist itself")
             self.source_uri = uri
             self._build()
         elif reason is None:
