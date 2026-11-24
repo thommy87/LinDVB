@@ -664,3 +664,28 @@ def test_sound_in_the_interface_language(monkeypatch):
         fake._starting_track = lambda *a, f=fake: Player._starting_track(f, *a)
         Player._apply_audio_preference(fake)
         assert chosen == want, setting
+
+
+def test_catalog_agrees_with_the_menus(redundant, player, monkeypatch):  # noqa: F811
+    """Stage D shadow mode on the 3sat-like stream, from the buffer and
+    played directly: the track catalog and the menus agree."""
+    from lindvb import debuglog
+    from lindvb.player import Player
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
+    srv, folder, data, _errors = redundant
+    out = folder / "buffer.ts"
+    out.write_bytes(data)
+    player.renditions[out.as_uri()] = parse_hls(sk.REDUNDANT_MASTER)["media"]
+    player.play_uri(out.as_uri())
+    _run(10, lambda: len(player.audio_tracks()[0]) == 3 and player._audio_pref_done
+         and player._pmt_raw)
+    Player._shadow_catalog(player, player._token)
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(srv.url("master.m3u8"))
+    _run(15, lambda: player.subtitle_tracks()[0] and len(player.audio_tracks()[0]) == 3)
+    Player._shadow_catalog(player, player._token)
+    tracks = [text for cat, text in lines if cat == "Tracks"]
+    assert sum(text.startswith("catalog:") for text in tracks) == 2, tracks
+    assert not [t for t in tracks if "differs" in t], tracks

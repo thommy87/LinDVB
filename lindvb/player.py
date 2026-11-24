@@ -21,10 +21,10 @@ from gi.repository import Gdk, GLib, GObject, Gst, GstVideo  # noqa: E402
 from .nowplaying import RadioTextDecoder, ancillary_tail  # noqa: E402
 from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio,  # noqa: E402
                          language_name, preferred_track, AUDIO_LANGUAGE_AUTO,
-                         language_track, playback_language)
+                         language_track, playback_language, is_audio_description)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import captions, debuglog, hwaccel, passthrough  # noqa: E402
+from . import captions, debuglog, hwaccel, passthrough, trackcatalog  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -417,6 +417,9 @@ class Player(GObject.Object):
         self.renditions = {}            # HLS address -> its EXT-X-MEDIA renditions
         self._cc_pmt = {}               # caption services the PMT names {service: language}
         self._ad_pids = set()           # audio description PIDs the PMT names
+        self._pmt_raw = b""             # the PMT section of what plays (track catalog)
+        self._catalog_logged = None     # what the debug log last said about the catalog
+        self._catalog_timer = 0
         # Internet streams with the audio in separate HLS renditions run on
         # playbin3: the old hlsdemux in playbin lines those renditions up by
         # playlist position instead of by timestamp, which puts sound and
@@ -945,6 +948,8 @@ class Player(GObject.Object):
         self._ttx_last = ""
         self._cc_pmt = {}
         self._ad_pids = set()
+        self._pmt_raw = b""
+        self._catalog_logged = None
         if self.metadata:
             self.metadata = {}
             self.emit("metadata", {})
@@ -1115,6 +1120,9 @@ class Player(GObject.Object):
             return
         if self.sid and program != self.sid:
             return
+        if bytes(raw) != self._pmt_raw:
+            self._pmt_raw = bytes(raw)
+            self._shadow_catalog_later()
         cc = captions.caption_services_from_descriptors(pmt.program_info)
         for _st, _pid, _ca, info in pmt.streams:
             cc.update(captions.caption_services_from_descriptors(info))
@@ -1487,8 +1495,44 @@ class Player(GObject.Object):
                 self._tracks_pending = False
                 self._apply_audio_preference()
                 self.emit("tracks")
+                self._shadow_catalog_later()
                 return False
             GLib.idle_add(fire)
+
+    # -- track catalog in shadow mode (stage D) ------------------------------------
+
+    def _shadow_catalog_later(self):
+        """Debug mode: compare the track catalog with the menus once the
+        tracks have settled (3 s after the last change)."""
+        if not debuglog.enabled():
+            return
+        if self._catalog_timer:
+            GLib.source_remove(self._catalog_timer)
+        self._catalog_timer = GLib.timeout_add(3000, self._shadow_catalog, self._token)
+
+    def _shadow_catalog(self, token):
+        """Write the catalog of what plays to the debug log, and where it
+        differs from the audio and subtitle menus. Only on a change."""
+        self._catalog_timer = 0
+        if token != self._token or not self.playbin or not debuglog.enabled():
+            return False
+        try:
+            catalog = trackcatalog.catalog_for(self._pmt_raw, self._media(), rendition_for_pid)
+            tracks, _cur = self.audio_track_info()
+            kinds = [kind for kind, _key, _label in self._subtitle_entries()]
+            diff = trackcatalog.compare(catalog, tracks, kinds, is_audio_description)
+        except (ValueError, IndexError) as e:
+            debuglog.write("Tracks", f"catalog not built: {e}")
+            return False
+        said = (tuple(t.id for t in catalog), tuple(diff))
+        if catalog and said != self._catalog_logged:
+            self._catalog_logged = said
+            debuglog.write("Tracks", "catalog: " + "; ".join(
+                f"{t.id} = {trackcatalog.label(t, language_name)}"
+                + ("" if t.in_buffer else " (not in the buffer)") for t in catalog))
+            for line in diff:
+                debuglog.write("Tracks", "the menu differs from the catalog: " + line)
+        return False
 
     def _pb3_tracks_changed(self):
         """playbin3 has no audio-tags-changed signal: the stream collection,
