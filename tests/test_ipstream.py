@@ -604,7 +604,7 @@ def test_hls_with_compressed_playlists(hls, playlist):
     try:
         text, final, compressed = ipstream.fetch_manifest(url)
         assert compressed and text.startswith("#EXTM3U") and final == url
-        assert ipstream.uncompressed_hls(url).startswith("data:")
+        assert ipstream.hls_handover(url)[0].startswith("data:")
         r, data, errors = _read_all(ipstream.GstReader, url,
                                     retry=ipstream.Retry(delays=(5,), give_up=30))
     finally:
@@ -651,7 +651,7 @@ def test_hls_with_subtitles_keeps_picture_and_sound(hls, tmp_path, monkeypatch):
 
 def test_plain_playlist_needs_no_unpacking(hls):
     base, _folder = hls
-    assert ipstream.uncompressed_hls(base + "/master.m3u8") is None
+    assert ipstream.hls_handover(base + "/master.m3u8") == (None, "")
     r, data, errors = _read_all(ipstream.GstReader, base + "/master.m3u8",
                                 retry=ipstream.Retry(delays=(5,), give_up=30))
     assert not errors and data and r.source_uri is None
@@ -664,7 +664,7 @@ def test_silent_stream_gives_a_message(monkeypatch):
     import socket
     _gst("urisourcebin", "parsebin", "appsink")
     monkeypatch.setattr(ipstream, "FIRST_DATA_TIMEOUT", 1)
-    monkeypatch.setattr(ipstream, "uncompressed_hls", lambda url: None)
+    monkeypatch.setattr(ipstream, "hls_handover", lambda url: (None, ""))
     sock = socket.socket()
     sock.bind(("127.0.0.1", 0))
     sock.listen(4)

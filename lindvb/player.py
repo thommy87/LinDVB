@@ -50,7 +50,7 @@ SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
 from .ipstream import (ADAPTIVE_DEMUX_SETTINGS, META_REPEAT, REFUSED_CODES, Retry,  # noqa: E402
                        fetch_manifest, find_meta, host_addresses, rendition_for_pid,
                        resolve_redirects, setup_http_source)
-from .streaminfo import parse_hls  # noqa: E402
+from .streaminfo import handover_master, hls_stream_name, parse_hls, without_variant_sound  # noqa: E402
 from . import i18n  # noqa: E402
 from .i18n import _  # noqa: E402
 
@@ -112,12 +112,11 @@ def _is_hls_url(uri):
 
 
 def _fetch_text(url, limit=256 * 1024, timeout=4):
-    """(text, data: address to play instead or None) of an HLS playlist; the
-    data: address when the server sends it compressed (GStreamer's HTTP source
-    cannot read that; lindvb.streaminfo.data_master)."""
-    from .streaminfo import data_master
+    """(text, data: address to play instead or None, why) of an HLS
+    playlist; the data: address when GStreamer cannot start from the address
+    itself (lindvb.streaminfo.handover_master)."""
     text, final, compressed = fetch_manifest(url, limit, timeout)
-    return text, (data_master(text, final) if compressed else None)
+    return (text, *handover_master(text, final, compressed))
 
 
 def enable_ttml():
@@ -1283,20 +1282,19 @@ class Player(GObject.Object):
     def _probe_hls(self, uri, token):
         media = []
         try:
-            text, unpacked = _fetch_text(uri)
+            text, unpacked, why = _fetch_text(uri)
             alt = hls_has_alternate_audio(text)
             media = parse_hls(text).get("media", [])
         except (OSError, ValueError):
-            alt, unpacked = False, None
-        GLib.idle_add(self._probe_done, uri, token, alt, unpacked, media)
+            alt, unpacked, why = False, None, ""
+        GLib.idle_add(self._probe_done, uri, token, alt, unpacked, media, why)
 
-    def _probe_done(self, uri, token, alt, unpacked=None, media=None):
+    def _probe_done(self, uri, token, alt, unpacked=None, media=None, why=""):
         self._hls_alt_audio[uri] = alt
         if media is not None:
             self.renditions[uri] = media
         if unpacked:
-            debuglog.write("Player", "the server sends the playlist compressed; "
-                                     "handing it to GStreamer unpacked")
+            debuglog.write("Player", f"{why}; handing GStreamer the playlist itself")
             self._hls_unpacked[uri] = unpacked
         else:
             self._hls_unpacked.pop(uri, None)
@@ -1660,7 +1658,7 @@ class Player(GObject.Object):
             st = c.get_stream(i)
             if st.get_stream_type() & stype:
                 out.append(st)
-        return out
+        return without_variant_sound(out)
 
     def _select_streams(self, stype, stream):
         """playbin3: keep the other selections, put `stream` (or none) for `stype`."""
@@ -1710,8 +1708,7 @@ class Player(GObject.Object):
     def _stream_name(stream_id, kind):
         """The rendition name hlsdemux2 puts at the end of its stream ids
         (".../audio-Klare Sprache", ".../text-Deutsch"), or ""."""
-        tail = (stream_id or "").rsplit("/", 1)[-1]
-        return tail[len(kind) + 1:] if tail.startswith(kind + "-") else ""
+        return hls_stream_name(stream_id, kind)
 
     def audio_track_info(self):
         """([AudioTrack], index of the current one or -1)."""
@@ -1925,7 +1922,7 @@ class Player(GObject.Object):
         for kind, prefix, wanted in ((Gst.StreamType.VIDEO, "video", ""),
                                      (Gst.StreamType.AUDIO, "audio", want_audio),
                                      (Gst.StreamType.TEXT, "text", want_text)):
-            of_kind = [st for st in streams if st.get_stream_type() & kind]
+            of_kind = without_variant_sound([st for st in streams if st.get_stream_type() & kind])
             if not of_kind or (kind == Gst.StreamType.VIDEO and self.video_off):
                 continue
             match = next((st for st in of_kind

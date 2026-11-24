@@ -291,6 +291,27 @@ main/index.m3u8
 main/index.m3u8
 """
 
+# 3sat as it is on air now (zdf-hls-18 .../master.m3u8, 24.11.2026), shortened:
+# every sound is a rendition of its own, the variant carries a sound too
+# (which the player must ignore), a name with a slash, and the audio
+# description shares its language with the main sound; the second variant
+# and its groups come from a backup folder (2016501-b)
+THREESAT_MASTER = """#EXTM3U
+#EXT-X-INDEPENDENT-SEGMENTS
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a1",NAME="TV Ton",LANGUAGE="deu",DEFAULT=YES,URI="tv/index.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a1",NAME="Klare Sprache / Originalton",LANGUAGE="mul",URI="klar/index.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a1",NAME="Audio-Deskription",LANGUAGE="deu",URI="ad/index.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a2",NAME="TV Ton",LANGUAGE="deu",DEFAULT=YES,URI="b/tv/index.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a2",NAME="Klare Sprache / Originalton",LANGUAGE="mul",URI="b/klar/index.m3u8"
+#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="a2",NAME="Audio-Deskription",LANGUAGE="deu",URI="b/ad/index.m3u8"
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="s1",NAME="Untertitel deutsch",CODECS="wvtt",LANGUAGE="deu",DEFAULT=YES,AUTOSELECT=YES,URI="subs/index.m3u8"
+#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="s2",NAME="Untertitel deutsch",CODECS="wvtt",LANGUAGE="deu",DEFAULT=YES,AUTOSELECT=YES,URI="b/subs/index.m3u8"
+#EXT-X-STREAM-INF:CODECS="avc1.42c01e,mp4a.40.2",BANDWIDTH=900000,AVERAGE-BANDWIDTH=800000,AUDIO="a1",SUBTITLES="s1",FRAME-RATE=25.000,RESOLUTION=320x180
+main/index.m3u8
+#EXT-X-STREAM-INF:CODECS="avc1.42c01e,mp4a.40.2",BANDWIDTH=900000,AVERAGE-BANDWIDTH=800000,AUDIO="a2",SUBTITLES="s2",FRAME-RATE=25.000,RESOLUTION=320x180
+b/main/index.m3u8
+"""
+
 # PBS (wedqdt4.lls.pbs.org), shortened: one variant, an English WebVTT rendition
 PBS_MASTER = """#EXTM3U
 #EXT-X-VERSION:3
@@ -402,6 +423,19 @@ def hls_redundant(folder, seconds=6):
     make_audio_segments(folder / "ad", seconds, freq=880)
     make_vtt(folder / "subs", seconds)
     (folder / "master.m3u8").write_text(REDUNDANT_MASTER)
+    return folder / "master.m3u8"
+
+
+def hls_3sat(folder, seconds=6):
+    make_av_segments(folder / "main", seconds)
+    make_audio_segments(folder / "tv", seconds, freq=440)
+    make_audio_segments(folder / "klar", seconds, freq=660)
+    make_audio_segments(folder / "ad", seconds, freq=880)
+    make_vtt(folder / "subs", seconds)
+    (folder / "b").mkdir()
+    for sub in ("main", "tv", "klar", "ad", "subs"):
+        (folder / "b" / sub).symlink_to(folder / sub)
+    (folder / "master.m3u8").write_text(THREESAT_MASTER)
     return folder / "master.m3u8"
 
 
