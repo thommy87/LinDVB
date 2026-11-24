@@ -4931,3 +4931,15 @@ msgstr "Alusta kirjeldustõlkega"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Väljas: pimedatele ja vaegnägijatele mõeldud kirjeldustõlge mängib ainult siis, kui see on helimenüüs valitud."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Subtiitrid satelliidi kaudu"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Subtiitrid kaabli kaudu"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Subtiitrid antenni kaudu"

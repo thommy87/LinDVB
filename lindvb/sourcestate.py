@@ -21,9 +21,11 @@ a renderer stands         switch only that renderer off, with a hint; never
                           restart the stream
 ========================  ==================================================
 
-Shadow mode: the reaction is worked out next to what the code does today
-and written to the debug log where the two differ (lindvb.ui.window). The
-code paths themselves do not ask it yet.
+A refusal follows the table: the buffer reader resolves the address once
+(lindvb.ipstream.GstReader, StreamReader), and a buffered channel it still
+refuses is not played directly (lindvb.ui.window). For the other events
+the model runs in shadow mode: worked out next to what the code does and
+written to the debug log where the two differ.
 """
 
 import re
@@ -65,6 +67,13 @@ def http_code(text):
     souphttpsrc writes "Forbidden (403)", urllib "HTTP 403 Forbidden"."""
     m = re.search(r"\((\d{3})\)|\bHTTP (\d{3})\b", text or "")
     return int(m.group(1) or m.group(2)) if m else None
+
+
+def refused_text(text):
+    """What to say about a refusal whose error text is *text* (after the host)."""
+    code = http_code(text)
+    return (f"refused the stream (HTTP {code}). It may be limited to certain countries "
+            "or devices.")
 
 
 def from_gst_error(err, debug=""):

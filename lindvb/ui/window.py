@@ -54,6 +54,14 @@ def _instance_kind(c):
     return "cable" if c.delsys.startswith("dvb-c") else "antenna"
 
 
+def _broadcast_subtitles_label(c):
+    """The subtitle menu entry that plays the broadcast instance *c*."""
+    if c.is_sat:
+        return _("Subtitles via satellite")
+    return _("Subtitles via cable") if c.delsys.startswith("dvb-c") else \
+        _("Subtitles via antenna")
+
+
 def _short(text, n=90):
     text = (text or "").strip()
     if text.startswith(_("Playback error: ")):
@@ -127,6 +135,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self._tuned = None           # the channel or DVB-I instance actually playing
         self._tried = set()          # DVB-I instances tried since the last channel change
         self._direct_fallback = False  # the internet channel plays without timeshift
+        self._broadcast_subs = (None, None)  # (channel, instance): subtitles via broadcast
+        self._subs_wanted = None     # switch subtitles on once the tracks come (channel key)
         self._video_check = None     # looks at the picture size once the channel plays
         self._channels_due = None    # saves the channels a little later (learnt picture)
         self._nolock_since = None
@@ -184,7 +194,8 @@ class MainWindow(Gtk.ApplicationWindow):
             _("{name} video decoding failed, playing with the next decoder").format(name=name)))
         self.player.connect("tracks", lambda _p: (self._rebuild_track_menus(),
                                                   self._update_visualizer(),
-                                                  self._update_teletext()))
+                                                  self._update_teletext(),
+                                                  self._wanted_subtitles_on()))
         self.player.connect("state", lambda _p, _s: self._update_visualizer())
         self.player.connect("notice", lambda _p, text: self.set_status(text))
         self.vis.analysis = self.player.analysis
@@ -279,6 +290,9 @@ class MainWindow(Gtk.ApplicationWindow):
         a = Gio.SimpleAction.new("subtitle", GLib.VariantType.new("i"))
         a.connect("activate", lambda _a, p: (self.player.select_subtitle(p.get_int32()),
                                              self._rebuild_track_menus()))
+        self.add_action(a)
+        a = Gio.SimpleAction.new("broadcast-subtitles", None)
+        a.connect("activate", lambda _a, _p: self._play_broadcast_subtitles())
         self.add_action(a)
         a = Gio.SimpleAction.new("rendition", GLib.VariantType.new("s"))
         a.connect("activate", lambda _a, p: self._play_rendition(*p.get_string().split("\t", 1)))
@@ -1704,6 +1718,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.player.radio = bool(c.radio)
         self._tuned = c
         self._tried = {_tuning_sig(c)}
+        self._subs_wanted = None
         self.oos.set_visible(False)
         off_air = bool(c.dvbi_periods) and not dvbi.available(c.dvbi_periods)
         if off_air:
@@ -1976,10 +1991,16 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def _on_capture_error(self, cap, msg):
         """An internet channel that never delivered into the timeshift buffer
-        (a format it cannot take) is played directly instead, once."""
+        (a format it cannot take) is played directly instead, once. A refused
+        stream (403 after resolving the address) is not: the server refuses
+        the direct path just the same (lindvb.sourcestate)."""
         c = self._tuned
+        state = getattr(cap, "source_state", lambda: None)()
+        # refused (403): the direct path is refused just the same; the next
+        # instance or a clear message instead (lindvb.sourcestate)
+        refused = state is not None and state[0] == sourcestate.REFUSED
         direct = cap is self.capture and c is not None and c.buffered and not cap.received and \
-            not self._direct_fallback and self.stopped is None
+            not self._direct_fallback and self.stopped is None and not refused
         if debuglog.enabled():
             self._shadow_source_state(cap, c, direct)
         if direct:
@@ -2592,7 +2613,84 @@ class MainWindow(Gtk.ApplicationWindow):
                                                  GLib.Variant.new_string(f"{kind}\t{name}"))
                 sec.append_item(item)
             menu.append_section(None, sec)
+        self._add_broadcast_subtitles()
         self._update_osd_tags()
+
+    def _add_broadcast_subtitles(self):
+        """The subtitle menu entry for the broadcast instance, when there is one."""
+        alt = self._broadcast_subtitle_instance()
+        if alt is not None:
+            sec = Gio.Menu()
+            sec.append(_broadcast_subtitles_label(alt), "win.broadcast-subtitles")
+            self.sub_menu.append_section(None, sec)
+
+    def _broadcast_subtitle_instance(self):
+        """While the internet instance of a DVB-I channel plays: its
+        satellite, cable or antenna instance with subtitles that a tuner can
+        receive (lindvb.channelcontext), or None. Worked out once per instance."""
+        c, tuned = self.current, self._tuned
+        if c is None or tuned is None or not c.dvbi_id or not tuned.is_iptv or \
+                self.stopped is not None:
+            return None
+        key = (c.key, _tuning_sig(tuned))
+        if self._broadcast_subs[0] != key:
+            try:
+                ctx = channelcontext.ChannelContext(tuned, self.capture, self.settings,
+                                                    self.app.db.channels,
+                                                    self.app.tuners.profiles())
+                alt = ctx.broadcast_subtitles()
+            except (OSError, RuntimeError, AttributeError, TypeError, ValueError):
+                alt = None
+            self._broadcast_subs = (key, alt)
+        return self._broadcast_subs[1]
+
+    def _play_broadcast_subtitles(self):
+        """Switch the DVB-I channel on air to its broadcast instance for the
+        subtitles (concept, decided on 23.11.2026), and switch them on there."""
+        c, alt = self.current, self._broadcast_subtitle_instance()
+        if c is None or alt is None:
+            return
+        debuglog.write("Channel", f"{c.name}: subtitles via the broadcast instance "
+                                  + debuglog.describe_channel(alt))
+        prev = self._tuned
+        self._tried.add(_tuning_sig(alt))
+        self._release_capture()
+        self._tuned = alt
+        try:
+            self._start_stream(alt)
+        except RuntimeError as e:
+            # no tuner free, say: the internet stream plays on
+            self._tuned = prev
+            try:
+                self._start_stream(prev)
+            except RuntimeError as again:
+                debuglog.write("Channel", f"{c.name}: back to the internet stream failed: {again}")
+            self.set_status(f"{c.name}: {_short(str(e))}")
+            self._update_teletext()
+            return
+        self._subs_wanted = c.key
+        self.set_status(f"{c.name}: {_broadcast_subtitles_label(alt)}")
+        self._update_teletext()
+
+    def _wanted_subtitles_on(self):
+        """The broadcast instance was picked for its subtitles: the first
+        subtitle track goes on as soon as there is one."""
+        c = self.current
+        if self._subs_wanted is None or c is None or self._subs_wanted != c.key:
+            self._subs_wanted = None
+            return
+        subs, cur = self.player.subtitle_tracks()
+        if not subs:
+            return
+        self._subs_wanted = None
+        if cur < 0:
+            GLib.idle_add(self._show_first_subtitles, c.key)
+
+    def _show_first_subtitles(self, key):
+        if self.current is not None and self.current.key == key:
+            self.player.select_subtitle(0)
+            self._rebuild_track_menus()
+        return False
 
     def _missing_renditions(self):
         """([subtitle names], [audio names]) of the HLS renditions of the

@@ -254,23 +254,28 @@ def label(track, language_name=None, gettext=None):
     roles = [tr(ROLE_NAMES[r]) for r in (DESCRIPTION, HARD_OF_HEARING, EASY, ORIGINAL)
              if r in track.roles]
     parts += [r for r in roles if r.casefold() not in head.casefold()]
-    if not parts:
-        parts.append(track.origin)
     if track.format:
         parts.append(track.format)
+    if not parts:
+        # nothing to name it by (a sound without language in the buffer):
+        # where it comes from, rather than nothing
+        parts.append(track.origin)
     return " · ".join(parts)
 
 
 # -- shadow mode ----------------------------------------------------------------------
 
-def catalog_for(pmt_section=None, media=(), rendition_for_pid=None):
+def catalog_for(pmt_section=None, media=(), rendition_for_pid=None, buffered=None):
     """The catalog of what plays: from the PMT of a transport stream (DVB,
     the timeshift buffer), with the HLS renditions it holds, or from the
     renditions alone (an HLS stream played directly). [] when neither is
-    known (files, DASH played directly)."""
+    known (files, DASH played directly). *buffered*: True for the timeshift
+    buffer, False played directly, None to tell from the PIDs."""
     tracks = from_pmt(pmt_section) if pmt_section else []
     if media:
-        if any(_rendition_of(t, media, rendition_for_pid) for t in tracks):
+        in_buffer = buffered if buffered is not None else \
+            any(_rendition_of(t, media, rendition_for_pid) for t in tracks)
+        if in_buffer:
             tracks = with_renditions(tracks, media, rendition_for_pid)
         else:
             # played directly: the PMT is the one of the variant's segments

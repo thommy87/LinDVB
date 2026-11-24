@@ -43,6 +43,7 @@ def known_bug(reason):
     return pytest.mark.xfail(strict=True, raises=AssertionError, reason=reason)
 
 
+LIVE = "main/live.m3u8"            # the playlist of streamkit.live_hls
 HLS_ELEMENTS = ("videotestsrc", "x264enc", "avenc_aac", "mpegtsmux", "hlssink", "urisourcebin",
                 "parsebin", "appsink", "h264parse", "hlsdemux2")
 
@@ -240,7 +241,7 @@ def test_reader_notices_a_server_that_stops_answering():
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 60, stall_after=6)
     got, errors, status = [], [], []
-    r = ipstream.GstReader(srv.url("main/live.m3u8"), got.append, errors.append,
+    r = ipstream.GstReader(srv.url(LIVE), got.append, errors.append,
                            lambda k, m: status.append((k, r.event)))
     r.start()
     try:
@@ -267,13 +268,14 @@ def test_refused_stream_in_the_buffer_is_named_refused():
     GLib, _Gst = sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls, 20, refuse=403)
     errors = []
-    r = ipstream.GstReader(srv.url("main/live.m3u8"), lambda b: None, errors.append,
+    r = ipstream.GstReader(srv.url(LIVE), lambda b: None, errors.append,
                            lambda k, m: None)
     r.start()
     try:
         _run(25, lambda: errors)
         assert errors and not r.received
-        assert (r.event, r.gave_up) == (sourcestate.REFUSED, True)
+        assert (r.event, r.gave_up, r.resolved) == (sourcestate.REFUSED, True, True)
+        assert "refused the stream (HTTP 403)" in errors[0]
         for left in (0, 1):
             s = sourcestate.Situation(r.event, gave_up=True, buffered=True,
                                       resolved=r.resolved, instances_left=left)
@@ -282,6 +284,73 @@ def test_refused_stream_in_the_buffer_is_named_refused():
     finally:
         r.close()
         srv.close()
+
+
+def test_buffer_reader_resolves_a_refusing_gateway():
+    """ARD's DVB-I gateway redirects to a CDN that refuses the request the
+    HTTP source makes: the buffer reader resolves the redirect itself and
+    reads the stream from the CDN, with timeshift (stage E; until then the
+    channel was played directly, without timeshift)."""
+    GLib, _Gst = sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.live_hls, 30, redirect={"dvbi/live.m3u8": "/" + LIVE},
+                           # the reader's own look at the playlist, then the HTTP source
+                           refuse_first={LIVE: 2})
+    got, errors = [], []
+    r = ipstream.GstReader(srv.url("dvbi/live.m3u8"), got.append, errors.append,
+                           lambda k, m: None)
+    r.start()
+    try:
+        _run(25, lambda: got or errors)
+        assert got and not errors
+        assert r.resolved and r.source_uri == srv.url(LIVE)
+    finally:
+        r.close()
+        srv.close()
+
+
+def test_buffer_reader_asks_again_after_a_one_off_refusal():
+    """ONE HD (Alex's log of 24.11.): the CDN refused the buffer once and
+    served the very next request. The reader asks once more when its own
+    look at the address was served, so the channel keeps its timeshift."""
+    GLib, _Gst = sk.gst(*HLS_ELEMENTS)
+    # the reader's own look at the playlist, then the HTTP source
+    srv, _folder = _served(sk.live_hls, 30, refuse_first={LIVE: 2})
+    got, errors = [], []
+    r = ipstream.GstReader(srv.url(LIVE), got.append, errors.append, lambda k, m: None)
+    r.start()
+    try:
+        _run(25, lambda: got or errors)
+        assert got and not errors and r.resolved
+    finally:
+        r.close()
+        srv.close()
+
+
+def test_refused_capture_is_not_played_directly():
+    """A buffered channel whose stream is refused (after resolving) does not
+    fall back to the direct path: the next instance, else the message."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    gi.require_version("Gdk", "4.0")
+    gi.require_version("Gst", "1.0")
+    from lindvb.ui.window import MainWindow
+    played, errors = [], []
+    for event, direct in ((sourcestate.REFUSED, False), (sourcestate.UNSUPPORTED, True),
+                          (sourcestate.NETWORK, True)):
+        played.clear()
+        errors.clear()
+        cap = types.SimpleNamespace(received=0, source_state=lambda e=event: (e, True, True))
+        chan = types.SimpleNamespace(name="Das Erste", buffered=True, url="https://x/a.mpd")
+        win = types.SimpleNamespace(
+            capture=cap, _tuned=chan, _direct_fallback=False, stopped=None,
+            _release_capture=lambda: None, quality=types.SimpleNamespace(reset=lambda k: None),
+            _update_quality_bar=lambda: None,
+            player=types.SimpleNamespace(play_uri=lambda u, live: played.append(u)),
+            hbbtv=types.SimpleNamespace(channel_changed=lambda c, cap: None),
+            set_status=lambda m: None, _on_play_error=errors.append)
+        MainWindow._on_capture_error(win, cap, "itv.ard.de: refused the stream (HTTP 403)")
+        assert bool(played) == direct, event
+        assert bool(errors) != direct, event
 
 
 def _window_for_shadow(event, resolved=False, alternatives=()):
@@ -299,18 +368,22 @@ def _window_for_shadow(event, resolved=False, alternatives=()):
 
 
 def test_shadow_mode_logs_where_the_model_differs(monkeypatch):
-    """Today a buffered channel that never delivered is played directly,
-    whatever the reason; the state model does so only for a format the
-    buffer cannot take. The difference goes into the debug log, the
-    behaviour stays as it is (shadow mode)."""
+    """A buffered channel that never delivered is played directly (except
+    for a refusal); the state model does so only for a format the buffer
+    cannot take. The difference goes into the debug log, the behaviour
+    stays as it is (shadow mode)."""
     from lindvb import debuglog
     lines = []
     monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
-    cls, win, cap, chan = _window_for_shadow(sourcestate.REFUSED, resolved=True)
+    cls, win, cap, chan = _window_for_shadow(sourcestate.NETWORK)
     cls._shadow_source_state(win, cap, chan, True)
     assert lines[-1][0] == "State"
-    assert "refused" in lines[-1][1] and "would message" in lines[-1][1] \
+    assert "network" in lines[-1][1] and "would message" in lines[-1][1] \
         and "does direct" in lines[-1][1]
+    # a refusal: the code follows the model now
+    cls, win, cap, chan = _window_for_shadow(sourcestate.REFUSED, resolved=True)
+    cls._shadow_source_state(win, cap, chan, False)
+    assert lines[-1][1] == "Das Erste: refused – the state model agrees (message)"
     cls, win, cap, chan = _window_for_shadow(sourcestate.UNSUPPORTED)
     cls._shadow_source_state(win, cap, chan, True)
     assert lines[-1][1] == "Das Erste: unsupported – the state model agrees (direct)"

@@ -4931,3 +4931,15 @@ msgstr "Tosaigh le closchur síos"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "As: ní sheinntear an closchur síos do dhaoine dalla agus lagamhairc ach nuair a roghnaítear é sa roghchlár fuaime."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Fotheidil trí shatailít"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Fotheidil trí chábla"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Fotheidil trí aeróg"

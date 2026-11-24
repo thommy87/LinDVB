@@ -1521,7 +1521,8 @@ class Player(GObject.Object):
         if token != self._token or not self.playbin or not debuglog.enabled():
             return False
         try:
-            catalog = trackcatalog.catalog_for(self._pmt_raw, self._media(), rendition_for_pid)
+            catalog = trackcatalog.catalog_for(self._pmt_raw, self._media(), rendition_for_pid,
+                                               buffered=True if self.capture else None)
             tracks, _cur = self.audio_track_info()
             kinds = [kind for kind, _key, _label in self._subtitle_entries()]
             diff = trackcatalog.compare(catalog, tracks, kinds, is_audio_description)

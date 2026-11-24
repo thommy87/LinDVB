@@ -5255,3 +5255,15 @@ msgstr "Սկսել աուդիոնկարագրությամբ"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Անջատված․ աուդիոնկարագրությունը կույրերի և թույլ տեսողություն ունեցողների համար հնչում է միայն, երբ ընտրվում է ձայնի ընտրացանկում։"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Ենթագրեր արբանյակով"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Ենթագրեր մալուխով"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Ենթագրեր ալեհավաքով"

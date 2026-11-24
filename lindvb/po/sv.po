@@ -4931,3 +4931,15 @@ msgstr "Börja med syntolkning"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "Av: syntolkning för blinda och synskadade spelas bara när den väljs i ljudmenyn."
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "Undertexter via satellit"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "Undertexter via kabel"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "Undertexter via antenn"

@@ -5287,3 +5287,15 @@ msgstr "以口述影像開始"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "關閉：為盲人和視障人士提供的口述影像僅在音訊選單中選擇後播放。"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "透過衛星的字幕"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "透過有線的字幕"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "透過天線的字幕"

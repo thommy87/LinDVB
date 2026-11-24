@@ -89,6 +89,23 @@ def test_timeshift_buffer_names_its_pids():
     assert [(t.name, t.in_buffer) for t in subs] == [("Untertitel deutsch", False)]
 
 
+def test_buffered_stream_with_subtitle_renditions_only():
+    """PBS (Alex's log of 24.11.): HLS in the buffer whose sound is in the
+    variant and whose WebVTT is a rendition. The catalog keeps the buffer's
+    sound and lists the subtitles as not in the buffer, so it agrees with
+    the menus instead of reporting a missing subtitle track."""
+    media = parse_hls(sk.PBS_MASTER)["media"]
+    pmt = _pmt([(0x1B, 0x41, b""), (0x0F, 0x42, b"")])
+    catalog = tc.catalog_for(pmt, media, rendition_for_pid, buffered=True)
+    assert [(t.id, t.in_buffer) for t in catalog] == [
+        ("audio/pid:0x42", True), ("subtitle/rendition:English", False)]
+    assert tc.label(catalog[0]) == "AAC"
+    assert tc.compare(catalog, [AudioTrack(codec="AAC")], [], is_audio_description) == []
+    # played directly: the renditions are what plays
+    direct = tc.catalog_for(pmt, media, rendition_for_pid, buffered=False)
+    assert [(t.id, t.in_buffer) for t in direct] == [("subtitle/rendition:English", True)]
+
+
 def test_label():
     names = {"deu": "German", "eng": "English"}.get
     assert tc.label(tc.Track(tc.AUDIO, "AAC", "deu", roles=frozenset({tc.MAIN})),
@@ -140,6 +157,7 @@ def test_player_writes_the_catalog_to_the_debug_log(monkeypatch):
     monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
     fake = types.SimpleNamespace(
         _catalog_timer=0, _token=1, playbin=object(), _pmt_raw=PMT, _catalog_logged=None,
+        capture=None,
         _media=lambda kind=None: [],
         audio_track_info=lambda: ([AudioTrack(language="deu"), AudioTrack(language="eng")], 0),
         _subtitle_entries=lambda: [])

@@ -5215,3 +5215,15 @@ msgstr "音声解説で始める"
 #: lindvb/ui/dialogs.py
 msgid "Off: the audio description for blind and visually impaired viewers only plays when it is chosen in the audio menu."
 msgstr "オフ：視覚障害のある方向けの音声解説は、音声メニューで選んだときだけ再生されます。"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via satellite"
+msgstr "衛星経由の字幕"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via cable"
+msgstr "ケーブル経由の字幕"
+
+#: lindvb/ui/window.py
+msgid "Subtitles via antenna"
+msgstr "アンテナ経由の字幕"
