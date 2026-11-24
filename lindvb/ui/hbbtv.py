@@ -20,7 +20,7 @@ import time
 import weakref
 
 from ..config import CACHE_DIR, DATA_DIR
-from .. import debuglog, dsmcc
+from .. import channelcontext, debuglog, dsmcc
 from .. import hbbtv as hb
 from ..i18n import _
 
@@ -285,8 +285,8 @@ class HbbTV:
         if self._sync_selector and self.cs is not None:
             self.cs.set_content(self._content_id() or None)
         self.life.autostart = self.settings.get("hbbtv_autostart", False)
-        if self.enabled and channel is not None and channel.dvbi_apps and \
-                (capture is None or getattr(channel, "is_iptv", False)):
+        if self.enabled and \
+                channelcontext.signalling(channel, capture) == channelcontext.DVBI_LIST:
             # an internet channel of a DVB-I list, also through the timeshift
             # buffer (ONE HD): its list names the applications
             self._dvbi_signalling(channel, same, capture)
@@ -343,8 +343,8 @@ class HbbTV:
 
     @property
     def country(self):
-        """The viewer's country for the channel on air (hb.country_for)."""
-        return hb.country_for(self.settings, getattr(self.win, "current", None))
+        """The viewer's country for the channel on air (the channel context)."""
+        return channelcontext.country(self.settings, getattr(self.win, "current", None))
 
     def _allowed(self, app):
         return app.key in self._unlocked or not hb.needs_pin(
@@ -762,7 +762,7 @@ class HbbTV:
             "capabilities": hb.capabilities_xml(),
             "components": self._components(),
             "config": {"audioLanguage": lang, "subtitleLanguage": lang, "uiLanguage": lang,
-                       "country": hb.country_for(self.settings, cur),
+                       "country": channelcontext.country(self.settings, cur),
                        "subtitles": bool(self.settings.get("hbbtv_subtitles", False)),
                        "audioDescription": bool(self.settings.get("hbbtv_audio_description", False)),
                        "ageLimit": self.age_limit, "hasPin": self.pin.has_pin,

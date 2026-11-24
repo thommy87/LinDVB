@@ -738,6 +738,15 @@ class Capture(GObject.Object):
         """How often the connection of an internet stream was opened again."""
         return getattr(self._net, "reconnects", 0) if self._net is not None else 0
 
+    def source_state(self):
+        """(event, resolved, gave_up) of the reader of an internet stream or
+        Tvheadend (lindvb.sourcestate), or None for a tuner."""
+        net = self._net
+        if net is None:
+            return None
+        return (getattr(net, "event", ""), bool(getattr(net, "resolved", False)),
+                bool(getattr(net, "gave_up", False)))
+
     def _learn_service(self, section):
         """Tvheadend: the PAT names the one service of the stream. Keep its ids
         on the channel, so the broadcast EIT finds it (Channel.epg_links)."""

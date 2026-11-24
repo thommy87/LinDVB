@@ -28,7 +28,7 @@ from pathlib import Path
 import pytest
 
 import streamkit as sk
-from lindvb import ipstream
+from lindvb import ipstream, sourcestate
 from lindvb.media_info import AudioTrack, is_audio_description, short_codec
 from lindvb.streaminfo import parse_hls
 
@@ -241,16 +241,83 @@ def test_reader_notices_a_server_that_stops_answering():
     srv, _folder = _served(sk.live_hls, 60, stall_after=6)
     got, errors, status = [], [], []
     r = ipstream.GstReader(srv.url("main/live.m3u8"), got.append, errors.append,
-                           lambda k, m: status.append(k))
+                           lambda k, m: status.append((k, r.event)))
     r.start()
     try:
         _run(8)
         assert got, "the stream did not start"
         _run(30, lambda: status or errors)
         assert status or errors
+        # stage E: the reader names the event, and the state model reconnects
+        if status:
+            assert status[0] == ("reconnecting", sourcestate.STALLED)
+            assert sourcestate.reaction(sourcestate.Situation(
+                sourcestate.STALLED, received=True, buffered=True)) == sourcestate.RECONNECT
     finally:
         r.close()
         srv.close()
+
+
+# -- a CDN that refuses us (403): never the direct path ------------------------------------
+
+def test_refused_stream_in_the_buffer_is_named_refused():
+    """ARD's CDNs answer 403 to a client they do not serve. The buffer
+    reader says "refused", so the state model goes to another instance or
+    says so, and does not play the same address directly (stage E)."""
+    GLib, _Gst = sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.live_hls, 20, refuse=403)
+    errors = []
+    r = ipstream.GstReader(srv.url("main/live.m3u8"), lambda b: None, errors.append,
+                           lambda k, m: None)
+    r.start()
+    try:
+        _run(25, lambda: errors)
+        assert errors and not r.received
+        assert (r.event, r.gave_up) == (sourcestate.REFUSED, True)
+        for left in (0, 1):
+            s = sourcestate.Situation(r.event, gave_up=True, buffered=True,
+                                      resolved=r.resolved, instances_left=left)
+            assert sourcestate.reaction(s) in (sourcestate.RESOLVE, sourcestate.NEXT_INSTANCE,
+                                               sourcestate.MESSAGE)
+    finally:
+        r.close()
+        srv.close()
+
+
+def _window_for_shadow(event, resolved=False, alternatives=()):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gtk", "4.0")
+    gi.require_version("Gdk", "4.0")
+    gi.require_version("Gst", "1.0")
+    from lindvb.ui.window import MainWindow
+    cap = types.SimpleNamespace(received=0,
+                                source_state=lambda: (event, resolved, True))
+    chan = types.SimpleNamespace(name="Das Erste", buffered=True)
+    win = types.SimpleNamespace(capture=cap, _tried=set(), _direct_fallback=False,
+                                _failover_alternatives=lambda: list(alternatives))
+    return MainWindow, win, cap, chan
+
+
+def test_shadow_mode_logs_where_the_model_differs(monkeypatch):
+    """Today a buffered channel that never delivered is played directly,
+    whatever the reason; the state model does so only for a format the
+    buffer cannot take. The difference goes into the debug log, the
+    behaviour stays as it is (shadow mode)."""
+    from lindvb import debuglog
+    lines = []
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
+    cls, win, cap, chan = _window_for_shadow(sourcestate.REFUSED, resolved=True)
+    cls._shadow_source_state(win, cap, chan, True)
+    assert lines[-1][0] == "State"
+    assert "refused" in lines[-1][1] and "would message" in lines[-1][1] \
+        and "does direct" in lines[-1][1]
+    cls, win, cap, chan = _window_for_shadow(sourcestate.UNSUPPORTED)
+    cls._shadow_source_state(win, cap, chan, True)
+    assert lines[-1][1] == "Das Erste: unsupported – the state model agrees (direct)"
+    # a tuner (no reader): nothing to compare
+    n = len(lines)
+    cls._shadow_source_state(win, types.SimpleNamespace(received=0), chan, True)
+    assert len(lines) == n
 
 
 # -- PBS-like WebVTT without time stamps ----------------------------------------------------

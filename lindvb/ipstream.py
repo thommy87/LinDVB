@@ -50,6 +50,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from . import sourcestate
 from .i18n import _
 
 # Captures of internet streams get adapter numbers from here up: no
@@ -61,7 +62,7 @@ TS_PACKET = 188
 TS_SYNC = 0x47
 REDIRECT_TIMEOUT = 8             # seconds for resolving a gateway redirect
 # HTTP answers that mean "not for you": the stream itself is there
-REFUSED_CODES = (401, 403, 451)
+REFUSED_CODES = sourcestate.REFUSED_CODES
 
 RECONNECT_DELAYS = (1, 2, 4, 8, 15, 30)     # seconds before each new attempt
 RECONNECT_GIVE_UP = 180                     # seconds without a stream before giving up
@@ -496,6 +497,9 @@ class StreamReader:
         self.closed = False
         self.received = 0
         self.reconnects = 0
+        self.event = ""                  # the latest event (lindvb.sourcestate)
+        self.resolved = False            # a refused address was resolved
+        self.gave_up = False             # on_error came: no more attempts
         self._resp = None
         self._thread = None
         self._wake = threading.Event()
@@ -507,12 +511,13 @@ class StreamReader:
         except Refused as e:
             # a gateway that redirects to a CDN refusing us: follow the
             # redirect ourselves and ask the CDN straight away (DVB-I)
+            self.resolved = True
             try:
                 target = resolve_redirects(self.url)
             except OSError:
-                raise OSError(str(e)) from None
+                raise Refused(str(e)) from None
             if target == self.url:
-                raise OSError(str(e)) from None
+                raise Refused(str(e)) from None
             self.url = target
             return self._request(target)
 
@@ -545,12 +550,15 @@ class StreamReader:
             try:
                 self._session(first)
                 reason = _("the server ended the stream")
-            except NotTransportStream:
+                self.event = sourcestate.ENDED
+            except NotTransportStream as e:
+                self.event = sourcestate.from_exception(e)
                 if not self.closed and self.on_other is not None:
                     self.on_other()
                 return
             except (OSError, ValueError) as e:
                 reason = str(e) or e.__class__.__name__
+                self.event = sourcestate.from_exception(e)
             if self.closed:
                 return
             if first and not self.received:
@@ -592,6 +600,7 @@ class StreamReader:
                     return
                 if self.retry.up_since is None:
                     self.retry.running()
+                    self.event = sourcestate.DATA
                     if self.reconnects:
                         self._status("reconnected", _("{host}: connected again").format(
                             host=self.host))
@@ -612,6 +621,7 @@ class StreamReader:
             self.on_status(kind, message)
 
     def _fail(self, message):
+        self.gave_up = True
         if not self.closed and self.on_error is not None:
             self.on_error(message)
 
@@ -685,6 +695,9 @@ class GstReader:
         self._watch = 0                  # FIRST_DATA_TIMEOUT timer
         self._stall_watch = 0            # STALL_TIMEOUT timer
         self._last_data = 0.0            # time.monotonic() of the last data
+        self.event = ""                  # the latest event (lindvb.sourcestate)
+        self.resolved = False            # (it does not resolve refused addresses)
+        self.gave_up = False             # on_error came: no more attempts
 
     @property
     def host(self):
@@ -711,6 +724,7 @@ class GstReader:
         pl = Gst.Pipeline.new(f"ipstream{gen}")
         src = Gst.ElementFactory.make("urisourcebin")
         if src is None:
+            self.event = sourcestate.UNSUPPORTED
             self._fail("GStreamer element 'urisourcebin' is missing (gst-plugins-base)")
             return
         uri, ssm, rtp = multicast_source(self.url) if stream_kind(self.url) == "multicast" \
@@ -742,7 +756,7 @@ class GstReader:
         self._last_data = time.monotonic()
         self._stall_watch = self.GLib.timeout_add_seconds(STALL_CHECK, self._stalled, gen)
         if pl.set_state(Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE:
-            self._broken(gen, _("could not open the stream"))
+            self._broken(gen, _("could not open the stream"), sourcestate.UNSUPPORTED)
 
     def _stalled(self, gen):
         """A stream that delivered data and then nothing for STALL_TIMEOUT:
@@ -751,14 +765,15 @@ class GstReader:
             return False                 # its timer was removed with its pipeline
         if self.received and time.monotonic() - self._last_data > STALL_TIMEOUT:
             self._stall_watch = 0
-            self._broken(gen, _("no data for {s} s").format(s=STALL_TIMEOUT))
+            self._broken(gen, _("no data for {s} s").format(s=STALL_TIMEOUT), sourcestate.STALLED)
             return False
         return True
 
     def _no_data(self, gen):
         self._watch = 0
         if gen == self._gen and not self.closed and not self.received:
-            self._broken(gen, _("no data arrived within {s} s").format(s=FIRST_DATA_TIMEOUT))
+            self._broken(gen, _("no data arrived within {s} s").format(s=FIRST_DATA_TIMEOUT),
+                         sourcestate.UNSUPPORTED)
         return False
 
     def _on_source_setup(self, _bin, source, ssm, rtp):
@@ -955,6 +970,7 @@ class GstReader:
         data = self._meta_out(data)
         if self.retry.up_since is None:
             self.retry.running()
+            self.event = sourcestate.DATA
             if self.reconnects:
                 self.GLib.idle_add(self._status, "reconnected",
                                    _("{host}: connected again").format(host=self.host))
@@ -967,10 +983,10 @@ class GstReader:
         if gen != self._gen or self.closed:
             return
         if msg.type == Gst.MessageType.ERROR:
-            err, _dbg = msg.parse_error()
-            self._broken(gen, err.message)
+            err, dbg = msg.parse_error()
+            self._broken(gen, err.message, sourcestate.from_gst_error(err, dbg))
         elif msg.type == Gst.MessageType.EOS:
-            self._broken(gen, _("the server ended the stream"))
+            self._broken(gen, _("the server ended the stream"), sourcestate.ENDED)
 
     def _on_collection(self, _bus, msg):
         """Streaming thread: the adaptive demuxer offers its streams."""
@@ -1012,9 +1028,10 @@ class GstReader:
             pl.get_bus().remove_signal_watch()
             pl.set_state(self.Gst.State.NULL)
 
-    def _broken(self, gen, reason):
+    def _broken(self, gen, reason, event=sourcestate.NETWORK):
         if gen != self._gen or self.closed:
             return
+        self.event = event
         self._gen += 1                   # ignore what the old pipeline still says
         self._teardown()
         if not self.received:
@@ -1068,6 +1085,7 @@ class GstReader:
         return False
 
     def _fail(self, message):
+        self.gave_up = True
         if not self.closed and self.on_error is not None:
             self.on_error(message)
 
@@ -1099,10 +1117,24 @@ class StreamSource:
         self.closed = False
         self.kind = stream_kind(url)
         self.reader = None
+        self._event = ""                 # no reader could be made
 
     @property
     def received(self):
         return self.reader.received if self.reader is not None else 0
+
+    @property
+    def event(self):
+        """The latest event of the reader (lindvb.sourcestate)."""
+        return self._event or getattr(self.reader, "event", "")
+
+    @property
+    def resolved(self):
+        return bool(getattr(self.reader, "resolved", False))
+
+    @property
+    def gave_up(self):
+        return bool(getattr(self.reader, "gave_up", False)) or bool(self._event)
 
     @property
     def reconnects(self):
@@ -1125,6 +1157,7 @@ class StreamSource:
                                     quality=self.quality, reconnect=self.reconnect,
                                     meta=self.meta)
         except (ImportError, ValueError) as e:
+            self._event = sourcestate.UNSUPPORTED
             if self.on_error is not None:
                 self.on_error(str(e))
             return False
