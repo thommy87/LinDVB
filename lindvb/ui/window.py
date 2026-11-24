@@ -11,7 +11,8 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
-from .. import chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs, satip
+from .. import (channelcontext, chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs,
+               satip, sourcestate)
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR, old_snap_folder
 from ..epg import details_line, programme_details
@@ -1960,13 +1961,28 @@ class MainWindow(Gtk.ApplicationWindow):
             self.hbbtv.channel_changed(c, own)
             self.app.plugins.emit("channel-tuned", c, self.capture)
             GLib.timeout_add(700, self._start_live, self.capture)
+        if debuglog.enabled():
+            self._log_channel_context(c)
+
+    def _log_channel_context(self, c):
+        """Shadow mode of the channel context (lindvb.channelcontext): what it
+        knows about the channel just tuned, into the debug log."""
+        try:
+            ctx = channelcontext.ChannelContext(c, self.capture, self.settings,
+                                                self.app.db.channels, self.app.tuners.profiles())
+            debuglog.write("Channel", "context: " + ctx.describe())
+        except (OSError, RuntimeError, AttributeError, TypeError, ValueError) as e:
+            debuglog.write("Channel", f"context: not available ({e})")
 
     def _on_capture_error(self, cap, msg):
         """An internet channel that never delivered into the timeshift buffer
         (a format it cannot take) is played directly instead, once."""
         c = self._tuned
-        if cap is self.capture and c is not None and c.buffered and not cap.received and \
-                not self._direct_fallback and self.stopped is None:
+        direct = cap is self.capture and c is not None and c.buffered and not cap.received and \
+            not self._direct_fallback and self.stopped is None
+        if debuglog.enabled():
+            self._shadow_source_state(cap, c, direct)
+        if direct:
             self._direct_fallback = True
             self._release_capture()
             self.quality.reset("iptv")
@@ -1977,6 +1993,24 @@ class MainWindow(Gtk.ApplicationWindow):
                             .format(name=c.name, reason=_short(msg)))
             return
         self._on_play_error(msg)
+
+    def _shadow_source_state(self, cap, c, direct):
+        """Shadow mode of the state model (lindvb.sourcestate): what it would
+        do about the failed capture *cap* of channel *c*, next to what the
+        code does (*direct*: play the stream directly), into the debug log."""
+        state = getattr(cap, "source_state", lambda: None)()
+        if state is None or c is None or cap is not self.capture or not state[2]:
+            return                   # a tuner, or not the reader's error
+        event, resolved, gave_up = state
+        left = sum(1 for alt in self._failover_alternatives()
+                   if _tuning_sig(alt) not in self._tried)
+        situation = sourcestate.Situation(
+            event, received=bool(cap.received), gave_up=gave_up, buffered=bool(c.buffered),
+            resolved=resolved, instances_left=left, direct_tried=self._direct_fallback)
+        today = sourcestate.DIRECT if direct else \
+            sourcestate.NEXT_INSTANCE if left else sourcestate.MESSAGE
+        line = sourcestate.shadow_line(c.name, situation, today)
+        debuglog.write("State", line or f"{c.name}: {event} – the state model agrees ({today})")
 
     def _on_connection(self, cap, kind, msg):
         """The stream of an internet or Tvheadend channel broke and is opened again."""
@@ -2007,18 +2041,23 @@ class MainWindow(Gtk.ApplicationWindow):
         if not self._try_failover(msg):
             self.set_status(msg)
 
+    def _failover_alternatives(self):
+        """The other instances of the DVB-I channel on air to fail over to
+        (IT-10), tried or not; [] when failover does not apply."""
+        c = self.current
+        if c is None or not c.dvbi_id or not self.settings.get("dvbi_failover", True) or \
+                self.stopped is not None:
+            return []
+        return dvbi.alternatives(c, self.app.db.channels,
+                                 sat_direct=self.settings.get("dvbi_sat_direct", True),
+                                 prefer_broadcast=self.settings.get("dvbi_prefer_broadcast", False))
+
     def _try_failover(self, reason):
         """IT-10: when the instance of a DVB-I channel in use fails, switch
         to the next one in priority order. Each instance is tried once per
         channel change, so a failing pair does not alternate."""
         c = self.current
-        if c is None or not c.dvbi_id or not self.settings.get("dvbi_failover", True) or \
-                self.stopped is not None:
-            return False
-        alts = dvbi.alternatives(c, self.app.db.channels,
-                                 sat_direct=self.settings.get("dvbi_sat_direct", True),
-                                 prefer_broadcast=self.settings.get("dvbi_prefer_broadcast", False))
-        for alt in alts:
+        for alt in self._failover_alternatives():
             sig = _tuning_sig(alt)
             if sig in self._tried:
                 continue

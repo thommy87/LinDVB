@@ -21,7 +21,8 @@ files of their own in the repository:
   Accessibility on its audio, as ARD's DVB-I streams have them (ONE HD).
 
 ``Server`` serves a folder; its ``stall_after`` makes every request after
-that many seconds hang until the server shuts down.
+that many seconds hang until the server shuts down, its ``refuse`` answers
+every request with that HTTP status (403: a CDN that does not serve us).
 """
 
 import http.server
@@ -199,6 +200,9 @@ class _Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         srv = self.server
         srv.requests.append(self.path)
+        if srv.refuse:
+            self.send_error(srv.refuse)
+            return
         if srv.stall_after is not None and time.monotonic() - srv.started > srv.stall_after:
             srv.stalled.wait()              # hangs until the server shuts down
             return
@@ -218,7 +222,7 @@ class Server:
     """A folder over HTTP on 127.0.0.1; ``url(path)`` gives an address.
     *live* maps paths to LivePlaylists, served in place of files."""
 
-    def __init__(self, folder, stall_after=None, live=None):
+    def __init__(self, folder, stall_after=None, live=None, refuse=None):
         self.folder = Path(folder)
 
         def handler(*a, **kw):
@@ -227,6 +231,7 @@ class Server:
         self.httpd.daemon_threads = True
         self.httpd.requests = []
         self.httpd.stall_after = stall_after
+        self.httpd.refuse = refuse
         self.httpd.stalled = threading.Event()
         self.httpd.live = dict(live or {})
         self.httpd.started = time.monotonic()
