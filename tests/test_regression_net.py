@@ -308,6 +308,24 @@ def test_buffer_reader_resolves_a_refusing_gateway():
         srv.close()
 
 
+def test_buffer_reader_asks_again_after_a_one_off_refusal():
+    """ONE HD (Alex's log of 24.11.): the CDN refused the buffer once and
+    served the very next request. The reader asks once more when its own
+    look at the address was served, so the channel keeps its timeshift."""
+    GLib, _Gst = sk.gst(*HLS_ELEMENTS)
+    # the reader's own look at the playlist, then the HTTP source
+    srv, _folder = _served(sk.live_hls, 30, refuse_first={LIVE: 2})
+    got, errors = [], []
+    r = ipstream.GstReader(srv.url(LIVE), got.append, errors.append, lambda k, m: None)
+    r.start()
+    try:
+        _run(25, lambda: got or errors)
+        assert got and not errors and r.resolved
+    finally:
+        r.close()
+        srv.close()
+
+
 def test_refused_capture_is_not_played_directly():
     """A buffered channel whose stream is refused (after resolving) does not
     fall back to the direct path: the next instance, else the message."""

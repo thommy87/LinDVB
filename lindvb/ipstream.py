@@ -1082,6 +1082,10 @@ class GstReader:
         if target and target != uri:
             self.source_uri = target
             self._build()
+        elif any(step[:1] == "2" for step in trace):
+            # the same address served the look just now: a one-off refusal
+            # (ONE HD, 24.11.), so the reader asks once more
+            self._build()
         else:
             self._fail(f"{self.host}: {reason}")
         return False
