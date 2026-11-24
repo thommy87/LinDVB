@@ -307,7 +307,7 @@ def test_buffer_reader_resolves_a_refusing_gateway():
         srv.close()
 
 
-def test_refused_capture_is_not_played_directly(monkeypatch):
+def test_refused_capture_is_not_played_directly():
     """A buffered channel whose stream is refused (after resolving) does not
     fall back to the direct path: the next instance, else the message."""
     gi = pytest.importorskip("gi")
