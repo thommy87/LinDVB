@@ -24,7 +24,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_track, playback_language, is_audio_description)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import captions, debuglog, hwaccel, passthrough, trackcatalog  # noqa: E402
+from . import captions, debuglog, hwaccel, passthrough, subrender, trackcatalog  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -413,6 +413,10 @@ class Player(GObject.Object):
         self._ttx_pages = []            # TeletextPage from the PMT
         self._ttx_in_pmt = False        # the PMT announces a teletext stream
         self._ttx_last = ""
+        # stage F: the teletext renderer, in the shadow of this path while
+        # debug mode is on (lindvb.subrender)
+        self._ttx_shadow = None
+        self._ttx_cmp = None
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -821,6 +825,7 @@ class Player(GObject.Object):
             self._pending_seek = pos[0] if pos else None
 
     def _teardown(self):
+        self._end_ttx_shadow()
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
@@ -935,7 +940,8 @@ class Player(GObject.Object):
             a.link(b)
         for e in reversed(chain):
             e.sync_state_with_parent()
-        if pad.link(q.get_static_pad("sink")) != Gst.PadLinkReturn.OK:
+        first = self._ttx_shadow_branch(parent, q)
+        if pad.link(first.get_static_pad("sink")) != Gst.PadLinkReturn.OK:
             return
         self._ttx_dec = dec
         self._ttx_present = True
@@ -1082,9 +1088,8 @@ class Player(GObject.Object):
         buf = sample.get_buffer()
         ok, info = buf.map(Gst.MapFlags.READ)
         if ok:
-            text = bytes(info.data).decode("utf-8", "replace").replace("\x00", "")
+            text = subrender.teletext_text(info.data)
             buf.unmap(info)
-            text = "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
             if self.ttx_page and text != self._ttx_last:
                 self._ttx_last = text
                 GLib.idle_add(self._show_subtitle, text)
@@ -1093,7 +1098,65 @@ class Player(GObject.Object):
     def _show_subtitle(self, text):
         if self.ttx_page:
             self.emit("subtitle-text", text)
+            if self._ttx_cmp is not None:
+                self._ttx_cmp.saw_old(text)
         return False
+
+    # -- the teletext renderer in the shadow (stage F) ----------------------
+
+    def _ttx_shadow_branch(self, parent, old_queue):
+        """The element to link tsdemux's teletext pad to: the old queue, or
+        with debug mode on a tee that also feeds the teletext renderer of
+        stage F (behind its leaky queue, so it cannot hold the old path up)."""
+        if not debuglog.enabled():
+            return old_queue
+        try:
+            tee = Gst.ElementFactory.make("tee")
+            shadow = subrender.TeletextRenderer(self._on_shadow_text, warm=True,
+                                                page=DEFAULT_SUBTITLE_PAGES[0])
+            parent.add(tee)
+            parent.add(shadow.element)
+            if not (tee.link(old_queue) and tee.link(shadow.element)):
+                raise RuntimeError("could not link the tee")
+            shadow.element.sync_state_with_parent()
+            tee.sync_state_with_parent()
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
+            debuglog.write("Player", f"teletext renderer (shadow) not started: {e}")
+            return old_queue
+        self._ttx_shadow = shadow
+        return tee
+
+    def _on_shadow_text(self, text):
+        cmp = self._ttx_cmp
+        if cmp is not None:
+            GLib.idle_add(lambda: (cmp.saw_new(text), False)[1])
+
+    def _ttx_shadow_follow(self, kind, key):
+        """The shadow renderer shows what the user picked, like the old path."""
+        shadow = self._ttx_shadow
+        if shadow is None:
+            return
+        self._report_ttx_shadow()
+        if kind == "ttx":
+            track = trackcatalog.Track(trackcatalog.SUBTITLE, subrender.TELETEXT,
+                                       origin=f"ttx:{key}")
+            self._ttx_cmp = subrender.Shadow(track.origin)
+            shadow.show(track)
+        else:
+            shadow.off()
+
+    def _report_ttx_shadow(self):
+        cmp, self._ttx_cmp = self._ttx_cmp, None
+        if cmp is not None and self._ttx_shadow is not None:
+            line = cmp.report(self._ttx_shadow.state())
+            if line:
+                debuglog.write("Player", line)
+
+    def _end_ttx_shadow(self):
+        if self._ttx_shadow is not None:
+            self._report_ttx_shadow()
+            self._ttx_shadow.off()
+        self._ttx_shadow = None
 
     def teletext_pages(self):
         """Teletext subtitle pages offered for the current stream."""
@@ -1837,6 +1900,7 @@ class Player(GObject.Object):
                     self._select_streams(Gst.StreamType.TEXT, st)
             else:
                 self.playbin.set_property("current-text", key)
+        self._ttx_shadow_follow(kind, key)
         self.emit("tracks")
 
     def _on_sync_collection(self, _bus, msg):
