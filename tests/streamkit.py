@@ -19,6 +19,9 @@ files of their own in the repository:
   the picture's user data, as US stations send them (WJXT, PBS on air).
 * ``dash_with_roles``: the DASH sample of tests/data/dash with Role and
   Accessibility on its audio, as ARD's DVB-I streams have them (ONE HD).
+* ``make_teletext_ts``: H.264 with teletext subtitles on page 150 and the
+  teletext descriptor in the PMT, as German broadcasters send them (Das
+  Erste, ZDF on satellite, cable and antenna).
 
 ``Server`` serves a folder; its ``stall_after`` makes every request after
 that many seconds hang until the server shuts down, its ``refuse`` answers
@@ -164,6 +167,109 @@ def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="b
               feed=feed)
     return folder
 
+
+
+# -- teletext (EN 300 706, carried as in EN 300 472) ----------------------------------
+
+_HAM84 = (0x15, 0x02, 0x49, 0x5E, 0x64, 0x73, 0x38, 0x2F,
+          0xD0, 0xC7, 0x8C, 0x9B, 0xA1, 0xB6, 0xFD, 0xEA)
+
+
+def _reverse(b):
+    return int(f"{b:08b}"[::-1], 2)
+
+
+def _odd(c):
+    c &= 0x7F
+    return c | (0x80 if bin(c).count("1") % 2 == 0 else 0)
+
+
+def _ttx_unit(mag, row, data40):
+    """One EBU teletext data unit (46 bytes) of packet *row* of magazine *mag*."""
+    addr = [_HAM84[(mag & 7) | ((row & 1) << 3)], _HAM84[row >> 1]]
+    return bytes([0x03, 0x2C, 0xE7, 0xE4] + [_reverse(b) for b in addr + list(data40)])
+
+
+def _ttx_page(text, page):
+    """A PES payload with a subtitle page: header (C6 subtitle) and row 22."""
+    mag, units = page // 0x100 % 8, page & 0xFF
+    control = [_HAM84[units & 0xF], _HAM84[units >> 4], _HAM84[0], _HAM84[0x8],
+               _HAM84[0], _HAM84[0x8], _HAM84[0x3], _HAM84[0]]
+    header = _ttx_unit(mag, 0, control + [_odd(ord(c)) for c in "LinDVB".ljust(32)])
+    chars = ([0x0B, 0x0B] + [ord(c) for c in text] + [0x0A, 0x0A] + [0x20] * 40)[:40]
+    data = bytes([0x10]) + header + _ttx_unit(mag, 22, [_odd(c) for c in chars])
+    while len(data) < 1 + 46 * 3:                     # stuffing units
+        data += bytes([0xFF, 0x2C]) + b"\xff" * 44
+    return data
+
+
+def _crc32(data):
+    crc = 0xFFFFFFFF
+    for b in data:
+        crc ^= b << 24
+        for _ in range(8):
+            crc = ((crc << 1) ^ 0x04C11DB7) if crc & 0x80000000 else crc << 1
+            crc &= 0xFFFFFFFF
+    return crc
+
+
+def _pmt_section(program, streams):
+    """A PMT section for *streams* [(stream type, pid, descriptors)], PCR on the first."""
+    pcr = streams[0][1]
+    body = bytes([program >> 8, program & 0xFF, 0xC1, 0, 0, 0xE0 | (pcr >> 8), pcr & 0xFF,
+                  0xF0, 0])
+    for stype, pid, desc in streams:
+        body += bytes([stype, 0xE0 | (pid >> 8), pid & 0xFF, 0xF0, len(desc)]) + desc
+    sec = bytes([0x02, 0xB0 | ((len(body) + 4) >> 8), (len(body) + 4) & 0xFF]) + body
+    return sec + _crc32(sec).to_bytes(4, "big")
+
+
+def _payload_start(packet):
+    """Where the payload of a TS packet starts, after its adaptation field."""
+    return 4 + (1 + packet[4] if packet[3] & 0x20 else 0)
+
+
+def _set_pmt(data, streams):
+    """Write a PMT for *streams* into the TS *data* (a bytearray), in place:
+    mpegtsmux names a teletext stream without the teletext descriptor."""
+    pmt_pid = program = None
+    for i in range(0, len(data), 188):
+        p = data[i:i + 188]
+        pid, start = ((p[1] & 0x1F) << 8) | p[2], _payload_start(p)
+        if not p[1] & 0x40:
+            continue
+        if pid == 0:
+            off = start + 1 + p[start]
+            program = (p[off + 8] << 8) | p[off + 9]
+            pmt_pid = ((p[off + 10] & 0x1F) << 8) | p[off + 11]
+        elif pid == pmt_pid:
+            payload = bytes([0]) + _pmt_section(program, streams)
+            data[i + start:i + 188] = payload + b"\xff" * (188 - start - len(payload))
+
+
+def make_teletext_ts(path, seconds=10, page=0x150, text="Untertitel"):
+    """A TS file of *seconds*: H.264 on PID 0x41 and teletext on 0x42 whose
+    subtitle page *page* shows "<text> 0", "<text> 1" ... one a second."""
+    _GLib, Gst = gst("videotestsrc", "x264enc", "mpegtsmux")
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    def feed(pl):
+        src = pl.get_by_name("ttx")
+        for i in range(seconds):
+            buf = Gst.Buffer.new_wrapped(_ttx_page(f"{text} {i}", page))
+            buf.pts, buf.duration = i * Gst.SECOND, Gst.SECOND
+            src.emit("push-buffer", buf)
+        src.emit("end-of-stream")
+    _pipeline(f"{_video(seconds, 320, 180, 'ball')} ! "
+              "x264enc key-int-max=25 speed-preset=ultrafast ! h264parse ! queue ! mux.sink_65 "
+              "appsrc name=ttx format=time caps=application/x-teletext ! queue ! mux.sink_66 "
+              f"mpegtsmux name=mux ! filesink location={path}", feed=feed)
+    data = bytearray(path.read_bytes())
+    mag = page // 0x100 % 8
+    teletext = bytes([0x56, 5]) + b"deu" + bytes([(2 << 3) | mag, page & 0xFF])
+    _set_pmt(data, [(0x1B, 0x41, b""), (0x06, 0x42, teletext)])
+    path.write_bytes(bytes(data))
+    return path
 
 # 3sat (zdf-hls-18 .../dach/veryhigh/master.m3u8), shortened: two copies of the
 # variant, each with its own groups; the German sound of the variant itself
