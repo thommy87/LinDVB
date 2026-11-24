@@ -273,7 +273,9 @@ def test_channel_changes_leave_no_open_files(tmp_path):
         left = [r for i in range(1, 5) for r in change(i)]
         gc.collect()
         assert [r() for r in left] == [None] * len(left)    # captures and readers are gone
-        assert _open_files() <= before + 1, (before, _open_files())
+        # each leaked capture kept 8 files; allow for sockets other tests'
+        # servers open or close meanwhile, not for one capture
+        assert _open_files() - before < 8, (before, _open_files())
     finally:
         tm.shutdown()
         srv.close()
