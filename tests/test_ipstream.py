@@ -635,9 +635,9 @@ def test_hls_with_subtitles_keeps_picture_and_sound(hls, tmp_path, monkeypatch):
     pads = []
     parsed = ipstream.GstReader._on_parsed_pad
 
-    def spy(self, parse, pad, pl):
+    def spy(self, parse, pad):
         pads.append(self._caps_name(pad))
-        return parsed(self, parse, pad, pl)
+        return parsed(self, parse, pad)
     monkeypatch.setattr(ipstream.GstReader, "_on_parsed_pad", spy)
     r, data, errors = _read_all(ipstream.GstReader, base + "/subs.m3u8",
                                 retry=ipstream.Retry(delays=(5,), give_up=30))

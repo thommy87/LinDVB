@@ -315,6 +315,8 @@ class Capture(GObject.Object):
         self._v5_fe = None               # festats.Frontend, False: not needed (see _v5_frontend)
 
         self.pipeline = Gst.Pipeline.new(f"capture{adapter}")
+        self._probes = []                # (pad, probe id): taken off in stop()
+        self._bus_handler = 0
         self._src = None                 # dvbsrc, whose PID filter may grow (AIT)
         self._pids = ""                  # the PIDs set on it ("8192" = all)
         self.ait = None                  # the latest AIT of the service (HbbTV)
@@ -380,21 +382,20 @@ class Capture(GObject.Object):
             if not self._pmt_pid:
                 self._pat_asm = SectionAssembler()     # find the PMT PID in the PAT
             self.ca.start(channel)
-            pad = sink.get_static_pad("sink")
-            pad.add_probe(Gst.PadProbeType.BUFFER, self._ca_probe)
+            self._probe(sink.get_static_pad("sink"), self._ca_probe)
 
         # EPG of other providers (MediaHighway 1/2, Freesat) on this transponder
         self.provider_epg = None
         kinds = provider_types_for(channel, settings.get("epg_provider_freqs", []))
         if kinds:
             self.provider_epg = ProviderEPG(kinds, self._on_provider_events, self.epg_language)
-            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._epg_probe)
+            self._probe(parse.get_static_pad("src"), self._epg_probe)
 
         # DVB EIT, reassembled from the packets (see lindvb.epgsources.EITCollector)
         self.eit = None
         if self._atsc is None:
             self.eit = EITCollector(self._on_eit_events, self.epg_language)
-            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._eit_probe)
+            self._probe(parse.get_static_pad("src"), self._eit_probe)
 
         # HbbTV: watch the PMT for the AIT and the AIT for applications
         self.ait_monitor = None
@@ -404,7 +405,7 @@ class Capture(GObject.Object):
                 channel.delsys not in ATSC_SYSTEMS:
             from .ait import AitMonitor
             self.ait_monitor = AitMonitor(channel.sid, self._pmt_pid, self._on_ait, self._on_ait_pids)
-            parse.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._ait_probe)
+            self._probe(parse.get_static_pad("src"), self._ait_probe)
 
         # channel analysis (lindvb.analysis): callables that get every buffer of
         # the transport stream; the list is replaced, never changed in place
@@ -415,7 +416,29 @@ class Capture(GObject.Object):
 
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect("message", self._on_message)
+        self._bus_handler = bus.connect("message", self._on_message)
+
+    def _probe(self, pad, fn):
+        """A buffer probe of the capture, taken off again when it stops."""
+        self._probes.append((pad, pad.add_probe(Gst.PadProbeType.BUFFER, fn)))
+
+    def _let_go(self):
+        """Undo what ties the pipeline to this capture: the bus handler and the
+        probes hold its methods, and it holds the pipeline. Python cannot see
+        that cycle through GStreamer, so a stopped capture stayed in memory with
+        its sockets and pipes, a few with every channel change, until LinDVB
+        ran out of files ("Too many open files")."""
+        bus = self.pipeline.get_bus()
+        bus.remove_signal_watch()
+        if self._bus_handler:
+            bus.disconnect(self._bus_handler)
+            self._bus_handler = 0
+        if self._tap_probe is not None:
+            self._parse.get_static_pad("src").remove_probe(self._tap_probe)
+            self._tap_probe = None
+        for pad, probe in self._probes:
+            pad.remove_probe(probe)
+        self._probes = []
 
     @staticmethod
     def _appsrc():
@@ -886,7 +909,7 @@ class Capture(GObject.Object):
         if self.ca is not None:
             self.ca.stop()
         self.pipeline.set_state(Gst.State.NULL)
-        self.pipeline.get_bus().remove_signal_watch()
+        self._let_go()
         self.store.finished = True
         if self._v5_fe:
             self._v5_fe.close()
