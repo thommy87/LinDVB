@@ -142,3 +142,49 @@ def test_open_files_are_counted_by_kind(log, tmp_path, monkeypatch):
     assert out.endswith("3x /tmp/x.ts")
     monkeypatch.setattr(debuglog, "_on", False)
     assert debuglog.open_files_summary(str(fds)) == ""
+
+
+def test_graphics_buffers_are_counted_by_driver(log, tmp_path):
+    """Alex's log: 578 of 670 open files were graphics buffers (/dmabuf:),
+    piling up while watching; the summary names the driver that made them."""
+    import os
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    fds, infos = tmp_path / "fd", tmp_path / "fdinfo"
+    fds.mkdir()
+    infos.mkdir()
+    for i in range(3):
+        os.symlink("/dmabuf:", fds / str(i))
+        (infos / str(i)).write_text(f"pos:\t0\nflags:\t02\nsize:\t{40_000_000}\n"
+                                    "count:\t1\nexp_name:\ti915\n")
+    os.symlink("/dmabuf:", fds / "3")           # no fdinfo: the driver unknown
+    os.symlink("socket:[7]", fds / "4")
+    out = debuglog.open_files_summary(str(fds))
+    assert out.startswith("open files 5/")
+    assert "dmabuf 4" in out and "socket 1" in out and "file 1" not in out
+    assert out.endswith("; graphics buffers i915 3 (120 MB), ? 1 (0 MB)")
+
+
+
+def test_window_logs_the_open_files_when_their_count_changes(log, monkeypatch):
+    from types import SimpleNamespace
+
+    import gi
+    for lib, version in (("Gst", "1.0"), ("Gtk", "4.0"), ("Gdk", "4.0")):
+        try:
+            gi.require_version(lib, version)
+        except ValueError:
+            pytest.skip(f"{lib} {version} missing")
+    from lindvb.ui.window import MainWindow
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    win = SimpleNamespace(_open_files_logged="", player=SimpleNamespace(
+        video_decoder=("vah264dec", "vaapi"), video_deinterlacer="vadeinterlace"))
+    looks = iter(["open files 10/1024: dmabuf 4", "open files 10/1024: dmabuf 4",
+                  "open files 11/1024: dmabuf 5"])
+    monkeypatch.setattr(debuglog, "open_files_summary", lambda: next(looks))
+    for _ in range(3):
+        assert MainWindow._log_open_files(win) is True
+    lines = [line for line in log.read_text().splitlines() if " Diag: " in line]
+    assert len(lines) == 2
+    assert lines[0].endswith("open files 10/1024: dmabuf 4; video decoder vah264dec, "
+                             "deinterlacer vadeinterlace")
+    assert "open files 11/1024" in lines[1]

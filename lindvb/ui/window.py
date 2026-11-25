@@ -32,6 +32,7 @@ from .visualizer import VisualizerArea
 from ..i18n import _
 
 NO_LOCK_SECONDS = 8          # DVB-I failover after this long without a signal lock
+OPEN_FILES_INTERVAL = 30     # debug mode: seconds between two looks at the open files
 
 
 def _summary(items, chosen, none):
@@ -160,6 +161,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.thumbnailer = None
         GLib.timeout_add_seconds(2, self._track_position)
         GLib.timeout_add_seconds(30, self._save_positions)
+        self._open_files_logged = ""
+        GLib.timeout_add_seconds(OPEN_FILES_INTERVAL, self._log_open_files)
         self._vis_id = None          # visualisation style currently drawn
 
         # dark (the default), light, or the desktop's scheme (Preferences › Appearance)
@@ -1944,6 +1947,20 @@ class MainWindow(Gtk.ApplicationWindow):
             now, _ = self.app.epg.now_next(self.current.epg_key)
         self.subtitle_label.set_text(f"{hm(now.start)}–{hm(now.end)}  {now.title}" if now else "")
         self.subtitle_label.set_visible(bool(now))
+
+    def _log_open_files(self):
+        """Debug mode, every OPEN_FILES_INTERVAL s: the open files when their
+        count changed, with the video decoder and deinterlacer in use (graphics
+        buffers piled up while watching, until no file could be opened)."""
+        summary = debuglog.open_files_summary()
+        count = summary.partition(":")[0]
+        if summary and count != self._open_files_logged:
+            self._open_files_logged = count
+            p = getattr(self, "player", None)
+            dec = getattr(p, "video_decoder", None)
+            debuglog.write("Diag", f"{summary}; video decoder {dec[0] if dec else '-'}, "
+                                   f"deinterlacer {getattr(p, 'video_deinterlacer', None) or '-'}")
+        return True
 
     def _start_stream(self, c):
         """Play channel *c* (a list channel, or another instance of it)."""
