@@ -248,6 +248,37 @@ def threesat():
         srv.close()
 
 
+def test_muxer_error_before_the_first_data_starts_again(monkeypatch):
+    """mpegtsmux sets up its streams with its first output and fails ("Could
+    not create handler for stream") on a sound whose muxer input was added in
+    that moment and has no format yet: the buffer started on the picture, the
+    3sat sounds came a few milliseconds later (CI, once). Before the first
+    data the reader starts again instead of giving up on the stream."""
+    _GLib, Gst = sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.hls_3sat)
+    real = ipstream.GstReader._on_parsed_pad
+    failed = []
+
+    def parsed_pad(self, parse, pad):
+        real(self, parse, pad)
+        mux = self._mux
+        if mux is not None and not failed:
+            failed.append(mux)
+            err = _GLib.Error.new_literal(Gst.StreamError.quark(),
+                                          "Could not create handler for stream",
+                                          int(Gst.StreamError.MUX))
+            mux.post_message(Gst.Message.new_error(mux, err, "gstbasetsmux.c"))
+    monkeypatch.setattr(ipstream.GstReader, "_on_parsed_pad", parsed_pad)
+    try:
+        r, data, errors = _read_all(ipstream.GstReader, srv.url("master.m3u8"),
+                                    retry=ipstream.Retry(delays=(5,), give_up=30))
+    finally:
+        srv.close()
+    assert failed, "the muxer error was not raised"
+    assert not errors and ipstream.looks_like_ts(data)
+    assert r._mux_restarts == 1
+
+
 def test_buffer_holds_the_3sat_sounds(threesat):
     """The three sounds of the playlist, each once on the PID its name gives
     (also the name with a slash), the audio description with its language;
