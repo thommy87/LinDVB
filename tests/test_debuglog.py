@@ -122,3 +122,23 @@ def test_describe_channel():
     d = debuglog.describe_channel(c)
     assert "'Das Erste HD'" in d and "11494000 kHz h" in d and "sid 10301" in d
     assert debuglog.describe_channel(None) == "-"
+
+
+def test_open_files_are_counted_by_kind(log, tmp_path, monkeypatch):
+    import os
+    assert debuglog.open_files_summary() == "", "debug mode off: nothing"
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    assert debuglog.open_files_summary().startswith("open files ")
+    fds = tmp_path / "fd"
+    fds.mkdir()
+    links = ["socket:[1]", "socket:[2]", "pipe:[3]", "anon_inode:[eventfd]",
+             "/dev/dri/renderD128", "/dev/snd/pcmC0D0p"] + ["/tmp/x.ts"] * 3
+    for i, target in enumerate(links):
+        os.symlink(target, fds / str(i))
+    out = debuglog.open_files_summary(str(fds))
+    assert out.startswith("open files 9/")
+    assert "socket 2" in out and "pipe 1" in out and "eventfd 1" in out
+    assert "dri 1" in out and "snd 1" in out and "file 3" in out
+    assert out.endswith("3x /tmp/x.ts")
+    monkeypatch.setattr(debuglog, "_on", False)
+    assert debuglog.open_files_summary(str(fds)) == ""

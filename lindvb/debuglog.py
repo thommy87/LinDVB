@@ -125,6 +125,50 @@ def log(*parts):
     write("LinDVB", *parts)
 
 
+def _fd_kind(target):
+    """The kind of an open file, from its /proc/self/fd link."""
+    if target.startswith("anon_inode:"):
+        return target[len("anon_inode:"):].strip("[]") or "anon_inode"
+    for prefix, kind in (("socket:", "socket"), ("pipe:", "pipe"), ("/dev/dri/", "dri"),
+                         ("/dev/snd/", "snd"), ("/dev/", "dev"), ("/memfd:", "memfd")):
+        if target.startswith(prefix):
+            return kind
+    return "file"
+
+
+def open_files_summary(fd_dir="/proc/self/fd"):
+    """The files LinDVB holds open, counted by kind ("open files 41/1024: socket 12,
+    pipe 8, ..."); the most frequent path is named when one is open several
+    times. Empty when debug mode is off or the system has no /proc."""
+    if not _on:
+        return ""
+    kinds, paths = {}, {}
+    try:
+        names = os.listdir(fd_dir)
+    except OSError:
+        return ""
+    for name in names:
+        try:
+            target = os.readlink(os.path.join(fd_dir, name))
+        except OSError:
+            continue
+        kind = _fd_kind(target)
+        kinds[kind] = kinds.get(kind, 0) + 1
+        if kind in ("file", "dev", "memfd"):
+            paths[target] = paths.get(target, 0) + 1
+    try:
+        import resource
+        limit = f"/{resource.getrlimit(resource.RLIMIT_NOFILE)[0]}"
+    except (ImportError, OSError, ValueError):
+        limit = ""
+    parts = ", ".join(f"{k} {n}" for k, n in sorted(kinds.items(), key=lambda kv: (-kv[1], kv[0])))
+    out = f"open files {sum(kinds.values())}{limit}: {parts}"
+    top = max(paths.items(), key=lambda kv: kv[1], default=None)
+    if top and top[1] > 2:
+        out += f"; {top[1]}x {top[0]}"
+    return out
+
+
 def describe_channel(c):
     """A channel in one line: name, delivery system and tuning data (no stream login)."""
     if c is None:
