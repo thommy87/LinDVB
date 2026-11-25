@@ -1948,6 +1948,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def _start_stream(self, c):
         """Play channel *c* (a list channel, or another instance of it)."""
         debuglog.write("Channel", "switch to " + debuglog.describe_channel(c))
+        debuglog.write("Channel", debuglog.open_files_summary())
         self._nolock_since = None
         # DVB-I services without a stream (an HbbTV application) have nothing to measure
         # Tvheadend: the server measures the signal, LinDVB gets the stream only

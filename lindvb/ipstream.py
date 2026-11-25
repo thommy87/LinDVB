@@ -79,6 +79,10 @@ FIRST_DATA_TIMEOUT = 20
 # Longer than the longest HLS segments in use (10 s) with room to spare.
 STALL_TIMEOUT = 20
 STALL_CHECK = 2                  # seconds between two looks
+# mpegtsmux failing on its first output (a sound added in that moment):
+# the pipeline is built again at once, a few times, before the first data
+MUX_RESTARTS = 3
+MUX_RESTART_DELAY_MS = 100
 
 QUALITIES = ("auto", "best")
 
@@ -694,6 +698,7 @@ class GstReader:
         self._rendition_pids = set()     # PIDs given to HLS audio renditions
         self.source_uri = None           # what GStreamer opens instead of url
         self._manifest_checked = False   # looked for a compressed playlist
+        self._mux_restarts = 0           # muxer failures before the first data
         self._watch = 0                  # FIRST_DATA_TIMEOUT timer
         self._stall_watch = 0            # STALL_TIMEOUT timer
         self._last_data = 0.0            # time.monotonic() of the last data
@@ -1029,12 +1034,31 @@ class GstReader:
             return
         if msg.type == Gst.MessageType.ERROR:
             err, dbg = msg.parse_error()
+            if self._muxer_start_failed(msg, err):
+                return
             event = sourcestate.from_gst_error(err, dbg)
             reason = sourcestate.refused_text(f"{err.message} {dbg or ''}") \
                 if event == sourcestate.REFUSED else err.message
             self._broken(gen, reason, event)
         elif msg.type == Gst.MessageType.EOS:
             self._broken(gen, _("the server ended the stream"), sourcestate.ENDED)
+
+    def _muxer_start_failed(self, msg, err):
+        """mpegtsmux sets up all its streams with its first output and fails
+        ("Could not create handler for stream") when a sound's input was added
+        in that very moment and has no format yet: HLS sounds come a few
+        milliseconds after the picture. Before the first data: build the
+        pipeline again at once (up to MUX_RESTARTS times), as nothing is lost."""
+        if self.received or msg.src is not self._mux or self._mux_restarts >= MUX_RESTARTS \
+                or not err.matches(self.Gst.StreamError.quark(), self.Gst.StreamError.MUX):
+            return False
+        from . import debuglog
+        self._mux_restarts += 1
+        debuglog.write("Stream", f"{self.host}: {err.message} before the first data; starting again")
+        self._gen += 1                   # ignore what the old pipeline still says
+        self._teardown()
+        self._timer = self.GLib.timeout_add(MUX_RESTART_DELAY_MS, self._again)
+        return True
 
     def _on_collection(self, _bus, msg):
         """Streaming thread: the adaptive demuxer offers its streams."""
