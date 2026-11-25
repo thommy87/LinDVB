@@ -387,6 +387,7 @@ class Player(GObject.Object):
         enable_ttml()
         self.apply_decoder_setting()
         self.video_decoder = None       # (factory, backend) decoding the video now
+        self.video_deinterlacer = None  # factory name of the deinterlacer in use
         self.video = VideoBin(picture)
         self.playbin = None
         self.video_off = False          # "Video Off (audio only)": kept across rebuilds
@@ -492,9 +493,12 @@ class Player(GObject.Object):
             pb.set_property("flags", pb.get_property("flags") & ~PLAY_FLAGS_TEXT)
         vf = Gst.Bin.new("vfilter")
         head, middle = [], [Gst.ElementFactory.make("videoconvert")]
+        self.video_deinterlacer = None
         if self.settings["deinterlace"]:
             gpu = hwaccel.preferred(self._decoder_mode(), hwaccel.available())
             deint = hwaccel.make_deinterlacer(gpu)
+            if deint is not None:
+                self.video_deinterlacer = deint.get_factory().get_name()
             if deint is not None and deint.get_factory().get_name() == "vadeinterlace":
                 # first in the chain: it takes the VA-API decoder's frames
                 # straight from the graphics card and deinterlaces them there

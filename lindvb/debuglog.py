@@ -130,19 +130,50 @@ def _fd_kind(target):
     if target.startswith("anon_inode:"):
         return target[len("anon_inode:"):].strip("[]") or "anon_inode"
     for prefix, kind in (("socket:", "socket"), ("pipe:", "pipe"), ("/dev/dri/", "dri"),
-                         ("/dev/snd/", "snd"), ("/dev/", "dev"), ("/memfd:", "memfd")):
+                         ("/dev/snd/", "snd"), ("/dev/", "dev"), ("/memfd:", "memfd"),
+                         ("/dmabuf:", "dmabuf")):
         if target.startswith(prefix):
             return kind
     return "file"
 
 
+def _dmabuf_exporter(fdinfo):
+    """(exporting driver, bytes) of a graphics buffer, from its /proc/self/fdinfo
+    entry ("exp_name: i915", "size: 3133440"); ("?", 0) when unreadable."""
+    fields = {}
+    try:
+        with open(fdinfo, encoding="ascii", errors="replace") as f:
+            for line in f:
+                key, _sep, value = line.partition(":")
+                fields[key.strip()] = value.strip()
+    except OSError:
+        pass
+    try:
+        size = int(fields.get("size", "0"))
+    except ValueError:
+        size = 0
+    return fields.get("exp_name") or "?", size
+
+
+def _dmabuf_part(dmabufs):
+    """ "graphics buffers i915 355 (1.1 GB)" from {driver: [count, bytes]}."""
+    if not dmabufs:
+        return ""
+    parts = ", ".join(f"{name} {n} ({size / 1e9:.1f} GB)" if size >= 1e9 else
+                      f"{name} {n} ({size / 1e6:.0f} MB)"
+                      for name, (n, size) in sorted(dmabufs.items(), key=lambda kv: -kv[1][0]))
+    return f"; graphics buffers {parts}"
+
+
 def open_files_summary(fd_dir="/proc/self/fd"):
     """The files LinDVB holds open, counted by kind ("open files 41/1024: socket 12,
     pipe 8, ..."); the most frequent path is named when one is open several
-    times. Empty when debug mode is off or the system has no /proc."""
+    times, graphics buffers (dmabuf) by the driver that made them. Empty when
+    debug mode is off or the system has no /proc."""
     if not _on:
         return ""
-    kinds, paths = {}, {}
+    kinds, paths, dmabufs = {}, {}, {}
+    info_dir = os.path.join(os.path.dirname(fd_dir), "fdinfo")
     try:
         names = os.listdir(fd_dir)
     except OSError:
@@ -156,6 +187,11 @@ def open_files_summary(fd_dir="/proc/self/fd"):
         kinds[kind] = kinds.get(kind, 0) + 1
         if kind in ("file", "dev", "memfd"):
             paths[target] = paths.get(target, 0) + 1
+        elif kind == "dmabuf":
+            driver, size = _dmabuf_exporter(os.path.join(info_dir, name))
+            entry = dmabufs.setdefault(driver, [0, 0])
+            entry[0] += 1
+            entry[1] += size
     try:
         import resource
         limit = f"/{resource.getrlimit(resource.RLIMIT_NOFILE)[0]}"
@@ -166,7 +202,7 @@ def open_files_summary(fd_dir="/proc/self/fd"):
     top = max(paths.items(), key=lambda kv: kv[1], default=None)
     if top and top[1] > 2:
         out += f"; {top[1]}x {top[0]}"
-    return out
+    return out + _dmabuf_part(dmabufs)
 
 
 def describe_channel(c):
