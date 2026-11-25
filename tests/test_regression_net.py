@@ -264,6 +264,9 @@ def test_muxer_error_before_the_first_data_starts_again(monkeypatch):
         mux = self._mux
         if mux is not None and not failed:
             failed.append(mux)
+            # as the real failure: this muxer puts nothing out
+            mux.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER,
+                                                lambda *_a: Gst.PadProbeReturn.DROP)
             err = _GLib.Error.new_literal(Gst.StreamError.quark(),
                                           "Could not create handler for stream",
                                           int(Gst.StreamError.MUX))
