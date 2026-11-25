@@ -442,6 +442,7 @@ class Player(GObject.Object):
         self._resolve_token = -1        # playback whose address was resolved once
         self._refused_token = -1        # playback whose refusal was reported
         self._hw_error_token = -1       # playback whose GPU decoder failed
+        self._empty_start_capture = None  # capture started again after an empty start
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
         # radio visualisations: audio analysis tap, or a GStreamer visualiser
@@ -813,6 +814,31 @@ class Player(GObject.Object):
         _ret, state, _pending = self.playbin.get_state(0)
         return (state in (Gst.State.PAUSED, Gst.State.PLAYING)
                 and self._count("video") == 0 and self._count("audio") > 0)
+
+    def _empty_start(self, src, dbg):
+        """True when playing from the buffer ended before the first picture
+        (a parser reached the end of its stream without one valid frame):
+        start once more at the live end, instead of the error.
+
+        3sat HD (DASH) did that 35 ms after the start in 3 of 5 starts (logs
+        of 24. and 25.11.2026), while switching away and back played. The
+        cause lies in the buffer's first bytes; the live end is past them."""
+        factory = src.get_factory() if isinstance(src, Gst.Element) else None
+        if self.capture is None or self._played or factory is None or \
+                "Parser" not in (factory.get_metadata("klass") or "") or \
+                "gst_base_parse_sink_event_default" not in (dbg or "") or \
+                self._empty_start_capture is self.capture:
+            return False
+        self._empty_start_capture = self.capture
+        debuglog.write("Player", "the buffer's start ended before the first picture: "
+                                 "starting again at the live end")
+        GLib.timeout_add(500, self._start_again_live, self._token)
+        return True
+
+    def _start_again_live(self, token):
+        if token == self._token and self.capture is not None:
+            self.play_capture(self.capture, self.sid)
+        return False
 
     def restart(self):
         """Rebuild the pipeline and continue at the same position."""
@@ -2262,6 +2288,8 @@ class Player(GObject.Object):
                 # e.g. hlsdemux2 refusing a stream: try the classic pipeline once
                 self._fallback_done = True
                 GLib.idle_add(self._fallback_to_playbin, self._token)
+                return
+            if self._empty_start(msg.src, _dbg):
                 return
             if self._on_refused(err, _dbg):
                 return

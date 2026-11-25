@@ -297,6 +297,53 @@ def test_direct_offers_the_3sat_sounds(threesat, player):  # noqa: F811
     assert "TV Ton" in labels[cur]
 
 
+# -- 3sat HD: the buffer's start ends before a picture (logs of 24. and 25.11.2026) ------------
+
+def _parser_error(target):
+    """What playbin posted for 3sat HD 35 ms after the start: h264parse ran
+    into the end of its stream before a single valid frame."""
+    from gi.repository import GLib, Gst
+    parser = Gst.ElementFactory.make("h264parse")
+    err = GLib.Error.new_literal(Gst.StreamError.quark(),
+                                 "No valid frames found before end of stream",
+                                 int(Gst.StreamError.FAILED))
+    dbg = ("../libs/gst/base/gstbaseparse.c(1423): gst_base_parse_sink_event_default (): "
+           "/GstPlayBin:player/GstURIDecodeBin:uridecodebin2/GstDecodeBin:decodebin2/"
+           "GstH264Parse:h264parse19")
+    target._on_message(None, Gst.Message.new_error(parser, err, dbg))
+
+
+def test_buffer_start_without_a_picture_starts_again_at_the_live_end(player, monkeypatch):  # noqa: F811
+    """Played from the buffer, the video parser ends before its first frame:
+    the player starts once more at the live end instead of showing the error;
+    a second time on the same channel the error shows."""
+    cap = types.SimpleNamespace(adapter=3000)
+    starts, errors = [], []
+    monkeypatch.setattr(player, "play_capture",
+                        lambda c, sid, offset=None: starts.append((c, sid, offset)))
+    player.connect("error", lambda _p, text: errors.append(text))
+    player.capture, player.sid, player._played = cap, 0, False
+    _parser_error(player)
+    _run(3, lambda: starts)
+    assert starts == [(cap, 0, None)] and errors == []
+    _parser_error(player)
+    _run(2, lambda: errors)
+    assert len(starts) == 1 and errors and "No valid frames" in errors[0]
+
+
+def test_parser_error_after_the_picture_is_shown(player, monkeypatch):  # noqa: F811
+    """Once the channel played, such an error is no start problem: it shows."""
+    cap = types.SimpleNamespace(adapter=3000)
+    starts, errors = [], []
+    monkeypatch.setattr(player, "play_capture",
+                        lambda c, sid, offset=None: starts.append((c, sid, offset)))
+    player.connect("error", lambda _p, text: errors.append(text))
+    player.capture, player.sid, player._played = cap, 0, True
+    _parser_error(player)
+    _run(2, lambda: errors)
+    assert starts == [] and errors
+
+
 # -- channel changes leave nothing behind (crash of 24.11.2026) ------------------------------
 
 def _open_files():
@@ -633,6 +680,44 @@ def test_dash_buffer_keeps_every_audio(dash):
     assert not errors and ipstream.looks_like_ts(data)
     langs = sorted(lang for _p, kind, lang in _pmt_streams(data) if kind == "audio")
     assert langs == ["deu", "eng"]
+
+
+def test_dash_language_with_a_stray_character(dash, tmp_path):
+    """NDR's DASH audio names its language "de`" in the MP4 header (log of
+    25.11.2026): mpegtsmux knows no such code and warned about it dozens of
+    times at every start. The reader hands it the German it means."""
+    from gi.repository import Gst
+    srv, folder = dash
+    ndr = tmp_path / "ndr"
+    ndr.mkdir()
+    for f in folder.iterdir():
+        if f.is_file():
+            (ndr / f.name).write_bytes(f.read_bytes())
+    init = bytearray((ndr / "init-stream1.m4s").read_bytes())     # the German set
+    at = init.find(b"mdhd") + 8 + 16                                # version 0: the language
+    init[at:at + 2] = ((4 << 10) | (5 << 5) | 0).to_bytes(2, "big")  # "de`"
+    (ndr / "init-stream1.m4s").write_bytes(bytes(init))
+    warned = []
+
+    def log(category, _level, _file, _function, _line, _obj, message, *_user):
+        if category.get_name() == "basetsmux":
+            warned.append(message.get())
+    Gst.debug_add_log_function(log, None)
+    old = Gst.debug_get_default_threshold()
+    Gst.debug_set_threshold_for_name("basetsmux", Gst.DebugLevel.WARNING)
+    Gst.debug_set_active(True)
+    served = sk.Server(ndr)
+    try:
+        _r, data, errors = _read_all(ipstream.GstReader, served.url("manifest-roles.mpd"),
+                                     retry=ipstream.Retry(delays=(5,), give_up=30))
+    finally:
+        served.close()
+        Gst.debug_remove_log_function(log)
+        Gst.debug_set_threshold_for_name("basetsmux", old)
+    assert not errors and ipstream.looks_like_ts(data)
+    assert not [w for w in warned if "language" in w], warned[:3]
+    langs = sorted(lang for _p, kind, lang in _pmt_streams(data) if kind == "audio")
+    assert langs in (["deu", "eng"], ["eng", "ger"]), langs
 
 
 def _dash_direct(srv, player):  # noqa: F811
