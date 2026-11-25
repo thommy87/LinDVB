@@ -43,6 +43,7 @@ back at the place it plays (lindvb.player), so a jump back in the buffer
 shows the song that ran then. Players that do not know the PID skip it.
 """
 
+import re
 import socket
 import threading
 import time
@@ -910,6 +911,7 @@ class GstReader:
                 e.sync_state_with_parent()
             pad.link(chain[0].get_static_pad("sink"))
             out = chain[-1].get_static_pad("src")
+            out.add_probe(Gst.PadProbeType.EVENT_DOWNSTREAM, self._clean_language)
             tmpl = self._mux.get_pad_template("sink_%d")
             caps = pad.get_current_caps() or pad.query_caps(None)
             mpad = None
@@ -957,6 +959,27 @@ class GstReader:
                 return Gst.PadProbeReturn.REMOVE
             first.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, once)
         return self._mux.request_pad(tmpl, f"sink_{pid}", None)
+
+    def _clean_language(self, pad, info):
+        """A language code with stray characters (NDR's DASH: "de`"): the
+        language it names for mpegtsmux, which knows no such code (it warned
+        at every start and left the PMT without a language)."""
+        Gst = self.Gst
+        ev = info.get_event()
+        if ev is None or ev.type != Gst.EventType.TAG:
+            return Gst.PadProbeReturn.OK
+        tags = ev.parse_tag()
+        ok, lang = tags.get_string(Gst.TAG_LANGUAGE_CODE)
+        cleaned = re.sub(r"[^a-z-]", "", lang.lower()) if ok else ""
+        if not ok or cleaned == lang or _iso639_2(lang):
+            return Gst.PadProbeReturn.OK
+        fixed = tags.copy()
+        fixed.remove_tag(Gst.TAG_LANGUAGE_CODE)
+        code = _iso639_2(cleaned)
+        if code:
+            fixed.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_LANGUAGE_CODE, code)
+        pad.push_event(Gst.Event.new_tag(fixed))
+        return Gst.PadProbeReturn.DROP
 
     def _language_of(self, tags):
         """The ISO 639-2 code of a stream's tags, or None. A language with a
