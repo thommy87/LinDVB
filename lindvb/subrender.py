@@ -31,12 +31,19 @@ from dataclasses import dataclass
 
 TELETEXT = "Teletext"            # lindvb.trackcatalog formats
 DVB_SUB = "DVB-SUB"
+WEBVTT = "WebVTT"
 CEA608 = "CEA-608"
 CEA708 = "CEA-708"
 
 # buffers a renderer's queue holds before it throws the oldest away:
 # teletext comes in a few PES packets a frame, so about two seconds
 QUEUE_BUFFERS = 100
+# text cues come as whole WebVTT segments (one a few seconds)
+CUE_QUEUE_BUFFERS = 30
+# what playsink hands its overlay that subparse reads (TTML follows)
+CUE_CAPS = ("application/x-subtitle-vtt", "application/x-subtitle")
+# a cue shown by both paths counts as on time when they agree this closely
+CUE_TOLERANCE_NS = 40_000_000
 
 
 @dataclass
@@ -215,6 +222,172 @@ class TeletextRenderer(Renderer):
             s.decoded += 1
             self._on_text(text)
         return Gst.FlowReturn.OK
+
+
+def cue_text(data):
+    """The plain text of a parsed cue (subparse: Pango markup), its lines trimmed."""
+    import html
+    import re
+    text = bytes(data).decode("utf-8", "replace").replace("\x00", "")
+    text = html.unescape(re.sub(r"<[^>]*>", "", text))
+    return "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
+
+
+def running_time(segment, pts):
+    """The running time of *pts* in *segment* (ns), None when it has none."""
+    from gi.repository import Gst
+    if segment is None or pts is None or pts == Gst.CLOCK_TIME_NONE:
+        return None
+    rt = segment.to_running_time(Gst.Format.TIME, pts)
+    return None if rt == Gst.CLOCK_TIME_NONE else rt
+
+
+class TextCueRenderer(Renderer):
+    """Text cues (WebVTT) parsed by subparse, the parser the old path uses.
+
+    It runs in a small pipeline of its own beside the playback (appsrc,
+    leaky queue, subparse, appsink), so it can never hold up picture or
+    sound: :meth:`feed` hands it a copy of each subtitle buffer as playbin
+    gives it to its overlay, with its caps and segment. *on_cue(text,
+    running_time)* gets each cue it decoded, from a streaming thread; the
+    running time (ns, in the playback's timeline) is when the cue is due.
+
+    In the shadow it shows nothing: drawing (Pango in GTK, without
+    textoverlay) comes when it takes over."""
+
+    kind = WEBVTT
+
+    def __init__(self, on_cue, queue_buffers=CUE_QUEUE_BUFFERS, warm=False):
+        from gi.repository import Gst
+        self._on_cue = on_cue
+        self._state = State(WEBVTT)
+        self.warm = warm
+        self.pipeline = Gst.Pipeline.new("text-cue-renderer")
+        self._src = Gst.ElementFactory.make("appsrc")
+        self._src.set_property("format", Gst.Format.TIME)
+        self._src.set_property("handle-segment-change", True)
+        self._src.set_property("max-buffers", queue_buffers)
+        self._src.set_property("leaky-type", 2)          # downstream: drop the oldest
+        q = Gst.ElementFactory.make("queue")
+        q.set_property("leaky", 2)
+        q.set_property("max-size-buffers", queue_buffers)
+        q.set_property("max-size-time", 0)
+        q.set_property("max-size-bytes", 0)
+        q.connect("overrun", self._overrun)
+        parse = Gst.ElementFactory.make("subparse")
+        sink = Gst.ElementFactory.make("appsink")
+        sink.set_property("sync", False)     # the due time is compared, not waited for
+        sink.set_property("emit-signals", True)
+        sink.connect("new-sample", self._on_sample)
+        chain = (self._src, q, parse, sink)
+        for e in chain:
+            self.pipeline.add(e)
+        for a, b in zip(chain, chain[1:]):
+            a.link(b)
+        self._caps = None
+        self.pipeline.set_state(Gst.State.PLAYING)
+
+    # -- the interface ---------------------------------------------------------------
+
+    def show(self, track):
+        self._state = State(WEBVTT, on=True, track=getattr(track, "origin", ""))
+
+    def off(self):
+        self._state = State(WEBVTT)
+
+    def state(self):
+        return self._state
+
+    def close(self):
+        from gi.repository import Gst
+        self.off()
+        self.pipeline.set_state(Gst.State.NULL)
+
+    # -- streaming threads -------------------------------------------------------------
+
+    def feed(self, buf, caps, segment):
+        """A subtitle buffer of the playback (any thread); never blocks."""
+        from gi.repository import Gst
+        s = self._state
+        if not s.on and not self.warm:
+            return
+        if caps is None:
+            return
+        if s.on:
+            s.data += 1
+        if self._caps is None or not caps.is_equal(self._caps):
+            self._caps = caps
+            self._src.set_property("caps", caps)
+        sample = Gst.Sample.new(buf.copy(), caps, segment, None)
+        if self._src.emit("push-sample", sample) != Gst.FlowReturn.OK:
+            s.dropped += 1
+
+    def _overrun(self, _queue):
+        self._state.dropped += 1
+
+    def _on_sample(self, sink):
+        from gi.repository import Gst
+        sample = sink.emit("pull-sample")
+        s = self._state
+        if sample is None or not s.on:
+            return Gst.FlowReturn.OK
+        buf = sample.get_buffer()
+        ok, info = buf.map(Gst.MapFlags.READ)
+        if not ok:
+            return Gst.FlowReturn.OK
+        text = cue_text(info.data)
+        buf.unmap(info)
+        if text:
+            s.last = text
+            s.decoded += 1
+            self._on_cue(text, running_time(sample.get_segment(), buf.pts))
+        return Gst.FlowReturn.OK
+
+
+class CueShadow:
+    """The cues the old path (subtitleoverlay's subparse) and the text cue
+    renderer beside it decoded, with the running time each is due; the
+    report says whether both had the same cues at the same times."""
+
+    KEEP = 500
+
+    def __init__(self, track=""):
+        self.track = track
+        self.old = []                # [(text, running time)]
+        self.new = []
+
+    def saw_old(self, text, rt):
+        if text:
+            self.old = (self.old + [(text, rt)])[-self.KEEP:]
+
+    def saw_new(self, text, rt):
+        if text:
+            self.new = (self.new + [(text, rt)])[-self.KEEP:]
+
+    @staticmethod
+    def _match(cue, others):
+        text, rt = cue
+        for t, r in others:
+            if t == text and (rt is None or r is None or abs(rt - r) <= CUE_TOLERANCE_NS):
+                return True
+        return False
+
+    def report(self, state):
+        if not self.old and not self.new:
+            return None
+        missing = [c for c in self.old if not self._match(c, self.new)]
+        extra = [c for c in self.new if not self._match(c, self.old)]
+        # the last cue of a side may still be on its way to the other
+        if missing[-1:] == self.old[-1:]:
+            missing = missing[:-1]
+        if extra[-1:] == self.new[-1:]:
+            extra = extra[:-1]
+        head = (f"{state.kind} renderer (shadow, {self.track}): {len(self.new)} cues, "
+                f"the old path {len(self.old)}; data {state.data}, dropped {state.dropped}")
+        if not missing and not extra:
+            return head + "; the same cues at the same times"
+        return head + (f"; missing {_few([t for t, _r in missing])}, "
+                       f"extra {_few([t for t, _r in extra])}")
 
 
 class Shadow:

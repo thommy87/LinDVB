@@ -259,3 +259,149 @@ def test_a_standing_renderer_never_holds_up_the_picture(teletext_ts):
         stuck.set()
     assert video >= 250 and took < 10
     assert r.state().dropped > 0
+
+
+# -- text cues (WebVTT) ----------------------------------------------------------------
+
+from test_hls_renditions import ard  # noqa: E402,F401 - the WebVTT stream sample
+
+WEBVTT_TRACK = Track(SUB, sr.WEBVTT, origin="text")
+
+
+def test_webvtt_subtitles_end_to_end(player, ard):  # noqa: F811
+    """ARD Mediathek, tagesschau24 (HLS with a WebVTT rendition): picked, the
+    cues are shown; with debug mode on, the text cue renderer read along
+    and had the same cues at the same times."""
+    url, _folder = ard
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(url)
+    _run(15, lambda: player.subtitle_tracks()[0] and player._played)
+    _run(1)
+    if player.log is None:
+        assert player._cue_shadow is None                # no renderer beside it at all
+    else:
+        assert player._cue_shadow.state() == sr.State(sr.WEBVTT)   # off: reads nothing
+    player.select_subtitle(0)
+    _run(15, lambda: player.subtitle_tracks()[1] == 0 and player._played)
+    _run(4)
+    assert player._cue_shadow is None if player.log is None else player._cue_shadow.state().on
+    player.select_subtitle(-1)
+    _run(15, lambda: player.subtitle_tracks()[1] == -1 and player._played)
+    _run(1)
+    player.stop()
+    if player.log is not None:
+        reports = [ln for ln in player.log if ln.startswith("WebVTT renderer (shadow")]
+        assert reports, player.log
+        assert all(r.endswith("the same cues at the same times") for r in reports), reports
+        counts = [int(r.split(": ", 1)[1].split()[0]) for r in reports]
+        assert sum(counts) >= 2, reports
+
+
+def test_cue_text():
+    assert sr.cue_text(b"<i>Untertitel</i> &amp; mehr\n  zwei \n\x00") == "Untertitel & mehr\nzwei"
+    assert sr.cue_text(b"<b></b>\n") == ""
+
+
+def test_running_time():
+    _GLib, Gst = streamkit.gst()
+    seg = Gst.Segment()
+    seg.init(Gst.Format.TIME)
+    seg.start = 10 * Gst.SECOND
+    assert sr.running_time(seg, 12 * Gst.SECOND) == 2 * Gst.SECOND
+    assert sr.running_time(seg, Gst.CLOCK_TIME_NONE) is None
+    assert sr.running_time(None, 12 * Gst.SECOND) is None
+    assert sr.running_time(seg, 5 * Gst.SECOND) is None   # before the segment
+
+
+def test_cue_shadow_report():
+    state = sr.State(sr.WEBVTT, on=True, track="text", data=6)
+    sh = sr.CueShadow("text")
+    assert sh.report(state) is None
+    ms = 1_000_000
+    for i, t in enumerate(("a", "b", "c")):
+        sh.saw_old(t, i * 1000 * ms)
+        sh.saw_new(t, i * 1000 * ms + 10 * ms)           # within the tolerance
+    sh.saw_old("d", 3000 * ms)                           # still on its way
+    sh.saw_new("", None)
+    assert sh.report(state) == ("WebVTT renderer (shadow, text): 3 cues, the old path 4; "
+                                "data 6, dropped 0; the same cues at the same times")
+    sh = sr.CueShadow("text")
+    sh.saw_old("a", 0)
+    sh.saw_old("b", 1000 * ms)
+    sh.saw_new("a", 500 * ms)                            # the same text, half a second late
+    sh.saw_new("b", 1000 * ms)
+    assert "missing 'a', extra 'a'" in sh.report(state)
+
+
+def _vtt_sample(Gst, text, start_s):
+    """A WebVTT segment as hlsdemux2 hands it to playbin: one buffer, its
+    own timestamp map."""
+    data = ("WEBVTT\nX-TIMESTAMP-MAP=MPEGTS:324000000,LOCAL:00:00:00.000\n\n"
+            f"00:00:{start_s:02d}.000 --> 00:00:{start_s:02d}.800\n{text}\n\n").encode()
+    return Gst.Buffer.new_wrapped(data)
+
+
+def _feed_vtt(renderer, n=4):
+    _GLib, Gst = streamkit.gst("subparse", "appsrc", "appsink")
+    caps = Gst.Caps.from_string("application/x-subtitle-vtt")
+    seg = Gst.Segment()
+    seg.init(Gst.Format.TIME)
+    for i in range(n):
+        renderer.feed(_vtt_sample(Gst, f"{SUBTITLE} {i}", i), caps, seg)
+
+
+def test_text_cue_renderer_decodes_cues():
+    import threading
+    streamkit.gst("subparse", "appsrc", "appsink")
+    got, done = [], threading.Event()
+
+    def on_cue(text, rt):
+        got.append((text, rt))
+        if len(got) == 4:
+            done.set()
+    r = sr.TextCueRenderer(on_cue)
+    try:
+        assert r.can(WEBVTT_TRACK) and not r.can(PAGE_150)
+        r.show(WEBVTT_TRACK)
+        _feed_vtt(r)
+        assert done.wait(10), got
+        assert [t for t, _rt in got] == [f"{SUBTITLE} {i}" for i in range(4)]
+        times = [rt for _t, rt in got]
+        assert all(t is not None for t in times) and times == sorted(times)
+        assert times[1] - times[0] == 1_000_000_000      # the cue times, one second apart
+        s = r.state()
+        assert s.on and s.track == "text" and s.data == 4 and s.decoded == 4 and s.dropped == 0
+        r.off()
+        assert r.state() == sr.State(sr.WEBVTT)
+    finally:
+        r.close()
+
+
+def test_text_cue_renderer_off_takes_in_no_data():
+    streamkit.gst("subparse", "appsrc", "appsink")
+    got = []
+    r = sr.TextCueRenderer(lambda t, rt: got.append(t))
+    try:
+        _feed_vtt(r)
+        time.sleep(0.5)
+        assert got == [] and r.state() == sr.State(sr.WEBVTT)
+    finally:
+        r.close()
+
+
+def test_a_standing_cue_renderer_never_blocks_the_feed():
+    """The cue callback hangs: feeding goes on at once, the renderer drops."""
+    import threading
+    streamkit.gst("subparse", "appsrc", "appsink")
+    stuck = threading.Event()
+    r = sr.TextCueRenderer(lambda t, rt: stuck.wait(30), queue_buffers=2)
+    try:
+        r.show(WEBVTT_TRACK)
+        t0 = time.monotonic()
+        _feed_vtt(r, n=40)
+        assert time.monotonic() - t0 < 2
+        time.sleep(0.3)
+        assert r.state().data == 40
+    finally:
+        stuck.set()
+        r.close()
