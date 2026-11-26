@@ -5574,3 +5574,15 @@ msgstr "Untertitel über Kabel"
 #: lindvb/ui/window.py
 msgid "Subtitles via antenna"
 msgstr "Untertitel über Antenne"
+
+#: lindvb/player.py
+msgid "Video output through the graphics card failed; the picture is shown the usual way again."
+msgstr "Die Videoausgabe über die Grafikkarte ist gescheitert; das Bild wird wieder auf dem üblichen Weg gezeigt."
+
+#: lindvb/ui/dialogs.py
+msgid "Video output through the graphics card (test)"
+msgstr "Videoausgabe über die Grafikkarte (Test)"
+
+#: lindvb/ui/dialogs.py
+msgid "Shows the picture without copying each frame, which takes less processor time. If it fails, the picture is shown the usual way again. Takes effect when LinDVB is started again."
+msgstr "Zeigt das Bild, ohne jedes Einzelbild zu kopieren, und braucht so weniger Prozessorzeit. Scheitert sie, wird das Bild wieder auf dem üblichen Weg gezeigt. Wirkt, wenn LinDVB neu gestartet wird."

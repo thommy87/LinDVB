@@ -65,6 +65,17 @@ for p in $PLUGINS; do
     f="$ARCH_LIB/gstreamer-$GSTVER/libgst$p.so"
     if [ -f "$f" ]; then cp "$f" "$APPDIR/usr/lib/gstreamer-$GSTVER/"; fi
 done
+# gtk4paintablesink: Ubuntu 24.04 has only its Rust sources, so it is built
+# from them when the system has no plugin (packaging/build-gtk4sink.sh). LinDVB
+# uses it in the AppImage only when switched on (Preferences > Debug) while it
+# is tested; lindvb --self-check fails when it is missing.
+if [ ! -f "$APPDIR/usr/lib/gstreamer-$GSTVER/libgstgtk4.so" ]; then
+    if GTK4SINK="$("$SRC/packaging/build-gtk4sink.sh" "$SRC/build")"; then
+        cp "$GTK4SINK" "$APPDIR/usr/lib/gstreamer-$GSTVER/"
+    else
+        echo "== gtk4paintablesink not built: the AppImage copies every video frame"
+    fi
+fi
 SCANNER="$(ls "$ARCH_LIB"/gstreamer$GSTVER/gstreamer-$GSTVER/gst-plugin-scanner 2>/dev/null || true)"
 [ -n "$SCANNER" ] && cp "$SCANNER" "$APPDIR/usr/lib/gst-plugin-scanner"
 

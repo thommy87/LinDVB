@@ -43,6 +43,7 @@ jobs:
             gstreamer1.0-alsa gstreamer1.0-pipewire dvb-tools dtv-scan-tables
             adwaita-icon-theme libgdk-pixbuf2.0-bin librsvg2-common file desktop-file-utils
             gir1.2-webkit-6.0 xvfb xauth
+            cargo librust-gst-plugin-gtk4-dev
 
       - name: Run tests
         # Under a virtual display, so the HbbTV browser tests run in WebKitGTK.
@@ -79,8 +80,13 @@ jobs:
 
       - name: Self-check (GTK, GStreamer elements, H.264 playback, audible sound, proxy, HTTPS HLS, IPTV path, HbbTV)
         # the AppImage as users start it: GTK lays out text, the elements live TV
-        # needs are there and a short H.264/MPEG audio stream really decodes
-        run: xvfb-run -a squashfs-root/AppRun --self-check
+        # needs are there and a short H.264/MPEG audio stream really decodes;
+        # the video output through the graphics card (gtk4paintablesink, on
+        # trial behind a switch) must show pictures with OpenGL (Mesa)
+        shell: bash
+        run: |
+          xvfb-run -a squashfs-root/AppRun --self-check | tee selfcheck.log
+          grep -q "^OK    video output through the graphics card" selfcheck.log
 
       - name: Self-check on Ubuntu 22.04 (older glibc)
         # The AppImage brings its own glibc for systems older than the build
@@ -103,7 +109,9 @@ jobs:
             echo "== --help"
             timeout 60 /lindvb/AppRun --help >/dev/null
             echo "== self-check"
-            timeout 300 xvfb-run -a /lindvb/AppRun --self-check'
+            set -o pipefail
+            timeout 300 xvfb-run -a /lindvb/AppRun --self-check | tee /tmp/selfcheck.log
+            grep -q "^OK    video output through the graphics card" /tmp/selfcheck.log'
 
       # CI artifacts only for pushes, kept briefly: the Actions storage quota is small.
       # Release builds upload straight to the release instead.

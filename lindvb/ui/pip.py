@@ -14,7 +14,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import GLib, Gst, Gtk, Pango  # noqa: E402
 
 from ..i18n import _  # noqa: E402
-from ..player import VideoBin  # noqa: E402
+from ..player import VideoBin, gl_output_failed, gtk4_sink_wanted, trial_output_error  # noqa: E402
 
 MOSAIC_TILES = 9
 
@@ -27,8 +27,10 @@ def can_show(channel):
 class MiniPlayer:
     """A muted playbin that draws into a Gtk.Picture."""
 
-    def __init__(self, picture):
+    def __init__(self, picture, settings=None):
         self.picture = picture
+        self.settings = settings if settings is not None else {}
+        self.video = None
         self.playbin = None
         self.channel = None
         self.on_error = None
@@ -41,7 +43,8 @@ class MiniPlayer:
             return False
         pb.set_property("uri", channel.url if "://" in channel.url
                         else Gst.filename_to_uri(channel.url))
-        pb.set_property("video-sink", VideoBin(self.picture).sink)
+        self.video = VideoBin(self.picture, gtk4_sink_wanted(self.settings))
+        pb.set_property("video-sink", self.video.sink)
         fake = Gst.ElementFactory.make("fakesink", None)
         if fake is not None:
             fake.set_property("sync", True)
@@ -55,6 +58,13 @@ class MiniPlayer:
 
     def _on_error(self, _bus, msg):
         err, _dbg = msg.parse_error()
+        if self.video is not None and trial_output_error(self.video, msg, _dbg):
+            # the GPU video output on trial failed: copy the frames, as before
+            gl_output_failed()
+            self.stop()             # no more errors of this pipeline
+            channel = self.channel
+            GLib.idle_add(lambda: (self.channel is channel and self.play(channel), False)[1])
+            return
         if self.on_error:
             self.on_error(err.message)
         self.stop()
@@ -95,7 +105,7 @@ class PipOverlay(Gtk.Box):
         click.connect("pressed", lambda _g, n, _x, _y: n == 2 and window.pip_swap())
         over.add_controller(click)
         self.append(over)
-        self.player = MiniPlayer(self.picture)
+        self.player = MiniPlayer(self.picture, window.app.settings)
         self.player.on_error = lambda m: window.set_status(
             _("Picture in picture: {error}").format(error=m))
 
@@ -190,7 +200,7 @@ class MosaicWindow(Gtk.Window):
         click = Gtk.GestureClick()
         click.connect("released", lambda *_a: self._watch(c))
         over.add_controller(click)
-        p = MiniPlayer(pic)
+        p = MiniPlayer(pic, self.app.settings)
         p.on_error = lambda m, lbl=name, ch=c: lbl.set_text(f"{ch.name} – {m}")
         GLib.idle_add(lambda: (p.play(c), False)[1])
         self.players.append(p)

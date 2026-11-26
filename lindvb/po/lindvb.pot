@@ -6556,3 +6556,15 @@ msgstr ""
 #: lindvb/ui/window.py
 msgid "Subtitles via antenna"
 msgstr ""
+
+#: lindvb/player.py
+msgid "Video output through the graphics card failed; the picture is shown the usual way again."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Video output through the graphics card (test)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Shows the picture without copying each frame, which takes less processor time. If it fails, the picture is shown the usual way again. Takes effect when LinDVB is started again."
+msgstr ""
