@@ -312,6 +312,10 @@ def test_stream_time():
     assert sr.stream_time(seg, Gst.CLOCK_TIME_NONE) is None
     assert sr.stream_time(None, 12 * Gst.SECOND) is None
     assert sr.stream_time(seg, 5 * Gst.SECOND) is None   # before the segment
+    # a seek into a cue: shown from where the seek went, one that ended before not at all
+    assert sr.stream_time(seg, 9 * Gst.SECOND, 2 * Gst.SECOND) == 100 * Gst.SECOND
+    assert sr.stream_time(seg, 8 * Gst.SECOND, Gst.SECOND) is None
+    assert sr.stream_time(seg, 12 * Gst.SECOND, Gst.SECOND) == 102 * Gst.SECOND
 
 
 def test_cue_shadow_report():
@@ -324,6 +328,7 @@ def test_cue_shadow_report():
         sh.saw_new(t, i * 1000 * ms + 10 * ms)           # within the tolerance
     sh.saw_old("d", 3000 * ms)                           # still on its way
     sh.saw_new("", None)
+    sh.saw_old("before the seek", None)                  # not shown: does not count
     assert sh.report(state) == ("WebVTT renderer (shadow, text): 3 cues, the old path 4; "
                                 "data 6, dropped 0; the same cues at the same times")
     sh = sr.CueShadow("text")

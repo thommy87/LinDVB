@@ -1414,7 +1414,7 @@ class Player(GObject.Object):
             text = subrender.cue_text(m.data)
             buf.unmap(m)
             ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
-            t = subrender.stream_time(ev.parse_segment() if ev else None, buf.pts)
+            t = subrender.stream_time(ev.parse_segment() if ev else None, buf.pts, buf.duration)
             cmp = self._cue_cmp
             if cmp is not None and text:
                 GLib.idle_add(lambda: (cmp.saw_old(text, t), False)[1])

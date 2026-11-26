@@ -241,12 +241,18 @@ def cue_text(data):
     return "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
 
 
-def stream_time(segment, pts):
-    """The stream time of *pts* in *segment* (ns): the playback position the
-    cue is due at, the same before and after a seek. None when it has none."""
+def stream_time(segment, pts, duration=None):
+    """The stream time (ns) a cue at *pts* lasting *duration* is shown from
+    in *segment*: the playback position, the same before and after a seek.
+    A cue that began before the segment (a seek into it) is shown from its
+    start; None when the cue is not shown in it at all, or has no time."""
     from gi.repository import Gst
     if segment is None or pts is None or pts == Gst.CLOCK_TIME_NONE:
         return None
+    if duration is not None and duration != Gst.CLOCK_TIME_NONE:
+        inside, pts, _stop = segment.clip(Gst.Format.TIME, pts, pts + duration)
+        if not inside:
+            return None
     t = segment.to_stream_time(Gst.Format.TIME, pts)
     return None if t == Gst.CLOCK_TIME_NONE else t
 
@@ -379,7 +385,7 @@ class TextCueRenderer(Renderer):
         if text:
             s.last = text
             s.decoded += 1
-            self._on_cue(text, stream_time(sample.get_segment(), buf.pts))
+            self._on_cue(text, stream_time(sample.get_segment(), buf.pts, buf.duration))
         return Gst.FlowReturn.OK
 
 
@@ -411,15 +417,15 @@ class CueShadow:
     def _match(cue, others):
         text, rt = cue
         for t, r in others:
-            if t == text and (rt is None or r is None or abs(rt - r) <= CUE_TOLERANCE_NS):
+            if t == text and abs(rt - r) <= CUE_TOLERANCE_NS:
                 return True
         return False
 
     @staticmethod
     def _due(cues, until):
-        if until is None:
-            return cues
-        return [c for c in cues if c[1] is None or c[1] <= until + CUE_TOLERANCE_NS]
+        """The cues shown up to *until*: one without a time is not shown."""
+        return [c for c in cues if c[1] is not None and
+                (until is None or c[1] <= until + CUE_TOLERANCE_NS)]
 
     def report(self, state, until=None):
         old, new = self._due(self.old, until), self._due(self.new, until)
