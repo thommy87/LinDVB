@@ -260,13 +260,19 @@ def test_muxer_error_before_the_first_data_starts_again(monkeypatch):
     failed = []
 
     def parsed_pad(self, parse, pad):
+        if not failed and self._mux is None:
+            # as the real failure: nothing comes out of this pipeline. Buffer
+            # lists too: mpegtsmux pushes only lists, which a BUFFER probe lets
+            # through; when the error was handled late (CI load) data had
+            # arrived, and the reader rightly did not count a start failure.
+            # On the appsink, set before the muxer is made and linked.
+            self._sink.get_static_pad("sink").add_probe(
+                Gst.PadProbeType.BUFFER | Gst.PadProbeType.BUFFER_LIST,
+                lambda *_a: Gst.PadProbeReturn.DROP)
         real(self, parse, pad)
         mux = self._mux
         if mux is not None and not failed:
             failed.append(mux)
-            # as the real failure: this muxer puts nothing out
-            mux.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER,
-                                                lambda *_a: Gst.PadProbeReturn.DROP)
             err = _GLib.Error.new_literal(Gst.StreamError.quark(),
                                           "Could not create handler for stream",
                                           int(Gst.StreamError.MUX))
@@ -278,7 +284,6 @@ def test_muxer_error_before_the_first_data_starts_again(monkeypatch):
     finally:
         srv.close()
     assert failed, "the muxer error was not raised"
-    # apart, so a failure says which (failed once in a full local run, not again)
     assert not errors, errors
     assert ipstream.looks_like_ts(data), f"{len(data)} bytes, restarts {r._mux_restarts}"
     assert r._mux_restarts == 1
