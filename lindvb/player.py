@@ -6,6 +6,7 @@ gives pause-and-resume timeshift and jumping back and forth for free. Files
 and internet streams go to playbin directly.
 """
 
+import os
 import re
 import threading
 import time
@@ -24,7 +25,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_track, playback_language, is_audio_description)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import captions, debuglog, hwaccel, passthrough, subrender, trackcatalog  # noqa: E402
+from . import captions, compat, debuglog, hwaccel, passthrough, subrender, trackcatalog  # noqa: E402
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -135,6 +136,29 @@ def enable_ttml():
         from . import contentguide
         contentguide.INTERNET_SUBTITLES = True
     return ok
+
+
+def _track_gpu_element(_bin, _sub, element):
+    """deep-element-added in debug mode: count the GPU elements (decoders,
+    vapostproc, ... of any GPU interface) until they are finalized."""
+    f = element.get_factory()
+    if f is not None and hwaccel.backend_of(f.get_plugin_name()) != "software":
+        debuglog.track(element, f.get_name())
+
+
+def trial_output_error(video, msg, dbg):
+    """The error *msg* (debug text *dbg*) is one of the GPU video output on
+    trial in VideoBin *video*: from inside it, or a picture it refused."""
+    return video.trial and (_inside(msg.src, video.sink) or "not-negotiated" in (dbg or ""))
+
+
+def _inside(el, container):
+    """*el* is *container* or one of the elements in it (at any depth)."""
+    while el is not None:
+        if el is container:
+            return True
+        el = el.get_parent()
+    return False
 
 
 def _sink_candidates(sink):
@@ -283,18 +307,58 @@ def display_size(s):
     return w, h
 
 
-class VideoBin:
-    """Video sink for GTK 4: gtk4paintablesink if present, else appsink -> GdkTexture."""
+# Packages that bring gtk4paintablesink themselves, built from Ubuntu's Rust
+# sources for them (concept §10). While it is tested there it is used only
+# when switched on; the system packages use it whenever it is installed.
+TRIAL_PACKAGES = ("AppImage", "Snap")
+# LINDVB_VIDEO_OUTPUT=gl or =copy overrides the setting (for tests and bug reports)
+VIDEO_OUTPUT_ENV = "LINDVB_VIDEO_OUTPUT"
+_gl_output_failed = False       # the GPU video output failed in this session
 
-    def __init__(self, picture):
+
+def gtk4_sink_wanted(settings):
+    """Whether VideoBin may use gtk4paintablesink: never without it, never after
+    it failed in this session, only when switched on in TRIAL_PACKAGES, else
+    always (as before)."""
+    if _gl_output_failed or Gst.ElementFactory.find("gtk4paintablesink") is None:
+        return False
+    forced = os.environ.get(VIDEO_OUTPUT_ENV, "").strip().lower()
+    if forced in ("gl", "copy"):
+        return forced == "gl"
+    if compat.bundled() in TRIAL_PACKAGES:
+        return bool(settings.get("video_output_gl", False))
+    return True
+
+
+def gl_output_failed():
+    """The GPU video output (on trial) failed: the rest of the session copies."""
+    global _gl_output_failed
+    _gl_output_failed = True
+
+
+class VideoBin:
+    """Video sink for GTK 4: gtk4paintablesink if present (and *gtk4*), else
+    appsink -> GdkTexture.
+
+    In TRIAL_PACKAGES gtk4paintablesink is on trial (``trial``): it is used only
+    with OpenGL (glsinkbin) and goes back to the appsink when GDK has no GL
+    context; Player falls back to the appsink when it fails while playing."""
+
+    def __init__(self, picture, gtk4=True):
         self.picture = picture
-        sink = Gst.ElementFactory.make("gtk4paintablesink")
+        self.trial = False
+        self.kind = "copy"          # how the picture reaches GTK, for the log
+        sink = Gst.ElementFactory.make("gtk4paintablesink") if gtk4 else None
+        if sink is not None and compat.bundled() in TRIAL_PACKAGES:
+            sink = self._trial_sink(sink)
         if sink is not None:
+            self.kind = "gtk4paintablesink"
             picture.set_paintable(sink.get_property("paintable"))
             glsink = Gst.ElementFactory.make("glsinkbin")
             if glsink is not None:
                 glsink.set_property("sink", sink)
                 self.sink = glsink
+                self.kind += " (OpenGL)"
             else:
                 self.sink = sink
             return
@@ -327,6 +391,20 @@ class VideoBin:
         bin_.add_pad(Gst.GhostPad.new("sink", conv.get_static_pad("sink")))
         self.sink = bin_
         self._pending = None
+
+    def _trial_sink(self, sink):
+        """*sink* when GDK gave it an OpenGL context (it then gets the frames
+        as GL textures, decoded on the GPU without a copy), else None: the
+        appsink, which every system has used so far."""
+        paintable = sink.get_property("paintable")
+        if paintable is None or not paintable.find_property("gl-context") or \
+                paintable.get_property("gl-context") is None or \
+                Gst.ElementFactory.find("glsinkbin") is None:
+            debuglog.write("Player", "video output through the graphics card: "
+                                     "no OpenGL, the frames are copied")
+            return None
+        self.trial = True
+        return sink
 
     def _on_sample(self, appsink):
         sample = appsink.emit("pull-sample")
@@ -388,7 +466,8 @@ class Player(GObject.Object):
         self.apply_decoder_setting()
         self.video_decoder = None       # (factory, backend) decoding the video now
         self.video_deinterlacer = None  # factory name of the deinterlacer in use
-        self.video = VideoBin(picture)
+        self.video = VideoBin(picture, gtk4_sink_wanted(settings))
+        debuglog.write("Player", f"video output: {self.video.kind}")
         self.playbin = None
         self.video_off = False          # "Video Off (audio only)": kept across rebuilds
         self._audio_pref_done = False   # preferred audio format applied for this stream
@@ -443,6 +522,7 @@ class Player(GObject.Object):
         self._resolve_token = -1        # playback whose address was resolved once
         self._refused_token = -1        # playback whose refusal was reported
         self._hw_error_token = -1       # playback whose GPU decoder failed
+        self._video_error_token = -1    # playback whose GPU video output failed
         self._empty_start_capture = None  # capture started again after an empty start
         self._tracks_pending = False
         self.audio_delay_ms = 0         # + = audio later, - = audio earlier
@@ -486,6 +566,11 @@ class Player(GObject.Object):
         self.rebuffers = 0
         self._played = False
         pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
+        if debuglog.enabled():
+            # do old pipelines and their GPU elements go? (graphics buffers
+            # piled up with VA-API, most with vadeinterlace)
+            debuglog.track(pb, "pipeline")
+            pb.connect("deep-element-added", _track_gpu_element)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
         if not (self._sub_choice and self._sub_choice[0] == "text") and \
@@ -499,6 +584,7 @@ class Player(GObject.Object):
             deint = hwaccel.make_deinterlacer(gpu)
             if deint is not None:
                 self.video_deinterlacer = deint.get_factory().get_name()
+                _track_gpu_element(None, None, deint)
             if deint is not None and deint.get_factory().get_name() == "vadeinterlace":
                 # first in the chain: it takes the VA-API decoder's frames
                 # straight from the graphics card and deinterlaces them there
@@ -1409,6 +1495,32 @@ class Player(GObject.Object):
             self._start_uri(False)
         return False
 
+    def _video_output_failed(self, msg, err, dbg):
+        """An error of the GPU video output on trial (VideoBin.trial): from
+        inside it, or a picture it refused (not-negotiated). The rest of the
+        session shows the picture through the appsink, as before; playback
+        goes on. True when the error is handled."""
+        if self._video_error_token == self._token:
+            return True             # more errors of the pipeline being replaced
+        if not trial_output_error(self.video, msg, dbg):
+            return False
+        self._video_error_token = self._token
+        print(f"Video output through the graphics card failed: {err.message} ({dbg}); "
+              f"copying the frames again")
+        debuglog.write("Player", "video output through the graphics card failed, "
+                                 "back to copying the frames")
+        gl_output_failed()
+        self.video = VideoBin(self.video.picture, False)
+        GLib.idle_add(self._video_fallback, self._token)
+        return True
+
+    def _video_fallback(self, token):
+        if token == self._token and (self.capture or self.uri):
+            self.restart()
+            self.emit("notice", _("Video output through the graphics card failed; "
+                                  "the picture is shown the usual way again."))
+        return False
+
     def _hw_fallback(self, token, gpu):
         if token == self._token and (self.capture or self.uri):
             self.restart()
@@ -2274,6 +2386,8 @@ class Player(GObject.Object):
                     self._vis_error_token = self._token
                     print(f"Visualisation failed: {err.message} ({_dbg})")
                     GLib.idle_add(self._drop_visualizer, err.message)
+                return
+            if self._video_output_failed(msg, err, _dbg):
                 return
             gpu = hwaccel.failed_backend(msg.src)
             if gpu is not None and self._hw_error_token == self._token:

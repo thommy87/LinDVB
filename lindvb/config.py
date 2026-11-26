@@ -243,6 +243,11 @@ DEFAULTS = {
     "epg_priority_order": ["eit", "provider", "dvbi", "xmltv"],
     "epg_priority_channels": {},
     "deinterlace": True,
+    # The AppImage (and the Snap) bring gtk4paintablesink, which hands the
+    # picture to the graphics card without a copy of each frame. While it is
+    # tested it is used only when this is on (Preferences › Debug); the system
+    # packages use it whenever the system has it (lindvb.player.gtk4_sink_wanted).
+    "video_output_gl": False,
     # Keep the screen saver and screen blanking away while TV, radio or a
     # file plays (Preferences › Playback).
     "inhibit_screensaver": True,

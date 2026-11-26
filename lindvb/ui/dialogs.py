@@ -486,6 +486,7 @@ class PrefsWindow(Gtk.Window):
                  "messages, GStreamer warnings and errors in a log file. Passwords, PINs, "
                  "your user name and your home folder are left out. Takes effect when you "
                  "save; switch it off again when the problem is solved."))
+        self._build_video_output_trial(g, switch)
         g = group(pg)
         buttons = Gtk.Box(spacing=6)
         folder = Gtk.Button(label=_("Open Folder"))
@@ -500,6 +501,21 @@ class PrefsWindow(Gtk.Window):
         # the hint label of that row, filled by _update_log_size
         self._log_size = buttons.get_parent().get_first_child().get_last_child()
         self._update_log_size()
+
+    @staticmethod
+    def _build_video_output_trial(g, switch):
+        """The switch for gtk4paintablesink in the packages that bring it on
+        trial (lindvb.player.TRIAL_PACKAGES); elsewhere it is used whenever
+        it is installed and there is nothing to switch."""
+        from .. import compat
+        from ..player import TRIAL_PACKAGES
+        if compat.bundled() not in TRIAL_PACKAGES or \
+                Gst.ElementFactory.find("gtk4paintablesink") is None:
+            return
+        switch(g, "video_output_gl", _("Video output through the graphics card (test)"),
+               _("Shows the picture without copying each frame, which takes less "
+                 "processor time. If it fails, the picture is shown the usual way again. "
+                 "Takes effect when LinDVB is started again."))
 
     def _update_log_size(self):
         from .. import debuglog

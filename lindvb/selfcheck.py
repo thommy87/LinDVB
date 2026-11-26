@@ -51,12 +51,16 @@ OPTIONAL_ELEMENTS = {
     "textoverlay": "text subtitles (WebVTT, TTML, SRT) are not shown",
     # the picture goes to GTK without a copy of each frame in Python
     # (gst-plugins-rs "gtk4", package gstreamer1.0-gtk4 / gst-plugin-gtk4;
-    # Ubuntu 24.04, which the Snap and the AppImage are built from, has none)
+    # Ubuntu 24.04, which the Snap and the AppImage are built from, has only
+    # its sources: the AppImage builds it, packaging/build-gtk4sink.sh)
     "gtk4paintablesink": "each video frame is copied on its way to the screen (more CPU)",
 }
 # ... except in the packages that bring these themselves: there a missing one
 # is a packaging mistake and fails the check
-REQUIRED_WHEN_BUNDLED = {"textoverlay": ("Snap", "AppImage")}
+REQUIRED_WHEN_BUNDLED = {"textoverlay": ("Snap", "AppImage"),
+                         "gtk4paintablesink": ("AppImage",)}
+# check_video_output: seconds to wait for a picture
+GL_TIMEOUT = 15
 # Audio output: one of these must exist; it only plays when a sound server runs
 AUDIO_SINKS = ["pulsesink", "pipewiresink", "alsasink"]
 
@@ -170,6 +174,57 @@ def check_elements(report):
         report.ok("audio output: " + ", ".join(sinks))
     else:
         report.fail("no audio output element (" + ", ".join(AUDIO_SINKS) + ")")
+
+
+def check_video_output(report, sample=SAMPLE):
+    """Pictures through gtk4paintablesink with OpenGL (glsinkbin), the way
+    VideoBin shows them when it may use it: the paintable must get the size of
+    the frames. Without OpenGL (no GPU, no Mesa) LinDVB copies the frames, so
+    that is only a warning; the AppImage's CI requires the OK line."""
+    from gi.repository import GLib, Gst, Gtk
+    if Gst.ElementFactory.find("gtk4paintablesink") is None:
+        return                      # check_elements reported it
+    if not Gtk.init_check():
+        report.fail("video output: no display")
+        return
+    sink = Gst.ElementFactory.make("gtk4paintablesink")
+    paintable = sink.get_property("paintable")
+    if paintable is None or paintable.get_property("gl-context") is None:
+        report.warn("video output through the graphics card: no OpenGL here, "
+                    "the frames are copied")
+        return
+    try:
+        # the H.264 sample, decoded as live TV is (the AppImage has no videotestsrc)
+        pipe = Gst.parse_launch(f'filesrc location="{sample}" ! tsdemux ! h264parse '
+                                '! avdec_h264 ! glsinkbin name=out')
+    except GLib.Error as e:
+        report.fail(f"video output through the graphics card: {e.message}")
+        return
+    pipe.get_by_name("out").set_property("sink", sink)
+    bus = pipe.get_bus()
+    pipe.set_state(Gst.State.PLAYING)
+    ctx = GLib.MainContext.default()
+    error, ended = None, None
+    deadline = time.monotonic() + GL_TIMEOUT
+    while time.monotonic() < deadline and error is None and \
+            paintable.get_intrinsic_width() <= 0:
+        if ended is not None and time.monotonic() > ended + 1:
+            break                   # the frames had a second to reach GTK
+        ctx.iteration(False)
+        msg = bus.timed_pop_filtered(10 * Gst.MSECOND,
+                                     Gst.MessageType.ERROR | Gst.MessageType.EOS)
+        if msg is not None and msg.type == Gst.MessageType.ERROR:
+            error = msg.parse_error()[0].message
+        elif msg is not None and ended is None:
+            ended = time.monotonic()
+    width, height = paintable.get_intrinsic_width(), paintable.get_intrinsic_height()
+    pipe.set_state(Gst.State.NULL)
+    if error is None and width > 0 and height > 0:
+        report.ok(f"video output through the graphics card (gtk4paintablesink, OpenGL): "
+                  f"{width}x{height} shown")
+    else:
+        report.fail("video output through the graphics card: "
+                    + (error or f"no picture within {GL_TIMEOUT} s"))
 
 
 def _factories(bin_):
@@ -484,7 +539,8 @@ def run(argv=None, out=None):
     Gst.init(None)
     where = compat.bundled() or "system packages"
     out.write(f"LinDVB {__version__} self-check ({where}, {Gst.version_string()})\n")
-    checks = [check_gtk, check_preferences, check_elements, check_playback, check_hbbtv]
+    checks = [check_gtk, check_preferences, check_elements, check_video_output,
+              check_playback, check_hbbtv]
     if "--offline" not in argv:
         checks += [check_tls, check_proxy, check_stream, check_iptv]
     for check in checks:

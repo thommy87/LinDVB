@@ -1953,19 +1953,22 @@ class MainWindow(Gtk.ApplicationWindow):
         count changed, with the video decoder and deinterlacer in use (graphics
         buffers piled up while watching, until no file could be opened)."""
         summary = debuglog.open_files_summary()
-        count = summary.partition(":")[0]
-        if summary and count != self._open_files_logged:
-            self._open_files_logged = count
+        alive = debuglog.alive_summary()
+        key = (summary.partition(":")[0], alive)
+        if summary and key != self._open_files_logged:
+            self._open_files_logged = key
             p = getattr(self, "player", None)
             dec = getattr(p, "video_decoder", None)
             debuglog.write("Diag", f"{summary}; video decoder {dec[0] if dec else '-'}, "
-                                   f"deinterlacer {getattr(p, 'video_deinterlacer', None) or '-'}")
+                                   f"deinterlacer {getattr(p, 'video_deinterlacer', None) or '-'}"
+                                   + (f"; {alive}" if alive else ""))
         return True
 
     def _start_stream(self, c):
         """Play channel *c* (a list channel, or another instance of it)."""
         debuglog.write("Channel", "switch to " + debuglog.describe_channel(c))
-        debuglog.write("Channel", debuglog.open_files_summary())
+        debuglog.write("Channel", "; ".join(p for p in (debuglog.open_files_summary(),
+                                                         debuglog.alive_summary()) if p))
         self._nolock_since = None
         # DVB-I services without a stream (an HbbTV application) have nothing to measure
         # Tvheadend: the server measures the signal, LinDVB gets the stream only

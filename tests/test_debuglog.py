@@ -3,6 +3,7 @@
 import sys
 import threading
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -161,12 +162,63 @@ def test_graphics_buffers_are_counted_by_driver(log, tmp_path):
     out = debuglog.open_files_summary(str(fds))
     assert out.startswith("open files 5/")
     assert "dmabuf 4" in out and "socket 1" in out and "file 1" not in out
-    assert out.endswith("; graphics buffers i915 3 (120 MB), ? 1 (0 MB)")
+    assert out.endswith("; graphics buffers i915 3 (120 MB), ? 1 (0 MB); sizes 3x 40 MB, 1x 0 KB")
+
+
+def test_graphics_buffer_sizes_tell_pictures_from_small_buffers():
+    """Alex's logs: ~300 graphics buffers of only 7 MB together; the three most
+    frequent sizes show what kind they are."""
+    part = debuglog._dmabuf_part({"i915": [303, 300 * 24_576 + 3 * 3_110_400]},
+                                 {24_576: 300, 3_110_400: 3})
+    assert part == "; graphics buffers i915 303 (17 MB); sizes 300x 25 KB, 3x 3 MB"
+
+
+def test_pipelines_and_gpu_elements_are_counted_until_they_go(log, monkeypatch):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    import gc
+    monkeypatch.setattr(debuglog, "_alive", {})
+    el = Gst.ElementFactory.make("identity")
+    debuglog.track(el, "pipeline")
+    assert debuglog.alive_summary() == "", "debug mode off: nothing counted"
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    debuglog.track(el, "pipeline")
+    other = Gst.ElementFactory.make("identity")
+    debuglog.track(other, "vah264dec")
+    assert debuglog.alive_summary() == "alive: pipeline 1, vah264dec 1"
+    del el
+    gc.collect()
+    assert debuglog.alive_summary() == "alive: vah264dec 1"
+    del other
+    gc.collect()
+    assert debuglog.alive_summary() == ""
+
+
+def test_the_player_counts_only_gpu_elements(log, monkeypatch):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    try:
+        from lindvb import player
+    except (ValueError, ImportError):
+        pytest.skip("GTK 4 missing")
+    monkeypatch.setattr(debuglog, "_alive", {})
+    debuglog.configure({"debug_mode": True}, log_path=log)
+
+    def element(plugin, name):
+        factory = SimpleNamespace(get_plugin_name=lambda: plugin, get_name=lambda: name)
+        return SimpleNamespace(get_factory=lambda: factory, weak_ref=lambda cb: None)
+    for plugin, name in (("va", "vah264dec"), ("va", "vadeinterlace"), ("nvcodec", "nvh264dec"),
+                         ("libav", "avdec_h264"), ("coreelements", "queue")):
+        player._track_gpu_element(None, None, element(plugin, name))
+    assert debuglog.alive_summary() == "alive: nvh264dec 1, vadeinterlace 1, vah264dec 1"
 
 
 
 def test_window_logs_the_open_files_when_their_count_changes(log, monkeypatch):
-    from types import SimpleNamespace
 
     import gi
     for lib, version in (("Gst", "1.0"), ("Gtk", "4.0"), ("Gdk", "4.0")):
@@ -176,6 +228,7 @@ def test_window_logs_the_open_files_when_their_count_changes(log, monkeypatch):
             pytest.skip(f"{lib} {version} missing")
     from lindvb.ui.window import MainWindow
     debuglog.configure({"debug_mode": True}, log_path=log)
+    monkeypatch.setattr(debuglog, "_alive", {})
     win = SimpleNamespace(_open_files_logged="", player=SimpleNamespace(
         video_decoder=("vah264dec", "vaapi"), video_deinterlacer="vadeinterlace"))
     looks = iter(["open files 10/1024: dmabuf 4", "open files 10/1024: dmabuf 4",
@@ -188,3 +241,9 @@ def test_window_logs_the_open_files_when_their_count_changes(log, monkeypatch):
     assert lines[0].endswith("open files 10/1024: dmabuf 4; video decoder vah264dec, "
                              "deinterlacer vadeinterlace")
     assert "open files 11/1024" in lines[1]
+    # the same files, but a pipeline more alive: logged too
+    monkeypatch.setattr(debuglog, "open_files_summary", lambda: "open files 11/1024: dmabuf 5")
+    monkeypatch.setattr(debuglog, "_alive", {"pipeline": 2})
+    MainWindow._log_open_files(win)
+    lines = [line for line in log.read_text().splitlines() if " Diag: " in line]
+    assert len(lines) == 3 and lines[2].endswith("; alive: pipeline 2")

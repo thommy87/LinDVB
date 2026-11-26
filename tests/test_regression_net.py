@@ -278,7 +278,9 @@ def test_muxer_error_before_the_first_data_starts_again(monkeypatch):
     finally:
         srv.close()
     assert failed, "the muxer error was not raised"
-    assert not errors and ipstream.looks_like_ts(data)
+    # apart, so a failure says which (failed once in a full local run, not again)
+    assert not errors, errors
+    assert ipstream.looks_like_ts(data), f"{len(data)} bytes, restarts {r._mux_restarts}"
     assert r._mux_restarts == 1
 
 
