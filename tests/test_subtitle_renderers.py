@@ -567,10 +567,29 @@ def test_dash_subtitles_picked_later_come_at_once(player, sample, request):
     the whole programme): picked while it plays, the subtitles come from
     where the picture is, within a few seconds; before, one file never
     came and segments only after 7 to 10 s."""
-    at, cues, first = _ttml_cues_after_pick(player, request.getfixturevalue(sample))
+    ready = []
+    seek = type(player)._seek_for_subtitles
+
+    def watched(self, pb):
+        ready.append(self._subtitle_overlay_ready(pb))
+        seek(self, pb)
+    type(player)._seek_for_subtitles = watched
+    try:
+        at, cues, first = _ttml_cues_after_pick(player, request.getfixturevalue(sample))
+    finally:
+        type(player)._seek_for_subtitles = seek
+    # one seek, once the subtitle overlay stood (in the middle of its making
+    # it left the playback standing now and then); TTML as one file was read
+    # to its end while off, so there only the seek brings the overlay
+    assert ready == ([False] if sample == "dash_ttml_file" else [True]), ready
     assert cues, "no subtitles"
     assert first < 3, first
-    assert cues[0] <= at + 1 and cues == sorted(cues), (at, cues)
+    # from where the picture is (cues parsed ahead of it before the seek
+    # are dropped by it)
+    near = [c for c in cues if c <= at + 1]
+    assert near, (at, cues)
+    after = cues[cues.index(near[0]):]
+    assert after == sorted(after), (at, cues)
     assert player.subtitle_tracks()[1] == 0
     pos = _position(player)
     _run(1)
@@ -595,6 +614,22 @@ class _FakePlaybin:
     def seek(self, rate, _fmt, _flags, _st, pos, _et, _end):
         self.seeks.append((rate, pos))
         return True
+
+    def get_state(self, _timeout):
+        from gi.repository import Gst
+        return Gst.StateChangeReturn.SUCCESS, Gst.State.PLAYING, Gst.State.VOID_PENDING
+
+    ready = 0                    # looks until the subtitle overlay stands
+
+    def get_by_name(self, name):
+        if name == "suboverlay":
+            self.ready -= 1
+            return self if self.ready < 0 else None
+        return self if name == "overlay" else None
+
+    def get_property(self, name):
+        assert name == "flags"
+        return 4 | 1 | 2                           # text, video, audio
 
 
 def test_subtitles_fetched_again_only_for_dash(player):
@@ -624,6 +659,34 @@ def test_subtitles_fetched_again_only_for_dash(player):
         player.playbin, player._dash = pb, True
         player._fetch_subtitles_again(None, 0)
         assert pb.seeks == [(1.5, 5_000_000_000)]       # the play rate stays
+        # the overlay is still being made: the seek waits for it
+        player.rate = 1.0
+        pb = _FakePlaybin(True)
+        pb.ready = 3
+        player.playbin = pb
+        player._fetch_subtitles_again(None, 0)
+        assert pb.seeks == []
+        _run(1, lambda: pb.seeks)
+        assert pb.seeks == [(1.0, 5_000_000_000)] and pb.ready < 0
+        _run(0.3)
+        assert len(pb.seeks) == 1                       # once
+        # it never comes (nothing came to make it with): the seek goes all the same
+        pb = _FakePlaybin(True)
+        pb.ready = 10_000
+        player.playbin = pb
+        t0 = time.monotonic()
+        player._fetch_subtitles_again(None, 0)
+        _run(3, lambda: pb.seeks)
+        assert pb.seeks == [(1.0, 5_000_000_000)]
+        assert 0.9 < time.monotonic() - t0 < 2
+        # another stream meanwhile: no seek into it
+        pb = _FakePlaybin(True)
+        pb.ready = 3
+        player.playbin = pb
+        player._fetch_subtitles_again(None, 0)
+        player.playbin = other = _FakePlaybin(True)
+        _run(0.5)
+        assert pb.seeks == [] and other.seeks == []
     finally:
         debuglog.write = real_write
         player.playbin, player.uri, player.rate = None, None, 1.0
