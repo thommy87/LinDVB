@@ -604,6 +604,7 @@ class Player(GObject.Object):
         self._teardown()
         self.video_decoder = None
         self._pb3 = bool(pb3)
+        self._dash = False              # dashdemux plays (classic playbin)
         self._collection, self._selected = None, set()
         self.fragments = []
         self.rebuffers = 0
@@ -1055,6 +1056,8 @@ class Player(GObject.Object):
         dec = hwaccel.factory_backend(element)
         if dec is not None:
             self.video_decoder = dec
+        if f and f.get_name() == "dashdemux":
+            self._dash = True
         if f and f.get_name() in ("hlsdemux2", "dashdemux2"):
             for k, v in ADAPTIVE_DEMUX_SETTINGS.items():
                 if element.find_property(k) is not None:
@@ -2190,6 +2193,7 @@ class Player(GObject.Object):
         elif kind == "cc":
             self.cc.show(key)
         elif kind == "text":
+            shown = self._text_shown()
             self.playbin.set_property("flags", self.playbin.get_property("flags") | PLAY_FLAGS_TEXT)
             if self._pb3:
                 st = next((st for st in self._streams(Gst.StreamType.TEXT)
@@ -2198,9 +2202,37 @@ class Player(GObject.Object):
                     self._select_streams(Gst.StreamType.TEXT, st)
             else:
                 self.playbin.set_property("current-text", key)
+                self._fetch_subtitles_again(shown, key)
         self._ttx_shadow_follow(kind, key)
         self._cue_shadow_follow(kind)
         self.emit("tracks")
+
+    def _text_shown(self):
+        """Classic playbin: the text stream shown (current-text), None when
+        text subtitles are off."""
+        if not self.playbin.get_property("flags") & PLAY_FLAGS_TEXT:
+            return None
+        return self.playbin.get_property("current-text")
+
+    def _fetch_subtitles_again(self, shown, key):
+        """Classic playbin with DASH, text stream *key* picked where *shown*
+        was (None: off): subtitle data that came while it was not shown is
+        gone, and TTML that comes as one file for the whole stream never
+        comes again. A seek to where the picture is makes dashdemux fetch it
+        again."""
+        if key == shown or not self._dash or self.capture or self.uri is None:
+            return
+        pb = self.playbin
+        q = Gst.Query.new_seeking(Gst.Format.TIME)
+        ok, pos = pb.query_position(Gst.Format.TIME)
+        if not (pb.query(q) and q.parse_seeking()[1] and ok and pos >= 0):
+            debuglog.write("Player", "subtitles on: the stream cannot seek, "
+                                     "they come with the next segments")
+            return
+        debuglog.write("Player", f"subtitles on: fetching the stream again at {pos / Gst.SECOND:.1f} s "
+                                 "for its subtitle data")
+        pb.seek(self.rate, Gst.Format.TIME, Gst.SeekFlags.FLUSH | Gst.SeekFlags.ACCURATE,
+                Gst.SeekType.SET, pos, Gst.SeekType.NONE, 0)
 
     def _on_sync_collection(self, _bus, msg):
         """Streaming thread: playbin3 offers its streams. Take the first video,
