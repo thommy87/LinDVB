@@ -1131,6 +1131,7 @@ def _video_sections(session, st):
                                                  vid.get("primaries"), cm) if x)),
             ("HDR", hdr),
             (_("Decoder"), decoder),
+            (_("Video output"), vi.get("output", "") if on else ""),
             (_("Frames shown / dropped"), f"{vi.get('rendered', 0)} / {vi.get('dropped', 0)}"
              if "dropped" in vi else ""),
             (_("Nominal bit rate"), (_fmt_rate(nominal) + ("" if vid.get("nominal_bps") else

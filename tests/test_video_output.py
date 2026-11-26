@@ -221,3 +221,12 @@ def test_self_check_shows_the_sample_through_it():
     assert out.getvalue().startswith(
         "OK    video output through the graphics card (gtk4paintablesink, OpenGL): 320x180"), \
         out.getvalue()
+
+
+def test_the_analyser_names_the_video_output():
+    """Alex could not tell from the analyser whether the switched-on output
+    was used: the decoder (vah264dec) is the same either way."""
+    assert player_mod.output_label("copy") == "frame by frame copied"
+    assert player_mod.output_label("gtk4paintablesink (OpenGL)") == \
+        "through the graphics card (gtk4paintablesink, OpenGL)"
+    assert player_mod.output_label("gtk4paintablesink") == "gtk4paintablesink"

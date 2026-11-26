@@ -579,7 +579,8 @@ class OverviewPage(Page):
         self.vkv = KV()
         for key, name in (("codec", _("Codec")), ("res", _("Resolution")), ("fps", _("Frame rate")),
                           ("aspect", _("Aspect ratio")), ("colour", _("Colour")),
-                          ("decoder", _("Decoder")), ("dropped", _("Dropped frames"))):
+                          ("decoder", _("Decoder")), ("output", _("Video output")),
+                          ("dropped", _("Dropped frames"))):
             self.vkv.row(key, name)
         vbox.append(self.vkv)
         abox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, hexpand=True)
@@ -716,6 +717,7 @@ class OverviewPage(Page):
                                         vid.get("transfer") or vi.get("colorimetry", "")) if x)
         self.vkv.set("colour", colour)
         self.vkv.set("decoder", vi.get("decoder", "") if st.get("on_screen") else _("only for the channel on screen"))
+        self.vkv.set("output", vi.get("output", "") if st.get("on_screen") else "")
         dropped = vi.get("dropped")
         self.vkv.set("dropped", f"{dropped} / {vi.get('rendered', 0)}" if dropped is not None else "")
         if st.get("on_screen") and vi.get("decoder"):
@@ -1289,7 +1291,8 @@ class MediaPage(Page):
                           ("res", _("Resolution")), ("scan", _("Scan")), ("fps", _("Frame rate")),
                           ("aspect", _("Aspect ratio")), ("afd", "AFD"), ("bars", _("Black bars")),
                           ("telecine", _("Film (3:2 pulldown)")), ("colour", _("Colour")),
-                          ("hdr", "HDR"), ("decoder", _("Decoder")), ("frames", _("Frames shown / dropped")),
+                          ("hdr", "HDR"), ("decoder", _("Decoder")), ("output", _("Video output")),
+                          ("frames", _("Frames shown / dropped")),
                           ("nominal", _("Nominal bit rate")), ("measured", _("Measured bit rate")),
                           ("vbv", _("VBV buffer"))):
             self.vkv.row(key, name)
@@ -1415,6 +1418,7 @@ class MediaPage(Page):
             hdr += " · " + _("mastering display data")
         self.vkv.set("hdr", hdr if (tr or cm) else "")
         self.vkv.set("decoder", vi.get("decoder", "") if on else _("only for the channel on screen"))
+        self.vkv.set("output", vi.get("output", "") if on else "")
         self.vkv.set("frames", f"{vi.get('rendered', 0)} / {vi.get('dropped', 0)}" if "dropped" in vi else "")
         nominal = vid.get("nominal_bps") or vd.get("max_bps")
         self.vkv.set("nominal", (rate(nominal) + ("" if vid.get("nominal_bps") else " " + _("(maximum)")))

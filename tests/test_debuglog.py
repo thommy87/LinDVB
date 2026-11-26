@@ -247,3 +247,67 @@ def test_window_logs_the_open_files_when_their_count_changes(log, monkeypatch):
     MainWindow._log_open_files(win)
     lines = [line for line in log.read_text().splitlines() if " Diag: " in line]
     assert len(lines) == 3 and lines[2].endswith("; alive: pipeline 2")
+
+
+def test_an_element_reported_twice_is_counted_once(log, monkeypatch):
+    """Alex's log said "vadeinterlace 2" with one pipeline: deep-element-added
+    names the elements of the video filter again when playsink takes it in."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    import gc
+    monkeypatch.setattr(debuglog, "_alive", {})
+    monkeypatch.setattr(debuglog, "_tracked", set())
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    el = Gst.ElementFactory.make("identity")
+    debuglog.track(el, "vadeinterlace")
+    debuglog.track(el, "vadeinterlace")
+    assert debuglog.alive_summary() == "alive: vadeinterlace 1"
+    del el
+    gc.collect()
+    assert debuglog.alive_summary() == ""
+
+
+def test_gpu_displays_shared_by_context_are_counted(log, monkeypatch):
+    """The VA-API display holds the driver's resources: is one kept while
+    the pipelines go?"""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    try:
+        from lindvb import player
+    except (ValueError, ImportError):
+        pytest.skip("GTK 4 missing")
+    monkeypatch.setattr(debuglog, "_alive", {})
+    monkeypatch.setattr(debuglog, "_tracked", set())
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    display = Gst.ElementFactory.make("identity")     # stands in for a GstVaDisplay
+
+    def message(ctx_type, field):
+        st = Gst.Structure.new_empty("context")
+        st.set_value(field, display)
+        ctx = SimpleNamespace(get_context_type=lambda: ctx_type, get_structure=lambda: st)
+        return SimpleNamespace(parse_have_context=lambda: ctx)
+    player._track_gpu_context(None, message("gst.va.display.handle", "gst-display"))
+    player._track_gpu_context(None, message("gst.va.display.handle", "gst-display"))
+    player._track_gpu_context(None, message("some.other", "x"))
+    assert debuglog.alive_summary() == "alive: VA display 1"
+
+
+def test_the_contexts_the_video_sink_holds(monkeypatch):
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    try:
+        from lindvb import player
+    except (ValueError, ImportError):
+        pytest.skip("GTK 4 missing")
+    sink = Gst.Bin.new("videoout")
+    inner = Gst.ElementFactory.make("fakesink")
+    sink.add(inner)
+    assert player.held_contexts(sink) == []
+    inner.set_context(Gst.Context.new("gst.va.display.handle", True))
+    assert player.held_contexts(sink) == ["gst.va.display.handle"]

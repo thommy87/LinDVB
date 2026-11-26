@@ -6568,3 +6568,15 @@ msgstr ""
 #: lindvb/ui/dialogs.py
 msgid "Shows the picture without copying each frame, which takes less processor time. If it fails, the picture is shown the usual way again. Takes effect when LinDVB is started again."
 msgstr ""
+
+#: lindvb/player.py
+msgid "frame by frame copied"
+msgstr ""
+
+#: lindvb/player.py
+msgid "through the graphics card (gtk4paintablesink, OpenGL)"
+msgstr ""
+
+#: lindvb/ui/analysis.py
+msgid "Video output"
+msgstr ""
