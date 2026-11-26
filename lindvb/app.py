@@ -721,6 +721,9 @@ def main():
     if "--self-check" in sys.argv[1:]:   # CI package test, see selfcheck.py
         from . import selfcheck
         return selfcheck.run()
+    if "--va-test" in sys.argv[1:]:      # graphics buffers without LinDVB, see vatest.py
+        from . import vatest
+        return vatest.run()
     from . import fdlimit, watchdog
     from .config import CACHE_DIR
     fdlimit.raise_limit()           # safety net for buffers held below LinDVB, see fdlimit

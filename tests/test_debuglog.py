@@ -272,6 +272,50 @@ def test_an_element_reported_twice_is_counted_once(log, monkeypatch):
     assert debuglog.alive_summary() == ""
 
 
+def test_pipelines_of_the_same_name_are_counted_apart(log, monkeypatch):
+    """Every pipeline is called "player": the new one, made while the old one
+    still goes, was not counted (the log of 26.11. showed no pipeline)."""
+    gi = pytest.importorskip("gi")
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+    Gst.init(None)
+    import gc
+    monkeypatch.setattr(debuglog, "_alive", {})
+    monkeypatch.setattr(debuglog, "_tracked", set())
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    old = Gst.ElementFactory.make("playbin", "player")
+    debuglog.track(old, "pipeline")
+    new = Gst.ElementFactory.make("playbin", "player")
+    debuglog.track(new, "pipeline")
+    assert debuglog.alive_summary() == "alive: pipeline 2"
+    del old
+    gc.collect()
+    assert debuglog.alive_summary() == "alive: pipeline 1"
+    del new
+    gc.collect()
+    assert debuglog.alive_summary() == ""
+
+
+def test_settings_changed_in_preferences_are_named():
+    before = {"video_decoder": "auto", "deinterlace": True, "tvh_password": "a",
+              "iptv_sources": [1]}
+    after = {"video_decoder": "software", "deinterlace": True, "tvh_password": "b",
+             "iptv_sources": [1, 2], "video_output_gl": True}
+    assert debuglog.settings_changes(before, after) == (
+        "iptv_sources <1 entries> -> <2 entries>, video_decoder 'auto' -> 'software', "
+        "video_output_gl None -> True")
+    assert debuglog.settings_changes(after, dict(after)) == ""
+
+
+def test_the_change_lands_in_the_log(log):
+    debuglog.configure({"debug_mode": True}, log_path=log)
+    debuglog.log_settings_changes({"deinterlace": True}, {"deinterlace": True})
+    debuglog.log_settings_changes({"video_decoder": "auto"}, {"video_decoder": "vaapi"})
+    text = log.read_text(encoding="utf-8")
+    assert text.count("settings changed") == 1
+    assert "LinDVB: settings changed: video_decoder 'auto' -> 'vaapi'" in text
+
+
 def test_gpu_displays_shared_by_context_are_counted(log, monkeypatch):
     """The VA-API display holds the driver's resources: is one kept while
     the pipelines go?"""

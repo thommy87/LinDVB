@@ -104,6 +104,25 @@ def settings_summary(settings):
     return scrub(", ".join(parts))
 
 
+def settings_changes(before, after):
+    """ "video_decoder 'auto' -> 'software', ..." for what Preferences changed
+    (the header names the settings only when debug mode is switched on), in
+    the words of settings_summary; "" when nothing changed."""
+    def show(v):
+        return f"<{len(v)} entries>" if isinstance(v, (list, dict)) else repr(v)
+    parts = [f"{k} {show(before.get(k))} -> {show(after.get(k))}"
+             for k in sorted(set(before) | set(after))
+             if not _SECRET_KEY.search(k) and before.get(k) != after.get(k)]
+    return scrub(", ".join(parts))
+
+
+def log_settings_changes(before, after):
+    """Preferences saved: what changed goes into the log (debug mode only)."""
+    changed = settings_changes(before, after)
+    if changed:
+        write("LinDVB", "settings changed: " + changed)
+
+
 # -- writing -----------------------------------------------------------------
 
 def write(category, *parts):
@@ -184,23 +203,24 @@ def _dmabuf_part(dmabufs, sizes=None):
 _alive = {}
 
 
-_tracked = set()        # (kind, name) of the GStreamer objects counted now
+_tracked = set()        # (kind, address) of the objects counted now
 
 
 def track(obj, kind):
-    """Count *obj* under *kind* until it is finalized (debug mode only). A
-    GStreamer object (names are unique per factory) is counted once, however
-    often it is reported: deep-element-added names the elements of a bin
-    again when playsink takes the bin in."""
+    """Count *obj* under *kind* until it is finalized (debug mode only). An
+    object is counted once, however often it is reported (deep-element-added
+    names the elements of a bin again when playsink takes the bin in); it is
+    told apart by its address, not its name: every pipeline is "player"."""
     if not _on or obj is None:
         return
-    name = obj.get_name() if hasattr(obj, "get_name") else None
-    key = (kind, name)
+    try:
+        key = (kind, hash(obj))     # PyGObject: the GObject's address, the same for every wrapper
+    except TypeError:
+        key = (kind, id(obj))
     with _lock:
-        if name is not None:
-            if key in _tracked:
-                return
-            _tracked.add(key)
+        if key in _tracked:
+            return
+        _tracked.add(key)
         _alive[kind] = _alive.get(kind, 0) + 1
 
     def gone(*_a):

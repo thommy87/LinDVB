@@ -88,6 +88,17 @@ jobs:
           xvfb-run -a squashfs-root/AppRun --self-check | tee selfcheck.log
           grep -q "^OK    video output through the graphics card" selfcheck.log
 
+      - name: VA-API isolation test runs in the AppImage
+        # --va-test (lindvb/vatest.py) is what users with VA-API run for the
+        # graphics buffer leak; the runner has no VA-API, so its software and
+        # output variants must run and its VA variants report themselves skipped
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout 300 xvfb-run -a squashfs-root/AppRun --va-test --rounds 2 | tee vatest.log
+          grep -q "^software decoder + deinterlace \[fakesink\]: pictures in every round" vatest.log
+          grep -q "^The report is in " vatest.log
+
       - name: Self-check on Ubuntu 22.04 (older glibc)
         # The AppImage brings its own glibc for systems older than the build
         # system (AppImageHub tests on the oldest supported Ubuntu LTS): the same
