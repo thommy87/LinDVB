@@ -19,12 +19,13 @@ certificates. CI+ modules work as far as they fall back to plain CI.
 
 import fcntl
 import os
-import select
 import struct
 import threading
 import time
 from collections import deque
 from dataclasses import dataclass, field
+
+from . import fdwait
 
 # --------------------------------------------------------------------------
 #  Length fields (ASN.1 BER style, used in TPDUs, SPDUs and APDUs)
@@ -621,7 +622,7 @@ class CIDevice:
                     self.state = "no module" if not flags & CA_CI_MODULE_PRESENT else \
                         "module initialising"
             try:
-                r, _, _ = select.select([self.fd], [], [], POLL_INTERVAL / 2)
+                r = fdwait.readable([self.fd], POLL_INTERVAL / 2)
             except (OSError, ValueError):
                 break
             if r:

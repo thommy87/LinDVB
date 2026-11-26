@@ -17,10 +17,9 @@ import ctypes
 import errno
 import fcntl
 import os
-import select
 import time
 
-from . import diseqc, festats, unicable
+from . import diseqc, fdwait, festats, unicable
 
 FE_SET_PROPERTY = (1 << 30) | (ctypes.sizeof(festats.DtvProperties) << 16) | (ord("o") << 8) | 82
 
@@ -166,7 +165,7 @@ class DirectTuner:
             if fd is None:
                 return
             try:
-                ready, _, _ = select.select([fd], [], [], 0.5)
+                ready = fdwait.readable([fd], 0.5)
                 if not ready:
                     continue
                 data = os.read(fd, chunk)

@@ -5586,3 +5586,15 @@ msgstr "Videoausgabe über die Grafikkarte (Test)"
 #: lindvb/ui/dialogs.py
 msgid "Shows the picture without copying each frame, which takes less processor time. If it fails, the picture is shown the usual way again. Takes effect when LinDVB is started again."
 msgstr "Zeigt das Bild, ohne jedes Einzelbild zu kopieren, und braucht so weniger Prozessorzeit. Scheitert sie, wird das Bild wieder auf dem üblichen Weg gezeigt. Wirkt, wenn LinDVB neu gestartet wird."
+
+#: lindvb/player.py
+msgid "frame by frame copied"
+msgstr "Einzelbild für Einzelbild kopiert"
+
+#: lindvb/player.py
+msgid "through the graphics card (gtk4paintablesink, OpenGL)"
+msgstr "über die Grafikkarte (gtk4paintablesink, OpenGL)"
+
+#: lindvb/ui/analysis.py
+msgid "Video output"
+msgstr "Videoausgabe"

@@ -184,16 +184,29 @@ def _dmabuf_part(dmabufs, sizes=None):
 _alive = {}
 
 
+_tracked = set()        # (kind, name) of the GStreamer objects counted now
+
+
 def track(obj, kind):
-    """Count *obj* under *kind* until it is finalized (debug mode only)."""
+    """Count *obj* under *kind* until it is finalized (debug mode only). A
+    GStreamer object (names are unique per factory) is counted once, however
+    often it is reported: deep-element-added names the elements of a bin
+    again when playsink takes the bin in."""
     if not _on or obj is None:
         return
+    name = obj.get_name() if hasattr(obj, "get_name") else None
+    key = (kind, name)
     with _lock:
+        if name is not None:
+            if key in _tracked:
+                return
+            _tracked.add(key)
         _alive[kind] = _alive.get(kind, 0) + 1
 
     def gone(*_a):
         with _lock:
             _alive[kind] -= 1
+            _tracked.discard(key)
     obj.weak_ref(gone)
 
 
@@ -385,6 +398,8 @@ def _header(what, settings=None):
         lines.append("DVB adapters: " + (", ".join(adapters) or "none"))
     except OSError:
         lines.append("DVB adapters: none")
+    from . import fdlimit
+    lines.append("Open files limit: " + fdlimit.describe())
     if settings is not None:
         lines.append("Settings: " + settings_summary(settings))
     for line in lines:

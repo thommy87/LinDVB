@@ -24,13 +24,14 @@ The module has no GStreamer dependency.
 
 import random
 import re
-import select
 import socket
 import struct
 import threading
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+
+from . import fdwait
 
 ADAPTER_BASE = 1000
 TUNERS_PER_SERVER = 16           # adapter numbers each server may use
@@ -453,7 +454,7 @@ class Session:
         try:
             while not self._closed and not self.dead:
                 try:
-                    ready, _, _ = select.select(socks, [], [], 0.2)
+                    ready = fdwait.readable(socks, 0.2)
                 except (OSError, ValueError):
                     break
                 for s in ready:

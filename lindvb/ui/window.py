@@ -1954,10 +1954,16 @@ class MainWindow(Gtk.ApplicationWindow):
         buffers piled up while watching, until no file could be opened)."""
         summary = debuglog.open_files_summary()
         alive = debuglog.alive_summary()
+        p = getattr(self, "player", None)
+        video = getattr(p, "video", None)
+        if summary and video is not None and getattr(video, "sink", None) is not None:
+            from ..player import held_contexts
+            held = held_contexts(video.sink)
+            if held:
+                alive = "; ".join(x for x in (alive, "video output holds " + ", ".join(held)) if x)
         key = (summary.partition(":")[0], alive)
         if summary and key != self._open_files_logged:
             self._open_files_logged = key
-            p = getattr(self, "player", None)
             dec = getattr(p, "video_decoder", None)
             debuglog.write("Diag", f"{summary}; video decoder {dec[0] if dec else '-'}, "
                                    f"deinterlacer {getattr(p, 'video_deinterlacer', None) or '-'}"

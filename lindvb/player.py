@@ -146,6 +146,47 @@ def _track_gpu_element(_bin, _sub, element):
         debuglog.track(element, f.get_name())
 
 
+# GPU connections the GPU elements share through a GstContext (the VA-API
+# display, the GL display, ...): the object that holds the driver's resources
+_GPU_CONTEXTS = {"gst.va.display.handle": ("gst-display", "VA display"),
+                 "gst.vulkan.device": ("device", "Vulkan device"),
+                 "gst.gl.GLDisplay": ("gst.gl.GLDisplay", "GL display")}
+
+
+def _track_gpu_context(_bus, msg):
+    """have-context in debug mode: count the GPU connection in it until it
+    is finalized (does one stay while the pipelines go?)."""
+    ctx = msg.parse_have_context()
+    field, kind = _GPU_CONTEXTS.get(ctx.get_context_type() if ctx else "", (None, None))
+    if field is None:
+        return
+    try:
+        obj = ctx.get_structure().get_value(field)
+    except (TypeError, ValueError):
+        return
+    if isinstance(obj, GObject.Object):
+        debuglog.track(obj, kind)
+
+
+def held_contexts(sink):
+    """The GstContext types the video sink (kept from pipeline to pipeline)
+    and the sinks inside it hold, for the debug log."""
+    types = set()
+    for el in _sink_candidates(sink):
+        if hasattr(el, "get_contexts"):
+            types.update(c.get_context_type() for c in el.get_contexts())
+    return sorted(types)
+
+
+def output_label(kind):
+    """How the picture reaches the screen (VideoBin.kind), for the analyser."""
+    if kind == "copy":
+        return _("frame by frame copied")
+    if "OpenGL" in kind:
+        return _("through the graphics card (gtk4paintablesink, OpenGL)")
+    return kind
+
+
 def trial_output_error(video, msg, dbg):
     """The error *msg* (debug text *dbg*) is one of the GPU video output on
     trial in VideoBin *video*: from inside it, or a picture it refused."""
@@ -644,6 +685,8 @@ class Player(GObject.Object):
         bus = pb.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._on_message)
+        if debuglog.enabled():
+            bus.connect("message::have-context", _track_gpu_context)
         if pb3:
             # the first choice of streams has to be made before playbin3
             # starts them: it would show a subtitle stream on its own, and
@@ -2298,6 +2341,7 @@ class Player(GObject.Object):
         if self.video_decoder:
             out["decoder"] = hwaccel.describe(self.video_decoder)
             out["hardware"] = self.video_decoder[1] not in (None, "", "software")
+        out["output"] = output_label(self.video.kind)
         stats = None
         for el in _sink_candidates(self.video.sink):
             if el.find_property("stats"):

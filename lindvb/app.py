@@ -721,7 +721,8 @@ def main():
     if "--self-check" in sys.argv[1:]:   # CI package test, see selfcheck.py
         from . import selfcheck
         return selfcheck.run()
-    from . import watchdog
+    from . import fdlimit, watchdog
     from .config import CACHE_DIR
+    fdlimit.raise_limit()           # safety net for buffers held below LinDVB, see fdlimit
     watchdog.start(CACHE_DIR / "hang.log")
     return LinDVBApp().run(sys.argv)
