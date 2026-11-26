@@ -539,6 +539,7 @@ class Player(GObject.Object):
         self._ttx_cmp = None
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
+        self._cue_drawer = None         # draws its cues at their time (stage F)
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -1332,6 +1333,10 @@ class Player(GObject.Object):
         only copy; nothing waits for the renderer."""
         try:
             self._cue_shadow = subrender.TextCueRenderer(self._on_shadow_cue)
+            # in the shadow it draws nothing yet, it says how soon it would have
+            self._cue_drawer = subrender.CueDrawer(self._cue_position, lambda _t, _p: None,
+                                                   lambda: self.rate,
+                                                   on_shown=self._on_cue_drawn)
         except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
             debuglog.write("Player", f"text cue renderer (shadow) not started: {e}")
             return
@@ -1370,6 +1375,7 @@ class Player(GObject.Object):
             self._cue_cmp = subrender.CueShadow("text")
             shadow.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CUE_PARSERS[name][1],
                                            origin="text"))
+            GLib.idle_add(self._start_cue_drawer)
         elif not shown and shadow.state().on:
             cmp, state = self._cue_cmp, shadow.state()
             self._cue_cmp = None
@@ -1390,18 +1396,37 @@ class Player(GObject.Object):
             self._write_cue_report(cmp, state)
 
     def _write_cue_report(self, cmp, state):
-        """The shadow's line in the debug log, for the cues due up to where
+        """The shadow's lines in the debug log, for the cues due up to where
         the playback is (main loop; the cues noted from streaming threads
-        are queued to it before this)."""
+        are queued to it before this). The drawer stops with it."""
+        until = self._cue_position()
+        drawer = self._cue_drawer
+        if drawer is not None:
+            drawer.stop()
         if cmp is None:
             return
-        until = None
-        if self.playbin is not None:
-            ok, pos = self.playbin.query_position(Gst.Format.TIME)
-            until = pos if ok and pos >= 0 else None
-        line = cmp.report(state, until)
-        if line:
-            debuglog.write("Player", line)
+        for line in (cmp.report(state, until), cmp.drawing_report(state, until)):
+            if line:
+                debuglog.write("Player", line)
+
+    def _cue_position(self):
+        """The playback position (stream time, ns), None when there is none."""
+        if self.playbin is None:
+            return None
+        ok, pos = self.playbin.query_position(Gst.Format.TIME)
+        return pos if ok and pos >= 0 else None
+
+    def _start_cue_drawer(self):
+        """Main loop: the shadow went on, so the drawer draws its cues (into
+        the comparison only; the old path still draws what is seen)."""
+        if self._cue_drawer is not None and self._cue_cmp is not None:
+            self._cue_drawer.start()
+        return False
+
+    def _on_cue_drawn(self, text, start, late):
+        cmp = self._cue_cmp
+        if cmp is not None:
+            cmp.drew(text, start, late)
 
     def _old_cue(self, pad, info):
         try:
@@ -1422,10 +1447,17 @@ class Player(GObject.Object):
             if cmp is not None and text:
                 GLib.idle_add(lambda: (cmp.saw_old(text, t), False)[1])
 
-    def _on_shadow_cue(self, text, t):
+    def _on_shadow_cue(self, text, t, end):
         cmp = self._cue_cmp
         if cmp is not None:
-            GLib.idle_add(lambda: (cmp.saw_new(text, t), False)[1])
+            GLib.idle_add(self._shadow_cue_arrived, cmp, text, t, end)
+
+    def _shadow_cue_arrived(self, cmp, text, t, end):
+        cmp.saw_new(text, t)
+        drawer = self._cue_drawer
+        if drawer is not None and cmp is self._cue_cmp:
+            drawer.add(text, t, end)
+        return False
 
     def _end_cue_shadow(self):
         shadow, self._cue_shadow = self._cue_shadow, None
@@ -1434,6 +1466,7 @@ class Player(GObject.Object):
             self._cue_cmp = None
             shadow.close()
             self._write_cue_report(cmp, state)
+        self._cue_drawer = None
 
     def teletext_pages(self):
         """Teletext subtitle pages offered for the current stream."""

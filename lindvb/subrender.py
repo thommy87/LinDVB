@@ -27,6 +27,7 @@ player stays and the renderer runs in its shadow when debug mode is on
 the first.
 """
 
+import bisect
 from dataclasses import dataclass
 
 TELETEXT = "Teletext"            # lindvb.trackcatalog formats
@@ -52,6 +53,22 @@ CUE_PARSERS = {
 CUE_CAPS = tuple(CUE_PARSERS)
 # a cue shown by both paths counts as on time when they agree this closely
 CUE_TOLERANCE_NS = 40_000_000
+# a cue that names no end is drawn this long at most
+CUE_DEFAULT_NS = 8_000_000_000
+# cues the drawer keeps (a few minutes of subtitles)
+CUE_KEEP = 500
+# the drawer looks at the playback position at least this often while on,
+# and never more often than this (ms)
+DRAW_TICK_MAX_MS = 250
+DRAW_TICK_MIN_MS = 10
+# after a start or a seek it looks every 40 ms (a frame at 25 Hz) until the
+# position goes at the playback speed again, measured over 200 ms; standing
+# (paused) it stops looking closely after ten such measures (two seconds)
+DRAW_TICK_FAST_MS = 40
+DRAW_PACE_NS = 200_000_000
+DRAW_FAST_LOOKS = 10
+# a cue drawn this soon after its time is on time: a frame or two and the main loop
+DRAW_TOLERANCE_NS = 100_000_000
 
 
 @dataclass
@@ -241,20 +258,30 @@ def cue_text(data):
     return "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
 
 
-def stream_time(segment, pts, duration=None):
-    """The stream time (ns) a cue at *pts* lasting *duration* is shown from
-    in *segment*: the playback position, the same before and after a seek.
-    A cue that began before the segment (a seek into it) is shown from its
-    start; None when the cue is not shown in it at all, or has no time."""
+def stream_span(segment, pts, duration=None):
+    """(start, end): the stream times (ns) a cue at *pts* lasting *duration*
+    is shown from and to in *segment*, the playback position, the same
+    before and after a seek. A cue that began before the segment (a seek
+    into it) is shown from where the seek went; (None, None) when the cue
+    is not shown in it at all, or has no time; end is None when the cue
+    has no duration."""
     from gi.repository import Gst
     if segment is None or pts is None or pts == Gst.CLOCK_TIME_NONE:
-        return None
+        return None, None
+    end = None
     if duration is not None and duration != Gst.CLOCK_TIME_NONE:
-        inside, pts, _stop = segment.clip(Gst.Format.TIME, pts, pts + duration)
+        inside, pts, stop = segment.clip(Gst.Format.TIME, pts, pts + duration)
         if not inside:
-            return None
+            return None, None
+        end = segment.to_stream_time(Gst.Format.TIME, stop)
+        end = None if end == Gst.CLOCK_TIME_NONE else end
     t = segment.to_stream_time(Gst.Format.TIME, pts)
-    return None if t == Gst.CLOCK_TIME_NONE else t
+    return (None, None) if t == Gst.CLOCK_TIME_NONE else (t, end)
+
+
+def stream_time(segment, pts, duration=None):
+    """The stream time (ns) a cue is shown from (:func:`stream_span`), or None."""
+    return stream_span(segment, pts, duration)[0]
 
 
 class TextCueRenderer(Renderer):
@@ -266,11 +293,13 @@ class TextCueRenderer(Renderer):
     sound: :meth:`feed` hands it a copy of each subtitle buffer the overlay's
     own parser gets, with its caps and segment; the pipeline is made for the
     parser those caps need, and made again when they change. *on_cue(text,
-    stream_time)* gets each cue it decoded, from a streaming thread; the
-    stream time (ns, the playback position) is when the cue is due.
+    start, end)* gets each cue it decoded, from a streaming thread; start
+    and end are the stream times (ns, the playback position) the cue is
+    shown from and to (end None when the cue names none).
 
-    In the shadow it shows nothing: drawing (Pango in GTK, without
-    textoverlay or ttmlrender) comes when it takes over."""
+    :class:`CueDrawer` draws them at their time (Pango in GTK, without
+    textoverlay or ttmlrender); in the shadow it only notes what it would
+    draw and when."""
 
     kind = WEBVTT
 
@@ -385,8 +414,189 @@ class TextCueRenderer(Renderer):
         if text:
             s.last = text
             s.decoded += 1
-            self._on_cue(text, stream_time(sample.get_segment(), buf.pts, buf.duration))
+            self._on_cue(text, *stream_span(sample.get_segment(), buf.pts, buf.duration))
         return Gst.FlowReturn.OK
+
+
+class CueTimeline:
+    """The cues to draw, by stream time (ns): which are due at a position.
+
+    The same cue coming again (a seek fetches the subtitles anew) is kept
+    once; only the last :data:`CUE_KEEP` cues are kept."""
+
+    def __init__(self):
+        self.cues = []               # [(start, end, text)], by start
+
+    def add(self, text, start, end=None):
+        """The cue (start, end, text) added; None when it is there already
+        or has no text or time."""
+        if not text or start is None:
+            return None
+        if end is None or end <= start:
+            end = start + CUE_DEFAULT_NS
+        cue = (start, end, text)
+        i = bisect.bisect_left(self.cues, cue)
+        if i < len(self.cues) and self.cues[i] == cue:
+            return None
+        self.cues.insert(i, cue)
+        del self.cues[:-CUE_KEEP]
+        return cue
+
+    def at(self, pos):
+        """The cues shown at *pos*, by start."""
+        return tuple(c for c in self.cues if c[0] <= pos < c[1])
+
+    def next_change(self, pos):
+        """The next stream time after *pos* a cue starts or ends, or None."""
+        times = [t for c in self.cues for t in c[:2] if t > pos]
+        return min(times) if times else None
+
+    def clear(self):
+        self.cues = []
+
+
+class CueDrawer:
+    """Draws the text cues at their time.
+
+    From the main loop it looks at the playback position (*position()*: the
+    stream time in ns, None when there is none) and hands *on_text(text,
+    position)* the text due there each time the cues due change: their
+    lines in order, "" when none is. Between the cues it sleeps until the
+    next one starts or ends, at most :data:`DRAW_TICK_MAX_MS`, so it costs
+    a few wake-ups a second and only while it is on. *rate()* is the
+    playback speed, *clock()* a monotonic clock in ns.
+
+    Right after a start or a seek the position stands, jumps or runs ahead
+    of the clock while the playback catches up; then the drawer looks every
+    :data:`DRAW_TICK_FAST_MS` for a while (:data:`DRAW_FAST_LOOKS` looks of
+    :data:`DRAW_PACE_NS`), and sooner still when the position runs faster.
+
+    *on_shown(text, start, late)* hears, once for each cue, how long (ns of
+    the clock) after its time it was first drawn, and None for a cue that
+    was over before it could be (it came after its end, or the position
+    jumped over it)."""
+
+    MAX_SPEED = 8.0              # a position jumping further is a seek, not speed
+
+    def __init__(self, position, on_text, rate=lambda: 1.0, clock=None, on_shown=None):
+        import time
+        self.timeline = CueTimeline()
+        self._position = position
+        self._on_text = on_text
+        self._on_shown = on_shown
+        self._rate = rate
+        self._clock = clock or time.monotonic_ns
+        self._shown = ()             # the cues drawn now
+        self._source = 0
+        self._last = None            # (clock, position) when it last looked
+        self._pace = None            # (clock, position) the pace is measured from
+        self._speed = 1.0            # how fast the position went, at least the rate
+        self._fast = 0               # looks of DRAW_PACE_NS left to look closely
+        self._pending = {}           # cue -> clock it came; not judged yet
+
+    @property
+    def running(self):
+        return bool(self._source)
+
+    def add(self, text, start, end=None):
+        """A cue (main loop); a running drawer looks again at once."""
+        cue = self.timeline.add(text, start, end)
+        if cue is not None:
+            self._pending[cue] = self._clock()
+        if self._source:
+            self._schedule(0)
+
+    def start(self):
+        if not self._source:
+            self._schedule(0)
+
+    def stop(self):
+        """Nothing more drawn; the cues kept are dropped."""
+        from gi.repository import GLib
+        if self._source:
+            GLib.source_remove(self._source)
+            self._source = 0
+        self.timeline.clear()
+        self._pending = {}
+        self._last = self._pace = None
+        if self._shown:
+            self._shown = ()
+            self._on_text("", None)
+
+    def tick(self):
+        """Draw what is due now; the ms until it should look again."""
+        pos, now = self._position(), self._clock()
+        if pos is None:
+            self._last = self._pace = None
+            return DRAW_TICK_MAX_MS
+        prev, self._last = self._last, (now, pos)
+        self._measure(now, pos)
+        due = self.timeline.at(pos)
+        if due != self._shown:
+            self._shown = due
+            self._on_text("\n".join(c[2] for c in due), pos)
+        self._judge(due, now, pos, prev)
+        nxt = self.timeline.next_change(pos)
+        ms = DRAW_TICK_MAX_MS if nxt is None else int((nxt - pos) / 1e6 / self._speed) + 1
+        if self._fast:
+            ms = min(ms, DRAW_TICK_FAST_MS)
+        return max(DRAW_TICK_MIN_MS, min(DRAW_TICK_MAX_MS, ms))
+
+    def _measure(self, now, pos):
+        """The pace of the position over the last DRAW_PACE_NS or more: at
+        the playback speed it is regular; standing, it uses up the close
+        looks; jumping or running at another speed, it earns them again."""
+        rate = abs(self._rate() or 1.0)
+        if self._pace is None:
+            self._pace, self._speed, self._fast = (now, pos), rate, DRAW_FAST_LOOKS
+            return
+        dt, dp = now - self._pace[0], pos - self._pace[1]
+        if dt < DRAW_PACE_NS:
+            return
+        self._pace = (now, pos)
+        ran = dp / dt
+        self._speed = max(rate, ran) if 0 < ran <= self.MAX_SPEED else rate
+        if abs(ran - rate) <= 0.25 * rate:
+            self._fast = 0
+        elif dp:
+            self._fast = DRAW_FAST_LOOKS
+        else:
+            self._fast = max(0, self._fast - 1)
+
+    def _judge(self, due, now, pos, prev):
+        """Each cue once: drawn now, and how late; or over already."""
+        for cue in [c for c in self._pending if c in due or c[1] <= pos]:
+            came = self._pending.pop(cue)
+            late = self._late(cue, came, now, pos, prev) if cue in due else None
+            if self._on_shown is not None:
+                self._on_shown(cue[2], cue[0], late)
+
+    @staticmethod
+    def _late(cue, came, now, pos, prev):
+        """How long after the position reached the cue it was drawn: between
+        two looks the position is taken to have gone on evenly; a cue that
+        came later is late from when it came."""
+        start = cue[0]
+        if prev is not None and came <= prev[0] and prev[1] < start <= pos:
+            due = prev[0] + (start - prev[1]) * (now - prev[0]) / (pos - prev[1])
+            return int(now - due)
+        return int(now - max(came, prev[0] if prev is not None else came))
+
+    def _schedule(self, ms):
+        from gi.repository import GLib
+        if self._source:
+            GLib.source_remove(self._source)
+        self._source = GLib.timeout_add(ms, self._run)
+
+    def _run(self):
+        from gi.repository import GLib
+        self._source = 0
+        try:
+            ms = self.tick()
+        except Exception:  # noqa: BLE001 - a bad cue must not end the drawing
+            ms = DRAW_TICK_MAX_MS
+        self._source = GLib.timeout_add(ms, self._run)
+        return False
 
 
 class CueShadow:
@@ -396,14 +606,19 @@ class CueShadow:
 
     The old path hands on a cue only when the picture gets there, the
     renderer (not drawing yet) as soon as it is parsed: cues due after the
-    position the playback had reached (*until*) are left out on both sides."""
+    position the playback had reached (*until*) are left out on both sides.
+
+    It also notes how soon :class:`CueDrawer` drew each cue (:meth:`drew`);
+    :meth:`drawing_report` says whether each cue of the old path was drawn
+    within :data:`DRAW_TOLERANCE_NS` after its time."""
 
     KEEP = 500
 
     def __init__(self, track=""):
         self.track = track
-        self.old = []                # [(text, running time)]
+        self.old = []                # [(text, stream time)]
         self.new = []
+        self.drawn = []              # [(cue text, its time, ns drawn late or None)]
 
     def saw_old(self, text, rt):
         if text:
@@ -412,6 +627,45 @@ class CueShadow:
     def saw_new(self, text, rt):
         if text:
             self.new = (self.new + [(text, rt)])[-self.KEEP:]
+
+    def drew(self, text, start, late):
+        """The drawer first drew the cue *text* due at *start* *late* ns
+        after its time; None: it was over before it could be."""
+        self.drawn = (self.drawn + [(text, start, late)])[-self.KEEP:]
+
+    def _drawn(self, cue):
+        """The drawing of the cue: (late or None,), () when the drawer never
+        had it."""
+        text, t = cue
+        found = [(late,) for d, start, late in self.drawn
+                 if d == text and abs(start - t) <= CUE_TOLERANCE_NS]
+        return found[0] if found else ()
+
+    def drawing_report(self, state, until=None):
+        """The line on the drawing: None when the old path had no cue due."""
+        old = self._due(self.old, until)
+        drawn = [(text, self._drawn((text, t))) for text, t in old]
+        if drawn and drawn[-1][1] == ():     # the last one may be on its way
+            drawn = drawn[:-1]
+        if not drawn:
+            return None
+        missing = [text for text, d in drawn if d == ()]
+        over = [text for text, d in drawn if d == (None,)]
+        late = [(text, d[0]) for text, d in drawn
+                if d and d[0] is not None and d[0] > DRAW_TOLERANCE_NS]
+        shown = len(drawn) - len(missing) - len(over)
+        head = f"{state.kind} drawing (shadow, {self.track}): {shown} of {len(drawn)} cues drawn"
+        if not missing and not over and not late:
+            return head + f", all within {DRAW_TOLERANCE_NS // 1_000_000} ms of their time"
+        parts = [head]
+        if late:
+            worst = max(late, key=lambda c: c[1])
+            parts.append(f"{len(late)} late (worst {worst[0][:40]!r} {worst[1] / 1e6:+.0f} ms)")
+        if over:
+            parts.append(f"over before they could be drawn {_few(over)}")
+        if missing:
+            parts.append(f"never drawn {_few(missing)}")
+        return "; ".join(parts)
 
     @staticmethod
     def _match(cue, others):
