@@ -1323,57 +1323,16 @@ class Player(GObject.Object):
     # -- the text cue renderer in the shadow (stage F) ----------------------
 
     def _cue_shadow_hook(self, pb):
-        """Debug mode: the text cue renderer gets a copy of what playbin hands
-        its subtitle overlay (playsink's text pad), while text subtitles are
-        shown, and what the overlay's own parser decoded is noted beside it.
-        Probes only copy; nothing waits for the renderer."""
+        """Debug mode: the text cue renderer gets a copy of what the subtitle
+        overlay's own parser (subparse, ttmlparse) gets, while text subtitles
+        are shown, and what that parser decoded is noted beside it. Probes
+        only copy; nothing waits for the renderer."""
         try:
             self._cue_shadow = subrender.TextCueRenderer(self._on_shadow_cue)
         except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
             debuglog.write("Player", f"text cue renderer (shadow) not started: {e}")
             return
-        playsink = pb.get_by_name("playsink")
-        if playsink is not None:
-            playsink.connect("pad-added", self._on_playsink_pad)
         pb.connect("deep-element-added", self._on_cue_overlay)
-
-    def _on_playsink_pad(self, _playsink, pad):
-        if pad.get_name().startswith("text"):
-            pad.add_probe(Gst.PadProbeType.BUFFER, self._feed_cue_shadow, self._cue_shadow)
-
-    def _feed_cue_shadow(self, pad, info, shadow):
-        """Streaming thread: on while playbin shows text subtitles (the old
-        path draws them), off otherwise."""
-        pb = self.playbin
-        if shadow is not self._cue_shadow or pb is None:
-            return Gst.PadProbeReturn.OK
-        caps = pad.get_current_caps()
-        shown = bool(pb.get_property("flags") & PLAY_FLAGS_TEXT) and caps is not None and \
-            caps.get_size() > 0 and caps.get_structure(0).get_name() in subrender.CUE_CAPS
-        if shown and not shadow.state().on:
-            self._cue_cmp = subrender.CueShadow("text")
-            shadow.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.WEBVTT, origin="text"))
-        elif not shown and shadow.state().on:
-            self._report_cue_shadow_later(shadow)
-        if shown:
-            ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
-            shadow.feed(info.get_buffer(), caps, ev.parse_segment() if ev else None)
-        return Gst.PadProbeReturn.OK
-
-    def _report_cue_shadow_later(self, shadow):
-        """Off; the report goes to the log from the main loop, after the
-        cues still on their way."""
-        cmp, state = self._cue_cmp, shadow.state()
-        self._cue_cmp = None
-        shadow.off()
-        if cmp is not None:
-            GLib.timeout_add(300, lambda: (self._write_cue_report(cmp, state), False)[1])
-
-    @staticmethod
-    def _write_cue_report(cmp, state):
-        line = cmp.report(state)
-        if line:
-            debuglog.write("Player", line)
 
     def _on_cue_overlay(self, _bin, _sub, element):
         f = element.get_factory()
@@ -1382,26 +1341,88 @@ class Player(GObject.Object):
 
     def _on_cue_overlay_child(self, _overlay, element):
         f = element.get_factory()
-        if f is not None and f.get_name() == "subparse":
+        if f is not None and f.get_name() in ("subparse", "ttmlparse"):
+            element.get_static_pad("sink").add_probe(
+                Gst.PadProbeType.BUFFER, self._feed_cue_shadow, self._cue_shadow)
             element.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._old_cue)
 
+    def _feed_cue_shadow(self, pad, info, shadow):
+        """Streaming thread: on while playbin shows text subtitles (the old
+        path draws them), off otherwise. Whatever happens in the shadow, the
+        buffer goes on."""
+        try:
+            self._cue_shadow_buffer(pad, info, shadow)
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
+            debuglog.write("Player", f"text cue renderer (shadow): {e}")
+        return Gst.PadProbeReturn.OK
+
+    def _cue_shadow_buffer(self, pad, info, shadow):
+        pb = self.playbin
+        if shadow is not self._cue_shadow or pb is None:
+            return
+        caps = pad.get_current_caps()
+        name = caps.get_structure(0).get_name() if caps is not None and caps.get_size() else ""
+        shown = name in subrender.CUE_PARSERS and bool(pb.get_property("flags") & PLAY_FLAGS_TEXT)
+        if shown and not shadow.state().on:
+            self._cue_cmp = subrender.CueShadow("text")
+            shadow.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CUE_PARSERS[name][1],
+                                           origin="text"))
+        elif not shown and shadow.state().on:
+            cmp, state = self._cue_cmp, shadow.state()
+            self._cue_cmp = None
+            shadow.off()
+            GLib.idle_add(lambda: (self._write_cue_report(cmp, state), False)[1])
+        if shown:
+            ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
+            shadow.feed(info.get_buffer(), caps, ev.parse_segment() if ev else None)
+
+    def _cue_shadow_follow(self, kind):
+        """Subtitles picked: text subtitles off, so the text cue renderer
+        goes off too and reports."""
+        shadow = self._cue_shadow
+        if kind != "text" and shadow is not None and shadow.state().on:
+            cmp, state = self._cue_cmp, shadow.state()
+            self._cue_cmp = None
+            shadow.off()
+            self._write_cue_report(cmp, state)
+
+    def _write_cue_report(self, cmp, state):
+        """The shadow's line in the debug log, for the cues due up to where
+        the playback is (main loop; the cues noted from streaming threads
+        are queued to it before this)."""
+        if cmp is None:
+            return
+        until = None
+        if self.playbin is not None:
+            ok, pos = self.playbin.query_position(Gst.Format.TIME)
+            until = pos if ok and pos >= 0 else None
+        line = cmp.report(state, until)
+        if line:
+            debuglog.write("Player", line)
+
     def _old_cue(self, pad, info):
+        try:
+            self._note_old_cue(pad, info)
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
+            debuglog.write("Player", f"text cue renderer (shadow): {e}")
+        return Gst.PadProbeReturn.OK
+
+    def _note_old_cue(self, pad, info):
         buf = info.get_buffer()
         ok, m = buf.map(Gst.MapFlags.READ)
         if ok:
             text = subrender.cue_text(m.data)
             buf.unmap(m)
             ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
-            rt = subrender.running_time(ev.parse_segment() if ev else None, buf.pts)
+            t = subrender.stream_time(ev.parse_segment() if ev else None, buf.pts, buf.duration)
             cmp = self._cue_cmp
             if cmp is not None and text:
-                GLib.idle_add(lambda: (cmp.saw_old(text, rt), False)[1])
-        return Gst.PadProbeReturn.OK
+                GLib.idle_add(lambda: (cmp.saw_old(text, t), False)[1])
 
-    def _on_shadow_cue(self, text, rt):
+    def _on_shadow_cue(self, text, t):
         cmp = self._cue_cmp
         if cmp is not None:
-            GLib.idle_add(lambda: (cmp.saw_new(text, rt), False)[1])
+            GLib.idle_add(lambda: (cmp.saw_new(text, t), False)[1])
 
     def _end_cue_shadow(self):
         shadow, self._cue_shadow = self._cue_shadow, None
@@ -1409,8 +1430,7 @@ class Player(GObject.Object):
             cmp, state = self._cue_cmp, shadow.state()
             self._cue_cmp = None
             shadow.close()
-            if cmp is not None:
-                self._write_cue_report(cmp, state)
+            self._write_cue_report(cmp, state)
 
     def teletext_pages(self):
         """Teletext subtitle pages offered for the current stream."""
@@ -2179,6 +2199,7 @@ class Player(GObject.Object):
             else:
                 self.playbin.set_property("current-text", key)
         self._ttx_shadow_follow(kind, key)
+        self._cue_shadow_follow(kind)
         self.emit("tracks")
 
     def _on_sync_collection(self, _bus, msg):

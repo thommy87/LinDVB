@@ -302,15 +302,20 @@ def test_cue_text():
     assert sr.cue_text(b"<b></b>\n") == ""
 
 
-def test_running_time():
+def test_stream_time():
     _GLib, Gst = streamkit.gst()
     seg = Gst.Segment()
     seg.init(Gst.Format.TIME)
     seg.start = 10 * Gst.SECOND
-    assert sr.running_time(seg, 12 * Gst.SECOND) == 2 * Gst.SECOND
-    assert sr.running_time(seg, Gst.CLOCK_TIME_NONE) is None
-    assert sr.running_time(None, 12 * Gst.SECOND) is None
-    assert sr.running_time(seg, 5 * Gst.SECOND) is None   # before the segment
+    seg.time = 100 * Gst.SECOND               # after a seek: the position stays
+    assert sr.stream_time(seg, 12 * Gst.SECOND) == 102 * Gst.SECOND
+    assert sr.stream_time(seg, Gst.CLOCK_TIME_NONE) is None
+    assert sr.stream_time(None, 12 * Gst.SECOND) is None
+    assert sr.stream_time(seg, 5 * Gst.SECOND) is None   # before the segment
+    # a seek into a cue: shown from where the seek went, one that ended before not at all
+    assert sr.stream_time(seg, 9 * Gst.SECOND, 2 * Gst.SECOND) == 100 * Gst.SECOND
+    assert sr.stream_time(seg, 8 * Gst.SECOND, Gst.SECOND) is None
+    assert sr.stream_time(seg, 12 * Gst.SECOND, Gst.SECOND) == 102 * Gst.SECOND
 
 
 def test_cue_shadow_report():
@@ -323,6 +328,7 @@ def test_cue_shadow_report():
         sh.saw_new(t, i * 1000 * ms + 10 * ms)           # within the tolerance
     sh.saw_old("d", 3000 * ms)                           # still on its way
     sh.saw_new("", None)
+    sh.saw_old("before the seek", None)                  # not shown: does not count
     assert sh.report(state) == ("WebVTT renderer (shadow, text): 3 cues, the old path 4; "
                                 "data 6, dropped 0; the same cues at the same times")
     sh = sr.CueShadow("text")
@@ -331,6 +337,15 @@ def test_cue_shadow_report():
     sh.saw_new("a", 500 * ms)                            # the same text, half a second late
     sh.saw_new("b", 1000 * ms)
     assert "missing 'a', extra 'a'" in sh.report(state)
+    # parsed ahead of the picture: only what was due up to the position counts
+    sh = sr.CueShadow("text")
+    for i in range(2):
+        sh.saw_old(f"c{i}", i * 1000 * ms)
+    for i in range(6):
+        sh.saw_new(f"c{i}", i * 1000 * ms)
+    assert "extra 'c2', 'c3', 'c4'" in sh.report(state)
+    assert sh.report(state, until=1500 * ms).endswith(
+        "2 cues, the old path 2; data 6, dropped 0; the same cues at the same times")
 
 
 def _vtt_sample(Gst, text, start_s):
@@ -405,3 +420,93 @@ def test_a_standing_cue_renderer_never_blocks_the_feed():
     finally:
         stuck.set()
         r.close()
+
+
+# -- text cues (TTML) ------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def dash_ttml(tmp_path_factory):
+    streamkit.gst("dashdemux", "ttmlparse", "ttmlrender")
+    folder = tmp_path_factory.mktemp("dash-ttml")
+    mpd = streamkit.make_dash_ttml(folder, seconds=16)
+    srv = streamkit.Server(folder)
+    yield srv.url(mpd.name)
+    srv.close()
+
+
+def test_ttml_subtitles_end_to_end(player, dash_ttml):
+    """ARD, ZDF over DVB-I (DASH with EBU-TT-D in segments): picked, the
+    subtitles are drawn by GStreamer's TTML renderer; with debug mode on,
+    the text cue renderer read along with ttmlparse and had the same cues
+    at the same times."""
+    from gi.repository import Gst
+    parsed = []
+
+    def child(_overlay, element):
+        f = element.get_factory()
+        if f is not None and f.get_name() == "ttmlparse":
+            element.get_static_pad("src").add_probe(
+                Gst.PadProbeType.BUFFER, lambda _p, _i: (parsed.append(1), Gst.PadProbeReturn.OK)[1])
+
+    def deep(_bin, _sub, element):
+        f = element.get_factory()
+        if f is not None and f.get_name() == "subtitleoverlay":
+            element.connect("element-added", child)
+    build = player._build
+
+    def watched(*a, **k):
+        pb = build(*a, **k)
+        pb.connect("deep-element-added", deep)
+        return pb
+    player._build = watched
+    player.play_uri(dash_ttml)
+    _run(15, lambda: player.subtitle_tracks()[0] and player._played)
+    assert len(player.subtitle_tracks()[0]) == 1 and player.subtitle_tracks()[1] == -1
+    if player.log is not None:
+        assert player._cue_shadow.state() == sr.State(sr.WEBVTT)   # off: reads nothing
+    player.select_subtitle(0)
+    _run(14, lambda: len(parsed) >= 4)
+    assert len(parsed) >= 4                              # the old path draws them
+    player.select_subtitle(-1)
+    _run(1)
+    player.stop()
+    if player.log is not None:
+        reports = [ln for ln in player.log if ln.startswith("TTML renderer (shadow")]
+        assert len(reports) == 1, player.log
+        assert reports[0].endswith("the same cues at the same times"), reports
+        # the cues due up to where the picture was (ttmlparse is a cue ahead)
+        assert int(reports[0].split(": ", 1)[1].split()[0]) >= 2, reports
+
+
+def test_text_cue_renderer_decodes_ttml():
+    import threading
+    _GLib, Gst = streamkit.gst("ttmlparse", "subparse", "appsrc", "appsink")
+    got, done = [], threading.Event()
+
+    def on_cue(text, rt):
+        got.append((text, rt))
+        if len(got) == 3:
+            done.set()
+    r = sr.TextCueRenderer(on_cue)
+    try:
+        ttml = Track(SUB, sr.TTML, "deu", origin="text")
+        assert r.can(ttml)
+        r.show(ttml)
+        seg = Gst.Segment()
+        seg.init(Gst.Format.TIME)
+        doc = streamkit.TTML_HEAD + "".join(streamkit.ttml_cue(i) for i in range(3)) + \
+            streamkit.TTML_TAIL
+        r.feed(Gst.Buffer.new_wrapped(doc.encode()),
+               Gst.Caps.from_string("application/ttml+xml"), seg)
+        assert done.wait(10), got
+        assert r.parser == "ttmlparse"
+        assert [t for t, _rt in got] == [f"{SUBTITLE} {i}" for i in range(3)]
+        assert [rt for _t, rt in got] == [i * 1_000_000_000 for i in range(3)]
+        s = r.state()
+        assert s.kind == sr.TTML and s.data == 1 and s.decoded == 3
+        # WebVTT after it: the pipeline is made again with subparse
+        _feed_vtt(r, n=1)
+        assert r.parser == "subparse"
+    finally:
+        r.close()
+    assert r.pipeline is None
