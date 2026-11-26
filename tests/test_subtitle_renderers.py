@@ -510,3 +510,120 @@ def test_text_cue_renderer_decodes_ttml():
     finally:
         r.close()
     assert r.pipeline is None
+
+
+# -- DASH subtitles switched on during playback ----------------------------------------
+
+@pytest.fixture(scope="module")
+def dash_ttml_file(tmp_path_factory):
+    streamkit.gst("dashdemux", "ttmlparse", "ttmlrender")
+    folder = tmp_path_factory.mktemp("dash-ttml-file")
+    mpd = streamkit.make_dash_ttml(folder, seconds=16, single_file=True)
+    srv = streamkit.Server(folder)
+    yield srv.url(mpd.name)
+    srv.close()
+
+
+def _ttml_cues_after_pick(player, url):
+    """Play *url*, pick its subtitles after 2 s: (second the picture was at
+    when picked, [seconds of the cues ttmlparse handed the renderer], seconds
+    the first one took)."""
+    from gi.repository import Gst
+    cues, picked = [], [0.0]
+
+    def child(_overlay, element):
+        f = element.get_factory()
+        if f is not None and f.get_name() == "ttmlparse":
+            element.get_static_pad("src").add_probe(
+                Gst.PadProbeType.BUFFER,
+                lambda _p, i: (cues.append((i.get_buffer().pts / Gst.SECOND, time.monotonic())),
+                               Gst.PadProbeReturn.OK)[1])
+
+    def deep(_bin, _sub, element):
+        f = element.get_factory()
+        if f is not None and f.get_name() == "subtitleoverlay":
+            element.connect("element-added", child)
+    build = player._build
+
+    def watched(*a, **k):
+        pb = build(*a, **k)
+        pb.connect("deep-element-added", deep)
+        return pb
+    player._build = watched
+    player.play_uri(url)
+    _run(15, lambda: player.subtitle_tracks()[0] and player._played)
+    _run(2)
+    at = _position(player) / Gst.SECOND
+    picked[0] = time.monotonic()
+    player.select_subtitle(0)
+    _run(6, lambda: len(cues) >= 3)
+    first = cues[0][1] - picked[0] if cues else None
+    return at, [round(c) for c, _t in cues], first
+
+
+@pytest.mark.parametrize("sample", ["dash_ttml", "dash_ttml_file"])
+def test_dash_subtitles_picked_later_come_at_once(player, sample, request):
+    """ARD Mediathek, DVB-I (DASH with TTML in segments, or as one file for
+    the whole programme): picked while it plays, the subtitles come from
+    where the picture is, within a few seconds; before, one file never
+    came and segments only after 7 to 10 s."""
+    at, cues, first = _ttml_cues_after_pick(player, request.getfixturevalue(sample))
+    assert cues, "no subtitles"
+    assert first < 3, first
+    assert cues[0] <= at + 1 and cues == sorted(cues), (at, cues)
+    assert player.subtitle_tracks()[1] == 0
+    pos = _position(player)
+    _run(1)
+    assert _position(player) > pos                      # the picture goes on
+    before = len(cues)
+    player.select_subtitle(0)                           # the same again: no new fetch
+    assert len(cues) == before
+
+
+class _FakePlaybin:
+    def __init__(self, seekable):
+        self.seekable, self.seeks = seekable, []
+
+    def query_position(self, _fmt):
+        return True, 5_000_000_000
+
+    def query(self, q):
+        from gi.repository import Gst
+        q.set_seeking(Gst.Format.TIME, self.seekable, 0, 16_000_000_000)
+        return True
+
+    def seek(self, rate, _fmt, _flags, _st, pos, _et, _end):
+        self.seeks.append((rate, pos))
+        return True
+
+
+def test_subtitles_fetched_again_only_for_dash(player):
+    """Only DASH on classic playbin seeks, only when the shown text stream
+    changes, and not where the stream cannot seek (live without a time
+    shift window): there the subtitles come with the next segments, as
+    before."""
+    lines = []
+    from lindvb import debuglog
+    real_write = debuglog.write
+    debuglog.write = lambda _c, *p: lines.append(" ".join(p))
+    try:
+        player.uri = "http://127.0.0.1/x.mpd"
+        for dash, seekable, shown, key, seeks in (
+                (True, True, None, 0, [(1.0, 5_000_000_000)]),
+                (True, True, 0, 0, []),                    # already shown
+                (True, True, 0, 1, [(1.0, 5_000_000_000)]),   # another track
+                (False, True, None, 0, []),                # not DASH
+                (True, False, None, 0, [])):               # cannot seek
+            pb = _FakePlaybin(seekable)
+            player.playbin, player._dash = pb, dash
+            player._fetch_subtitles_again(shown, key)
+            assert pb.seeks == seeks, (dash, seekable, shown, key)
+        assert lines[-1] == "subtitles on: the stream cannot seek, they come with the next segments"
+        player.rate = 1.5
+        pb = _FakePlaybin(True)
+        player.playbin, player._dash = pb, True
+        player._fetch_subtitles_again(None, 0)
+        assert pb.seeks == [(1.5, 5_000_000_000)]       # the play rate stays
+    finally:
+        debuglog.write = real_write
+        player.playbin, player.uri, player.rate = None, None, 1.0
