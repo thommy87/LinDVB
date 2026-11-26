@@ -138,6 +138,14 @@ def enable_ttml():
     return ok
 
 
+def _track_gpu_element(_bin, _sub, element):
+    """deep-element-added in debug mode: count the GPU elements (decoders,
+    vapostproc, ... of any GPU interface) until they are finalized."""
+    f = element.get_factory()
+    if f is not None and hwaccel.backend_of(f.get_plugin_name()) != "software":
+        debuglog.track(element, f.get_name())
+
+
 def trial_output_error(video, msg, dbg):
     """The error *msg* (debug text *dbg*) is one of the GPU video output on
     trial in VideoBin *video*: from inside it, or a picture it refused."""
@@ -558,6 +566,11 @@ class Player(GObject.Object):
         self.rebuffers = 0
         self._played = False
         pb = Gst.ElementFactory.make("playbin3" if pb3 else "playbin", "player")
+        if debuglog.enabled():
+            # do old pipelines and their GPU elements go? (graphics buffers
+            # piled up with VA-API, most with vadeinterlace)
+            debuglog.track(pb, "pipeline")
+            pb.connect("deep-element-added", _track_gpu_element)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
         if not (self._sub_choice and self._sub_choice[0] == "text") and \
@@ -571,6 +584,7 @@ class Player(GObject.Object):
             deint = hwaccel.make_deinterlacer(gpu)
             if deint is not None:
                 self.video_deinterlacer = deint.get_factory().get_name()
+                _track_gpu_element(None, None, deint)
             if deint is not None and deint.get_factory().get_name() == "vadeinterlace":
                 # first in the chain: it takes the VA-API decoder's frames
                 # straight from the graphics card and deinterlaces them there

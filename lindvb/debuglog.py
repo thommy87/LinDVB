@@ -155,14 +155,53 @@ def _dmabuf_exporter(fdinfo):
     return fields.get("exp_name") or "?", size
 
 
-def _dmabuf_part(dmabufs):
-    """ "graphics buffers i915 355 (1.1 GB)" from {driver: [count, bytes]}."""
+def _human(size):
+    return (f"{size / 1e9:.1f} GB" if size >= 1e9 else f"{size / 1e6:.0f} MB" if size >= 1e6
+            else f"{size / 1e3:.0f} KB")
+
+
+def _dmabuf_part(dmabufs, sizes=None):
+    """ "graphics buffers i915 355 (1.1 GB); sizes 300x 24 KB, 17x 3 MB" from
+    {driver: [count, bytes]} and {bytes: count} (the three most frequent sizes
+    tell picture buffers from small ones)."""
     if not dmabufs:
         return ""
     parts = ", ".join(f"{name} {n} ({size / 1e9:.1f} GB)" if size >= 1e9 else
                       f"{name} {n} ({size / 1e6:.0f} MB)"
                       for name, (n, size) in sorted(dmabufs.items(), key=lambda kv: -kv[1][0]))
-    return f"; graphics buffers {parts}"
+    out = f"; graphics buffers {parts}"
+    if sizes:
+        top = sorted(sizes.items(), key=lambda kv: (-kv[1], -kv[0]))[:3]
+        out += "; sizes " + ", ".join(f"{n}x {_human(size)}" for size, n in top)
+    return out
+
+
+# -- objects that should go with their pipeline ------------------------------
+# Debug mode counts the pipelines and GPU elements LinDVB made that still exist
+# (GObject weak references): graphics buffers that pile up while the count of
+# these stays flat are held below LinDVB (driver, GStreamer); a count that
+# grows with every channel change means LinDVB keeps old pipelines alive.
+_alive = {}
+
+
+def track(obj, kind):
+    """Count *obj* under *kind* until it is finalized (debug mode only)."""
+    if not _on or obj is None:
+        return
+    with _lock:
+        _alive[kind] = _alive.get(kind, 0) + 1
+
+    def gone(*_a):
+        with _lock:
+            _alive[kind] -= 1
+    obj.weak_ref(gone)
+
+
+def alive_summary():
+    """ "alive: pipeline 1, vah264dec 1" (what track() counts now), or ""."""
+    with _lock:
+        parts = [f"{k} {n}" for k, n in sorted(_alive.items()) if n]
+    return "alive: " + ", ".join(parts) if parts else ""
 
 
 def open_files_summary(fd_dir="/proc/self/fd"):
@@ -172,7 +211,7 @@ def open_files_summary(fd_dir="/proc/self/fd"):
     debug mode is off or the system has no /proc."""
     if not _on:
         return ""
-    kinds, paths, dmabufs = {}, {}, {}
+    kinds, paths, dmabufs, sizes = {}, {}, {}, {}
     info_dir = os.path.join(os.path.dirname(fd_dir), "fdinfo")
     try:
         names = os.listdir(fd_dir)
@@ -192,6 +231,7 @@ def open_files_summary(fd_dir="/proc/self/fd"):
             entry = dmabufs.setdefault(driver, [0, 0])
             entry[0] += 1
             entry[1] += size
+            sizes[size] = sizes.get(size, 0) + 1
     try:
         import resource
         limit = f"/{resource.getrlimit(resource.RLIMIT_NOFILE)[0]}"
@@ -202,7 +242,7 @@ def open_files_summary(fd_dir="/proc/self/fd"):
     top = max(paths.items(), key=lambda kv: kv[1], default=None)
     if top and top[1] > 2:
         out += f"; {top[1]}x {top[0]}"
-    return out + _dmabuf_part(dmabufs)
+    return out + _dmabuf_part(dmabufs, sizes)
 
 
 def describe_channel(c):
