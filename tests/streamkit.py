@@ -490,3 +490,51 @@ def dash_with_roles(folder):
         text = text[:end] + "\n\t\t\t" + "\n\t\t\t".join(extra) + text[end:]
     (folder / "manifest-roles.mpd").write_text(text)
     return folder / "manifest-roles.mpd"
+
+
+TTML_HEAD = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+             '<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling" '
+             'xmlns:ttp="http://www.w3.org/ns/ttml#parameter" ttp:timeBase="media" xml:lang="de">'
+             '<head><styling><style xml:id="s1" tts:color="#ffffff" tts:backgroundColor="#000000"/>'
+             '</styling><layout><region xml:id="bottom" tts:origin="10% 80%" tts:extent="80% 15%"/>'
+             '</layout></head><body><div>\n')
+TTML_TAIL = "</div></body></tt>\n"
+
+
+def ttml_cue(i, text="Untertitel"):
+    """An EBU-TT-D paragraph shown from second *i* for 0.8 s."""
+    t = f"{i // 3600:02d}:{i // 60 % 60:02d}:{i % 60:02d}"
+    return (f'<p begin="{t}.000" end="{t}.800" '
+            f'region="bottom" style="s1">{text} {i}</p>\n')
+
+
+def make_dash_ttml(folder, seconds=20, single_file=False, text="Untertitel"):
+    """A DASH VOD stream (H.264 + AAC in TS segments of 1 s) with a German
+    TTML subtitle set: segments of 2 s (DVB-I), or with *single_file* one
+    TTML document for the whole stream (HbbTV media libraries). Cue i is
+    "Untertitel i" from second i for 0.8 s. Returns the manifest."""
+    folder.mkdir(parents=True, exist_ok=True)
+    make_av_segments(folder / "av", seconds=seconds)
+    if single_file:
+        (folder / "subtitles.ttml").write_text(
+            TTML_HEAD + "".join(ttml_cue(i, text) for i in range(seconds)) + TTML_TAIL)
+        rep = '<Representation id="sub" bandwidth="1000"><BaseURL>subtitles.ttml</BaseURL></Representation>'
+    else:
+        for n in range(seconds // 2):
+            (folder / f"sub{n:05d}.ttml").write_text(
+                TTML_HEAD + ttml_cue(2 * n, text) + ttml_cue(2 * n + 1, text) + TTML_TAIL)
+        rep = ('<Representation id="sub" bandwidth="1000"><SegmentTemplate '
+               'media="sub$Number%05d$.ttml" startNumber="0" duration="2"/></Representation>')
+    mpd = folder / ("single.mpd" if single_file else "segments.mpd")
+    mpd.write_text(
+        '<?xml version="1.0"?>\n<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" '
+        'profiles="urn:mpeg:dash:profile:isoff-main:2011" type="static" '
+        f'mediaPresentationDuration="PT{seconds}S" minBufferTime="PT2S"><Period id="p0">'
+        '<AdaptationSet id="1" contentType="video" mimeType="video/mp2t">'
+        '<Representation id="av" bandwidth="200000" width="320" height="180" codecs="avc1,mp4a.40.2">'
+        '<SegmentTemplate media="av/seg$Number%05d$.ts" startNumber="0" duration="1"/>'
+        '</Representation></AdaptationSet>'
+        '<AdaptationSet id="3" contentType="text" mimeType="application/ttml+xml" lang="deu">'
+        f'<Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>{rep}</AdaptationSet>'
+        '</Period></MPD>\n')
+    return mpd

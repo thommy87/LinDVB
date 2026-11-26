@@ -32,6 +32,7 @@ from dataclasses import dataclass
 TELETEXT = "Teletext"            # lindvb.trackcatalog formats
 DVB_SUB = "DVB-SUB"
 WEBVTT = "WebVTT"
+TTML = "TTML"
 CEA608 = "CEA-608"
 CEA708 = "CEA-708"
 
@@ -40,8 +41,15 @@ CEA708 = "CEA-708"
 QUEUE_BUFFERS = 100
 # text cues come as whole WebVTT segments (one a few seconds)
 CUE_QUEUE_BUFFERS = 30
-# what playsink hands its overlay that subparse reads (TTML follows)
-CUE_CAPS = ("application/x-subtitle-vtt", "application/x-subtitle")
+# what playsink hands its overlay, and the parser the old path takes for it
+# (subtitleoverlay: subparse; ttmlparse once lindvb.player.enable_ttml gave
+# it a rank)
+CUE_PARSERS = {
+    "application/x-subtitle-vtt": ("subparse", WEBVTT),
+    "application/x-subtitle": ("subparse", WEBVTT),
+    "application/ttml+xml": ("ttmlparse", TTML),
+}
+CUE_CAPS = tuple(CUE_PARSERS)
 # a cue shown by both paths counts as on time when they agree this closely
 CUE_TOLERANCE_NS = 40_000_000
 
@@ -243,83 +251,113 @@ def running_time(segment, pts):
 
 
 class TextCueRenderer(Renderer):
-    """Text cues (WebVTT) parsed by subparse, the parser the old path uses.
+    """Text cues (WebVTT, SRT, TTML) parsed by the parser the old path uses
+    for them (:data:`CUE_PARSERS`).
 
     It runs in a small pipeline of its own beside the playback (appsrc,
-    leaky queue, subparse, appsink), so it can never hold up picture or
+    leaky queue, parser, appsink), so it can never hold up picture or
     sound: :meth:`feed` hands it a copy of each subtitle buffer as playbin
-    gives it to its overlay, with its caps and segment. *on_cue(text,
+    gives it to its overlay, with its caps and segment; the pipeline is made
+    for the parser those caps need, and made again when they change. *on_cue(text,
     running_time)* gets each cue it decoded, from a streaming thread; the
     running time (ns, in the playback's timeline) is when the cue is due.
 
     In the shadow it shows nothing: drawing (Pango in GTK, without
-    textoverlay) comes when it takes over."""
+    textoverlay or ttmlrender) comes when it takes over."""
 
     kind = WEBVTT
 
     def __init__(self, on_cue, queue_buffers=CUE_QUEUE_BUFFERS, warm=False):
-        from gi.repository import Gst
         self._on_cue = on_cue
+        self._queue_buffers = queue_buffers
         self._state = State(WEBVTT)
         self.warm = warm
-        self.pipeline = Gst.Pipeline.new("text-cue-renderer")
-        self._src = Gst.ElementFactory.make("appsrc")
-        self._src.set_property("format", Gst.Format.TIME)
-        self._src.set_property("handle-segment-change", True)
-        self._src.set_property("max-buffers", queue_buffers)
-        self._src.set_property("leaky-type", 2)          # downstream: drop the oldest
+        self.pipeline = None
+        self.parser = ""             # the parser of the pipeline there is
+        self._src = None
+        self._caps = None
+
+    def _make(self, parser):
+        """The pipeline appsrc ! queue ! *parser* ! appsink, playing."""
+        from gi.repository import Gst
+        self._close_pipeline()
+        pipeline = Gst.Pipeline.new("text-cue-renderer")
+        src = Gst.ElementFactory.make("appsrc")
+        src.set_property("format", Gst.Format.TIME)
+        src.set_property("handle-segment-change", True)
+        src.set_property("max-buffers", self._queue_buffers)
+        src.set_property("leaky-type", 2)          # downstream: drop the oldest
         q = Gst.ElementFactory.make("queue")
         q.set_property("leaky", 2)
-        q.set_property("max-size-buffers", queue_buffers)
+        q.set_property("max-size-buffers", self._queue_buffers)
         q.set_property("max-size-time", 0)
         q.set_property("max-size-bytes", 0)
         q.connect("overrun", self._overrun)
-        parse = Gst.ElementFactory.make("subparse")
+        parse = Gst.ElementFactory.make(parser)
         sink = Gst.ElementFactory.make("appsink")
         sink.set_property("sync", False)     # the due time is compared, not waited for
         sink.set_property("emit-signals", True)
         sink.connect("new-sample", self._on_sample)
-        chain = (self._src, q, parse, sink)
+        if parse is None:
+            raise RuntimeError(f"{parser} missing")
+        chain = (src, q, parse, sink)
         for e in chain:
-            self.pipeline.add(e)
+            pipeline.add(e)
         for a, b in zip(chain, chain[1:]):
             a.link(b)
-        self._caps = None
-        self.pipeline.set_state(Gst.State.PLAYING)
+        pipeline.set_state(Gst.State.PLAYING)
+        self.pipeline, self._src, self.parser, self._caps = pipeline, src, parser, None
+
+    def _close_pipeline(self):
+        from gi.repository import Gst
+        if self.pipeline is not None:
+            self.pipeline.set_state(Gst.State.NULL)
+        self.pipeline, self._src, self.parser, self._caps = None, None, "", None
 
     # -- the interface ---------------------------------------------------------------
 
+    def can(self, track):
+        return getattr(track, "format", "") in (WEBVTT, TTML)
+
     def show(self, track):
-        self._state = State(WEBVTT, on=True, track=getattr(track, "origin", ""))
+        self._state = State(getattr(track, "format", "") or WEBVTT, on=True,
+                            track=getattr(track, "origin", ""))
 
     def off(self):
-        self._state = State(WEBVTT)
+        self._state = State(self._state.kind)
 
     def state(self):
         return self._state
 
     def close(self):
-        from gi.repository import Gst
         self.off()
-        self.pipeline.set_state(Gst.State.NULL)
+        self._close_pipeline()
 
     # -- streaming threads -------------------------------------------------------------
 
     def feed(self, buf, caps, segment):
-        """A subtitle buffer of the playback (any thread); never blocks."""
+        """A subtitle buffer of the playback (one streaming thread); never blocks."""
         from gi.repository import Gst
         s = self._state
         if not s.on and not self.warm:
             return
-        if caps is None:
+        if caps is None or not caps.get_size():
+            return
+        parser = CUE_PARSERS.get(caps.get_structure(0).get_name(), ("", ""))[0]
+        if not parser:
             return
         if s.on:
             s.data += 1
+        if parser != self.parser:
+            self._make(parser)
+        src = self._src
+        if src is None:                  # closed meanwhile
+            return
         if self._caps is None or not caps.is_equal(self._caps):
             self._caps = caps
-            self._src.set_property("caps", caps)
+            src.set_property("caps", caps)
         sample = Gst.Sample.new(buf.copy(), caps, segment, None)
-        if self._src.emit("push-sample", sample) != Gst.FlowReturn.OK:
+        if src.emit("push-sample", sample) != Gst.FlowReturn.OK:
             s.dropped += 1
 
     def _overrun(self, _queue):
