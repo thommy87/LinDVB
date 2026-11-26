@@ -241,13 +241,14 @@ def cue_text(data):
     return "\n".join(ln.strip() for ln in text.splitlines() if ln.strip())
 
 
-def running_time(segment, pts):
-    """The running time of *pts* in *segment* (ns), None when it has none."""
+def stream_time(segment, pts):
+    """The stream time of *pts* in *segment* (ns): the playback position the
+    cue is due at, the same before and after a seek. None when it has none."""
     from gi.repository import Gst
     if segment is None or pts is None or pts == Gst.CLOCK_TIME_NONE:
         return None
-    rt = segment.to_running_time(Gst.Format.TIME, pts)
-    return None if rt == Gst.CLOCK_TIME_NONE else rt
+    t = segment.to_stream_time(Gst.Format.TIME, pts)
+    return None if t == Gst.CLOCK_TIME_NONE else t
 
 
 class TextCueRenderer(Renderer):
@@ -256,11 +257,11 @@ class TextCueRenderer(Renderer):
 
     It runs in a small pipeline of its own beside the playback (appsrc,
     leaky queue, parser, appsink), so it can never hold up picture or
-    sound: :meth:`feed` hands it a copy of each subtitle buffer as playbin
-    gives it to its overlay, with its caps and segment; the pipeline is made
-    for the parser those caps need, and made again when they change. *on_cue(text,
-    running_time)* gets each cue it decoded, from a streaming thread; the
-    running time (ns, in the playback's timeline) is when the cue is due.
+    sound: :meth:`feed` hands it a copy of each subtitle buffer the overlay's
+    own parser gets, with its caps and segment; the pipeline is made for the
+    parser those caps need, and made again when they change. *on_cue(text,
+    stream_time)* gets each cue it decoded, from a streaming thread; the
+    stream time (ns, the playback position) is when the cue is due.
 
     In the shadow it shows nothing: drawing (Pango in GTK, without
     textoverlay or ttmlrender) comes when it takes over."""
@@ -378,14 +379,18 @@ class TextCueRenderer(Renderer):
         if text:
             s.last = text
             s.decoded += 1
-            self._on_cue(text, running_time(sample.get_segment(), buf.pts))
+            self._on_cue(text, stream_time(sample.get_segment(), buf.pts))
         return Gst.FlowReturn.OK
 
 
 class CueShadow:
-    """The cues the old path (subtitleoverlay's subparse) and the text cue
-    renderer beside it decoded, with the running time each is due; the
-    report says whether both had the same cues at the same times."""
+    """The cues the old path (subtitleoverlay's subparse or ttmlparse) and
+    the text cue renderer beside it decoded, with the stream time each is
+    due; the report says whether both had the same cues at the same times.
+
+    The old path hands on a cue only when the picture gets there, the
+    renderer (not drawing yet) as soon as it is parsed: cues due after the
+    position the playback had reached (*until*) are left out on both sides."""
 
     KEEP = 500
 
@@ -410,18 +415,25 @@ class CueShadow:
                 return True
         return False
 
-    def report(self, state):
-        if not self.old and not self.new:
+    @staticmethod
+    def _due(cues, until):
+        if until is None:
+            return cues
+        return [c for c in cues if c[1] is None or c[1] <= until + CUE_TOLERANCE_NS]
+
+    def report(self, state, until=None):
+        old, new = self._due(self.old, until), self._due(self.new, until)
+        if not old and not new:
             return None
-        missing = [c for c in self.old if not self._match(c, self.new)]
-        extra = [c for c in self.new if not self._match(c, self.old)]
+        missing = [c for c in old if not self._match(c, new)]
+        extra = [c for c in new if not self._match(c, old)]
         # the last cue of a side may still be on its way to the other
-        if missing[-1:] == self.old[-1:]:
+        if missing[-1:] == old[-1:]:
             missing = missing[:-1]
-        if extra[-1:] == self.new[-1:]:
+        if extra[-1:] == new[-1:]:
             extra = extra[:-1]
-        head = (f"{state.kind} renderer (shadow, {self.track}): {len(self.new)} cues, "
-                f"the old path {len(self.old)}; data {state.data}, dropped {state.dropped}")
+        head = (f"{state.kind} renderer (shadow, {self.track}): {len(new)} cues, "
+                f"the old path {len(old)}; data {state.data}, dropped {state.dropped}")
         if not missing and not extra:
             return head + "; the same cues at the same times"
         return head + (f"; missing {_few([t for t, _r in missing])}, "

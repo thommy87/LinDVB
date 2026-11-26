@@ -302,15 +302,16 @@ def test_cue_text():
     assert sr.cue_text(b"<b></b>\n") == ""
 
 
-def test_running_time():
+def test_stream_time():
     _GLib, Gst = streamkit.gst()
     seg = Gst.Segment()
     seg.init(Gst.Format.TIME)
     seg.start = 10 * Gst.SECOND
-    assert sr.running_time(seg, 12 * Gst.SECOND) == 2 * Gst.SECOND
-    assert sr.running_time(seg, Gst.CLOCK_TIME_NONE) is None
-    assert sr.running_time(None, 12 * Gst.SECOND) is None
-    assert sr.running_time(seg, 5 * Gst.SECOND) is None   # before the segment
+    seg.time = 100 * Gst.SECOND               # after a seek: the position stays
+    assert sr.stream_time(seg, 12 * Gst.SECOND) == 102 * Gst.SECOND
+    assert sr.stream_time(seg, Gst.CLOCK_TIME_NONE) is None
+    assert sr.stream_time(None, 12 * Gst.SECOND) is None
+    assert sr.stream_time(seg, 5 * Gst.SECOND) is None   # before the segment
 
 
 def test_cue_shadow_report():
@@ -331,6 +332,15 @@ def test_cue_shadow_report():
     sh.saw_new("a", 500 * ms)                            # the same text, half a second late
     sh.saw_new("b", 1000 * ms)
     assert "missing 'a', extra 'a'" in sh.report(state)
+    # parsed ahead of the picture: only what was due up to the position counts
+    sh = sr.CueShadow("text")
+    for i in range(2):
+        sh.saw_old(f"c{i}", i * 1000 * ms)
+    for i in range(6):
+        sh.saw_new(f"c{i}", i * 1000 * ms)
+    assert "extra 'c2', 'c3', 'c4'" in sh.report(state)
+    assert sh.report(state, until=1500 * ms).endswith(
+        "2 cues, the old path 2; data 6, dropped 0; the same cues at the same times")
 
 
 def _vtt_sample(Gst, text, start_s):
@@ -450,8 +460,8 @@ def test_ttml_subtitles_end_to_end(player, dash_ttml):
     if player.log is not None:
         assert player._cue_shadow.state() == sr.State(sr.WEBVTT)   # off: reads nothing
     player.select_subtitle(0)
-    _run(14, lambda: len(parsed) >= 3)
-    assert len(parsed) >= 3                              # the old path draws them
+    _run(14, lambda: len(parsed) >= 4)
+    assert len(parsed) >= 4                              # the old path draws them
     player.select_subtitle(-1)
     _run(1)
     player.stop()
@@ -459,7 +469,8 @@ def test_ttml_subtitles_end_to_end(player, dash_ttml):
         reports = [ln for ln in player.log if ln.startswith("TTML renderer (shadow")]
         assert len(reports) == 1, player.log
         assert reports[0].endswith("the same cues at the same times"), reports
-        assert int(reports[0].split(": ", 1)[1].split()[0]) >= 3, reports
+        # the cues due up to where the picture was (ttmlparse is a cue ahead)
+        assert int(reports[0].split(": ", 1)[1].split()[0]) >= 2, reports
 
 
 def test_text_cue_renderer_decodes_ttml():
