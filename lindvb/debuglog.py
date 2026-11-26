@@ -398,6 +398,8 @@ def _header(what, settings=None):
         lines.append("DVB adapters: " + (", ".join(adapters) or "none"))
     except OSError:
         lines.append("DVB adapters: none")
+    from . import fdlimit
+    lines.append("Open files limit: " + fdlimit.describe())
     if settings is not None:
         lines.append("Settings: " + settings_summary(settings))
     for line in lines:

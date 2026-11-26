@@ -8,9 +8,9 @@ builds the channels from them.
 
 import errno
 import os
-import select
 import time
 
+from . import fdwait
 from .ca import SectionAssembler, ts_pid
 from .channels import Channel, SAT_SYSTEMS, parse_dvbv5
 from .tsanalysis import parse_pat, parse_pmt_full, parse_sdt, section_header
@@ -196,7 +196,7 @@ def scan(tuner, frontend_status, uc, lnb, tps, diseqc=-1, root="", log=print,
         end = time.monotonic() + read_wait
         while time.monotonic() < end and not ts.complete and not cancelled():
             try:
-                ready, _, _ = select.select([tuner.dvr], [], [], 0.2)
+                ready = fdwait.readable([tuner.dvr], 0.2)
                 data = os.read(tuner.dvr, TS * 348) if ready else b""
             except OSError as e:
                 if e.errno in (errno.EOVERFLOW, errno.EAGAIN, errno.EINTR):

@@ -78,10 +78,13 @@ def test_size_is_limited(log, monkeypatch):
 
 
 def test_save_as_and_clear(log, tmp_path, monkeypatch):
-    monkeypatch.setattr(debuglog, "MAX_BYTES", 500)
+    # room for the header that clear() writes anew (it grew by the open files
+    # limit), small enough that the 30 lines rotate once
+    monkeypatch.setattr(debuglog, "MAX_BYTES", 800)
     debuglog.configure({"debug_mode": True}, log_path=log)
     for i in range(30):
         debuglog.write("Test", f"line {i:02d} " + "y" * 30)
+    assert log.with_name("debug.log.1").exists()
     target = tmp_path / "copy.log"
     debuglog.save_as(target)
     copy = target.read_text(encoding="utf-8")
