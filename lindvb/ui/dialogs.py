@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Preferences, channel editor, recording statistics and teletext windows."""
 
+import copy
 import dataclasses
 import time
 from pathlib import Path
@@ -1305,6 +1306,7 @@ class PrefsWindow(Gtk.Window):
 
     def on_save(self):
         s = self.app.settings
+        settings_before = copy.deepcopy(dict(s))
         s["timeshift_mode"] = self._ts_modes[self._ts_mode_drop.get_selected()]
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
@@ -1344,6 +1346,7 @@ class PrefsWindow(Gtk.Window):
         self._saved = True
         from .. import debuglog
         debuglog.configure(s)
+        debuglog.log_settings_changes(settings_before, s)
         from . import hbbtv as hbbtv_ui
         hbbtv_ui.DEBUG = hbbtv_ui.ENV_DEBUG or debuglog.enabled()
         from .. import channels as channels_mod
