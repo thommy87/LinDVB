@@ -223,6 +223,9 @@ MIN_GLIBC="$(getconf GNU_LIBC_VERSION | awk '{print $2}')"
 cat > "$APPDIR/AppRun" <<EOF
 #!/bin/bash
 HERE="\$(dirname "\$(readlink -f "\$0")")"
+# the AppImage runtime sets APPDIR; an extracted AppImage (squashfs-root/AppRun,
+# as the CI self-check runs it) must count as the AppImage too (compat.bundled)
+export APPDIR="\${APPDIR:-\$HERE}"
 # Built on glibc $MIN_GLIBC, which the AppImage brings along (usr/lib/glibc):
 # on an older system, or one without glibc, its programs use that one; on a
 # system with this glibc or a newer one, the host's (see glibc-launcher.c).

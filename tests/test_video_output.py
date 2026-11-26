@@ -203,3 +203,21 @@ def test_the_real_element_shows_pictures_with_opengl(monkeypatch):
     size = paintable.get_intrinsic_width(), paintable.get_intrinsic_height()
     pipe.set_state(Gst.State.NULL)
     assert size == (160, 120)
+
+
+def test_self_check_shows_the_sample_through_it():
+    """--self-check decodes its H.264 sample into the element with OpenGL
+    (the AppImage has no videotestsrc); its CI requires the OK line."""
+    if Gst.ElementFactory.find("gtk4paintablesink") is None:
+        pytest.skip("gtk4paintablesink is not installed")
+    if not Gtk.init_check():
+        pytest.skip("no display")
+    import io
+    from lindvb import selfcheck
+    out = io.StringIO()
+    selfcheck.check_video_output(selfcheck.Report(out))
+    if out.getvalue().startswith("WARN"):
+        pytest.skip("no OpenGL here")
+    assert out.getvalue().startswith(
+        "OK    video output through the graphics card (gtk4paintablesink, OpenGL): 320x180"), \
+        out.getvalue()
