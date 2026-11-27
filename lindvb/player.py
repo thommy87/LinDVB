@@ -25,7 +25,8 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
                          language_track, playback_language, is_audio_description)
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
-from . import captions, compat, debuglog, hwaccel, passthrough, subrender, trackcatalog  # noqa: E402
+from . import (captions, compat, debuglog, flowwatch, hwaccel, passthrough,  # noqa: E402
+               subrender, trackcatalog)
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -43,6 +44,9 @@ except (ImportError, ValueError):
 PLAY_FLAGS_VIDEO = 1
 PLAY_FLAGS_AUDIO = 2
 PLAY_FLAGS_TEXT = 4
+# the demuxers whose output the debug log notes when the picture stands
+# still with subtitles on (lindvb.flowwatch)
+FLOW_DEMUXERS = ("hlsdemux2", "dashdemux2", "hlsdemux", "dashdemux")
 PLAY_FLAGS_VIS = 8
 # DASH subtitles switched on during playback are fetched again with a seek
 # (Player._fetch_subtitles_again) once the subtitle overlay stands: it is
@@ -548,6 +552,7 @@ class Player(GObject.Object):
         self._cue_drawer = None         # draws its cues at their time (stage F)
         self._dvbsub_shadow = None      # and the DVB-SUB renderer: (renderer, DvbSubShadow)
         self._dvbsub_restart = False
+        self._flow = None               # debug mode: what flows from the demuxer and the overlay
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -627,6 +632,7 @@ class Player(GObject.Object):
             pb.connect("deep-element-added", _track_gpu_element)
             self._cue_shadow_hook(pb)
             self._dvbsub_shadow_hook(pb)
+            self._flow_hook(pb)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
         if not (self._sub_choice and self._sub_choice[0] == "text") and \
@@ -1497,6 +1503,46 @@ class Player(GObject.Object):
             shadow.close()
             self._write_cue_report(cmp, state)
         self._cue_drawer = None
+
+    # -- what flows when the picture stands still with subtitles (debug mode) --------
+
+    def _flow_hook(self, pb):
+        """Debug mode: note what leaves the adaptive demuxer and what goes
+        in and out of the subtitle overlay (lindvb.flowwatch), for the line
+        the subtitle watchdog writes when the picture stands still."""
+        self._flow = flowwatch.FlowWatch()
+        pb.connect("deep-element-added", self._on_flow_element, self._flow)
+
+    def _on_flow_element(self, _bin, _sub, element, flow):
+        try:
+            f = element.get_factory()
+            name = f.get_name() if f is not None else ""
+            if name in FLOW_DEMUXERS:
+                element.connect("pad-added", lambda _el, pad: flow.watch(
+                    pad, f"demuxer {pad.get_name()}") if pad.get_direction() == Gst.PadDirection.SRC
+                    else None)
+            elif name == "subtitleoverlay":
+                for pad, label in (("video_sink", "overlay picture in"),
+                                   ("subtitle_sink", "overlay subtitles in"), ("src", "overlay out")):
+                    p = element.get_static_pad(pad)
+                    if p is not None:
+                        flow.watch(p, label)
+        except Exception as e:  # noqa: BLE001 - noting must never cost the stream
+            debuglog.write("Player", f"flow watch: {e}")
+
+    def _write_flow(self, still, pos):
+        """Debug mode, the subtitle watchdog: the picture stood still for
+        2 s (the start) or 6 s (it gives up): what flowed where."""
+        flow = self._flow
+        if flow is None or still not in (2.0, 6.0) or not debuglog.enabled():
+            return
+        at = flowwatch.clock_text(pos if pos >= 0 else None)
+        what = f"stands at {at} with the subtitles on" if still == 2.0 else \
+            f"stood at {at} for 6 s"
+        clock = self.playbin.get_clock() if hasattr(self.playbin, "get_clock") else None
+        now = flowwatch.clock_text(clock.get_time() - self.playbin.get_base_time()) \
+            if clock is not None else "-"
+        debuglog.write("Player", f"the picture {what} (running time {now}): {flow.summary()}")
 
     # -- the DVB-SUB renderer in the shadow (stage F) ---------------------------------
 
@@ -2572,6 +2618,7 @@ class Player(GObject.Object):
         if checks and not self.paused:
             moved = pos >= 0 and last is not None and last >= 0 and pos - last >= Gst.SECOND // 2
             still = 0.0 if moved else still + 2.0
+        self._write_flow(still, pos)
         if still >= 6.0:
             debuglog.write("Player", "the picture stands still with the subtitles on: "
                                      "opening the stream again without them")
