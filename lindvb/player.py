@@ -1534,11 +1534,11 @@ class Player(GObject.Object):
         """Debug mode, the subtitle watchdog: the picture stood still for
         2 s (the start) or 6 s (it gives up): what flowed where."""
         flow = self._flow
-        if flow is None or still not in (2.0, 6.0) or not debuglog.enabled():
+        start, end = 0 < still <= 2.0, still >= 6.0     # it grows by 2 s a look
+        if flow is None or not (start or end) or not debuglog.enabled():
             return
         at = flowwatch.clock_text(pos if pos >= 0 else None)
-        what = f"stands at {at} with the subtitles on" if still == 2.0 else \
-            f"stood at {at} for 6 s"
+        what = f"stands at {at} with the subtitles on" if start else f"stood at {at} for 6 s"
         clock = self.playbin.get_clock() if hasattr(self.playbin, "get_clock") else None
         now = flowwatch.clock_text(clock.get_time() - self.playbin.get_base_time()) \
             if clock is not None else "-"
