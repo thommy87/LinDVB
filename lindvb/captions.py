@@ -32,8 +32,12 @@ and old captions flashed up when they were switched on again.
 The caption pad of ccextractor appears with the first frame that carries
 captions, so ``CaptionOverlay.present`` (and with it Subtitles › Closed
 Captions and the OSD's subtitle icon) is only true for a channel that really
-sends them. Only CEA-708 (DTVCC) services are offered; a stream with nothing
-but CEA-608 captions is logged and not offered.
+sends them. The CEA-708 (DTVCC) services are offered; a stream with nothing
+but CEA-608 captions offers the CEA-608 channels that carry captions
+(:func:`caption_channels_608`), decoded by LinDVB's CEA-608 renderer. With
+both, CEA-708 alone is offered: by convention its services carry the same
+captions (service 1: CC1, service 2: CC3). The old path draws CEA-708 only,
+so with it CEA-608 is not offered.
 """
 
 import os
@@ -47,6 +51,25 @@ from gi.repository import Gst  # noqa: E402
 # cc_data triplets: marker bits, cc_valid, cc_type; 2 = DTVCC data, 3 = DTVCC start
 _CC_VALID = 0x04
 _CC_TYPE = 0x03
+
+
+# CEA-608 commands that start captions (RCL, RU2-RU4, RDC): first byte 0x14/0x15
+# (data channel 1) or 0x1C/0x1D (data channel 2), second byte below
+_608_CAPTION_MODES = (0x20, 0x25, 0x26, 0x27, 0x29)
+
+
+def caption_channels_608(data):
+    """The CEA-608 channels (1-4: CC1-CC4) whose captions start in these
+    cc_data triplets (a command that starts pop-on, roll-up or paint-on
+    captions). Text mode and XDS programme data are not captions."""
+    out = set()
+    for i in range(0, len(data) - 2, 3):
+        b0, b1, b2 = data[i], data[i + 1] & 0x7f, data[i + 2] & 0x7f
+        if not b0 & _CC_VALID or b0 & _CC_TYPE >= 2:
+            continue
+        if b1 & 0xf7 in (0x14, 0x15) and b2 in _608_CAPTION_MODES:
+            out.add(2 * (b0 & _CC_TYPE) + (2 if b1 & 0x08 else 1))
+    return out
 
 
 def caption_kinds(data):
@@ -359,9 +382,10 @@ class CaptionOverlay:
     SCAN_BUFFERS = 900                  # 30 s at 30 frames a second
 
     def __init__(self, silent=True, on_found=None, log=None, middle=(), old=None):
-        self.present = False            # CEA-708 captions seen in this pipeline
+        self.present = False            # captions offered: CEA-708, or CEA-608 alone
         self.kinds = set()
-        self.service = 0                # the service shown, 0 = off
+        self.service = 0                # the service shown (CEA-608: -channel), 0 = off
+        self._channels = set()          # CEA-608 channels that carry captions
         self._scanner = DtvccScanner()
         self._scanned = 0
         self._on_found = on_found
@@ -398,16 +422,23 @@ class CaptionOverlay:
     @property
     def services(self):
         """The CEA-708 services with captions seen so far, sorted."""
-        return sorted(self._scanner.services) or ([1] if self.present else [])
+        return sorted(self._scanner.services) or ([1] if "708" in self.kinds else [])
+
+    @property
+    def channels(self):
+        """The CEA-608 channels offered (1-4), sorted: those that carry
+        captions in a stream without CEA-708, none with the old path."""
+        return [] if self.old or "708" in self.kinds else sorted(self._channels)
 
     def show(self, service):
-        """The CEA-708 service shown, or none (0 / None); the old path draws
-        it, else the player's renderer does."""
+        """The CEA-708 service shown (CEA-608: minus the channel), or none
+        (0 / None); the old path draws CEA-708, else the player's renderers
+        draw."""
         service = int(service or 0)
         self.service = service
         if self.overlay is None:
             return
-        if service:
+        if service > 0:
             self.overlay.set_property("service-number", service)
             self.overlay.set_property("silent", False)
         else:
@@ -532,16 +563,7 @@ class CaptionOverlay:
             return Gst.PadProbeReturn.OK
         data = bytes(m.data)
         buf.unmap(m)
-        found = False
-        new = caption_kinds(data) - self.kinds
-        if new:
-            self.kinds |= new
-            self._log("closed captions in the video: " + ", ".join(
-                f"CEA-{k}" for k in sorted(self.kinds)))
-            if "708" in new:
-                self.present = found = True
-            elif not self.present:
-                self._log("only CEA-608 captions, which are not offered")
+        found = self._note_kinds(data) | self._note_channels(data)
         services = self._scanner.feed(data)
         if services:
             self._log("CEA-708 caption services: " + ", ".join(map(str, self.services)))
@@ -552,3 +574,33 @@ class CaptionOverlay:
             self._scanned += 1
         return Gst.PadProbeReturn.REMOVE if self._scanned > self.SCAN_BUFFERS else \
             Gst.PadProbeReturn.OK
+
+    def _note_kinds(self, data):
+        """CEA-608 or CEA-708 seen for the first time: logged; True when
+        CEA-708 came (it is offered)."""
+        new = caption_kinds(data) - self.kinds
+        if not new:
+            return False
+        self.kinds |= new
+        self._log("closed captions in the video: " + ", ".join(
+            f"CEA-{k}" for k in sorted(self.kinds)))
+        if "708" in new:
+            self.present = True
+            return True
+        if self.old and not self.present:
+            self._log("only CEA-608 captions, which cc708overlay does not draw")
+        return False
+
+    def _note_channels(self, data):
+        """A CEA-608 channel's captions started for the first time: True when
+        it is offered (no CEA-708, not the old path)."""
+        new = caption_channels_608(data) - self._channels
+        if not new:
+            return False
+        self._channels |= new
+        if not self.channels:
+            return False
+        self.present = True
+        self._log("CEA-608 caption channels offered: " + ", ".join(
+            f"CC{c}" for c in self.channels))
+        return True

@@ -152,13 +152,14 @@ def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20, cc608=None)
     DTVCC packet only when it comes within one frame; with a small
     *per_frame* (3: as PBS WJXT) a packet is spread over frames, the rest of
     each frame padding. With *cc608*, CC1 carries the line "<cc608>
-    <second>" too (one pair a frame, in field 1)."""
+    <second>" too (one pair a frame, in field 1); *text* None leaves
+    CEA-708 out (CEA-608 alone, as older encoders send)."""
     window = [0x98, 0x38, 0x0A, 0x00, 0x01, 0x1F, 0x09]    # DF0: visible, 2 rows, 32 columns
     frames = []
     dtvcc = per_frame - (1 if cc608 else 0)
     for sec in range(seconds):
-        pkt = _dtvcc_packet(sec, window +
-                            list(f"{text} {sec}".encode()) + [0x0D, 0x89, 0x01])
+        pkt = _dtvcc_packet(sec, window + list(f"{text} {sec}".encode()) + [0x0D, 0x89, 0x01]) \
+            if text is not None else b""
         trip = []
         for i in range(0, len(pkt), 2):
             trip += [0xFF if i == 0 else 0xFE, pkt[i], pkt[i + 1]]   # packet start, data
@@ -176,15 +177,17 @@ def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20, cc608=None)
 
 
 def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="ball",
-                            cc608=None, per_frame=20):
+                            cc608=None, per_frame=20, text="LinDVB 708"):
     """As make_av_segments, with CEA-708 captions in the H.264 stream (and
-    CEA-608 on CC1 with *cc608*, see caption_frames)."""
+    CEA-608 on CC1 with *cc608*; *text* None: CEA-608 alone, see
+    caption_frames)."""
     _GLib, Gst = gst("cccombiner", "x264enc", "avenc_aac", "mpegtsmux", "hlssink")
     folder.mkdir(parents=True, exist_ok=True)
 
     def feed(pl):
         src = pl.get_by_name("cc")
-        for i, data in enumerate(caption_frames(seconds, cc608=cc608, per_frame=per_frame)):
+        for i, data in enumerate(caption_frames(seconds, text=text, cc608=cc608,
+                                                per_frame=per_frame)):
             buf = Gst.Buffer.new_wrapped(data)
             buf.pts, buf.duration = i * Gst.SECOND // 25, Gst.SECOND // 25
             src.emit("push-buffer", buf)
