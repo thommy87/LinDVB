@@ -1326,19 +1326,18 @@ class Player(GObject.Object):
             self._bcues.show(choice[1])
         if not self._bcues.pids:
             # the reader is still reading the playlist for the renditions
-            GLib.timeout_add(BUFFER_CUE_PIDS_MS, self._buffer_cue_pids, self._token, 0)
+            GLib.timeout_add(BUFFER_CUE_PIDS_MS, self._buffer_cue_pids, self._token, [0])
 
     def _buffer_cue_pids(self, token, looks):
-        """Main loop: the renditions in the buffer became known (menu)."""
+        """Main loop, every BUFFER_CUE_PIDS_MS: the renditions in the buffer
+        became known (menu). True to look again."""
         bcues = self._bcues
         if token != self._token or bcues is None:
             return False
         if bcues.set_pids(getattr(self.capture, "cue_pids", {})):
             self.emit("tracks")
-        if bcues.pids or looks >= BUFFER_CUE_PIDS_LOOKS:
-            return False
-        GLib.timeout_add(BUFFER_CUE_PIDS_MS, self._buffer_cue_pids, token, looks + 1)
-        return False
+        looks[0] += 1
+        return not bcues.pids and looks[0] < BUFFER_CUE_PIDS_LOOKS
 
     def _end_buffer_cues(self):
         bcues, self._bcues = self._bcues, None
@@ -1374,17 +1373,17 @@ class Player(GObject.Object):
         before = None
         if self._start_offset > start:
             before = SegmentReader(capture.store, max(start, self._start_offset - window))
-        return (lambda *cue: GLib.idle_add(self._buffer_cue, token, *cue)), before
+        return (lambda *cue: GLib.idle_add(
+            lambda: (self._buffer_cue(token, *cue), False)[1])), before
 
     def _buffer_cue(self, token, pid, start, end, text, epoch):
         """Main loop: a cue the feeder found."""
         bcues = self._bcues
         if token != self._token or bcues is None:
-            return False
+            return
         if bcues.set_pids(getattr(self.capture, "cue_pids", {})):
             self.emit("tracks")                  # the renditions became known
         bcues.add(pid, text, start, end, epoch)
-        return False
 
     def _stop_meta(self):
         if self._meta_timer:
