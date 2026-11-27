@@ -19,6 +19,7 @@ The streams come from tests/streamkit.py (made on the fly, served locally).
 
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -827,10 +828,21 @@ def _changed(a, b):
     return sum(1 for x, y in zip(a, b) if abs(x - y) > 60)
 
 
-def _subtitle_texts(pl):
+def _caption_texts(pl):
+    """What the window is handed to show as closed captions; nothing of
+    them goes to the teletext/subtitle label."""
     texts = []
-    pl.connect("subtitle-text", lambda _p, text: texts.append(text))
+    pl.connect("caption-text", lambda _p, text: texts.append(text))
+    pl.connect("subtitle-text", lambda _p, text: text and texts.append(("subtitle-text", text)))
     return texts
+
+
+def _drawer_lag(line):
+    """The most seconds a caption change was shown after its frame, from the
+    debug log line."""
+    m = re.search(r"after their frame on average \(most (-?[0-9.]+) s\)", line)
+    assert m, line
+    return float(m.group(1))
 
 
 @pytest.mark.parametrize("per_frame", [20, 3])
@@ -847,7 +859,7 @@ def test_cea708_captions_start_off_are_drawn_and_go(player, monkeypatch, per_fra
     folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
     sk.make_captioned_segments(folder / "main", 20, pattern="blue", per_frame=per_frame)
     srv = sk.Server(folder)
-    texts = _subtitle_texts(player)
+    texts = _caption_texts(player)
     try:
         player.play_uri(srv.url("main/index.m3u8"), live=True)
         _run(10, lambda: player.has_closed_captions() and player._played)
@@ -888,7 +900,7 @@ def test_cea608_captions_alone_are_offered_and_drawn(player, monkeypatch):  # no
     folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
     sk.make_captioned_segments(folder / "main", 20, pattern="blue", text=None, cc608="LinDVB 608")
     srv = sk.Server(folder)
-    texts = _subtitle_texts(player)
+    texts = _caption_texts(player)
     try:
         player.play_uri(srv.url("main/index.m3u8"), live=True)
         _run(10, lambda: player.has_closed_captions() and player._played)
@@ -910,6 +922,8 @@ def test_cea608_captions_alone_are_offered_and_drawn(player, monkeypatch):  # no
     assert any("CEA-608 caption channels offered: CC1" in ln for ln in lines), lines
     drawn = [ln for ln in lines if ln.startswith("CEA-608 renderer (CC1): ")]
     assert len(drawn) == 1 and "captions drawn" in drawn[0] and "dropped 0" in drawn[0], lines
+    assert "thrown away: 0 with more than 300 waiting, 0 as a time went back" in drawn[0], drawn
+    assert _drawer_lag(drawn[0]) < 0.5, drawn
 
 
 def test_cea708_captions_by_the_old_path_when_asked(player, monkeypatch):  # noqa: F811
@@ -922,7 +936,7 @@ def test_cea708_captions_by_the_old_path_when_asked(player, monkeypatch):  # noq
     folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
     sk.make_captioned_segments(folder / "main", 20, pattern="blue")
     srv = sk.Server(folder)
-    texts = _subtitle_texts(player)
+    texts = _caption_texts(player)
     try:
         player.play_uri(srv.url("main/index.m3u8"), live=True)
         _run(10, lambda: player.has_closed_captions() and player._played)
@@ -1029,6 +1043,11 @@ def test_debug_log_says_what_the_caption_renderer_drew(player, monkeypatch):  # 
     drawn = [t for c, t in lines if t.startswith("CEA-708 renderer (service 1)")]
     assert len(drawn) == 1 and "captions drawn" in drawn[0], lines
     assert "'LinDVB 708 " in drawn[0] and "dropped 0" in drawn[0], drawn
+    # the drawer: each change with its frame (within a look, 0.1 s), nothing thrown away
+    assert "; drawer: " in drawn[0] and _drawer_lag(drawn[0]) < 0.5, drawn
+    assert "thrown away: 0 with more than 300 waiting, 0 as a time went back; " \
+           "0 shown without a time" in drawn[0], drawn
+    print(drawn[0])
     assert not [t for c, t in lines if t.startswith(("CEA-708 renderer (shadow", "CEA-608 renderer"))]
 
 

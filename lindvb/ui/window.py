@@ -33,6 +33,27 @@ from ..i18n import _
 
 NO_LOCK_SECONDS = 8          # DVB-I failover after this long without a signal lock
 OPEN_FILES_INTERVAL = 30     # debug mode: seconds between two looks at the open files
+CAPTION_COLUMNS = 32         # the width of the closed caption block (CEA-608 rows)
+
+
+def caption_label():
+    """The label of the closed captions, as a TV shows them: rows
+    left-aligned in a block of fixed width (CEA-608 has 32 columns), never
+    wrapped, so that roll-up captions grow and move up in place instead of
+    jumping about (WJXT, 27.11.2026). Teletext and the other subtitles keep
+    their centred label."""
+    label = Gtk.Label(css_classes=["ccsub"], halign=Gtk.Align.CENTER, valign=Gtk.Align.END,
+                      margin_bottom=36, xalign=0, justify=Gtk.Justification.LEFT,
+                      width_chars=CAPTION_COLUMNS, wrap=False, can_target=False)
+    label.set_visible(False)
+    return label
+
+
+def caption_markup(text):
+    """Pango markup of closed captions: each row on its own dark background
+    (only behind its characters, as on a TV), a space either side."""
+    rows = [GLib.markup_escape_text(f" {row} ") for row in text.split("\n")] if text else []
+    return "\n".join(f'<span background="#000000" bgalpha="75%">{row}</span>' for row in rows)
 
 
 def _summary(items, chosen, none):
@@ -205,6 +226,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.vis.analysis = self.player.analysis
         self.player.connect("metadata", self._on_metadata)
         self.player.connect("subtitle-text", self._on_subtitle_text)
+        self.player.connect("caption-text", self._on_caption_text)
         # DVB-I pop-up channels come and go with their availability windows
         GLib.timeout_add_seconds(60, self._availability_tick)
         self._update_teletext()
@@ -697,6 +719,8 @@ class MainWindow(Gtk.ApplicationWindow):
                                   wrap=True, can_target=False)
         self.sublabel.set_visible(False)
         overlay.add_overlay(self.sublabel)
+        self.cclabel = caption_label()
+        overlay.add_overlay(self.cclabel)
         # DVB-I: banner of a channel that is not on air (IT-4, pop-up channels)
         self.oos = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12,
                            halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER, can_target=False)
@@ -2286,6 +2310,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.oos.set_visible(False)
         self._hide_osd()
         self.sublabel.set_visible(False)
+        self.cclabel.set_visible(False)
         self.signal_label.set_text("")
         self.quality.reset(None)
         self._update_quality_bar()
@@ -2623,6 +2648,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.sublabel.set_text(text)
         self.sublabel.set_visible(bool(text))
 
+    def _on_caption_text(self, _player, text):
+        self.cclabel.set_markup(caption_markup(text))
+        self.cclabel.set_visible(bool(text))
+
     def _rebuild_track_menus(self):
         self.audio_menu.remove_all()
         tracks, cur = self.player.audio_tracks()
@@ -2944,12 +2973,14 @@ class MainWindow(Gtk.ApplicationWindow):
             self.overlay.add_overlay(rev)
             self.osd.set_margin_bottom(110)
             self.sublabel.set_margin_bottom(120)
+            self.cclabel.set_margin_bottom(120)
             self._schedule_hide()
         else:
             rev.remove_css_class("lv-floating")
             self.main_box.insert_child_after(rev, self.paned)
             self.osd.set_margin_bottom(24)
             self.sublabel.set_margin_bottom(36)
+            self.cclabel.set_margin_bottom(36)
             self._show_controls()
         self.fs_btn.set_icon_name("view-restore-symbolic" if floating else "view-fullscreen-symbolic")
         self.fs_btn.set_tooltip_text(_("Leave full screen (F)") if floating else _("Full screen (F)"))

@@ -45,6 +45,8 @@ def test_display_css_and_subtitle_font():
     css = display_css({"osd_scale": 150, "subtitle_scale": 200, "subtitle_font": 'Noto "Sans'})
     assert ".osd, .osd-num { font-size: 1.50em; }" in css
     assert ".ttxsub { font-size: 3.00em; }" in css and 'font-family: "Noto Sans"' in css
+    # closed captions the same size; their rows keep a fixed font of even width
+    assert ".ccsub { font-size: 3.00em; }" in css and '.ccsub { font-family' not in css
     assert "font-family" not in display_css({})
     assert display_css({"osd_scale": "x"}).startswith(".osd, .osd-num { font-size: 1.00em; }")
     # GStreamer keeps its own font until the preferences change it

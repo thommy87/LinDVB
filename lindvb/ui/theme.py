@@ -163,6 +163,8 @@ paned.lv-paned > separator { background: transparent; min-width: 1px; }
 }
 .ttxsub { background: rgba(0,0,0,0.75); color: white; font-size: 1.5em; font-weight: bold;
           border-radius: 4px; padding: 2px 10px; }
+/* closed captions: a fixed grid of rows, the background behind the text only */
+.ccsub { color: white; font-size: 1.5em; font-weight: bold; font-family: monospace; }
 
 /* ---------- bottom control bar ---------- */
 .lv-controls {
@@ -645,7 +647,8 @@ def display_css(settings):
     sub = _clamp_percent(settings.get("subtitle_scale", 100)) / 100
     family = str(settings.get("subtitle_font") or "").replace('"', "").replace("\\", "").strip()
     css = (f".osd, .osd-num {{ font-size: {osd:.2f}em; }}\n"
-           f".ttxsub {{ font-size: {1.5 * sub:.2f}em; }}\n")
+           f".ttxsub {{ font-size: {1.5 * sub:.2f}em; }}\n"
+           f".ccsub {{ font-size: {1.5 * sub:.2f}em; }}\n")
     if family:
         css += f'.ttxsub {{ font-family: "{family}"; }}\n'
     return css
