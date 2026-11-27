@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """A CEA-708 (DTVCC) caption decoder: the text a caption service shows.
 
-The renderer of stage F decodes CEA-708 itself, apart from the old path
-(cc708overlay), so that a fix in one cannot touch the other, and to know
-whether text was decoded. The service blocks of a service
+The renderer of stage F decodes CEA-708 itself and LinDVB draws the text:
+GStreamer's cc708overlay drew nothing of packets spread over frames, as
+broadcasters send them, and GStreamer 1.28 of some distributions lacks it. The service blocks of a service
 (lindvb.captions.dtvcc_blocks) carry commands and characters (CEA-708-E
 7.1.4): eight windows, each defined with a size and shown or hidden, a pen
 that writes into the current one. What is shown is the text of the

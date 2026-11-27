@@ -547,6 +547,7 @@ class Player(GObject.Object):
         self._ttx_shadow = None
         self._ttx_cmp = None
         self._cc_shadow = None          # (CaptionOverlay, [(renderer, CaptionShadow)]) in debug mode
+        self._cc_draw = None            # (Cea708Renderer, CaptionDrawer, CaptionShadow or None)
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
         self._cue_drawer = None         # draws its cues at their time (stage F)
@@ -668,6 +669,7 @@ class Player(GObject.Object):
             chain = head + [self.cc.bin]
             if self._sub_choice and self._sub_choice[0] == "cc":
                 self.cc.show(self._sub_choice[1])
+                self._cc_draw_follow("cc", self._sub_choice[1])
                 self._cc_shadow_follow("cc", self._sub_choice[1])
             self.cc.measure(self._measure_captions)
         else:
@@ -1026,6 +1028,7 @@ class Player(GObject.Object):
         self._end_ttx_shadow()
         self._end_cue_shadow()
         self._end_cc_shadow()
+        self._end_cc_draw()
         self._end_dvbsub_shadow()
         self._end_vtt_shadow()
         self._ttx_dec = None
@@ -1686,20 +1689,72 @@ class Player(GObject.Object):
         if shadow is not None and shadow[0].state().on:
             self._report_dvbsub_shadow(shadow)
 
+    # -- closed captions drawn by LinDVB's CEA-708 renderer (stage F) ---------------
+
+    def _cc_draw_follow(self, kind, key):
+        """Closed captions picked: LinDVB's CEA-708 renderer decodes service
+        *key* off the video thread and the drawer shows its text over the
+        picture when the frame that brought it is shown, as teletext
+        subtitles are. cc708overlay drew them before and still does with
+        LINDVB_CC708OVERLAY=1 (lindvb.captions). In debug mode the log
+        says what was drawn."""
+        self._end_cc_draw()
+        if kind != "cc" or not isinstance(key, int) or self.cc is None or self.cc.old:
+            return
+        log = subrender.CaptionShadow(f"service {key}", drawn=True) if debuglog.enabled() else None
+        drawer = subrender.CaptionDrawer(self._cue_position, self._draw_caption)
+
+        def on_text(text, t):
+            if log is not None:
+                log.saw_new(text, t)
+            drawer.add(text, t)
+        try:
+            r = subrender.Cea708Renderer(on_text)
+            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CEA708, origin=f"cc:{key}"))
+        except Exception as e:  # noqa: BLE001 - the captions must never cost the playback
+            debuglog.write("Player", f"CEA-708 renderer not started: {e}")
+            return
+        self._cc_draw = (r, drawer, log)
+        self.cc.listen(r.feed, "draw")
+        drawer.start()
+
+    def _draw_caption(self, text):
+        if self._cc_draw is not None:
+            self.emit("subtitle-text", text)
+
+    def _end_cc_draw(self):
+        draw = self._cc_draw
+        if draw is None:
+            return
+        r, drawer, log = draw
+        if self.cc is not None:
+            self.cc.listen(None, "draw")
+        drawer.stop()                   # what shows goes
+        self._cc_draw = None
+        try:
+            r.decode()
+            line = log.report(r.state()) if log is not None else None
+        except Exception as e:  # noqa: BLE001
+            line = f"{r.kind} renderer: {e}"
+        r.off()
+        if line:
+            debuglog.write("Player", line)
+
     # -- the CEA-608 and CEA-708 renderers in the shadow (stage F) ------------------
 
     def _cc_shadow_follow(self, kind, key):
-        """Debug mode: closed captions picked (the old path draws CEA-708
-        service *key* with cc708overlay). Beside it the CEA-708 renderer
-        decodes that service and the CEA-608 renderer the channel that by
-        convention carries the same captions (service 1: CC1, service 2:
-        CC3); each writes what it decoded to the debug log when they go off.
-        They only note; nothing is drawn."""
+        """Debug mode: closed captions picked. Beside what draws them, the
+        CEA-608 renderer decodes the channel that by convention carries the
+        same captions (service 1: CC1, service 2: CC3), and with the old path
+        (cc708overlay) the CEA-708 renderer decodes service *key*; each
+        writes what it decoded to the debug log when they go off. They only
+        note; nothing is drawn."""
         self._end_cc_shadow()
         if kind != "cc" or not isinstance(key, int) or self.cc is None or not debuglog.enabled():
             return
         shadows = []
-        tracks = [(subrender.Cea708Renderer, subrender.CEA708, f"cc:{key}", f"service {key}")]
+        tracks = [(subrender.Cea708Renderer, subrender.CEA708, f"cc:{key}", f"service {key}")] \
+            if self.cc.old else []
         channel = {1: 1, 2: 3}.get(key)
         if channel:
             tracks.append((subrender.Cea608Renderer, subrender.CEA608, f"cc:CC{channel}",
@@ -1717,14 +1772,14 @@ class Player(GObject.Object):
             return
         self._cc_shadow = (self.cc, shadows)
         feeds = [r.feed for r, _cmp in shadows]
-        self.cc.listen(lambda data, fmt, t: [f(data, fmt, t) for f in feeds])
+        self.cc.listen(lambda data, fmt, t: [f(data, fmt, t) for f in feeds], "shadow")
 
     def _end_cc_shadow(self):
         shadow, self._cc_shadow = self._cc_shadow, None
         if shadow is None:
             return
         cc, shadows = shadow
-        cc.listen(None)
+        cc.listen(None, "shadow")
         for r, cmp in shadows:
             try:
                 r.decode()              # what came since the last look
@@ -2505,6 +2560,7 @@ class Player(GObject.Object):
                 self._fetch_subtitles_again(shown, key)
         self._ttx_shadow_follow(kind, key)
         self._cue_shadow_follow(kind)
+        self._cc_draw_follow(kind, key)
         self._cc_shadow_follow(kind, key)
         self._dvbsub_shadow_follow()
         self.emit("tracks")

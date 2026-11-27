@@ -4,7 +4,8 @@
 0.21.0 offered Subtitles › Closed Captions (and showed the OSD's subtitle
 icon) on every channel once the packages had cc708overlay, and cc708overlay
 drew nothing even for real captions: it ignores the caption meta on the
-frames and only reads its cc_sink pad."""
+frames and only reads its cc_sink pad. Since stage F, LinDVB's own renderer
+draws them; cc708overlay (the old path, ``old=True``) still can."""
 
 import pytest
 
@@ -54,18 +55,30 @@ def test_kinds_of_cc_data():
     assert caption_kinds(cc608("HI")[0] + cc708("HI")) == {"608", "708"}
 
 
+def _split(text, start, per_frame):
+    """{frame: cc_data}: the DTVCC packet of :func:`cc708` spread over
+    frames, *per_frame* triplets each (padded to 20), as broadcasters send
+    them."""
+    trip = [cc708(text)[i:i + 3] for i in range(0, len(cc708(text)), 3)]
+    return {start + k // per_frame: b"".join(trip[k:k + per_frame]) +
+            PADDING * (20 - len(trip[k:k + per_frame]))
+            for k in range(0, len(trip), per_frame)}
+
+
 def _need(*factories):
     missing = [f for f in factories if Gst.ElementFactory.find(f) is None]
     if missing:
         pytest.skip("missing " + ", ".join(missing))
 
 
-def _play(frames, silent=False, n=60, measure=False):
+def _play(frames, silent=False, n=60, measure=False, old=True, listen=None):
     """Black video with these cc_data frames through CaptionOverlay at real
     speed (the overlay times captions against the picture); returns the
     overlay and the largest number of bright pixels in a frame."""
     from lindvb.captions import CaptionOverlay
-    cc = CaptionOverlay(silent=silent)
+    cc = CaptionOverlay(silent=silent, old=old)
+    if listen is not None:
+        cc.listen(listen, "test")
     cc.measure(measure)
     p = Gst.parse_launch(
         f"videotestsrc pattern=black num-buffers={n} ! "
@@ -102,6 +115,56 @@ def _play(frames, silent=False, n=60, measure=False):
 @pytest.fixture
 def elements():
     _need("cc708overlay", "ccextractor", "ccconverter", "cccombiner", "videotestsrc", "appsrc")
+
+
+@pytest.fixture
+def extraction():
+    _need("ccextractor", "ccconverter", "cccombiner", "videotestsrc", "appsrc")
+
+
+def test_captions_need_no_overlay(extraction, monkeypatch):
+    """GStreamer 1.28 of Ubuntu 26.04 and Arch has no cc708overlay: the
+    captions are still taken off the frames, offered and handed on; the
+    picture goes through untouched."""
+    from lindvb import captions
+    assert captions.available()
+    monkeypatch.delenv("LINDVB_CC708OVERLAY", raising=False)
+    assert not captions.old_path()
+    got = []
+    data = cc708("HELLO")
+    cc, bright = _play({10: data, 20: data}, old=False, listen=lambda d, f, t: got.append((d, f, t)))
+    assert cc.overlay is None and cc.present and cc.services == [1]
+    assert bright == 0                                   # nothing drawn into the picture
+    assert {f for _d, f, _t in got} == {"cc_data"}
+    t = next(t for d, _f, t in got if data in d)        # in the frame's cc_data, padded
+    assert t == 10 * Gst.SECOND // 30                    # the stream time of its frame
+    cc.show(1)
+    assert cc.service == 1
+
+
+def test_old_path_only_when_asked(elements, monkeypatch):
+    from lindvb import captions
+    monkeypatch.setenv("LINDVB_CC708OVERLAY", "1")
+    assert captions.old_path()
+    assert captions.CaptionOverlay().overlay is not None
+    monkeypatch.setenv("LINDVB_CC708OVERLAY", "0")
+    assert captions.CaptionOverlay().overlay is None
+
+
+def test_old_path_draws_nothing_of_a_packet_over_several_frames(elements):
+    """Why LinDVB draws the captions itself: broadcasters spread a DTVCC
+    packet over several frames (PBS WJXT), and cc708overlay (GStreamer
+    1.24.2) then draws nothing; the same packet in one frame it draws."""
+    whole = {}
+    split = {}
+    for start in (10, 30, 50):
+        whole[start] = cc708("HELLO")
+        split.update(_split("HELLO", start, 3))
+    _cc, bright_whole = _play(whole, n=90)
+    _cc, bright_split = _play(split, n=90)
+    assert bright_whole > 100
+    if bright_split:
+        pytest.skip("this cc708overlay draws packets over several frames")
 
 
 def test_no_captions_no_offer(elements):
@@ -180,7 +243,7 @@ def test_overlay_last_in_the_filter(elements):
     """The overlay draws behind the converters it is given (middle)."""
     from lindvb.captions import CaptionOverlay
     mid = [Gst.ElementFactory.make("videoconvert"), Gst.ElementFactory.make("videobalance")]
-    cc = CaptionOverlay(silent=True, middle=mid)
+    cc = CaptionOverlay(silent=True, middle=mid, old=True)
     assert mid[1].get_static_pad("src").get_peer().get_parent() is cc.overlay
     assert cc.service == 0 and cc.overlay.get_property("silent")
     cc.show(2)
@@ -192,7 +255,7 @@ def test_overlay_last_in_the_filter(elements):
 def test_caption_shows_with_its_frame(elements):
     """A caption sent with frame 10 is drawn from about frame 10 on, not later."""
     from lindvb.captions import CaptionOverlay
-    cc = CaptionOverlay(silent=False)
+    cc = CaptionOverlay(silent=False, old=True)
     p = Gst.parse_launch(
         "videotestsrc pattern=black num-buffers=40 ! "
         "video/x-raw,format=I420,width=320,height=180,framerate=30/1 ! cccombiner name=c "
