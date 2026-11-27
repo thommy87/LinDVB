@@ -621,14 +621,21 @@ def test_live_subtitles_without_timestamps_keep_the_picture(player):  # noqa: F8
         srv.close()
 
 
+def _old_vtt_path(player, monkeypatch):  # noqa: F811
+    """hlsdemux2 plays the WebVTT rendition (the old path), as when the
+    video carries no MPEG-TS time."""
+    monkeypatch.setattr(player, "_vtt_own", lambda name: False)
+
+
 def test_debug_log_says_what_flows_with_subtitles_on(player, monkeypatch):  # noqa: F811
-    """Debug mode, live HLS with a WebVTT rendition: what leaves the demuxer
+    """The old path, debug mode, live HLS with a WebVTT rendition: what leaves the demuxer
     and goes in and out of the subtitle overlay is noted per pad, for the
     line the watchdog writes when the picture stands still (PBS, ARD-alpha)."""
     from lindvb import debuglog
     sk.gst(*HLS_ELEMENTS)
     monkeypatch.setattr(debuglog, "enabled", lambda: True)
     monkeypatch.setattr(debuglog, "write", lambda cat, *p: None)
+    _old_vtt_path(player, monkeypatch)
     srv, _folder = _served(sk.live_hls_vtt_without_timestamps, 40)
     try:
         player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
@@ -647,13 +654,14 @@ def test_debug_log_says_what_flows_with_subtitles_on(player, monkeypatch):  # no
 
 
 def _vtt_shadow_run(player, monkeypatch, sample, until):  # noqa: F811
-    """Debug mode: play *sample*'s "English" rendition until *until(shadow)*
+    """Debug mode, the old path: play *sample*'s "English" rendition until *until(shadow)*
     holds, then stop; (shadow, debug log lines)."""
     from lindvb import debuglog
     sk.gst(*HLS_ELEMENTS)
     lines = []
     monkeypatch.setattr(debuglog, "enabled", lambda: True)
     monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    _old_vtt_path(player, monkeypatch)
     srv, _folder = _served(sample, 30)
     shadows = []
     try:
@@ -718,16 +726,186 @@ def test_webvtt_loader_beside_a_stalled_live_stream(player, monkeypatch):  # noq
     print(report[-1])
 
 
-def test_no_webvtt_loader_without_debug_mode(player):  # noqa: F811
+def test_no_webvtt_shadow_without_debug_mode(player, monkeypatch):  # noqa: F811
+    from lindvb import debuglog
+    if debuglog.enabled():
+        pytest.skip("debug mode is on")
+    sk.gst(*HLS_ELEMENTS)
+    _old_vtt_path(player, monkeypatch)
+    srv, _folder = _served(sk.live_hls_vtt, 30)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(4, lambda: player._sub_choice)
+        assert player._sub_choice and player._vtt is None and player._vtt_draw is None
+    finally:
+        srv.close()
+
+
+def test_no_video_clock_without_subtitles_or_debug_mode(player):  # noqa: F811
     from lindvb import debuglog
     if debuglog.enabled():
         pytest.skip("debug mode is on")
     sk.gst(*HLS_ELEMENTS)
     srv, _folder = _served(sk.live_hls_vtt, 30)
     try:
+        player.play_uri(srv.url("master.m3u8"), live=True)
+        _run(15, lambda: player._played)
+        assert player._ts_clocks == [] and player._vtt_draw is None
+    finally:
+        srv.close()
+
+
+# -- HLS WebVTT loaded and drawn by LinDVB (stage F) ----------------------------------------
+
+def _drawn_run(player, sample, until, seconds=30):  # noqa: F811
+    """Play *sample*'s "English" rendition until *until(shown)* holds;
+    (shown, server): shown is [(text, picture position s)] of what the
+    player handed the subtitle label, in order; the caller closes the server."""
+    from gi.repository import Gst
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sample, seconds)
+    shown = []
+
+    def on_text(_p, text):
+        sink = getattr(player.video, "sink", None)
+        ok, pos = sink.query_position(Gst.Format.TIME) if sink else (False, -1)
+        shown.append((text, pos / Gst.SECOND if ok else None))
+
+    player.connect("subtitle-text", on_text)
+    try:
         player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
-        _run(4, lambda: player._sub_choice)
-        assert player._sub_choice and player._vtt is None and player._ts_clocks == []
+        _run(25, lambda: until(shown))
+    except BaseException:
+        srv.close()
+        raise
+    return shown, srv
+
+
+def _cue_texts(shown, word):
+    return [(int(t.split()[1]), pos) for t, pos in shown if t.startswith(word + " ")]
+
+
+def test_live_webvtt_drawn_by_lindvb_keeps_the_picture(player):  # noqa: F811
+    """Live, timed WebVTT (ARD-alpha, PBS): hlsdemux2 (1.24) would hold
+    picture and sound back for it. LinDVB loads and draws the cues itself,
+    playbin3 never gets the subtitle track: the picture goes on, each cue
+    shows at its time and goes, and the menu shows the rendition on."""
+    from gi.repository import Gst
+    notices = []
+    player.connect("notice", lambda _p, text: notices.append(text))
+    shown, srv = _drawn_run(player, sk.live_hls_vtt,
+                            lambda sh: len(_cue_texts(sh, "Live")) >= 4)
+    try:
+        ok, pos = player.playbin.query_position(Gst.Format.TIME)
+        _run(3)
+        ok2, pos2 = player.playbin.query_position(Gst.Format.TIME)
+        assert ok and ok2 and pos2 - pos >= 2 * Gst.SECOND
+        _check_live_drawn(player, shown, notices)
+    finally:
+        srv.close()
+
+
+def _check_live_drawn(player, shown, notices):  # noqa: F811
+    from gi.repository import Gst
+    cues = _cue_texts(shown, "Live")
+    assert len(cues) >= 4, shown
+    # cue n is due at stream time n (X-TIMESTAMP-MAP 3600 s, the video's start)
+    for n, at in cues:
+        assert at is not None and n - 0.05 <= at < n + 0.5, (n, at, shown)
+    assert "" in [t for t, _p in shown[1:]], shown           # each goes after 0.8 s
+    assert player.subtitle_tracks() == (["English"], 0)
+    assert player._vtt_draw is not None and not notices
+    assert not [st for st in player._streams(Gst.StreamType.TEXT)
+                if st.get_stream_id() in player._selected]
+    # off: the stream opens again without them, nothing is drawn any more
+    player.select_subtitle(-1)
+    _run(10, lambda: player._played and player._vtt_draw is None)
+    assert player._vtt_draw is None and player._sub_choice is None
+    assert player.subtitle_tracks()[1] == -1
+
+
+def test_vod_webvtt_drawn_by_lindvb_at_their_time(player):  # noqa: F811
+    """A playlist with an end: the loader has the cues before the playback
+    begins; cue i shows at stream time i."""
+    shown, srv = _drawn_run(player, sk.hls_vtt, lambda sh: len(_cue_texts(sh, "Cue")) >= 3, 8)
+    srv.close()
+    cues = _cue_texts(shown, "Cue")
+    assert len(cues) >= 3, shown
+    for n, at in cues:
+        assert at is not None and n - 0.05 <= at < n + 0.5, (n, at, shown)
+    assert [n for n, _at in cues] == sorted(n for n, _at in cues)
+
+
+def test_debug_log_says_what_lindvb_drew_of_the_webvtt(player, monkeypatch):  # noqa: F811
+    from lindvb import debuglog
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    shown, srv = _drawn_run(player, sk.live_hls_vtt, lambda sh: len(_cue_texts(sh, "Live")) >= 3)
+    try:
+        assert len(_cue_texts(shown, "Live")) >= 3, shown
+        assert player._vtt is None                              # no shadow beside it
+        player._teardown()
+    finally:
+        srv.close()
+    assert any(ln.startswith("WebVTT subtitles (LinDVB draws, English): loading subs/")
+               for ln in lines), lines
+    report = [ln for ln in lines if ln.startswith("WebVTT subtitles (LinDVB draws, English): "
+                                                  "playlist")]
+    assert report, lines
+    line = report[-1]
+    print(line)
+    assert "video: MPEG-TS time to stream time -3600.000 s" in line, line
+    assert "old path" not in line, line
+    m = re.search(r"; (\d+) cues drawn, (-?[0-9.]+) s after their time on average "
+                  r"\(most (-?[0-9.]+) s\)", line)
+    assert m and int(m.group(1)) >= 3 and float(m.group(3)) < 0.5, line
+
+
+def test_webvtt_by_the_old_path_when_asked(player, monkeypatch):  # noqa: F811
+    """LINDVB_WEBVTT_HLSDEMUX=1: hlsdemux2 plays the subtitles, as before
+    stage F, with the watchdog; LinDVB draws nothing."""
+    from gi.repository import Gst
+    monkeypatch.setenv("LINDVB_WEBVTT_HLSDEMUX", "1")
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.hls_vtt, 8)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(15, lambda: player._played and [
+            st for st in player._streams(Gst.StreamType.TEXT)
+            if st.get_stream_id() in player._selected])
+        assert player._vtt_draw is None
+        assert [st for st in player._streams(Gst.StreamType.TEXT)
+                if st.get_stream_id() in player._selected]
+        assert player.subtitle_tracks() == (["English"], 0)
+    finally:
+        srv.close()
+
+
+def test_webvtt_without_a_video_clock_goes_to_the_old_path(player, monkeypatch):  # noqa: F811
+    """The video carries no MPEG-TS time (no tsdemux, as fragmented MP4
+    would): after a while with the picture going on, the stream opens again
+    with hlsdemux2 playing the subtitles, and stays so."""
+    from gi.repository import Gst
+    from lindvb import debuglog
+    from lindvb import player as player_mod
+    lines = []
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    monkeypatch.setattr(player_mod, "VTT_CLOCK_LOOKS", 4)
+    monkeypatch.setattr(player, "_video_clock", lambda: None)
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.hls_vtt, 8)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(20, lambda: player._vtt_old_path and player._played and [
+            st for st in player._streams(Gst.StreamType.TEXT)
+            if st.get_stream_id() in player._selected])
+        assert player._vtt_old_path and player._vtt_draw is None, lines
+        assert any("the video carries no MPEG-TS time to draw them by; hlsdemux2 plays them"
+                   in ln for ln in lines), lines
+        assert [st for st in player._streams(Gst.StreamType.TEXT)
+                if st.get_stream_id() in player._selected]
+        assert player.subtitle_tracks() == (["English"], 0)
     finally:
         srv.close()
 

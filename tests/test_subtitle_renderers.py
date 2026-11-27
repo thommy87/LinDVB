@@ -375,11 +375,13 @@ from test_hls_renditions import ard  # noqa: E402,F401 - the WebVTT stream sampl
 WEBVTT_TRACK = Track(SUB, sr.WEBVTT, origin="text")
 
 
-def test_webvtt_subtitles_end_to_end(player, ard):  # noqa: F811
-    """ARD Mediathek, tagesschau24 (HLS with a WebVTT rendition): picked, the
-    cues are shown; with debug mode on, the text cue renderer read along
+def test_webvtt_subtitles_end_to_end(player, ard, monkeypatch):  # noqa: F811
+    """ARD Mediathek, tagesschau24 (HLS with a WebVTT rendition), played by
+    hlsdemux2 (the old path, as when the video carries no MPEG-TS time):
+    picked, the cues are shown; with debug mode on, the text cue renderer read along
     and had the same cues at the same times."""
     url, _folder = ard
+    monkeypatch.setattr(player, "_vtt_own", lambda name: False)
     player.settings["stream_engine"] = "playbin3"
     player.play_uri(url)
     _run(15, lambda: player.subtitle_tracks()[0] and player._played)
@@ -405,14 +407,35 @@ def test_webvtt_subtitles_end_to_end(player, ard):  # noqa: F811
         _assert_drawn_on_time(player.log, "WebVTT")
 
 
-def test_empty_webvtt_segments_end_to_end(player, ard):  # noqa: F811
-    """3sat (HLS): a programme without subtitles still sends its WebVTT
+def test_webvtt_subtitles_drawn_by_lindvb_end_to_end(player, ard):  # noqa: F811
+    """tagesschau24 as the user picks it: Subtitles on in the menu, LinDVB
+    loads and draws the WebVTT rendition (hlsdemux2 never gets it), the menu
+    shows it on; off again, nothing more is drawn."""
+    url, _folder = ard
+    texts = []
+    player.connect("subtitle-text", lambda _p, text: texts.append(text))
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(url)
+    _run(15, lambda: player.subtitle_tracks()[0] and player._played)
+    player.select_subtitle(0)
+    _run(15, lambda: player.subtitle_tracks()[1] == 0 and player._played and any(texts))
+    assert player._vtt_draw is not None and any(texts), texts
+    assert player.subtitle_tracks()[1] == 0
+    player.select_subtitle(-1)
+    _run(15, lambda: player.subtitle_tracks()[1] == -1 and player._played)
+    assert player._vtt_draw is None and texts[-1] == "", texts[-3:]
+    player.stop()
+
+
+def test_empty_webvtt_segments_end_to_end(player, ard, monkeypatch):  # noqa: F811
+    """3sat (HLS), the old path: a programme without subtitles still sends its WebVTT
     segments, with only the header in them. Picked, nothing is shown; with
     debug mode on, the line of the text cue renderer says the data held no
     text, so the debug log alone tells this from subtitles that went lost."""
     url, folder = ard
     for vtt in (folder / "subs").glob("*.vtt"):
         vtt.write_text("WEBVTT\nX-TIMESTAMP-MAP=MPEGTS:324000000,LOCAL:00:00:00.000\n\n\n\n")
+    monkeypatch.setattr(player, "_vtt_own", lambda name: False)
     player.settings["stream_engine"] = "playbin3"
     player.play_uri(url)
     _run(15, lambda: player.subtitle_tracks()[0] and player._played)

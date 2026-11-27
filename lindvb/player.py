@@ -26,7 +26,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import (captions, compat, debuglog, flowwatch, hwaccel, passthrough,  # noqa: E402
-               subrender, trackcatalog, tsclock, vttload)
+               subrender, trackcatalog, tsclock, vttdraw, vttload)
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -47,6 +47,10 @@ PLAY_FLAGS_TEXT = 4
 # the demuxers whose output the debug log notes when the picture stands
 # still with subtitles on (lindvb.flowwatch)
 FLOW_DEMUXERS = ("hlsdemux2", "dashdemux2", "hlsdemux", "dashdemux")
+# LinDVB's WebVTT drawer: how often it looks whether the video clock has its
+# offset, and after how many looks with the picture going on it gives up
+VTT_CLOCK_LOOK_MS = 250
+VTT_CLOCK_LOOKS = 40
 PLAY_FLAGS_VIS = 8
 # DASH subtitles switched on during playback are fetched again with a seek
 # (Player._fetch_subtitles_again) once the subtitle overlay stands: it is
@@ -579,6 +583,8 @@ class Player(GObject.Object):
         self._flow = None               # debug mode: what flows from the demuxer and the overlay
         self._ts_clocks = []            # debug mode: tsclock.TsClock of each tsdemux in hlsdemux2
         self._vtt = None                # debug mode: (WebVttLoader, VttShadow) beside hlsdemux2
+        self._vtt_draw = None           # (WebVttLoader, VttDraw, stream id): LinDVB draws them
+        self._vtt_old_path = False      # this stream's WebVTT has no MPEG-TS time: hlsdemux2's
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -659,11 +665,10 @@ class Player(GObject.Object):
             self._cue_shadow_hook(pb)
             self._dvbsub_shadow_hook(pb)
             self._flow_hook(pb)
-            self._ts_clock_hook(pb)
+        self._ts_clock_hook(pb)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
-        if not (self._sub_choice and self._sub_choice[0] == "text") and \
-                not (self._want_rendition and self._want_rendition[0] == "SUBTITLES"):
+        if not self._text_wanted():
             pb.set_property("flags", pb.get_property("flags") & ~PLAY_FLAGS_TEXT)
         vf = Gst.Bin.new("vfilter")
         head, middle = [], [Gst.ElementFactory.make("videoconvert")]
@@ -1056,6 +1061,7 @@ class Player(GObject.Object):
         self._end_cc_draw()
         self._end_dvbsub_shadow()
         self._end_vtt_shadow()
+        self._end_vtt_draw()
         self._ts_clocks = []
         self._ttx_dec = None
         self._ttx_present = False
@@ -1187,6 +1193,7 @@ class Player(GObject.Object):
         # subtitles start switched off on every channel and file
         self._sub_choice = None
         self._want_rendition = None
+        self._vtt_old_path = False
         self.ttx_page = 0
         self._ttx_last = ""
         self._cc_pmt = {}
@@ -1457,6 +1464,7 @@ class Player(GObject.Object):
         goes off too and reports, and so does the WebVTT loader."""
         if kind != "text":
             self._end_vtt_shadow()
+            self._end_vtt_draw()
         shadow = self._cue_shadow
         if kind != "text" and shadow is not None and shadow.state().on:
             cmp, state = self._cue_cmp, shadow.state()
@@ -1582,18 +1590,87 @@ class Player(GObject.Object):
             loader.stop()
             debuglog.write("Player", shadow.report(loader.state, self._video_clock()))
 
+    # -- the WebVTT subtitles of HLS, loaded and drawn by LinDVB (stage F) ------------
+
+    def _start_vtt_draw(self, name, key):
+        """LinDVB loads the subtitle rendition *name* (stream *key*) on a
+        thread of its own and draws its cues at their time over the picture
+        (lindvb.vttdraw). Should the video turn out to carry no MPEG-TS time
+        (no tsdemux: fragmented MP4), the stream opens again with hlsdemux2
+        playing them (:meth:`_check_vtt_clock`)."""
+        self._end_vtt_draw()
+        media = next((m for m in self._media("SUBTITLES")
+                      if m.get("name") == name and m.get("uri")), None)
+        if media is None or not self.uri:
+            return
+        draw = vttdraw.VttDraw(name, self._video_clock, self._cue_position,
+                               lambda text: self.emit("subtitle-text", text), lambda: self.rate)
+        loader = vttload.WebVttLoader(
+            self.uri, media["uri"],
+            lambda text, start, end, mapped: GLib.idle_add(self._vtt_cue, draw, text, start, end,
+                                                           mapped))
+        self._vtt_draw = (loader, draw, key)
+        loader.start()
+        draw.start()
+        GLib.timeout_add(VTT_CLOCK_LOOK_MS, self._check_vtt_clock, self._token, draw, 0)
+        debuglog.write("Player", f"WebVTT subtitles (LinDVB draws, {name}): loading {media['uri']}")
+
+    def _vtt_cue(self, draw, text, start, end, mapped):
+        vtt = self._vtt_draw
+        if vtt is not None and vtt[1] is draw:
+            draw.cue(text, start, end, mapped)
+        return False
+
+    def _check_vtt_clock(self, token, draw, looks):
+        """Main loop, every VTT_CLOCK_LOOK_MS while the clock has no offset:
+        the cues waiting go to the drawer once it has. The picture went on
+        for VTT_CLOCK_LOOKS looks without one: no MPEG-TS time in the video,
+        so hlsdemux2 plays the subtitles of this stream (the old path)."""
+        vtt = self._vtt_draw
+        if token != self._token or vtt is None or vtt[1] is not draw:
+            return False
+        draw.flush()
+        if draw.timed():
+            return False
+        if self._played and looks >= VTT_CLOCK_LOOKS:
+            debuglog.write("Player", f"WebVTT subtitles ({draw.name}): the video carries no "
+                                     "MPEG-TS time to draw them by; hlsdemux2 plays them")
+            self._vtt_old_path = True
+            self._start_uri(True)
+            return False
+        GLib.timeout_add(VTT_CLOCK_LOOK_MS, self._check_vtt_clock, token, draw,
+                         looks + (1 if self._played else 0))
+        return False
+
+    def _end_vtt_draw(self):
+        vtt, self._vtt_draw = self._vtt_draw, None
+        if vtt is None:
+            return
+        loader, draw, _key = vtt
+        loader.stop()
+        draw.stop()                     # what shows goes
+        if debuglog.enabled():
+            debuglog.write("Player", draw.report(loader.state))
+
     def _position_s(self):
         pos = self._cue_position()
         return pos / Gst.SECOND if pos is not None else None
 
     # -- the MPEG-TS time of the picture against its stream time (debug mode) -----
 
+    def _text_wanted(self):
+        """Text subtitles are picked, or a subtitle rendition is to be."""
+        return bool(self._sub_choice and self._sub_choice[0] == "text") or \
+            bool(self._want_rendition and self._want_rendition[0] == "SUBTITLES")
+
     def _ts_clock_hook(self, pb):
-        """Debug mode: each tsdemux inside the HLS or DASH demuxer gets a
-        video clock (lindvb.tsclock), which ties the MPEG-TS time of the
-        WebVTT cues to the playback position."""
+        """Text subtitles wanted (LinDVB draws an HLS WebVTT rendition), and
+        always in debug mode: each tsdemux inside the HLS or DASH demuxer
+        gets a video clock (lindvb.tsclock), which ties the MPEG-TS time of
+        the WebVTT cues to the picture."""
         self._ts_clocks = []
-        pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks)
+        if debuglog.enabled() or self._text_wanted():
+            pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks)
 
     def _on_ts_element(self, _bin, _sub, element, clocks):
         try:
@@ -2510,7 +2587,8 @@ class Player(GObject.Object):
         keys = [k for k, _l in streams]
         cur = -1
         if self._pb3:
-            cur = next((i for i, k in enumerate(keys) if k in self._selected), -1)
+            drawn = self._vtt_draw[2] if self._vtt_draw is not None else None
+            cur = next((i for i, k in enumerate(keys) if k in self._selected or k == drawn), -1)
         elif self.playbin and self.playbin.get_property("flags") & PLAY_FLAGS_TEXT and keys:
             cur = self.playbin.get_property("current-text")
         return [lab for _k, lab in streams], cur
@@ -2604,8 +2682,7 @@ class Player(GObject.Object):
             # playbin3 (1.24) hangs or crashes when its subtitle stream changes
             # while it plays: open the stream again with the new choice
             # (_on_sync_collection makes it before anything starts)
-            shown = next((st.get_stream_id() for st in self._streams(Gst.StreamType.TEXT)
-                          if st.get_stream_id() in self._selected), None)
+            shown = self._text_shown_pb3()
             if (key if kind == "text" else None) != shown:
                 self._want_rendition = ("SUBTITLES", self._stream_name(key, "text")) \
                     if kind == "text" else None
@@ -2650,6 +2727,14 @@ class Player(GObject.Object):
         self._cc_shadow_follow(kind, key)
         self._dvbsub_shadow_follow()
         self.emit("tracks")
+
+    def _text_shown_pb3(self):
+        """playbin3: the text stream shown, by playbin3 or LinDVB's WebVTT
+        drawer; None when none is."""
+        if self._vtt_draw is not None:
+            return self._vtt_draw[2]
+        return next((st.get_stream_id() for st in self._streams(Gst.StreamType.TEXT)
+                     if st.get_stream_id() in self._selected), None)
 
     def _text_shown(self):
         """Classic playbin: the text stream shown (current-text), None when
@@ -2744,12 +2829,8 @@ class Player(GObject.Object):
                 continue
             match = next((st for st in of_kind
                           if wanted and self._stream_name(st.get_stream_id(), prefix) == wanted), None)
-            if kind == Gst.StreamType.TEXT:
-                if match is None:
-                    continue            # subtitles stay off
-                if self._sub_choice != ("text", match.get_stream_id()):
-                    self._sub_choice = ("text", match.get_stream_id())
-                    GLib.idle_add(self._hls_subtitles_on, self._token, wanted)
+            if kind == Gst.StreamType.TEXT and (match is None or not self._text_picked(match, wanted)):
+                continue                # subtitles off, or LinDVB draws them
             if match is None and kind == Gst.StreamType.AUDIO and not wanted:
                 match = self._preferred_audio_stream(of_kind)
             if match is None:
@@ -2785,11 +2866,37 @@ class Player(GObject.Object):
             bool(s.get("audio_description_prefer", False)))
         return streams[idx] if idx is not None else None
 
-    def _hls_subtitles_on(self, token, name):
-        """Main loop: hlsdemux2's subtitle rendition *name* is picked; the
-        watchdog looks after the picture, the WebVTT loader in the shadow."""
-        if token == self._token:
-            self._start_vtt_shadow(name)
+    def _text_picked(self, match, wanted):
+        """Streaming thread: the subtitle stream *match* (rendition *wanted*)
+        is picked. True when playbin3 is to play it; False when LinDVB loads
+        and draws the rendition itself (lindvb.vttdraw), so that hlsdemux2
+        never gets the subtitle track it holds picture and sound back for."""
+        own = self._vtt_own(wanted)
+        if self._sub_choice != ("text", match.get_stream_id()):
+            self._sub_choice = ("text", match.get_stream_id())
+            GLib.idle_add(self._hls_subtitles_on, self._token, wanted, match.get_stream_id(), own)
+        return not own
+
+    def _vtt_own(self, name):
+        """LinDVB draws the HLS subtitle rendition *name*: it has a playlist
+        of its own, the stream plays directly with playbin3, its video
+        segments did not turn out to lack the MPEG-TS time, and the old path
+        was not asked for (LINDVB_WEBVTT_HLSDEMUX=1, lindvb.vttdraw)."""
+        if vttdraw.old_path():
+            return False
+        return bool(name) and self._pb3 and not self.capture and not self._vtt_old_path and \
+            any(m.get("name") == name and m.get("uri") for m in self._media("SUBTITLES"))
+
+    def _hls_subtitles_on(self, token, name, key=None, own=False):
+        """Main loop: the subtitle rendition *name* is picked. LinDVB draws
+        it (*own*), or hlsdemux2 plays it: then the watchdog looks after the
+        picture and, in debug mode, the WebVTT loader runs in the shadow."""
+        if token != self._token:
+            return False
+        if own:
+            self._start_vtt_draw(name, key)
+            return False
+        self._start_vtt_shadow(name)
         return self._watch_subtitle_stall(token)
 
     def _watch_subtitle_stall(self, token, last=None, still=0.0, checks=0):
