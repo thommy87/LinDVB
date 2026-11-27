@@ -620,6 +620,45 @@ def test_live_subtitles_without_timestamps_keep_the_picture(player):  # noqa: F8
         srv.close()
 
 
+def test_debug_log_says_what_flows_with_subtitles_on(player, monkeypatch):  # noqa: F811
+    """Debug mode, live HLS with a WebVTT rendition: what leaves the demuxer
+    and goes in and out of the subtitle overlay is noted per pad, for the
+    line the watchdog writes when the picture stands still (PBS, ARD-alpha)."""
+    from lindvb import debuglog
+    sk.gst(*HLS_ELEMENTS)
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: None)
+    srv, _folder = _served(sk.live_hls_vtt_without_timestamps, 40)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        flows = lambda: player._flow.flows if player._flow else {}  # noqa: E731
+        _run(15, lambda: player._played and flows().get("overlay out") and
+             flows()["overlay out"].buffers > 25)
+        names = list(flows())
+        assert [n for n in names if n.startswith("demuxer video")], names
+        assert [n for n in names if n.startswith("demuxer subtitle")], names
+        assert {"overlay picture in", "overlay subtitles in", "overlay out"} <= set(names), names
+        assert flows()["overlay out"].buffers > 25 and flows()["overlay out"].last is not None
+        line = player._flow.summary()
+        assert "demuxer video" in line and "overlay out: " in line, line
+    finally:
+        srv.close()
+
+
+def test_no_flow_watch_without_debug_mode(player):  # noqa: F811
+    from lindvb import debuglog
+    if debuglog.enabled():
+        pytest.skip("debug mode is on")
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.live_hls_vtt_without_timestamps, 40)
+    try:
+        player.play_uri(srv.url("master.m3u8"), live=True)
+        _run(15, lambda: player._played)
+        assert player._flow is None
+    finally:
+        srv.close()
+
+
 class _StillPlaybin:
     """Stands in for playbin: the picture stands at 10 s."""
 
@@ -649,6 +688,35 @@ def test_subtitle_watchdog_switches_them_off_once(player, monkeypatch):  # noqa:
     reopened, notices = _stall(player, monkeypatch)
     assert reopened == [True] and len(notices) == 1
     assert player._sub_choice is None
+
+
+def test_subtitle_watchdog_says_what_flowed(player, monkeypatch):  # noqa: F811
+    """Debug mode: at the start of a stall (2 s) and when the watchdog gives
+    up (6 s) the debug log says what flowed where."""
+    from gi.repository import GLib
+    from lindvb import debuglog, flowwatch
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    player._flow = flowwatch.FlowWatch(clock=lambda: 50.0)
+    flow = player._flow.flows["demuxer video_00"] = flowwatch.Flow()
+    flow.buffers, flow.last, flow.at = 120, 70 * 10**9, 44.0
+    player._flow.flows["demuxer subtitle_01"] = flowwatch.Flow()
+    _stall(player, monkeypatch)
+    assert lines[0] == ("the picture stood at 0:00:10.0 for 6 s (running time -): demuxer "
+                        "video_00: 120 buffers, last 0:01:10.0 (6.0 s ago); demuxer subtitle_01: "
+                        "nothing"), lines
+    assert lines[1].startswith("the picture stands still with the subtitles on")
+    lines.clear()
+    player._sub_choice = ("text", "x/text-English")
+    player.playbin = _StillPlaybin()
+    monkeypatch.setattr(GLib, "timeout_add", lambda *a: 0)          # no next look
+    try:
+        player._watch_subtitle_stall(player._token, 10 * 10**9, 0.0, 1)    # still for 2 s
+    finally:
+        player.playbin = None
+    assert len(lines) == 1 and lines[0].startswith(
+        "the picture stands at 0:00:10.0 with the subtitles on (running time -): "), lines
 
 
 def test_subtitle_watchdog_does_not_pick_them_again(player, monkeypatch):  # noqa: F811
