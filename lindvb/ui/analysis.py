@@ -15,7 +15,7 @@ from pathlib import Path
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import sitree
-from ..analysis import AnalysisSession, no_playlist, ca_lines, report_json
+from ..analysis import AnalysisSession, no_playlist, ca_lines, caption_lines, report_json
 from ..esparse import AFD_NAMES
 from ..i18n import _
 from ..media_info import is_audio_description
@@ -1493,6 +1493,7 @@ class MediaPage(Page):
             elif d["kind"] == "subtitle":
                 lines.append(_("DVB subtitles PID {pid}:").format(pid=pid) + " " + ", ".join(
                     f"{lang} (0x{t:02X})" for lang, t in d.get("subtitles", [])))
+        lines += caption_lines(st.get("captions"))
         self.tt.set_text("\n".join(lines) or _("No teletext or subtitles in this channel."))
 
 

@@ -700,6 +700,33 @@ def test_cea708_captions_start_off_are_drawn_and_go(player):  # noqa: F811
         srv.close()
 
 
+def test_channel_analysis_counts_the_captions(player):  # noqa: F811
+    """PBS WJXT: "the channel sends nothing" and "LinDVB draws nothing"
+    looked the same. While the channel analysis measures, the captions in
+    the H.264 stream are counted per service, with the text in them; not
+    measuring, nothing is counted."""
+    from lindvb import captions
+    if not captions.available():
+        pytest.skip("cc708overlay missing")
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 8, pattern="blue")
+    srv = sk.Server(folder)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        assert player.caption_info() is None
+        player.measure_captions = True
+        _run(10, lambda: (player.caption_info() or {}).get("708", {}).get(1, (0, 0))[1] >= 24)
+        info = player.caption_info()
+        assert info["seen"] and info["708"][1][1] >= 24             # "LinDVB 708 n", twice
+        assert info["608"] == {}
+        player.measure_captions = False
+        assert player.caption_info() is None
+    finally:
+        player.measure_captions = False
+        srv.close()
+
+
 # -- DASH with roles (ARD's DVB-I streams, ONE HD) ------------------------------------------
 
 @pytest.fixture(scope="module")

@@ -5598,3 +5598,35 @@ msgstr "über die Grafikkarte (gtk4paintablesink, OpenGL)"
 #: lindvb/ui/analysis.py
 msgid "Video output"
 msgstr "Videoausgabe"
+
+#: lindvb/analysis.py
+msgid "{n} characters of text"
+msgstr "{n} Zeichen Text"
+
+#: lindvb/analysis.py
+msgid "no text, only commands"
+msgstr "kein Text, nur Steuerbefehle"
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video: none so far."
+msgstr "Closed Captions im Video: bisher keine."
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video ({n} frames with caption data):"
+msgstr "Closed Captions im Video ({n} Bilder mit Caption-Daten):"
+
+#: lindvb/analysis.py
+msgid "CEA-608 field {field} (CC{a}/CC{b})"
+msgstr "CEA-608 Feld {field} (CC{a}/CC{b})"
+
+#: lindvb/analysis.py
+msgid "CEA-708 service {n}"
+msgstr "CEA-708 Dienst {n}"
+
+#: lindvb/analysis.py
+msgid "XDS programme data: {size}"
+msgstr "XDS-Programmdaten: {size}"
+
+#: lindvb/analysis.py
+msgid "only padding, no captions"
+msgstr "nur Füllbytes, keine Untertitel"

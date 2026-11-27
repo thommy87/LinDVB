@@ -60,12 +60,13 @@ def _need(*factories):
         pytest.skip("missing " + ", ".join(missing))
 
 
-def _play(frames, silent=False, n=60):
+def _play(frames, silent=False, n=60, measure=False):
     """Black video with these cc_data frames through CaptionOverlay at real
     speed (the overlay times captions against the picture); returns the
     overlay and the largest number of bright pixels in a frame."""
     from lindvb.captions import CaptionOverlay
     cc = CaptionOverlay(silent=silent)
+    cc.measure(measure)
     p = Gst.parse_launch(
         f"videotestsrc pattern=black num-buffers={n} ! "
         "video/x-raw,format=I420,width=320,height=180,framerate=30/1 ! cccombiner name=c "
@@ -219,3 +220,100 @@ def test_caption_shows_with_its_frame(elements):
     p.set_state(Gst.State.NULL)
     assert len(shown) == 40
     assert shown.index(True) <= 12
+
+
+# -- what the captions carry (channel analysis) -------------------------------------
+
+def test_text_of_608_pairs():
+    from lindvb.captions import text_608
+    assert text_608(_parity(0x48), _parity(0x49)) == 2              # "HI"
+    assert text_608(_parity(0x48), 0x80) == 1                       # "H" and a null
+    assert text_608(_parity(0x14), _parity(0x2c)) == 0              # EDM: a command
+    assert text_608(_parity(0x11), _parity(0x37)) == 1              # special character ♪
+    assert text_608(_parity(0x12), _parity(0x25)) == 1              # extended character
+
+
+def test_text_of_708_blocks():
+    """Characters count, commands and their parameters do not."""
+    from lindvb.captions import text_708
+    define = bytes([0x98, 0x38, 0x00, 0x00, 0x1f, 0x11, 0x0b])    # DefineWindow: 6 parameters
+    assert text_708(define + b"HELLO" + bytes([0x89, 0x01])) == 5
+    assert text_708(define + bytes([0x89, 0x01, 0x8c, 0xff])) == 0  # commands only
+    assert text_708(bytes([0x90, 0x05, 0x00, 0x91, 0x2a, 0x00, 0x00]) + b"OK") == 2
+    assert text_708(bytes([0x0d, 0x03]) + b"A" + bytes([0x10, 0x25])) == 2   # CR, ETX, EXT1 G2
+    assert text_708(bytes([0xe4, 0xf6])) == 2                       # G1: "äö"
+
+
+def test_caption_count_per_field_and_service():
+    from lindvb.captions import CaptionCount
+    c = CaptionCount()
+    c.feed(b"".join(cc608("HELLO WORLD")))
+    c.feed(cc708("HELLO") + PADDING)
+    c.feed(cc708_service("HOLA", 2) + PADDING)
+    c.feed(bytes([0xfc, 0x80, 0x80]) * 4)                          # 608 null padding
+    c.feed(PADDING * 10)
+    out = c.summary()
+    assert out["buffers"] == 5
+    assert out["608"][1][1] == 11 and 2 not in out["608"]          # "HELLO WORLD"
+    assert out["608"][1][0] == 2 * 10                               # 4 commands, 6 text pairs
+    assert out["708"][1][1] == 5 and out["708"][2][1] == 4
+    assert out["xds"] == 0
+
+
+def test_caption_count_sends_nothing():
+    """A channel that sends only commands (Google DAI's empty 708 service)
+    or padding: bytes, but no text."""
+    from lindvb.captions import CaptionCount
+    c = CaptionCount()
+    svc = bytes([0x98, 0x38, 0x00, 0x00, 0x1f, 0x11, 0x0b, 0x89, 0x01])
+    blk = bytes([(1 << 5) | len(svc)]) + svc
+    data = bytes([((len(blk) + 2) // 2) & 0x3f]) + blk
+    data += b"\0" * (len(data) % 2)
+    c.feed(b"".join([bytes([0xff, data[0], data[1]])] +
+                    [bytes([0xfe, data[i], data[i + 1]]) for i in range(2, len(data), 2)]) + PADDING)
+    c.feed(PADDING * 20)
+    out = c.summary()
+    assert out["708"] == {1: (len(svc), 0)} and out["608"] == {}
+
+
+def test_caption_count_keeps_xds_apart():
+    """XDS programme data in field 2 (class 0x01, type, "NEWS", end 0x0F) is
+    not caption text; caption text after it in field 2 is."""
+    from lindvb.captions import CaptionCount
+    c = CaptionCount()
+    pairs = [(0x01, 0x03), (ord("N"), ord("E")), (ord("W"), ord("S")), (0x0f, 0x12),
+             (0x15, 0x2c), (ord("O"), ord("K"))]
+    c.feed(b"".join(bytes([0xfd, _parity(a), _parity(b)]) for a, b in pairs))
+    out = c.summary()
+    assert out["xds"] == 8
+    assert out["608"] == {2: (4, 2)}
+
+
+def test_caption_count_of_608_formats():
+    from lindvb.captions import CaptionCount, cdp_cc_data
+    c = CaptionCount()
+    c.feed(bytes([_parity(ord("H")), _parity(ord("I"))]), "raw")
+    c.feed(bytes([0x80, _parity(ord("A")), 0x80, 0x00, _parity(ord("B")), _parity(ord("C"))]),
+           "s334-1a")
+    assert c.summary()["608"] == {1: (4, 3), 2: (2, 2)}
+    trip = cc708("HI")
+    cdp = bytes([0x96, 0x69, 0, 0x4f, 0x43, 0, 1, 0x72, 0xe0 | (len(trip) // 3)]) + trip
+    assert cdp_cc_data(cdp) == trip
+    assert cdp_cc_data(b"\x00" * 12) == b""
+
+
+def test_overlay_counts_while_measuring(elements):
+    """The channel analysis: the overlay counts what the captions carried,
+    and only while measuring."""
+    data = cc708("HELLO")
+    cc, _bright = _play({10: data, 20: data, 30: data}, measure=True)
+    info = cc.caption_info()
+    assert info["seen"] and info["708"][1][1] == 15
+    assert info["buffers"] >= 3
+    cc.measure(False)
+    assert cc.caption_info() is None and cc._count_probe is None
+    cc, _bright = _play({})
+    assert cc.caption_info() is None
+    cc, _bright = _play({}, measure=True)                # caption data, but only padding
+    info = cc.caption_info()
+    assert info["seen"] and info["buffers"] > 50 and info["608"] == info["708"] == {}

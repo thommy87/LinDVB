@@ -30,6 +30,8 @@ sends them. cc708overlay draws CEA-708 (DTVCC) services only; a stream with
 nothing but CEA-608 captions is logged and not offered.
 """
 
+import threading
+
 import gi
 
 gi.require_version("Gst", "1.0")
@@ -55,17 +57,17 @@ def caption_kinds(data):
     return kinds
 
 
-def dtvcc_services(packet):
-    """The service numbers with data in one DTVCC packet (CEA-708 7.1):
-    a header byte (sequence number, size) and service blocks, each a header
-    (service number, block size; service 7 = extended number in the next
-    byte) and that many bytes."""
+def dtvcc_blocks(packet):
+    """The service blocks of one DTVCC packet (CEA-708 7.1), [(service,
+    bytes)]: a header byte (sequence number, size) and service blocks, each a
+    header (service number, block size; service 7 = extended number in the
+    next byte) and that many bytes."""
     if not packet:
-        return set()
+        return []
     code = packet[0] & 0x3f
     size = 127 if code == 0 else code * 2 - 1
     data = packet[1:1 + size]
-    services, i = set(), 0
+    blocks, i = [], 0
     while i < len(data):
         svc, length = data[i] >> 5, data[i] & 0x1f
         i += 1
@@ -76,9 +78,153 @@ def dtvcc_services(packet):
             i += 1
         if svc == 0 or length == 0:         # null block: the rest is padding
             break
-        services.add(svc)
+        blocks.append((svc, bytes(data[i:i + length])))
         i += length
-    return services
+    return blocks
+
+
+def dtvcc_services(packet):
+    """The service numbers with data in one DTVCC packet."""
+    return {svc for svc, _block in dtvcc_blocks(packet)}
+
+
+# -- what the captions carry (channel analysis) -------------------------------------
+
+# CEA-708 C1 commands (0x80-0x9F): the parameter bytes that follow each
+_C1_PARAMS = bytes([0] * 8 + [1, 1, 1, 1, 1, 1, 0, 0] + [2, 3, 2, 0, 0, 0, 0, 4] + [6] * 8)
+
+
+def text_608(b1, b2):
+    """The characters a CEA-608 byte pair writes (parity stripped): a pair
+    starting with 0x10-0x1F is a command, except the special and extended
+    characters, which write one."""
+    b1, b2 = b1 & 0x7f, b2 & 0x7f
+    if 0x10 <= b1 <= 0x1f:
+        if b1 in (0x11, 0x19) and 0x30 <= b2 <= 0x3f:
+            return 1
+        if b1 in (0x12, 0x13, 0x1a, 0x1b) and 0x20 <= b2 <= 0x3f:
+            return 1
+        return 0
+    return (b1 >= 0x20) + (b2 >= 0x20)
+
+
+def _is_708_char(b):
+    return b >= 0xa0 or 0x20 <= b < 0x80
+
+
+def _708_ext1(block, i):
+    """(characters, length) of the EXT1 code at *i*; length None: unknown."""
+    if i + 1 >= len(block):
+        return 0, None
+    e = block[i + 1]
+    if _is_708_char(e):                         # G2, G3
+        return 1, 2
+    if e < 0x20:                                # C2: 0, 1, 2 or 3 parameter bytes
+        return 0, 2 + e // 8
+    if e < 0x90:                                # C3: 4 or 5 parameter bytes
+        return 0, 2 + (4 if e < 0x88 else 5)
+    return 0, None
+
+
+def _708_code(block, i):
+    """(characters, length) of the code at *i* of a service block."""
+    b = block[i]
+    if _is_708_char(b):                         # G0, G1
+        return 1, 1
+    if b == 0x10:
+        return _708_ext1(block, i)
+    if b < 0x20:                                # C0: 0x10-0x17 take one byte, 0x18-0x1F two
+        return 0, 1 + (b >= 0x10) + (b >= 0x18)
+    return 0, 1 + _C1_PARAMS[b - 0x80]
+
+
+def text_708(block):
+    """The characters a CEA-708 service block writes (CEA-708 7.1.4): G0
+    and G1 characters (and G2/G3 behind EXT1) count; commands and their
+    parameters do not. A command of unknown length ends the count."""
+    n, i = 0, 0
+    while i < len(block):
+        chars, length = _708_code(block, i)
+        if length is None:
+            break
+        n, i = n + chars, i + length
+    return n
+
+
+class CaptionCount:
+    """What the closed captions of a stream carry, for the channel analysis:
+    bytes and characters of text per CEA-608 field and CEA-708 service.
+    "Sends nothing" (no data, or only commands and padding) can so be told
+    from "LinDVB draws nothing"."""
+
+    def __init__(self):
+        self.buffers = 0
+        self.fields = {}                # 608 field (1, 2): [bytes, characters]
+        self.services = {}              # 708 service: [bytes, characters]
+        self.xds = 0                    # bytes of XDS programme data (608 field 2)
+        self._xds = set()               # the fields inside an XDS packet
+        self._packet = bytearray()
+
+    def feed(self, data, fmt="cc_data"):
+        """One buffer of the caption pad, in its format: cc_data triplets,
+        s334-1a triplets (field flag, two bytes) or raw 608 pairs (field 1)."""
+        self.buffers += 1
+        if fmt == "raw":
+            for i in range(0, len(data) - 1, 2):
+                self._pair(1, data[i], data[i + 1])
+            return
+        for i in range(0, len(data) - 2, 3):
+            b0, b1, b2 = data[i], data[i + 1], data[i + 2]
+            if fmt == "s334-1a":
+                self._pair(1 if b0 & 0x80 else 2, b1, b2)
+            else:
+                self._triplet(b0, b1, b2)
+
+    def _triplet(self, b0, b1, b2):
+        valid, kind = b0 & _CC_VALID, b0 & _CC_TYPE
+        if kind < 2:
+            if valid:
+                self._pair(kind + 1, b1, b2)
+        elif valid and kind == 3:
+            self._end()
+            self._packet += bytes([b1, b2])
+        elif valid:
+            if self._packet:
+                self._packet += bytes([b1, b2])
+        else:
+            self._end()
+
+    def _pair(self, field, b1, b2):
+        c = b1 & 0x7f
+        if not c and not (b2 & 0x7f):           # null padding
+            return
+        # XDS (programme data, field 2): from a class code 0x01-0x0E to its
+        # end code 0x0F; a caption command ends it as well
+        if 0x01 <= c <= 0x0f or (field in self._xds and not 0x10 <= c <= 0x1f):
+            self.xds += 2
+            if c == 0x0f:
+                self._xds.discard(field)
+            elif c <= 0x0e:
+                self._xds.add(field)
+            return
+        self._xds.discard(field)
+        f = self.fields.setdefault(field, [0, 0])
+        f[0] += 2
+        f[1] += text_608(b1, b2)
+
+    def _end(self):
+        if self._packet:
+            for svc, block in dtvcc_blocks(bytes(self._packet)):
+                s = self.services.setdefault(svc, [0, 0])
+                s[0] += len(block)
+                s[1] += text_708(block)
+            self._packet = bytearray()
+
+    def summary(self):
+        """{"buffers", "xds", "608": {field: (bytes, characters)}, "708": {service: …}}."""
+        return {"buffers": self.buffers, "xds": self.xds,
+                "608": {k: tuple(v) for k, v in sorted(self.fields.items())},
+                "708": {k: tuple(v) for k, v in sorted(self.services.items())}}
 
 
 class DtvccScanner:
@@ -147,6 +293,35 @@ def instream_service(instream_id):
     return {"CC1": 1, "CC3": 2}.get(iid)
 
 
+def caption_format(caps):
+    """The format of a caption pad's caps: "cc_data", "cdp", "s334-1a" or
+    "raw" (608 byte pairs); "" when unknown."""
+    if caps is None or not caps.get_size():
+        return ""
+    st = caps.get_structure(0)
+    fmt = st.get_string("format") or ""
+    if st.get_name() == "closedcaption/x-cea-708":
+        return fmt if fmt in ("cc_data", "cdp") else ""
+    if st.get_name() == "closedcaption/x-cea-608":
+        return fmt if fmt in ("raw", "s334-1a") else ""
+    return ""
+
+
+def cdp_cc_data(cdp):
+    """The cc_data triplets of a caption distribution packet (SMPTE 334-2):
+    a 7 byte header (0x96 0x69, length, frame rate, flags, sequence), an
+    optional time code section (0x71, 5 bytes), then 0x72 and the count."""
+    if len(cdp) < 9 or cdp[0] != 0x96 or cdp[1] != 0x69:
+        return b""
+    i = 7
+    if cdp[i] == 0x71:
+        i += 5
+    if i + 1 >= len(cdp) or cdp[i] != 0x72:
+        return b""
+    n = cdp[i + 1] & 0x1f
+    return bytes(cdp[i + 2:i + 2 + 3 * n])
+
+
 def available():
     return all(Gst.ElementFactory.find(f) for f in ("cc708overlay", "ccextractor", "ccconverter"))
 
@@ -165,6 +340,10 @@ class CaptionOverlay:
         self._scanned = 0
         self._on_found = on_found
         self._log = log or (lambda _msg: None)
+        self.count = None               # CaptionCount while the channel analysis measures
+        self._caption_pad = None        # ccextractor's caption pad, once captions came
+        self._count_probe = None
+        self._lock = threading.Lock()
         self.bin = Gst.Bin.new("captions")
         self.extractor = Gst.ElementFactory.make("ccextractor")
         self.overlay = Gst.ElementFactory.make("cc708overlay")
@@ -212,9 +391,62 @@ class CaptionOverlay:
     def set_silent(self, silent):
         self.show(0 if silent else (self.services or [1])[0])
 
+    # -- the channel analysis ----------------------------------------------------
+
+    def measure(self, on):
+        """Count what the captions carry (:class:`CaptionCount`) while *on*.
+        The count sits on ccextractor's caption pad, in front of the queue
+        that may drop data, and costs nothing while off: the probe is only
+        there while measuring."""
+        with self._lock:
+            if on and self.count is None:
+                self.count = CaptionCount()
+            elif not on:
+                self.count = None
+            self._place_count_probe()
+
+    def caption_info(self):
+        """None while not measuring; else whether captions came at all
+        ("seen") and :meth:`CaptionCount.summary`."""
+        count = self.count
+        if count is None:
+            return None
+        return {"seen": self._caption_pad is not None, **count.summary()}
+
+    def _place_count_probe(self):
+        pad = self._caption_pad
+        if pad is None:
+            return
+        if self.count is not None and self._count_probe is None:
+            self._count_probe = pad.add_probe(Gst.PadProbeType.BUFFER, self._on_count)
+        elif self.count is None and self._count_probe is not None:
+            pad.remove_probe(self._count_probe)
+            self._count_probe = None
+
+    def _on_count(self, pad, info):
+        count = self.count
+        buf = info.get_buffer()
+        if count is None or buf is None:
+            return Gst.PadProbeReturn.OK
+        ok, m = buf.map(Gst.MapFlags.READ)
+        if not ok:
+            return Gst.PadProbeReturn.OK
+        data = bytes(m.data)
+        buf.unmap(m)
+        fmt = caption_format(pad.get_current_caps())
+        if fmt == "cdp":
+            data, fmt = cdp_cc_data(data), "cc_data"
+        count.feed(data, fmt)
+        return Gst.PadProbeReturn.OK
+
+    # -- drawing ---------------------------------------------------------------------
+
     def _on_pad_added(self, _el, pad):
         if pad.get_direction() != Gst.PadDirection.SRC or pad.get_name() != "caption":
             return
+        with self._lock:
+            self._caption_pad = pad
+            self._place_count_probe()
         # The overlay waits on its caption pad while a caption is queued: a
         # queue of its own keeps that wait off the video thread, and leaking
         # keeps the picture going when the overlay is silent and drains nothing.
