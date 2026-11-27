@@ -143,6 +143,44 @@ def test_report_offset_to_the_old_path():
            "(spread 0.000 s)" in line, line
 
 
+class _Clock:
+    """A video clock (lindvb.tsclock) whose offset is known."""
+
+    def __init__(self, offset):
+        self.offset = offset
+
+    def stream_time(self, mpegts, near=None):
+        return None if self.offset is None else mpegts + self.offset
+
+    def summary(self):
+        return "the clock"
+
+
+def test_report_on_the_picture_timeline():
+    """With the video clock: when each cue is due on the picture's timeline
+    against where the playback was when it came, and the old path's times
+    against the picture's."""
+    shadow = vttload.VttShadow("English")
+    for i, pos in enumerate((None, 0.5, 2.5, 4.0)):
+        shadow.saw_new(f"cue {i}", 3601.0 + i, 3601.8 + i, True, pos)
+        shadow.saw_old(f"cue {i}", int((1.25 + i) * 1e9))
+    assert shadow.leads(_Clock(-3600.0)) == [1.5, 0.5, 0.0]
+    line = shadow.report(vttload.LoaderState(), _Clock(-3600.0))
+    assert "; video: the clock; on the picture's timeline the cues came 0.667 s before they " \
+           "were due (least 0.000 s, 0 late); 1 cues came before the playback had begun; " \
+           "the old path's times -0.250 s off the picture's (spread 0.000 s)" in line, line
+    shadow.saw_new("late", 3610.0, 3611.0, True, 11.0)
+    assert "(least -1.000 s, 1 late)" in shadow.report(vttload.LoaderState(), _Clock(-3600.0))
+
+
+def test_report_with_a_clock_that_saw_no_picture():
+    shadow = vttload.VttShadow("English")
+    shadow.saw_new("x", 3601.0, 3602.0, True, 0.5)
+    line = shadow.report(vttload.LoaderState(), _Clock(None))
+    assert line.endswith("; video: the clock; first 'x'"), line
+    assert "video" not in shadow.report(vttload.LoaderState())
+
+
 def test_report_says_what_went_wrong():
     shadow = vttload.VttShadow("English")
     shadow.saw_new("x", 5.0, 6.0, False)

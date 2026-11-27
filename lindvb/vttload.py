@@ -236,15 +236,18 @@ class VttShadow:
     track, subparse); the report line says it, and how the loader's cue
     times lie to the old path's for the same texts: the offset between the
     two timelines, and whether it stays the same (what drawing them at the
-    right time needs)."""
+    right time needs). With the video clock (lindvb.tsclock) it also says
+    when each cue would be due on the picture's timeline and how long before
+    that it came."""
 
     def __init__(self, name):
         self.name = name
-        self.new = []                   # [(text, start s, mapped)]
+        self.new = []                   # [(text, start s, mapped, playback position s)]
         self.old = []                   # [(text, stream time s)]
 
-    def saw_new(self, text, start, _end, mapped):
-        self.new.append((text, start, mapped))
+    def saw_new(self, text, start, _end, mapped, pos=None):
+        """A cue of the loader; *pos* is where the playback was when it came."""
+        self.new.append((text, start, mapped, pos))
         del self.new[:-KEEP]
 
     def saw_old(self, text, t_ns):
@@ -252,17 +255,26 @@ class VttShadow:
             self.old.append((text, t_ns / 1e9))
             del self.old[:-KEEP]
 
-    def offsets(self):
+    def offsets(self, clock=None):
         """The loader's time minus the old path's, for each text both had
-        (the nearest of the same text)."""
+        (the nearest of the same text); with *clock* the loader's time on the
+        picture's timeline, else its MPEG-TS time."""
         out = []
         for text, t in self.old:
-            mine = [s for x, s, mapped in self.new if x == text and mapped]
+            mine = [s for x, s, mapped, _pos in self.new if x == text and mapped]
+            if clock is not None:
+                mine = [clock.stream_time(s, near=t) for s in mine]
             if mine:
                 out.append(min(mine, key=lambda s: abs(s - t)) - t)
         return out
 
-    def report(self, state):
+    def leads(self, clock):
+        """For each mapped cue: when it is due on the picture's timeline
+        minus where the playback was when it came (below 0: late)."""
+        return [clock.stream_time(s, near=pos) - pos
+                for _x, s, mapped, pos in self.new if mapped and pos is not None]
+
+    def report(self, state, clock=None):
         st = state
         head = (f"WebVTT loader (shadow, {self.name}): playlist read {st.playlists} times, "
                 f"{st.segments} segments ({st.empty} without cues, {st.mapped} with "
@@ -275,15 +287,40 @@ class VttShadow:
             tail.append(f"stopped after {VOD_LIMIT} segments")
         offsets = self.offsets()
         if offsets:
-            spread = max(offsets) - min(offsets)
             tail.append(f"{len(offsets)} of the old path's cues found, its times "
-                        f"{_signed(sum(offsets) / len(offsets))} s off theirs "
-                        f"(spread {spread:.3f} s)")
+                        f"{_mean_spread(offsets, 'theirs')}")
         elif self.old and self.new:
             tail.append("none of the old path's cues found")
+        if clock is not None:
+            tail.extend(self._clock_lines(clock))
         if self.new:
             tail.append(f"first {self.new[0][0][:40]!r}")
         return head + "".join(f"; {t}" for t in tail)
+
+    def _clock_lines(self, clock):
+        lines = [f"video: {clock.summary()}"]
+        if clock.offset is None:
+            return lines
+        leads = self.leads(clock)
+        if leads:
+            late = sum(1 for x in leads if x < 0)
+            lines.append(f"on the picture's timeline the cues came {sum(leads) / len(leads):.3f} s "
+                         f"before they were due (least {min(leads):.3f} s, {late} late)")
+        early = sum(1 for _x, _s, mapped, pos in self.new if mapped and pos is None)
+        if early:
+            lines.append(f"{early} cues came before the playback had begun")
+        offsets = self.offsets(clock)
+        if offsets:
+            picture = _mean_spread(offsets, "the picture's")
+            lines.append(f"the old path's times {picture}")
+        return lines
+
+
+def _mean_spread(offsets, what):
+    """The average of *offsets* (theirs minus the old path's) and how far
+    they spread, for the report."""
+    spread = max(offsets) - min(offsets)
+    return f"{_signed(sum(offsets) / len(offsets))} s off {what} (spread {spread:.3f} s)"
 
 
 def _signed(x):

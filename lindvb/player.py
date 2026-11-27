@@ -26,7 +26,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import (captions, compat, debuglog, flowwatch, hwaccel, passthrough,  # noqa: E402
-               subrender, trackcatalog, vttload)
+               subrender, trackcatalog, tsclock, vttload)
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -153,6 +153,18 @@ def _caption_renderer(key):
     if key > 0:
         return subrender.Cea708Renderer, subrender.CEA708, f"cc:{key}", f"service {key}"
     return subrender.Cea608Renderer, subrender.CEA608, f"cc:CC{-key}", f"CC{-key}"
+
+
+def _inside_demuxer(element):
+    """Is *element* inside an adaptive demuxer (hlsdemux2 puts a tsdemux
+    in a parsebin of its own)?"""
+    parent = element.get_parent()
+    while parent is not None:
+        f = parent.get_factory() if hasattr(parent, "get_factory") else None
+        if f is not None and f.get_name() in FLOW_DEMUXERS:
+            return True
+        parent = parent.get_parent()
+    return False
 
 
 def _track_gpu_element(_bin, _sub, element):
@@ -562,6 +574,7 @@ class Player(GObject.Object):
         self._dvbsub_shadow = None      # and the DVB-SUB renderer: (renderer, DvbSubShadow)
         self._dvbsub_restart = False
         self._flow = None               # debug mode: what flows from the demuxer and the overlay
+        self._ts_clocks = []            # debug mode: tsclock.TsClock of each tsdemux in hlsdemux2
         self._vtt = None                # debug mode: (WebVttLoader, VttShadow) beside hlsdemux2
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
@@ -643,6 +656,7 @@ class Player(GObject.Object):
             self._cue_shadow_hook(pb)
             self._dvbsub_shadow_hook(pb)
             self._flow_hook(pb)
+            self._ts_clock_hook(pb)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
         if not (self._sub_choice and self._sub_choice[0] == "text") and \
@@ -1039,6 +1053,7 @@ class Player(GObject.Object):
         self._end_cc_draw()
         self._end_dvbsub_shadow()
         self._end_vtt_shadow()
+        self._ts_clocks = []
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
@@ -1541,7 +1556,7 @@ class Player(GObject.Object):
         loader = vttload.WebVttLoader(
             self.uri, media["uri"],
             lambda text, start, end, mapped: GLib.idle_add(
-                lambda: (shadow.saw_new(text, start, end, mapped), False)[1]))
+                lambda: (shadow.saw_new(text, start, end, mapped, self._position_s()), False)[1]))
         self._vtt = (loader, shadow)
         loader.start()
         debuglog.write("Player", f"WebVTT loader (shadow, {name}): loading {media['uri']}")
@@ -1551,7 +1566,36 @@ class Player(GObject.Object):
         if vtt is not None:
             loader, shadow = vtt
             loader.stop()
-            debuglog.write("Player", shadow.report(loader.state))
+            debuglog.write("Player", shadow.report(loader.state, self._video_clock()))
+
+    def _position_s(self):
+        pos = self._cue_position()
+        return pos / Gst.SECOND if pos is not None else None
+
+    # -- the MPEG-TS time of the picture against its stream time (debug mode) -----
+
+    def _ts_clock_hook(self, pb):
+        """Debug mode: each tsdemux inside the HLS or DASH demuxer gets a
+        video clock (lindvb.tsclock), which ties the MPEG-TS time of the
+        WebVTT cues to the playback position."""
+        self._ts_clocks = []
+        pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks)
+
+    def _on_ts_element(self, _bin, _sub, element, clocks):
+        try:
+            f = element.get_factory()
+            if f is None or f.get_name() != "tsdemux" or not _inside_demuxer(element):
+                return
+            clock = tsclock.TsClock()
+            clock.watch(element)
+            clocks.append(clock)
+        except Exception as e:  # noqa: BLE001 - noting must never cost the stream
+            debuglog.write("Player", f"video clock: {e}")
+
+    def _video_clock(self):
+        """The clock of the tsdemux that had the picture, None without."""
+        clocks = self._ts_clocks
+        return next((c for c in clocks if c.offset is not None), clocks[0] if clocks else None)
 
     # -- what flows when the picture stands still with subtitles (debug mode) --------
 
