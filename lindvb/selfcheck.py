@@ -37,12 +37,14 @@ ELEMENTS = ["h264parse", "mpegaudioparse", "aacparse", "videoconvert", "audiocon
             "decodebin3",
             "level",           # loudness meter (gst-plugins-good)
             "capssetter"]      # AAC and subtitles in MP4/MKV recordings (good)
-# Closed captions (CEA-608/708, gst-plugins-bad). The packages that bring their
-# own GStreamer must have it; GStreamer 1.28 of the distributions (e.g. Arch)
-# no longer has it, so there a missing overlay is only a warning.
+# Closed captions (CEA-608/708, gst-plugins-bad "closedcaption"): ccextractor
+# takes them off the frames and LinDVB's renderer draws them (lindvb.captions).
+# The packages that bring their own GStreamer must have them; elsewhere a
+# missing element is only a warning.
+CC_ELEMENTS = ("ccextractor", "ccconverter")
+# the old path, only with LINDVB_CC708OVERLAY=1; GStreamer 1.28 of the
+# distributions (Ubuntu 26.04, Arch) no longer has it, and nothing needs it
 CC_OVERLAY = "cc708overlay"
-# cc708overlay draws only what ccextractor takes off the frames (lindvb.captions)
-CC_ELEMENTS = (CC_OVERLAY, "ccextractor", "ccconverter")
 # Elements without which LinDVB still plays, but worse: missing, they are a
 # warning, with what the user loses ...
 OPTIONAL_ELEMENTS = {

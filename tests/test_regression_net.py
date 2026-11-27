@@ -813,19 +813,67 @@ def _changed(a, b):
     return sum(1 for x, y in zip(a, b) if abs(x - y) > 60)
 
 
-def test_cea708_captions_start_off_are_drawn_and_go(player):  # noqa: F811
-    """A still picture with captions on service 1: offered as CC1, not
-    drawn at the start, drawn once picked, gone again with Off."""
+def _subtitle_texts(pl):
+    texts = []
+    pl.connect("subtitle-text", lambda _p, text: texts.append(text))
+    return texts
+
+
+@pytest.mark.parametrize("per_frame", [20, 3])
+def test_cea708_captions_start_off_are_drawn_and_go(player, monkeypatch, per_frame):  # noqa: F811
+    """Captions on service 1: offered as CC1, not drawn at the start, drawn
+    by LinDVB's renderer once picked (over the picture, as teletext
+    subtitles), gone again with Off. With 3 triplets a frame a DTVCC packet
+    is spread over frames, as PBS WJXT sends them: cc708overlay drew
+    nothing of those."""
     from lindvb import captions
     if not captions.available():
-        pytest.skip("cc708overlay missing")
+        pytest.skip("ccextractor missing")
+    monkeypatch.delenv("LINDVB_CC708OVERLAY", raising=False)
     folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
-    sk.make_captioned_segments(folder / "main", 20, pattern="blue")
+    sk.make_captioned_segments(folder / "main", 20, pattern="blue", per_frame=per_frame)
     srv = sk.Server(folder)
+    texts = _subtitle_texts(player)
     try:
         player.play_uri(srv.url("main/index.m3u8"), live=True)
         _run(10, lambda: player.has_closed_captions() and player._played)
         assert player.subtitle_tracks() == (["Closed captions (CC1)"], -1)
+        assert player.cc.overlay is None
+        _run(1)
+        assert not [t for t in texts if t]
+        off = _grab(player.video.picture)
+        player.select_subtitle(0)
+        assert player.subtitle_tracks()[1] == 0
+        _run(4, lambda: len({t for t in texts if t}) >= 2)
+        shown = [t for t in texts if t]
+        assert len(set(shown)) >= 2 and all(t.startswith("LinDVB 708 ") for t in shown), texts
+        n = [int(t.split()[-1]) for t in shown]
+        assert n == sorted(n)                           # in order, one line a second
+        on = _grab(player.video.picture)
+        assert _changed(off, on) < 50                   # nothing blended into the picture
+        player.select_subtitle(-1)
+        assert texts[-1] == "" and player._cc_draw is None
+        _run(1)
+        assert texts[-1] == ""
+    finally:
+        srv.close()
+
+
+def test_cea708_captions_by_the_old_path_when_asked(player, monkeypatch):  # noqa: F811
+    """LINDVB_CC708OVERLAY=1: cc708overlay blends them into the picture, as
+    before stage F, and LinDVB's renderer draws nothing."""
+    from lindvb import captions
+    monkeypatch.setenv("LINDVB_CC708OVERLAY", "1")
+    if not captions.old_path():
+        pytest.skip("cc708overlay missing")
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 20, pattern="blue")
+    srv = sk.Server(folder)
+    texts = _subtitle_texts(player)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        assert player.cc.overlay is not None
         _run(1)
         off = _grab(player.video.picture)
         player.select_subtitle(0)
@@ -836,6 +884,7 @@ def test_cea708_captions_start_off_are_drawn_and_go(player):  # noqa: F811
         off_again = _grab(player.video.picture)
         assert _changed(off, on) > 500                  # the caption window
         assert _changed(off, off_again) < 50
+        assert player._cc_draw is None and not [t for t in texts if t]
     finally:
         srv.close()
 
@@ -847,7 +896,7 @@ def test_channel_analysis_counts_the_captions(player):  # noqa: F811
     measuring, nothing is counted."""
     from lindvb import captions
     if not captions.available():
-        pytest.skip("cc708overlay missing")
+        pytest.skip("ccextractor missing")
     folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
     sk.make_captioned_segments(folder / "main", 8, pattern="blue")
     srv = sk.Server(folder)
@@ -873,7 +922,7 @@ def test_cea608_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
     it, off the video thread, and the debug log says what it decoded."""
     from lindvb import captions, debuglog
     if not captions.available():
-        pytest.skip("cc708overlay missing")
+        pytest.skip("ccextractor missing")
     lines = []
     monkeypatch.setattr(debuglog, "enabled", lambda: True)
     monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
@@ -899,18 +948,50 @@ def test_cea608_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
     assert "dropped 0" in reports[0], reports
 
 
+def test_debug_log_says_what_the_caption_renderer_drew(player, monkeypatch):  # noqa: F811
+    """Debug mode: LinDVB's CEA-708 renderer draws service 1; when the
+    captions go off the log says what it drew. In the shadow only the
+    CEA-608 renderer runs then (no CEA-608 here: it reports nothing)."""
+    from lindvb import captions, debuglog
+    if not captions.available():
+        pytest.skip("ccextractor missing")
+    monkeypatch.delenv("LINDVB_CC708OVERLAY", raising=False)
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 8, pattern="blue", per_frame=3)
+    srv = sk.Server(folder)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        player.select_subtitle(0)
+        r = player._cc_draw[0]
+        _cc, shadows = player._cc_shadow
+        assert [sr.kind for sr, _cmp in shadows] == ["CEA-608"]
+        _run(10, lambda: r.state().decoded >= 2)
+        player.select_subtitle(-1)
+    finally:
+        srv.close()
+    drawn = [t for c, t in lines if t.startswith("CEA-708 renderer (service 1)")]
+    assert len(drawn) == 1 and "captions drawn" in drawn[0], lines
+    assert "'LinDVB 708 " in drawn[0] and "dropped 0" in drawn[0], drawn
+    assert not [t for c, t in lines if t.startswith(("CEA-708 renderer (shadow", "CEA-608 renderer"))]
+
+
 def _cc_shadow_renderer(pl, kind):
     _cc, shadows = pl._cc_shadow
     return next(r for r, _cmp in shadows if r.kind == kind)
 
 
 def test_cea708_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
-    """Stage F, debug mode: closed captions picked, the CEA-708 renderer
-    decodes service 1 beside cc708overlay, off the video thread, and the
-    debug log says what it decoded. No CEA-608 in the stream: its renderer
-    reports nothing."""
+    """Stage F, debug mode, the old path asked for: closed captions picked,
+    the CEA-708 renderer decodes service 1 beside cc708overlay, off the
+    video thread, and the debug log says what it decoded. No CEA-608 in the
+    stream: its renderer reports nothing."""
     from lindvb import captions, debuglog
-    if not captions.available():
+    monkeypatch.setenv("LINDVB_CC708OVERLAY", "1")
+    if not captions.old_path():
         pytest.skip("cc708overlay missing")
     lines = []
     monkeypatch.setattr(debuglog, "enabled", lambda: True)

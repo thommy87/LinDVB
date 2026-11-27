@@ -186,3 +186,98 @@ def test_caption_shadow_names_the_service():
     line = sh.report(sr.State(sr.CEA708, on=True, data=25))
     assert line == ("CEA-708 renderer (shadow, service 1): 1 captions decoded; data 25, "
                     "dropped 0; first 'LinDVB 708 0', last 'LinDVB 708 0'")
+
+
+def test_caption_report_of_the_renderer_that_draws():
+    sh = sr.CaptionShadow("service 1", drawn=True)
+    sh.saw_new("LinDVB 708 0", 0)
+    line = sh.report(sr.State(sr.CEA708, on=True, data=25))
+    assert line.startswith("CEA-708 renderer (service 1): 1 captions drawn; data 25, dropped 0")
+
+
+def test_packets_over_several_frames_are_drawn():
+    """Broadcasters spread a DTVCC packet over frames, a few triplets each
+    (PBS WJXT); cc708overlay drew nothing of them, the renderer decodes them."""
+    got = []
+    r = sr.Cea708Renderer(lambda text, t: got.append((text, t)), timer=False)
+    r.show(SERVICE1)
+    pkt = _packet(0, _df() + _t("WJXT NEWS") + CR + [0x89, 0x01])
+    trip = [bytes([0xff if i == 0 else 0xfe, pkt[i], pkt[i + 1]]) for i in range(0, len(pkt), 2)]
+    for f, k in enumerate(range(0, len(trip), 2)):
+        r.feed(b"".join(trip[k:k + 2]) + bytes([0xfa, 0, 0]) * 18, "cc_data", f * 1000)
+    r.decode()
+    assert got and got[-1][0] == "WJXT NEWS" and got[-1][1] == 0      # the time of its start
+
+
+class _Clock:
+    def __init__(self):
+        self.pos = None
+
+    def __call__(self):
+        return self.pos
+
+
+def test_caption_drawer_shows_each_change_with_its_frame():
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    d.add("A", 1000)
+    d.add("A B", 2000)
+    d.add("", 3000)
+    pos.pos = 500
+    d.tick()
+    assert shown == []                      # its frame is not on screen yet
+    pos.pos = 2500
+    d.tick()
+    assert shown == ["A B"]                 # the latest due; "A" was over before a look
+    d.tick()
+    assert shown == ["A B"]                 # once
+    pos.pos = 3000
+    d.tick()
+    assert shown == ["A B", ""]
+
+
+def test_caption_drawer_without_position_or_time_shows_at_once():
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    d.add("A", 1000)
+    d.tick()                                # no position (yet)
+    pos.pos = 0
+    d.add("B", None)                        # no time
+    d.tick()
+    assert shown == ["A", "B"]
+
+
+def test_caption_drawer_after_a_seek_back():
+    """The frames before the seek point bring their captions again: what
+    was still to come of the old ones goes."""
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    d.add("late 1", 50_000)
+    d.add("late 2", 60_000)
+    d.add("again", 10_000)                  # seek back
+    pos.pos = 70_000
+    d.tick()
+    assert shown == ["again"]
+
+
+def test_caption_drawer_keeps_a_bounded_queue():
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    for i in range(sr.CC_DRAW_KEEP + 50):
+        d.add(f"c{i}", i)
+    assert len(d._changes) == sr.CC_DRAW_KEEP
+    pos.pos = 10**9
+    d.tick()
+    assert shown == [f"c{sr.CC_DRAW_KEEP + 49}"]
+
+
+def test_caption_drawer_stop_takes_the_text_away():
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    pos.pos = 0
+    d.add("A", 0)
+    d.tick()
+    d.stop()
+    assert shown == ["A", ""]
+    d.stop()
+    assert shown == ["A", ""]

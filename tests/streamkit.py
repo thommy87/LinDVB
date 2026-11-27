@@ -148,9 +148,11 @@ def cc608_pairs(text):
 def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20, cc608=None):
     """cc_data of each frame: one line of text a second on service 1, each
     time with its window (CEA-708 DefineWindow, text, CR, DisplayWindows),
-    so that every segment shows captions on its own. A DTVCC packet has to
-    come within one frame for cc708overlay. With *cc608*, CC1 carries the
-    line "<cc608> <second>" too (one pair a frame, in field 1)."""
+    so that every segment shows captions on its own. cc708overlay draws a
+    DTVCC packet only when it comes within one frame; with a small
+    *per_frame* (3: as PBS WJXT) a packet is spread over frames, the rest of
+    each frame padding. With *cc608*, CC1 carries the line "<cc608>
+    <second>" too (one pair a frame, in field 1)."""
     window = [0x98, 0x38, 0x0A, 0x00, 0x01, 0x1F, 0x09]    # DF0: visible, 2 rows, 32 columns
     frames = []
     dtvcc = per_frame - (1 if cc608 else 0)
@@ -168,12 +170,13 @@ def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20, cc608=None)
             if cc608:
                 b1, b2 = line21[f] if f < len(line21) else (0, 0)
                 head = [0xFC, _odd_parity(b1), _odd_parity(b2)]
-            frames.append(bytes(head + t + [0xFA, 0, 0] * (dtvcc - len(t) // 3)))   # padding
+            room = max(dtvcc, 20 - len(head) // 3)            # a frame's 20 triplets
+            frames.append(bytes(head + t + [0xFA, 0, 0] * (room - len(t) // 3)))   # padding
     return frames
 
 
 def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="ball",
-                            cc608=None):
+                            cc608=None, per_frame=20):
     """As make_av_segments, with CEA-708 captions in the H.264 stream (and
     CEA-608 on CC1 with *cc608*, see caption_frames)."""
     _GLib, Gst = gst("cccombiner", "x264enc", "avenc_aac", "mpegtsmux", "hlssink")
@@ -181,7 +184,7 @@ def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="b
 
     def feed(pl):
         src = pl.get_by_name("cc")
-        for i, data in enumerate(caption_frames(seconds, cc608=cc608)):
+        for i, data in enumerate(caption_frames(seconds, cc608=cc608, per_frame=per_frame)):
             buf = Gst.Buffer.new_wrapped(data)
             buf.pts, buf.duration = i * Gst.SECOND // 25, Gst.SECOND // 25
             src.emit("push-buffer", buf)

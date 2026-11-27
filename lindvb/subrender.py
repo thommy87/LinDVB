@@ -393,8 +393,8 @@ def _dtvcc_size(header):
 
 
 class Cea708Renderer(Renderer):
-    """CEA-708 captions of one service, decoded by lindvb.cc708 apart
-    from the old path (cc708overlay).
+    """CEA-708 captions of one service, decoded by lindvb.cc708; the
+    player draws them (stage F), in place of cc708overlay.
 
     As :class:`Cea608Renderer`: :meth:`feed` (video thread) only queues the
     DTVCC part of each frame's cc_data, bounded; the main loop puts the
@@ -478,15 +478,17 @@ class Cea708Renderer(Renderer):
                 self._triplet(data[i], data[i + 1], data[i + 2], t)
 
     def _triplet(self, b0, b1, b2, t):
+        """A packet ends when it has its size or the next one starts.
+        Padding (cc_valid 0) does not end it: broadcasters spread a packet
+        over frames, a few triplets each, the rest of each frame padding."""
         valid, start = b0 & 0x04, b0 & 0x03 == 3
-        if valid and start:
+        if not valid:
+            return
+        if start:
             self._end()
             self._packet, self._packet_t = bytearray([b1, b2]), t
-        elif valid and self._packet:
+        elif self._packet:
             self._packet += bytes([b1, b2])
-        elif not valid:
-            self._end()
-            return
         if self._packet and len(self._packet) >= _dtvcc_size(self._packet[0]):
             self._end()                                     # complete: no need to wait
 
@@ -507,15 +509,16 @@ class Cea708Renderer(Renderer):
 
 
 class CaptionShadow:
-    """What a closed caption renderer (CEA-608, CEA-708) decoded beside the
-    old path, cc708overlay: what that draws cannot be read back as text, so
-    the line says what the renderer decoded and shows a few of the
-    captions, to set beside what the picture showed."""
+    """What a closed caption renderer (CEA-608, CEA-708) decoded: in the
+    shadow beside the renderer that draws, or (*drawn*) the one that draws.
+    The line says what it decoded and shows a few of the captions, to set
+    beside what the picture showed."""
 
     KEEP = 500
 
-    def __init__(self, track=""):
+    def __init__(self, track="", drawn=False):
         self.track = track
+        self.drawn = drawn
         self.captions = []           # [(text, stream time)]
 
     def saw_new(self, text, t):
@@ -532,12 +535,79 @@ class CaptionShadow:
         """None when no caption data came."""
         if not state.data:
             return None
-        head = (f"{state.kind} renderer (shadow, {self.track}): {len(self.captions)} captions "
-                f"decoded; data {state.data}, dropped {state.dropped}")
+        where, did = (self.track, "drawn") if self.drawn else (f"shadow, {self.track}", "decoded")
+        head = (f"{state.kind} renderer ({where}): {len(self.captions)} captions "
+                f"{did}; data {state.data}, dropped {state.dropped}")
         if not self.captions:
             return head + "; the caption data held no text for this channel"
         texts = [c[0].replace("\n", " / ") for c in self.captions]
         return head + f"; first {_few(texts[:3])}, last {texts[-1][:60]!r}"
+
+
+# changes of what a closed caption channel shows that wait for their frame
+CC_DRAW_KEEP = 300
+
+
+class CaptionDrawer:
+    """Shows what a closed caption channel shows when its frame is shown.
+
+    A caption renderer hears of each change (:meth:`add`, main loop) with
+    the stream time of the frame that brought it, a little before that
+    frame reaches the screen. Every :data:`CC_DECODE_MS` the drawer looks
+    at the playback position (*position()*: stream time in ns, None when
+    there is none) and hands *on_text(text)* the latest change due there,
+    once ("" when the captions go off). A change without a time, or while
+    there is no position, is due at once. A time going back (a seek) drops
+    the changes still to come: the frames bring them again."""
+
+    def __init__(self, position, on_text, tick_ms=CC_DECODE_MS):
+        from collections import deque
+        self._position = position
+        self._on_text = on_text
+        self._tick_ms = tick_ms
+        self._changes = deque()      # [(stream time or None, text)], in the order they came
+        self._shown = ""
+        self._source = 0
+
+    def add(self, text, t):
+        ch = self._changes
+        if t is not None:
+            while ch and ch[-1][0] is not None and ch[-1][0] > t:
+                ch.pop()
+        ch.append((t, text))
+        while len(ch) > CC_DRAW_KEEP:
+            ch.popleft()
+
+    def start(self):
+        from gi.repository import GLib
+        if not self._source:
+            self._source = GLib.timeout_add(self._tick_ms, self._tick)
+
+    def stop(self):
+        from gi.repository import GLib
+        if self._source:
+            GLib.source_remove(self._source)
+            self._source = 0
+        self._changes.clear()
+        if self._shown:
+            self._shown = ""
+            self._on_text("")
+
+    def _tick(self):
+        try:
+            self.tick()
+        except Exception:  # noqa: BLE001 - drawing must never cost the playback
+            pass
+        return bool(self._source)
+
+    def tick(self):
+        """Show what is due now."""
+        pos, ch, due = self._position(), self._changes, None
+        while ch and (ch[0][0] is None or pos is None or ch[0][0] <= pos):
+            due = ch.popleft()
+        if due is not None and due[1] != self._shown:
+            self._shown = due[1]
+            self._on_text(due[1])
 
 
 # PES packets of DVB subtitles the renderer's queue holds (a display set is

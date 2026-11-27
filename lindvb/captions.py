@@ -2,21 +2,27 @@
 """CEA-608/708 closed captions of the video (ATSC, US cable, some IPTV).
 
 The decoders put the captions of the video stream (H.264/H.265 SEI, MPEG-2
-user data) on the decoded frames as GstVideoCaptionMeta. cc708overlay does not
-read that meta: it draws only what reaches its ``cc_sink`` pad, so
-``CaptionOverlay`` takes the captions off the frames with ccextractor and
-feeds them to that pad::
+user data) on the decoded frames as GstVideoCaptionMeta. ``CaptionOverlay``
+takes them off the frames with ccextractor; LinDVB's own CEA-708 renderer
+(lindvb.subrender, stage F) decodes them and the player draws the text over
+the picture like teletext subtitles::
 
-    ccextractor ── src ── (middle: deinterlacer, videobalance, videoconvert) ── video_sink ┐
-         └─ caption (once captions show up) ─ queue ─ ccconverter ──────────────── cc_sink ┴ cc708overlay
+    ccextractor ── src ── (middle: deinterlacer, videobalance, videoconvert) ──
+         └─ caption (once captions show up) ─ queue ─ ccconverter ── fakesink
+                  (the renderers listen here: CaptionOverlay.listen)
 
-The overlay sits at the end of the video filter: it blends the captions
-into the frames videoconvert just wrote (plain, cached system memory). In
-front of the converter it blended into the decoder's frames, which with a
-GPU decoder can be memory that is slow to read back, and the picture
-stuttered whenever captions showed.
+GStreamer's cc708overlay drew them before. It draws nothing when a DTVCC
+packet is spread over several frames, as broadcasters send them (PBS WJXT,
+27.11.2026; reproduced with GStreamer 1.24.2), and GStreamer 1.28 of Ubuntu
+26.04 and Arch no longer has it. With ``LINDVB_CC708OVERLAY=1`` it still
+draws instead (:func:`old_path`), at the end of the video filter, fed on its
+``cc_sink`` pad in place of the fakesink: there it blends the captions into
+the frames videoconvert just wrote (plain, cached system memory). In front
+of the converter it blended into the decoder's frames, which with a GPU
+decoder can be memory that is slow to read back, and the picture stuttered
+whenever captions showed.
 
-Off is ``service-number`` 0 (no service has that number) together with
+The old path's off is ``service-number`` 0 (no service has that number) together with
 ``silent``: the decoder then never has a caption waiting to be shown. A
 silent overlay that still decodes service 1 keeps its next caption until a
 frame takes it, which no frame does while it is silent; meanwhile the queue
@@ -26,10 +32,11 @@ and old captions flashed up when they were switched on again.
 The caption pad of ccextractor appears with the first frame that carries
 captions, so ``CaptionOverlay.present`` (and with it Subtitles › Closed
 Captions and the OSD's subtitle icon) is only true for a channel that really
-sends them. cc708overlay draws CEA-708 (DTVCC) services only; a stream with
-nothing but CEA-608 captions is logged and not offered.
+sends them. Only CEA-708 (DTVCC) services are offered; a stream with nothing
+but CEA-608 captions is logged and not offered.
 """
 
+import os
 import threading
 
 import gi
@@ -334,7 +341,15 @@ def cdp_cc_data(cdp):
 
 
 def available():
-    return all(Gst.ElementFactory.find(f) for f in ("cc708overlay", "ccextractor", "ccconverter"))
+    """The elements that take the captions off the frames are there."""
+    return all(Gst.ElementFactory.find(f) for f in ("ccextractor", "ccconverter"))
+
+
+def old_path():
+    """cc708overlay draws the captions instead of LinDVB's renderer: only
+    when asked for (``LINDVB_CC708OVERLAY=1``) and there."""
+    return os.environ.get("LINDVB_CC708OVERLAY") == "1" and \
+        Gst.ElementFactory.find("cc708overlay") is not None
 
 
 class CaptionOverlay:
@@ -343,7 +358,7 @@ class CaptionOverlay:
     # caption data looked at for services after the first ones were found
     SCAN_BUFFERS = 900                  # 30 s at 30 frames a second
 
-    def __init__(self, silent=True, on_found=None, log=None, middle=()):
+    def __init__(self, silent=True, on_found=None, log=None, middle=(), old=None):
         self.present = False            # CEA-708 captions seen in this pipeline
         self.kinds = set()
         self.service = 0                # the service shown, 0 = off
@@ -354,35 +369,31 @@ class CaptionOverlay:
         self.count = None               # CaptionCount while the channel analysis measures
         self._caption_pad = None        # ccextractor's caption pad, once captions came
         self._count_probe = None
-        self._listener = None           # gets the caption data of each frame (stage F renderers)
+        self._listeners = {}            # name -> fn: the caption data of each frame (stage F)
         self._lock = threading.Lock()
+        self.old = old_path() if old is None else old    # cc708overlay draws
         self.bin = Gst.Bin.new("captions")
         self.extractor = Gst.ElementFactory.make("ccextractor")
-        self.overlay = Gst.ElementFactory.make("cc708overlay")
+        self.overlay = Gst.ElementFactory.make("cc708overlay") if self.old else None
         # plain system memory behind the overlay: it then draws the captions
         # into the picture instead of attaching them as overlay meta, which
         # the sink would not draw
         blend = Gst.ElementFactory.make("capsfilter")
         blend.set_property("caps", Gst.Caps.from_string("video/x-raw"))
-        chain = [self.extractor, *middle, self.overlay, blend]
-        for e in chain:
-            self.bin.add(e)
-        prev = self.extractor
-        for e in middle:
-            if prev is self.extractor:
-                prev.link_pads("src", e, None)
-            else:
-                prev.link(e)
-            prev = e
-        if prev is self.extractor:
-            prev.link_pads("src", self.overlay, "video_sink")
-        else:
-            prev.link_pads(None, self.overlay, "video_sink")
-        self.overlay.link(blend)
+        self._link_video([self.extractor, *middle, *([self.overlay] if self.overlay else []), blend])
         self.show(1 if not silent else 0)
         self.bin.add_pad(Gst.GhostPad.new("sink", self.extractor.get_static_pad("sink")))
         self.bin.add_pad(Gst.GhostPad.new("src", blend.get_static_pad("src")))
         self.extractor.connect("pad-added", self._on_pad_added)
+
+    def _link_video(self, chain):
+        """ccextractor's src, then the elements in order; the overlay takes
+        the video on its video_sink."""
+        for e in chain:
+            self.bin.add(e)
+        for a, b in zip(chain, chain[1:]):
+            a.link_pads("src" if a is self.extractor else None, b,
+                        "video_sink" if b is self.overlay else None)
 
     @property
     def services(self):
@@ -390,9 +401,12 @@ class CaptionOverlay:
         return sorted(self._scanner.services) or ([1] if self.present else [])
 
     def show(self, service):
-        """Draw the captions of one CEA-708 service, or none (0 / None)."""
+        """The CEA-708 service shown, or none (0 / None); the old path draws
+        it, else the player's renderer does."""
         service = int(service or 0)
         self.service = service
+        if self.overlay is None:
+            return
         if service:
             self.overlay.set_property("service-number", service)
             self.overlay.set_property("silent", False)
@@ -417,12 +431,18 @@ class CaptionOverlay:
                 self.count = None
             self._place_count_probe()
 
-    def listen(self, fn):
+    def listen(self, fn, name="shadow"):
         """*fn(data, fmt, t)* gets the caption data of each frame (a
-        streaming thread; t the stream time or None), or nobody (None). The
-        probe is there only while someone listens or the analysis counts."""
+        streaming thread; t the stream time or None); None stops the
+        listener of that *name*. The probe is there only while someone
+        listens or the analysis counts."""
         with self._lock:
-            self._listener = fn
+            listeners = dict(self._listeners)
+            if fn is None:
+                listeners.pop(name, None)
+            else:
+                listeners[name] = fn
+            self._listeners = listeners
             self._place_count_probe()
 
     def caption_info(self):
@@ -437,7 +457,7 @@ class CaptionOverlay:
         pad = self._caption_pad
         if pad is None:
             return
-        wanted = self.count is not None or self._listener is not None
+        wanted = self.count is not None or bool(self._listeners)
         if wanted and self._count_probe is None:
             self._count_probe = pad.add_probe(Gst.PadProbeType.BUFFER, self._on_count)
         elif not wanted and self._count_probe is not None:
@@ -445,9 +465,9 @@ class CaptionOverlay:
             self._count_probe = None
 
     def _on_count(self, pad, info):
-        count, listener = self.count, self._listener
+        count, listeners = self.count, self._listeners
         buf = info.get_buffer()
-        if (count is None and listener is None) or buf is None:
+        if (count is None and not listeners) or buf is None:
             return Gst.PadProbeReturn.OK
         ok, m = buf.map(Gst.MapFlags.READ)
         if not ok:
@@ -459,8 +479,10 @@ class CaptionOverlay:
             data, fmt = cdp_cc_data(data), "cc_data"
         if count is not None:
             count.feed(data, fmt)
-        if listener is not None:
-            listener(data, fmt, _stream_time(pad, buf.pts))
+        if listeners:
+            t = _stream_time(pad, buf.pts)
+            for fn in listeners.values():
+                fn(data, fmt, t)
         return Gst.PadProbeReturn.OK
 
     # -- drawing ---------------------------------------------------------------------
@@ -482,13 +504,24 @@ class CaptionOverlay:
         conv = Gst.ElementFactory.make("ccconverter")
         caps = Gst.ElementFactory.make("capsfilter")
         caps.set_property("caps", Gst.Caps.from_string("closedcaption/x-cea-708,format=cc_data"))
-        for e in (q, conv, caps):
+        sink = None
+        if self.overlay is None:
+            # nothing draws here (the renderers listen on the caption pad);
+            # the data only has to go somewhere, never waiting for the clock
+            sink = Gst.ElementFactory.make("fakesink")
+            sink.set_property("sync", False)
+            sink.set_property("async", False)
+        added = [e for e in (q, conv, caps, sink) if e is not None]
+        for e in added:
             self.bin.add(e)
         q.link(conv)
         conv.link(caps)
-        caps.link_pads("src", self.overlay, "cc_sink")
+        if sink is None:
+            caps.link_pads("src", self.overlay, "cc_sink")
+        else:
+            caps.link(sink)
         caps.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, self._on_captions)
-        for e in (caps, conv, q):
+        for e in reversed(added):
             e.sync_state_with_parent()
         pad.link(q.get_static_pad("sink"))
 
@@ -508,7 +541,7 @@ class CaptionOverlay:
             if "708" in new:
                 self.present = found = True
             elif not self.present:
-                self._log("only CEA-608 captions, which cc708overlay does not draw")
+                self._log("only CEA-608 captions, which are not offered")
         services = self._scanner.feed(data)
         if services:
             self._log("CEA-708 caption services: " + ", ".join(map(str, self.services)))

@@ -290,7 +290,7 @@ def test_captions_in_the_list_and_off(player):
     and Off switches them off (before, only a second click on their line did)."""
     pb = player._build()
     if player.cc is None:
-        pytest.skip("cc708overlay missing")
+        pytest.skip("ccextractor missing")
     player.playbin = pb
     player.cc.present = True
     player.cc._scanner.services = {1, 2}
@@ -298,6 +298,8 @@ def test_captions_in_the_list_and_off(player):
     assert labels == ["Closed captions (CC1)", "Closed captions (service 2)"] and cur == -1
     player.select_subtitle(1)
     assert player.cc.service == 2 and player.subtitle_tracks()[1] == 1
+    assert player._cc_draw is not None and player._cc_draw[0].state().track == "cc:2"
     player.select_subtitle(-1)
     assert player.cc.service == 0 and player.subtitle_tracks()[1] == -1
-    assert player.cc.overlay.get_property("silent")
+    assert player._cc_draw is None
+    assert player.cc.overlay is None or player.cc.overlay.get_property("silent")
