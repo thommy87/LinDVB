@@ -4943,3 +4943,35 @@ msgstr "Napisy przez kablówkę"
 #: lindvb/ui/window.py
 msgid "Subtitles via antenna"
 msgstr "Napisy przez antenę"
+
+#: lindvb/analysis.py
+msgid "{n} characters of text"
+msgstr "{n} znaków tekstu"
+
+#: lindvb/analysis.py
+msgid "no text, only commands"
+msgstr "brak tekstu, tylko polecenia"
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video: none so far."
+msgstr "Napisy w wideo (closed captions): na razie brak."
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video ({n} frames with caption data):"
+msgstr "Napisy w wideo (closed captions, {n} klatek z danymi napisów):"
+
+#: lindvb/analysis.py
+msgid "CEA-608 field {field} (CC{a}/CC{b})"
+msgstr "CEA-608 pole {field} (CC{a}/CC{b})"
+
+#: lindvb/analysis.py
+msgid "CEA-708 service {n}"
+msgstr "CEA-708 usługa {n}"
+
+#: lindvb/analysis.py
+msgid "XDS programme data: {size}"
+msgstr "Dane programu XDS: {size}"
+
+#: lindvb/analysis.py
+msgid "only padding, no captions"
+msgstr "tylko wypełnienie, brak napisów"

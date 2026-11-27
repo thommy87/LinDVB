@@ -8,7 +8,7 @@ import struct
 import pytest
 
 from lindvb import esparse, festats, linkbudget, loudness, sitree, streaminfo
-from lindvb.analysis import ca_lines, service_layers, signal_sample, transponder_shares
+from lindvb.analysis import ca_lines, caption_lines, service_layers, signal_sample, transponder_shares
 from lindvb.channels import Channel
 from lindvb.receptionlog import ReceptionLog
 from lindvb.tsanalysis import NULL_PID, TsAnalyzer, pid_owners
@@ -472,3 +472,19 @@ def test_report_of_a_dvb_channel_has_signal_and_reception():
     assert "\nSignal\n" in text and "C/N: 12.5 dB" in text and "Margin: +4.0 dB" in text
     assert "\nReception\n" in text and "Frequency: 11494 MHz H" in text and "Symbol rate: 22000 kBd" in text
     assert "Internet stream" not in text
+
+
+def test_caption_lines():
+    """The channel analysis tells "sends nothing" from "draws nothing"."""
+    assert caption_lines(None) == []
+    assert caption_lines({"seen": False}) == ["Closed captions in the video: none so far."]
+    lines = caption_lines({"seen": True, "buffers": 900, "xds": 24,
+                           "608": {1: (2400, 1200), 2: (40, 0)}, "708": {1: (3000, 0)}})
+    assert lines == [
+        "Closed captions in the video (900 frames with caption data):",
+        "   CEA-608 field 1 (CC1/CC2): 2.4 kB, 1200 characters of text",
+        "   CEA-608 field 2 (CC3/CC4): 40 B, no text, only commands",
+        "   CEA-708 service 1: 3.0 kB, no text, only commands",
+        "   XDS programme data: 24 B"]
+    assert caption_lines({"seen": True, "buffers": 30, "608": {}, "708": {}})[1:] == [
+        "   only padding, no captions"]

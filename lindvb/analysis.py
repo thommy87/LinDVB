@@ -331,6 +331,7 @@ class AnalysisSession(GObject.Object):
             self._attach_capture()
         if self.player is not None and self.is_on_screen():
             self.player.measure_loudness = True
+            self.player.measure_captions = True
         self.emit("channel-changed")
 
     def _attach_capture(self):
@@ -388,6 +389,7 @@ class AnalysisSession(GObject.Object):
             sessions.remove(self)
         if self.player is not None and not any(s.is_on_screen() for s in sessions):
             self.player.measure_loudness = False
+            self.player.measure_captions = False
 
     def _on_preempt(self, _tm, cap):
         if cap is self.capture:
@@ -608,6 +610,8 @@ class AnalysisSession(GObject.Object):
         st["on_screen"] = on_screen
         if on_screen:
             player.measure_loudness = True
+            player.measure_captions = True
+            st["captions"] = player.caption_info()
             st["video"] = player.video_info()
             if now - self._bars_at >= BARS_EVERY:
                 self._bars_at = now
@@ -1217,9 +1221,46 @@ def _audio_sections(session, st):
         elif d["kind"] == "subtitle":
             lines.append(_("DVB subtitles PID {pid}:").format(pid=pid) + " " + ", ".join(
                 f"{lang} (0x{t:02X})" for lang, t in d.get("subtitles", [])))
+    lines += caption_lines(st.get("captions"))
     out.append(_section(_("Teletext and subtitles"),
                         lines=lines or [_("No teletext or subtitles in this channel.")]))
     return out
+
+
+def _kb(n):
+    return f"{n / 1000:.1f} kB" if n >= 1000 else f"{n} B"
+
+
+def _caption_part(label, data):
+    size, chars = data
+    if chars:
+        text = _("{n} characters of text").format(n=chars)
+    else:
+        text = _("no text, only commands")
+    return f"   {label}: {_kb(size)}, {text}"
+
+
+def caption_lines(info):
+    """What the closed captions in the video carried while the analysis ran
+    (lindvb.captions.CaptionCount): so "the channel sends nothing" can be
+    told from "LinDVB draws nothing". None (not counted): no lines."""
+    if not info:
+        return []
+    if not info.get("seen"):
+        return [_("Closed captions in the video: none so far.")]
+    lines = [_("Closed captions in the video ({n} frames with caption data):").format(
+        n=info.get("buffers", 0))]
+    for field, data in (info.get("608") or {}).items():
+        label = _("CEA-608 field {field} (CC{a}/CC{b})").format(
+            field=field, a=2 * field - 1, b=2 * field)
+        lines.append(_caption_part(label, data))
+    for svc, data in (info.get("708") or {}).items():
+        lines.append(_caption_part(_("CEA-708 service {n}").format(n=svc), data))
+    if info.get("xds"):
+        lines.append("   " + _("XDS programme data: {size}").format(size=_kb(info["xds"])))
+    if len(lines) == 1:
+        lines.append("   " + _("only padding, no captions"))
+    return lines
 
 
 def _health_section(session, st):

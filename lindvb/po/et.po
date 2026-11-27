@@ -4943,3 +4943,35 @@ msgstr "Subtiitrid kaabli kaudu"
 #: lindvb/ui/window.py
 msgid "Subtitles via antenna"
 msgstr "Subtiitrid antenni kaudu"
+
+#: lindvb/analysis.py
+msgid "{n} characters of text"
+msgstr "{n} tekstimärki"
+
+#: lindvb/analysis.py
+msgid "no text, only commands"
+msgstr "teksti pole, ainult käsud"
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video: none so far."
+msgstr "Video subtiitrid (closed captions): seni puuduvad."
+
+#: lindvb/analysis.py
+msgid "Closed captions in the video ({n} frames with caption data):"
+msgstr "Video subtiitrid (closed captions, {n} kaadrit subtiitriandmetega):"
+
+#: lindvb/analysis.py
+msgid "CEA-608 field {field} (CC{a}/CC{b})"
+msgstr "CEA-608 väli {field} (CC{a}/CC{b})"
+
+#: lindvb/analysis.py
+msgid "CEA-708 service {n}"
+msgstr "CEA-708 teenus {n}"
+
+#: lindvb/analysis.py
+msgid "XDS programme data: {size}"
+msgstr "XDS-saateandmed: {size}"
+
+#: lindvb/analysis.py
+msgid "only padding, no captions"
+msgstr "ainult täitebaidid, subtiitreid pole"

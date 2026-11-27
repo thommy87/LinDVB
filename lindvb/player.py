@@ -590,6 +590,7 @@ class Player(GObject.Object):
         self._ts_taps = ()
         self.loudness = LoudnessMeter()
         self._measure_loudness = False
+        self._measure_captions = False
         self._level_elements = []
         self.fragments = []              # recent (uri, bytes, seconds) of HLS/DASH
         self.rebuffers = 0
@@ -656,6 +657,7 @@ class Player(GObject.Object):
             chain = head + [self.cc.bin]
             if self._sub_choice and self._sub_choice[0] == "cc":
                 self.cc.show(self._sub_choice[1])
+            self.cc.measure(self._measure_captions)
         else:
             chain = head + middle
         for e in chain:
@@ -854,6 +856,22 @@ class Player(GObject.Object):
             self.loudness.reset()
         for lv in self._level_elements:
             lv.set_property("post-messages", on)
+
+    @property
+    def measure_captions(self):
+        return self._measure_captions
+
+    @measure_captions.setter
+    def measure_captions(self, on):
+        """Count what the closed captions of the video carry (channel analysis)."""
+        self._measure_captions = bool(on)
+        if self.cc is not None:
+            self.cc.measure(self._measure_captions)
+
+    def caption_info(self):
+        """What the closed captions of the video carried since the count
+        started (lindvb.captions.CaptionCount), None when not counted."""
+        return self.cc.caption_info() if self.cc is not None else None
 
     def add_ts_tap(self, fn):
         """Hand the transport stream of internet channels to fn (streaming thread),
