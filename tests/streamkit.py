@@ -22,6 +22,9 @@ files of their own in the repository:
 * ``make_teletext_ts``: H.264 with teletext subtitles on page 150 and the
   teletext descriptor in the PMT, as German broadcasters send them (Das
   Erste, ZDF on satellite, cable and antenna).
+* ``make_dvbsub_ts``: H.264 with DVB subtitles (bitmaps, one PID per
+  language) and the subtitling descriptor in the PMT, as broadcasters
+  across Europe send them.
 
 ``Server`` serves a folder; its ``stall_after`` makes every request after
 that many seconds hang until the server shuts down, its ``refuse`` answers
@@ -293,6 +296,104 @@ def make_teletext_ts(path, seconds=10, page=0x150, text="Untertitel"):
     _set_pmt(data, [(0x1B, 0x41, b""), (0x06, 0x42, teletext)])
     path.write_bytes(bytes(data))
     return path
+
+# -- DVB subtitles (EN 300 743) -----------------------------------------------------
+
+class _BitWriter:
+    def __init__(self):
+        self.bits = []
+
+    def put(self, value, n):
+        self.bits += [(value >> (n - 1 - k)) & 1 for k in range(n)]
+
+    def data(self):
+        bits = self.bits + [0] * (-len(self.bits) % 8)
+        return bytes(int("".join(map(str, bits[i:i + 8])), 2) for i in range(0, len(bits), 8))
+
+
+def dvbsub_line(runs):
+    """One line of 4-bit pixel data: [(code, run)], each run 1 or 3 and more."""
+    w = _BitWriter()
+    for code, n in runs:
+        while n:
+            if n >= 25:
+                k = min(n, 280)
+                w.put(0, 4), w.put(0b1111, 4), w.put(k - 25, 8), w.put(code, 4)
+            elif n >= 9:
+                k = n
+                w.put(0, 4), w.put(0b1110, 4), w.put(k - 9, 4), w.put(code, 4)
+            else:
+                k = 1
+                if code:
+                    w.put(code, 4)
+                else:
+                    w.put(0, 4), w.put(0b1100, 4)               # one pixel of 0
+            n -= k
+    w.put(0, 4), w.put(0, 4)                                    # end of the string
+    return bytes([0x11]) + w.data() + bytes([0xf0])
+
+
+def _segment(kind, page, data):
+    return bytes([0x0f, kind, page >> 8, page & 0xff, len(data) >> 8, len(data) & 0xff]) + data
+
+
+def dvbsub_display_set(box=None, page=1, version=0, state=2, timeout=10, code=1):
+    """The PES data of one display set of *page*: with *box* (x, y, w, h),
+    one region there holding one object, a bar of *code* (CLUT 0 default:
+    not transparent); without, a page that shows nothing."""
+    pcs = bytes([timeout, (version & 0x0f) << 4 | (state & 3) << 2])
+    out = b""
+    if box:
+        x, y, w, h = box
+        pcs += bytes([0, 0, x >> 8, x & 0xff, y >> 8, y & 0xff])
+        rcs = bytes([0, (version & 0x0f) << 4 | 0x08, w >> 8, w & 0xff, h >> 8, h & 0xff,
+                     2 << 5 | 2 << 2, 0, 0, 0]) + bytes([0, 1, 0, 0, 0, 0])
+        line = dvbsub_line([(code, w)])
+        top = line * ((h + 1) // 2)
+        bottom = line * (h // 2)
+        ods = bytes([0, 1, (version & 0x0f) << 4, len(top) >> 8, len(top) & 0xff,
+                     len(bottom) >> 8, len(bottom) & 0xff]) + top + bottom
+        out = _segment(0x10, page, pcs) + _segment(0x11, page, rcs) + _segment(0x13, page, ods)
+    else:
+        out = _segment(0x10, page, pcs)
+    return bytes([0x20, 0x00]) + out + _segment(0x80, page, b"") + bytes([0xff])
+
+
+def make_dvbsub_ts(path, seconds=10, page=1, languages=("deu",)):
+    """A TS file of *seconds*: H.264 on PID 0x41 and DVB subtitles, page
+    *page*, one PID from 0x42 on for each of *languages*: each second a bar
+    (the second language's 200 pixels further right), every other one lower
+    down, shown half a second, then an empty page."""
+    _GLib, Gst = gst("videotestsrc", "x264enc", "mpegtsmux")
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    def feed(pl):
+        for n in range(len(languages)):
+            src = pl.get_by_name(f"sub{n}")
+            for i in range(seconds):
+                box = (100 + 200 * n, 400 + 40 * (i % 2), 300 + 10 * i, 30)
+                for k, data in enumerate((dvbsub_display_set(box, page, version=2 * i),
+                                          dvbsub_display_set(None, page, version=2 * i + 1,
+                                                             state=0))):
+                    buf = Gst.Buffer.new_wrapped(data)
+                    buf.pts = i * Gst.SECOND + k * Gst.SECOND // 2
+                    buf.duration = Gst.SECOND // 2
+                    src.emit("push-buffer", buf)
+            src.emit("end-of-stream")
+    subs = " ".join(f"appsrc name=sub{n} format=time caps=subpicture/x-dvb ! queue ! "
+                    f"mux.sink_{66 + n}" for n in range(len(languages)))
+    _pipeline(f"{_video(seconds, 720, 576, 'ball')} ! "
+              "x264enc key-int-max=25 speed-preset=ultrafast ! h264parse ! queue ! mux.sink_65 "
+              f"{subs} mpegtsmux name=mux ! filesink location={path}", feed=feed)
+    data = bytearray(path.read_bytes())
+    streams = [(0x1B, 0x41, b"")]
+    for n, lang in enumerate(languages):
+        streams.append((0x06, 0x42 + n, bytes([0x59, 8]) + lang.encode() +
+                        bytes([0x10, page >> 8, page & 0xff, page >> 8, page & 0xff])))
+    _set_pmt(data, streams)
+    path.write_bytes(bytes(data))
+    return path
+
 
 # 3sat (zdf-hls-18 .../dach/veryhigh/master.m3u8), shortened: two copies of the
 # variant, each with its own groups; the German sound of the variant itself
