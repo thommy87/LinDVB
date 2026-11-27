@@ -147,6 +147,14 @@ def enable_ttml():
     return ok
 
 
+def _caption_renderer(key):
+    """(renderer, format, track origin, name) of the closed captions *key*
+    of the subtitle menu: a CEA-708 service, or minus a CEA-608 channel."""
+    if key > 0:
+        return subrender.Cea708Renderer, subrender.CEA708, f"cc:{key}", f"service {key}"
+    return subrender.Cea608Renderer, subrender.CEA608, f"cc:CC{-key}", f"CC{-key}"
+
+
 def _track_gpu_element(_bin, _sub, element):
     """deep-element-added in debug mode: count the GPU elements (decoders,
     vapostproc, ... of any GPU interface) until they are finalized."""
@@ -547,7 +555,7 @@ class Player(GObject.Object):
         self._ttx_shadow = None
         self._ttx_cmp = None
         self._cc_shadow = None          # (CaptionOverlay, [(renderer, CaptionShadow)]) in debug mode
-        self._cc_draw = None            # (Cea708Renderer, CaptionDrawer, CaptionShadow or None)
+        self._cc_draw = None            # (Cea708/608Renderer, CaptionDrawer, CaptionShadow or None)
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
         self._cue_drawer = None         # draws its cues at their time (stage F)
@@ -1689,19 +1697,22 @@ class Player(GObject.Object):
         if shadow is not None and shadow[0].state().on:
             self._report_dvbsub_shadow(shadow)
 
-    # -- closed captions drawn by LinDVB's CEA-708 renderer (stage F) ---------------
+    # -- closed captions drawn by LinDVB's CEA-608 and CEA-708 renderers (stage F) --
 
     def _cc_draw_follow(self, kind, key):
         """Closed captions picked: LinDVB's CEA-708 renderer decodes service
-        *key* off the video thread and the drawer shows its text over the
-        picture when the frame that brought it is shown, as teletext
-        subtitles are. cc708overlay drew them before and still does with
-        LINDVB_CC708OVERLAY=1 (lindvb.captions). In debug mode the log
-        says what was drawn."""
+        *key* (CEA-608 renderer: channel -*key*, a stream without CEA-708)
+        off the video thread and the drawer shows its text over the picture
+        when the frame that brought it is shown, as teletext subtitles are.
+        cc708overlay drew CEA-708 before and still does with
+        LINDVB_CC708OVERLAY=1 (lindvb.captions). In debug mode the log says
+        what was drawn."""
         self._end_cc_draw()
-        if kind != "cc" or not isinstance(key, int) or self.cc is None or self.cc.old:
+        if kind != "cc" or not isinstance(key, int) or not key or self.cc is None or \
+                (key > 0 and self.cc.old):
             return
-        log = subrender.CaptionShadow(f"service {key}", drawn=True) if debuglog.enabled() else None
+        renderer, fmt, origin, name = _caption_renderer(key)
+        log = subrender.CaptionShadow(name, drawn=True) if debuglog.enabled() else None
         drawer = subrender.CaptionDrawer(self._cue_position, self._draw_caption)
 
         def on_text(text, t):
@@ -1709,10 +1720,10 @@ class Player(GObject.Object):
                 log.saw_new(text, t)
             drawer.add(text, t)
         try:
-            r = subrender.Cea708Renderer(on_text)
-            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CEA708, origin=f"cc:{key}"))
+            r = renderer(on_text)
+            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, fmt, origin=origin))
         except Exception as e:  # noqa: BLE001 - the captions must never cost the playback
-            debuglog.write("Player", f"CEA-708 renderer not started: {e}")
+            debuglog.write("Player", f"{fmt} renderer not started: {e}")
             return
         self._cc_draw = (r, drawer, log)
         self.cc.listen(r.feed, "draw")
@@ -2447,7 +2458,9 @@ class Player(GObject.Object):
     def caption_label(self, service):
         """'English (CC1)': the closed caption service with the name and language
         the HLS playlist (CLOSED-CAPTIONS) or the PMT (caption_service_descriptor)
-        gives for it."""
+        gives for it. A CEA-608 channel comes as minus its number."""
+        if service < 0:
+            return self._caption_label_608(-service)
         hls = next((m for m in self._media("CLOSED-CAPTIONS")
                     if captions.instream_service(m.get("instream_id")) == service), None)
         iid = (hls or {}).get("instream_id", "").upper()
@@ -2458,6 +2471,17 @@ class Player(GObject.Object):
             language_name(self._cc_pmt.get(service, "") or self._cc_pmt.get(-service, ""))
         return f"{name} ({tag})" if name else _("Closed captions ({tag})").format(tag=tag)
 
+    def _caption_label_608(self, channel):
+        """'English (CC1)' for CEA-608 channel *channel* (1-4): the HLS
+        playlist names it by INSTREAM-ID, the PMT by field (CC1, CC3)."""
+        tag = f"CC{channel}"
+        hls = next((m for m in self._media("CLOSED-CAPTIONS")
+                    if (m.get("instream_id") or "").strip().upper() == tag), None) or {}
+        pmt = {1: -1, 3: -2}.get(channel)
+        name = hls.get("name", "") or language_name(hls.get("language", "")) or \
+            language_name(self._cc_pmt.get(pmt, "") if pmt else "")
+        return f"{name} ({tag})" if name else _("Closed captions ({tag})").format(tag=tag)
+
     def _subtitle_entries(self):
         """[(kind, key, label)]: text/DVB subtitle streams, teletext subtitle
         pages and the closed caption services of the video."""
@@ -2465,6 +2489,7 @@ class Player(GObject.Object):
         out += [("ttx", p.page, p.label) for p in self.teletext_pages()]
         if self.cc is not None and self.cc.present:
             out += [("cc", svc, self.caption_label(svc)) for svc in self.cc.services]
+            out += [("cc", -ch, self.caption_label(-ch)) for ch in self.cc.channels]
         return out
 
     def audio_tracks(self):
@@ -2488,7 +2513,8 @@ class Player(GObject.Object):
         return labels, cur
 
     def has_closed_captions(self):
-        """The video of the current stream carries CEA-708 captions."""
+        """The video of the current stream carries closed captions LinDVB
+        offers (CEA-708, or CEA-608 alone)."""
         return self.cc is not None and self.cc.present
 
     def select_audio(self, i):

@@ -859,6 +859,45 @@ def test_cea708_captions_start_off_are_drawn_and_go(player, monkeypatch, per_fra
         srv.close()
 
 
+def test_cea608_captions_alone_are_offered_and_drawn(player, monkeypatch):  # noqa: F811
+    """A stream with CEA-608 captions and no CEA-708 (older encoders, some
+    IPTV): CC1 is offered, LinDVB's CEA-608 renderer draws it over the
+    picture once picked, and it goes again with Off. The debug log says what
+    was drawn."""
+    from lindvb import captions, debuglog
+    if not captions.available():
+        pytest.skip("ccextractor missing")
+    monkeypatch.delenv("LINDVB_CC708OVERLAY", raising=False)
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 20, pattern="blue", text=None, cc608="LinDVB 608")
+    srv = sk.Server(folder)
+    texts = _subtitle_texts(player)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        assert player.cc.kinds == {"608"}
+        assert player.subtitle_tracks() == (["Closed captions (CC1)"], -1)
+        _run(1)
+        assert not [t for t in texts if t]
+        player.select_subtitle(0)
+        assert player.subtitle_tracks()[1] == 0 and player._cc_shadow is None
+        _run(6, lambda: len({t.split("\n")[-1] for t in texts if t.endswith(("2", "3", "4"))}) >= 2)
+        # roll-up: the bottom row grows a pair at a time, one line a second
+        shown = [t.split("\n")[-1] for t in texts if t]
+        assert all("LinDVB 608".startswith(t) or t.startswith("LinDVB 608 ") for t in shown), texts
+        assert len({t for t in shown if t.startswith("LinDVB 608 ")}) >= 2, texts
+        player.select_subtitle(-1)
+        assert texts[-1] == "" and player._cc_draw is None
+    finally:
+        srv.close()
+    assert any("CEA-608 caption channels offered: CC1" in ln for ln in lines), lines
+    drawn = [ln for ln in lines if ln.startswith("CEA-608 renderer (CC1): ")]
+    assert len(drawn) == 1 and "captions drawn" in drawn[0] and "dropped 0" in drawn[0], lines
+
+
 def test_cea708_captions_by_the_old_path_when_asked(player, monkeypatch):  # noqa: F811
     """LINDVB_CC708OVERLAY=1: cc708overlay blends them into the picture, as
     before stage F, and LinDVB's renderer draws nothing."""

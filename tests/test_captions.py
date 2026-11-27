@@ -9,7 +9,7 @@ draws them; cc708overlay (the old path, ``old=True``) still can."""
 
 import pytest
 
-from lindvb.captions import caption_kinds
+from lindvb.captions import caption_channels_608, caption_kinds
 
 gi = pytest.importorskip("gi")
 gi.require_version("Gst", "1.0")
@@ -53,6 +53,25 @@ def test_kinds_of_cc_data():
     assert caption_kinds(b"".join(cc608("HI"))) == {"608"}
     assert caption_kinds(cc708("HI")) == {"708"}
     assert caption_kinds(cc608("HI")[0] + cc708("HI")) == {"608", "708"}
+
+
+def _pair(b0, b1, b2):
+    return bytes([b0, _parity(b1), _parity(b2)])
+
+
+def test_608_channels_with_captions():
+    """A channel counts once a command starts captions on it (RCL, RU2-4,
+    RDC); text mode, XDS and CEA-708 do not."""
+    assert caption_channels_608(b"".join(cc608("HI"))) == {1}                 # RU2, CC1
+    assert caption_channels_608(_pair(0xfc, 0x1c, 0x20)) == {2}               # RCL, CC2
+    assert caption_channels_608(_pair(0xfd, 0x15, 0x29)) == {3}               # RDC, field 2
+    assert caption_channels_608(_pair(0xfd, 0x14, 0x26)) == {3}               # 0x14 there too
+    assert caption_channels_608(_pair(0xfd, 0x1d, 0x27)) == {4}
+    assert caption_channels_608(_pair(0xfc, 0x14, 0x2a)) == set()             # text mode
+    assert caption_channels_608(_pair(0xfc, 0x14, 0x2c)) == set()             # erase only
+    assert caption_channels_608(_pair(0xfd, 0x01, 0x03)) == set()             # XDS
+    assert caption_channels_608(_pair(0xf8, 0x14, 0x25)) == set()             # not valid
+    assert caption_channels_608(cc708("HI") + PADDING) == set()
 
 
 def _split(text, start, per_frame):
@@ -185,11 +204,29 @@ def test_silent_draws_nothing(elements):
     assert cc.present and bright == 0
 
 
-def test_608_only_is_not_offered(elements):
+def test_608_only_is_not_offered_by_the_old_path(elements):
     """cc708overlay cannot draw CEA-608: no menu entry that shows nothing."""
     cc, bright = _play(dict(enumerate(cc608("HELLO WORLD"))))
     assert cc.kinds == {"608"}
-    assert not cc.present
+    assert not cc.present and cc.channels == []
+
+
+def test_608_only_is_offered(extraction):
+    """No CEA-708: the CEA-608 channel that carries captions is offered,
+    LinDVB's CEA-608 renderer draws it."""
+    cc, bright = _play(dict(enumerate(cc608("HELLO WORLD"))), old=False)
+    assert cc.kinds == {"608"} and cc.present
+    assert cc.channels == [1] and cc.services == []
+    assert bright == 0                                  # nothing blended into the picture
+
+
+def test_608_beside_708_only_708_is_offered(extraction):
+    """By convention service 1 carries what CC1 does: one entry, not two."""
+    frames = dict(enumerate(cc608("HELLO WORLD")))
+    frames.update({20: cc708("HELLO"), 30: cc708("HELLO")})
+    cc, _bright = _play(frames, old=False)
+    assert cc.kinds == {"608", "708"} and cc.present
+    assert cc.services == [1] and cc.channels == []
 
 
 def cc708_service(text, service):
