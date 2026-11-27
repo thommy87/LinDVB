@@ -298,6 +298,31 @@ def test_webvtt_subtitles_end_to_end(player, ard):  # noqa: F811
         _assert_drawn_on_time(player.log, "WebVTT")
 
 
+def test_empty_webvtt_segments_end_to_end(player, ard):  # noqa: F811
+    """3sat (HLS): a programme without subtitles still sends its WebVTT
+    segments, with only the header in them. Picked, nothing is shown; with
+    debug mode on, the line of the text cue renderer says the data held no
+    text, so the debug log alone tells this from subtitles that went lost."""
+    url, folder = ard
+    for vtt in (folder / "subs").glob("*.vtt"):
+        vtt.write_text("WEBVTT\nX-TIMESTAMP-MAP=MPEGTS:324000000,LOCAL:00:00:00.000\n\n\n\n")
+    player.settings["stream_engine"] = "playbin3"
+    player.play_uri(url)
+    _run(15, lambda: player.subtitle_tracks()[0] and player._played)
+    player.select_subtitle(0)
+    _run(15, lambda: player.subtitle_tracks()[1] == 0 and player._played)
+    _run(4)
+    player.select_subtitle(-1)
+    _run(15, lambda: player.subtitle_tracks()[1] == -1 and player._played)
+    _run(1)
+    player.stop()
+    if player.log is not None:
+        reports = [ln for ln in player.log if ln.startswith("WebVTT renderer (shadow")]
+        assert reports, player.log
+        assert all(r.endswith("the subtitle data held no text") for r in reports), reports
+        assert not [ln for ln in player.log if " drawing (shadow" in ln], player.log
+
+
 def test_cue_text():
     assert sr.cue_text(b"<i>Untertitel</i> &amp; mehr\n  zwei \n\x00") == "Untertitel & mehr\nzwei"
     assert sr.cue_text(b"<b></b>\n") == ""
@@ -322,7 +347,10 @@ def test_stream_time():
 def test_cue_shadow_report():
     state = sr.State(sr.WEBVTT, on=True, track="text", data=6)
     sh = sr.CueShadow("text")
-    assert sh.report(state) is None
+    assert sh.report(sr.State(sr.WEBVTT, on=True, track="text")) is None
+    # data came, but no cue in it (3sat sending WebVTT segments with only the header)
+    assert sh.report(state) == ("WebVTT renderer (shadow, text): 0 cues, the old path 0; "
+                                "data 6, dropped 0; the subtitle data held no text")
     ms = 1_000_000
     for i, t in enumerate(("a", "b", "c")):
         sh.saw_old(t, i * 1000 * ms)
