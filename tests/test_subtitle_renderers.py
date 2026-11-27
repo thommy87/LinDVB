@@ -440,13 +440,20 @@ def test_ttml_subtitles_end_to_end(player, dash_ttml):
     the text cue renderer read along with ttmlparse and had the same cues
     at the same times."""
     from gi.repository import Gst
-    parsed = []
+    parsed = []                                          # the texts ttmlparse handed on
+
+    def note(_pad, info):
+        buf = info.get_buffer()
+        ok, m = buf.map(Gst.MapFlags.READ)
+        if ok:
+            parsed.append(sr.cue_text(m.data))
+            buf.unmap(m)
+        return Gst.PadProbeReturn.OK
 
     def child(_overlay, element):
         f = element.get_factory()
         if f is not None and f.get_name() == "ttmlparse":
-            element.get_static_pad("src").add_probe(
-                Gst.PadProbeType.BUFFER, lambda _p, _i: (parsed.append(1), Gst.PadProbeReturn.OK)[1])
+            element.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, note)
 
     def deep(_bin, _sub, element):
         f = element.get_factory()
@@ -465,8 +472,15 @@ def test_ttml_subtitles_end_to_end(player, dash_ttml):
     if player.log is not None:
         assert player._cue_shadow.state() == sr.State(sr.WEBVTT)   # off: reads nothing
     player.select_subtitle(0)
-    _run(14, lambda: len(parsed) >= 4)
-    assert len(parsed) >= 4                              # the old path draws them
+
+    def drawn():
+        # ttmlparse may hand on a few cues from where dashdemux first took
+        # the text from, before the seek that fetches it again: the cues
+        # counted are those after the seek, once the picture got to them
+        ok, pos = player.playbin.query_position(Gst.Format.TIME)
+        return "Untertitel 3" in parsed and ok and pos >= 3_100_000_000
+    _run(14, drawn)
+    assert drawn(), parsed                               # the old path draws them
     player.select_subtitle(-1)
     _run(1)
     player.stop()
