@@ -107,8 +107,9 @@ def test_other_sound_is_not_audio_description(track):
 
 # -- the subtitle and audio menus: renditions the buffer cannot carry -----------------------
 
-def _menu_extras(media, titles, buffered=True, pb3=False):
-    """window._missing_renditions on a stand-in window."""
+def _menu_extras(media, titles, buffered=True, pb3=False, held=()):
+    """window._missing_renditions on a stand-in window; *held*: the
+    subtitle renditions whose cues are in the buffer (stage H)."""
     gi = pytest.importorskip("gi")
     gi.require_version("Gtk", "4.0")
     from lindvb.ui.window import MainWindow
@@ -116,7 +117,8 @@ def _menu_extras(media, titles, buffered=True, pb3=False):
     tuned = types.SimpleNamespace(url=url, buffered=buffered)
     stub = types.SimpleNamespace(
         renditions={url: media}, uri="" if buffered else url, _pb3=pb3,
-        audio_track_info=lambda: ([AudioTrack(title=t) for t in titles], 0))
+        audio_track_info=lambda: ([AudioTrack(title=t) for t in titles], 0),
+        buffer_subtitles=lambda: list(held))
     fake = types.SimpleNamespace(_tuned=tuned, capture=object() if buffered else None, player=stub)
     return MainWindow._missing_renditions(fake)
 
@@ -134,6 +136,8 @@ def test_menu_extras_ard():
     media = parse_hls(MASTER)["media"]
     assert _menu_extras(media, ["Deutsch", "Klare Sprache"]) == (["Deutsch"], [])
     assert _menu_extras(media, []) == (["Deutsch"], ["Klare Sprache"])
+    # the buffer holds the cues of the WebVTT: no entry without timeshift for it
+    assert _menu_extras(media, ["Deutsch", "Klare Sprache"], held=["Deutsch"]) == ([], [])
 
 
 @pytest.mark.parametrize("titles", [["TV Ton", "Klare Sprache", "Audio-Deskription"], []],

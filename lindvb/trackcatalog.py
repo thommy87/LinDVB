@@ -14,7 +14,7 @@ once the logs show no more differences.
 
 Kept free of GTK and GStreamer so it can be tested on its own."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from . import captions
 from .ca import parse_pmt
@@ -206,11 +206,12 @@ def from_hls(media, in_buffer=True):
     return tracks
 
 
-def with_renditions(pmt_tracks, media, rendition_for_pid):
+def with_renditions(pmt_tracks, media, rendition_for_pid, held_subtitles=()):
     """The timeshift buffer of an HLS stream: its PMT names one PID per audio
     rendition (lindvb.ipstream.rendition_pid). The PID's track gets the
     rendition's name and roles; renditions the buffer does not hold are
-    added as not in the buffer."""
+    added as not in the buffer, except the subtitle renditions named in
+    *held_subtitles* (their cues are in it, lindvb.cuebuffer)."""
     out, used = [], set()
     for t in pmt_tracks:
         m = _rendition_of(t, media, rendition_for_pid)
@@ -222,7 +223,10 @@ def with_renditions(pmt_tracks, media, rendition_for_pid):
         roles |= set(t.roles) - {MAIN}
         out.append(Track(AUDIO, t.format, t.language or lang, m.get("name", ""),
                          _with_main(roles), t.origin))
-    out += [t for t in from_hls(media, in_buffer=False)
+    out += [replace(t, in_buffer=True)
+            if t.origin == f"rendition:{t.name}" and t.kind == SUBTITLE and
+            t.name in held_subtitles else t
+            for t in from_hls(media, in_buffer=False)
             if not (t.kind == AUDIO and t.name in used)]
     return out
 
@@ -265,18 +269,20 @@ def label(track, language_name=None, gettext=None):
 
 # -- shadow mode ----------------------------------------------------------------------
 
-def catalog_for(pmt_section=None, media=(), rendition_for_pid=None, buffered=None):
+def catalog_for(pmt_section=None, media=(), rendition_for_pid=None, buffered=None,
+                held_subtitles=()):
     """The catalog of what plays: from the PMT of a transport stream (DVB,
     the timeshift buffer), with the HLS renditions it holds, or from the
     renditions alone (an HLS stream played directly). [] when neither is
     known (files, DASH played directly). *buffered*: True for the timeshift
-    buffer, False played directly, None to tell from the PIDs."""
+    buffer, False played directly, None to tell from the PIDs.
+    *held_subtitles*: the subtitle renditions whose cues the buffer holds."""
     tracks = from_pmt(pmt_section) if pmt_section else []
     if media:
         in_buffer = buffered if buffered is not None else \
             any(_rendition_of(t, media, rendition_for_pid) for t in tracks)
         if in_buffer:
-            tracks = with_renditions(tracks, media, rendition_for_pid)
+            tracks = with_renditions(tracks, media, rendition_for_pid, held_subtitles)
         else:
             # played directly: the PMT is the one of the variant's segments
             # and knows nothing of the other renditions

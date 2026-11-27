@@ -104,6 +104,11 @@ def test_buffered_stream_with_subtitle_renditions_only():
     # played directly: the renditions are what plays
     direct = tc.catalog_for(pmt, media, rendition_for_pid, buffered=False)
     assert [(t.id, t.in_buffer) for t in direct] == [("subtitle/rendition:English", True)]
+    # the capture writes the cues of the WebVTT into the buffer (stage H)
+    held = tc.catalog_for(pmt, media, rendition_for_pid, buffered=True, held_subtitles=["English"])
+    assert [(t.id, t.in_buffer) for t in held] == [
+        ("audio/pid:0x42", True), ("subtitle/rendition:English", True)]
+    assert tc.compare(held, [AudioTrack(codec="AAC")], ["cue"], is_audio_description) == []
 
 
 def test_label():
@@ -160,7 +165,7 @@ def test_player_writes_the_catalog_to_the_debug_log(monkeypatch):
         capture=None,
         _media=lambda kind=None: [],
         audio_track_info=lambda: ([AudioTrack(language="deu"), AudioTrack(language="eng")], 0),
-        _subtitle_entries=lambda: [])
+        _subtitle_entries=lambda: [], buffer_subtitles=lambda: [])
     assert Player._shadow_catalog(fake, 1) is False
     assert lines[0][0] == "Tracks" and "audio/pid:0x13EF" in lines[0][1]
     assert any("2 tracks in the menu, 4 in the catalog" in text for _c, text in lines)

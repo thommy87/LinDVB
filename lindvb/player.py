@@ -51,6 +51,9 @@ FLOW_DEMUXERS = ("hlsdemux2", "dashdemux2", "hlsdemux", "dashdemux")
 # offset, and after how many looks with the picture going on it gives up
 VTT_CLOCK_LOOK_MS = 250
 VTT_CLOCK_LOOKS = 40
+BUFFER_CUE_WINDOW = 12          # s read before the start for the cues running there
+BUFFER_CUE_PIDS_MS = 1000       # how often, and how many times, the player looks
+BUFFER_CUE_PIDS_LOOKS = 30      # whether the renditions in the buffer became known
 PLAY_FLAGS_VIS = 8
 # DASH subtitles switched on during playback are fetched again with a seek
 # (Player._fetch_subtitles_again) once the subtitle overlay stands: it is
@@ -326,15 +329,49 @@ class Feeder(threading.Thread):
     """Pushes TS data from a SegmentReader into an appsrc, blocking when full.
 
     *on_meta(offset, fields)* gets the song title packets of internet radio
-    (lindvb.ipstream.META_PID) with their byte offset in the capture."""
+    (lindvb.ipstream.META_PID) with their byte offset in the capture.
+    *on_cue(pid, start, end, text, epoch)* the subtitle cues in the buffer
+    (lindvb.cuebuffer); *before* is a SegmentReader a little before the
+    start, read for the cues that began there (and closed) first."""
 
-    def __init__(self, reader, appsrc, on_meta=None):
+    def __init__(self, reader, appsrc, on_meta=None, on_cue=None, before=None):
         super().__init__(daemon=True)
         self.reader, self.appsrc = reader, appsrc
         self.on_meta = on_meta
+        self.on_cue = on_cue
+        self._before = before
+        self._cues = None
+        if on_cue is not None:
+            from .cuebuffer import CueFinder
+            self._cues = CueFinder()
         self.running = True
 
+    def _read_before(self):
+        """The bytes before the start, for the cues running there."""
+        before, self._before = self._before, None
+        try:
+            while self.running and before.offset < self.reader.offset:
+                data = before.read(min(TS_PACKET * 512, self.reader.offset - before.offset))
+                if not data:
+                    break
+                self._cues.before(data)
+        finally:
+            before.close()
+
+    def _find_cues(self, data):
+        try:
+            for cue in self._cues.feed(data):
+                self.on_cue(*cue)
+        except Exception as e:  # noqa: BLE001 - the subtitles must never cost the picture
+            self._cues = None
+            debuglog.write("Player", f"subtitles from the buffer: {e}")
+
     def run(self):
+        if self._before is not None and self._cues is not None:
+            try:
+                self._read_before()
+            except Exception as e:  # noqa: BLE001
+                debuglog.write("Player", f"subtitles from the buffer: {e}")
         while self.running:
             data = self.reader.read()
             if data is None:
@@ -347,9 +384,13 @@ class Feeder(threading.Thread):
                 start = self.reader.offset - len(data)
                 for pos, fields in find_meta(data):
                     self.on_meta(start + pos, fields)
+            if self._cues is not None:
+                self._find_cues(data)
             if self.appsrc.emit("push-buffer", Gst.Buffer.new_wrapped(data)) != Gst.FlowReturn.OK:
                 break
         self.reader.close()
+        if self._before is not None:
+            self._before.close()
 
     def stop(self):
         self.running = False
@@ -644,6 +685,7 @@ class Player(GObject.Object):
         self._meta_queue = []
         self._meta_lock = threading.Lock()
         self._meta_timer = 0
+        self._bcues = None              # the subtitle cues in the buffer (vttdraw.BufferCues)
 
     # -- pipeline -----------------------------------------------------------
 
@@ -1062,6 +1104,7 @@ class Player(GObject.Object):
         self._end_dvbsub_shadow()
         self._end_vtt_shadow()
         self._end_vtt_draw()
+        self._end_buffer_cues()
         self._ts_clocks = []
         self._ttx_dec = None
         self._ttx_present = False
@@ -1110,8 +1153,9 @@ class Player(GObject.Object):
             if getattr(self.capture, "meta_titles", False):
                 token = self._token
                 on_meta = lambda off, fields: self._queue_meta(off, fields, token)
+            on_cue, before = self._buffer_cue_feed()
             self.feeder = Feeder(SegmentReader(self.capture.store, self._start_offset), src,
-                                 on_meta)
+                                 on_meta, on_cue, before)
             self.feeder.start()
         elif name == "udpsrc" and self._ssm_source:
             if src.find_property("multicast-source"):
@@ -1259,6 +1303,87 @@ class Player(GObject.Object):
         if last:
             self._update_metadata(dict(last), self._token)
         self._meta_timer = GLib.timeout_add(250, self._apply_meta, self._token)
+
+    # -- the subtitles of an internet channel in its buffer (stage H) --------------
+
+    def _buffer_cues_on(self):
+        """The capture writes the subtitle cues into its buffer."""
+        return bool(self.capture is not None and getattr(self.capture, "writes_cues", False))
+
+    def _start_buffer_cues(self):
+        """A start from the capture: the cues the feeder finds are kept for
+        the subtitle menu, the one picked is drawn at the buffer's video
+        clock (lindvb.vttdraw.BufferCues)."""
+        self._end_buffer_cues()
+        if not self._buffer_cues_on():
+            return
+        self._bcues = vttdraw.BufferCues(self._video_clock, self._cue_position,
+                                         lambda text: self.emit("subtitle-text", text),
+                                         lambda: self.rate)
+        self._bcues.set_pids(getattr(self.capture, "cue_pids", {}))
+        choice = self._sub_choice
+        if choice and choice[0] == "cue":
+            self._bcues.show(choice[1])
+        if not self._bcues.pids:
+            # the reader is still reading the playlist for the renditions
+            GLib.timeout_add(BUFFER_CUE_PIDS_MS, self._buffer_cue_pids, self._token, [0])
+
+    def _buffer_cue_pids(self, token, looks):
+        """Main loop, every BUFFER_CUE_PIDS_MS: the renditions in the buffer
+        became known (menu). True to look again."""
+        bcues = self._bcues
+        if token != self._token or bcues is None:
+            return False
+        if bcues.set_pids(getattr(self.capture, "cue_pids", {})):
+            self.emit("tracks")
+        looks[0] += 1
+        return not bcues.pids and looks[0] < BUFFER_CUE_PIDS_LOOKS
+
+    def _end_buffer_cues(self):
+        bcues, self._bcues = self._bcues, None
+        if bcues is None:
+            return
+        report = bcues.off()
+        if debuglog.enabled():
+            debuglog.write("Player", f"{report or 'subtitles from the buffer: none drawn'}; "
+                                     f"{bcues.found} cues found in it")
+
+    def buffer_subtitles(self):
+        """Names of the subtitle renditions in the buffer that plays."""
+        return list(self._bcues.pids) if self._bcues is not None else []
+
+    def _buffer_draw_follow(self, kind, key):
+        """The subtitle choice changed: draw buffer rendition *key* when
+        *kind* is "cue", else none."""
+        if self._bcues is None:
+            return
+        report = self._bcues.off()
+        if report and debuglog.enabled():
+            debuglog.write("Player", report)
+        if kind == "cue":
+            self._bcues.show(key)
+
+    def _buffer_cue_feed(self):
+        """(on_cue, SegmentReader before the start) for the Feeder, or (None, None)."""
+        if self._bcues is None:
+            return None, None
+        token, capture = self._token, self.capture
+        start, _end = capture.store.bounds()
+        window = int(capture.byte_rate() * BUFFER_CUE_WINDOW)
+        before = None
+        if self._start_offset > start:
+            before = SegmentReader(capture.store, max(start, self._start_offset - window))
+        return (lambda *cue: GLib.idle_add(
+            lambda: (self._buffer_cue(token, *cue), False)[1])), before
+
+    def _buffer_cue(self, token, pid, start, end, text, epoch):
+        """Main loop: a cue the feeder found."""
+        bcues = self._bcues
+        if token != self._token or bcues is None:
+            return
+        if bcues.set_pids(getattr(self.capture, "cue_pids", {})):
+            self.emit("tracks")                  # the renditions became known
+        bcues.add(pid, text, start, end, epoch)
 
     def _stop_meta(self):
         if self._meta_timer:
@@ -1667,15 +1792,18 @@ class Player(GObject.Object):
         """Text subtitles wanted (LinDVB draws an HLS WebVTT rendition), and
         always in debug mode: each tsdemux inside the HLS or DASH demuxer
         gets a video clock (lindvb.tsclock), which ties the MPEG-TS time of
-        the WebVTT cues to the picture."""
+        the WebVTT cues to the picture. Played from the buffer of a capture
+        that writes the subtitle cues into it, its tsdemux gets the clock."""
         self._ts_clocks = []
-        if debuglog.enabled() or self._text_wanted():
-            pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks)
+        if self._buffer_cues_on():
+            pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks, False)
+        elif debuglog.enabled() or self._text_wanted():
+            pb.connect("deep-element-added", self._on_ts_element, self._ts_clocks, True)
 
-    def _on_ts_element(self, _bin, _sub, element, clocks):
+    def _on_ts_element(self, _bin, _sub, element, clocks, inside):
         try:
             f = element.get_factory()
-            if f is None or f.get_name() != "tsdemux" or not _inside_demuxer(element):
+            if f is None or f.get_name() != "tsdemux" or _inside_demuxer(element) != inside:
                 return
             clock = tsclock.TsClock()
             clock.watch(element)
@@ -2014,6 +2142,7 @@ class Player(GObject.Object):
         self._delay = max(0.0, (end - offset) / capture.byte_rate())
         self._paused_at = None
         pb = self._build()
+        self._start_buffer_cues()
         if getattr(capture, "meta_titles", False):
             self._start_meta(capture, offset)
         pb.set_property("uri", "appsrc://")
@@ -2390,7 +2519,8 @@ class Player(GObject.Object):
             return False
         try:
             catalog = trackcatalog.catalog_for(self._pmt_raw, self._media(), rendition_for_pid,
-                                               buffered=True if self.capture else None)
+                                               buffered=True if self.capture else None,
+                                               held_subtitles=self.buffer_subtitles())
             tracks, _cur = self.audio_track_info()
             kinds = [kind for kind, _key, _label in self._subtitle_entries()]
             diff = trackcatalog.compare(catalog, tracks, kinds, is_audio_description)
@@ -2622,8 +2752,11 @@ class Player(GObject.Object):
 
     def _subtitle_entries(self):
         """[(kind, key, label)]: text/DVB subtitle streams, teletext subtitle
-        pages and the closed caption services of the video."""
+        pages, the closed caption services of the video and the subtitle
+        renditions in the buffer of an internet channel."""
         out = [("text", k, lab) for k, lab in self._text_streams()]
+        if self._bcues is not None:
+            out += [("cue", name, name) for name in self._bcues.pids]
         out += [("ttx", p.page, p.label) for p in self.teletext_pages()]
         if self.cc is not None and self.cc.present:
             out += [("cc", svc, self.caption_label(svc)) for svc in self.cc.services]
@@ -2641,7 +2774,10 @@ class Player(GObject.Object):
         entries = self._subtitle_entries()
         labels = [lab for _k, _key, lab in entries]
         cur = -1
-        if self.ttx_page:
+        if self._bcues is not None and self._bcues.name:
+            cur = next((i for i, e in enumerate(entries) if e[:2] == ("cue", self._bcues.name)),
+                       -1)
+        elif self.ttx_page:
             cur = next((i for i, e in enumerate(entries) if e[:2] == ("ttx", self.ttx_page)), -1)
         elif self.cc is not None and self.cc.service:
             cur = next((i for i, e in enumerate(entries) if e[:2] == ("cc", self.cc.service)), -1)
@@ -2724,6 +2860,7 @@ class Player(GObject.Object):
         self._ttx_shadow_follow(kind, key)
         self._cue_shadow_follow(kind)
         self._cc_draw_follow(kind, key)
+        self._buffer_draw_follow(kind, key)
         self._cc_shadow_follow(kind, key)
         self._dvbsub_shadow_follow()
         self.emit("tracks")

@@ -301,6 +301,11 @@ class PrefsWindow(Gtk.Window):
               "buffer keeps what arrived. Always the best looks the same all the time, "
               "but stops to wait on a slow connection."))
         self._iptv_ts_rows.append(self._ts_quality_drop.get_parent())
+        switch(g, "subtitles_in_buffer", _("Subtitles of HLS channels in the buffer (test)"),
+               _("The WebVTT subtitles of an HLS channel go into the timeshift buffer too, "
+                 "so the channel keeps its timeshift with subtitles switched on. Off: the "
+                 "channel plays without timeshift while they are on."))
+        self._iptv_ts_rows.append(self.w["subtitles_in_buffer"][0].get_parent())
         self._on_timeshift_mode()
         switch(g, "stream_reconnect", _("Reconnect internet streams"),
                _("When the connection of an internet or Tvheadend channel breaks, it is "

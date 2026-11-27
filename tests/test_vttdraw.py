@@ -10,7 +10,7 @@ class _Clock:
     def __init__(self, offset=None):
         self.offset = offset
 
-    def stream_time(self, mpegts, near=None):
+    def stream_time(self, mpegts, near=None, epoch=None):
         return None if self.offset is None else mpegts + self.offset
 
     def summary(self):

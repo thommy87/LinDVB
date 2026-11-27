@@ -5630,3 +5630,11 @@ msgstr "XDS-Programmdaten: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "nur Füllbytes, keine Untertitel"
+
+#: lindvb/ui/dialogs.py
+msgid "Subtitles of HLS channels in the buffer (test)"
+msgstr "Untertitel von HLS-Sendern im Puffer (Test)"
+
+#: lindvb/ui/dialogs.py
+msgid "The WebVTT subtitles of an HLS channel go into the timeshift buffer too, so the channel keeps its timeshift with subtitles switched on. Off: the channel plays without timeshift while they are on."
+msgstr "Die WebVTT-Untertitel eines HLS-Senders kommen mit in den Zeitversatz-Puffer, so behält der Sender seinen Zeitversatz bei eingeschalteten Untertiteln. Aus: Der Sender läuft ohne Zeitversatz, solange sie an sind."
