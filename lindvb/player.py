@@ -44,6 +44,11 @@ PLAY_FLAGS_VIDEO = 1
 PLAY_FLAGS_AUDIO = 2
 PLAY_FLAGS_TEXT = 4
 PLAY_FLAGS_VIS = 8
+# DASH subtitles switched on during playback are fetched again with a seek
+# (Player._fetch_subtitles_again) once the subtitle overlay stands: it is
+# looked for this often (ms), for this long (s)
+SUBTITLE_OVERLAY_POLL_MS = 50
+SUBTITLE_OVERLAY_WAIT_S = 1.0
 
 SPECTRUM_BINS = 256
 SPECTRUM_INTERVAL = 33_333_333      # ns, 30 updates per second
@@ -2219,10 +2224,49 @@ class Player(GObject.Object):
         was (None: off): subtitle data that came while it was not shown is
         gone, and TTML that comes as one file for the whole stream never
         comes again. A seek to where the picture is makes dashdemux fetch it
-        again."""
+        again.
+
+        The seek waits until the subtitle overlay stands: switching
+        subtitles on makes playsink build it (subtitleoverlay plugs a parser
+        and a renderer, the pipeline prerolls again), and a flushing seek in
+        the middle of that left the playback standing in preroll now and
+        then (1 in 8 in the tests; never with the seek after it)."""
         if key == shown or not self._dash or self.capture or self.uri is None:
             return
         pb = self.playbin
+        if self._subtitle_overlay_ready(pb):
+            self._seek_for_subtitles(pb)
+            return
+        GLib.timeout_add(SUBTITLE_OVERLAY_POLL_MS, self._fetch_when_overlay_ready, pb,
+                         time.monotonic() + SUBTITLE_OVERLAY_WAIT_S)
+
+    def _fetch_when_overlay_ready(self, pb, deadline):
+        """Main loop: seek once the overlay stands; nothing when the stream or
+        the subtitles changed meanwhile."""
+        if pb is not self.playbin or not pb.get_property("flags") & PLAY_FLAGS_TEXT:
+            return False
+        if self._subtitle_overlay_ready(pb):
+            self._seek_for_subtitles(pb)
+            return False
+        if time.monotonic() < deadline:
+            return True
+        # no data came to build it with (TTML as one file was read to its end
+        # while the subtitles were off): only the seek brings it
+        self._seek_for_subtitles(pb)
+        return False
+
+    @staticmethod
+    def _subtitle_overlay_ready(pb):
+        """playsink's subtitle overlay has its renderer and the playback is
+        settled (no state change on its way)."""
+        if pb.get_state(0)[0] != Gst.StateChangeReturn.SUCCESS:
+            return False
+        overlay = pb.get_by_name("suboverlay")
+        if overlay is None:
+            return False
+        return any(overlay.get_by_name(n) is not None for n in ("overlay", "renderer"))
+
+    def _seek_for_subtitles(self, pb):
         q = Gst.Query.new_seeking(Gst.Format.TIME)
         ok, pos = pb.query_position(Gst.Format.TIME)
         if not (pb.query(q) and q.parse_seeking()[1] and ok and pos >= 0):
