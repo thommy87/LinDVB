@@ -546,6 +546,8 @@ class Player(GObject.Object):
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
         self._cue_drawer = None         # draws its cues at their time (stage F)
+        self._dvbsub_shadow = None      # and the DVB-SUB renderer: (renderer, DvbSubShadow)
+        self._dvbsub_restart = False
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -624,6 +626,7 @@ class Player(GObject.Object):
             debuglog.track(pb, "pipeline")
             pb.connect("deep-element-added", _track_gpu_element)
             self._cue_shadow_hook(pb)
+            self._dvbsub_shadow_hook(pb)
         pb.set_property("video-sink", self.video.sink)
         # subtitles start switched off; the user turns them on in Subtitles
         if not (self._sub_choice and self._sub_choice[0] == "text") and \
@@ -1016,6 +1019,7 @@ class Player(GObject.Object):
         self._end_ttx_shadow()
         self._end_cue_shadow()
         self._end_cc_shadow()
+        self._end_dvbsub_shadow()
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
@@ -1493,6 +1497,110 @@ class Player(GObject.Object):
             shadow.close()
             self._write_cue_report(cmp, state)
         self._cue_drawer = None
+
+    # -- the DVB-SUB renderer in the shadow (stage F) ---------------------------------
+
+    def _dvbsub_shadow_hook(self, pb):
+        """Debug mode: the DVB-SUB renderer gets a copy of what the old path,
+        dvbsuboverlay, gets while it shows DVB subtitles, and writes what it
+        decoded to the debug log when they go off. The probe only copies;
+        nothing waits for the renderer, nothing is drawn."""
+        try:
+            renderer = subrender.DvbSubRenderer(self._on_dvbsub_page)
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
+            debuglog.write("Player", f"DVB-SUB renderer (shadow) not started: {e}")
+            return
+        self._dvbsub_shadow = (renderer, None)
+        pb.connect("deep-element-added", self._on_dvbsub_overlay)
+
+    def _on_dvbsub_overlay(self, _bin, _sub, element):
+        f = element.get_factory()
+        if f is not None and f.get_name() == "dvbsuboverlay":
+            element.get_static_pad("text_sink").add_probe(
+                Gst.PadProbeType.BUFFER, self._feed_dvbsub_shadow, self._dvbsub_shadow[0])
+
+    def _dvbsub_shown(self):
+        """Text subtitles picked and on (the old path shows them)."""
+        pb, choice = self.playbin, self._sub_choice
+        return pb is not None and bool(pb.get_property("flags") & PLAY_FLAGS_TEXT) and \
+            bool(choice) and choice[0] == "text"
+
+    @staticmethod
+    def _dvbsub_track(stream_id):
+        """The name of a DVB subtitle stream: its PID ("pid:0x42"), which
+        tsdemux puts at the end of the stream id."""
+        tail = (stream_id or "").replace(":", "/").rsplit("/", 1)[-1]
+        try:
+            return f"pid:0x{int(tail, 16):X}" if 2 <= len(tail) <= 8 else "text"
+        except ValueError:
+            return "text"
+
+    def _feed_dvbsub_shadow(self, pad, info, renderer):
+        """Streaming thread: whatever happens in the shadow, the buffer goes on."""
+        try:
+            self._dvbsub_shadow_buffer(pad, info, renderer)
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the subtitles
+            debuglog.write("Player", f"DVB-SUB renderer (shadow): {e}")
+        return Gst.PadProbeReturn.OK
+
+    def _dvbsub_shadow_buffer(self, pad, info, r):
+        if self._dvbsub_shadow is None or r is not self._dvbsub_shadow[0] or \
+                not self._dvbsub_shown():
+            return                      # an old pipeline, or not shown
+        track = self._dvbsub_track(pad.get_stream_id())
+        st = r.state()
+        if st.on and st.track != track:
+            if not self._dvbsub_restart:    # another stream: report, then start again
+                self._dvbsub_restart = True
+                GLib.idle_add(self._restart_dvbsub_shadow, r)
+            return
+        if not st.on:
+            self._dvbsub_shadow = (r, subrender.DvbSubShadow(track))
+            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.DVB_SUB, origin=track))
+        buf = info.get_buffer()
+        ok, m = buf.map(Gst.MapFlags.READ)
+        if not ok:
+            return
+        data = bytes(m.data)
+        buf.unmap(m)
+        ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
+        r.feed(data, subrender.stream_time(ev.parse_segment() if ev else None, buf.pts))
+
+    def _restart_dvbsub_shadow(self, r):
+        self._dvbsub_restart = False
+        shadow = self._dvbsub_shadow
+        if shadow is not None and shadow[0] is r and r.state().on:
+            self._report_dvbsub_shadow(shadow)
+        return False
+
+    def _on_dvbsub_page(self, page, t):
+        shadow = self._dvbsub_shadow
+        if shadow is not None and shadow[1] is not None:
+            shadow[1].saw_page(page, t)
+
+    def _dvbsub_shadow_follow(self):
+        """Main loop: subtitles picked. DVB subtitles that went off: the
+        renderer decodes what is left, reports and goes off (the next buffer
+        of a stream shown starts it again)."""
+        shadow = self._dvbsub_shadow
+        if shadow is not None and shadow[0].state().on and not self._dvbsub_shown():
+            self._report_dvbsub_shadow(shadow)
+
+    def _report_dvbsub_shadow(self, shadow):
+        r, cmp = shadow
+        try:
+            r.decode()
+            line = cmp.report(r.state()) if cmp is not None else None
+        except Exception as e:  # noqa: BLE001
+            line = f"DVB-SUB renderer (shadow): {e}"
+        r.off()
+        if line:
+            debuglog.write("Player", line)
+
+    def _end_dvbsub_shadow(self):
+        shadow, self._dvbsub_shadow = self._dvbsub_shadow, None
+        if shadow is not None and shadow[0].state().on:
+            self._report_dvbsub_shadow(shadow)
 
     # -- the CEA-608 and CEA-708 renderers in the shadow (stage F) ------------------
 
@@ -2314,6 +2422,7 @@ class Player(GObject.Object):
         self._ttx_shadow_follow(kind, key)
         self._cue_shadow_follow(kind)
         self._cc_shadow_follow(kind, key)
+        self._dvbsub_shadow_follow()
         self.emit("tracks")
 
     def _text_shown(self):

@@ -108,6 +108,113 @@ def test_teletext_subtitles_end_to_end(player, teletext_ts):
         assert reports[0].endswith("the same texts") and f"ttx:{TTX_PAGE}" in reports[0], reports
 
 
+@pytest.fixture(scope="module")
+def dvbsub_ts(tmp_path_factory):
+    return streamkit.make_dvbsub_ts(tmp_path_factory.mktemp("dvbsub") / "dvbsub.ts", seconds=14,
+                                    languages=("deu", "eng"))
+
+
+def _element(bin_, factory):
+    it = bin_.iterate_recurse()
+    while True:
+        ok, el = it.next()
+        if ok != 1:                    # Gst.IteratorResult.OK
+            return None
+        f = el.get_factory()
+        if f is not None and f.get_name() == factory:
+            return el
+
+
+def test_dvb_subtitles_end_to_end(player, dvbsub_ts):
+    """Broadcast DVB subtitles in two languages: offered, off at the start,
+    drawn by dvbsuboverlay once picked while the picture goes on. In debug
+    mode the DVB-SUB renderer decodes them beside it and says what it
+    decoded when they go off."""
+    streamkit.gst("dvbsuboverlay")
+    player.play_uri(dvbsub_ts.as_uri())
+    _run(10, lambda: len(player.subtitle_tracks()[0]) == 2)
+    labels, cur = player.subtitle_tracks()
+    assert len(labels) == 2 and cur == -1, labels
+    player.select_subtitle(0)
+    _run(10, lambda: _element(player.playbin, "dvbsuboverlay") is not None and
+         _position(player) > 4_000_000_000)
+    assert _element(player.playbin, "dvbsuboverlay") is not None     # the old path draws
+    pos = _position(player)
+    _run(1)
+    assert _position(player) > pos                      # the picture goes on
+    player.select_subtitle(-1)
+    assert player.subtitle_tracks()[1] == -1
+    if player.log is None:
+        assert player._dvbsub_shadow is None            # no shadow without debug mode
+        return
+    assert not player._dvbsub_shadow[0].state().on
+    reports = [ln for ln in player.log if ln.startswith("DVB-SUB renderer (shadow")]
+    assert len(reports) == 1 and reports[0].startswith(
+        "DVB-SUB renderer (shadow, pid:0x42): "), player.log
+    assert "x30 at 100,4" in reports[0] and "dropped 0" in reports[0], reports
+    assert int(reports[0].split(": ")[1].split()[0]) >= 3, reports
+
+
+class _Pad:
+    def __init__(self, stream_id):
+        self.stream_id = stream_id
+
+    def get_stream_id(self):
+        return self.stream_id
+
+    def get_sticky_event(self, *_a):
+        return None
+
+
+class _Info:
+    def __init__(self, data):
+        from gi.repository import Gst
+        self.buf = Gst.Buffer.new_wrapped(bytes(data))
+        self.buf.pts = 0
+
+    def get_buffer(self):
+        return self.buf
+
+
+def test_dvb_subtitle_shadow_follows_the_stream(player):
+    """Debug mode: the DVB-SUB renderer goes with the stream that reaches
+    dvbsuboverlay; when another one does (the other language picked), it
+    reports what it decoded of the first and starts on the second; it takes
+    nothing while text subtitles are off. (A pipeline that does not play:
+    the buffers come from the test alone.)"""
+    from gi.repository import Gst
+    if player.log is None:
+        pytest.skip("the shadow runs in debug mode")
+    pb = Gst.ElementFactory.make("playbin")
+    player.playbin = pb
+    try:
+        player._dvbsub_shadow_hook(pb)
+        r = player._dvbsub_shadow[0]
+        data = streamkit.dvbsub_display_set((10, 20, 30, 2))
+        player._dvbsub_shadow_buffer(_Pad("abc/0042"), _Info(data), r)
+        assert not r.state().on                         # off: nothing taken
+        pb.set_property("flags", pb.get_property("flags") | 4)      # text subtitles on
+        player._sub_choice = ("text", 0)
+        player._dvbsub_shadow_buffer(_Pad("abc/0042"), _Info(data), r)
+        assert r.state().on and r.state().track == "pid:0x42" and r.state().data == 1
+        player._dvbsub_shadow_buffer(_Pad("abc/0043"), _Info(data), r)    # the other language
+        player._dvbsub_shadow_buffer(_Pad("abc/0043"), _Info(data), r)
+        _run(1, lambda: not r.state().on)
+        assert [ln for ln in player.log if ln.startswith("DVB-SUB renderer")] == [
+            "DVB-SUB renderer (shadow, pid:0x42): 1 subtitle pages shown, 0 cleared; data 1, "
+            "dropped 0; first '30x2 at 10,20 (1 region)', last '30x2 at 10,20 (1 region)'"]
+        player._dvbsub_shadow_buffer(_Pad("abc/0043"), _Info(data), r)
+        assert r.state().track == "pid:0x43" and r.state().data == 1
+        player._sub_choice = None                       # Off
+        player._dvbsub_shadow_follow()
+        assert not r.state().on
+        assert player.log[-1].startswith("DVB-SUB renderer (shadow, pid:0x43): 1 subtitle")
+        assert player._dvbsub_track("weird") == "text" and player._dvbsub_track(None) == "text"
+    finally:
+        player.playbin = None
+        player._end_dvbsub_shadow()
+
+
 # -- the interface -------------------------------------------------------------------
 
 from lindvb import subrender as sr  # noqa: E402

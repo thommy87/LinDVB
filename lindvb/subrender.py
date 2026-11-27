@@ -12,7 +12,7 @@ interface:
 * ``state()``: a :class:`State`: on or off, the track, whether data arrives
   and whether text was decoded.
 
-There will be five: DVB subtitles (bitmaps), teletext (teletextdec),
+There are five: DVB subtitles (bitmaps), teletext (teletextdec),
 CEA-608, CEA-708 and text cues (WebVTT/TTML). Exactly one is on
 (:class:`Switch`); "Off" switches all of them off. Renderers do not know
 each other and share nothing but which one is on.
@@ -538,6 +538,131 @@ class CaptionShadow:
             return head + "; the caption data held no text for this channel"
         texts = [c[0].replace("\n", " / ") for c in self.captions]
         return head + f"; first {_few(texts[:3])}, last {texts[-1][:60]!r}"
+
+
+# PES packets of DVB subtitles the renderer's queue holds (a display set is
+# one or two; a few a second at most)
+DVBSUB_QUEUE_BUFFERS = 100
+
+
+class DvbSubRenderer(Renderer):
+    """DVB subtitles (bitmaps) of one PID, decoded by lindvb.dvbsub apart
+    from the old path (dvbsuboverlay).
+
+    :meth:`feed` (a streaming thread) only puts the PES data in a bounded
+    queue, the oldest thrown away when it is full (counted as dropped). A
+    thread of its own decodes it: a display set of HD subtitles takes some
+    ten milliseconds in Python, which the main loop is not to wait for.
+    *on_page(page, t)* gets each display set (a lindvb.dvbsub.Page) with the
+    stream time of the packet that ended it, on that thread (None, None
+    when the renderer goes off). Drawing comes with the takeover; in the
+    shadow it is only noted."""
+
+    kind = DVB_SUB
+
+    def __init__(self, on_page, queue_buffers=DVBSUB_QUEUE_BUFFERS, thread=True):
+        import threading
+        from collections import deque
+        self._on_page = on_page
+        self._state = State(DVB_SUB)
+        self._queue = deque()
+        self._queue_buffers = queue_buffers
+        self._use_thread = thread        # False (tests): decode by hand (see :meth:`decode`)
+        self._decoder = None
+        self._lock = threading.Lock()   # one decodes at a time: its thread or decode()
+        self._wake = threading.Event()
+
+    def show(self, track):
+        import threading
+        from . import dvbsub
+        self.off()
+        decoder = self._decoder = dvbsub.DvbSubDecoder()
+        self._state = State(DVB_SUB, on=True, track=getattr(track, "origin", ""))
+        if self._use_thread:
+            threading.Thread(target=self._work, args=(decoder,), name="lindvb-dvbsub",
+                             daemon=True).start()
+
+    def off(self):
+        was = self._state
+        self._state = State(DVB_SUB)
+        with self._lock:
+            self._queue.clear()
+            self._decoder = None
+        self._wake.set()                # its thread ends
+        if was.on and was.last:
+            self._on_page(None, None)
+
+    def state(self):
+        return self._state
+
+    def feed(self, data, t=None):
+        """The data of one PES packet; never blocks."""
+        s = self._state
+        if not s.on or not data:
+            return
+        s.data += 1
+        if len(self._queue) >= self._queue_buffers:
+            self._queue.popleft()
+            s.dropped += 1
+        self._queue.append((bytes(data), t))
+        self._wake.set()
+
+    def _work(self, decoder):
+        while self._decoder is decoder:
+            self._wake.wait(1.0)
+            self._wake.clear()
+            try:
+                self.decode()
+            except Exception:  # noqa: BLE001 - a renderer must never cost the playback
+                pass
+
+    def decode(self):
+        """Decode what came; each display set goes to on_page."""
+        with self._lock:
+            q, s, dec = self._queue, self._state, self._decoder
+            while q and dec is not None:
+                data, t = q.popleft()
+                page = dec.feed(data)
+                if page is None:
+                    continue
+                if page.pixels or page.text:
+                    s.decoded += 1
+                s.last = page.describe()
+                self._on_page(page, t)
+
+
+class DvbSubShadow:
+    """What the DVB-SUB renderer decoded beside the old path,
+    dvbsuboverlay: that blends the bitmaps into the picture and lets nothing
+    be read back, so the line says what the renderer decoded (pages shown,
+    where on the display, how many cleared) to set beside what the picture
+    showed."""
+
+    KEEP = 500
+
+    def __init__(self, track=""):
+        self.track = track
+        self.pages = []                 # [(describe(), stream time)] of the pages shown
+        self.cleared = 0
+
+    def saw_page(self, page, t):
+        if page is None:
+            return
+        if page.pixels or page.text:
+            self.pages = (self.pages + [(page.describe(), t)])[-self.KEEP:]
+        else:
+            self.cleared += 1
+
+    def report(self, state):
+        """None when no subtitle data came."""
+        if not state.data:
+            return None
+        head = (f"{state.kind} renderer (shadow, {self.track}): {len(self.pages)} subtitle "
+                f"pages shown, {self.cleared} cleared; data {state.data}, dropped {state.dropped}")
+        if not self.pages:
+            return head + "; the subtitle data showed nothing"
+        shown = [p[0] for p in self.pages]
+        return head + f"; first {_few(shown[:3])}, last {shown[-1][:60]!r}"
 
 
 def cue_text(data):
