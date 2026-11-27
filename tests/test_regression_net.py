@@ -676,14 +676,26 @@ def test_webvtt_loader_finds_the_cues_of_the_old_path(player, monkeypatch):  # n
     """Timed WebVTT that the old path shows (a playlist with an end): the
     loader loads the same cues and says how far apart the two timelines
     are, which drawing them at the right time needs."""
+    clocks = []
     shadow, lines = _vtt_shadow_run(player, monkeypatch, sk.hls_vtt,
-                                    lambda sh: len(sh.offsets()) >= 3)
+                                    lambda sh: len(sh.offsets()) >= 3 and
+                                    clocks.append(player._video_clock()) is None)
     offsets = shadow.offsets()
     assert len(offsets) >= 3, (shadow.old, shadow.new)
     assert max(offsets) - min(offsets) < 0.1, offsets
     report = _vtt_report(lines)
     assert report and "of the old path's cues found" in report[-1], lines
     print(report[-1])
+    # the picture's clock: cue i is due at stream time i, as the old path has it
+    clock = clocks[-1]
+    assert clock is not None and clock.offset == pytest.approx(-3600.0, abs=0.001), clock.summary()
+    assert clock.matched > 25 and clock.missed == 0, clock.summary()
+    assert "video: MPEG-TS time to stream time -3600.000 s" in report[-1]
+    against = shadow.offsets(clock)
+    assert against and max(abs(x) for x in against) < 0.5, against
+    assert "off the picture's" in report[-1], report[-1]
+    # a playlist with an end: the loader has its cues before the playback begins
+    assert "cues came before the playback had begun" in report[-1], report[-1]
 
 
 def test_webvtt_loader_beside_a_stalled_live_stream(player, monkeypatch):  # noqa: F811
@@ -694,12 +706,14 @@ def test_webvtt_loader_beside_a_stalled_live_stream(player, monkeypatch):  # noq
     reports."""
     shadow, lines = _vtt_shadow_run(player, monkeypatch, sk.live_hls_vtt,
                                     lambda sh: len(sh.new) >= 3)
-    assert len(shadow.new) >= 3 and all(m for _t, _s, m in shadow.new), shadow.new
-    text, start, _mapped = shadow.new[0]
+    assert len(shadow.new) >= 3 and all(m for _t, _s, m, _pos in shadow.new), shadow.new
+    text, start, _mapped, _pos = shadow.new[0]
     n = int(text.split()[1])
     assert text == f"Live {n}" and start == 3600.0 + n
     report = _vtt_report(lines)
     assert report and "with X-TIMESTAMP-MAP" in report[-1], lines
+    # the picture stands still here, but its first frames tie the clocks together
+    assert "video: MPEG-TS time to stream time -3600.000 s" in report[-1], report[-1]
     print(report[-1])
 
 
@@ -712,7 +726,7 @@ def test_no_webvtt_loader_without_debug_mode(player):  # noqa: F811
     try:
         player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
         _run(4, lambda: player._sub_choice)
-        assert player._sub_choice and player._vtt is None
+        assert player._sub_choice and player._vtt is None and player._ts_clocks == []
     finally:
         srv.close()
 
