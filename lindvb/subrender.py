@@ -249,6 +249,166 @@ class TeletextRenderer(Renderer):
         return Gst.FlowReturn.OK
 
 
+# -- CEA-608 (lindvb.cc608) ------------------------------------------------------------
+
+# byte pairs a CEA-608 renderer holds before it throws the oldest away:
+# one or two a frame, so about ten seconds
+CC_QUEUE_PAIRS = 600
+# the CEA-608 renderer decodes what came this often (main loop)
+CC_DECODE_MS = 100
+
+
+def cc608_pairs(data, fmt="cc_data"):
+    """[(field, b1, b2)] of one buffer of a caption pad (lindvb.captions
+    formats: cc_data and cdp already turned into cc_data, s334-1a, raw)."""
+    out = []
+    if fmt == "raw":
+        return [(1, data[i], data[i + 1]) for i in range(0, len(data) - 1, 2)]
+    for i in range(0, len(data) - 2, 3):
+        b0, b1, b2 = data[i], data[i + 1], data[i + 2]
+        if fmt == "s334-1a":
+            out.append((1 if b0 & 0x80 else 2, b1, b2))
+        elif b0 & 0x04 and b0 & 0x03 < 2:            # cc_valid, NTSC field 1 or 2
+            out.append(((b0 & 0x03) + 1, b1, b2))
+    return out
+
+
+def _cc_channel(track):
+    """The CEA-608 channel (1-4) of a track ("cc:CC3"), 0 when it names none."""
+    origin = getattr(track, "origin", "") or ""
+    name = origin.split(":", 1)[-1].upper()
+    return int(name[2]) if name.startswith("CC") and name[2:3] in "1234" and name[2:] else 0
+
+
+class Cea608Renderer(Renderer):
+    """CEA-608 captions of one channel (CC1-CC4), decoded by
+    lindvb.cc608 (GStreamer's CEA-608 decoders are in gst-plugins-rs, which
+    most systems lack).
+
+    :meth:`feed` gets the caption data of a frame (a streaming thread) and
+    only puts its byte pairs in a bounded queue: a full queue throws the
+    oldest away (counted as dropped), so the video thread never waits. The
+    main loop decodes what came every :data:`CC_DECODE_MS`; *on_text(text,
+    t)* gets each change of what the channel shows, with the stream time of
+    the frame that brought it ("" when it goes off). Drawing it (Pango in
+    GTK) comes with the takeover; in the shadow it is only noted."""
+
+    kind = CEA608
+
+    def __init__(self, on_text, queue_pairs=CC_QUEUE_PAIRS, timer=True):
+        from collections import deque
+        self._on_text = on_text
+        self._state = State(CEA608)
+        self._queue = deque()
+        self._queue_pairs = queue_pairs
+        self._decoder = None
+        self._timer = None
+        self._use_timer = timer          # False (tests): decode by hand (see :meth:`decode`)
+
+    def can(self, track):
+        return getattr(track, "format", "") == CEA608 and _cc_channel(track) > 0
+
+    def show(self, track):
+        from . import cc608
+        channel = _cc_channel(track)
+        if not channel:
+            self.off()
+            return
+        self.off()
+        self._decoder = cc608.Cea608Decoder(channel)
+        self._state = State(CEA608, on=True, track=getattr(track, "origin", ""))
+        if self._use_timer:
+            from gi.repository import GLib
+            self._timer = GLib.timeout_add(CC_DECODE_MS, self._tick)
+
+    def off(self):
+        was = self._state
+        self._state = State(CEA608)
+        if self._timer is not None:
+            from gi.repository import GLib
+            GLib.source_remove(self._timer)
+            self._timer = None
+        self._queue.clear()
+        self._decoder = None
+        if was.on and was.last:
+            self._on_text("", None)
+
+    def state(self):
+        return self._state
+
+    # -- streaming threads -------------------------------------------------------------
+
+    def feed(self, data, fmt="cc_data", t=None):
+        """The caption data of one frame; never blocks."""
+        s, dec = self._state, self._decoder
+        if not s.on or dec is None:
+            return
+        s.data += 1
+        q = self._queue
+        for field, b1, b2 in cc608_pairs(data, fmt):
+            if field != dec.field:
+                continue
+            if len(q) >= self._queue_pairs:
+                q.popleft()
+                s.dropped += 1
+            q.append((b1, b2, t))
+
+    # -- main loop ---------------------------------------------------------------------
+
+    def _tick(self):
+        try:
+            self.decode()
+        except Exception:  # noqa: BLE001 - a renderer must never cost the playback
+            pass
+        return self._state.on
+
+    def decode(self):
+        """Decode what came; the text shown changes on_text."""
+        s, dec, q = self._state, self._decoder, self._queue
+        while q and dec is not None:
+            b1, b2, t = q.popleft()
+            if dec.feed(b1, b2):
+                text = dec.text
+                if text:
+                    s.decoded += 1
+                s.last = text
+                self._on_text(text, t)
+
+
+class CaptionShadow:
+    """What the CEA-608 renderer decoded beside the old path (cc708overlay,
+    which draws the CEA-708 service, never CEA-608): there is nothing to
+    compare it with, so the line says what it decoded and shows a few of
+    the captions, to set beside what the picture showed."""
+
+    KEEP = 500
+
+    def __init__(self, track=""):
+        self.track = track
+        self.captions = []           # [(text, stream time)]
+
+    def saw_new(self, text, t):
+        """A change of what the channel shows: a line that grows (roll-up and
+        paint-on write a pair at a time) counts once, at its first time."""
+        if not text:
+            return
+        if self.captions and text.startswith(self.captions[-1][0]):
+            self.captions[-1] = (text, self.captions[-1][1])
+            return
+        self.captions = (self.captions + [(text, t)])[-self.KEEP:]
+
+    def report(self, state):
+        """None when no caption data came."""
+        if not state.data:
+            return None
+        head = (f"{state.kind} renderer (shadow, {self.track}): {len(self.captions)} captions "
+                f"decoded; data {state.data}, dropped {state.dropped}")
+        if not self.captions:
+            return head + "; the caption data held no text for this channel"
+        texts = [c[0].replace("\n", " / ") for c in self.captions]
+        return head + f"; first {_few(texts[:3])}, last {texts[-1][:60]!r}"
+
+
 def cue_text(data):
     """The plain text of a parsed cue (subparse: Pango markup), its lines trimmed."""
     import html

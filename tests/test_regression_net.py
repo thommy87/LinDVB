@@ -727,6 +727,38 @@ def test_channel_analysis_counts_the_captions(player):  # noqa: F811
         srv.close()
 
 
+def test_cea608_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
+    """Stage F, debug mode: closed captions picked (cc708overlay draws
+    service 1), the CEA-608 renderer decodes CC1 of the H.264 stream beside
+    it, off the video thread, and the debug log says what it decoded."""
+    from lindvb import captions, debuglog
+    if not captions.available():
+        pytest.skip("cc708overlay missing")
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 8, pattern="blue", cc608="LinDVB 608")
+    srv = sk.Server(folder)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        assert player._cc_shadow is None                    # not picked: nothing decoded
+        player.select_subtitle(0)
+        r = player._cc_shadow[0]
+        # roll-up: the line grows a pair at a time, one line a second
+        _run(10, lambda: r.state().last.endswith(("608 2", "608 3", "608 4")))
+        assert r.state().last.split("\n")[-1].startswith("LinDVB 608 "), r.state()
+        player.select_subtitle(-1)
+        assert player._cc_shadow is None
+    finally:
+        srv.close()
+    reports = [t for c, t in lines if t.startswith("CEA-608 renderer (shadow, CC1)")]
+    assert len(reports) == 1, lines
+    assert "captions decoded" in reports[0] and "'LinDVB 608 " in reports[0], reports
+    assert "dropped 0" in reports[0], reports
+
+
 # -- DASH with roles (ARD's DVB-I streams, ONE HD) ------------------------------------------
 
 @pytest.fixture(scope="module")

@@ -293,6 +293,17 @@ def instream_service(instream_id):
     return {"CC1": 1, "CC3": 2}.get(iid)
 
 
+def _stream_time(pad, pts):
+    """The stream time (the playback position, ns) of *pts* on *pad*, or None."""
+    if pts == Gst.CLOCK_TIME_NONE:
+        return None
+    ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
+    if ev is None:
+        return None
+    t = ev.parse_segment().to_stream_time(Gst.Format.TIME, pts)
+    return t if t != Gst.CLOCK_TIME_NONE and t >= 0 else None
+
+
 def caption_format(caps):
     """The format of a caption pad's caps: "cc_data", "cdp", "s334-1a" or
     "raw" (608 byte pairs); "" when unknown."""
@@ -343,6 +354,7 @@ class CaptionOverlay:
         self.count = None               # CaptionCount while the channel analysis measures
         self._caption_pad = None        # ccextractor's caption pad, once captions came
         self._count_probe = None
+        self._listener = None           # gets the caption data of each frame (stage F renderers)
         self._lock = threading.Lock()
         self.bin = Gst.Bin.new("captions")
         self.extractor = Gst.ElementFactory.make("ccextractor")
@@ -405,6 +417,14 @@ class CaptionOverlay:
                 self.count = None
             self._place_count_probe()
 
+    def listen(self, fn):
+        """*fn(data, fmt, t)* gets the caption data of each frame (a
+        streaming thread; t the stream time or None), or nobody (None). The
+        probe is there only while someone listens or the analysis counts."""
+        with self._lock:
+            self._listener = fn
+            self._place_count_probe()
+
     def caption_info(self):
         """None while not measuring; else whether captions came at all
         ("seen") and :meth:`CaptionCount.summary`."""
@@ -417,16 +437,17 @@ class CaptionOverlay:
         pad = self._caption_pad
         if pad is None:
             return
-        if self.count is not None and self._count_probe is None:
+        wanted = self.count is not None or self._listener is not None
+        if wanted and self._count_probe is None:
             self._count_probe = pad.add_probe(Gst.PadProbeType.BUFFER, self._on_count)
-        elif self.count is None and self._count_probe is not None:
+        elif not wanted and self._count_probe is not None:
             pad.remove_probe(self._count_probe)
             self._count_probe = None
 
     def _on_count(self, pad, info):
-        count = self.count
+        count, listener = self.count, self._listener
         buf = info.get_buffer()
-        if count is None or buf is None:
+        if (count is None and listener is None) or buf is None:
             return Gst.PadProbeReturn.OK
         ok, m = buf.map(Gst.MapFlags.READ)
         if not ok:
@@ -436,7 +457,10 @@ class CaptionOverlay:
         fmt = caption_format(pad.get_current_caps())
         if fmt == "cdp":
             data, fmt = cdp_cc_data(data), "cc_data"
-        count.feed(data, fmt)
+        if count is not None:
+            count.feed(data, fmt)
+        if listener is not None:
+            listener(data, fmt, _stream_time(pad, buf.pts))
         return Gst.PadProbeReturn.OK
 
     # -- drawing ---------------------------------------------------------------------
