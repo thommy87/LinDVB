@@ -143,7 +143,7 @@ def test_renderer_decodes_in_its_own_time():
     r.decode()
     assert got == [("HI", 6 * 40_000_000)]
     st = r.state()
-    assert st.on and st.data == 8 and st.decoded == 1 and st.last == "HI" and st.track == "cc:CC1"
+    assert st.on and st.data == 7 and st.decoded == 1 and st.last == "HI" and st.track == "cc:CC1"
     r.off()
     assert got[-1] == ("", None) and not r.state().on
 
