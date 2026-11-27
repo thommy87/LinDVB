@@ -128,34 +128,57 @@ def _dtvcc_packet(seq, data, service=1):
     return pkt + b"\0" * (size - len(pkt))
 
 
-def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20):
+def _odd_parity(b):
+    b &= 0x7f
+    return b | (0x80 if bin(b).count("1") % 2 == 0 else 0)
+
+
+def cc608_pairs(text):
+    """CEA-608 byte pairs (CC1, roll-up 2) that put *text* on a new bottom
+    row: RU2, CR and the row 15 address, each sent twice, then the text."""
+    pairs = [(0x14, 0x25)] * 2 + [(0x14, 0x2d)] * 2 + [(0x14, 0x60)] * 2
+    text += "\0" * (len(text) % 2)
+    pairs += [(ord(text[i]), ord(text[i + 1])) for i in range(0, len(text), 2)]
+    return pairs
+
+
+def caption_frames(seconds, fps=25, text="LinDVB 708", per_frame=20, cc608=None):
     """cc_data of each frame: one line of text a second on service 1, each
     time with its window (CEA-708 DefineWindow, text, CR, DisplayWindows),
     so that every segment shows captions on its own. A DTVCC packet has to
-    come within one frame for cc708overlay."""
+    come within one frame for cc708overlay. With *cc608*, CC1 carries the
+    line "<cc608> <second>" too (one pair a frame, in field 1)."""
     window = [0x98, 0x38, 0x0A, 0x00, 0x01, 0x1F, 0x09]    # DF0: visible, 2 rows, 32 columns
     frames = []
+    dtvcc = per_frame - (1 if cc608 else 0)
     for sec in range(seconds):
         pkt = _dtvcc_packet(sec, window +
                             list(f"{text} {sec}".encode()) + [0x0D, 0x89, 0x01])
         trip = []
         for i in range(0, len(pkt), 2):
             trip += [0xFF if i == 0 else 0xFE, pkt[i], pkt[i + 1]]   # packet start, data
-        chunks = [trip[i:i + per_frame * 3] for i in range(0, len(trip), per_frame * 3)]
+        chunks = [trip[i:i + dtvcc * 3] for i in range(0, len(trip), dtvcc * 3)]
+        line21 = cc608_pairs(f"{cc608} {sec}") if cc608 else []
         for f in range(fps):
             t = chunks[f] if f < len(chunks) else []
-            frames.append(bytes(t + [0xFA, 0, 0] * (per_frame - len(t) // 3)))   # padding
+            head = []
+            if cc608:
+                b1, b2 = line21[f] if f < len(line21) else (0, 0)
+                head = [0xFC, _odd_parity(b1), _odd_parity(b2)]
+            frames.append(bytes(head + t + [0xFA, 0, 0] * (dtvcc - len(t) // 3)))   # padding
     return frames
 
 
-def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="ball"):
-    """As make_av_segments, with CEA-708 captions in the H.264 stream."""
+def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="ball",
+                            cc608=None):
+    """As make_av_segments, with CEA-708 captions in the H.264 stream (and
+    CEA-608 on CC1 with *cc608*, see caption_frames)."""
     _GLib, Gst = gst("cccombiner", "x264enc", "avenc_aac", "mpegtsmux", "hlssink")
     folder.mkdir(parents=True, exist_ok=True)
 
     def feed(pl):
         src = pl.get_by_name("cc")
-        for i, data in enumerate(caption_frames(seconds)):
+        for i, data in enumerate(caption_frames(seconds, cc608=cc608)):
             buf = Gst.Buffer.new_wrapped(data)
             buf.pts, buf.duration = i * Gst.SECOND // 25, Gst.SECOND // 25
             src.emit("push-buffer", buf)

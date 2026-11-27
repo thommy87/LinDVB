@@ -542,6 +542,7 @@ class Player(GObject.Object):
         # debug mode is on (lindvb.subrender)
         self._ttx_shadow = None
         self._ttx_cmp = None
+        self._cc_shadow = None          # (Cea608Renderer, CaptionShadow) in debug mode
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
         self._cue_drawer = None         # draws its cues at their time (stage F)
@@ -657,6 +658,7 @@ class Player(GObject.Object):
             chain = head + [self.cc.bin]
             if self._sub_choice and self._sub_choice[0] == "cc":
                 self.cc.show(self._sub_choice[1])
+                self._cc_shadow_follow("cc", self._sub_choice[1])
             self.cc.measure(self._measure_captions)
         else:
             chain = head + middle
@@ -1013,6 +1015,7 @@ class Player(GObject.Object):
     def _teardown(self):
         self._end_ttx_shadow()
         self._end_cue_shadow()
+        self._end_cc_shadow()
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
@@ -1490,6 +1493,44 @@ class Player(GObject.Object):
             shadow.close()
             self._write_cue_report(cmp, state)
         self._cue_drawer = None
+
+    # -- the CEA-608 renderer in the shadow (stage F) --------------------------------
+
+    def _cc_shadow_follow(self, kind, key):
+        """Debug mode: closed captions picked (the old path draws CEA-708
+        service *key* with cc708overlay); the CEA-608 renderer decodes the
+        channel that by convention carries the same captions (service 1:
+        CC1, service 2: CC3) beside it and writes what it decoded to the
+        debug log when they go off. It only notes; nothing is drawn."""
+        self._end_cc_shadow()
+        channel = {1: 1, 2: 3}.get(key) if kind == "cc" and isinstance(key, int) else None
+        if not channel or self.cc is None or not debuglog.enabled():
+            return
+        try:
+            cmp = subrender.CaptionShadow(f"CC{channel}")
+            r = subrender.Cea608Renderer(cmp.saw_new)
+            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CEA608,
+                                      origin=f"cc:CC{channel}"))
+        except Exception as e:  # noqa: BLE001 - the shadow must never cost the captions
+            debuglog.write("Player", f"CEA-608 renderer (shadow) not started: {e}")
+            return
+        self._cc_shadow = (r, cmp, self.cc)
+        self.cc.listen(r.feed)
+
+    def _end_cc_shadow(self):
+        shadow, self._cc_shadow = self._cc_shadow, None
+        if shadow is None:
+            return
+        r, cmp, cc = shadow
+        cc.listen(None)
+        try:
+            r.decode()                  # what came since the last look
+            line = cmp.report(r.state())
+        except Exception as e:  # noqa: BLE001
+            line = f"CEA-608 renderer (shadow): {e}"
+        r.off()
+        if line:
+            debuglog.write("Player", line)
 
     def teletext_pages(self):
         """Teletext subtitle pages offered for the current stream."""
@@ -2261,6 +2302,7 @@ class Player(GObject.Object):
                 self._fetch_subtitles_again(shown, key)
         self._ttx_shadow_follow(kind, key)
         self._cue_shadow_follow(kind)
+        self._cc_shadow_follow(kind, key)
         self.emit("tracks")
 
     def _text_shown(self):
