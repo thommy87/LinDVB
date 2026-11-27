@@ -570,6 +570,14 @@ def hls_vtt_without_timestamps(folder, seconds=6):
     return folder / "master.m3u8"
 
 
+def hls_vtt(folder, seconds=6):
+    """The PBS master ("English") with timed WebVTT segments, a cue each."""
+    make_av_segments(folder / "main", seconds)
+    make_vtt(folder / "subs", seconds, text="Cue")
+    (folder / "master.m3u8").write_text(PBS_MASTER)
+    return folder / "master.m3u8"
+
+
 def _live(folder, pattern):
     return LivePlaylist(sorted(p.name for p in folder.glob(pattern)))
 
@@ -586,6 +594,18 @@ def live_hls_vtt_without_timestamps(folder, seconds=30):
     with Server(folder, live=...) and open server.url("master.m3u8")."""
     seg = make_av_segments(folder / "main", seconds)
     subs = make_vtt(folder / "subs", seconds, timestamps=False)
+    (folder / "master.m3u8").write_text(
+        PBS_MASTER.replace("subs/index.m3u8", "subs/live.m3u8").replace(
+            "main/index.m3u8", "main/live.m3u8"))
+    return {"main/live.m3u8": _live(seg, "seg*.ts"), "subs/live.m3u8": _live(subs, "s*.vtt")}
+
+
+
+def live_hls_vtt(folder, seconds=30):
+    """Live, with a WebVTT rendition whose segments carry X-TIMESTAMP-MAP
+    and a cue each (as ARD-alpha's); the master as PBS's ("English")."""
+    seg = make_av_segments(folder / "main", seconds)
+    subs = make_vtt(folder / "subs", seconds, text="Live")
     (folder / "master.m3u8").write_text(
         PBS_MASTER.replace("subs/index.m3u8", "subs/live.m3u8").replace(
             "main/index.m3u8", "main/live.m3u8"))

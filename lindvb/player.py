@@ -26,7 +26,7 @@ from .media_info import (AudioTrack, audio_track_labels, hls_has_alternate_audio
 from .audioviz import AudioAnalysis, parse_spectrum  # noqa: E402
 from .loudness import LoudnessMeter, k_weighting  # noqa: E402
 from . import (captions, compat, debuglog, flowwatch, hwaccel, passthrough,  # noqa: E402
-               subrender, trackcatalog)
+               subrender, trackcatalog, vttload)
 from .teletext import (DEFAULT_SUBTITLE_PAGES, TeletextPage, subtitle_pages_from_pmt,  # noqa: E402
                        teletext_in_pmt)
 from .ca import parse_pmt  # noqa: E402
@@ -553,6 +553,7 @@ class Player(GObject.Object):
         self._dvbsub_shadow = None      # and the DVB-SUB renderer: (renderer, DvbSubShadow)
         self._dvbsub_restart = False
         self._flow = None               # debug mode: what flows from the demuxer and the overlay
+        self._vtt = None                # debug mode: (WebVttLoader, VttShadow) beside hlsdemux2
         # the subtitles the user picked for this channel or file: None (off),
         # ("text", stream name or index), ("ttx", page) or ("cc", service).
         # Every channel starts with them off.
@@ -1026,6 +1027,7 @@ class Player(GObject.Object):
         self._end_cue_shadow()
         self._end_cc_shadow()
         self._end_dvbsub_shadow()
+        self._end_vtt_shadow()
         self._ttx_dec = None
         self._ttx_present = False
         self._ttx_pages = []
@@ -1423,7 +1425,9 @@ class Player(GObject.Object):
 
     def _cue_shadow_follow(self, kind):
         """Subtitles picked: text subtitles off, so the text cue renderer
-        goes off too and reports."""
+        goes off too and reports, and so does the WebVTT loader."""
+        if kind != "text":
+            self._end_vtt_shadow()
         shadow = self._cue_shadow
         if kind != "text" and shadow is not None and shadow.state().on:
             cmp, state = self._cue_cmp, shadow.state()
@@ -1482,6 +1486,9 @@ class Player(GObject.Object):
             cmp = self._cue_cmp
             if cmp is not None and text:
                 GLib.idle_add(lambda: (cmp.saw_old(text, t), False)[1])
+            vtt = self._vtt
+            if vtt is not None and text:
+                GLib.idle_add(lambda: (vtt[1].saw_old(text, t), False)[1])
 
     def _on_shadow_cue(self, text, t, end):
         cmp = self._cue_cmp
@@ -1503,6 +1510,37 @@ class Player(GObject.Object):
             shadow.close()
             self._write_cue_report(cmp, state)
         self._cue_drawer = None
+
+    # -- the WebVTT subtitles loaded by LinDVB itself, in the shadow (debug mode) --
+
+    def _start_vtt_shadow(self, name):
+        """Debug mode: while hlsdemux2 plays the subtitle rendition *name*,
+        LinDVB loads its WebVTT segments on a thread of its own
+        (lindvb.vttload) and says at the end what it found and how its cue
+        times lie to the old path's. Nothing is drawn from it yet."""
+        self._end_vtt_shadow()
+        if not debuglog.enabled() or not self.uri:
+            return
+        media = next((m for m in self._media("SUBTITLES")
+                      if m.get("name") == name and m.get("uri")), None)
+        if media is None:
+            debuglog.write("Player", f"WebVTT loader (shadow, {name}): no URI for the rendition")
+            return
+        shadow = vttload.VttShadow(name)
+        loader = vttload.WebVttLoader(
+            self.uri, media["uri"],
+            lambda text, start, end, mapped: GLib.idle_add(
+                lambda: (shadow.saw_new(text, start, end, mapped), False)[1]))
+        self._vtt = (loader, shadow)
+        loader.start()
+        debuglog.write("Player", f"WebVTT loader (shadow, {name}): loading {media['uri']}")
+
+    def _end_vtt_shadow(self):
+        vtt, self._vtt = self._vtt, None
+        if vtt is not None:
+            loader, shadow = vtt
+            loader.stop()
+            debuglog.write("Player", shadow.report(loader.state))
 
     # -- what flows when the picture stands still with subtitles (debug mode) --------
 
@@ -2569,7 +2607,7 @@ class Player(GObject.Object):
                     continue            # subtitles stay off
                 if self._sub_choice != ("text", match.get_stream_id()):
                     self._sub_choice = ("text", match.get_stream_id())
-                    GLib.idle_add(self._watch_subtitle_stall, self._token)
+                    GLib.idle_add(self._hls_subtitles_on, self._token, wanted)
             if match is None and kind == Gst.StreamType.AUDIO and not wanted:
                 match = self._preferred_audio_stream(of_kind)
             if match is None:
@@ -2604,6 +2642,13 @@ class Player(GObject.Object):
             playback_language(s.get("audio_language", AUDIO_LANGUAGE_AUTO), i18n.current),
             bool(s.get("audio_description_prefer", False)))
         return streams[idx] if idx is not None else None
+
+    def _hls_subtitles_on(self, token, name):
+        """Main loop: hlsdemux2's subtitle rendition *name* is picked; the
+        watchdog looks after the picture, the WebVTT loader in the shadow."""
+        if token == self._token:
+            self._start_vtt_shadow(name)
+        return self._watch_subtitle_stall(token)
 
     def _watch_subtitle_stall(self, token, last=None, still=0.0, checks=0):
         """A subtitle rendition whose segments carry no usable time stamps

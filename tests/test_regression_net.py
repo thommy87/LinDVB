@@ -645,6 +645,78 @@ def test_debug_log_says_what_flows_with_subtitles_on(player, monkeypatch):  # no
         srv.close()
 
 
+def _vtt_shadow_run(player, monkeypatch, sample, until):  # noqa: F811
+    """Debug mode: play *sample*'s "English" rendition until *until(shadow)*
+    holds, then stop; (shadow, debug log lines)."""
+    from lindvb import debuglog
+    sk.gst(*HLS_ELEMENTS)
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append(" ".join(p)))
+    srv, _folder = _served(sample, 30)
+    shadows = []
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(25, lambda: player._vtt is not None and (shadows.append(player._vtt[1]) or
+                                                      until(player._vtt[1])))
+        player._teardown()
+    finally:
+        srv.close()
+    assert shadows, "\n".join(lines)
+    assert player._vtt is None
+    assert any("WebVTT loader (shadow, English): loading subs/" in ln for ln in lines), lines
+    return shadows[-1], lines
+
+
+def _vtt_report(lines):
+    return [ln for ln in lines if ln.startswith("WebVTT loader (shadow, English): playlist")]
+
+
+def test_webvtt_loader_finds_the_cues_of_the_old_path(player, monkeypatch):  # noqa: F811
+    """Timed WebVTT that the old path shows (a playlist with an end): the
+    loader loads the same cues and says how far apart the two timelines
+    are, which drawing them at the right time needs."""
+    shadow, lines = _vtt_shadow_run(player, monkeypatch, sk.hls_vtt,
+                                    lambda sh: len(sh.offsets()) >= 3)
+    offsets = shadow.offsets()
+    assert len(offsets) >= 3, (shadow.old, shadow.new)
+    assert max(offsets) - min(offsets) < 0.1, offsets
+    report = _vtt_report(lines)
+    assert report and "of the old path's cues found" in report[-1], lines
+    print(report[-1])
+
+
+def test_webvtt_loader_beside_a_stalled_live_stream(player, monkeypatch):  # noqa: F811
+    """Live, timed WebVTT: hlsdemux2 (1.24) gets its subtitle buffers
+    without time and holds picture and sound back, as with PBS and
+    ARD-alpha; the old path shows nothing, the loader has the cues. The
+    watchdog opens the stream again without subtitles and the loader
+    reports."""
+    shadow, lines = _vtt_shadow_run(player, monkeypatch, sk.live_hls_vtt,
+                                    lambda sh: len(sh.new) >= 3)
+    assert len(shadow.new) >= 3 and all(m for _t, _s, m in shadow.new), shadow.new
+    text, start, _mapped = shadow.new[0]
+    n = int(text.split()[1])
+    assert text == f"Live {n}" and start == 3600.0 + n
+    report = _vtt_report(lines)
+    assert report and "with X-TIMESTAMP-MAP" in report[-1], lines
+    print(report[-1])
+
+
+def test_no_webvtt_loader_without_debug_mode(player):  # noqa: F811
+    from lindvb import debuglog
+    if debuglog.enabled():
+        pytest.skip("debug mode is on")
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.live_hls_vtt, 30)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(4, lambda: player._sub_choice)
+        assert player._sub_choice and player._vtt is None
+    finally:
+        srv.close()
+
+
 def test_no_flow_watch_without_debug_mode(player):  # noqa: F811
     from lindvb import debuglog
     if debuglog.enabled():
