@@ -682,6 +682,11 @@ class CueShadow:
                 (until is None or c[1] <= until + CUE_TOLERANCE_NS)]
 
     def report(self, state, until=None):
+        """None when no cue was due yet; when the subtitle data held no cue
+        at all (a stream sending empty WebVTT segments), the line says so."""
+        if not self.old and not self.new and state.data:
+            return (f"{state.kind} renderer (shadow, {self.track}): 0 cues, the old path 0; "
+                    f"data {state.data}, dropped {state.dropped}; the subtitle data held no text")
         old, new = self._due(self.old, until), self._due(self.new, until)
         if not old and not new:
             return None
