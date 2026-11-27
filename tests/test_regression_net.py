@@ -745,7 +745,7 @@ def test_cea608_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
         _run(10, lambda: player.has_closed_captions() and player._played)
         assert player._cc_shadow is None                    # not picked: nothing decoded
         player.select_subtitle(0)
-        r = player._cc_shadow[0]
+        r = _cc_shadow_renderer(player, "CEA-608")
         # roll-up: the line grows a pair at a time, one line a second
         _run(10, lambda: r.state().last.endswith(("608 2", "608 3", "608 4")))
         assert r.state().last.split("\n")[-1].startswith("LinDVB 608 "), r.state()
@@ -757,6 +757,43 @@ def test_cea608_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
     assert len(reports) == 1, lines
     assert "captions decoded" in reports[0] and "'LinDVB 608 " in reports[0], reports
     assert "dropped 0" in reports[0], reports
+
+
+def _cc_shadow_renderer(pl, kind):
+    _cc, shadows = pl._cc_shadow
+    return next(r for r, _cmp in shadows if r.kind == kind)
+
+
+def test_cea708_renderer_in_the_shadow(player, monkeypatch):  # noqa: F811
+    """Stage F, debug mode: closed captions picked, the CEA-708 renderer
+    decodes service 1 beside cc708overlay, off the video thread, and the
+    debug log says what it decoded. No CEA-608 in the stream: its renderer
+    reports nothing."""
+    from lindvb import captions, debuglog
+    if not captions.available():
+        pytest.skip("cc708overlay missing")
+    lines = []
+    monkeypatch.setattr(debuglog, "enabled", lambda: True)
+    monkeypatch.setattr(debuglog, "write", lambda cat, *p: lines.append((cat, " ".join(p))))
+    folder = Path(tempfile.mkdtemp(prefix="lindvb-net-"))
+    sk.make_captioned_segments(folder / "main", 8, pattern="blue")
+    srv = sk.Server(folder)
+    try:
+        player.play_uri(srv.url("main/index.m3u8"), live=True)
+        _run(10, lambda: player.has_closed_captions() and player._played)
+        player.select_subtitle(0)
+        r = _cc_shadow_renderer(player, "CEA-708")
+        _run(10, lambda: r.state().decoded >= 2)
+        assert r.state().last.startswith("LinDVB 708 "), r.state()
+        player.select_subtitle(-1)
+        assert player._cc_shadow is None
+    finally:
+        srv.close()
+    reports = [t for c, t in lines if t.startswith("CEA-708 renderer (shadow, service 1)")]
+    assert len(reports) == 1, lines
+    assert "captions decoded" in reports[0] and "'LinDVB 708 " in reports[0], reports
+    assert "dropped 0" in reports[0], reports
+    assert not [t for c, t in lines if t.startswith("CEA-608 renderer")], lines
 
 
 # -- DASH with roles (ARD's DVB-I streams, ONE HD) ------------------------------------------

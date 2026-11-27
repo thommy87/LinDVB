@@ -79,7 +79,8 @@ class State:
     kind: str
     on: bool = False
     track: str = ""              # the origin of the track shown ("ttx:150"), "" when off
-    data: int = 0                # buffers taken in since it went on
+    data: int = 0                # buffers taken in since it went on (CEA-608: byte pairs
+                                 # of its field, CEA-708: frames with DTVCC data; no padding)
     decoded: int = 0             # texts decoded since it went on
     dropped: int = 0             # times its queue was full and threw data away
     last: str = ""               # the text shown last
@@ -343,11 +344,11 @@ class Cea608Renderer(Renderer):
         s, dec = self._state, self._decoder
         if not s.on or dec is None:
             return
-        s.data += 1
         q = self._queue
         for field, b1, b2 in cc608_pairs(data, fmt):
-            if field != dec.field:
+            if field != dec.field or not (b1 & 0x7f or b2 & 0x7f):     # not its field, padding
                 continue
+            s.data += 1
             if len(q) >= self._queue_pairs:
                 q.popleft()
                 s.dropped += 1
@@ -375,11 +376,141 @@ class Cea608Renderer(Renderer):
                 self._on_text(text, t)
 
 
+# frames of caption data a CEA-708 renderer holds before it throws the oldest away
+CC_QUEUE_FRAMES = 300
+
+
+def _cc_service(track):
+    """The CEA-708 service of a track ("cc:1"), 0 when it names none."""
+    name = (getattr(track, "origin", "") or "").split(":", 1)[-1]
+    return int(name) if name.isdigit() and 1 <= int(name) <= 63 else 0
+
+
+def _dtvcc_size(header):
+    """The bytes of a DTVCC packet, its header byte included (CEA-708 5)."""
+    code = header & 0x3f
+    return 128 if code == 0 else code * 2
+
+
+class Cea708Renderer(Renderer):
+    """CEA-708 captions of one service, decoded by lindvb.cc708 apart
+    from the old path (cc708overlay).
+
+    As :class:`Cea608Renderer`: :meth:`feed` (video thread) only queues the
+    DTVCC part of each frame's cc_data, bounded; the main loop puts the
+    packets together, decodes the blocks of its service every
+    :data:`CC_DECODE_MS` and hands *on_text(text, t)* each change of what
+    the service shows."""
+
+    kind = CEA708
+
+    def __init__(self, on_text, queue_frames=CC_QUEUE_FRAMES, timer=True):
+        from collections import deque
+        self._on_text = on_text
+        self._state = State(CEA708)
+        self._queue = deque()
+        self._queue_frames = queue_frames
+        self._use_timer = timer
+        self._decoder = None
+        self._timer = None
+        self._packet = bytearray()
+        self._packet_t = None
+
+    def can(self, track):
+        return getattr(track, "format", "") == CEA708 and _cc_service(track) > 0
+
+    def show(self, track):
+        from . import cc708
+        service = _cc_service(track)
+        self.off()
+        if not service:
+            return
+        self._decoder = cc708.Cea708Decoder(service)
+        self._state = State(CEA708, on=True, track=getattr(track, "origin", ""))
+        if self._use_timer:
+            from gi.repository import GLib
+            self._timer = GLib.timeout_add(CC_DECODE_MS, self._tick)
+
+    def off(self):
+        was = self._state
+        self._state = State(CEA708)
+        if self._timer is not None:
+            from gi.repository import GLib
+            GLib.source_remove(self._timer)
+            self._timer = None
+        self._queue.clear()
+        self._decoder = None
+        self._packet, self._packet_t = bytearray(), None
+        if was.on and was.last:
+            self._on_text("", None)
+
+    def state(self):
+        return self._state
+
+    def feed(self, data, fmt="cc_data", t=None):
+        """The caption data of one frame (cc_data); never blocks."""
+        s = self._state
+        if not s.on or fmt != "cc_data":
+            return
+        triplets = [data[i:i + 3] for i in range(0, len(data) - 2, 3) if data[i] & 0x03 >= 2]
+        if not any(tr[0] & 0x04 for tr in triplets):        # none, or padding only
+            return
+        dtvcc = b"".join(triplets)
+        s.data += 1
+        if len(self._queue) >= self._queue_frames:
+            self._queue.popleft()
+            s.dropped += 1
+        self._queue.append((dtvcc, t))
+
+    def _tick(self):
+        try:
+            self.decode()
+        except Exception:  # noqa: BLE001 - a renderer must never cost the playback
+            pass
+        return self._state.on
+
+    def decode(self):
+        """Put the packets together and decode them; changes go to on_text."""
+        q = self._queue
+        while q and self._decoder is not None:
+            data, t = q.popleft()
+            for i in range(0, len(data) - 2, 3):
+                self._triplet(data[i], data[i + 1], data[i + 2], t)
+
+    def _triplet(self, b0, b1, b2, t):
+        valid, start = b0 & 0x04, b0 & 0x03 == 3
+        if valid and start:
+            self._end()
+            self._packet, self._packet_t = bytearray([b1, b2]), t
+        elif valid and self._packet:
+            self._packet += bytes([b1, b2])
+        elif not valid:
+            self._end()
+            return
+        if self._packet and len(self._packet) >= _dtvcc_size(self._packet[0]):
+            self._end()                                     # complete: no need to wait
+
+    def _end(self):
+        from .captions import dtvcc_blocks
+        packet, t = bytes(self._packet), self._packet_t
+        self._packet, self._packet_t = bytearray(), None
+        dec, s = self._decoder, self._state
+        if not packet or dec is None:
+            return
+        for svc, block in dtvcc_blocks(packet):
+            if svc == dec.service and dec.feed(block):
+                text = dec.text
+                if text:
+                    s.decoded += 1
+                s.last = text
+                self._on_text(text, t)
+
+
 class CaptionShadow:
-    """What the CEA-608 renderer decoded beside the old path (cc708overlay,
-    which draws the CEA-708 service, never CEA-608): there is nothing to
-    compare it with, so the line says what it decoded and shows a few of
-    the captions, to set beside what the picture showed."""
+    """What a closed caption renderer (CEA-608, CEA-708) decoded beside the
+    old path, cc708overlay: what that draws cannot be read back as text, so
+    the line says what the renderer decoded and shows a few of the
+    captions, to set beside what the picture showed."""
 
     KEEP = 500
 

@@ -542,7 +542,7 @@ class Player(GObject.Object):
         # debug mode is on (lindvb.subrender)
         self._ttx_shadow = None
         self._ttx_cmp = None
-        self._cc_shadow = None          # (Cea608Renderer, CaptionShadow) in debug mode
+        self._cc_shadow = None          # (CaptionOverlay, [(renderer, CaptionShadow)]) in debug mode
         self._cue_shadow = None         # and the text cue renderer (WebVTT)
         self._cue_cmp = None
         self._cue_drawer = None         # draws its cues at their time (stage F)
@@ -1494,43 +1494,54 @@ class Player(GObject.Object):
             self._write_cue_report(cmp, state)
         self._cue_drawer = None
 
-    # -- the CEA-608 renderer in the shadow (stage F) --------------------------------
+    # -- the CEA-608 and CEA-708 renderers in the shadow (stage F) ------------------
 
     def _cc_shadow_follow(self, kind, key):
         """Debug mode: closed captions picked (the old path draws CEA-708
-        service *key* with cc708overlay); the CEA-608 renderer decodes the
-        channel that by convention carries the same captions (service 1:
-        CC1, service 2: CC3) beside it and writes what it decoded to the
-        debug log when they go off. It only notes; nothing is drawn."""
+        service *key* with cc708overlay). Beside it the CEA-708 renderer
+        decodes that service and the CEA-608 renderer the channel that by
+        convention carries the same captions (service 1: CC1, service 2:
+        CC3); each writes what it decoded to the debug log when they go off.
+        They only note; nothing is drawn."""
         self._end_cc_shadow()
-        channel = {1: 1, 2: 3}.get(key) if kind == "cc" and isinstance(key, int) else None
-        if not channel or self.cc is None or not debuglog.enabled():
+        if kind != "cc" or not isinstance(key, int) or self.cc is None or not debuglog.enabled():
             return
-        try:
-            cmp = subrender.CaptionShadow(f"CC{channel}")
-            r = subrender.Cea608Renderer(cmp.saw_new)
-            r.show(trackcatalog.Track(trackcatalog.SUBTITLE, subrender.CEA608,
-                                      origin=f"cc:CC{channel}"))
-        except Exception as e:  # noqa: BLE001 - the shadow must never cost the captions
-            debuglog.write("Player", f"CEA-608 renderer (shadow) not started: {e}")
+        shadows = []
+        tracks = [(subrender.Cea708Renderer, subrender.CEA708, f"cc:{key}", f"service {key}")]
+        channel = {1: 1, 2: 3}.get(key)
+        if channel:
+            tracks.append((subrender.Cea608Renderer, subrender.CEA608, f"cc:CC{channel}",
+                           f"CC{channel}"))
+        for renderer, fmt, origin, name in tracks:
+            try:
+                cmp = subrender.CaptionShadow(name)
+                r = renderer(cmp.saw_new)
+                r.show(trackcatalog.Track(trackcatalog.SUBTITLE, fmt, origin=origin))
+            except Exception as e:  # noqa: BLE001 - the shadow must never cost the captions
+                debuglog.write("Player", f"{fmt} renderer (shadow) not started: {e}")
+                continue
+            shadows.append((r, cmp))
+        if not shadows:
             return
-        self._cc_shadow = (r, cmp, self.cc)
-        self.cc.listen(r.feed)
+        self._cc_shadow = (self.cc, shadows)
+        feeds = [r.feed for r, _cmp in shadows]
+        self.cc.listen(lambda data, fmt, t: [f(data, fmt, t) for f in feeds])
 
     def _end_cc_shadow(self):
         shadow, self._cc_shadow = self._cc_shadow, None
         if shadow is None:
             return
-        r, cmp, cc = shadow
+        cc, shadows = shadow
         cc.listen(None)
-        try:
-            r.decode()                  # what came since the last look
-            line = cmp.report(r.state())
-        except Exception as e:  # noqa: BLE001
-            line = f"CEA-608 renderer (shadow): {e}"
-        r.off()
-        if line:
-            debuglog.write("Player", line)
+        for r, cmp in shadows:
+            try:
+                r.decode()              # what came since the last look
+                line = cmp.report(r.state())
+            except Exception as e:  # noqa: BLE001
+                line = f"{r.kind} renderer (shadow): {e}"
+            r.off()
+            if line:
+                debuglog.write("Player", line)
 
     def teletext_pages(self):
         """Teletext subtitle pages offered for the current stream."""
