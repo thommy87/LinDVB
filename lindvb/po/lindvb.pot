@@ -6612,3 +6612,11 @@ msgstr ""
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Subtitles of HLS channels in the buffer (test)"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "The WebVTT subtitles of an HLS channel go into the timeshift buffer too, so the channel keeps its timeshift with subtitles switched on. Off: the channel plays without timeshift while they are on."
+msgstr ""

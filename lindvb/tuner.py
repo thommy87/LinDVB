@@ -275,6 +275,9 @@ class Capture(GObject.Object):
         self._net = None
         # internet radio: the song titles go into the buffer (ipstream.META_PID)
         self.meta_titles = bool(channel.radio and ipstream.is_stream(self.tuner))
+        # internet TV: the WebVTT subtitles of HLS into the buffer (lindvb.cuebuffer)
+        self.subtitles = bool(not channel.radio and ipstream.is_stream(self.tuner) and
+                              settings.get("subtitles_in_buffer", False))
         if satip.is_satip(self.tuner) or tvheadend.is_tvheadend(self.tuner) or \
                 ipstream.is_stream(self.tuner):
             self._uc = None
@@ -340,7 +343,7 @@ class Capture(GObject.Object):
                     channel.url, on_data=self._push_direct, on_error=self._on_net_error,
                     on_status=self._on_net_status, reconnect=reconnect,
                     quality=settings.get("iptv_timeshift_quality", "auto"),
-                    meta=self.meta_titles)
+                    meta=self.meta_titles, subtitles=self.subtitles)
             elif satip.is_satip(self.tuner):
                 src = self._appsrc()
                 self._satip = satip.Session(self.tuner["host"], self.tuner.get("port"),
@@ -924,6 +927,18 @@ class Capture(GObject.Object):
     def destroy(self):
         self.stop()
         self.store.cleanup()
+
+    @property
+    def cue_pids(self):
+        """{subtitle rendition: PID} of the cues in the buffer (stage H)."""
+        return getattr(self._net, "cue_pids", {}) if self.writes_cues else {}
+
+    @property
+    def writes_cues(self):
+        """The reader writes subtitle cues into the buffer, or is about to
+        (an HLS channel whose playlist it is still reading for them)."""
+        reader = getattr(self._net, "reader", None) if self.subtitles else None
+        return getattr(reader, "cues", None) is not None
 
     def byte_rate(self):
         _, end = self.store.bounds()

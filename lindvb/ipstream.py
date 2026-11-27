@@ -665,10 +665,14 @@ class GstReader:
     With *meta* set (internet radio), the song title and station name the
     stream sends as tags go into the packed transport stream as packets of
     their own (meta_packet).
+
+    With *subtitles* set (stage H), the WebVTT subtitle renditions of an HLS
+    stream are loaded beside it and their cues go into the transport stream
+    as packets of their own (lindvb.cuebuffer); ``cue_pids`` names their PIDs.
     """
 
     def __init__(self, url, on_data, on_error=None, on_status=None, quality="auto",
-                 reconnect=True, retry=None, meta=False):
+                 reconnect=True, retry=None, meta=False, subtitles=False):
         import gi
         gi.require_version("Gst", "1.0")
         from gi.repository import GLib, Gst
@@ -705,13 +709,26 @@ class GstReader:
         self.event = ""                  # the latest event (lindvb.sourcestate)
         self.resolved = False            # a refused address was resolved
         self.gave_up = False             # on_error came: no more attempts
+        self.cues = None                 # cuebuffer.CueWriter: subtitle cues into the stream
+        self._cue_loaders = []
+        if subtitles and stream_kind(url) == "adaptive" and ".m3u8" in url.lower():
+            from .cuebuffer import CueWriter
+            self.cues = CueWriter()
 
     @property
     def host(self):
         parts = urllib.parse.urlsplit(self.url)
         return parts.netloc or self.url
 
+    @property
+    def cue_pids(self):
+        """{subtitle rendition: PID} of the cues in the stream (stage H)."""
+        return dict(self.cues.pids) if self.cues is not None else {}
+
     def start(self):
+        if self.cues is not None:
+            threading.Thread(target=self._load_subtitles, name="lindvb-cues",
+                             daemon=True).start()
         if stream_kind(self.url) == "adaptive" and ".m3u8" in self.url.lower() and \
                 self.url.lower().startswith(("http://", "https://")):
             # an HLS playlist the server sends compressed reaches the demuxer
@@ -750,6 +767,8 @@ class GstReader:
         self._sink = sink
         self._mux = None
         self._rendition_pids = set()
+        if self.cues is not None:
+            self.cues.restart()             # the new muxer starts its PTS again
         pl.connect("deep-element-added", self._on_element)
         # the handlers find the pipeline as their element's parent: passed
         # along, it would be held by its own element, and the pipeline (with
@@ -801,8 +820,12 @@ class GstReader:
             setup_http_source(source)
 
     def _on_element(self, _pl, _bin, element):
-        """The adaptive demuxer: the variant choice (auto or the best one)."""
+        """The adaptive demuxer: the variant choice (auto or the best one).
+        A tsdemux in it: the segments for the cue writer's clock."""
         f = element.get_factory()
+        if f is not None and f.get_name() == "tsdemux" and self.cues is not None:
+            self.cues.watch_input(element)
+            return
         if f is None or f.get_name() not in ADAPTIVE_DEMUXERS:
             return
         settings = dict(ADAPTIVE_DEMUX_SETTINGS)
@@ -1018,6 +1041,8 @@ class GstReader:
         received = len(data)
         self._last_data = time.monotonic()
         data = self._meta_out(data)
+        if self.cues is not None:
+            data = self._cues_out(data)
         if self.retry.up_since is None:
             self.retry.running()
             self.event = sourcestate.DATA
@@ -1164,6 +1189,49 @@ class GstReader:
             self._fail(f"{self.host}: {reason}")
         return False
 
+    def _load_subtitles(self):
+        """Thread: the subtitle renditions of the master playlist, each loaded
+        by a WebVTT loader of its own whose cues go to the cue writer."""
+        from . import cuebuffer, debuglog, vttload
+        from .streaminfo import parse_hls
+        try:
+            text, final, _z = fetch_manifest(self.url)
+            media = [m for m in parse_hls(text).get("media", [])
+                     if m.get("type") == "SUBTITLES" and m.get("uri") and m.get("name")]
+        except (OSError, ValueError) as e:
+            debuglog.write("Stream", f"{self.host}: no subtitles for the buffer ({e})")
+            self.cues = None                # nothing to write: no clock to keep
+            return
+        writer = self.cues
+        pids = cuebuffer.cue_pids(m["name"] for m in media)
+        if not pids:
+            self.cues = None
+            return
+        writer.set_pids(pids)
+        loaders = []
+        for m in media:
+            if m["name"] not in pids:
+                continue
+            loaders.append(vttload.WebVttLoader(
+                final, m["uri"], lambda text, start, end, mapped, name=m["name"]:
+                writer.cue(name, text, start, end, mapped)))
+        with self._lock:
+            if self.closed:
+                return
+            self._cue_loaders = loaders
+        for loader in loaders:
+            loader.start()
+        debuglog.write("Stream", f"{self.host}: subtitles into the buffer: " + ", ".join(
+            f"{n} (0x{p:04X})" for n, p in pids.items()))
+
+    def _cues_out(self, data):
+        """*data* with the packets of the cues due after it (stage H)."""
+        try:
+            aligned = bool(data) and data[0] == TS_SYNC and not len(data) % TS_PACKET
+            return data + self.cues.out(data, aligned, same=bool(self.passthrough))
+        except Exception:  # noqa: BLE001 - the subtitles must never cost the stream
+            return data
+
     def _check_manifest(self, reason):
         uri, why = hls_handover(self.url)
         self.GLib.idle_add(self._manifest_checked_done, uri, reason, why)
@@ -1200,11 +1268,19 @@ class GstReader:
             self.on_error(message)
 
     def close(self):
-        self.closed = True
+        with self._lock:
+            self.closed = True
+            loaders, self._cue_loaders = self._cue_loaders, []
         if self._timer:
             self.GLib.source_remove(self._timer)
             self._timer = 0
         self._teardown()
+        for loader in loaders:
+            loader.stop()
+        if self.cues is not None:
+            from . import debuglog
+            if debuglog.enabled():
+                debuglog.write("Stream", f"{self.host}: {self.cues.report()}")
 
 
 # -- the source of a capture -------------------------------------------------------
@@ -1213,12 +1289,14 @@ class StreamSource:
     """What a capture reads an internet channel with: picks the reader for
     the address and switches from HTTP to GStreamer when an HTTP address is
     not a transport stream. Same interface as the readers. *meta*: write the
-    song titles into the stream (internet radio; see GstReader)."""
+    song titles into the stream (internet radio; see GstReader); *subtitles*:
+    the cues of the HLS subtitle renditions (stage H)."""
 
     def __init__(self, url, on_data, on_error=None, on_status=None, quality="auto",
-                 reconnect=True, meta=False):
+                 reconnect=True, meta=False, subtitles=False):
         self.url = url
         self.meta = meta
+        self.subtitles = subtitles
         self.on_data = on_data
         self.on_error = on_error
         self.on_status = on_status
@@ -1250,6 +1328,11 @@ class StreamSource:
     def reconnects(self):
         return getattr(self.reader, "reconnects", 0) if self.reader is not None else 0
 
+    @property
+    def cue_pids(self):
+        """{subtitle rendition: PID} of the cues in the buffer (stage H)."""
+        return getattr(self.reader, "cue_pids", {}) if self.reader is not None else {}
+
     def start(self):
         if self.kind == "http":
             self.reader = StreamReader(self.url, self.on_data, self.on_error, self.on_status,
@@ -1265,7 +1348,7 @@ class StreamSource:
         try:
             self.reader = GstReader(self.url, self.on_data, self.on_error, self.on_status,
                                     quality=self.quality, reconnect=self.reconnect,
-                                    meta=self.meta)
+                                    meta=self.meta, subtitles=self.subtitles)
         except (ImportError, ValueError) as e:
             self._event = sourcestate.UNSUPPORTED
             if self.on_error is not None:

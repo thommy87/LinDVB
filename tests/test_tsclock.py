@@ -115,3 +115,51 @@ def test_kept_times_are_bounded():
     clock = TsClock()
     clock.feed_ts(b"".join(_packet(i * 3600) for i in range(tsclock.KEEP + 50)))
     assert len(clock._seen) == tsclock.KEEP and len(clock._order) == tsclock.KEEP
+
+
+# -- epochs: the PTS jump without a flush (the reader connected again) -----------------
+
+def _pes_packet(pts_ticks, pid=0x41):
+    """A TS packet starting a video PES with this PTS."""
+    from lindvb.cuebuffer import _pts_bytes
+    pes = b"\0\0\1\xe0\0\0\x80\x80\x05" + _pts_bytes(pts_ticks)
+    return bytes((0x47, 0x40 | pid >> 8, pid & 0xFF, 0x10)) + pes + b"\xff" * (184 - len(pes))
+
+
+def test_a_pts_jump_starts_an_epoch_with_its_own_offset():
+    from lindvb import tsclock
+    c = tsclock.TsClock()
+    hz = tsclock.PTS_HZ
+    old = [round((3700 + k * 0.04) * hz) for k in range(50)]
+    new = [round((3600 + k * 0.04) * hz) for k in range(50)]
+    c.feed_ts(b"".join(_pes_packet(p) for p in old + new))
+    for k in range(50):
+        c.frame(10 + k * 0.04)                    # stream time goes on across the jump
+    assert c.epoch == 0 and c.offset == pytest.approx(10 - 3700)
+    for k in range(50):
+        c.frame(12 + k * 0.04)
+    assert c.epoch == 1 and c.offset == pytest.approx(12 - 3600)
+    assert c.missed == 0 and c.matched == 99 and c.starts == 2
+    assert c.stream_time(3701, epoch=0) == pytest.approx(11)
+    assert c.stream_time(3601, epoch=1) == pytest.approx(13)
+    assert c.stream_time(3601, epoch=2) is None
+    c.restart()
+    assert c.offsets == {} and c.epoch == 0
+
+
+def test_epochs_counted_in_the_fed_bytes():
+    from lindvb import tsclock
+    hz = tsclock.PTS_HZ
+    data = b"".join(_pes_packet(round(t * hz)) for t in (3700, 3700.04, 3600, 3600.04))
+    e = tsclock.Epochs()
+    assert e.at(data, [0, 188 * 2, 188 * 2 + 1, 188 * 4]) == [0, 0, 1, 1]
+    assert e.at(_pes_packet(round(3600.08 * hz)), [0]) == [1]       # goes on in the next piece
+
+
+def test_b_frames_and_wraps_are_no_jumps():
+    from lindvb.tsclock import PTS_WRAP, is_jump
+    assert not is_jump(None, 5)
+    assert not is_jump(90000 * 10, 90000 * 10 - 40000)              # B-frame, 0.44 s back
+    assert not is_jump(PTS_WRAP - 3600, 1800)                        # the 33-bit wrap
+    assert is_jump(90000 * 3700, 90000 * 3600)
+    assert is_jump(90000 * 3600, 90000 * 3700)

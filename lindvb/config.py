@@ -140,6 +140,8 @@ DEFAULTS = {
     # HLS/DASH quality there: "auto" (follows the connection) or "best"
     "iptv_timeshift": True,
     "iptv_timeshift_quality": "auto",
+    # the WebVTT subtitles of HLS channels into that buffer too (stage H, on test)
+    "subtitles_in_buffer": False,
     # open internet streams (and Tvheadend) again when the connection breaks
     "stream_reconnect": True,
     "recording_dir": str(user_dir("XDG_VIDEOS_DIR", "Videos") / APP_NAME),

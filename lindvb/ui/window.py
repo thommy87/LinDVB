@@ -2760,14 +2760,17 @@ class MainWindow(Gtk.ApplicationWindow):
     def _missing_renditions(self):
         """([subtitle names], [audio names]) of the HLS renditions of the
         channel that what plays does not carry: the timeshift buffer (no
-        WebVTT), or playbin (no renditions at all)."""
+        WebVTT, unless the capture writes their cues into it), or playbin
+        (no renditions at all)."""
         c = self._tuned
         if c is None or not c.url or not (
                 (self.capture is not None and c.buffered) or
                 (self.capture is None and self.player.uri and not self.player._pb3)):
             return [], []
         media = self.player.renditions.get(c.url, [])
-        subs = [m["name"] for m in media if m.get("type") == "SUBTITLES" and m.get("name")]
+        held = set(self.player.buffer_subtitles())        # in the buffer after all (stage H)
+        subs = [m["name"] for m in media if m.get("type") == "SUBTITLES" and m.get("name")
+                and m["name"] not in held]
         titles = {t.title for t in self.player.audio_track_info()[0]}
         audio = [m["name"] for m in media if m.get("type") == "AUDIO" and m.get("uri")
                  and m.get("name") and m["name"] not in titles]

@@ -17,6 +17,14 @@ gives the offset (stream time minus MPEG-TS time). Every later frame
 checks it: its stream time minus the offset is the MPEG-TS time of a PES
 seen at the sink, or the offset no longer holds (counted as missed). The
 probes only note; they never hold a buffer.
+
+The PTS of a stream can jump without a flush: the timeshift buffer of an
+internet channel holds what the reader's mpegtsmux made, and a reader that
+connects again starts a muxer with its PTS from the beginning. Each run of
+PTS without such a jump is an epoch (:func:`is_jump`); the first frame
+after the first PES of a new epoch gives that epoch its offset, and a cue
+taken from the same bytes (lindvb.cuebuffer) is mapped with the offset of
+its own epoch (:class:`Epochs` counts them in the bytes the player feeds).
 """
 
 import threading
@@ -29,6 +37,8 @@ PTS_WRAP = 1 << 33
 KEEP = 4000                      # video PES times kept to check the frames against
 ANCHORS = 100                    # offsets kept (one a start or seek)
 TS_PACKET = 188
+JUMP_BACK = PTS_HZ              # a video PES this much before the last one: a new epoch
+JUMP_AHEAD = 10 * PTS_HZ        # or this much after it
 
 
 def pes_pts(packet):
@@ -50,6 +60,66 @@ def pes_pts(packet):
     return ((b[0] >> 1) & 7) << 30 | b[1] << 22 | (b[2] >> 1) << 15 | b[3] << 7 | b[4] >> 1
 
 
+def is_jump(prev, cur):
+    """Video PES PTS *cur* (ticks) after *prev* starts a new epoch: further
+    back than B-frames go, or further ahead than a segment lasts."""
+    if prev is None:
+        return False
+    d = (cur - prev) % PTS_WRAP
+    if d >= PTS_WRAP // 2:
+        d -= PTS_WRAP
+    return d < -JUMP_BACK or d > JUMP_AHEAD
+
+
+def video_pes(data):
+    """[(position, PTS ticks)] of the video PES that start in whole TS
+    packets of *data* (aligned to its packets or not)."""
+    return _scan(data)[0]
+
+
+def _scan(data):
+    """(video_pes(data), where the packet starts that *data* ends before
+    it is whole, or -1)."""
+    found, n = [], len(data)
+    i = data.find(b"\x47")
+    while 0 <= i and i + TS_PACKET <= n:
+        if data[i] != 0x47:                  # lost the packet start: look again
+            i = data.find(b"\x47", i + 1)
+            continue
+        if data[i + 1] & 0x40:
+            p = pes_pts(data[i:i + TS_PACKET])
+            if p is not None:
+                found.append((i, p))
+        i += TS_PACKET
+    return found, i
+
+
+class Epochs:
+    """Counts the epochs in the bytes as they go by: :meth:`at` gives the
+    epoch at each of the positions in a piece of data."""
+
+    def __init__(self):
+        self.epoch = 0
+        self._last = None
+
+    def at(self, data, positions):
+        out, pes = [], video_pes(data)
+        k = 0
+        for pos in positions:
+            while k < len(pes) and pes[k][0] < pos:
+                self._step(pes[k][1])
+                k += 1
+            out.append(self.epoch)
+        for _pos, p in pes[k:]:
+            self._step(p)
+        return out
+
+    def _step(self, p):
+        if is_jump(self._last, p):
+            self.epoch += 1
+        self._last = p
+
+
 class TsClock:
     def __init__(self):
         self._lock = threading.Lock()
@@ -59,6 +129,11 @@ class TsClock:
         self._first = None                   # the first video PES since the anchor went
         self._anchored = False
         self.offset = None                   # stream time minus MPEG-TS time, s
+        self.offsets = {}                    # epoch -> offset (since the start or flush)
+        self.epoch = 0                       # the epoch of the frames that come out
+        self._in_epoch = 0                   # the epoch of the PES that came in
+        self._last_in = None
+        self._epoch_first = {}               # epoch -> its first video PES
         self.anchors = []                    # the offsets taken (a flush takes a new one)
         self.starts = 0
         self.frames = 0                      # frames checked against the offset
@@ -114,27 +189,25 @@ class TsClock:
             self._anchored = False
             self._seen.clear()
             self._order.clear()
+            self.offsets = {}
+            self.epoch = self._in_epoch = 0
+            self._last_in = None
+            self._epoch_first = {}
 
     def feed_ts(self, data):
         """TS bytes as they come to tsdemux (not always whole packets). Only
         the packets that start a PES are looked at."""
         data = self._rest + data
-        found, n = [], len(data)
-        i = data.find(b"\x47")
-        while 0 <= i and i + TS_PACKET <= n:
-            if data[i] != 0x47:                  # lost the packet start: look again
-                i = data.find(b"\x47", i + 1)
-                continue
-            if data[i + 1] & 0x40:
-                p = pes_pts(data[i:i + TS_PACKET])
-                if p is not None:
-                    found.append(p)
-            i += TS_PACKET
+        found, i = _scan(data)
         with self._lock:
             self._rest = data[i:] if i >= 0 else b""
             if found and self._first is None and not self._anchored:
-                self._first = found[0]
-            for p in found:
+                self._first = found[0][1]
+            for _pos, p in found:
+                if is_jump(self._last_in, p):
+                    self._in_epoch += 1
+                    self._epoch_first[self._in_epoch] = p
+                self._last_in = p
                 self._seen.add(p)
                 self._order.append(p)
             while len(self._order) > KEEP:
@@ -145,30 +218,41 @@ class TsClock:
         with self._lock:
             if not self._anchored:
                 if self._first is not None:
-                    self.offset = t - self._first / PTS_HZ
-                    self.anchors.append(self.offset)
-                    self.starts += 1
-                    del self.anchors[:-ANCHORS]
+                    self._anchor(t, self._first, self.epoch)
                     self._anchored = True
-                    self._seen.discard(self._first)
                 return
             self.frames += 1
             ticks = round((t - self.offset) * PTS_HZ) % PTS_WRAP
             hit = next((p for p in (ticks, ticks - 1, ticks + 1) if p in self._seen), None)
-            if hit is None:
+            if hit is None and self.epoch + 1 in self._epoch_first:
+                # the first frame of the next epoch: its first PES
+                self.epoch += 1
+                self._anchor(t, self._epoch_first.pop(self.epoch), self.epoch)
+                self.matched += 1
+            elif hit is None:
                 self.missed += 1
             else:
                 self.matched += 1
                 self._seen.discard(hit)
 
+    def _anchor(self, t, first, epoch):
+        self.offset = t - first / PTS_HZ
+        self.offsets[epoch] = self.offset
+        self.anchors.append(self.offset)
+        self.starts += 1
+        del self.anchors[:-ANCHORS]
+        self._seen.discard(first)
+
     # -- main loop -----------------------------------------------------------------
 
-    def stream_time(self, mpegts, near=None):
+    def stream_time(self, mpegts, near=None, epoch=None):
         """The stream time (s) of MPEG-TS time *mpegts* (s), the wrap taken
-        into account near stream time *near*; None without an offset."""
-        if self.offset is None:
+        into account near stream time *near*; None without an offset (for
+        *epoch*: once that epoch's first frame came out)."""
+        offset = self.offset if epoch is None else self.offsets.get(epoch)
+        if offset is None:
             return None
-        t = mpegts + self.offset
+        t = mpegts + offset
         if near is not None:
             wrap = PTS_WRAP / PTS_HZ
             t += round((near - t) / wrap) * wrap
