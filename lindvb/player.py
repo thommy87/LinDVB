@@ -2879,8 +2879,11 @@ class Player(GObject.Object):
 
     def _vtt_own(self, name):
         """LinDVB draws the HLS subtitle rendition *name*: it has a playlist
-        of its own, the stream plays directly with playbin3, and its video
-        segments did not turn out to lack the MPEG-TS time."""
+        of its own, the stream plays directly with playbin3, its video
+        segments did not turn out to lack the MPEG-TS time, and the old path
+        was not asked for (LINDVB_WEBVTT_HLSDEMUX=1, lindvb.vttdraw)."""
+        if vttdraw.old_path():
+            return False
         return bool(name) and self._pb3 and not self.capture and not self._vtt_old_path and \
             any(m.get("name") == name and m.get("uri") for m in self._media("SUBTITLES"))
 

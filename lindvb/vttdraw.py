@@ -15,12 +15,23 @@ A cue segment without X-TIMESTAMP-MAP has its times on MPEG-TS time 0
 (RFC 8216, 3.5). Cues that come before the clock has its offset wait for
 it (bounded). :class:`VttDraw` lives on the main loop; the loader's thread
 hands it the cues through GLib.idle_add.
+
+With ``LINDVB_WEBVTT_HLSDEMUX=1`` hlsdemux2 plays them as before stage F
+(:func:`old_path`), with the stall watchdog.
 """
+
+import os
 
 from .subrender import CueDrawer, Spread
 from .vttload import VttShadow
 
 PENDING = 500                    # cues kept while the clock has no offset yet
+
+
+def old_path():
+    """hlsdemux2 plays the WebVTT subtitles instead of LinDVB: only when
+    asked for (``LINDVB_WEBVTT_HLSDEMUX=1``)."""
+    return os.environ.get("LINDVB_WEBVTT_HLSDEMUX") == "1"
 
 
 class VttDraw:

@@ -862,6 +862,26 @@ def test_debug_log_says_what_lindvb_drew_of_the_webvtt(player, monkeypatch):  # 
     assert m and int(m.group(1)) >= 3 and float(m.group(3)) < 0.5, line
 
 
+def test_webvtt_by_the_old_path_when_asked(player, monkeypatch):  # noqa: F811
+    """LINDVB_WEBVTT_HLSDEMUX=1: hlsdemux2 plays the subtitles, as before
+    stage F, with the watchdog; LinDVB draws nothing."""
+    from gi.repository import Gst
+    monkeypatch.setenv("LINDVB_WEBVTT_HLSDEMUX", "1")
+    sk.gst(*HLS_ELEMENTS)
+    srv, _folder = _served(sk.hls_vtt, 8)
+    try:
+        player.play_rendition(srv.url("master.m3u8"), "SUBTITLES", "English")
+        _run(15, lambda: player._played and [
+            st for st in player._streams(Gst.StreamType.TEXT)
+            if st.get_stream_id() in player._selected])
+        assert player._vtt_draw is None
+        assert [st for st in player._streams(Gst.StreamType.TEXT)
+                if st.get_stream_id() in player._selected]
+        assert player.subtitle_tracks() == (["English"], 0)
+    finally:
+        srv.close()
+
+
 def test_webvtt_without_a_video_clock_goes_to_the_old_path(player, monkeypatch):  # noqa: F811
     """The video carries no MPEG-TS time (no tsdemux, as fragmented MP4
     would): after a while with the picture going on, the stream opens again

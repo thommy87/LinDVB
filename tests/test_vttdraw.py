@@ -81,3 +81,12 @@ def test_report_says_cues_never_timed():
     assert line.endswith("; 0 cues drawn, 0 over before they could be drawn, "
                          "1 never timed (no offset)"), line
 
+
+
+def test_old_path_only_when_asked(monkeypatch):
+    monkeypatch.delenv("LINDVB_WEBVTT_HLSDEMUX", raising=False)
+    assert not vttdraw.old_path()
+    monkeypatch.setenv("LINDVB_WEBVTT_HLSDEMUX", "0")
+    assert not vttdraw.old_path()
+    monkeypatch.setenv("LINDVB_WEBVTT_HLSDEMUX", "1")
+    assert vttdraw.old_path()
