@@ -516,6 +516,9 @@ class Player(GObject.Object):
         "hw-fallback": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # teletext subtitle text to show over the video ("" clears it)
         "subtitle-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        # closed captions (CEA-608/708) to show over the video, in rows as a
+        # TV shows them: left-aligned, never wrapped ("" clears them)
+        "caption-text": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # something the user should know about what plays (status line)
         "notice": (GObject.SignalFlags.RUN_LAST, None, (str,)),
         # what is playing (dict: title, artist, album, year, track, image,
@@ -1476,11 +1479,22 @@ class Player(GObject.Object):
                 debuglog.write("Player", line)
 
     def _cue_position(self):
-        """The playback position (stream time, ns), None when there is none."""
+        """The position of the picture shown (stream time, ns), which
+        subtitles and captions go with; None when there is none. It is the
+        video sink's: playbin answers with the furthest of its sinks, and the
+        loudness meter's fakesink (not synced to the clock) runs ahead of the
+        picture by what the audio is decoded ahead (about 1 s in the tests,
+        27.11.2026), so captions counted as due as soon as they came. Without
+        a picture (radio, video off) playbin's position."""
         if self.playbin is None:
             return None
-        ok, pos = self.playbin.query_position(Gst.Format.TIME)
-        return pos if ok and pos >= 0 else None
+        sink = getattr(self.video, "sink", None)
+        for el in (sink, self.playbin):
+            if el is not None:
+                ok, pos = el.query_position(Gst.Format.TIME)
+                if ok and pos >= 0:
+                    return pos
+        return None
 
     def _start_cue_drawer(self):
         """Main loop: the shadow went on, so the drawer draws its cues (into
@@ -1775,7 +1789,7 @@ class Player(GObject.Object):
 
     def _draw_caption(self, text):
         if self._cc_draw is not None:
-            self.emit("subtitle-text", text)
+            self.emit("caption-text", text)
 
     def _end_cc_draw(self):
         draw = self._cc_draw
@@ -1789,6 +1803,8 @@ class Player(GObject.Object):
         try:
             r.decode()
             line = log.report(r.state()) if log is not None else None
+            if line:
+                line += "; " + drawer.summary()
         except Exception as e:  # noqa: BLE001
             line = f"{r.kind} renderer: {e}"
         r.off()

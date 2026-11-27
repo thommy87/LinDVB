@@ -548,6 +548,23 @@ class CaptionShadow:
 CC_DRAW_KEEP = 300
 
 
+class Spread:
+    """Count, average, least and most of some seconds, for a report."""
+
+    def __init__(self):
+        self.n, self.total, self.low, self.high = 0, 0.0, None, None
+
+    def note(self, x):
+        self.n += 1
+        self.total += x
+        self.low = x if self.low is None else min(self.low, x)
+        self.high = x if self.high is None else max(self.high, x)
+
+    @property
+    def mean(self):
+        return self.total / self.n if self.n else None
+
+
 class CaptionDrawer:
     """Shows what a closed caption channel shows when its frame is shown.
 
@@ -558,7 +575,11 @@ class CaptionDrawer:
     there is none) and hands *on_text(text)* the latest change due there,
     once ("" when the captions go off). A change without a time, or while
     there is no position, is due at once. A time going back (a seek) drops
-    the changes still to come: the frames bring them again."""
+    the changes still to come: the frames bring them again.
+
+    For the debug log it counts what it did (:meth:`summary`): how long
+    before its frame each change came, how long after its frame it was
+    shown, and what it threw away."""
 
     def __init__(self, position, on_text, tick_ms=CC_DECODE_MS):
         from collections import deque
@@ -568,15 +589,27 @@ class CaptionDrawer:
         self._changes = deque()      # [(stream time or None, text)], in the order they came
         self._shown = ""
         self._source = 0
+        self.shown = 0               # changes shown
+        self.together = 0            # changes due in the same tick as a later one
+        self.untimed = 0             # shown at once: no time, or no position
+        self.back = 0                # thrown away: a time went back
+        self.overflow = 0            # thrown away: more than CC_DRAW_KEEP waited
+        self.early = Spread()        # s a change came before its frame was shown
+        self.late = Spread()         # s a change was shown after its frame
 
     def add(self, text, t):
         ch = self._changes
         if t is not None:
             while ch and ch[-1][0] is not None and ch[-1][0] > t:
                 ch.pop()
+                self.back += 1
+            pos = self._position()
+            if pos is not None:
+                self.early.note((t - pos) / 1e9)
         ch.append((t, text))
         while len(ch) > CC_DRAW_KEEP:
             ch.popleft()
+            self.overflow += 1
 
     def start(self):
         from gi.repository import GLib
@@ -602,12 +635,34 @@ class CaptionDrawer:
 
     def tick(self):
         """Show what is due now."""
-        pos, ch, due = self._position(), self._changes, None
+        pos, ch, due, n = self._position(), self._changes, None, 0
         while ch and (ch[0][0] is None or pos is None or ch[0][0] <= pos):
             due = ch.popleft()
-        if due is not None and due[1] != self._shown:
+            n += 1
+        if due is None:
+            return
+        self.together += n - 1
+        if due[1] != self._shown:
             self._shown = due[1]
+            self.shown += 1
+            if due[0] is None or pos is None:
+                self.untimed += 1
+            else:
+                self.late.note((pos - due[0]) / 1e9)
             self._on_text(due[1])
+
+    def summary(self):
+        """What the drawer did, for the debug log."""
+        out = f"drawer: {self.shown} changes shown ({self.together} more came with the next"
+        out += f" within {self._tick_ms / 1000:.1f} s)"
+        if self.late.n:
+            out += (f", shown {self.late.mean:.3f} s after their frame on average "
+                    f"(most {self.late.high:.3f} s)")
+        if self.early.n:
+            out += (f"; the data came {self.early.mean:.3f} s before its frame on average "
+                    f"(least {self.early.low:.3f} s, most {self.early.high:.3f} s)")
+        return out + (f"; thrown away: {self.overflow} with more than {CC_DRAW_KEEP} waiting, "
+                      f"{self.back} as a time went back; {self.untimed} shown without a time")
 
 
 # PES packets of DVB subtitles the renderer's queue holds (a display set is

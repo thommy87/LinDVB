@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """The CEA-708 decoder and renderer of stage F (lindvb.cc708, subrender)."""
 
+import pytest
+
 from lindvb import subrender as sr
 from lindvb.cc708 import Cea708Decoder
 from lindvb.trackcatalog import SUBTITLE, Track
@@ -281,3 +283,44 @@ def test_caption_drawer_stop_takes_the_text_away():
     assert shown == ["A", ""]
     d.stop()
     assert shown == ["A", ""]
+
+
+def test_caption_drawer_counts_for_the_debug_log():
+    """How long before its frame each change came, how long after its frame
+    it was shown, and what the drawer threw away (WJXT, 27.11.2026: "not in
+    sync, much left out": the log is to say whether LinDVB is the cause)."""
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    pos.pos = 0
+    d.add("A", 400_000_000)                 # 0.4 s before its frame
+    d.add("A B", 500_000_000)
+    pos.pos = 550_000_000
+    d.tick()                                # both due: "A" shown together with "A B"
+    d.add("C", 450_000_000)                 # its frame was already shown: late
+    pos.pos = 600_000_000
+    d.tick()
+    d.add("D", None)
+    d.tick()
+    assert shown == ["A B", "C", "D"]
+    assert (d.shown, d.together, d.untimed, d.back, d.overflow) == (3, 1, 1, 0, 0)
+    assert d.late.n == 2 and d.late.mean == pytest.approx(0.1) and d.late.high == pytest.approx(0.15)
+    assert d.early.low == pytest.approx(-0.1) and d.early.high == pytest.approx(0.5)
+    text = d.summary()
+    assert text.startswith("drawer: 3 changes shown (1 more came with the next within 0.1 s), "
+                           "shown 0.100 s after their frame on average (most 0.150 s); "
+                           "the data came 0.267 s before its frame on average "
+                           "(least -0.100 s, most 0.500 s)"), text
+    assert text.endswith("thrown away: 0 with more than 300 waiting, 0 as a time went back; "
+                         "1 shown without a time"), text
+
+
+def test_caption_drawer_counts_what_it_throws_away():
+    pos, shown = _Clock(), []
+    d = sr.CaptionDrawer(pos, shown.append)
+    for i in range(sr.CC_DRAW_KEEP + 5):
+        d.add(f"c{i}", 10_000 + i)
+    d.add("back", 0)                        # a seek back: all that waited goes
+    assert d.overflow == 5 and d.back == sr.CC_DRAW_KEEP
+    assert d.summary() == ("drawer: 0 changes shown (0 more came with the next within 0.1 s); "
+                           f"thrown away: 5 with more than {sr.CC_DRAW_KEEP} waiting, "
+                           f"{sr.CC_DRAW_KEEP} as a time went back; 0 shown without a time")
