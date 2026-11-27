@@ -295,6 +295,7 @@ def test_webvtt_subtitles_end_to_end(player, ard):  # noqa: F811
         assert all(r.endswith("the same cues at the same times") for r in reports), reports
         counts = [int(r.split(": ", 1)[1].split()[0]) for r in reports]
         assert sum(counts) >= 2, reports
+        _assert_drawn_on_time(player.log, "WebVTT")
 
 
 def test_cue_text():
@@ -348,6 +349,216 @@ def test_cue_shadow_report():
         "2 cues, the old path 2; data 6, dropped 0; the same cues at the same times")
 
 
+def test_stream_span():
+    _GLib, Gst = streamkit.gst()
+    seg = Gst.Segment()
+    seg.init(Gst.Format.TIME)
+    seg.start = 10 * Gst.SECOND
+    seg.time = 100 * Gst.SECOND
+    s = Gst.SECOND
+    assert sr.stream_span(seg, 12 * s, 2 * s) == (102 * s, 104 * s)
+    assert sr.stream_span(seg, 12 * s) == (102 * s, None)            # no end named
+    assert sr.stream_span(seg, 9 * s, 2 * s) == (100 * s, 101 * s)   # a seek into it
+    assert sr.stream_span(seg, 8 * s, s) == (None, None)
+    assert sr.stream_span(None, 12 * s) == (None, None)
+
+
+def test_cue_timeline():
+    s = 1_000_000_000
+    tl = sr.CueTimeline()
+    tl.add("b", 2 * s, 3 * s)
+    tl.add("a", 0, s)
+    tl.add("a", 0, s)                          # the same cue again (after a seek)
+    tl.add("", 5 * s, 6 * s)                   # no text, no time: left out
+    tl.add("x", None, s)
+    tl.add("c", 2 * s + s // 2)                # no end: drawn a while at most
+    assert [c[2] for c in tl.cues] == ["a", "b", "c"]
+    assert tl.at(0) == ((0, s, "a"),) and tl.at(s) == ()
+    assert [c[2] for c in tl.at(2 * s + s // 2)] == ["b", "c"]       # both, in order
+    assert tl.cues[-1][1] == 2 * s + s // 2 + sr.CUE_DEFAULT_NS
+    assert tl.next_change(0) == s and tl.next_change(s) == 2 * s
+    assert tl.next_change(100 * s) is None
+    for i in range(sr.CUE_KEEP + 10):
+        tl.add(f"n{i}", (20 + i) * s, (20 + i) * s + 1)
+    assert len(tl.cues) == sr.CUE_KEEP and tl.cues[-1][2] == f"n{sr.CUE_KEEP + 9}"
+
+
+class _Clock:
+    """Position and clock of a playback under test, in ms; the clock goes
+    with the position unless told otherwise."""
+
+    MS = 1_000_000
+
+    def __init__(self):
+        self.pos, self.now = 0, 0
+
+    def at(self, pos, now=None):
+        self.now = pos if now is None else now
+        self.pos = pos
+
+    def drawer(self, rate=1.0):
+        drawn, shown = [], []
+        d = sr.CueDrawer(lambda: None if self.pos is None else self.pos * self.MS,
+                         lambda text, p: drawn.append((text, p and p // self.MS)),
+                         rate=lambda: rate, clock=lambda: self.now * self.MS,
+                         on_shown=lambda t, start, late: shown.append(
+                             (t, start // self.MS, None if late is None else late // self.MS)))
+        return d, drawn, shown
+
+
+def _steady(d, c, ms):
+    """Past the close looks of a start: the position went evenly for a while."""
+    for t in range(0, ms + 1, 200):
+        c.at(t)
+        d.tick()
+
+
+def test_cue_drawer_draws_at_the_cue_times():
+    """The drawer hands on what is due at the position, each time that
+    changes, and sleeps until the next cue starts or ends."""
+    ms = _Clock.MS
+    c = _Clock()
+    d, drawn, shown = c.drawer()
+    assert d.tick() == sr.DRAW_TICK_FAST_MS        # just started: looks closely
+    _steady(d, c, 400)
+    d.add("eins", 1000 * ms, 1900 * ms)
+    d.add("zwei", 2000 * ms, 2800 * ms)
+    d.add("drei", 2500 * ms, 3000 * ms)
+    c.at(600)
+    assert d.tick() == sr.DRAW_TICK_MAX_MS and drawn == []
+    c.at(800)
+    assert d.tick() == 201                         # wakes when "eins" starts
+    c.at(1000)
+    d.tick()
+    assert drawn == [("eins", 1000)] and shown == [("eins", 1000, 0)]
+    c.at(1200)
+    assert d.tick() == sr.DRAW_TICK_MAX_MS         # looks again at least every 250 ms
+    assert drawn == [("eins", 1000)]               # nothing changed, nothing drawn
+    for t in (1450, 1700, 1900, 2000, 2250, 2500, 2800, 3000):
+        c.at(t)
+        d.tick()
+    assert drawn[1:] == [("", 1900), ("zwei", 2000), ("zwei\ndrei", 2500),
+                         ("drei", 2800), ("", 3000)]
+    assert [late for _t, _s, late in shown] == [0, 0, 0]
+    c.at(3200)
+    assert d.tick() == sr.DRAW_TICK_MAX_MS         # no cue left
+    c.pos = None
+    assert d.tick() == sr.DRAW_TICK_MAX_MS         # no position: nothing drawn
+
+
+def test_cue_drawer_same_text_twice():
+    """The same text in the next cue counts as drawn again."""
+    ms = _Clock.MS
+    c = _Clock()
+    d, drawn, shown = c.drawer()
+    d.add("♪", 0, 500 * ms)
+    d.add("♪", 500 * ms, 900 * ms)
+    for t in (0, 500):
+        c.at(t)
+        d.tick()
+    assert drawn == [("♪", 0), ("♪", 500)] and [s[1] for s in shown] == [0, 500]
+
+
+def test_cue_drawer_paces_with_the_playback():
+    ms = _Clock.MS
+    c = _Clock()
+    d, _drawn, _shown = c.drawer(rate=2.0)          # double speed: half the time
+    _steady(d, c, 0)
+    c.at(800, now=400)
+    d.tick()
+    d.add("x", 1300 * ms, 1400 * ms)
+    c.at(1200, now=600)
+    assert d.tick() == 51                          # 100 ms of position at twice the speed
+    # the position runs ahead of the clock (catching up after a start)
+    c = _Clock()
+    d, _drawn, shown = c.drawer()
+    d.add("y", 1000 * ms, 1200 * ms)
+    for now, pos in ((0, 0), (40, 0), (80, 0), (200, 0)):
+        c.at(pos, now=now)
+        assert d.tick() == sr.DRAW_TICK_FAST_MS    # standing at the start: looks closely
+    c.at(500, now=400)                             # going at 2.5 times the clock
+    assert d.tick() == sr.DRAW_TICK_FAST_MS
+    c.at(1100, now=440)                            # it passed the cue 20 ms ago
+    d.tick()
+    assert shown == [("y", 1000, 6)]               # by the clock: 7 ms after it passed
+    # standing (paused) it stops looking closely after a while
+    for i in range(sr.DRAW_FAST_LOOKS + 2):
+        c.at(1150, now=640 + 200 * i)
+        ms_next = d.tick()
+    assert ms_next > sr.DRAW_TICK_FAST_MS
+
+
+def test_cue_drawer_late_cues():
+    ms = _Clock.MS
+    c = _Clock()
+    d, drawn, shown = c.drawer()
+    _steady(d, c, 1000)
+    c.at(1100)
+    d.tick()
+    d.add("spät", 1000 * ms, 1500 * ms)            # came after its time: drawn at once
+    d.tick()
+    d.add("vorbei", 500 * ms, 900 * ms)            # came after its end: never drawn
+    c.at(1200)
+    d.tick()
+    assert drawn == [("spät", 1100)]
+    assert shown == [("spät", 1000, 0), ("vorbei", 500, None)]
+    # the drawer looked late (the main loop stood): late by the clock
+    d.add("dann", 2000 * ms, 2500 * ms)
+    c.at(1400)
+    d.tick()
+    c.at(2300)
+    d.tick()
+    assert shown[-1] == ("dann", 2000, 300)
+    d.add("z", 9000 * ms, 9500 * ms)
+    d.stop()
+    assert d.timeline.cues == [] and drawn[-1] == ("", None)
+
+
+def test_cue_drawer_runs_in_the_main_loop():
+    ms = 1_000_000
+    t0 = time.monotonic_ns()
+    drawn, shown = [], []
+    d = sr.CueDrawer(lambda: time.monotonic_ns() - t0, lambda text, p: drawn.append(text),
+                     on_shown=lambda *a: shown.append(a))
+    d.start()
+    d.add("a", 300 * ms, 500 * ms)
+    d.add("b", 600 * ms, 800 * ms)
+    assert d.running
+    _run(1.2)
+    assert drawn == ["a", "", "b", ""], drawn
+    assert [(t, start // ms) for t, start, _late in shown] == [("a", 300), ("b", 600)]
+    assert all(0 <= late < sr.DRAW_TOLERANCE_NS for _t, _s, late in shown), shown
+    d.stop()
+    assert not d.running
+
+
+def test_cue_drawing_report():
+    state = sr.State(sr.WEBVTT, on=True, track="text", data=6)
+    ms = 1_000_000
+    sh = sr.CueShadow("text")
+    assert sh.drawing_report(state) is None
+    for i, t in enumerate(("a", "b", "c")):
+        sh.saw_old(t, i * 1000 * ms)
+        sh.drew(t, i * 1000 * ms + 10 * ms, 30 * ms)
+    sh.saw_old("d", 3000 * ms)                 # due, not drawn yet: on its way
+    assert sh.drawing_report(state) == ("WebVTT drawing (shadow, text): 3 of 3 cues drawn, "
+                                        "all within 100 ms of their time")
+    sh = sr.CueShadow("text")
+    for i, t in enumerate("abcde"):
+        sh.saw_old(t, i * 1000 * ms)
+    sh.drew("a", 0, 20 * ms)
+    sh.drew("b", 1000 * ms, 400 * ms)          # 400 ms late
+    sh.drew("c", 2000 * ms, None)              # over before it came
+    sh.drew("e", 4000 * ms, 0)
+    line = sh.drawing_report(state)
+    assert line == ("WebVTT drawing (shadow, text): 3 of 5 cues drawn; "
+                    "1 late (worst 'b' +400 ms); over before they could be drawn 'c'; "
+                    "never drawn 'd'"), line
+    # only what was due up to the position counts
+    assert sh.drawing_report(state, until=500 * ms).endswith(
+        "1 of 1 cues drawn, all within 100 ms of their time")
+
+
 def _vtt_sample(Gst, text, start_s):
     """A WebVTT segment as hlsdemux2 hands it to playbin: one buffer, its
     own timestamp map."""
@@ -370,7 +581,7 @@ def test_text_cue_renderer_decodes_cues():
     streamkit.gst("subparse", "appsrc", "appsink")
     got, done = [], threading.Event()
 
-    def on_cue(text, rt):
+    def on_cue(text, rt, _end):
         got.append((text, rt))
         if len(got) == 4:
             done.set()
@@ -395,7 +606,7 @@ def test_text_cue_renderer_decodes_cues():
 def test_text_cue_renderer_off_takes_in_no_data():
     streamkit.gst("subparse", "appsrc", "appsink")
     got = []
-    r = sr.TextCueRenderer(lambda t, rt: got.append(t))
+    r = sr.TextCueRenderer(lambda t, *_: got.append(t))
     try:
         _feed_vtt(r)
         time.sleep(0.5)
@@ -409,7 +620,7 @@ def test_a_standing_cue_renderer_never_blocks_the_feed():
     import threading
     streamkit.gst("subparse", "appsrc", "appsink")
     stuck = threading.Event()
-    r = sr.TextCueRenderer(lambda t, rt: stuck.wait(30), queue_buffers=2)
+    r = sr.TextCueRenderer(lambda *_: stuck.wait(30), queue_buffers=2)
     try:
         r.show(WEBVTT_TRACK)
         t0 = time.monotonic()
@@ -490,6 +701,22 @@ def test_ttml_subtitles_end_to_end(player, dash_ttml):
         assert reports[0].endswith("the same cues at the same times"), reports
         # the cues due up to where the picture was (ttmlparse is a cue ahead)
         assert int(reports[0].split(": ", 1)[1].split()[0]) >= 2, reports
+        _assert_drawn_on_time(player.log, "TTML", least=1)
+
+
+def _assert_drawn_on_time(log, kind, least=2):
+    """The drawer drew every cue the old path had due within the tolerance,
+    but those that came after their end (subtitles picked during playback
+    come a moment later: #223), which the old path could not show either."""
+    lines = [ln for ln in log if ln.startswith(f"{kind} drawing (shadow")]
+    assert lines, log
+    on_time = f"all within {sr.DRAW_TOLERANCE_NS // 1_000_000} ms of their time"
+    for ln in lines:
+        parts = ln.split("; ")
+        assert parts[0].endswith(on_time) or (
+            len(parts) == 2 and parts[1].startswith("over before they could be drawn")), lines
+    drawn = [int(ln.split(": ", 1)[1].split()[0]) for ln in lines]
+    assert sum(drawn) >= least, lines
 
 
 def test_text_cue_renderer_decodes_ttml():
@@ -497,7 +724,7 @@ def test_text_cue_renderer_decodes_ttml():
     _GLib, Gst = streamkit.gst("ttmlparse", "subparse", "appsrc", "appsink")
     got, done = [], threading.Event()
 
-    def on_cue(text, rt):
+    def on_cue(text, rt, _end):
         got.append((text, rt))
         if len(got) == 3:
             done.set()
