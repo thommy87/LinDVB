@@ -72,6 +72,14 @@ def _pipeline(desc, timeout=120, feed=None):
         raise RuntimeError(f"stream sample not made: {msg and msg.parse_error()}")
 
 
+# H.264 for the HLS samples. tune=zerolatency: without it x264's lookahead
+# and frame threads put the keyframe hlssink asks for each second some
+# frames late, the more the busier the machine, so the segments drift from
+# the seconds they are named after (up to 6 s over 40 segments, 28.11.2026),
+# and their cues (one WebVTT segment a second) with them
+HLS_H264 = "x264enc key-int-max=25 speed-preset=ultrafast tune=zerolatency"
+
+
 def _hls(folder):
     return (f"hlssink location={folder}/seg%05d.ts playlist-location={folder}/index.m3u8 "
             "target-duration=1 max-files=0 playlist-length=0")
@@ -92,7 +100,7 @@ def make_av_segments(folder, seconds=6, width=320, height=180, pattern="ball"):
     gst("videotestsrc", "x264enc", "audiotestsrc", "avenc_aac", "mpegtsmux", "hlssink")
     folder.mkdir(parents=True, exist_ok=True)
     _pipeline(f"{_video(seconds, width, height, pattern)} ! "
-              "x264enc key-int-max=25 speed-preset=ultrafast ! h264parse ! queue ! mux. "
+              f"{HLS_H264} ! h264parse ! queue ! mux. "
               f"{_audio(seconds)} ! queue ! mux. mpegtsmux name=mux ! {_hls(folder)}")
     return folder
 
@@ -193,7 +201,7 @@ def make_captioned_segments(folder, seconds=6, width=320, height=180, pattern="b
             src.emit("push-buffer", buf)
         src.emit("end-of-stream")
     _pipeline(f"{_video(seconds, width, height, pattern)} ! cccombiner name=c ! "
-              "x264enc key-int-max=25 speed-preset=ultrafast ! h264parse ! queue ! mux. "
+              f"{HLS_H264} ! h264parse ! queue ! mux. "
               "appsrc name=cc format=time caps=closedcaption/x-cea-708,format=cc_data,framerate=25/1 "
               f"! c.caption {_audio(seconds)} ! queue ! mux. mpegtsmux name=mux ! {_hls(folder)}",
               feed=feed)
