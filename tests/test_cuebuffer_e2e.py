@@ -103,12 +103,36 @@ def _english(player):
 LATE = 0.5      # s a cue may show after its time (the drawer's, as in the tests of #239)
 
 
-def _check_spacing(cues):
-    """Cue n shows one second after cue n-1, as on the segments."""
-    assert len(cues) >= 3, cues
-    first_n, first_at = min(cues, key=lambda c: c[1] - c[0])     # the one drawn soonest
+def _state(player, cap, shown):
+    """What the reader and the player had, for a failed assertion."""
+    bc = player._bcues
+    draw = bc.draw if bc is not None else None
+    clock = player._video_clock()
+    reader = cap._net.reader
+    return {"shown": shown, "position": player._position_s(),
+            "found": bc.found if bc else None,
+            "waiting": len(draw.pending) if draw else None,
+            "drawn": draw.drawn if draw else None, "missed": draw.missed if draw else None,
+            "player clock": clock.summary() if clock else None,
+            "reader": reader.cues.report() if reader.cues else None}
+
+
+def _check_times(player, cap, shown, epoch=0, last=None):
+    """Each cue "Live n" in *shown* (the *last* ones) shows at the picture
+    of its time: the segments' second n is the buffer's time the reader's
+    clock gives it, which is the position the player's clock gives that.
+    One already running when the picture started shows right then."""
+    cues = _cues(shown)[-last:] if last else _cues(shown)
+    assert len(cues) >= 3, _state(player, cap, shown)
+    writer, clock = cap._net.reader.cues, player._video_clock()
+    start = min(pos for _t, pos in shown if pos is not None)
     for n, at in cues:
-        assert -0.05 <= (at - first_at) - (n - first_n) < LATE, cues
+        due = clock.stream_time(writer.clock.stream_time(3600 + n), at, epoch)
+        if due < start:
+            assert at < start + LATE, (n, at, due, _state(player, cap, shown))
+        else:
+            assert due - 0.05 <= at < due + LATE, (n, at, due, _state(player, cap, shown))
+    return cues
 
 
 def test_subtitles_from_the_buffer_at_their_time(channel):
@@ -117,20 +141,23 @@ def test_subtitles_from_the_buffer_at_their_time(channel):
     i = _english(player)
     assert i is not None, player.subtitle_tracks()
     assert player.buffer_subtitles() == ["English"]
+    writer, clock = cap._net.reader.cues, player._video_clock()
+    _run(3)
+    writer.behind = 0.0         # from here on: the start (the loaders read first) is over
     player.select_subtitle(i)
     _run(20, lambda: len(_cues(shown)) >= 4)
-    cues = _cues(shown)
-    _check_spacing(cues)
-    # and at the picture of its time: the segments' second n is the
-    # buffer's time the reader's clock gives it, which is the position the
-    # player's clock gives that
-    writer = cap._net.reader.cues
+    _check_times(player, cap, shown)
     clock = player._video_clock()
-    for n, at in cues:
-        due = clock.stream_time(writer.clock.stream_time(3600 + n), at, 0)
-        assert due - 0.05 <= at < due + LATE, (n, at, due, cues)
     assert "" in [t for t, _p in shown[1:]], shown                 # each goes after 0.8 s
     assert player.subtitle_tracks()[1] == i
+    # woken by the picture of each new segment, the loader had its cues,
+    # and they went in at once, not with the next segment (without: up to
+    # 2 s after the picture came under load, and cues were lost; 28.11.2026).
+    # The sample's video segments end up to 0.1 s after the second their
+    # subtitle segment covers, so a cue may go in up to one segment (1 s)
+    # after the first frames of its second came, not later.
+    assert writer.between >= 1 and writer.kicks >= 4, writer.report()
+    assert writer.behind < 1.2, writer.report()
     # the reader's clock and the player's held on every frame
     assert writer.written >= 4 and writer.clock.missed == 0, writer.report()
     assert clock is not None and clock.missed == 0, clock.summary()
@@ -152,10 +179,10 @@ def test_jump_back_shows_the_cues_again(channel):
     k = len(shown)
     player.jump(-5)
     _run(20, lambda: len(_cues(shown[k:])) >= 3)
-    again = _cues(shown[k:])
-    _check_spacing(again)
-    # the ones of the last five seconds come once more, in order
-    assert again[0][0] <= seen[-1] and again[0][0] >= seen[-1] - 6, (seen, again)
+    again = _check_times(player, cap, shown[k:])
+    # earlier ones come once more (how far back depends on the byte rate
+    # the jump is worked out with)
+    assert again[0][0] < seen[-1] - 1, (seen, again)
     assert player.subtitle_tracks()[1] == _english(player)
 
 
@@ -175,7 +202,7 @@ def test_reconnect_keeps_the_subtitles_at_their_time(channel):
     after = _cues(shown[k:])
     clock = player._video_clock()
     assert clock is not None and clock.epoch >= 1, clock.summary()
-    _check_spacing(after[-4:])
+    _check_times(player, cap, shown[k:], clock.epoch, last=4)
     assert len(after) >= 6, (after, clock.summary(), reader.cues.report())
 
 

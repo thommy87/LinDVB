@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """Subtitle cues in the timeshift buffer (lindvb.cuebuffer)."""
 
-import pytest
 
 from lindvb import cuebuffer as cb
 from lindvb.tsclock import pes_pts
@@ -112,7 +111,7 @@ def test_cues_are_held_until_shortly_before_their_picture():
     found = r.feed(_hand_on(w, 3601.0, 1))
     assert [(t0, t1, text) for _pos, _pid, t0, t1, text in found] == [(3603.0, 3604.0, "eins")]
     assert w.written == 2 and w.late == 0 and not w._held
-    assert "2 came, 2 written (0 after their picture" in w.report()
+    assert "2 came, 2 written (0 after their picture, at most 0.00 s after it came)" in w.report()
 
 
 def test_late_cues_still_go_in_long_over_ones_not():
@@ -122,7 +121,8 @@ def test_late_cues_still_go_in_long_over_ones_not():
     w.cue("Deutsch", "long over", 50.0, 52.0)
     found = cb.CueReader().feed(_hand_on(w, 3610, 1))
     assert [text for *_x, text in found] == ["late"]
-    assert w.late == 1 and w.stale == 1 and w.behind == pytest.approx(2.0, abs=0.05)
+    # its picture came moments ago: that is how long it went in after it
+    assert w.late == 1 and w.stale == 1 and 0 <= w.behind < 1.0
 
 
 def test_a_new_pipeline_waits_for_its_first_picture():
@@ -166,3 +166,45 @@ def test_cues_from_before_a_jump_at_the_start_are_left_out():
     f.before(old + cue1)
     new = b"".join(_video(3600 + k * 0.04) for k in range(10))   # playback starts on the jump
     assert f.feed(new) == []
+
+
+def test_new_segment_time_wakes_the_loaders():
+    """The loaders read their playlists every target duration: new segment
+    time at the demuxer wakes them, at most every KICK_GAP s, and again
+    after a jump back (a new start)."""
+    w = cb.CueWriter({"Deutsch": 0x1FC4})
+    c = w.clock
+    assert not w._new_segment_time(c, now=10.0)                       # nothing seen yet
+    c.feed_ts(_video(100.0))
+    assert w._new_segment_time(c, now=10.0) and w.kicks == 1
+    c.feed_ts(_video(100.2))
+    assert not w._new_segment_time(c, now=11.0)                       # not half a second on
+    c.feed_ts(_video(101.0))
+    w._kick_time = 11.0
+    assert not w._new_segment_time(c, now=11.2)                       # too soon after the last
+    assert w._new_segment_time(c, now=11.6) and w.kicks == 2
+    c.feed_ts(_video(50.0))                                           # the stream started anew
+    assert w._new_segment_time(c, now=12.2) and w.kicks == 3
+    woken = []
+    w.on_new = lambda: woken.append(1)
+    c.feed_ts(_video(60.0))
+    w._kick_time = 0.0
+    w.out(_video(3600.0))
+    assert woken == [1]
+
+
+def test_a_cue_that_comes_between_two_segments_goes_in_at_once():
+    """The demuxer hands on a segment at a time: a cue the loader brings
+    after its segment's picture goes into the stream at once, not with the
+    next segment; not while the stream stands between two packets."""
+    w = _writer()
+    _hand_on(w, 3600, 25)                                 # the segment up to 3600.96 s
+    w.cue("Deutsch", "late", 100.5, 101.5)
+    found = cb.CueReader().feed(w.due_now())
+    assert [text for *_x, text in found] == ["late"] and w.between == 1
+    w.cue("Deutsch", "far ahead", 110.0, 111.0)
+    assert w.due_now() == b"" and len(w._held) == 1        # not due yet: waits
+    w.out(b"\x47" * 100, aligned=False)
+    w.cue("Deutsch", "now", 101.0, 101.5)
+    assert w.due_now() == b""                             # mid packet: with the next data
+    assert "1 times written between two pieces of video" in w.report()

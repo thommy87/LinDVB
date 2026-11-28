@@ -223,3 +223,30 @@ def test_live_stream_that_starts_anew():
     pages["https://h/live.m3u8"] = _playlist(0, 5)    # the encoder restarted
     loader.step()
     assert site.asked[-4:] == [f"https://h/s{i}.vtt" for i in range(2, 6)]
+
+
+def test_a_kick_looks_again_soon_until_the_segment_is_listed():
+    """The buffer's reader got the picture of a new segment: the loader
+    looks at once, and a few times shortly after while the subtitle
+    segment is not listed yet; then at its usual pace again."""
+    import threading
+    pages = {f"https://cdn/x/subs/s{i}.vtt": MAPPED for i in range(20)}
+    pages["https://cdn/x/subs/live.m3u8"] = _playlist(0, 9)
+    loader = vttload.WebVttLoader("https://cdn/x/master.m3u8", "https://cdn/x/subs/live.m3u8",
+                                  lambda *c: None, fetch=_Site(pages))
+    assert loader.step() == 2.0
+    loader.kick()
+    assert loader._kick.is_set()
+    assert [loader.step() for _ in range(vttload.KICK_TRIES)] == \
+        [vttload.KICK_RETRY] * vttload.KICK_TRIES
+    assert loader.step() == 1.0                 # nothing came: the usual pace
+    loader.kick()
+    pages["https://cdn/x/subs/live.m3u8"] = _playlist(2, 10)
+    assert loader.step() == 2.0 and loader._eager == 0    # it came
+    # the wait ends with a kick, not after its time
+    done = threading.Event()
+    t = threading.Thread(target=lambda: (loader._wait(30), done.set()))
+    t.start()
+    loader.kick()
+    assert done.wait(5)
+    loader.stop()

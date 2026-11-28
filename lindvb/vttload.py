@@ -32,6 +32,8 @@ LIVE_START = 4                   # segments of a live playlist loaded at the sta
 VOD_LIMIT = 300                  # segments of a playlist with an end loaded at most
 KEEP = 500                       # cues kept
 GIVE_UP = 5                      # errors in a row before the loader stops
+KICK_TRIES = 3                   # looks again after a kick that found nothing new yet
+KICK_RETRY = 0.3                 # s between them
 
 _TIME = re.compile(r"(?:(\d+):)?(\d{1,2}):(\d{2})[.,](\d{3})")
 _ARROW = re.compile(r"^\s*(\S+)\s+-->\s+(\S+)")
@@ -150,7 +152,9 @@ class WebVttLoader:
         self.state = LoaderState()
         self._fetch = fetch
         self._stop = threading.Event()
-        self._sleep = sleep or self._stop.wait
+        self._kick = threading.Event()  # look at the playlist now (kick)
+        self._sleep = sleep or self._wait
+        self._eager = 0                 # quick looks left after a kick
         self._next = None               # the sequence number of the next segment to load
         self._loaded = 0                # segments loaded of a playlist with an end
         self._thread = None
@@ -161,6 +165,19 @@ class WebVttLoader:
 
     def stop(self):
         self._stop.set()
+        self._kick.set()
+
+    def kick(self):
+        """Look at the playlist now: the picture of a new segment came (the
+        timeshift buffer's reader, lindvb.cuebuffer), and its cues are
+        wanted before the picture is played. Until the subtitle segment is
+        listed too, it looks again a few times shortly after."""
+        self._eager = KICK_TRIES
+        self._kick.set()
+
+    def _wait(self, timeout):
+        self._kick.wait(timeout)
+        self._kick.clear()
 
     @property
     def running(self):
@@ -212,6 +229,11 @@ class WebVttLoader:
             self._loaded += 1
         if not live:
             return None
+        if new:
+            self._eager = 0
+        elif self._eager > 0:
+            self._eager -= 1
+            return KICK_RETRY           # the picture's segment came; its cues are due
         return min(max(target / (2 if not new else 1), 1.0), 10.0)
 
     def _load(self, address):
