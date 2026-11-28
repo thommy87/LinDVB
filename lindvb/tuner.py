@@ -934,6 +934,11 @@ class Capture(GObject.Object):
         return getattr(self._net, "cue_pids", {}) if self.writes_cues else {}
 
     @property
+    def cue_languages(self):
+        """{subtitle rendition: language} of the cues in the buffer."""
+        return getattr(self._net, "cue_languages", {}) if self.writes_cues else {}
+
+    @property
     def writes_cues(self):
         """The reader writes subtitle cues into the buffer, or is about to
         (an HLS channel whose playlist it is still reading for them)."""

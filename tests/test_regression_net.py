@@ -835,8 +835,17 @@ def test_vod_webvtt_drawn_by_lindvb_at_their_time(player):  # noqa: F811
     srv.close()
     cues = _cue_texts(shown, "Cue")
     assert len(cues) >= 3, shown
-    for n, at in cues:
-        assert at is not None and n - 0.05 <= at < n + 0.5, (n, at, shown)
+    for k, (n, at) in enumerate(cues):
+        if at is None:
+            # cue 0 (stream time 0) shows with the first picture, before the
+            # video sink can say its position (half the runs, on main too,
+            # 28.11.2026): the time it goes (0.8 s) tells when it came
+            assert k == 0 and n == 0, (n, shown)
+            i = shown.index(("Cue 0", None))
+            gone = next((p for t, p in shown[i + 1:] if t == ""), None)
+            assert gone is not None and 0.75 <= gone < 0.8 + 0.5, shown
+            continue
+        assert n - 0.05 <= at < n + 0.5, (n, at, shown)
     assert [n for n, _at in cues] == sorted(n for n, _at in cues)
 
 

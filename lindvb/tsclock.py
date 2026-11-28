@@ -39,11 +39,19 @@ ANCHORS = 100                    # offsets kept (one a start or seek)
 TS_PACKET = 188
 JUMP_BACK = PTS_HZ              # a video PES this much before the last one: a new epoch
 JUMP_AHEAD = 10 * PTS_HZ        # or this much after it
+TABLES_WAIT = 4 << 20            # bytes looked at for a PAT and PMT before the first PES counts anyway
 
 
 def pes_pts(packet):
     """The PTS (90 kHz ticks) of a video PES that starts in this TS packet,
     else None."""
+    got = pes_stream_pts(packet)
+    return got[1] if got is not None and 0xe0 <= got[0] <= 0xef else None
+
+
+def pes_stream_pts(packet):
+    """(stream id, PTS ticks) of a PES with a PTS that starts in this TS
+    packet, else None."""
     if len(packet) < TS_PACKET or packet[0] != 0x47 or not packet[1] & 0x40:
         return None
     afc = (packet[3] >> 4) & 3
@@ -52,12 +60,12 @@ def pes_pts(packet):
         i += 1 + packet[4]
     if not afc & 1 or i + 14 > TS_PACKET:
         return None
-    if packet[i:i + 3] != b"\0\0\1" or not 0xe0 <= packet[i + 3] <= 0xef:
+    if packet[i:i + 3] != b"\0\0\1" or not 0xbd <= packet[i + 3] <= 0xef:
         return None
     if not packet[i + 7] & 0x80:             # PTS_DTS_flags: no PTS
         return None
     b = packet[i + 9:i + 14]
-    return ((b[0] >> 1) & 7) << 30 | b[1] << 22 | (b[2] >> 1) << 15 | b[3] << 7 | b[4] >> 1
+    return packet[i + 3], ((b[0] >> 1) & 7) << 30 | b[1] << 22 | (b[2] >> 1) << 15 | b[3] << 7 | b[4] >> 1
 
 
 def is_jump(prev, cur):
@@ -94,6 +102,62 @@ def _scan(data):
     return found, i
 
 
+def pat_pmt_pids(packet):
+    """The PMT PIDs a PAT section starting in this TS packet names, else None."""
+    if len(packet) < TS_PACKET or packet[0] != 0x47 or not packet[1] & 0x40 or \
+            ((packet[1] & 0x1F) << 8 | packet[2]):
+        return None
+    afc = (packet[3] >> 4) & 3
+    i = 4 + (1 + packet[4] if afc & 2 else 0)
+    if not afc & 1 or i >= TS_PACKET:
+        return None
+    i += 1 + packet[i]                       # pointer field
+    if i + 8 > TS_PACKET or packet[i] != 0:
+        return None
+    end = min(TS_PACKET, i + 3 + (((packet[i + 1] & 0x0F) << 8) | packet[i + 2]) - 4)
+    pids = set()
+    for k in range(i + 8, end - 3, 4):
+        if packet[k] << 8 | packet[k + 1]:   # program 0 is the NIT
+            pids.add((packet[k + 2] & 0x1F) << 8 | packet[k + 3])
+    return pids
+
+
+class _Tables:
+    """Where tsdemux can first make frames: it takes no PES before it has
+    the PAT and then the PMT, so the first frame out is the first video PES
+    that starts after the first PMT (a start in the middle of a stream).
+    Bytes without a PAT go as they come."""
+
+    def __init__(self):
+        self.ready = False
+        self._pmts = set()
+        self._looked = 0
+
+    def ready_at(self, data):
+        """-1 when ready before *data*, the position in it from which the
+        PES count, or None when not yet."""
+        if self.ready:
+            return -1
+        self._looked += len(data)
+        i, n = data.find(b"\x47"), len(data)
+        while 0 <= i and i + TS_PACKET <= n:
+            if data[i] != 0x47:
+                i = data.find(b"\x47", i + 1)
+                continue
+            if data[i + 1] & 0x40:
+                pid = (data[i + 1] & 0x1F) << 8 | data[i + 2]
+                if pid == 0:
+                    self._pmts |= pat_pmt_pids(data[i:i + TS_PACKET]) or set()
+                elif pid in self._pmts:
+                    self.ready = True
+                    return i
+            i += TS_PACKET
+        if self._looked > TABLES_WAIT:       # a stream without them: as it comes
+            self.ready = True
+            return -1
+        return None
+
+
 class Epochs:
     """Counts the epochs in the bytes as they go by: :meth:`at` gives the
     epoch at each of the positions in a piece of data."""
@@ -121,7 +185,8 @@ class Epochs:
 
 
 class TsClock:
-    def __init__(self):
+    def __init__(self, running=False):
+        self.running = running               # frames by running time, not stream time (remux)
         self._lock = threading.Lock()
         self._rest = b""                     # the start of a TS packet the next buffer ends
         self._seen = set()                   # video PES PTS (ticks) not yet matched
@@ -134,6 +199,7 @@ class TsClock:
         self._in_epoch = 0                   # the epoch of the PES that came in
         self._last_in = None
         self._epoch_first = {}               # epoch -> its first video PES
+        self._tables = _Tables()
         self.anchors = []                    # the offsets taken (a flush takes a new one)
         self.starts = 0
         self.frames = 0                      # frames checked against the offset
@@ -174,7 +240,9 @@ class TsClock:
             if buf.pts != Gst.CLOCK_TIME_NONE:
                 ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
                 if ev is not None:
-                    t = ev.parse_segment().to_stream_time(Gst.Format.TIME, buf.pts)
+                    seg = ev.parse_segment()
+                    t = (seg.to_running_time if self.running else seg.to_stream_time)(
+                        Gst.Format.TIME, buf.pts)
                     if t != Gst.CLOCK_TIME_NONE:
                         self.frame(t / Gst.SECOND)
         except Exception:  # noqa: BLE001
@@ -201,8 +269,14 @@ class TsClock:
         found, i = _scan(data)
         with self._lock:
             self._rest = data[i:] if i >= 0 else b""
-            if found and self._first is None and not self._anchored:
-                self._first = found[0][1]
+            if not self._anchored:
+                ready = self._tables.ready_at(data)
+                if ready is not None and ready >= 0:
+                    # the PES before the first PMT: tsdemux makes no frame of them
+                    after = [p for pos, p in found if pos > ready]
+                    self._first = after[0] if after else None
+                elif found and self._first is None:
+                    self._first = found[0][1]
             for _pos, p in found:
                 if is_jump(self._last_in, p):
                     self._in_epoch += 1

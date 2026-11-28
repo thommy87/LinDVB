@@ -55,7 +55,27 @@ def read_info(path):
         return {}
 
 
+def add_subtitle_files(path, files):
+    """Note the subtitle files LinDVB wrote beside a recording (the .srt
+    files of a TS recording, lindvb.recsubs), so that they go with it."""
+    info = read_info(path)
+    names = set(info.get("subtitle_files") or ()) | {Path(f).name for f in files}
+    info["subtitle_files"] = sorted(names)
+    try:
+        sidecar_path(path).write_text(json.dumps(info, ensure_ascii=False, indent=1))
+    except OSError:
+        pass
+
+
 def delete_info(path):
+    """Remove the details of a recording and the subtitle files written with it."""
+    path = Path(path)
+    for name in read_info(path).get("subtitle_files") or ():
+        if isinstance(name, str) and name and Path(name).name == name:
+            try:
+                (path.parent / name).unlink()
+            except OSError:
+                pass
     try:
         sidecar_path(path).unlink()
     except OSError:
