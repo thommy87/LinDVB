@@ -5003,3 +5003,35 @@ msgstr "Vorbire clară"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Limbajul semnelor"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Ascunde această notificare până la versiunea următoare"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} este disponibil"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Actualizări"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Este actualizat de managerul de pachete"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Căutarea versiunilor noi este oprită (Preferințe > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "La zi (verificat {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Caută versiuni noi"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "O dată pe zi, LinDVB întreabă GitHub care este cea mai nouă versiune și afișează o notificare în bara de stare când există una mai nouă. Se aplică după ce apăsați Salvează."

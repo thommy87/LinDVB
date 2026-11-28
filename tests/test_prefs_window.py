@@ -74,3 +74,22 @@ def test_timeshift_is_a_switch_and_brings_the_buffer_subtitles_back(prefs):
     iptv.set_active(False)
     iptv.set_active(True)
     assert subs.get_active()
+
+
+def test_update_switch_only_where_lindvb_checks(monkeypatch):
+    """Preferences > Internet > Updates: only for the packages that look for
+    new versions themselves (lindvb.updatecheck), not in a checkout or a Snap."""
+    from lindvb import updatecheck
+    settings = Settings()
+    db = ChannelDB()
+    app = types.SimpleNamespace(settings=settings, db=db, favs=FavouriteLists(db),
+                                plugins=PluginManager(settings), _dvbi_busy=False)
+    for checks in (True, False):
+        monkeypatch.setattr(updatecheck, "install", lambda checks=checks: {"checks": checks})
+        win = PrefsWindow(app, None)
+        try:
+            assert ("update_check" in win.w) == checks
+            if checks:
+                assert win.w["update_check"][0].get_active() == bool(settings["update_check"])
+        finally:
+            win.destroy()

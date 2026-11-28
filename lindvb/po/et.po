@@ -5003,3 +5003,35 @@ msgstr "Selge kõne"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Viipekeel"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Peida see teade järgmise versioonini"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} on saadaval"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Uuendused"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Uuendab paketihaldur"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Uute versioonide otsimine on välja lülitatud (Eelistused > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Ajakohane (kontrollitud {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Otsi uusi versioone"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Kord päevas küsib LinDVB GitHubist uusimat versiooni ja näitab olekuribal teadet, kui on olemas uuem. Jõustub pärast nupu Salvesta klõpsamist."

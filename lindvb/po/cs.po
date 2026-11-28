@@ -5003,3 +5003,35 @@ msgstr "Srozumitelná řeč"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Znakový jazyk"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Skrýt toto upozornění do další verze"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} je k dispozici"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Aktualizace"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Aktualizuje správce balíčků"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Hledání nových verzí je vypnuté (Předvolby > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Aktuální (zkontrolováno {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Hledat nové verze"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Jednou denně se LinDVB zeptá GitHubu na nejnovější verzi a ve stavovém řádku zobrazí upozornění, pokud existuje novější. Platí po kliknutí na Uložit."

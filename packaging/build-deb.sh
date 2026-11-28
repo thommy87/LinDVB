@@ -17,6 +17,8 @@ mkdir -p "$PKG/DEBIAN" "$PKG/usr/bin" "$PKG/usr/lib/python3/dist-packages" \
 
 # the program
 cp -r "$SRC/lindvb" "$PKG/usr/lib/python3/dist-packages/"
+# the .deb of a release: the update check compares it with the releases
+printf '{"package": "deb", "channel": "release"}\n' > "$PKG/usr/lib/python3/dist-packages/lindvb/_build.json"
 find "$PKG/usr/lib/python3/dist-packages" -name __pycache__ -prune -exec rm -rf {} +
 find "$PKG/usr/lib/python3/dist-packages" -type f -exec chmod 644 {} +
 cat > "$PKG/usr/bin/lindvb" <<'SH'

@@ -31,5 +31,9 @@ build() {
 package() {
   cd "lindvb-${pkgver}"
   python -m installer --destdir="$pkgdir" dist/*.whl
+  # pacman updates LinDVB: no update check of its own (lindvb/updatecheck.py)
+  local site
+  site="$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')"
+  printf '{"package": "aur", "channel": "release"}\n' > "$pkgdir$site/lindvb/_build.json"
   install -Dm644 THIRD-PARTY-NOTICES.md -t "$pkgdir/usr/share/doc/$pkgname"
 }

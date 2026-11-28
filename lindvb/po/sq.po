@@ -5332,3 +5332,35 @@ msgstr "Të folur i qartë"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Gjuha e shenjave"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Fshihe këtë njoftim deri në versionin tjetër"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} është i disponueshëm"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Përditësime"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Përditësohet nga menaxheri i paketave"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Kërkimi për versione të reja është i fikur (Parapëlqime > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "I përditësuar (kontrolluar më {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Kërko versione të reja"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Një herë në ditë LinDVB pyet GitHub për versionin më të ri dhe shfaq një njoftim në shiritin e gjendjes kur ka një më të ri. Hyn në fuqi pasi klikoni Ruaj."

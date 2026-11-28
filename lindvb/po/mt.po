@@ -5003,3 +5003,35 @@ msgstr "Diskors ċar"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Lingwa tas-sinjali"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Aħbi din in-notifika sal-verżjoni li jmiss"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} hija disponibbli"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Aġġornamenti"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Jiġi aġġornat mill-maniġer tal-pakketti"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "It-tfittxija għal verżjonijiet ġodda hija mitfija (Preferenzi > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Aġġornat (iċċekkjat {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Fittex verżjonijiet ġodda"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Darba kuljum LinDVB jistaqsi lil GitHub għall-aħħar verżjoni u juri notifika fil-bar tal-istatus meta jkun hemm waħda ġdida. Tidħol fis-seħħ meta tikklikkja Issejvja."

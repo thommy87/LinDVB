@@ -217,6 +217,14 @@ DEFAULTS = {
     "vis_show_clock": True,
     # Look up album covers online (artist and title go to the iTunes Search API).
     "vis_cover_online": True,
+    # Look for a newer release on GitHub once a day (lindvb.updatecheck; only
+    # for the AppImage, .deb and Flatpak bundle of a release). What it learnt,
+    # and the version whose notice the user closed.
+    "update_check": True,
+    "update_checked_at": 0,
+    "update_latest": "",
+    "update_url": "",
+    "update_hidden": "",
     # Station logos: image files named after the channel (DVBViewer's
     # channel logos work as they are). "" = DATA_DIR/logos.
     "logo_dir": "",

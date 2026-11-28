@@ -5075,3 +5075,35 @@ msgstr "Dialoghi chiari"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Lingua dei segni"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Nascondi questo avviso fino alla prossima versione"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} è disponibile"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Aggiornamenti"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Aggiornato dal gestore dei pacchetti"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "La ricerca di nuove versioni è disattivata (Preferenze > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Aggiornato (controllato il {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Cerca nuove versioni"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Una volta al giorno LinDVB chiede a GitHub l'ultima versione e mostra un avviso nella barra di stato quando ce n'è una più recente. Ha effetto dopo aver fatto clic su Salva."

@@ -5003,3 +5003,35 @@ msgstr "كلام واضح"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "لغة الإشارة"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "إخفاء هذا التنبيه حتى الإصدار التالي"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "يتوفر LinDVB {version}"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "التحديثات"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "يُحدَّث بواسطة مدير الحزم"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "البحث عن إصدارات جديدة متوقف (التفضيلات > الإنترنت)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "محدّث (تم الفحص {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "البحث عن إصدارات جديدة"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "مرة يوميًا يسأل LinDVB موقع GitHub عن أحدث إصدار ويعرض تنبيهًا في شريط الحالة عند وجود إصدار أحدث. يسري بعد النقر على حفظ."

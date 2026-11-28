@@ -5003,3 +5003,35 @@ msgstr "Skaidra runa"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Zīmju valoda"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Paslēpt šo paziņojumu līdz nākamajai versijai"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "Pieejama LinDVB {version}"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Atjauninājumi"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Atjaunina pakotņu pārvaldnieks"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Jaunu versiju meklēšana ir izslēgta (Iestatījumi > Internets)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Aktuāla (pārbaudīts {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Meklēt jaunas versijas"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Reizi dienā LinDVB vaicā GitHub par jaunāko versiju un statusa joslā parāda paziņojumu, ja ir jaunāka. Stājas spēkā pēc klikšķa uz Saglabāt."

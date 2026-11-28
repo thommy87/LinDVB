@@ -5359,3 +5359,35 @@ msgstr "清晰語音"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "手語"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "在下一個版本之前隱藏此通知"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} 已推出"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "更新"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "由套件管理員更新"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "檢查新版本已關閉（偏好設定 > 網際網路）"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "已是最新（檢查於 {date}）"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "檢查新版本"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "LinDVB 每天向 GitHub 查詢一次最新版本，若有較新的版本，會在狀態列中顯示通知。按下儲存後生效。"

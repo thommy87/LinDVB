@@ -5332,3 +5332,35 @@ msgstr "เสียงพูดชัดเจน"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "ภาษามือ"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "ซ่อนการแจ้งเตือนนี้จนถึงเวอร์ชันถัดไป"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} พร้อมใช้งานแล้ว"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "การอัปเดต"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "อัปเดตโดยตัวจัดการแพ็กเกจ"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "การค้นหาเวอร์ชันใหม่ปิดอยู่ (การตั้งค่า > อินเทอร์เน็ต)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "เป็นเวอร์ชันล่าสุด (ตรวจสอบเมื่อ {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "ค้นหาเวอร์ชันใหม่"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "วันละครั้ง LinDVB จะถาม GitHub ถึงรุ่นล่าสุดและแสดงการแจ้งเตือนในแถบสถานะเมื่อมีรุ่นที่ใหม่กว่า มีผลหลังจากคลิกบันทึก"

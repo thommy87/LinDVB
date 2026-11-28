@@ -28,6 +28,10 @@ pinned = f"""      - type: git
 """
 if text.count(local) != 1:
     sys.exit("the local LinDVB source was not found in " + src)
-open(out, "w", encoding="utf-8").write(text.replace(local, pinned))
+# Flathub updates LinDVB itself: no update check (lindvb/updatecheck.py)
+bundle, flathub = '"package":"flatpak"', '"package":"flathub"'
+if text.count(bundle) != 1:
+    sys.exit("the build stamp was not found in " + src)
+open(out, "w", encoding="utf-8").write(text.replace(local, pinned).replace(bundle, flathub))
 print(f"{out}: LinDVB {tag} ({commit})")
 PY

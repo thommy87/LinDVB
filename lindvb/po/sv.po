@@ -5003,3 +5003,35 @@ msgstr "Tydligt tal"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Teckenspråk"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Dölj det här meddelandet till nästa version"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} finns tillgänglig"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Uppdateringar"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Uppdateras av pakethanteraren"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Sökningen efter nya versioner är avstängd (Inställningar > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Uppdaterad (kontrollerad {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Sök efter nya versioner"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "En gång om dagen frågar LinDVB GitHub efter den senaste versionen och visar ett meddelande i statusfältet när det finns en nyare. Gäller när du klickar på Spara."

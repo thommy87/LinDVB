@@ -5003,3 +5003,35 @@ msgstr "Duidelijke spraak"
 #: lindvb/progfeatures.py
 msgid "Sign language"
 msgstr "Gebarentaal"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Deze melding verbergen tot de volgende versie"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} is beschikbaar"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Updates"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Wordt bijgewerkt door het pakketbeheer"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Zoeken naar nieuwe versies staat uit (Voorkeuren > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Bijgewerkt (gecontroleerd {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Zoeken naar nieuwe versies"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Eén keer per dag vraagt LinDVB GitHub naar de nieuwste versie en toont een melding in de statusbalk als er een nieuwere is. Geldt na een klik op Opslaan."
