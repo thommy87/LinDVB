@@ -4975,3 +4975,31 @@ msgstr "XDS raidījuma dati: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "tikai aizpildījums, nav subtitru"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Telpiskā skaņa 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Telpiskā skaņa 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Oriģinālvaloda"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Skaidra runa"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Zīmju valoda"

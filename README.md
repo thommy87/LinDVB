@@ -75,8 +75,9 @@ them.
   left, and a technical row with the source (DVB-S/S2, DVB-C, DVB-T/T2, ATSC,
   ISDB-T, DTMB, SAT>IP, Tvheadend, DVB-I, IPTV), resolution (SD 576i, HD 1080i,
   UHD 2160p), 16:9 or 4:3, HDR, the sound on offer (mono, stereo, 5.1, 7.1, codec,
-  languages, audio description), subtitles, black and white programmes and a
-  signal or buffer quality bar
+  languages, original language, clear speech, audio description), subtitles,
+  black and white programmes and a signal or buffer quality bar; the programme
+  details of the guide show the same features
 * Audio track and subtitle selection, 10-band equalizer, brightness/contrast/
   saturation/hue, deinterlacing, zoom modes, window size presets, screenshots,
   play rate for files, playlists, sleep timer

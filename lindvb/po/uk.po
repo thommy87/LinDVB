@@ -4975,3 +4975,31 @@ msgstr "Дані програми XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "лише заповнення, субтитрів немає"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Моно"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Стерео"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Об'ємний звук 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Об'ємний звук 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Мова оригіналу"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Чітке мовлення"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Мова жестів"
