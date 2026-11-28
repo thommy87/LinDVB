@@ -6620,3 +6620,31 @@ msgstr ""
 #: lindvb/ui/dialogs.py
 msgid "The WebVTT subtitles of an HLS channel go into the timeshift buffer too, so the channel keeps its timeshift with subtitles switched on. Off: the channel plays without timeshift while they are on."
 msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr ""
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr ""

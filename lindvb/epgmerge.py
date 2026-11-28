@@ -52,7 +52,7 @@ SLACK_SHARE = 0.1
 SAME_SHARE = 0.5
 # Fields a programme can borrow from the same programme in another source.
 DETAIL_FIELDS = ("subtitle", "description", "genre", "country", "year",
-                 "programme_id", "image", "min_age", "access", "bw")
+                 "programme_id", "image", "min_age", "access", "bw", "features")
 
 
 def source_for_key(key):

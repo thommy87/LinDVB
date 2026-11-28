@@ -29,6 +29,7 @@ import unicodedata
 import zlib
 
 from .epg import GENRES, Event
+from .progfeatures import component_features, ordered
 
 # -- provider list -----------------------------------------------------------
 
@@ -352,7 +353,7 @@ def parse_eit_raw(section, language=""):
         dlen = ((section[pos + 10] & 0x0F) << 8) | section[pos + 11]
         dpos, dend = pos + 12, min(pos + 12 + dlen, end)
         pos = dend
-        shorts, extended, genre, bw = [], {}, "", False
+        shorts, extended, genre, bw, features = [], {}, "", False, set()
         while dpos + 2 <= dend:
             tag, ln = section[dpos], section[dpos + 1]
             body = section[dpos + 2:dpos + 2 + ln]
@@ -375,6 +376,10 @@ def parse_eit_raw(section, language=""):
                 genre = GENRES.get(body[0] >> 4, "")
                 # content 0xB1: "black and white" (EN 300 468 table 29)
                 bw = bw or any(body[i] == 0xB1 for i in range(0, len(body), 2))
+            elif tag == 0x50 and len(body) >= 6:
+                # component: what sound, subtitles and picture the programme has
+                features |= component_features(body[0], body[0] >> 4, body[1],
+                                               body[3:6].decode("latin-1"), dvb_text(body[6:]))
         if not start or not shorts:
             continue
         title, sub = pick_language(shorts, language)
@@ -383,7 +388,8 @@ def parse_eit_raw(section, language=""):
         if len(sub) > 80 and not desc:
             sub, desc = "", sub
         if title:
-            events.append(Event(start, dur, title, sub, desc, genre, event_id, bw=bw))
+            events.append(Event(start, dur, title, sub, desc, genre, event_id, bw=bw,
+                                features=ordered(features)))
     return f"{tsid}:{sid}", events
 
 

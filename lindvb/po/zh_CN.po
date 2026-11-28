@@ -5331,3 +5331,31 @@ msgstr "XDS 节目数据：{size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "仅填充，无字幕"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "单声道"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "立体声"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "环绕声 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "环绕声 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "原声语言"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "清晰语音"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "手语"

@@ -5304,3 +5304,31 @@ msgstr "Të dhëna programi XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "vetëm mbushje, pa titra"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Zë rrethues 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Zë rrethues 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Gjuha origjinale"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Të folur i qartë"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Gjuha e shenjave"

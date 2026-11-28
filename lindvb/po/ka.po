@@ -5331,3 +5331,31 @@ msgstr "XDS გადაცემის მონაცემები: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "მხოლოდ შევსება, სუბტიტრები არ არის"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "მონო"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "სტერეო"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "გარსშემომცველი ხმა 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "გარსშემომცველი ხმა 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "ორიგინალი ენა"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "მკაფიო მეტყველება"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "ჟესტების ენა"

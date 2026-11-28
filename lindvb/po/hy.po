@@ -5299,3 +5299,31 @@ msgstr "XDS հաղորդման տվյալներ՝ {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "միայն լրացում, ենթագրեր չկան"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Մոնո"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Ստերեո"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Շրջապատող ձայն 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Շրջապատող ձայն 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Բնօրինակ լեզու"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Հստակ խոսք"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Ժեստերի լեզու"

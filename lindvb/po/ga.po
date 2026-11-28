@@ -4975,3 +4975,31 @@ msgstr "Sonraí cláir XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "líonadh amháin, gan fotheidil"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mona"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Steirió"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Fuaim timpeall 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Fuaim timpeall 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Bunteanga"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Caint shoiléir"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Teanga chomharthaíochta"

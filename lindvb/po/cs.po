@@ -4975,3 +4975,31 @@ msgstr "Programová data XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "jen výplň, žádné titulky"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Prostorový zvuk 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Prostorový zvuk 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Původní jazyk"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Srozumitelná řeč"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Znakový jazyk"

@@ -4975,3 +4975,31 @@ msgstr "Datos de programa XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "solo relleno, sin subtítulos"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Estéreo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Sonido envolvente 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Sonido envolvente 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Idioma original"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Diálogo claro"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Lengua de signos"

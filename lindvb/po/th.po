@@ -5304,3 +5304,31 @@ msgstr "ข้อมูลรายการ XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "มีแต่การเติมข้อมูล ไม่มีคำบรรยาย"
+
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "โมโน"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "สเตอริโอ"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "เสียงรอบทิศทาง 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "เสียงรอบทิศทาง 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "ภาษาต้นฉบับ"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "เสียงพูดชัดเจน"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "ภาษามือ"
