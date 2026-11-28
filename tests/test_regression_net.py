@@ -789,6 +789,23 @@ def _cue_texts(shown, word):
     return [(int(t.split()[1]), pos) for t, pos in shown if t.startswith(word + " ")]
 
 
+def _check_cue_times(shown, cues, word):
+    """Cue n shows at stream time n and goes 0.8 s later. The first cue may
+    be due with the first picture (cue 0 of a VOD; cue 1 or later of a live
+    stream, which hlsdemux2 joins some segments back from its end): it is
+    drawn at the preroll, before the video sink can say its position, so the
+    time it goes tells when it came (on main too, 28.11.2026)."""
+    for k, (n, at) in enumerate(cues):
+        if at is None:
+            assert k == 0, (n, shown)
+            i = shown.index((f"{word} {n}", None))
+            gone = next((p for t, p in shown[i + 1:] if t == ""), None)
+            assert gone is not None and n + 0.75 <= gone < n + 0.8 + 0.5, (n, gone, shown)
+            continue
+        assert n - 0.05 <= at < n + 0.5, (n, at, shown)
+    assert [n for n, _at in cues] == sorted(n for n, _at in cues)
+
+
 def test_live_webvtt_drawn_by_lindvb_keeps_the_picture(player):  # noqa: F811
     """Live, timed WebVTT (ARD-alpha, PBS): hlsdemux2 (1.24) would hold
     picture and sound back for it. LinDVB loads and draws the cues itself,
@@ -814,8 +831,7 @@ def _check_live_drawn(player, shown, notices):  # noqa: F811
     cues = _cue_texts(shown, "Live")
     assert len(cues) >= 4, shown
     # cue n is due at stream time n (X-TIMESTAMP-MAP 3600 s, the video's start)
-    for n, at in cues:
-        assert at is not None and n - 0.05 <= at < n + 0.5, (n, at, shown)
+    _check_cue_times(shown, cues, "Live")
     assert "" in [t for t, _p in shown[1:]], shown           # each goes after 0.8 s
     assert player.subtitle_tracks() == (["English"], 0)
     assert player._vtt_draw is not None and not notices
@@ -835,18 +851,8 @@ def test_vod_webvtt_drawn_by_lindvb_at_their_time(player):  # noqa: F811
     srv.close()
     cues = _cue_texts(shown, "Cue")
     assert len(cues) >= 3, shown
-    for k, (n, at) in enumerate(cues):
-        if at is None:
-            # cue 0 (stream time 0) shows with the first picture, before the
-            # video sink can say its position (half the runs, on main too,
-            # 28.11.2026): the time it goes (0.8 s) tells when it came
-            assert k == 0 and n == 0, (n, shown)
-            i = shown.index(("Cue 0", None))
-            gone = next((p for t, p in shown[i + 1:] if t == ""), None)
-            assert gone is not None and 0.75 <= gone < 0.8 + 0.5, shown
-            continue
-        assert n - 0.05 <= at < n + 0.5, (n, at, shown)
-    assert [n for n, _at in cues] == sorted(n for n, _at in cues)
+    assert cues[0][1] is not None or cues[0][0] == 0, shown   # a VOD begins with cue 0
+    _check_cue_times(shown, cues, "Cue")
 
 
 def test_debug_log_says_what_lindvb_drew_of_the_webvtt(player, monkeypatch):  # noqa: F811
