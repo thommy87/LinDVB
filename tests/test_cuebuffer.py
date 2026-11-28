@@ -33,6 +33,27 @@ def test_parts_split_over_two_pieces_of_data():
     assert len(found) == 1 and found[0][4] == "x" * 400
 
 
+def test_a_cue_packet_cut_between_two_reads():
+    other = bytes((0x47, 0x01, 0x00, 0x10)) + b"\xab" * 184
+    cue, _cc = cb.cue_packets(0x1FC2, "geteilt", 7.0, 8.0)
+    data = other + cue + other
+    for cut in (188 + 1, 188 + 2, 188 + 100, 188 + 187):
+        r = cb.CueReader()
+        first, second = r.feed(data[:cut]), r.feed(data[cut:])
+        assert first == [] and [(f[0], f[4]) for f in second] == [(0, "geteilt")], cut
+
+
+def test_cue_packets_taken_out_of_whole_packets():
+    other = bytes((0x47, 0x01, 0x00, 0x10)) + b"\xab" * 184
+    a, cc = cb.cue_packets(0x1FC2, "x" * 400, 1.0, 2.0)          # three packets
+    b, _cc = cb.cue_packets(0x1FC5, "zwei", 3.0, 4.0, cc)
+    assert cb.strip_cue_packets(other + a + other + b + other) == other * 3
+    assert cb.strip_cue_packets(other * 2) == other * 2
+    # the same bytes inside a packet are no cue packet
+    inside = bytes((0x47, 0x01, 0x00, 0x10)) + b"\x47\x5f\xc0" + b"\xab" * 181
+    assert cb.strip_cue_packets(inside) == inside
+
+
 def test_cues_among_other_packets_not_aligned():
     other = bytes((0x47, 0x01, 0x00, 0x10)) + b"\xab" * 184
     a, cc = cb.cue_packets(0x1FC2, "eins", 1.0, 2.0)

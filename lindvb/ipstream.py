@@ -710,6 +710,7 @@ class GstReader:
         self.resolved = False            # a refused address was resolved
         self.gave_up = False             # on_error came: no more attempts
         self.cues = None                 # cuebuffer.CueWriter: subtitle cues into the stream
+        self.cue_languages = {}          # rendition -> its language (recordings, stage H)
         self._cue_loaders = []
         self._out_lock = threading.Lock()   # the reader's data and the cues between it
         if subtitles and stream_kind(url) == "adaptive" and ".m3u8" in url.lower():
@@ -1210,6 +1211,7 @@ class GstReader:
         if not pids:
             self.cues = None
             return
+        self.cue_languages = {m["name"]: m.get("language", "") for m in media if m["name"] in pids}
         writer.set_pids(pids)
         loaders = []
         for m in media:
@@ -1347,6 +1349,12 @@ class StreamSource:
     def cue_pids(self):
         """{subtitle rendition: PID} of the cues in the buffer (stage H)."""
         return getattr(self.reader, "cue_pids", {}) if self.reader is not None else {}
+
+    @property
+    def cue_languages(self):
+        """{subtitle rendition: language} of the cues in the buffer."""
+        return dict(getattr(self.reader, "cue_languages", {}) or {}) \
+            if self.reader is not None else {}
 
     def start(self):
         if self.kind == "http":

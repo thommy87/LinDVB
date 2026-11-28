@@ -142,12 +142,19 @@ class CueReader:
 
     def __init__(self):
         self._parts = {}             # (pid, PTS) -> [pieces]
+        self._rest = b""             # a cue packet the data before ended in
 
     def feed(self, data):
         found = []
+        back = len(self._rest)
+        if back:
+            data, self._rest = self._rest + data, b""
         for i in _find_all(data, _CUE_HEAD):
             if data[i + 2:i + 3] and data[i + 2] & 0xF0 != CUE_PID_BASE & 0xF0:
                 continue
+            if i + TS_PACKET > len(data):
+                self._rest = data[i:]            # its end comes with the next data
+                break
             got = parse_cue_packet(data[i:i + TS_PACKET])
             if got is None:
                 continue
@@ -161,7 +168,9 @@ class CueReader:
                 if all(p is not None for p in pieces):
                     text = b"".join(pieces).decode("utf-8", "replace")
                     start = ticks / PTS_HZ
-                    found.append((i, pid, start, start + dur / PTS_HZ, text))
+                    found.append((max(0, i - back), pid, start, start + dur / PTS_HZ, text))
+        if not self._rest and data[-1:] == _CUE_HEAD[:1]:
+            self._rest = data[-1:]                   # perhaps the first byte of a cue packet
         if len(self._parts) > 4 * CUE_PIDS:          # parts whose last never came
             self._parts.clear()
         return found
@@ -216,6 +225,22 @@ class CueFinder:
         found = [(pid, t0, t1, text, at[k])
                  for k, (_pos, pid, t0, t1, text) in enumerate(cues)]
         return found, at.get(-1)
+
+
+def strip_cue_packets(data):
+    """*data* (whole packets, from a packet start) without its cue packets:
+    a TS recording takes the cues out into .srt files (lindvb.recsubs), and
+    ffmpeg-based players would count a cue's PTS as the file's start."""
+    cut = [i for i in _find_all(data, _CUE_HEAD)
+           if i % TS_PACKET == 0 and is_cue_pid((data[i + 1] & 0x1F) << 8 | data[i + 2])]
+    if not cut:
+        return data
+    parts, at = [], 0
+    for i in cut:
+        parts.append(data[at:i])
+        at = i + TS_PACKET
+    parts.append(data[at:])
+    return b"".join(parts)
 
 
 def _find_all(data, needle):
