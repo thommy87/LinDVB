@@ -13,6 +13,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import (channelcontext, chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs,
                satip, sourcestate)
+from .. import updatecheck
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR, old_snap_folder
 from ..epg import details_line, programme_details
@@ -775,6 +776,17 @@ class MainWindow(Gtk.ApplicationWindow):
         self.rec_label = Gtk.Label(css_classes=["rec"])
         for w in (self.status, self.ts_label, self.rec_label, self.signal_label):
             self.statusbar.append(w)
+        # a newer release (lindvb.updatecheck): a quiet link until clicked or closed
+        self.update_box = Gtk.Box(spacing=2, visible=False)
+        self.update_btn = Gtk.Button(css_classes=["flat", "lv-update"])
+        self.update_btn.connect("clicked", lambda _b: self._open_update())
+        close = Gtk.Button(icon_name="window-close-symbolic", css_classes=["flat"],
+                           tooltip_text=_("Hide this notice until the next version"))
+        close.connect("clicked", lambda _b: self._hide_update())
+        self.update_box.append(self.update_btn)
+        self.update_box.append(close)
+        self.statusbar.insert_child_after(self.update_box, self.status)
+        self._update = None
 
         self.main_box = box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.append(self.paned)
@@ -3509,10 +3521,42 @@ class MainWindow(Gtk.ApplicationWindow):
         from .shortcuts import ShortcutsWindow
         ShortcutsWindow(self).present()
 
+    # ------------------------------------------------------------- updates
+    def start_update_check(self):
+        """Look for a newer release in the background (issue #206)."""
+        def newer(version, page):
+            GLib.idle_add(self._show_update, version, page)
+        updatecheck.check(self.settings, newer)
+
+    def _show_update(self, version, page):
+        self._update = (version, page)
+        if version != self.settings.get("update_hidden", ""):
+            self.update_btn.set_label(_("LinDVB {version} is available").format(version=version))
+            self.update_btn.set_tooltip_text(page)
+            self.update_box.set_visible(True)
+            debuglog.log(f"update: {version} is available ({page})")
+        return False
+
+    def _open_update(self):
+        if self._update:
+            try:
+                Gio.AppInfo.launch_default_for_uri(self._update[1], None)
+            except GLib.Error as e:
+                self.set_status(str(e))
+        self._hide_update()
+
+    def _hide_update(self):
+        if self._update:
+            self.settings["update_hidden"] = self._update[0]
+        self.update_box.set_visible(False)
+
     def on_about(self):
         from .. import COPYRIGHT, DISCUSSIONS, FEEDBACK_MAIL, ISSUES, WEBSITE, __version__
         from ..credits import CREDITS
-        dlg = Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version=__version__,
+        info = updatecheck.install()
+        package = updatecheck.describe(info)
+        version = f"{__version__} ({package})" if package else __version__
+        dlg = Gtk.AboutDialog(transient_for=self, program_name=APP_NAME, version=version,
                               comments=_("Watch and record DVB-S/S2, DVB-C, DVB-T/T2, ATSC and "
                                          "internet TV with the Linux DVB API and GStreamer."),
                               copyright=COPYRIGHT, website=WEBSITE, authors=["thommy87"],
@@ -3520,9 +3564,30 @@ class MainWindow(Gtk.ApplicationWindow):
         # "Name <mail>" and "Name https://…" turn into clickable links
         dlg.add_credit_section(_("Feedback"), [f"{FEEDBACK_MAIL} <{FEEDBACK_MAIL}>"] + [
             f"{url.split('://', 1)[1]} {url}" for url in (ISSUES, DISCUSSIONS)])
+        updates = self._update_lines(info)
+        if updates:
+            dlg.add_credit_section(_("Updates"), updates)
         for title, people in CREDITS:
             dlg.add_credit_section(_(title), list(people))
         dlg.present()
+
+    def _update_lines(self, info):
+        """What the About dialog says about updates."""
+        if info["package"] in ("snap", "flathub", "aur"):
+            return [_("Updated by the package manager")]
+        if not info["checks"]:
+            return []
+        found = self._update or updatecheck.known(self.settings)
+        if found:
+            # "Name https://..." turns into a link
+            return [f"{_('LinDVB {version} is available').format(version=found[0])} {found[1]}"]
+        if not self.settings.get("update_check", True):
+            return [_("The check for new versions is off (Preferences > Internet)")]
+        at = self.settings.get("update_checked_at", 0)
+        if at:
+            return [_("Up to date (checked {date})").format(date=time.strftime("%x %H:%M",
+                                                                                time.localtime(at)))]
+        return []
 
     def _on_close(self, *_):
         if self._channels_due:

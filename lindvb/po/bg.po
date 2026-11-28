@@ -4975,3 +4975,35 @@ msgstr "XDS програмни данни: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "само запълване, без субтитри"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Скриване на това известие до следващата версия"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} е налична"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Обновления"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Обновява се от мениджъра на пакети"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Търсенето на нови версии е изключено (Настройки > Интернет)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Актуална (проверено {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Търсене на нови версии"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Веднъж на ден LinDVB пита GitHub за най-новата версия и показва известие в лентата на състоянието, когато има по-нова. Влиза в сила след щракване върху Запазване."

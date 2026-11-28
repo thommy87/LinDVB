@@ -57,6 +57,10 @@ jobs:
 
       - name: Build AppImage
         shell: bash
+        env:
+          # a release build (the update check compares it with the releases);
+          # the Release workflow's draft has no tag yet
+          RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           set +e
           packaging/build-appimage.sh 2>&1 | tee build.log

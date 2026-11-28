@@ -4975,3 +4975,35 @@ msgstr "Sonraí cláir XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "líonadh amháin, gan fotheidil"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Folaigh an fógra seo go dtí an chéad leagan eile"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "Tá LinDVB {version} ar fáil"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Nuashonruithe"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Nuashonraíonn an bainisteoir pacáistí é"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Tá cuardach leaganacha nua múchta (Sainroghanna > Idirlíon)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Cothrom le dáta (seiceáilte {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Cuardaigh leaganacha nua"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Uair sa lá fiafraíonn LinDVB de GitHub cén leagan is déanaí agus taispeánann sé fógra sa bharra stádais nuair atá leagan níos nuaí ann. Bíonn éifeacht leis nuair a chliceálann tú Sábháil."

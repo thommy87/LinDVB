@@ -5259,3 +5259,35 @@ msgstr "XDS 番組データ: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "パディングのみ、字幕なし"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "次のバージョンまでこの通知を非表示にする"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} が利用可能です"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "アップデート"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "パッケージマネージャーが更新します"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "新しいバージョンの確認はオフです（設定 > インターネット）"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "最新です（{date} に確認）"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "新しいバージョンを確認する"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "LinDVB は 1 日に 1 回 GitHub に最新リリースを問い合わせ、新しいバージョンがあればステータスバーに通知を表示します。保存をクリックすると有効になります。"

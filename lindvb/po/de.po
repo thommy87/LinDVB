@@ -5642,3 +5642,35 @@ msgstr "Untertitel von HLS-Sendern im Puffer"
 #: lindvb/ui/dialogs.py
 msgid "The WebVTT subtitles of an HLS channel go into the timeshift buffer too, so the channel keeps its timeshift with subtitles switched on. Off: the channel plays without timeshift while they are on."
 msgstr "Die WebVTT-Untertitel eines HLS-Senders kommen mit in den Zeitversatz-Puffer, so behält der Sender seinen Zeitversatz bei eingeschalteten Untertiteln. Aus: Der Sender läuft ohne Zeitversatz, solange sie an sind."
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Diesen Hinweis bis zur nächsten Version ausblenden"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} ist verfügbar"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Updates"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Wird vom Paketmanager aktualisiert"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Die Suche nach neuen Versionen ist aus (Einstellungen > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Aktuell (geprüft {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Nach neuen Versionen suchen"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Einmal am Tag fragt LinDVB bei GitHub nach der neuesten Version und zeigt einen Hinweis in der Statusleiste, wenn es eine neuere gibt. Gilt nach einem Klick auf Speichern."

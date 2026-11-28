@@ -104,6 +104,9 @@ modules:
     build-commands:
       - mkdir -p ${FLATPAK_DEST}/share/lindvb
       - cp -r lindvb ${FLATPAK_DEST}/share/lindvb/
+      # the bundle of a GitHub release: the update check compares it with the
+      # releases (packaging/flathub-manifest.sh writes "flathub" instead)
+      - printf '{"package":"flatpak","channel":"release"}\n' > ${FLATPAK_DEST}/share/lindvb/lindvb/_build.json
       - install -Dm755 flatpak/lindvb.sh ${FLATPAK_DEST}/bin/lindvb
       - install -Dm644 data/io.github.thommy87.LinDVB.desktop -t ${FLATPAK_DEST}/share/applications
       - install -Dm644 data/io.github.thommy87.LinDVB.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo

@@ -394,6 +394,8 @@ def _header(what, settings=None):
     pkg = ("AppImage" if os.environ.get("APPIMAGE") else
            "Flatpak" if os.environ.get("FLATPAK_ID") else
            "Snap" if os.environ.get("SNAP") else "source / system package")
+    from . import updatecheck
+    pkg = updatecheck.describe(updatecheck.install()) or pkg
     desktop = os.environ.get("XDG_CURRENT_DESKTOP", "?")
     session = os.environ.get("XDG_SESSION_TYPE", "?")
     lines.append(f"Package: {pkg}; desktop: {desktop} ({session}); "

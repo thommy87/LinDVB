@@ -4975,3 +4975,35 @@ msgstr "Dados de programa XDS: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "apenas preenchimento, sem legendas"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Ocultar este aviso até à próxima versão"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "O LinDVB {version} está disponível"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Atualizações"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Atualizado pelo gestor de pacotes"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "A procura de novas versões está desligada (Preferências > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Atualizado (verificado em {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Procurar novas versões"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Uma vez por dia, o LinDVB pergunta ao GitHub qual é a versão mais recente e mostra um aviso na barra de estado quando existe uma mais nova. Aplica-se ao clicar em Guardar."

@@ -4975,3 +4975,35 @@ msgstr "XDS-ohjelmatiedot: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "vain täytettä, ei tekstityksiä"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Piilota tämä ilmoitus seuraavaan versioon asti"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} on saatavilla"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Päivitykset"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Paketinhallinta päivittää"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Uusien versioiden haku on pois päältä (Asetukset > Internet)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Ajan tasalla (tarkistettu {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Etsi uusia versioita"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Kerran päivässä LinDVB kysyy GitHubilta uusinta versiota ja näyttää tilarivillä ilmoituksen, jos uudempi on saatavilla. Tulee voimaan, kun napsautat Tallenna."

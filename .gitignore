@@ -11,3 +11,4 @@ parts/
 prime/
 stage/
 *.snap
+lindvb/_build.json

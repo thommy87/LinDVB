@@ -31,6 +31,21 @@ for mod in gi cairo; do
     done
 done
 cp -r "$SRC/lindvb" "$SITE/"
+# Which package this is, for the update check (lindvb/updatecheck.py): a
+# release when it is built for the tag of the version (RELEASE_TAG, set by
+# the Release workflow, whose draft has no tag yet) or the commit carries
+# that tag, else a build of a later commit ("nightly"), which is not
+# compared with the releases.
+VER="$(sed -n 's/^version = "\(.*\)"/\1/p' "$SRC/pyproject.toml")"
+COMMIT="$(git -C "$SRC" rev-parse --short=12 HEAD 2>/dev/null || true)"
+CHANNEL=nightly
+if [ "${RELEASE_TAG:-}" = "v$VER" ] || \
+        git -C "$SRC" tag --points-at HEAD 2>/dev/null | grep -qx "v$VER"; then
+    CHANNEL=release
+fi
+printf '{"package": "appimage", "channel": "%s", "commit": "%s"}\n' "$CHANNEL" "$COMMIT" \
+    > "$SITE/lindvb/_build.json"
+echo "== build stamp: $(cat "$SITE/lindvb/_build.json")"
 find "$SITE" -name __pycache__ -prune -exec rm -rf {} +
 
 echo "== GObject introspection typelibs"

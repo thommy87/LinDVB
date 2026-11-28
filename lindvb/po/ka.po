@@ -5331,3 +5331,35 @@ msgstr "XDS გადაცემის მონაცემები: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "მხოლოდ შევსება, სუბტიტრები არ არის"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "ამ შეტყობინების დამალვა შემდეგ ვერსიამდე"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "ხელმისაწვდომია LinDVB {version}"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "განახლებები"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "ანახლებს პაკეტების მმართველი"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "ახალი ვერსიების ძებნა გამორთულია (პარამეტრები > ინტერნეტი)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "განახლებულია (შემოწმდა {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "ახალი ვერსიების ძებნა"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "დღეში ერთხელ LinDVB GitHub-ს ეკითხება უახლეს ვერსიას და სტატუსის ზოლში აჩვენებს შეტყობინებას, თუ უფრო ახალი არსებობს. ძალაში შედის შენახვაზე დაწკაპუნების შემდეგ."

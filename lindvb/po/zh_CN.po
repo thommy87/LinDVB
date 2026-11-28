@@ -5331,3 +5331,35 @@ msgstr "XDS 节目数据：{size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "仅填充，无字幕"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "在下一个版本之前隐藏此通知"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} 已发布"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "更新"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "由软件包管理器更新"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "检查新版本已关闭（首选项 > 互联网）"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "已是最新（检查于 {date}）"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "检查新版本"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "LinDVB 每天向 GitHub 查询一次最新版本，如有更新的版本，会在状态栏中显示通知。点击保存后生效。"

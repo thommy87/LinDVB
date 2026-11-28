@@ -232,6 +232,10 @@ them.
 * Debug mode for bug reports (Preferences ▸ Debug): a log of versions, tuning,
   playback, recordings, HbbTV and errors in `~/.cache/lindvb/debug.log`, without
   passwords, PINs or your user name
+* Notice of a new version: the AppImage, the .deb and the Flatpak bundle of a
+  release ask GitHub once a day for the latest release (Preferences ▸ Internet ▸
+  Updates). The Snap, Flathub and AUR packages are updated by snapd, the software
+  centre or pacman and do not ask
 
 ### Languages
 

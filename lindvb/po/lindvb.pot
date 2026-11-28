@@ -6624,3 +6624,35 @@ msgstr ""
 #: lindvb/ui/dialogs.py
 msgid "The WebVTT subtitles of an HLS channel go into the timeshift buffer too, so the channel keeps its timeshift with subtitles switched on. Off: the channel plays without timeshift while they are on."
 msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr ""
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr ""
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr ""

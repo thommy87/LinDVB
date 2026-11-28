@@ -162,6 +162,8 @@ class LinDVBApp(Gtk.Application):
         if first_start:
             self._plugins_checked = True
             self._report_missing_plugins()
+            # a newer release? In the background, a while after the start
+            GLib.timeout_add_seconds(10, lambda: (self.window.start_update_check(), False)[1])
         target = None
         if self._start_channel:
             s = self._start_channel

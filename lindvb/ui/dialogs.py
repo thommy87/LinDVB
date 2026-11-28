@@ -10,7 +10,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import chansort
 from ..channels import Channel, number_order
-from .. import hwaccel
+from .. import hwaccel, updatecheck
 from ..config import DATA_DIR
 from ..epgsources import LANGUAGES
 from ..recformat import (AUDIO_MODE_LABELS, AUDIO_MODES, EXTRA_LABELS, FORMAT_LABELS,
@@ -423,6 +423,13 @@ class PrefsWindow(Gtk.Window):
                             margin_top=4))
         self._dvbi = DVBIPanel(app)
         pg.append(self._dvbi)
+        if updatecheck.install()["checks"]:
+            # only where LinDVB itself looks for new versions (lindvb.updatecheck)
+            g = group(pg, _("Updates"))
+            switch(g, "update_check", _("Look for new versions"),
+                   _("Once a day LinDVB asks GitHub for the latest release and shows a notice "
+                     "in the status bar when there is a newer one. Takes effect when you click "
+                     "Save."))
         self.stack.connect("notify::visible-child-name", lambda *_: self._page_shown())
 
         # -- Recording

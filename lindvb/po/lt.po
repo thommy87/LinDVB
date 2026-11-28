@@ -4975,3 +4975,35 @@ msgstr "XDS programos duomenys: {size}"
 #: lindvb/analysis.py
 msgid "only padding, no captions"
 msgstr "tik užpildas, subtitrų nėra"
+
+#: lindvb/ui/window.py
+msgid "Hide this notice until the next version"
+msgstr "Slėpti šį pranešimą iki kitos versijos"
+
+#: lindvb/ui/window.py
+msgid "LinDVB {version} is available"
+msgstr "LinDVB {version} jau prieinama"
+
+#: lindvb/ui/window.py lindvb/ui/dialogs.py
+msgid "Updates"
+msgstr "Atnaujinimai"
+
+#: lindvb/ui/window.py
+msgid "Updated by the package manager"
+msgstr "Atnaujina paketų tvarkyklė"
+
+#: lindvb/ui/window.py
+msgid "The check for new versions is off (Preferences > Internet)"
+msgstr "Naujų versijų paieška išjungta (Nuostatos > Internetas)"
+
+#: lindvb/ui/window.py
+msgid "Up to date (checked {date})"
+msgstr "Naujausia (patikrinta {date})"
+
+#: lindvb/ui/dialogs.py
+msgid "Look for new versions"
+msgstr "Ieškoti naujų versijų"
+
+#: lindvb/ui/dialogs.py
+msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr "Kartą per dieną LinDVB paklausia GitHub apie naujausią versiją ir būsenos juostoje parodo pranešimą, kai yra naujesnė. Įsigalioja spustelėjus Įrašyti."
