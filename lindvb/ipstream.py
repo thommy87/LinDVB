@@ -711,6 +711,7 @@ class GstReader:
         self.gave_up = False             # on_error came: no more attempts
         self.cues = None                 # cuebuffer.CueWriter: subtitle cues into the stream
         self._cue_loaders = []
+        self._out_lock = threading.Lock()   # the reader's data and the cues between it
         if subtitles and stream_kind(url) == "adaptive" and ".m3u8" in url.lower():
             from .cuebuffer import CueWriter
             self.cues = CueWriter()
@@ -1041,8 +1042,6 @@ class GstReader:
         received = len(data)
         self._last_data = time.monotonic()
         data = self._meta_out(data)
-        if self.cues is not None:
-            data = self._cues_out(data)
         if self.retry.up_since is None:
             self.retry.running()
             self.event = sourcestate.DATA
@@ -1050,7 +1049,11 @@ class GstReader:
                 self.GLib.idle_add(self._status, "reconnected",
                                    _("{host}: connected again").format(host=self.host))
         self.received += received
-        self.on_data(data)
+        if self.cues is None:
+            self.on_data(data)
+            return Gst.FlowReturn.OK
+        with self._out_lock:                # the cues that come between go in whole
+            self.on_data(self._cues_out(data))
         return Gst.FlowReturn.OK
 
     def _on_message(self, _bus, msg, gen):
@@ -1214,15 +1217,27 @@ class GstReader:
                 continue
             loaders.append(vttload.WebVttLoader(
                 final, m["uri"], lambda text, start, end, mapped, name=m["name"]:
-                writer.cue(name, text, start, end, mapped)))
+                self._cue_came(writer, name, text, start, end, mapped)))
         with self._lock:
             if self.closed:
                 return
             self._cue_loaders = loaders
+        writer.on_new = lambda: [loader.kick() for loader in loaders]
         for loader in loaders:
             loader.start()
         debuglog.write("Stream", f"{self.host}: subtitles into the buffer: " + ", ".join(
             f"{n} (0x{p:04X})" for n, p in pids.items()))
+
+    def _cue_came(self, writer, name, text, start, end, mapped):
+        """Loader thread: a cue for the writer, into the stream at once when
+        it is due already (the next video comes a whole segment later)."""
+        writer.cue(name, text, start, end, mapped)
+        with self._out_lock:
+            if self.closed:
+                return
+            data = writer.due_now()
+            if data:
+                self.on_data(data)
 
     def _cues_out(self, data):
         """*data* with the packets of the cues due after it (stage H)."""

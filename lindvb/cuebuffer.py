@@ -230,6 +230,9 @@ def _find_all(data, needle):
 CUE_LEAD = 2.0                   # s: a cue goes into the buffer this long before it is due
 CUE_HOLD = 500                   # cues held at most (the oldest go first)
 CUE_STALE = 30.0                 # s: a cue over this long before the buffer got to it is left out
+CUE_PICTURES = 2000              # video PES remembered: when each was handed on
+KICK_STEP = 0.5                  # s of new segment time that wakes the loaders
+KICK_GAP = 0.5                   # s at least between two wake-ups
 
 
 class CueWriter:
@@ -245,7 +248,13 @@ class CueWriter:
     again) starts a new clock; the cues still held then go in on its
     timeline. Holding them until shortly before they are due keeps each cue
     in the same stretch of buffer as its picture, so the player maps it with
-    the offset of that stretch (tsclock epochs)."""
+    the offset of that stretch (tsclock epochs).
+
+    The loaders read their playlists every target duration; the demuxer
+    may have the picture of a new segment up to that long before them, and
+    a cue that comes after its picture has been played is lost. So new
+    segment time at the demuxer wakes them (*on_new*, at most every
+    KICK_GAP s)."""
 
     def __init__(self, pids=None, lead=CUE_LEAD):
         import threading
@@ -259,8 +268,16 @@ class CueWriter:
         self._cc = {}
         self._ready = b""                 # packets waiting for data that starts on a packet
         self.last = None                  # PTS (s) of the latest video PES handed on
+        self.on_new = None                # wakes the loaders (new segment time came)
+        self._kick_at = None              # segment PTS (ticks) of the last wake-up
+        self._kick_time = 0.0
+        self.kicks = 0
+        self._aligned = True              # the last data handed on ended on a packet
+        self.between = 0                  # cues written between two pieces of video
         self.came = self.written = self.late = self.stale = self.dropped = 0
-        self.behind = 0.0                 # s: the most a cue went in after its picture
+        self.behind = 0.0                 # s: the most a cue went in after its picture came
+        from collections import deque
+        self._came = deque(maxlen=CUE_PICTURES)   # (PTS s, monotonic s) of the video handed on
 
     def set_pids(self, pids):
         with self._lock:
@@ -271,6 +288,8 @@ class CueWriter:
         with self._lock:
             self.clock = self._TsClock()
             self.last = None
+            self._kick_at = None
+            self._came.clear()
 
     def watch_input(self, tsdemux):
         """The tsdemux inside the HLS demuxer: its sink sees the segments."""
@@ -298,7 +317,9 @@ class CueWriter:
         pipeline, so the player counts them in its epoch); with *same* the
         data is also the segments' (the transport stream passed on as it
         came)."""
+        import time
         from .tsclock import PTS_HZ, video_pes
+        now = time.monotonic()
         with self._lock:
             clock = self.clock
             if same:
@@ -306,12 +327,51 @@ class CueWriter:
             for _pos, p in video_pes(data):
                 clock.frame(p / PTS_HZ)
                 self.last = p / PTS_HZ
+                self._came.append((self.last, now))
+            kick = self._new_segment_time(clock)
             out = self._ready + self._due(clock)
+            self._aligned = aligned
             if not aligned:
-                self._ready = out
+                self._ready, out = out, b""
+            else:
+                self._ready = b""
+        if kick and self.on_new is not None:
+            self.on_new()
+        return out
+
+    def due_now(self):
+        """Loader thread, after a cue came: the packets of the cues due now,
+        to go into the stream at once rather than with the next piece of
+        video (which comes a whole segment later: the demuxer hands on a
+        segment at a time); b"" when the stream is not on a packet
+        boundary."""
+        with self._lock:
+            if self._ready or not self._aligned:
                 return b""
-            self._ready = b""
+            out = self._due(self.clock)
+            self.between += bool(out)
             return out
+
+    def _new_segment_time(self, clock, now=None):
+        """True when the loaders are to look at their playlists: the newest
+        video PES of the segments went KICK_STEP on (or back: a new start)."""
+        import time
+        from .tsclock import JUMP_BACK, PTS_HZ, PTS_WRAP
+        cur = clock._last_in
+        if cur is None:
+            return False
+        if self._kick_at is not None:
+            d = (cur - self._kick_at) % PTS_WRAP
+            if d >= PTS_WRAP // 2:
+                d -= PTS_WRAP
+            if -JUMP_BACK <= d < KICK_STEP * PTS_HZ:
+                return False
+        now = time.monotonic() if now is None else now
+        if now - self._kick_time < KICK_GAP:
+            return False
+        self._kick_at, self._kick_time = cur, now
+        self.kicks += 1
+        return True
 
     def _due(self, clock):
         if self.last is None or clock.offset is None:
@@ -331,17 +391,26 @@ class CueWriter:
                 # after its picture (the loader got it later than the
                 # demuxer the video): the player still shows what is left
                 self.late += 1
-                self.behind = max(self.behind, self.last - t0)
+                self.behind = max(self.behind, self._after_picture(t0))
             pid = self.pids[name]
             packets, self._cc[pid] = cue_packets(pid, text, t0, t1, self._cc.get(pid, 0))
             out.append(packets)
             self.written += 1
         return b"".join(out)
 
+    def _after_picture(self, t0):
+        """s since the first picture at or after *t0* was handed on: how long
+        playing at the live end has to wait for the cue to be in time."""
+        import time
+        came = next((wall for pts, wall in self._came if pts >= t0), None)
+        return time.monotonic() - came if came is not None else 0.0
+
     def report(self):
         with self._lock:
             names = ", ".join(f"{n} on 0x{p:04X}" for n, p in self.pids.items()) or "none"
             return (f"subtitle cues in the buffer ({names}): {self.came} came, "
                     f"{self.written} written ({self.late} after their picture, at most "
-                    f"{self.behind:.2f} s), {self.stale} long over, {len(self._held)} held, "
-                    f"{self.dropped} thrown away; video: {self.clock.summary()}")
+                    f"{self.behind:.2f} s after it came), {self.stale} long over, {len(self._held)} held, "
+                    f"{self.dropped} thrown away, loaders woken {self.kicks} times, "
+                    f"{self.between} times written between two pieces of video; "
+                    f"video: {self.clock.summary()}")
