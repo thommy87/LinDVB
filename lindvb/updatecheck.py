@@ -13,7 +13,7 @@ the PKGBUILD); the Snap is told by its environment.
 
 The check asks the GitHub API for the latest release, at most once a day,
 in the background, and says nothing when it fails (offline). Preferences
-> Internet > Updates switches it off.
+> General > Updates switches it off.
 """
 
 import json
@@ -26,6 +26,7 @@ import urllib.request
 from pathlib import Path
 
 from . import __version__
+from .i18n import N_
 
 LATEST_API = "https://api.github.com/repos/thommy87/LinDVB/releases/latest"
 RELEASES = "https://github.com/thommy87/LinDVB/releases"
@@ -75,6 +76,21 @@ def describe(info, version=__version__):
         build = f"{version}+{info['commit']}" if info.get("commit") else version
         return f"{name}, development build {build}"
     return name
+
+
+def why_not(info):
+    """Why this installation does not look for new versions (an untranslated
+    text for the preferences), or "" when it does."""
+    if info.get("checks"):
+        return ""
+    if info.get("package") in _UPDATED_ELSEWHERE:
+        return N_("Your package manager or software centre keeps this LinDVB up to date "
+                  "(Snap, Flathub, AUR).")
+    if info.get("channel") == "nightly":
+        return N_("This is a development build of the newest code, not a release, so it is "
+                  "not compared with the releases.")
+    return N_("This LinDVB came from its source code or from a package of your "
+              "distribution, so it is not compared with the releases.")
 
 
 def version_key(text):

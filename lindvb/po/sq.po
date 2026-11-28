@@ -5350,8 +5350,8 @@ msgid "Updated by the package manager"
 msgstr "Përditësohet nga menaxheri i paketave"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Kërkimi për versione të reja është i fikur (Parapëlqime > Internet)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Kërkimi për versione të reja është i fikur (Parapëlqime > Të përgjithshme)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5364,3 +5364,15 @@ msgstr "Kërko versione të reja"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Një herë në ditë LinDVB pyet GitHub për versionin më të ri dhe shfaq një njoftim në shiritin e gjendjes kur ka një më të ri. Hyn në fuqi pasi klikoni Ruaj."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Menaxheri i paketave ose qendra e programeve e mban të përditësuar këtë LinDVB (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Ky është një version zhvillimi i kodit më të ri, jo një botim, prandaj nuk krahasohet me botimet."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Ky LinDVB vjen nga kodi burim ose nga një paketë e shpërndarjes suaj, prandaj nuk krahasohet me botimet."

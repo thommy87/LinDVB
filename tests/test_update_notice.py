@@ -57,7 +57,7 @@ def test_about_lines():
     assert "99.0" in line and line.endswith(" " + uc.RELEASES + "/tag/v99.0")
     me = _win(update_check=False)
     assert me._update_lines(release) == [_("The check for new versions is off "
-                                           "(Preferences > Internet)")]
+                                           "(Preferences > General)")]
     snap = uc.install({"SNAP": "/snap/x", "SNAP_REVISION": "81"}, {})
     assert me._update_lines(snap) == [_("Updated by the package manager")]
     assert me._update_lines(uc.install({}, {})) == []            # a source checkout

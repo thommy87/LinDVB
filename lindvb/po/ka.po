@@ -5377,8 +5377,8 @@ msgid "Updated by the package manager"
 msgstr "ანახლებს პაკეტების მმართველი"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "ახალი ვერსიების ძებნა გამორთულია (პარამეტრები > ინტერნეტი)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "ახალი ვერსიების ძებნა გამორთულია (პარამეტრები > ზოგადი)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5391,3 +5391,15 @@ msgstr "ახალი ვერსიების ძებნა"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "დღეში ერთხელ LinDVB GitHub-ს ეკითხება უახლეს ვერსიას და სტატუსის ზოლში აჩვენებს შეტყობინებას, თუ უფრო ახალი არსებობს. ძალაში შედის შენახვაზე დაწკაპუნების შემდეგ."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "ამ LinDVB-ს განახლებულს ინახავს თქვენი პაკეტების მმართველი ან პროგრამების ცენტრი (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "ეს უახლესი კოდის სადემონსტრაციო აწყობაა და არა გამოშვება, ამიტომ გამოშვებებს არ ედარება."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "ეს LinDVB მიღებულია საწყისი კოდიდან ან თქვენი დისტრიბუტივის პაკეტიდან, ამიტომ გამოშვებებს არ ედარება."

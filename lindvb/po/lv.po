@@ -5021,8 +5021,8 @@ msgid "Updated by the package manager"
 msgstr "Atjaunina pakotņu pārvaldnieks"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Jaunu versiju meklēšana ir izslēgta (Iestatījumi > Internets)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Jaunu versiju meklēšana ir izslēgta (Iestatījumi > Vispārīgi)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5035,3 +5035,15 @@ msgstr "Meklēt jaunas versijas"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Reizi dienā LinDVB vaicā GitHub par jaunāko versiju un statusa joslā parāda paziņojumu, ja ir jaunāka. Stājas spēkā pēc klikšķa uz Saglabāt."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Šo LinDVB atjaunina jūsu pakotņu pārvaldnieks vai programmatūras centrs (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Šī ir jaunākā koda izstrādes versija, nevis laidiens, tāpēc to nesalīdzina ar laidieniem."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Šis LinDVB ir no pirmkoda vai no jūsu distribūcijas pakotnes, tāpēc to nesalīdzina ar laidieniem."

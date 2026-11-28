@@ -5350,8 +5350,8 @@ msgid "Updated by the package manager"
 msgstr "อัปเดตโดยตัวจัดการแพ็กเกจ"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "การค้นหาเวอร์ชันใหม่ปิดอยู่ (การตั้งค่า > อินเทอร์เน็ต)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "การค้นหาเวอร์ชันใหม่ปิดอยู่ (การตั้งค่า > ทั่วไป)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5364,3 +5364,15 @@ msgstr "ค้นหาเวอร์ชันใหม่"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "วันละครั้ง LinDVB จะถาม GitHub ถึงรุ่นล่าสุดและแสดงการแจ้งเตือนในแถบสถานะเมื่อมีรุ่นที่ใหม่กว่า มีผลหลังจากคลิกบันทึก"
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "ตัวจัดการแพ็กเกจหรือศูนย์ซอฟต์แวร์ของคุณจะอัปเดต LinDVB นี้ให้ (Snap, Flathub, AUR)"
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "นี่คือรุ่นพัฒนาจากโค้ดล่าสุด ไม่ใช่รุ่นเผยแพร่ จึงไม่ถูกเปรียบเทียบกับรุ่นเผยแพร่"
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "LinDVB นี้มาจากซอร์สโค้ดหรือจากแพ็กเกจของดิสทริบิวชันของคุณ จึงไม่ถูกเปรียบเทียบกับรุ่นเผยแพร่"

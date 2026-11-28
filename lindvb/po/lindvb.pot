@@ -6669,7 +6669,7 @@ msgid "Updated by the package manager"
 msgstr ""
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
+msgid "The check for new versions is off (Preferences > General)"
 msgstr ""
 
 #: lindvb/ui/window.py
@@ -6682,4 +6682,16 @@ msgstr ""
 
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
+msgstr ""
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr ""
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr ""
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
 msgstr ""
