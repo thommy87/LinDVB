@@ -5305,8 +5305,8 @@ msgid "Updated by the package manager"
 msgstr "パッケージマネージャーが更新します"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "新しいバージョンの確認はオフです（設定 > インターネット）"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "新しいバージョンの確認はオフです（設定 > 一般）"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5319,3 +5319,15 @@ msgstr "新しいバージョンを確認する"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "LinDVB は 1 日に 1 回 GitHub に最新リリースを問い合わせ、新しいバージョンがあればステータスバーに通知を表示します。保存をクリックすると有効になります。"
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "この LinDVB はパッケージマネージャーまたはソフトウェアセンターが最新に保ちます（Snap、Flathub、AUR）。"
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "これは最新コードの開発ビルドでありリリースではないため、リリースとは比較しません。"
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "この LinDVB はソースコードまたはディストリビューションのパッケージから入手したものなので、リリースとは比較しません。"

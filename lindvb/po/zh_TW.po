@@ -5377,8 +5377,8 @@ msgid "Updated by the package manager"
 msgstr "由套件管理員更新"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "檢查新版本已關閉（偏好設定 > 網際網路）"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "檢查新版本已關閉（偏好設定 > 一般）"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5391,3 +5391,15 @@ msgstr "檢查新版本"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "LinDVB 每天向 GitHub 查詢一次最新版本，若有較新的版本，會在狀態列中顯示通知。按下儲存後生效。"
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "您的套件管理員或軟體中心會讓此 LinDVB 保持最新（Snap、Flathub、AUR）。"
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "這是基於最新程式碼的開發版本，不是正式發行版，因此不會與發行版比較。"
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "此 LinDVB 來自原始碼或您所用發行版的套件，因此不會與發行版比較。"

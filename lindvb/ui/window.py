@@ -3590,7 +3590,7 @@ class MainWindow(Gtk.ApplicationWindow):
             # "Name https://..." turns into a link
             return [f"{_('LinDVB {version} is available').format(version=found[0])} {found[1]}"]
         if not self.settings.get("update_check", True):
-            return [_("The check for new versions is off (Preferences > Internet)")]
+            return [_("The check for new versions is off (Preferences > General)")]
         at = self.settings.get("update_checked_at", 0)
         if at:
             return [_("Up to date (checked {date})").format(date=time.strftime("%x %H:%M",

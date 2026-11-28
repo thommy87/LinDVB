@@ -76,20 +76,46 @@ def test_timeshift_is_a_switch_and_brings_the_buffer_subtitles_back(prefs):
     assert subs.get_active()
 
 
-def test_update_switch_only_where_lindvb_checks(monkeypatch):
-    """Preferences > Internet > Updates: only for the packages that look for
-    new versions themselves (lindvb.updatecheck), not in a checkout or a Snap."""
+def test_update_switch_on_the_general_page(monkeypatch):
+    """Preferences > General > Updates: the switch is always there, but works
+    only for the packages that look for new versions themselves
+    (lindvb.updatecheck); elsewhere it is greyed out and says why."""
     from lindvb import updatecheck
+    from lindvb.i18n import _
     settings = Settings()
     db = ChannelDB()
     app = types.SimpleNamespace(settings=settings, db=db, favs=FavouriteLists(db),
                                 plugins=PluginManager(settings), _dvbi_busy=False)
-    for checks in (True, False):
-        monkeypatch.setattr(updatecheck, "install", lambda checks=checks: {"checks": checks})
+    for info in ({"checks": True, "package": "appimage", "channel": "release"},
+                 {"checks": False, "package": "appimage", "channel": "nightly"},
+                 {"checks": False, "package": "snap", "channel": ""}):
+        monkeypatch.setattr(updatecheck, "install", lambda info=info: info)
         win = PrefsWindow(app, None)
         try:
-            assert ("update_check" in win.w) == checks
-            if checks:
-                assert win.w["update_check"][0].get_active() == bool(settings["update_check"])
+            assert win.stack.get_pages()[0].get_name() == "general"
+            if info["checks"]:
+                sw = win.w["update_check"][0]
+                assert sw.get_sensitive() and sw.get_active() == bool(settings["update_check"])
+            else:
+                # off and greyed out, and not saved over the setting
+                assert "update_check" not in win.w
+                assert not win._update_switch.get_sensitive()
+                assert not win._update_switch.get_active()
+            labels = _labels(win.stack.get_pages()[0].get_child())
+            assert _("Updates") in labels and _("Appearance") in labels
+            if not info["checks"]:
+                assert _(updatecheck.why_not(info)) in labels
         finally:
             win.destroy()
+
+
+def _labels(widget):
+    """All label texts below *widget*."""
+    out = []
+    child = widget.get_first_child()
+    while child is not None:
+        if isinstance(child, Gtk.Label):
+            out.append(child.get_label())
+        out.extend(_labels(child))
+        child = child.get_next_sibling()
+    return out

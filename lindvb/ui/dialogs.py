@@ -170,16 +170,15 @@ class PrefsWindow(Gtk.Window):
         def switch(g, key, label, hint=None):
             self.w[key] = (_row(g, label, Gtk.Switch(active=bool(s[key])), hint), bool)
 
-        # -- Appearance
-        pg = page("appearance", _("Appearance"))
-        g = group(pg, _("Language"))
+        # -- General: appearance and updates
+        pg = page("general", _("General"))
+        g = group(pg, _("Appearance"))
         lang = s.get("language", "")
         self._lang_codes = list(LANGUAGES_UI)
         self._lang_drop = _row(g, _("Language"), dropdown(
             [_(n) if c == "" else n for c, n in LANGUAGES_UI.items()],
             self._lang_codes.index(lang) if lang in self._lang_codes else 0),
             _("Takes effect when LinDVB is started again."))
-        g = group(pg, _("Colour scheme"))
         theme = s.get("theme", "dark")
         self._theme_drop = _row(g, _("Colour scheme"), dropdown(
             [_("Dark"), _("Light"), _("Same as the system")],
@@ -188,7 +187,6 @@ class PrefsWindow(Gtk.Window):
         self._theme_drop.connect("notify::selected", lambda *_: apply_theme(
             SCHEMES[self._theme_drop.get_selected()] if
             SCHEMES[self._theme_drop.get_selected()] != "system" else {"theme": "system"}))
-        g = group(pg, _("Accent colour"))
         mode = s.get("accent_mode", "default")
         self._accent_drop = _row(g, _("Accent colour"), dropdown(
             ACCENT_LABELS, ACCENT_MODES.index(mode) if mode in ACCENT_MODES else 0),
@@ -199,6 +197,20 @@ class PrefsWindow(Gtk.Window):
                                       margin_top=4, margin_bottom=6)
         g.append(self._accent_hint)
         self._accent_drop.connect("notify::selected", lambda *_: self._preview_accent())
+        # new versions (lindvb.updatecheck): the switch is always there, but only
+        # works where LinDVB itself looks; elsewhere it says why not
+        g = group(pg, _("Updates"))
+        info = updatecheck.install()
+        if info["checks"]:
+            switch(g, "update_check", _("Look for new versions"),
+                   _("Once a day LinDVB asks GitHub for the latest release and shows a notice "
+                     "in the status bar when there is a newer one. Takes effect when you click "
+                     "Save."))
+        else:
+            # shown off and greyed out; the setting itself is left as it is
+            self._update_switch = _row(g, _("Look for new versions"),
+                                       Gtk.Switch(active=False, sensitive=False),
+                                       _(updatecheck.why_not(info)))
 
         # -- OSD and visualisations
         pg = page("visualisation", _("OSD and Visualisations"))
@@ -423,13 +435,6 @@ class PrefsWindow(Gtk.Window):
                             margin_top=4))
         self._dvbi = DVBIPanel(app)
         pg.append(self._dvbi)
-        if updatecheck.install()["checks"]:
-            # only where LinDVB itself looks for new versions (lindvb.updatecheck)
-            g = group(pg, _("Updates"))
-            switch(g, "update_check", _("Look for new versions"),
-                   _("Once a day LinDVB asks GitHub for the latest release and shows a notice "
-                     "in the status bar when there is a newer one. Takes effect when you click "
-                     "Save."))
         self.stack.connect("notify::visible-child-name", lambda *_: self._page_shown())
 
         # -- Recording

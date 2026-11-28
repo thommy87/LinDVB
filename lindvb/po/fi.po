@@ -5021,8 +5021,8 @@ msgid "Updated by the package manager"
 msgstr "Paketinhallinta päivittää"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Uusien versioiden haku on pois päältä (Asetukset > Internet)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Uusien versioiden haku on pois päältä (Asetukset > Yleiset)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5035,3 +5035,15 @@ msgstr "Etsi uusia versioita"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Kerran päivässä LinDVB kysyy GitHubilta uusinta versiota ja näyttää tilarivillä ilmoituksen, jos uudempi on saatavilla. Tulee voimaan, kun napsautat Tallenna."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Paketinhallinta tai sovelluskeskus pitää tämän LinDVB:n ajan tasalla (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Tämä on uusimman koodin kehitysversio eikä julkaisu, joten sitä ei verrata julkaisuihin."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Tämä LinDVB on peräisin lähdekoodista tai jakelusi paketista, joten sitä ei verrata julkaisuihin."

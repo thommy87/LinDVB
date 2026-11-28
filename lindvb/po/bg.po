@@ -5021,8 +5021,8 @@ msgid "Updated by the package manager"
 msgstr "Обновява се от мениджъра на пакети"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Търсенето на нови версии е изключено (Настройки > Интернет)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Търсенето на нови версии е изключено (Настройки > Общи)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5035,3 +5035,15 @@ msgstr "Търсене на нови версии"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Веднъж на ден LinDVB пита GitHub за най-новата версия и показва известие в лентата на състоянието, когато има по-нова. Влиза в сила след щракване върху Запазване."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Вашият мениджър на пакети или софтуерен център поддържа този LinDVB актуален (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Това е версия за разработка на най-новия код, а не издание, затова не се сравнява с изданията."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Този LinDVB е от изходния код или от пакет на вашата дистрибуция, затова не се сравнява с изданията."

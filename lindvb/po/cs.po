@@ -5021,8 +5021,8 @@ msgid "Updated by the package manager"
 msgstr "Aktualizuje správce balíčků"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Hledání nových verzí je vypnuté (Předvolby > Internet)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Hledání nových verzí je vypnuté (Předvolby > Obecné)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5035,3 +5035,15 @@ msgstr "Hledat nové verze"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Jednou denně se LinDVB zeptá GitHubu na nejnovější verzi a ve stavovém řádku zobrazí upozornění, pokud existuje novější. Platí po kliknutí na Uložit."
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Tento LinDVB udržuje aktuální váš správce balíčků nebo softwarové centrum (Snap, Flathub, AUR)."
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Toto je vývojové sestavení nejnovějšího kódu, ne vydání, proto se neporovnává s vydáními."
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Tento LinDVB pochází ze zdrojového kódu nebo z balíčku vaší distribuce, proto se neporovnává s vydáními."

@@ -5345,8 +5345,8 @@ msgid "Updated by the package manager"
 msgstr "Թարմացվում է փաթեթների կառավարչի կողմից"
 
 #: lindvb/ui/window.py
-msgid "The check for new versions is off (Preferences > Internet)"
-msgstr "Նոր տարբերակների որոնումն անջատված է (Կարգավորումներ > Համացանց)"
+msgid "The check for new versions is off (Preferences > General)"
+msgstr "Նոր տարբերակների որոնումն անջատված է (Կարգավորումներ > Ընդհանուր)"
 
 #: lindvb/ui/window.py
 msgid "Up to date (checked {date})"
@@ -5359,3 +5359,15 @@ msgstr "Որոնել նոր տարբերակներ"
 #: lindvb/ui/dialogs.py
 msgid "Once a day LinDVB asks GitHub for the latest release and shows a notice in the status bar when there is a newer one. Takes effect when you click Save."
 msgstr "Օրը մեկ անգամ LinDVB-ն GitHub-ից հարցնում է վերջին տարբերակը և կարգավիճակի գոտում ծանուցում ցույց տալիս, երբ կա ավելի նորը։ Ուժի մեջ է մտնում Պահպանել սեղմելուց հետո։"
+
+#: lindvb/updatecheck.py
+msgid "Your package manager or software centre keeps this LinDVB up to date (Snap, Flathub, AUR)."
+msgstr "Ձեր փաթեթների կառավարիչը կամ ծրագրերի կենտրոնը թարմացնում է այս LinDVB-ն (Snap, Flathub, AUR)։"
+
+#: lindvb/updatecheck.py
+msgid "This is a development build of the newest code, not a release, so it is not compared with the releases."
+msgstr "Սա վերջին կոդի մշակման տարբերակ է, ոչ թե թողարկում, ուստի այն չի համեմատվում թողարկումների հետ։"
+
+#: lindvb/updatecheck.py
+msgid "This LinDVB came from its source code or from a package of your distribution, so it is not compared with the releases."
+msgstr "Այս LinDVB-ն ստացվել է իր ելակոդից կամ ձեր բաշխման փաթեթից, ուստի այն չի համեմատվում թողարկումների հետ։"
