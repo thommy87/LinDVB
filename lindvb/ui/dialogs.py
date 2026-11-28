@@ -291,6 +291,7 @@ class PrefsWindow(Gtk.Window):
                  "tuner's: pause, jump back and keep the buffer as a recording. Radio "
                  "stations keep their song titles."))
         self._iptv_ts_rows = [self.w["iptv_timeshift"][0].get_parent()]
+        self.w["iptv_timeshift"][0].connect("notify::active", lambda *_a: self._on_iptv_timeshift())
         from ..ipstream import QUALITIES
         self._ts_qualities = list(QUALITIES)
         cur = s.get("iptv_timeshift_quality", "auto")
@@ -301,7 +302,7 @@ class PrefsWindow(Gtk.Window):
               "buffer keeps what arrived. Always the best looks the same all the time, "
               "but stops to wait on a slow connection."))
         self._iptv_ts_rows.append(self._ts_quality_drop.get_parent())
-        switch(g, "subtitles_in_buffer", _("Subtitles of HLS channels in the buffer (test)"),
+        switch(g, "subtitles_in_buffer", _("Subtitles of HLS channels in the buffer"),
                _("The WebVTT subtitles of an HLS channel go into the timeshift buffer too, "
                  "so the channel keeps its timeshift with subtitles switched on. Off: the "
                  "channel plays without timeshift while they are on."))
@@ -1221,13 +1222,17 @@ class PrefsWindow(Gtk.Window):
     # -- timeshift (lindvb.timeshift)
     def _timeshift_rows(self, g, s, folder, spin):
         from .. import timeshift
-        self._ts_modes = list(timeshift.MODES)
+        self._ts_modes = list(timeshift.STORES)
         cur = timeshift.mode(s)
-        self._ts_mode_drop = _row(g, _("Timeshift"), dropdown(
-            [_("Off"), _("In memory (RAM)"), _("On disk as a file")],
-            self._ts_modes.index(cur)),
-            _("Off: live TV cannot pause or jump back. In memory: nothing is written "
-              "to the disk, but the buffer takes RAM. On disk: the largest buffer."))
+        store = cur if cur in timeshift.STORES else timeshift.store(s)
+        self._ts_switch = _row(g, _("Timeshift"), Gtk.Switch(active=cur != "off"),
+                               _("Pause live TV, jump back and keep the buffer as a "
+                                 "recording. Off: live TV cannot pause or jump back."))
+        self._ts_switch.connect("notify::active", lambda *_a: self._on_timeshift_switch())
+        self._ts_mode_drop = _row(g, _("Timeshift buffer"), dropdown(
+            [_("In memory (RAM)"), _("On disk as a file")], self._ts_modes.index(store)),
+            _("In memory: nothing is written to the disk, but the buffer takes RAM. "
+              "On disk: the largest buffer."))
         self._ts_mode_drop.connect("notify::selected", lambda *_a: self._on_timeshift_mode())
         folder(g, "timeshift_dir", _("Timeshift folder"))
         spin(g, "timeshift_max_mb", _("Timeshift buffer (MB)"), timeshift.MIN_MB,
@@ -1301,18 +1306,40 @@ class PrefsWindow(Gtk.Window):
 
         dlg.select_folder(self, None, done)
 
+    def _timeshift_mode(self):
+        """"off", "ram" or "disk", as the switch and the buffer choice say."""
+        if not self._ts_switch.get_active():
+            return "off"
+        return self._ts_modes[self._ts_mode_drop.get_selected()]
+
     def _on_timeshift_mode(self):
-        mode = self._ts_modes[self._ts_mode_drop.get_selected()]
-        self.w["timeshift_dir"][0].get_parent().set_visible(mode == "disk")
-        self.w["timeshift_max_mb"][0].get_parent().set_visible(mode == "disk")
-        self.w["timeshift_ram_mb"][0].get_parent().set_visible(mode == "ram")
-        for row in getattr(self, "_iptv_ts_rows", []):
-            row.set_sensitive(mode != "off")
+        store = self._ts_modes[self._ts_mode_drop.get_selected()]
+        on = self._ts_switch.get_active()
+        self.w["timeshift_dir"][0].get_parent().set_visible(store == "disk")
+        self.w["timeshift_max_mb"][0].get_parent().set_visible(store == "disk")
+        self.w["timeshift_ram_mb"][0].get_parent().set_visible(store == "ram")
+        for row in [self._ts_mode_drop.get_parent(), self.w["timeshift_dir"][0].get_parent(),
+                    self.w["timeshift_max_mb"][0].get_parent(),
+                    self.w["timeshift_ram_mb"][0].get_parent()] + \
+                getattr(self, "_iptv_ts_rows", []):
+            row.set_sensitive(on)
+
+    def _on_timeshift_switch(self):
+        """Timeshift switched on again: the subtitles in the buffer come
+        with it (they can be switched off on their own)."""
+        if self._ts_switch.get_active() and "subtitles_in_buffer" in self.w:
+            self.w["subtitles_in_buffer"][0].set_active(True)
+        self._on_timeshift_mode()
+
+    def _on_iptv_timeshift(self):
+        if self.w["iptv_timeshift"][0].get_active() and "subtitles_in_buffer" in self.w:
+            self.w["subtitles_in_buffer"][0].set_active(True)
 
     def on_save(self):
         s = self.app.settings
         settings_before = copy.deepcopy(dict(s))
-        s["timeshift_mode"] = self._ts_modes[self._ts_mode_drop.get_selected()]
+        s["timeshift_mode"] = self._timeshift_mode()
+        s["timeshift_store"] = self._ts_modes[self._ts_mode_drop.get_selected()]
         s["ca_provider"] = self._ca_names[self._ca_drop.get_selected()]
         s["language"] = self._lang_codes[self._lang_drop.get_selected()]
         video_before = (s.get("video_decoder", "auto"), bool(s.get("deinterlace")))

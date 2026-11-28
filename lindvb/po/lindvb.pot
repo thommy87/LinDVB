@@ -5839,7 +5839,11 @@ msgid "On disk as a file"
 msgstr ""
 
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
-msgid "Off: live TV cannot pause or jump back. In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
+msgid "Pause live TV, jump back and keep the buffer as a recording. Off: live TV cannot pause or jump back."
+msgstr ""
+
+#: lindvb/ui/dialogs.py
+msgid "In memory: nothing is written to the disk, but the buffer takes RAM. On disk: the largest buffer."
 msgstr ""
 
 #: lindvb/ui/dialogs.py lindvb/timeshift.py lindvb/ui/window.py
@@ -6614,7 +6618,7 @@ msgid "only padding, no captions"
 msgstr ""
 
 #: lindvb/ui/dialogs.py
-msgid "Subtitles of HLS channels in the buffer (test)"
+msgid "Subtitles of HLS channels in the buffer"
 msgstr ""
 
 #: lindvb/ui/dialogs.py

@@ -133,6 +133,9 @@ DEFAULTS = {
     # timeshift buffer (lindvb.timeshift): "disk" (in timeshift_dir), "ram"
     # (tmpfs, at most half of the memory) or "off" (no pause / jumping back)
     "timeshift_mode": "disk",
+    # where the buffer lives while timeshift is on ("ram" or "disk"); kept
+    # while timeshift is switched off, so switching it on again finds it
+    "timeshift_store": "disk",
     "timeshift_dir": str(CACHE_DIR / "timeshift"),
     "timeshift_max_mb": 4096,
     "timeshift_ram_mb": 1024,
@@ -140,8 +143,9 @@ DEFAULTS = {
     # HLS/DASH quality there: "auto" (follows the connection) or "best"
     "iptv_timeshift": True,
     "iptv_timeshift_quality": "auto",
-    # the WebVTT subtitles of HLS channels into that buffer too (stage H, on test)
-    "subtitles_in_buffer": False,
+    # the WebVTT subtitles of HLS channels into that buffer too (stage H)
+    "subtitles_in_buffer": True,
+    "subtitles_in_buffer_set": False,     # chosen since it became the default (0.23)
     # open internet streams (and Tvheadend) again when the connection breaks
     "stream_reconnect": True,
     "recording_dir": str(user_dir("XDG_VIDEOS_DIR", "Videos") / APP_NAME),
@@ -391,6 +395,13 @@ class Settings(dict):
         # from before the colour scheme could be chosen keeps the dark look
         if saved and "theme" not in saved:
             saved["theme"] = "dark"
+        # the subtitles in the buffer were a test switch, off: with 0.23 they
+        # are on, also where the switch was saved off before
+        if not saved.get("subtitles_in_buffer_set"):
+            saved.pop("subtitles_in_buffer", None)
+            saved["subtitles_in_buffer_set"] = True
+        if saved.get("timeshift_mode") in ("ram", "disk"):
+            saved["timeshift_store"] = saved["timeshift_mode"]
         self.update(saved)
 
     def save(self):
