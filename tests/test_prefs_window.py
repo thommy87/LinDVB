@@ -50,3 +50,27 @@ def test_folder_settings_have_a_folder_chooser(prefs, key):
             buttons.append(child.get_icon_name())
         child = child.get_next_sibling()
     assert "folder-open-symbolic" in buttons
+
+
+def test_timeshift_is_a_switch_and_brings_the_buffer_subtitles_back(prefs):
+    """Timeshift on and off with a switch, the buffer in memory or on disk
+    beside it; switched on again (also for internet channels), the
+    subtitles in the buffer come back on, and stay off on their own."""
+    ts, subs = prefs._ts_switch, prefs.w["subtitles_in_buffer"][0]
+    iptv = prefs.w["iptv_timeshift"][0]
+    ts.set_active(True)
+    store = prefs._ts_modes[prefs._ts_mode_drop.get_selected()]
+    assert prefs._timeshift_mode() == store and store in ("ram", "disk")
+    subs.set_active(False)                      # off on its own: stays off
+    assert not subs.get_active() and prefs._timeshift_mode() == store
+    ts.set_active(False)
+    assert prefs._timeshift_mode() == "off"
+    assert not prefs._ts_mode_drop.get_parent().get_sensitive()
+    assert not subs.get_parent().get_sensitive()
+    ts.set_active(True)
+    assert subs.get_active() and prefs._timeshift_mode() == store
+    assert prefs._ts_mode_drop.get_parent().get_sensitive()
+    subs.set_active(False)
+    iptv.set_active(False)
+    iptv.set_active(True)
+    assert subs.get_active()

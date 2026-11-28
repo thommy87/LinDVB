@@ -62,8 +62,8 @@ them.
 * Live TV and radio from DVB tuners and internet streams (HLS, DASH, HTTP, RTSP,
   RTP/UDP multicast including source-specific `rtp://source@group:port`)
 * Timeshift: pause live TV, jump ±10 s / ±60 s, back to live, keep the buffer.
-  The buffer lives on disk, in memory (RAM) or is switched off (Preferences ▸
-  Playback ▸ Timeshift). Internet TV channels (M3U, Xtream, DVB-I, multicast) and
+  It is switched on by default and lives on disk or in memory (RAM)
+  (Preferences ▸ Playback ▸ Timeshift). Internet TV channels (M3U, Xtream, DVB-I, multicast) and
   internet radio go through the same buffer (radio with its song titles, so a
   jump back shows the song that ran then); HLS/DASH keep switching quality with the connection ("automatic") or
   stay on the best quality (Preferences ▸ Playback ▸ Timeshift). Broken

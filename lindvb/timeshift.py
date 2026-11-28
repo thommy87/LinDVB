@@ -26,6 +26,7 @@ from pathlib import Path
 
 MB = 1024 * 1024
 MODES = ("off", "ram", "disk")
+STORES = ("ram", "disk")          # where the buffer lives while timeshift is on
 
 SEGMENT_BYTES = 64 * MB           # disk and RAM buffers
 SMALL_SEGMENT_BYTES = 16 * MB     # the small buffer (off, RAM recordings)
@@ -47,6 +48,15 @@ _SEGMENT = re.compile(r"seg\d+\.ts$")
 def mode(settings):
     m = settings.get("timeshift_mode", "disk")
     return m if m in MODES else "disk"
+
+
+def store(settings):
+    """Where the buffer lives when timeshift is on: "ram" or "disk"."""
+    m = mode(settings)
+    if m in STORES:
+        return m
+    s = settings.get("timeshift_store", "disk")
+    return s if s in STORES else "disk"
 
 
 def enabled(settings):
