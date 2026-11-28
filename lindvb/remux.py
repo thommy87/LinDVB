@@ -25,6 +25,13 @@ from .recformat import audio_extension, choose_streams  # noqa: E402
 
 MUXERS = {"TS": "mpegtsmux", "MPG": "mpegpsmux", "MP4": "mp4mux", "MKV": "matroskamux"}
 GAP_STEP = Gst.SECOND
+# The text tracks of the buffer's cues (stage H, MKV) are kept moving this
+# far behind the picture: a cue goes into the buffer up to a segment after
+# its picture (lindvb.cuebuffer), and the muxer takes no text from before
+# the time it was told the track is empty up to.
+CUE_LAG = 3 * Gst.SECOND
+CUE_PENDING = 64                 # cues kept while their stretch has no clock yet
+CUE_CAPS = "text/x-raw,format=(string)utf8"
 # Internet TV: how long the parsed streams wait for the other source pads.
 SETTLE_MS = 500
 SETTLE_LIMIT_S = 10
@@ -58,6 +65,14 @@ class Remuxer:
         self._sub_queue = None
         self._sub_ready = False
         self._sub_last = -1
+        # the buffer's cues as text tracks (stage H, MKV; see cue_tracks)
+        self.cue_clock = None
+        self._cue_tracks = {}          # PID -> CueTrack
+        self._cue_pending = []         # (pid, start s, end s, text, epoch)
+        self._cue_lock = threading.Lock()
+        self._cue_watched = False
+        self._tsdemux = None
+        self.cues_written = self.cues_late = self.cues_dropped = 0
         # Internet TV (see the module docstring)
         self.audio_mode = audio_mode or ("all" if all_audio else "first")
         self.language = language
@@ -127,6 +142,8 @@ class Remuxer:
             return
         if self.appsrc is not None:
             self.appsrc.emit("end-of-stream")
+            if self._cue_tracks and not self.have_video:
+                self._cues_end()       # no picture to end them with
         else:
             self._end_url()
         GLib.timeout_add_seconds(15, self._finish)
@@ -268,8 +285,13 @@ class Remuxer:
     # -- pipeline building ----------------------------------------------------
     def _element_added(self, _bin, _sub, element):
         factory = element.get_factory()
-        if factory and factory.get_name() == "tsdemux" and self.program:
-            element.set_property("program-number", self.program)
+        if factory and factory.get_name() == "tsdemux":
+            if self.program:
+                element.set_property("program-number", self.program)
+            with self._cue_lock:
+                # parsebin can make it from the source's caps, before any data
+                self._tsdemux = element
+            self._watch_cues()
 
     def _branch(self, pad, *elements):
         """Link pad -> elements... and return the last element's src pad."""
@@ -420,6 +442,10 @@ class Remuxer:
             self.have_video = q is not None
             if q is not None and self.subtitle_page:
                 q.get_static_pad("sink").add_probe(Gst.PadProbeType.BUFFER, self._video_probe)
+            if q is not None and self._cue_tracks:
+                q.get_static_pad("sink").add_probe(
+                    Gst.PadProbeType.BUFFER | Gst.PadProbeType.EVENT_DOWNSTREAM,
+                    self._cue_video_probe)
         elif name.startswith("audio/"):
             if self.audio_count and (not self.all_audio or self.mux is None):
                 return self._drop(pad, name)
@@ -495,3 +521,184 @@ class Remuxer:
             self._sub_last = pts
             q.get_static_pad("sink").send_event(Gst.Event.new_gap(max(start, 0), pts - max(start, 0)))
         return Gst.PadProbeReturn.OK
+
+
+    # -- the buffer's cues (stage H) --------------------------------------------
+    def cue_tracks(self, renditions):
+        """MKV of a buffer with subtitle cues (lindvb.cuebuffer): a text
+        track for each (PID, name, language) in *renditions*. Called before
+        the first data, as the muxer takes no new track after it. Returns
+        how many tracks were made."""
+        if self.fmt != "MKV" or self.mux is None or not renditions:
+            return 0
+        from .tsclock import TsClock
+        with self._lock:
+            for pid, name, language in renditions:
+                track = self._cue_track(pid, name, language)
+                if track is not None:
+                    self._cue_tracks[pid] = track
+            if self._cue_tracks:
+                # frames by running time: the time the muxer writes
+                self.cue_clock = TsClock(running=True)
+        self._watch_cues()
+        return len(self._cue_tracks)
+
+    def _watch_cues(self):
+        """The clock of the cues watches the tsdemux, once both are there."""
+        with self._cue_lock:
+            if self.cue_clock is None or self._tsdemux is None or self._cue_watched:
+                return
+            self._cue_watched = True
+            demux = self._tsdemux
+        self.cue_clock.watch(demux)
+
+    def _cue_track(self, pid, name, language):
+        tmpl = self.mux.get_pad_template("subtitle_%u")
+        if tmpl is None or not tmpl.get_caps().can_intersect(Gst.Caps.from_string(CUE_CAPS)):
+            return None
+        request = getattr(self.mux, "request_pad_simple", None) or self.mux.get_request_pad
+        mpad = request("subtitle_%u")
+        q = Gst.ElementFactory.make("queue")
+        if mpad is None or q is None:
+            return None
+        for prop in ("max-size-time", "max-size-buffers", "max-size-bytes"):
+            q.set_property(prop, 0)            # text: small, and it must never block the picture
+        self.pipeline.add(q)
+        q.sync_state_with_parent()
+        if q.get_static_pad("src").link(mpad) != Gst.PadLinkReturn.OK:
+            self.mux.release_request_pad(mpad)
+            return None
+        sink = q.get_static_pad("sink")
+        sink.send_event(Gst.Event.new_stream_start(f"lindvb-cues-{pid:04x}"))
+        sink.send_event(Gst.Event.new_caps(Gst.Caps.from_string(CUE_CAPS)))
+        seg = Gst.Segment()
+        seg.init(Gst.Format.TIME)
+        sink.send_event(Gst.Event.new_segment(seg))
+        tags = Gst.TagList.new_empty()
+        tags.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_TITLE, name)
+        if language:
+            tags.add_value(Gst.TagMergeMode.REPLACE, Gst.TAG_LANGUAGE_CODE, language)
+        sink.send_event(Gst.Event.new_tag(tags))
+        return CueTrack(sink)
+
+    def cue(self, pid, start, end, text, epoch):
+        """A cue found in the bytes pushed (lindvb.cuebuffer.CueFinder):
+        it goes into its track once the picture of its stretch came."""
+        if not self._cue_tracks or self.finished:
+            return
+        with self._cue_lock:
+            self._cue_pending.append((pid, start, end, text, epoch))
+            if len(self._cue_pending) > CUE_PENDING:
+                del self._cue_pending[0]
+                self.cues_dropped += 1
+
+    def _cue_video_probe(self, pad, info):
+        """The picture on its way to the muxer: the cues whose stretch now
+        has a clock go into their tracks, and each track is said empty up
+        to CUE_LAG before the picture, so the muxer goes on."""
+        try:
+            if info.type & Gst.PadProbeType.BUFFER:
+                buf = info.get_buffer()
+                ev = pad.get_sticky_event(Gst.EventType.SEGMENT, 0)
+                if buf is not None and buf.pts != Gst.CLOCK_TIME_NONE and ev is not None:
+                    rt = ev.parse_segment().to_running_time(Gst.Format.TIME, buf.pts)
+                    if rt != Gst.CLOCK_TIME_NONE:
+                        self._cues_out(rt)
+            elif info.get_event().type == Gst.EventType.EOS:
+                self._cues_out(None)
+                self._cues_end()
+        except Exception as e:  # noqa: BLE001 - the subtitles must never cost the recording
+            print(f"LinDVB: recording subtitles: {e}")
+        return Gst.PadProbeReturn.OK
+
+    def _cues_out(self, rt):
+        """(video streaming thread) *rt*: the running time (ns) of the
+        picture, None at its end."""
+        clock = self.cue_clock
+        with self._cue_lock:
+            pending, self._cue_pending = self._cue_pending, []
+        keep = []
+        near = rt / Gst.SECOND if rt is not None else None
+        for cue in pending:
+            pid, start, end, text, epoch = cue
+            t = clock.stream_time(start, near, epoch) if clock is not None else None
+            track = self._cue_tracks.get(pid)
+            if track is None:
+                self.cues_dropped += 1
+            elif t is None:
+                keep.append(cue)
+            else:
+                self._cue_into(track, round(t * Gst.SECOND), round((end - start) * Gst.SECOND),
+                               text)
+        if keep and rt is not None:
+            with self._cue_lock:
+                self._cue_pending[:0] = keep
+                self.cues_dropped += max(0, len(self._cue_pending) - CUE_PENDING)
+                del self._cue_pending[:-CUE_PENDING]
+        elif keep:
+            self.cues_dropped += len(keep)
+        if rt is not None:
+            for track in self._cue_tracks.values():
+                track.gap_to(rt - CUE_LAG)
+
+    def _cue_into(self, track, t0, dur, text):
+        floor = track.floor
+        if t0 < floor:
+            dur -= floor - t0
+            t0 = floor
+            if dur <= 0:
+                self.cues_dropped += 1
+                return
+            self.cues_late += 1
+        if track.push(t0, dur, text):
+            self.cues_written += 1
+        else:
+            self.cues_dropped += 1
+
+    def _cues_end(self):
+        for track in self._cue_tracks.values():
+            track.end()
+
+    def cue_report(self):
+        clock = self.cue_clock.summary() if self.cue_clock is not None else "no clock"
+        return (f"{self.cues_written} cues into {len(self._cue_tracks)} text tracks, "
+                f"{self.cues_late} shortened (late), {self.cues_dropped} not; {clock}")
+
+
+class CueTrack:
+    """One text track of buffer cues: the sink pad of its queue to the
+    muxer, fed from the picture's streaming thread only, so buffers and
+    gaps keep their order."""
+
+    def __init__(self, sink):
+        self.sink = sink
+        self.last = 0                  # the start (ns) of the last cue
+        self.gap = 0                   # the time (ns) the track was said empty up to
+        self.ended = False
+
+    @property
+    def floor(self):
+        """No cue may start before this (ns)."""
+        return max(self.last, self.gap)
+
+    def push(self, t0, dur, text):
+        if self.ended:
+            return False
+        self.gap_to(t0)
+        buf = Gst.Buffer.new_wrapped(text.encode("utf-8"))
+        buf.pts = t0
+        buf.duration = dur
+        self.last = t0
+        return self.sink.chain(buf) in (Gst.FlowReturn.OK, Gst.FlowReturn.NOT_LINKED)
+
+    def gap_to(self, t):
+        start = self.floor
+        if self.ended or t <= start + GAP_STEP // 2:
+            return
+        self.sink.send_event(Gst.Event.new_gap(start, t - start))
+        self.gap = t
+
+    def end(self):
+        if not self.ended:
+            self.ended = True
+            self.sink.send_event(Gst.Event.new_eos())

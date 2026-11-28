@@ -163,3 +163,36 @@ def test_b_frames_and_wraps_are_no_jumps():
     assert not is_jump(PTS_WRAP - 3600, 1800)                        # the 33-bit wrap
     assert is_jump(90000 * 3700, 90000 * 3600)
     assert is_jump(90000 * 3600, 90000 * 3700)
+
+
+def _pat(pmt_pid=0x1000, program=1):
+    body = bytes([0, 0xb0, 13, 0, 1, 0xc1, 0, 0, program >> 8, program & 0xff,
+                  0xe0 | pmt_pid >> 8, pmt_pid & 0xff]) + b"\0\0\0\0"
+    return (bytes([0x47, 0x40, 0x00, 0x10, 0]) + body).ljust(tsclock.TS_PACKET, b"\xff")
+
+
+def _pmt(pmt_pid=0x1000):
+    return bytes([0x47, 0x40 | pmt_pid >> 8, pmt_pid & 0xff, 0x10, 0, 2]).ljust(
+        tsclock.TS_PACKET, b"\xff")
+
+
+def test_the_pat_names_its_pmts():
+    assert tsclock.pat_pmt_pids(_pat(0x1000)) == {0x1000}
+    assert tsclock.pat_pmt_pids(_pmt()) is None
+
+
+def test_a_start_in_the_middle_ties_the_clocks_after_the_pmt():
+    """tsdemux makes no frame of the PES before the first PAT and PMT (a
+    recording that starts in the middle of the buffer): the first frame is
+    the first PES after them, not the first in the bytes."""
+    pts = [324000000 + i * 3600 for i in range(10)]
+    before = b"".join(_packet(p) for p in pts[:2])
+    after = b"".join(_packet(p) for p in pts[2:])
+    for cut in (len(before) + 188, len(before) + 2 * 188 + 1):
+        clock = TsClock()
+        data = before + _pat() + _pmt() + after
+        clock.feed_ts(data[:cut])
+        clock.feed_ts(data[cut:])
+        _frames(clock, pts[2], 8, -3600.0)
+        assert clock.offset == pytest.approx(-3600.0), cut
+        assert (clock.frames, clock.matched, clock.missed) == (7, 7, 0)

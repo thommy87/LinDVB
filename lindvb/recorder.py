@@ -19,11 +19,14 @@ from .recformat import (AFTER_ACTIONS, AUDIO_MODES, EXTENSIONS, EXTRA_DEFAULTS, 
                         audio_mode_from_legacy, pmt_all_pids,
                         choose_from_pmt, effective_format, expand_scheme, keep_pids, needs_pmt,
                         usable_extras)
+from .cuebuffer import strip_cue_packets
 from .tuner import SegmentReader
 # systemd-logind methods; D-Bus works natively and inside the Flatpak sandbox.
 AFTER_COMMANDS = {"Standby": "Suspend", "Hibernate": "Hibernate", "Power off": "PowerOff"}
 # stored in timers as indices; the names are translated where they are shown
 WEEKDAYS = [N_("Mo"), N_("Tu"), N_("We"), N_("Th"), N_("Fr"), N_("Sa"), N_("Su")]
+HOLD_LIMIT = 4 << 20     # MKV: data held at most until the subtitles are known
+CUE_WAIT = 5.0           # s an MKV recording waits for the buffer to name its subtitles
 
 
 def safe(s):
@@ -149,6 +152,7 @@ class Recording:
         self.running = True
         self._bytes = 0
         self.remux = None
+        self._buffer_subtitles(capture, fmt)
         if capture is not None:
             if start_offset is None:
                 _, start_offset = capture.store.bounds()
@@ -193,7 +197,32 @@ class Recording:
     def _remuxer(self, url=None, program=0, all_audio=True, **kw):
         from .remux import Remuxer
         return Remuxer(self.fmt, self.path, url=url, program=program, all_audio=all_audio,
-                       on_done=lambda r: setattr(self, "path", Path(r.path)), **kw)
+                       on_done=self._remux_done, **kw)
+
+    def _remux_done(self, remux):
+        self.path = Path(remux.path)
+        if self._cue_finder is not None:
+            from . import debuglog
+            debuglog.write("Recording", f"subtitles from the buffer: {remux.cue_report()}")
+
+    def _buffer_subtitles(self, capture, fmt):
+        """The subtitle cues in the buffer of an HLS channel (stage H): TS
+        gets .srt files beside it, MKV a text track for each rendition."""
+        self.subs = None               # TS (lindvb.recsubs.TsSubtitles)
+        self._cue_finder = None        # MKV: the cues in the bytes read
+        self._cue_found = []
+        self._cue_until = None         # MKV: the data waits until then for the renditions
+        # TS: the cue packets stay out of the file (the .srt files have them)
+        self._cue_strip = bool(fmt == "TS" and getattr(capture, "subtitles", False))
+        if "subtitles" not in self.extras or not getattr(capture, "writes_cues", False):
+            return
+        if fmt == "TS":
+            from .recsubs import TsSubtitles
+            self.subs = TsSubtitles(self.path, lambda: capture.cue_pids)
+        elif fmt == "MKV":
+            from .cuebuffer import CueFinder
+            self._cue_finder = CueFinder()
+            self._cue_until = time.monotonic() + CUE_WAIT
 
     @property
     def bytes(self):
@@ -212,28 +241,65 @@ class Recording:
             pages = []
         return pages[0].page if pages else DEFAULT_SUBTITLE_PAGES[0]
 
+    def _holding(self):
+        return bool(self.want_sub_page and not self.remux.subtitle_page) or \
+            self._cue_until is not None
+
+    def _hold(self, held):
+        """MKV: True while the data waits (up to HOLD_LIMIT) for the PMT to
+        name the teletext subtitle page, or for the buffer's reader to name
+        its subtitle renditions: the muxer takes no track after the data."""
+        full = sum(map(len, held)) >= HOLD_LIMIT
+        if self.want_sub_page and not self.remux.subtitle_page:
+            if self.filter.pmt is None and not full:
+                return True
+            self.remux.subtitle_page = self._subtitle_page()
+        if self._cue_until is not None:
+            pids = self.capture.cue_pids
+            if not pids and self.capture.writes_cues and not full and \
+                    time.monotonic() < self._cue_until:
+                return True
+            self._cue_until = None
+            langs = self.capture.cue_languages
+            if not self.remux.cue_tracks([(pid, name, langs.get(name, ""))
+                                          for name, pid in pids.items()]):
+                self._cue_finder, self._cue_found = None, []
+        return False
+
+    def _cues_to_remux(self):
+        if self._cue_found and self._cue_until is None:
+            for cue in self._cue_found:
+                self.remux.cue(*cue)
+            self._cue_found = []
+
     def _copy(self):
         out = open(self.path, "wb") if self.remux is None else None
-        held = []          # MKV subtitles: hold data until the PMT names the page
+        held = []          # MKV subtitles: hold data until they are known (_hold)
         try:
             while self.running:
-                data = self.reader.read()
-                if data is None:
+                read = self.reader.read()
+                if read is None:
                     break
-                if not data:
+                if not read:
                     time.sleep(0.1)
                     continue
-                data = self.filter.feed(data)
+                data = self.filter.feed(read)
                 if out is not None:
+                    if self._cue_strip:
+                        data = strip_cue_packets(data)
                     out.write(data)
                     self._bytes += len(data)
+                    if self.subs is not None:
+                        self.subs.feed(read, data)
                     continue
-                if self.want_sub_page and not self.remux.subtitle_page:
+                if self._cue_finder is not None:
+                    self._cue_found += self._cue_finder.feed(read)
+                if self._holding():
                     held.append(data)
-                    if self.filter.pmt is None and sum(map(len, held)) < (4 << 20):
+                    if self._hold(held):
                         continue
-                    self.remux.subtitle_page = self._subtitle_page()
                     data, held = b"".join(held), []
+                self._cues_to_remux()
                 self.remux.push(data)
         finally:
             rest = self.filter.flush()
@@ -244,11 +310,20 @@ class Recording:
                 held.append(rest)
             if out is not None:
                 out.close()
+            if self.subs is not None:
+                self._srt_done()
             if self.remux is not None:
                 if held:
                     self.remux.push(b"".join(held))
                 GLib.idle_add(self.remux.stop)
             self.reader.close()
+
+    def _srt_done(self):
+        from . import debuglog, library
+        files = self.subs.close()
+        debuglog.write("Recording", f"subtitles from the buffer: {self.subs.report()}")
+        if files:
+            library.add_subtitle_files(self.path, files)
 
     def stop(self):
         from . import debuglog
