@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 
 from .config import CACHE_DIR
 from .epgmerge import DEFAULT_ORDER, merge, normalize_order, source_for_key
+from . import progfeatures
 
 GENRES = {
     0x1: "Movie/Drama", 0x2: "News/Current affairs", 0x3: "Show/Game show",
@@ -39,6 +40,8 @@ class Event:
     min_age: int = 0
     access: list = field(default_factory=list)
     bw: bool = False      # black and white (EIT content 0xB1, XMLTV <colour>no)
+    # sound, subtitles, HD ... as the guide signals them (lindvb.progfeatures)
+    features: list = field(default_factory=list)
 
     @property
     def end(self):
@@ -303,7 +306,8 @@ def read_xmltv(data: bytes, language=""):
             _pick_text(p, "category", language).strip(),
             country=(p.findtext("country") or "").strip(),
             year=int(date[:4]) if date[:4].isdigit() else 0,
-            bw=(p.findtext("video/colour") or "").strip().lower() == "no")))
+            bw=(p.findtext("video/colour") or "").strip().lower() == "no",
+            features=progfeatures.ordered(progfeatures.xmltv_features(p) - {progfeatures.BW}))))
     return channels, items
 
 

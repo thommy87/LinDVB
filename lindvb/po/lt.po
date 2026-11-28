@@ -4976,6 +4976,34 @@ msgstr "XDS programos duomenys: {size}"
 msgid "only padding, no captions"
 msgstr "tik užpildas, subtitrų nėra"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Erdvinis garsas 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Erdvinis garsas 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Originalo kalba"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Aiški kalba"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Gestų kalba"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Slėpti šį pranešimą iki kitos versijos"

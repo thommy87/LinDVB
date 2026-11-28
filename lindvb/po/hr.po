@@ -4976,6 +4976,34 @@ msgstr "XDS programski podaci: {size}"
 msgid "only padding, no captions"
 msgstr "samo ispuna, nema titlova"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Surround zvuk 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Surround zvuk 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Izvorni jezik"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Jasan govor"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Znakovni jezik"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Sakrij ovu obavijest do sljedeće verzije"

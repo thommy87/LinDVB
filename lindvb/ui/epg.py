@@ -10,7 +10,8 @@ import time
 from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 
 from ..config import CACHE_DIR
-from ..contentguide import ACCESS_ICONS, AUDIO_DESCRIPTION, SUBTITLES, access_icons, badges, image_url
+from .. import progfeatures
+from ..contentguide import AUDIO_DESCRIPTION, SIGN_LANGUAGE, SUBTITLES, access_icons, badges, image_url
 from .common import day, dropdown, fill, hm, make_column_view, scrolled, selected
 from ..i18n import _
 
@@ -412,15 +413,21 @@ class EPGWindow(Gtk.Window):
         self.chips.remove_all()
         facts = [f"{day(e.start)}  {hm(e.start)}–{hm(e.end)}", f"{e.duration // 60} min"]
         facts += [e.genre] if e.genre else []
-        facts += [_(a) for a in e.access or [] if a not in ACCESS_ICONS]
+        facts += [_(a) for a in e.access or []
+                  if a not in (AUDIO_DESCRIPTION, SUBTITLES, SIGN_LANGUAGE)]
         facts += [f"FSK {e.min_age}"] if e.min_age else []
         for i, fact in enumerate([c.name] + facts):
             css = ["epg-chip"] + (["epg-chip-accent"] if i == 0 else [])
             self.chips.append(Gtk.Label(label=fact, halign=Gtk.Align.START, css_classes=css))
-        for name, a in access_icons(e):
-            chip = Gtk.Box(spacing=5, halign=Gtk.Align.START, css_classes=["epg-chip"], tooltip_text=_(a))
-            chip.append(Gtk.Image(icon_name=name, pixel_size=16))
-            chip.append(Gtk.Label(label=_(a)))
+        # what the programme offers (black and white, 5.1, original language,
+        # clear speech, audio description, subtitles ...), with its symbol
+        for f in progfeatures.event_features(e):
+            label = _(progfeatures.LABELS[f])
+            chip = Gtk.Box(spacing=5, halign=Gtk.Align.START, css_classes=["epg-chip"],
+                           tooltip_text=label)
+            if f in progfeatures.ICONS:
+                chip.append(Gtk.Image(icon_name=progfeatures.ICONS[f], pixel_size=16))
+            chip.append(Gtk.Label(label=label))
             self.chips.append(chip)
         self.desc_lbl.set_text(e.description or "")
         self.desc_lbl.set_visible(bool(e.description))

@@ -4976,6 +4976,34 @@ msgstr "Data tal-programm XDS: {size}"
 msgid "only padding, no captions"
 msgstr "mili biss, l-ebda sottotitoli"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Sterjo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Ħoss surround 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Ħoss surround 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Lingwa oriġinali"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Diskors ċar"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Lingwa tas-sinjali"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Aħbi din in-notifika sal-verżjoni li jmiss"

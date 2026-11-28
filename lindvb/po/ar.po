@@ -4976,6 +4976,34 @@ msgstr "بيانات برنامج XDS: {size}"
 msgid "only padding, no captions"
 msgstr "حشو فقط، بلا ترجمة"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "أحادي"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "ستيريو"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "صوت محيطي 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "صوت محيطي 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "اللغة الأصلية"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "كلام واضح"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "لغة الإشارة"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "إخفاء هذا التنبيه حتى الإصدار التالي"

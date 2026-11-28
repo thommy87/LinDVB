@@ -4976,6 +4976,34 @@ msgstr "Date de program XDS: {size}"
 msgid "only padding, no captions"
 msgstr "doar umplutură, fără subtitrări"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Sunet surround 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Sunet surround 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Limba originală"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Vorbire clară"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Limbajul semnelor"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Ascunde această notificare până la versiunea următoare"

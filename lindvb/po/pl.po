@@ -4976,6 +4976,34 @@ msgstr "Dane programu XDS: {size}"
 msgid "only padding, no captions"
 msgstr "tylko wypełnienie, brak napisów"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Dźwięk przestrzenny 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Dźwięk przestrzenny 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Język oryginalny"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Wyraźna mowa"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Język migowy"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Ukryj to powiadomienie do następnej wersji"

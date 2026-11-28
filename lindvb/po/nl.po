@@ -4976,6 +4976,34 @@ msgstr "XDS-programmagegevens: {size}"
 msgid "only padding, no captions"
 msgstr "alleen opvulling, geen ondertitels"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "Mono"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "Stereo"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "Surroundgeluid 5.1"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "Surroundgeluid 7.1"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "Originele taal"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "Duidelijke spraak"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "Gebarentaal"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "Deze melding verbergen tot de volgende versie"

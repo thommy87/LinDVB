@@ -12,7 +12,7 @@ from pathlib import Path
 from gi.repository import Gdk, Gio, GLib, GObject, Gst, Gtk, Pango
 
 from .. import (channelcontext, chansort, debuglog, dvbi, iptvsources, listfilter, logothumbs,
-               satip, sourcestate)
+               progfeatures, satip, sourcestate)
 from .. import updatecheck
 from ..channels import import_file, is_lindvb_json, parse_lindvb_json
 from ..config import APP_NAME, CACHE_DIR, old_snap_folder
@@ -2884,10 +2884,18 @@ class MainWindow(Gtk.ApplicationWindow):
                 if codec:
                     b.append(Gtk.Label(label=codec, css_classes=["lv-osd-codec"]))
                 self.osd_tags.append(b)
+            sound = progfeatures.on_air(self.app.epg.now_next(c.epg_key)[0], tracks)
+            if progfeatures.ORIGINAL in sound:
+                langs = [lang for lang in langs if lang != "OV"]      # the symbol says it
             if len(langs) > 1:
                 _layouts, names = audio_summary(tracks, cur)
                 self.osd_tags.append(Gtk.Label(label=" · ".join(langs), css_classes=["lv-osd-tag"],
                                                tooltip_text=" / ".join(names) or None))
+            for f in (progfeatures.ORIGINAL, progfeatures.CLEAR_SPEECH):
+                if f in sound:
+                    self.osd_tags.append(Gtk.Image(icon_name=progfeatures.ICONS[f], pixel_size=18,
+                                                   css_classes=["lv-osd-icon"],
+                                                   tooltip_text=_(progfeatures.LABELS[f])))
             if any(is_audio_description(t) for t in tracks):
                 self.osd_tags.append(Gtk.Image(icon_name="lindvb-audio-description-symbolic",
                                                pixel_size=18, css_classes=["lv-osd-icon"],

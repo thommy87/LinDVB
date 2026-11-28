@@ -5019,6 +5019,34 @@ msgstr "داده برنامه XDS: {size}"
 msgid "only padding, no captions"
 msgstr "فقط پرکننده، بدون زیرنویس"
 
+#: lindvb/progfeatures.py
+msgid "Mono"
+msgstr "مونو"
+
+#: lindvb/progfeatures.py
+msgid "Stereo"
+msgstr "استریو"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 5.1"
+msgstr "صدای فراگیر ۵.۱"
+
+#: lindvb/progfeatures.py
+msgid "Surround sound 7.1"
+msgstr "صدای فراگیر ۷.۱"
+
+#: lindvb/progfeatures.py
+msgid "Original language"
+msgstr "زبان اصلی"
+
+#: lindvb/progfeatures.py
+msgid "Clear speech"
+msgstr "گفتار واضح"
+
+#: lindvb/progfeatures.py
+msgid "Sign language"
+msgstr "زبان اشاره"
+
 #: lindvb/ui/window.py
 msgid "Hide this notice until the next version"
 msgstr "پنهان کردن این اعلان تا نسخه بعدی"
